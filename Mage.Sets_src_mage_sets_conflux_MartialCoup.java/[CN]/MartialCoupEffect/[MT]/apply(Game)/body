@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(this.source.getControllerId());
+  int amount=this.source.getCosts().getVariableCosts().get(0).getValue();
+  FilterCreaturePermanent filter=new FilterCreaturePermanent();
+  if (amount > 4) {
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(filter)) {
+      permanent.destroy(this.source.getSourceId(),game,false);
+    }
+  }
+  for (int i=0; i < amount; i++) {
+    controller.putOntoBattlefield(new SoldierToken(),game);
+  }
+  return true;
+}

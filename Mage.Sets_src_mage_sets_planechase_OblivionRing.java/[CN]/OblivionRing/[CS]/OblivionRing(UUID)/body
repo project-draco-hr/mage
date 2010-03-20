@@ -1,0 +1,13 @@
+{
+  super(ownerId,"Oblivion Ring",new CardType[]{CardType.ENCHANTMENT},"{2}{W}");
+  this.color.setWhite(true);
+  this.art="115005_typ_reg_sty_010.jpg";
+  FilterNonlandPermanent filter=new FilterNonlandPermanent();
+  filter.setId(this.getId());
+  filter.setNotId(true);
+  Ability ability1=new EntersBattlefieldTriggeredAbility(new ExileTargetEffect(this.getId(),"Oblivion Ring exile"),false);
+  ability1.addTarget(new TargetPermanent(filter,TargetController.ANY));
+  this.addAbility(ability1);
+  Ability ability2=new LeavesBattlefieldTriggeredAbility(new ReturnFromExileEffect(this.getId(),Zone.BATTLEFIELD),false);
+  this.addAbility(ability2);
+}

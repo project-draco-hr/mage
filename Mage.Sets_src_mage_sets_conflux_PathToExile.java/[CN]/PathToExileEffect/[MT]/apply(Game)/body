@@ -1,0 +1,22 @@
+{
+  Permanent permanent=game.getPermanent(this.source.getFirstTarget());
+  if (permanent != null) {
+    Player player=game.getPlayer(permanent.getControllerId());
+    if (permanent.moveToZone(Zone.EXILED,game,false)) {
+      if (player.chooseUse(Outcome.PutCardInPlay,"Use Path to Exile effect?",game)) {
+        TargetCardInLibrary target=new TargetCardInLibrary(new FilterBasicLandCard());
+        player.searchLibrary(target,game);
+        Card card=player.getLibrary().remove(target.getFirstTarget());
+        if (card != null) {
+          if (player.putOntoBattlefield(card,game)) {
+            Permanent land=game.getPermanent(card.getId());
+            if (land != null)             land.setTapped(true);
+          }
+        }
+        player.shuffleLibrary(game);
+      }
+      return true;
+    }
+  }
+  return false;
+}

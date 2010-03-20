@@ -1,0 +1,15 @@
+{
+  filter.getControllerId().clear();
+  filter.getControllerId().add(this.source.getControllerId());
+  List<UUID> wolves=new ArrayList<UUID>();
+  Permanent target=game.getPermanent(this.source.getFirstTarget());
+  if (target != null) {
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(filter)) {
+      permanent.tap(game);
+      target.damage(permanent.getToughness().getValue(),permanent.getId(),game);
+    }
+    Player player=game.getPlayer(target.getControllerId());
+    player.assignDamage(target.getPower().getValue(),wolves,target.getId(),game);
+  }
+  return true;
+}
