@@ -1,0 +1,14 @@
+{
+  if (damage > 0 && canDamage(game.getObject(sourceId))) {
+    GameEvent event=new GameEvent(GameEvent.EventType.DAMAGE_PLAYER,playerId,sourceId,playerId,damage);
+    if (!game.replaceEvent(event)) {
+      int actualDamage=event.getAmount();
+      if (actualDamage > 0) {
+        actualDamage=this.loseLife(actualDamage,game);
+        game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DAMAGED_PLAYER,playerId,sourceId,playerId,actualDamage));
+        return actualDamage;
+      }
+    }
+  }
+  return 0;
+}

@@ -1,0 +1,27 @@
+{
+  boolean result=false;
+  if (card.getCardType().contains(CardType.INSTANT) || card.getCardType().contains(CardType.SORCERY)) {
+    SpellAbility ability=card.getSpellAbility();
+    if (ability.getTargets().stillLegal(game)) {
+      boolean replaced=false;
+      for (      KickerAbility kicker : card.getAbilities().getKickerAbilities()) {
+        if (kicker.isKicked()) {
+          if (kicker.isReplaces()) {
+            replaced=true;
+          }
+          kicker.resolve(game);
+        }
+      }
+      if (!replaced)       result=ability.resolve(game);
+      if (ability.getEffects().contains(ExileSourceEffect.getInstance()))       game.getExile().getPermanentExile().add(card);
+ else       game.getPlayers().get(controllerId).putInGraveyard(card,game,false);
+      return result;
+    }
+    counter(game);
+    return false;
+  }
+ else {
+    Player controller=game.getPlayers().get(controllerId);
+    return controller.putOntoBattlefield(card,game);
+  }
+}

@@ -1,0 +1,12 @@
+{
+  List<Permanent> permanents=game.getBattlefield().getActivePermanents(filter);
+  Iterator<Permanent> it=permanents.iterator();
+  while (it.hasNext()) {
+    Permanent permanent=it.next();
+    if (!permanent.canTarget(game.getObject(sourceId))) {
+      it.remove();
+    }
+  }
+  if (permanents.size() >= this.minNumberOfTargets)   return true;
+  return false;
+}

@@ -1,0 +1,8 @@
+{
+  UUID activePlayerId=state.getTurn().getActivePlayerId();
+  if (!replaceEvent(new GameEvent(GameEvent.EventType.UPKEEP_STEP,null,null,activePlayerId))) {
+    fireEvent(new GameEvent(GameEvent.EventType.UPKEEP_STEP_PRE,null,null,activePlayerId));
+    playPriority();
+    fireEvent(new GameEvent(GameEvent.EventType.UPKEEP_STEP_POST,null,null,activePlayerId));
+  }
+}

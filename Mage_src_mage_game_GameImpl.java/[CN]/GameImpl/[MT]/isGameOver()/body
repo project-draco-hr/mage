@@ -1,0 +1,14 @@
+{
+  if (state.isGameOver())   return true;
+  int remainingPlayers=0;
+  int numLosers=0;
+  for (  Player player : state.getPlayers().values()) {
+    if (!player.hasLeft())     remainingPlayers++;
+    if (player.hasLost())     numLosers++;
+  }
+  if (remainingPlayers <= 1 || numLosers >= state.getPlayers().size() - 1) {
+    state.endGame();
+    return true;
+  }
+  return false;
+}

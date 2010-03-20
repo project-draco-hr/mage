@@ -1,0 +1,13 @@
+{
+  StackObject stackObject=getStackObject(objectId);
+  if (stackObject != null) {
+    if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.COUNTER,objectId,sourceId,stackObject.getControllerId()))) {
+      this.remove(stackObject);
+      stackObject.counter(game);
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.COUNTERED,objectId,sourceId,stackObject.getControllerId()));
+      return true;
+    }
+    return false;
+  }
+  return false;
+}

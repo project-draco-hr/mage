@@ -1,0 +1,14 @@
+{
+  for (Iterator<ContinuousEffect> i=effects.iterator(); i.hasNext(); ) {
+    ContinuousEffect entry=i.next();
+    if (entry.getDuration() == Duration.WhileInPlay) {
+      Permanent permanent=(Permanent)game.getPermanent(entry.getSource().getSourceId());
+      if (permanent == null || !permanent.isPhasedIn())       i.remove();
+    }
+    if (entry.getDuration() == Duration.OneUse) {
+      if (entry instanceof ReplacementEffect) {
+        if (((ReplacementEffect)entry).isUsed())         i.remove();
+      }
+    }
+  }
+}

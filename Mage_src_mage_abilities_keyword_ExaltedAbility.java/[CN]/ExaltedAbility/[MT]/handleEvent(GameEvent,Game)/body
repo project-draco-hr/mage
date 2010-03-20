@@ -1,0 +1,15 @@
+{
+  if (event.getType() == EventType.DECLARED_ATTACKERS) {
+    Combat combat=game.getCombat();
+    if (combat.getGroups().size() == 1) {
+      CombatGroup group=combat.getGroups().get(0);
+      if (group.getAttackers().size() == 1) {
+        if (game.getPermanent(group.getAttackers().get(0)).getControllerId().equals(this.controllerId)) {
+          this.targets.add(new TargetCreaturePermanent());
+          this.targets.get(0).getTargets().add(group.getAttackers().get(0));
+          trigger(game,event.getPlayerId());
+        }
+      }
+    }
+  }
+}

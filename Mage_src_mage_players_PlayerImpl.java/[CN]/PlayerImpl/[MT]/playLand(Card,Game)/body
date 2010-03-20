@@ -1,0 +1,14 @@
+{
+  if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.PLAY_LAND,card.getId(),playerId))) {
+    game.bookmarkState();
+    removeFromHand(card,game);
+    if (putOntoBattlefield(card,game)) {
+      landsPlayed++;
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.LAND_PLAYED,card.getId(),playerId));
+      game.removeLastBookmark();
+      return true;
+    }
+  }
+  game.restoreState();
+  return false;
+}

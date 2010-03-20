@@ -1,0 +1,34 @@
+{
+  Mana compare=avail.copy();
+  compare.subtract(this);
+  if (compare.getRed() < 0) {
+    compare.setAny(compare.getAny() + compare.getRed());
+    if (compare.getAny() < 0)     return false;
+    compare.setRed(0);
+  }
+  if (compare.getGreen() < 0) {
+    compare.setAny(compare.getAny() + compare.getGreen());
+    if (compare.getAny() < 0)     return false;
+    compare.setGreen(0);
+  }
+  if (compare.getBlue() < 0) {
+    compare.setAny(compare.getAny() + compare.getBlue());
+    if (compare.getAny() < 0)     return false;
+    compare.setBlue(0);
+  }
+  if (compare.getBlack() < 0) {
+    compare.setAny(compare.getAny() + compare.getBlack());
+    if (compare.getAny() < 0)     return false;
+    compare.setBlack(0);
+  }
+  if (compare.getWhite() < 0) {
+    compare.setAny(compare.getAny() + compare.getWhite());
+    if (compare.getAny() < 0)     return false;
+    compare.setWhite(0);
+  }
+  if (compare.getColorless() < 0) {
+    int remaining=compare.getRed() + compare.getGreen() + compare.getBlack()+ compare.getBlue()+ compare.getWhite();
+    if (compare.getColorless() + remaining < 0)     return false;
+  }
+  return true;
+}

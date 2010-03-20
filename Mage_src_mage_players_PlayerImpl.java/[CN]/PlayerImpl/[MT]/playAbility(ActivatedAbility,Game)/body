@@ -1,0 +1,13 @@
+{
+  if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.ACTIVATE_ABILITY,ability.getId(),playerId))) {
+    game.bookmarkState();
+    game.getStack().push(new StackAbility(ability,playerId));
+    if (ability.activate(game,false)) {
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.ACTIVATED_ABILITY,ability.getId(),playerId));
+      game.removeLastBookmark();
+      return true;
+    }
+  }
+  game.restoreState();
+  return false;
+}

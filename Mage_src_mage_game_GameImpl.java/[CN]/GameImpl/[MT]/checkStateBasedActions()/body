@@ -1,0 +1,75 @@
+{
+  boolean somethingHappened=false;
+  for (  Player player : state.getPlayers().values()) {
+    if (player.getLife() <= 0 || player.isEmptyDraw() || player.getCounters().getCount("Poison") >= 10) {
+      player.lost(this);
+      somethingHappened=true;
+    }
+  }
+  for (  Permanent perm : getBattlefield().getActivePermanents(CardType.CREATURE)) {
+    if (perm.getToughness().getValue() == 0) {
+      perm.moveToZone(Zone.GRAVEYARD,this,false);
+      somethingHappened=true;
+    }
+ else     if (perm.getToughness().getValue() <= perm.getDamage() || perm.isDeathtouched()) {
+      perm.destroy(null,this,false);
+      somethingHappened=true;
+    }
+  }
+  FilterPlaneswalkerPermanent filter=new FilterPlaneswalkerPermanent();
+  if (getBattlefield().count(filter) > 1) {
+    for (    String planeswalkerType : Constants.PlaneswalkerTypes) {
+      filter.getSubtype().clear();
+      filter.getSubtype().add(planeswalkerType);
+      filter.setScopeSubtype(ComparisonScope.Any);
+      if (getBattlefield().count(filter) > 1) {
+        for (        Permanent perm : getBattlefield().getActivePermanents(filter)) {
+          perm.moveToZone(Zone.GRAVEYARD,this,false);
+          somethingHappened=true;
+        }
+      }
+    }
+  }
+  for (  Permanent perm : getBattlefield().getActivePermanents(CardType.PLANESWALKER)) {
+    if (perm.getLoyalty().getValue() == 0) {
+      perm.moveToZone(Zone.GRAVEYARD,this,false);
+      return true;
+    }
+  }
+  for (  Permanent perm : getBattlefield().getActivePermanents(new FilterEquipment())) {
+    if (perm.getAttachedTo() != null) {
+      Permanent creature=getPermanent(perm.getAttachedTo());
+      if (creature == null) {
+        perm.attachTo(null);
+      }
+ else       if (!creature.getCardType().contains(CardType.CREATURE)) {
+        creature.removeAttachment(perm.getId(),this);
+        somethingHappened=true;
+      }
+    }
+  }
+  for (  Permanent perm : getBattlefield().getActivePermanents(new FilterFortification())) {
+    if (perm.getAttachedTo() != null) {
+      Permanent land=getPermanent(perm.getAttachedTo());
+      if (land == null) {
+        perm.attachTo(null);
+      }
+ else       if (!land.getCardType().contains(CardType.LAND)) {
+        land.removeAttachment(perm.getId(),this);
+        somethingHappened=true;
+      }
+    }
+  }
+  for (  Permanent perm : getBattlefield().getActivePermanents()) {
+    if (perm.getAttachments().size() > 0) {
+      for (      UUID attachmentId : perm.getAttachments()) {
+        Permanent attachment=getPermanent(attachmentId);
+        if (!(attachment.getSubtype().contains("Aura") || attachment.getSubtype().contains("Equipment") || attachment.getSubtype().contains("Fortification"))) {
+          perm.removeAttachment(id,this);
+          return true;
+        }
+      }
+    }
+  }
+  return somethingHappened;
+}

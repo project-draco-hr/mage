@@ -1,0 +1,13 @@
+{
+  for (  UUID attackerId : attackers) {
+    if (game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARE_BLOCKER,blockerId,attackerId,playerId))) {
+      return;
+    }
+  }
+  game.getPermanent(blockerId).setBlocking(true);
+  blockers.add(blockerId);
+  this.blocked=true;
+  for (  UUID attackerId : attackers) {
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.BLOCKER_DECLARED,blockerId,attackerId,playerId));
+  }
+}

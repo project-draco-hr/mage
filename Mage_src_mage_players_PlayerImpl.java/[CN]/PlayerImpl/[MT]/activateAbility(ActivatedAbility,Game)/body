@@ -1,0 +1,18 @@
+{
+  boolean result;
+  if (!ability.canActivate(this.playerId,game))   return false;
+  if (ability instanceof PlayLandAbility) {
+    result=playLand(hand.get(ability.getSourceId()),game);
+  }
+ else   if (ability instanceof ManaAbility) {
+    result=playManaAbility((ManaAbility)ability,game);
+  }
+ else   if (ability instanceof SpellAbility) {
+    result=cast(hand.get(ability.getSourceId()),game,false);
+  }
+ else {
+    result=playAbility(ability,game);
+  }
+  if (result && !(ability instanceof ManaAbility))   game.fireInformEvent(name + ability.getActivatedMessage(game));
+  return result;
+}

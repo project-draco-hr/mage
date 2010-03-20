@@ -1,0 +1,50 @@
+{
+  Mana compare=avail.copy();
+  compare.subtract(this);
+  if (compare.getRed() < 0 && compare.getAny() > 0) {
+    int diff=Math.min(compare.getAny(),Math.abs(compare.getRed()));
+    compare.setAny(compare.getAny() - diff);
+    compare.setRed(compare.getRed() + diff);
+  }
+  if (compare.getGreen() < 0 && compare.getAny() > 0) {
+    int diff=Math.min(compare.getAny(),Math.abs(compare.getGreen()));
+    compare.setAny(compare.getAny() - diff);
+    compare.setGreen(compare.getGreen() + diff);
+  }
+  if (compare.getBlue() < 0 && compare.getAny() > 0) {
+    int diff=Math.min(compare.getAny(),Math.abs(compare.getBlue()));
+    compare.setAny(compare.getAny() - diff);
+    compare.setBlue(compare.getBlue() + diff);
+  }
+  if (compare.getBlack() < 0 && compare.getAny() > 0) {
+    int diff=Math.min(compare.getAny(),Math.abs(compare.getBlack()));
+    compare.setAny(compare.getAny() - diff);
+    compare.setBlack(compare.getBlack() + diff);
+  }
+  if (compare.getWhite() < 0 && compare.getAny() > 0) {
+    int diff=Math.min(compare.getAny(),Math.abs(compare.getWhite()));
+    compare.setAny(compare.getAny() - diff);
+    compare.setWhite(compare.getWhite() + diff);
+  }
+  if (compare.getColorless() < 0) {
+    int remaining=0;
+    remaining+=Math.min(0,compare.getRed());
+    remaining+=Math.min(0,compare.getWhite());
+    remaining+=Math.min(0,compare.getGreen());
+    remaining+=Math.min(0,compare.getBlack());
+    remaining+=Math.min(0,compare.getBlue());
+    remaining+=Math.min(0,compare.getAny());
+    if (remaining > 0) {
+      int diff=Math.min(remaining,Math.abs(compare.getColorless()));
+      compare.setColorless(compare.getColorless() + diff);
+    }
+  }
+  Mana needed=new Mana();
+  if (compare.getRed() < 0)   needed.setRed(Math.abs(compare.getRed()));
+  if (compare.getWhite() < 0)   needed.setWhite(Math.abs(compare.getWhite()));
+  if (compare.getGreen() < 0)   needed.setGreen(Math.abs(compare.getGreen()));
+  if (compare.getBlack() < 0)   needed.setBlack(Math.abs(compare.getBlack()));
+  if (compare.getBlue() < 0)   needed.setBlue(Math.abs(compare.getBlue()));
+  if (compare.getColorless() < 0)   needed.setColorless(Math.abs(compare.getColorless()));
+  return needed;
+}

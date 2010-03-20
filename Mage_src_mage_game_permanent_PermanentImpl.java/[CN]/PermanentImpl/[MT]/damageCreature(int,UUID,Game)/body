@@ -1,0 +1,15 @@
+{
+  GameEvent event=new GameEvent(GameEvent.EventType.DAMAGE_CREATURE,objectId,sourceId,controllerId,damage);
+  if (!game.replaceEvent(event)) {
+    int actualDamage=event.getAmount();
+    if (actualDamage > 0) {
+      if (this.damage + event.getAmount() > this.toughness.getValue()) {
+        actualDamage=this.toughness.getValue() - this.damage;
+      }
+      this.damage+=actualDamage;
+      game.fireEvent(GameEvent.getEvent(EventType.DAMAGED_CREATURE,objectId,sourceId,controllerId,actualDamage));
+      return actualDamage;
+    }
+  }
+  return 0;
+}

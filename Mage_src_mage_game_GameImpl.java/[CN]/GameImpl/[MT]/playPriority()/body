@@ -1,0 +1,24 @@
+{
+  while (!isGameOver()) {
+    while (!isGameOver()) {
+      int stackSize=state.getStack().size();
+      state.getPlayers().resetPriority();
+      for (      Player player : getPlayerList(state.getTurn().getActivePlayerId())) {
+        state.getTurn().setPriorityPlayerId(player.getId());
+        while (!player.isPassed() && !isGameOver()) {
+          checkStateAndTriggered();
+          if (isGameOver())           return;
+          player.priority(this);
+          if (isGameOver())           return;
+          applyEffects();
+          saveState();
+        }
+      }
+      if (isGameOver() || stackSize == state.getStack().size())       break;
+    }
+    if (isGameOver() || state.getStack().isEmpty())     break;
+    state.getStack().resolve(this);
+    applyEffects();
+    saveState();
+  }
+}

@@ -1,0 +1,17 @@
+{
+  if (filter != null) {
+    filter.getControllerId().clear();
+    filter.getControllerId().add(this.source.getControllerId());
+    for (    Permanent perm : game.getBattlefield().getActivePermanents(filter)) {
+      perm.addPower(power);
+      perm.addToughness(toughness);
+    }
+  }
+ else {
+    for (    Permanent perm : game.getBattlefield().getActivePermanents(this.source.getControllerId(),CardType.CREATURE)) {
+      perm.addPower(power);
+      perm.addToughness(toughness);
+    }
+  }
+  return true;
+}

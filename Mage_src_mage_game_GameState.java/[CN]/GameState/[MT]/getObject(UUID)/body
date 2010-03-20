@@ -1,0 +1,27 @@
+{
+  MageObject object;
+  if (battlefield.containsPermanent(objectId)) {
+    object=battlefield.getPermanent(objectId);
+    object.setZone(Zone.BATTLEFIELD);
+    return object;
+  }
+  for (  Player player : players.values()) {
+    if (player.getHand().containsKey(objectId)) {
+      object=player.getHand().get(objectId);
+      object.setZone(Zone.HAND);
+      return object;
+    }
+    if (player.getGraveyard().containsKey(objectId)) {
+      object=player.getGraveyard().get(objectId);
+      object.setZone(Zone.GRAVEYARD);
+      return object;
+    }
+  }
+  for (  StackObject item : stack) {
+    if (item.getId().equals(objectId)) {
+      item.setZone(Zone.STACK);
+      return item;
+    }
+  }
+  return null;
+}

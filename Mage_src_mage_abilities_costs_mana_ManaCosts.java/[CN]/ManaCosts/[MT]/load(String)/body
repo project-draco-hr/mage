@@ -1,0 +1,26 @@
+{
+  this.clear();
+  if (mana == null || mana.length() == 0)   return;
+  String[] symbols=mana.split("^\\{|\\}\\{|\\}$");
+  for (  String symbol : symbols) {
+    if (symbol.length() > 0) {
+      if (symbol.length() == 1) {
+        if (Character.isDigit(symbol.charAt(0))) {
+          this.add(new GenericManaCost(Integer.valueOf(symbol)));
+        }
+ else {
+          if (!symbol.equals("X"))           this.add(new ColoredManaCost(ColoredManaSymbol.lookup(symbol.charAt(0))));
+ else           this.add(new VariableManaCost());
+        }
+      }
+ else {
+        if (Character.isDigit(symbol.charAt(0))) {
+          this.add(new MonoHybridManaCost(ColoredManaSymbol.lookup(symbol.charAt(2))));
+        }
+ else {
+          this.add(new HybridManaCost(ColoredManaSymbol.lookup(symbol.charAt(0)),ColoredManaSymbol.lookup(symbol.charAt(2))));
+        }
+      }
+    }
+  }
+}

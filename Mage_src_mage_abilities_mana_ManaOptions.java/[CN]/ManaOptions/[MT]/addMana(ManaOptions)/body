@@ -1,0 +1,21 @@
+{
+  if (isEmpty())   this.add(new Mana());
+  if (!options.isEmpty()) {
+    if (options.size() == 1) {
+      addMana(options.get(0));
+    }
+ else     if (options.size() > 1) {
+      Copier<List<Mana>> copier=new Copier<List<Mana>>();
+      List<Mana> copy=copier.copy(this);
+      this.clear();
+      for (      Mana addMana : options) {
+        for (        Mana mana : copy) {
+          Mana newMana=new Mana();
+          newMana.add(mana);
+          newMana.add(addMana);
+          this.add(newMana);
+        }
+      }
+    }
+  }
+}
