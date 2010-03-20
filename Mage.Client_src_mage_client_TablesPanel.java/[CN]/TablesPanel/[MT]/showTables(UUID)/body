@@ -1,0 +1,26 @@
+{
+  this.roomId=roomId;
+  session=MageFrame.getSession();
+  if (newTableDialog == null) {
+    newTableDialog=new NewTableDialog();
+    MageFrame.getDesktop().add(newTableDialog);
+  }
+  if (joinTableDialog == null) {
+    joinTableDialog=new JoinTableDialog();
+    MageFrame.getDesktop().add(joinTableDialog);
+  }
+  if (tableWaitingDialog == null) {
+    tableWaitingDialog=new TableWaitingDialog();
+    MageFrame.getDesktop().add(tableWaitingDialog);
+  }
+  UUID chatRoomId=session.getRoomChatId(roomId);
+  if (chatRoomId != null) {
+    this.chatPanel.connect(session.getRoomChatId(roomId));
+    tablesWatchdog.addObserver(this);
+    this.setVisible(true);
+    this.repaint();
+  }
+ else {
+    hideTables();
+  }
+}

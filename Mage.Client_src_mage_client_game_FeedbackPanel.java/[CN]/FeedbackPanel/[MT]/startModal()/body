@@ -1,0 +1,40 @@
+{
+  try {
+    if (SwingUtilities.isEventDispatchThread()) {
+      EventQueue theQueue=getToolkit().getSystemEventQueue();
+      while (!selected) {
+        AWTEvent event=theQueue.getNextEvent();
+        Object source=event.getSource();
+        boolean dispatch=true;
+        if (event instanceof MouseEvent) {
+          MouseEvent e=(MouseEvent)event;
+          MouseEvent m=SwingUtilities.convertMouseEvent((Component)e.getSource(),e,this);
+          if (!this.contains(m.getPoint()) && e.getID() != MouseEvent.MOUSE_DRAGGED) {
+            dispatch=false;
+          }
+        }
+        if (dispatch) {
+          if (event instanceof ActiveEvent) {
+            ((ActiveEvent)event).dispatch();
+          }
+ else           if (source instanceof Component) {
+            ((Component)source).dispatchEvent(event);
+          }
+ else           if (source instanceof MenuComponent) {
+            ((MenuComponent)source).dispatchEvent(event);
+          }
+ else {
+            logger.info("Unable to dispatch: " + event);
+          }
+        }
+      }
+    }
+ else {
+      while (!selected) {
+        wait();
+      }
+    }
+  }
+ catch (  InterruptedException ignored) {
+  }
+}

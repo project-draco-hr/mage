@@ -1,0 +1,19 @@
+{
+  int battlefieldWidth=this.getWidth();
+  Rectangle r=new Rectangle(size);
+  boolean intersects;
+  while (true) {
+    intersects=false;
+    for (    Permanent perm : permanents.values()) {
+      Rectangle pr=perm.getBounds();
+      if (r.intersects(pr)) {
+        intersects=true;
+        if (pr.x + pr.width + r.width > battlefieldWidth)         r.setLocation(0,pr.y + pr.height + 1);
+ else         r.translate(pr.x + pr.width - r.x,0);
+        break;
+      }
+    }
+    if (!intersects)     break;
+  }
+  return r;
+}

@@ -1,0 +1,14 @@
+{
+  int ret=fcSelectDeck.showOpenDialog(this);
+  if (ret == JFileChooser.APPROVE_OPTION) {
+    File file=fcSelectDeck.getSelectedFile();
+    try {
+      deck=Deck.load(DeckCardLists.load(file.getPath()));
+    }
+ catch (    Exception ex) {
+      Logger.getLogger(DeckEditorPanel.class.getName()).log(Level.SEVERE,null,ex);
+    }
+    refreshDeck();
+  }
+  fcSelectDeck.setSelectedFile(null);
+}

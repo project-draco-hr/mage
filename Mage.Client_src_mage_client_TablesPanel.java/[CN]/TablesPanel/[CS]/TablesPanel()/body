@@ -1,0 +1,27 @@
+{
+  tableModel=new TableTableModel();
+  initComponents();
+  tableTables.createDefaultColumnsFromModel();
+  Action join=new AbstractAction(){
+    public void actionPerformed(    ActionEvent e){
+      int modelRow=Integer.valueOf(e.getActionCommand());
+      UUID tableId=UUID.fromString((String)tableModel.getValueAt(modelRow,0));
+      String state=(String)tableModel.getValueAt(modelRow,4);
+      if (state.equals("Join")) {
+        logger.info("Joining table " + tableId);
+        joinTableDialog.showDialog(roomId,tableId);
+        if (joinTableDialog.isJoined())         tableWaitingDialog.showDialog(roomId,tableId);
+      }
+ else       if (state.equals("Watch")) {
+        logger.info("Watching table " + tableId);
+        if (!session.watchTable(roomId,tableId))         hideTables();
+      }
+ else       if (state.equals("Replay")) {
+        logger.info("Replaying table " + tableId);
+        if (!session.replayTable(roomId,tableId))         hideTables();
+      }
+    }
+  }
+;
+  ButtonColumn buttonColumn=new ButtonColumn(tableTables,join,4);
+}

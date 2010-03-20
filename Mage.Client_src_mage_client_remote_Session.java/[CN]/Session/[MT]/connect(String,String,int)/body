@@ -1,0 +1,20 @@
+{
+  if (isConnected()) {
+    disconnect();
+  }
+  this.userName=userName;
+  this.client=new ClientImpl(frame,userName);
+  System.setSecurityManager(null);
+  Registry reg=LocateRegistry.getRegistry(serverName,port);
+  this.server=(Server)reg.lookup(Config.remoteServer);
+  try {
+    sessionId=server.registerClient(client);
+    playerTypes=server.getPlayerTypes();
+    gameTypes=server.getGameTypes();
+    logger.info("Connected to RMI server at " + serverName + ":"+ port);
+    frame.enableButtons();
+  }
+ catch (  MageException ex) {
+    Logger.getLogger(Session.class.getName()).log(Level.SEVERE,null,ex);
+  }
+}

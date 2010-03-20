@@ -1,0 +1,22 @@
+{
+  for (  PermanentView permanent : battlefield.values()) {
+    if (!permanents.containsKey(permanent.getId())) {
+      addPermanent(permanent);
+    }
+ else {
+      permanents.get(permanent.getId()).update(permanent);
+    }
+  }
+  for (Iterator<Entry<UUID,Permanent>> i=permanents.entrySet().iterator(); i.hasNext(); ) {
+    Entry<UUID,Permanent> entry=i.next();
+    if (!battlefield.containsKey(entry.getKey())) {
+      removePermanent(entry.getKey());
+      i.remove();
+    }
+  }
+  for (  PermanentView permanent : battlefield.values()) {
+    if (permanent.getAttachments() != null) {
+      groupAttachments(permanent);
+    }
+  }
+}

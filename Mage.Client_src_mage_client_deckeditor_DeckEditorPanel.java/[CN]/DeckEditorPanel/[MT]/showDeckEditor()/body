@@ -1,0 +1,27 @@
+{
+  this.cardSelector.loadCards(this.bigCard);
+  this.cardSelector.setVisible(true);
+  this.jPanel1.setVisible(true);
+  this.cardSelector.getCardsList().clearCardEventListeners();
+  this.cardSelector.getCardsList().addCardEventListener(new Listener<Event>(){
+    @Override public void event(    Event event){
+      if (event.getEventName().equals("double-click")) {
+        deck.getCards().add(createCard(cardSelector.getCards().get((UUID)event.getSource()).getClass()));
+        refreshDeck();
+      }
+    }
+  }
+);
+  this.deckArea.getDeckList().clearCardEventListeners();
+  this.deckArea.getDeckList().addCardEventListener(new Listener<Event>(){
+    @Override public void event(    Event event){
+      if (event.getEventName().equals("double-click")) {
+        deck.getCards().remove((UUID)event.getSource());
+        refreshDeck();
+      }
+    }
+  }
+);
+  this.setVisible(true);
+  this.repaint();
+}
