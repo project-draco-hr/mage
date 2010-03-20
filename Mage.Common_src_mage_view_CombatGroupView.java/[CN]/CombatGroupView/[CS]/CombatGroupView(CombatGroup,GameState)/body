@@ -1,0 +1,16 @@
+{
+  Player player=game.getPlayer(combatGroup.getDefenderId());
+  if (player != null) {
+    this.defenderName=player.getName();
+  }
+ else {
+    Permanent perm=game.getPermanent(combatGroup.getDefenderId());
+    this.defenderName=perm.getName();
+  }
+  for (  UUID id : combatGroup.getAttackers()) {
+    attackers.add(new PermanentView(game.getPermanent(id)));
+  }
+  for (  UUID id : combatGroup.getBlockers()) {
+    blockers.add(new PermanentView(game.getPermanent(id)));
+  }
+}

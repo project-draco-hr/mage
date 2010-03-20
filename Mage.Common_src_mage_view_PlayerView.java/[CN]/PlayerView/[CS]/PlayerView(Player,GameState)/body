@@ -1,0 +1,15 @@
+{
+  this.playerId=player.getId();
+  this.name=player.getName();
+  this.life=player.getLife();
+  this.libraryCount=player.getLibrary().size();
+  this.handCount=player.getHand().size();
+  this.manaPool=new ManaPoolView(player.getManaPool());
+  for (  Card card : player.getGraveyard().values()) {
+    graveyard.add(new CardView(card));
+  }
+  for (  Permanent permanent : game.getBattlefield().getAllPermanents(player.getId())) {
+    PermanentView view=new PermanentView(permanent);
+    battlefield.put(view.getId(),view);
+  }
+}
