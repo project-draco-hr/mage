@@ -1,0 +1,47 @@
+{
+  game.addTableEventListener(new Listener<TableEvent>(){
+    @Override public void event(    TableEvent event){
+switch (event.getEventType()) {
+case UPDATE:
+        updateGame();
+      break;
+case INFO:
+    ChatManager.getInstance().broadcast(chatId,"",event.getMessage());
+  logger.info(game.getId() + " " + event.getMessage());
+break;
+}
+}
+}
+);
+game.addPlayerQueryEventListener(new Listener<PlayerQueryEvent>(){
+@Override public void event(PlayerQueryEvent event){
+switch (event.getQueryType()) {
+case ASK:
+ask(event.getPlayerId(),event.getMessage());
+break;
+case PICK_TARGET:
+target(event.getPlayerId(),event.getMessage(),event.getCards(),event.isRequired());
+break;
+case SELECT:
+select(event.getPlayerId(),event.getMessage());
+break;
+case PLAY_MANA:
+playMana(event.getPlayerId(),event.getMessage());
+break;
+case PLAY_X_MANA:
+playXMana(event.getPlayerId(),event.getMessage());
+break;
+case CHOOSE_ABILITY:
+chooseAbility(event.getPlayerId(),event.getAbilities());
+break;
+case CHOOSE:
+choose(event.getPlayerId(),event.getMessage(),event.getChoices());
+break;
+case AMOUNT:
+amount(event.getPlayerId(),event.getMessage(),event.getMin(),event.getMax());
+break;
+}
+}
+}
+);
+}

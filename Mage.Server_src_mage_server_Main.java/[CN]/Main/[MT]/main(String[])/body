@@ -1,0 +1,11 @@
+{
+  logger.info("Starting MAGE server version " + Main.class.getPackage().getImplementationVersion());
+  ConfigSettings config=ConfigSettings.getInstance();
+  for (  Plugin plugin : config.getGameTypes()) {
+    GameFactory.getInstance().addGameType(plugin.getName(),loadPlugin(plugin));
+  }
+  for (  Plugin plugin : config.getPlayerTypes()) {
+    PlayerFactory.getInstance().addPlayerType(plugin.getName(),loadPlugin(plugin));
+  }
+  Server server=new ServerImpl(config.getPort(),config.getServerName());
+}

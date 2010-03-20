@@ -1,0 +1,12 @@
+{
+  try {
+    System.setSecurityManager(null);
+    Registry reg=LocateRegistry.createRegistry(port);
+    Server server=(Server)UnicastRemoteObject.exportObject(this,0);
+    reg.rebind(name,server);
+    logger.info("Started MAGE server - listening on port " + port);
+  }
+ catch (  RemoteException ex) {
+    logger.log(Level.SEVERE,"Failed to start RMI server at port " + port,ex);
+  }
+}

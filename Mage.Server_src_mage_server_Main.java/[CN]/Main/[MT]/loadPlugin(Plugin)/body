@@ -1,0 +1,12 @@
+{
+  try {
+    File jarFile=new File("plugins/" + plugin.getJar());
+    URLClassLoader urlClassLoader=URLClassLoader.newInstance(new URL[]{jarFile.toURI().toURL()},Main.class.getClassLoader());
+    logger.info("Loaded plugin: " + plugin.getClassName());
+    return Class.forName(plugin.getClassName(),true,urlClassLoader);
+  }
+ catch (  Exception ex) {
+    logger.log(Level.SEVERE,"Error loading plugin " + plugin.getJar(),ex);
+  }
+  return null;
+}

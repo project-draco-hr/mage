@@ -1,0 +1,25 @@
+{
+  if (table.getState() != TableState.WAITING) {
+    return false;
+  }
+  try {
+    Seat seat=table.getSeats()[seatNum];
+    Deck deck=Deck.load(deckList);
+    if (validDeck(deck)) {
+      Player player=createPlayer(name,deck,seat.getPlayerType());
+      table.joinTable(player,seatNum);
+      logger.info("player joined " + player.getId());
+      if (table.getSeats()[seatNum].getPlayerType().equals("Human")) {
+        sessionPlayerMap.put(sessionId,player.getId());
+      }
+    }
+ else {
+      throw new GameException("Invalid deck type");
+    }
+  }
+ catch (  GameException ex) {
+    logger.log(Level.WARNING,ex.getMessage());
+    return false;
+  }
+  return true;
+}

@@ -1,0 +1,11 @@
+{
+  final String message="Waiting for " + game.getPlayer(playerId).getName();
+  for (  final Entry<UUID,GameSession> entry : gameSessions.entrySet()) {
+    if (!entry.getKey().equals(playerId)) {
+      entry.getValue().inform(message,getGameView(entry.getKey()));
+    }
+  }
+  for (  final GameWatcher watcher : watchers.values()) {
+    watcher.inform(message,getGameView());
+  }
+}

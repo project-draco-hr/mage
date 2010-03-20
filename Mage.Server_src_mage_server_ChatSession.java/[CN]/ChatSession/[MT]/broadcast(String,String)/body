@@ -1,0 +1,18 @@
+{
+  Calendar cal=new GregorianCalendar();
+  final String msg=timeFormatter.format(cal.getTime()) + " " + userName+ ":"+ message;
+  for (  final Entry<UUID,ChatClient> entry : clients.entrySet()) {
+    executor.submit(new Runnable(){
+      public void run(){
+        try {
+          entry.getValue().receiveMessage(msg);
+        }
+ catch (        RemoteException ex) {
+          logger.log(Level.WARNING,ex.getMessage());
+          kill(entry.getKey());
+        }
+      }
+    }
+);
+  }
+}
