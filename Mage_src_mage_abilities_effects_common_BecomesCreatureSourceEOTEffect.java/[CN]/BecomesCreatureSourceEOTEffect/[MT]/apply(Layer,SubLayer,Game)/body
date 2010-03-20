@@ -1,0 +1,31 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+switch (layer) {
+case TypeChangingEffects_4:
+    if (sublayer == SubLayer.NA) {
+      if (token.getCardType().size() > 0)       permanent.getCardType().addAll(token.getCardType());
+      if (token.getSubtype().size() > 0)       permanent.getSubtype().addAll(token.getSubtype());
+    }
+  break;
+case ColorChangingEffects_5:
+if (sublayer == SubLayer.NA) {
+  if (token.getColor().hasColor())   permanent.getColor().setColor(token.getColor());
+}
+break;
+case AbilityAddingRemovingEffects_6:
+if (sublayer == SubLayer.NA) {
+if (token.getAbilities().size() > 0) {
+for (Ability ability : token.getAbilities()) {
+  permanent.addAbility(ability);
+}
+}
+}
+break;
+case PTChangingEffects_7:
+if (sublayer == SubLayer.SetPT_7b) {
+if (token.getPower() != MageInt.EmptyMageInt) permanent.getPower().setValue(token.getPower().getValue());
+if (token.getToughness() != MageInt.EmptyMageInt) permanent.getToughness().setValue(token.getToughness().getValue());
+}
+}
+return true;
+}
