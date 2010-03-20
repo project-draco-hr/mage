@@ -1,0 +1,44 @@
+{
+  logger.info("playMana");
+  ManaCost cost;
+  List<Permanent> producers;
+  if (unpaid instanceof ManaCosts) {
+    cost=((ManaCosts)unpaid).get(0);
+    producers=getSortedProducers((ManaCosts)unpaid,game);
+  }
+ else {
+    cost=unpaid;
+    producers=this.getAvailableManaProducers(game);
+  }
+  for (  Permanent perm : producers) {
+    for (    ManaAbility ability : perm.getAbilities().getManaAbilities(Zone.BATTLEFIELD)) {
+      if (cost instanceof ColoredManaCost) {
+        if (cost.testPay(ability.getNetMana())) {
+          if (activateAbility(ability,game))           return true;
+        }
+      }
+    }
+    for (    ManaAbility ability : perm.getAbilities().getManaAbilities(Zone.BATTLEFIELD)) {
+      if (cost instanceof HybridManaCost) {
+        if (cost.testPay(ability.getNetMana())) {
+          if (activateAbility(ability,game))           return true;
+        }
+      }
+    }
+    for (    ManaAbility ability : perm.getAbilities().getManaAbilities(Zone.BATTLEFIELD)) {
+      if (cost instanceof MonoHybridManaCost) {
+        if (cost.testPay(ability.getNetMana())) {
+          if (activateAbility(ability,game))           return true;
+        }
+      }
+    }
+    for (    ManaAbility ability : perm.getAbilities().getManaAbilities(Zone.BATTLEFIELD)) {
+      if (cost instanceof GenericManaCost) {
+        if (cost.testPay(ability.getNetMana())) {
+          if (activateAbility(ability,game))           return true;
+        }
+      }
+    }
+  }
+  return false;
+}

@@ -1,0 +1,16 @@
+{
+  logger.info("getAvailableAttackers");
+  FilterCreatureForAttack attackFilter=new FilterCreatureForAttack();
+  attackFilter.getControllerId().add(playerId);
+  Attackers attackers=new Attackers();
+  List<Permanent> creatures=game.getBattlefield().getActivePermanents(attackFilter);
+  for (  Permanent creature : creatures) {
+    int potential=combatPotential(creature,game);
+    if (potential > 0) {
+      List<Permanent> l=attackers.get(potential);
+      if (l == null)       attackers.put(potential,l=new ArrayList<Permanent>());
+      l.add(creature);
+    }
+  }
+  return attackers;
+}

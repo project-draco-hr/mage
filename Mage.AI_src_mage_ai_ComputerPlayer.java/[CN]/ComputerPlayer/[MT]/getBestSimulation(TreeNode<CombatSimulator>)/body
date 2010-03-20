@@ -1,0 +1,12 @@
+{
+  CombatSimulator best=simulations.getData();
+  int bestResult=best.evaluate();
+  for (  TreeNode<CombatSimulator> node : simulations.getChildren()) {
+    CombatSimulator bestSub=getBestSimulation(node);
+    if (bestSub.evaluate() > bestResult) {
+      best=node.getData();
+      bestResult=best.evaluate();
+    }
+  }
+  return best;
+}

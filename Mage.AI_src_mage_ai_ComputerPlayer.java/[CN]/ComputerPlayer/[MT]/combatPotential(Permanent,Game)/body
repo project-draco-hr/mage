@@ -1,0 +1,11 @@
+{
+  logger.info("combatPotential");
+  if (!creature.canAttack(game))   return 0;
+  int potential=creature.getPower().getValue();
+  potential+=creature.getAbilities().getEvasionAbilities().size();
+  potential+=creature.getAbilities().getProtectionAbilities().size();
+  potential+=creature.getAbilities().containsKey(FirstStrikeAbility.getInstance().getId()) ? 1 : 0;
+  potential+=creature.getAbilities().containsKey(DoubleStrikeAbility.getInstance().getId()) ? 2 : 0;
+  potential+=creature.getAbilities().containsKey(TrampleAbility.getInstance().getId()) ? 1 : 0;
+  return potential;
+}
