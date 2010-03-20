@@ -1,0 +1,50 @@
+{
+  if (blockers.size() == 0) {
+    if (canDamage(attacker,first))     unblockedDamage+=attacker.power;
+  }
+ else   if (blockers.size() == 1) {
+    CreatureSimulator blocker=blockers.get(0);
+    if (canDamage(attacker,first)) {
+      if (attacker.hasTrample) {
+        int lethalDamage=blocker.getLethalDamage();
+        if (attacker.power > lethalDamage) {
+          blocker.damage+=lethalDamage;
+          unblockedDamage+=attacker.power - lethalDamage;
+        }
+ else {
+          blocker.damage+=attacker.power;
+        }
+      }
+    }
+    if (canDamage(blocker,first)) {
+      attacker.damage+=blocker.power;
+    }
+  }
+ else {
+    int damage=attacker.power;
+    for (    CreatureSimulator blocker : blockers) {
+      if (damage > 0 && canDamage(attacker,first)) {
+        int lethalDamage=blocker.getLethalDamage();
+        if (damage > lethalDamage) {
+          blocker.damage+=lethalDamage;
+          damage-=lethalDamage;
+        }
+ else {
+          blocker.damage+=damage;
+          damage=0;
+        }
+      }
+      if (canDamage(blocker,first)) {
+        attacker.damage+=blocker.power;
+      }
+    }
+    if (damage > 0) {
+      if (attacker.hasTrample) {
+        unblockedDamage+=damage;
+      }
+ else {
+        blockers.get(0).damage+=damage;
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  Map<UUID,Integer> damage=new HashMap<UUID,Integer>();
+  int result=0;
+  for (  CombatGroupSimulator group : groups) {
+    if (!damage.containsKey(group.defenderId)) {
+      damage.put(group.defenderId,group.unblockedDamage);
+    }
+ else {
+      damage.put(group.defenderId,damage.get(group.defenderId) + group.unblockedDamage);
+    }
+  }
+  for (  Entry<UUID,Integer> entry : playersLife.entrySet()) {
+    if (entry.getValue() <= damage.get(entry.getKey())) {
+      return Integer.MAX_VALUE;
+    }
+  }
+  for (  CombatGroupSimulator group : groups) {
+    result+=group.evaluateCombat();
+  }
+  rating=result;
+  return result;
+}
