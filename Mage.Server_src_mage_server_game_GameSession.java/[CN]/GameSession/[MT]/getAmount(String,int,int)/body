@@ -1,16 +1,6 @@
 {
   if (!killed) {
-    setupTimeout();
-    rmiExecutor.submit(new Runnable(){
-      @Override public void run(){
-        try {
-          client.getAmount(min,max);
-        }
- catch (        RemoteException ex) {
-          handleRemoteException(ex);
-        }
-      }
-    }
-);
+    Session session=SessionManager.getInstance().getSession(sessionId);
+    if (session != null)     session.fireCallback(new ClientCallback("gameSelectAmount",new GameClientMessage(message,min,max)));
   }
 }

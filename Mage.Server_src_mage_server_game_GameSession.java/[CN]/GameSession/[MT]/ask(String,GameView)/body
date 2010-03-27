@@ -1,16 +1,6 @@
 {
   if (!killed) {
-    setupTimeout();
-    rmiExecutor.submit(new Runnable(){
-      @Override public void run(){
-        try {
-          client.ask(question,gameView);
-        }
- catch (        RemoteException ex) {
-          handleRemoteException(ex);
-        }
-      }
-    }
-);
+    Session session=SessionManager.getInstance().getSession(sessionId);
+    if (session != null)     session.fireCallback(new ClientCallback("gameAsk",new GameClientMessage(gameView,question)));
   }
 }

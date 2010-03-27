@@ -1,13 +1,6 @@
 {
-  if (!killed)   rmiExecutor.submit(new Runnable(){
-    @Override public void run(){
-      try {
-        client.inform(message,gameView);
-      }
- catch (      RemoteException ex) {
-        handleRemoteException(ex);
-      }
-    }
+  if (!killed) {
+    Session session=SessionManager.getInstance().getSession(sessionId);
+    if (session != null)     session.fireCallback(new ClientCallback("gameInform",new GameClientMessage(gameView,message)));
   }
-);
 }

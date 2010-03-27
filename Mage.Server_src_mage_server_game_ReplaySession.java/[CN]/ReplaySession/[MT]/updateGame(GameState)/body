@@ -1,13 +1,4 @@
 {
-  rmiExecutor.submit(new Runnable(){
-    public void run(){
-      try {
-        client.update(new GameView(state));
-      }
- catch (      RemoteException ex) {
-        logger.log(Level.SEVERE,null,ex);
-      }
-    }
-  }
-);
+  Session session=SessionManager.getInstance().getSession(sessionId);
+  if (session != null)   session.fireCallback(new ClientCallback("replayUpdate",new GameView(state)));
 }
