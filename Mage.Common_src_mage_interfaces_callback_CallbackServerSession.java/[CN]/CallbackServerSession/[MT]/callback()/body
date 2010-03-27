@@ -1,0 +1,18 @@
+{
+  callback.clear();
+  lock.lock();
+  try {
+    waitingForCallback=true;
+    waiting.signal();
+    while (callback.getMethod() == null) {
+      logger.fine("waiting for callback");
+      callbackCalled.await();
+    }
+    waitingForCallback=false;
+    logger.fine("callback called:" + callback.getMethod());
+    return callback;
+  }
+  finally {
+    lock.unlock();
+  }
+}

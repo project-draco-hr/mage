@@ -1,0 +1,15 @@
+{
+  lock.lock();
+  try {
+    while (!waitingForCallback) {
+      logger.fine("waiting for callback state to call:" + call.getMethod());
+      waiting.await();
+    }
+    callback.setMethod(call.getMethod());
+    callback.setData(call.getData());
+    callbackCalled.signal();
+  }
+  finally {
+    lock.unlock();
+  }
+}
