@@ -3,10 +3,14 @@
   if (ret == JFileChooser.APPROVE_OPTION) {
     File file=fcSelectDeck.getSelectedFile();
     try {
+      setCursor(new Cursor(Cursor.WAIT_CURSOR));
       deck=Deck.load(DeckCardLists.load(file.getPath()));
     }
  catch (    Exception ex) {
       Logger.getLogger(DeckEditorPanel.class.getName()).log(Level.SEVERE,null,ex);
+    }
+ finally {
+      setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
     refreshDeck();
   }

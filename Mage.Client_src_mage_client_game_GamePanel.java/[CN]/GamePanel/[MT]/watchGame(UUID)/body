@@ -1,6 +1,7 @@
 {
   this.gameId=gameId;
-  gameClient=new GameClientImpl(this);
+  session=MageFrame.getSession();
+  session.setGame(this);
   this.feedbackPanel.init(gameId);
   this.feedbackPanel.clear();
   this.btnConcede.setVisible(false);
@@ -8,5 +9,5 @@
   this.pnlReplay.setVisible(false);
   this.setVisible(true);
   this.chatPanel.connect(session.getGameChatId(gameId));
-  if (!session.watchGame(gameId,gameClient))   hideGame();
+  if (!session.watchGame(gameId))   hideGame();
 }
