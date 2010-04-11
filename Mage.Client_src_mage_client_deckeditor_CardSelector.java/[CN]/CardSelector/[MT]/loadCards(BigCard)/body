@@ -1,14 +1,12 @@
 {
   this.bigCard=bigCard;
   this.cards.clear();
-  cards.addAll(AlaraReborn.getInstance().createCards());
-  cards.addAll(Conflux.getInstance().createCards());
-  cards.addAll(Magic2010.getInstance().createCards());
-  cards.addAll(Planechase.getInstance().createCards());
-  cards.addAll(ShardsOfAlara.getInstance().createCards());
-  cards.addAll(Tenth.getInstance().createCards());
-  cards.addAll(Worldwake.getInstance().createCards());
-  cards.addAll(Zendikar.getInstance().createCards());
+  cbExpansionSet.setModel(new DefaultComboBoxModel(Sets.getInstance().toArray()));
+  cbExpansionSet.insertItemAt("All sets",0);
+  cbExpansionSet.setSelectedIndex(0);
+  for (  ExpansionSet set : Sets.getInstance()) {
+    cards.addAll(set.createCards());
+  }
   filter.setUseColor(true);
   filter.getColor().setBlack(true);
   filter.getColor().setBlue(true);
@@ -19,5 +17,13 @@
   filter.setUseColorless(true);
   filter.setNotColor(false);
   filter.setScopeColor(ComparisonScope.Any);
+  filter.getCardType().add(CardType.LAND);
+  filter.getCardType().add(CardType.ARTIFACT);
+  filter.getCardType().add(CardType.CREATURE);
+  filter.getCardType().add(CardType.ENCHANTMENT);
+  filter.getCardType().add(CardType.INSTANT);
+  filter.getCardType().add(CardType.PLANESWALKER);
+  filter.getCardType().add(CardType.SORCERY);
+  filter.setScopeCardType(ComparisonScope.Any);
   filterCards();
 }

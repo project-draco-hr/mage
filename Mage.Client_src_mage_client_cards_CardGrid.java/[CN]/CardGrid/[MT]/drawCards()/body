@@ -1,0 +1,22 @@
+{
+  removeAll();
+  int maxWidth=this.getParent().getWidth();
+  int numColumns=maxWidth / FRAME_WIDTH;
+  int curColumn=0;
+  int curRow=0;
+  if (cards.size() > 0) {
+    Rectangle rectangle=new Rectangle(FRAME_WIDTH,FRAME_HEIGHT);
+    for (    Card cardImg : cards) {
+      rectangle.setLocation(curColumn * FRAME_WIDTH,curRow * 20);
+      cardImg.setBounds(rectangle);
+      add(cardImg);
+      moveToFront(cardImg);
+      curColumn++;
+      if (curColumn == numColumns) {
+        curColumn=0;
+        curRow++;
+      }
+    }
+  }
+  resizeArea();
+}

@@ -1,8 +1,15 @@
 {
+  String lastFolder=prefs.get("lastDeckFolder","");
+  if (!lastFolder.isEmpty())   fcSelectDeck.setCurrentDirectory(new File(lastFolder));
   int ret=fcSelectDeck.showDialog(this,"Select Deck");
   if (ret == JFileChooser.APPROVE_OPTION) {
     File file=fcSelectDeck.getSelectedFile();
     this.txtPlayerDeck.setText(file.getPath());
+    try {
+      prefs.put("lastDeckFolder",file.getCanonicalPath());
+    }
+ catch (    IOException ex) {
+    }
   }
   fcSelectDeck.setSelectedFile(null);
 }

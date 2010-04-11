@@ -1,0 +1,18 @@
+{
+  Dimension area=new Dimension(0,0);
+  Dimension size=getPreferredSize();
+  for (  Component comp : getComponents()) {
+    Rectangle r=comp.getBounds();
+    if (r.x + r.width > area.width) {
+      area.width=r.x + r.width;
+    }
+    if (r.y + r.height > area.height) {
+      area.height=r.y + r.height;
+    }
+  }
+  if (size.height != area.height || size.width != area.width) {
+    setPreferredSize(area);
+    revalidate();
+    repaint();
+  }
+}

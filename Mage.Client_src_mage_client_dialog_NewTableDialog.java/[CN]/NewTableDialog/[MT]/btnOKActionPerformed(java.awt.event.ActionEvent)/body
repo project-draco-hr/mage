@@ -3,14 +3,19 @@
     List<String> playerTypes=new ArrayList<String>();
     playerTypes.add("Human");
     playerTypes.add((String)this.cbPlayer2Type.getSelectedItem());
-    table=session.createTable(roomId,(String)this.cbGameType.getSelectedItem(),(Constants.DeckType)this.cbDeckType.getSelectedItem(),playerTypes);
-    session.joinTable(roomId,table.getTableId(),0,this.player1Panel.getPlayerName(),DeckCardLists.load(this.player1Panel.getDeckFile()));
-    if (!this.cbPlayer2Type.getSelectedItem().equals("Human")) {
-      session.joinTable(roomId,table.getTableId(),1,this.player2Panel.getPlayerName(),DeckCardLists.load(this.player2Panel.getDeckFile()));
+    table=session.createTable(roomId,(String)this.cbGameType.getSelectedItem(),(String)this.cbDeckType.getSelectedItem(),playerTypes);
+    if (session.joinTable(roomId,table.getTableId(),0,this.player1Panel.getPlayerName(),DeckCardLists.load(this.player1Panel.getDeckFile()))) {
+      if (!this.cbPlayer2Type.getSelectedItem().equals("Human")) {
+        if (session.joinTable(roomId,table.getTableId(),1,this.player2Panel.getPlayerName(),DeckCardLists.load(this.player2Panel.getDeckFile()))) {
+          this.setVisible(false);
+          return;
+        }
+      }
     }
   }
  catch (  Exception ex) {
     handleError(ex);
   }
-  this.setVisible(false);
+  session.removeTable(roomId,table.getTableId());
+  table=null;
 }
