@@ -1,0 +1,24 @@
+{
+  MageObject object=game.getObject(response.getUUID());
+  Map<UUID,ActivatedAbility> useableAbilities;
+switch (object.getZone()) {
+case HAND:
+    useableAbilities=getUseableAbilities(object.getAbilities().getManaAbilities(Zone.HAND),game);
+  if (useableAbilities.size() > 0) {
+    activateAbility(useableAbilities,game);
+  }
+break;
+case BATTLEFIELD:
+useableAbilities=getUseableAbilities(object.getAbilities().getManaAbilities(Zone.BATTLEFIELD),game);
+if (useableAbilities.size() > 0) {
+activateAbility(useableAbilities,game);
+}
+break;
+case GRAVEYARD:
+useableAbilities=getUseableAbilities(object.getAbilities().getManaAbilities(Zone.GRAVEYARD),game);
+if (useableAbilities.size() > 0) {
+activateAbility(useableAbilities,game);
+}
+break;
+}
+}

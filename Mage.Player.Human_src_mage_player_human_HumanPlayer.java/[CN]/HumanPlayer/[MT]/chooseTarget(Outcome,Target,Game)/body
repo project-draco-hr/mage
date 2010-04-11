@@ -1,0 +1,16 @@
+{
+  game.fireSelectTargetEvent(playerId,target.getMessage(),target.isRequired());
+  while (!abort) {
+    waitForResponse();
+    if (response.getUUID() != null) {
+      if (target.canTarget(response.getUUID(),game)) {
+        target.addTarget(response.getUUID(),game);
+        return true;
+      }
+    }
+ else     if (!target.isRequired()) {
+      return false;
+    }
+  }
+  return false;
+}

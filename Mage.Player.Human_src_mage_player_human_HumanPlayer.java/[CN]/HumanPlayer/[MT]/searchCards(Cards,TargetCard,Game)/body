@@ -1,0 +1,13 @@
+{
+  while (!abort && !target.doneChosing()) {
+    game.fireSelectTargetEvent(playerId,target.getMessage(),cards,target.isRequired());
+    waitForResponse();
+    if (response.getUUID() != null && cards.containsKey(response.getUUID())) {
+      target.addTarget(response.getUUID(),game);
+    }
+ else     if (!target.isRequired()) {
+      break;
+    }
+  }
+  return target.isChosen();
+}

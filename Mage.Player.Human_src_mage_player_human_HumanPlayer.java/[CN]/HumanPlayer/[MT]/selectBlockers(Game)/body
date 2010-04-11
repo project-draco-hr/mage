@@ -1,0 +1,15 @@
+{
+  while (!abort) {
+    targetCombat.getTargets().clear();
+    game.fireSelectEvent(playerId,"Select blockers");
+    waitForResponse();
+    if (response.getBoolean() != null) {
+      return;
+    }
+ else     if (response.getUUID() != null) {
+      if (targetCombat.canTarget(playerId,response.getUUID(),game)) {
+        selectCombatGroup(response.getUUID(),game);
+      }
+    }
+  }
+}
