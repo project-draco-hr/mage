@@ -1,0 +1,14 @@
+{
+  FilterLandPermanent filter=new FilterLandPermanent();
+  filter.getControllerId().clear();
+  filter.getControllerId().add(this.controllerId);
+  int numLands=game.getBattlefield().count(filter);
+  for (  UUID opponentId : game.getOpponents(this.controllerId)) {
+    filter.getControllerId().clear();
+    filter.getControllerId().add(opponentId);
+    if (numLands < game.getBattlefield().count(filter)) {
+      return true;
+    }
+  }
+  return false;
+}

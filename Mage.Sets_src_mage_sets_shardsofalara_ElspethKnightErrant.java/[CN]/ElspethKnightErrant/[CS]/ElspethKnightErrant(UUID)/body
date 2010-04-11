@@ -1,0 +1,21 @@
+{
+  super(ownerId,"Elspeth, Knight-Errant",new CardType[]{CardType.PLANESWALKER},"{2}{W}{W}");
+  this.expansionSetId=ShardsOfAlara.getInstance().getId();
+  this.subtype.add("Elspeth");
+  this.color.setWhite(true);
+  this.art="114973_typ_reg_sty_010.jpg";
+  this.loyalty=new MageInt(4);
+  this.addAbility(new LoyaltyAbility(new CreateTokenEffect(soldierToken),1));
+  Effects effects1=new Effects(null);
+  effects1.add(new BoostTargetEffect(3,3,Duration.EndOfTurn));
+  effects1.add(new GainAbilityTargetEffect(FlyingAbility.getInstance(),Duration.EndOfTurn));
+  LoyaltyAbility ability1=new LoyaltyAbility(effects1,1);
+  ability1.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability1);
+  FilterPermanent filter=new FilterPermanent("artifacts, creatures, enchantments and lands");
+  filter.getCardType().add(CardType.ARTIFACT);
+  filter.getCardType().add(CardType.CREATURE);
+  filter.getCardType().add(CardType.ENCHANTMENT);
+  filter.getCardType().add(CardType.LAND);
+  this.addAbility(new LoyaltyAbility(new GainAbilityControlledEffect(IndestructableAbility.getInstance(),Duration.EndOfGame,filter),-8));
+}
