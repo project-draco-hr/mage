@@ -1,5 +1,6 @@
 {
   logger.info("Starting MAGE server version " + Main.class.getPackage().getImplementationVersion());
+  logger.info("Logging level: " + logger.getLevel());
   ConfigSettings config=ConfigSettings.getInstance();
   for (  Plugin plugin : config.getGameTypes()) {
     GameFactory.getInstance().addGameType(plugin.getName(),loadPlugin(plugin));
@@ -7,12 +8,16 @@
   for (  Plugin plugin : config.getPlayerTypes()) {
     PlayerFactory.getInstance().addPlayerType(plugin.getName(),loadPlugin(plugin));
   }
+  for (  Plugin plugin : config.getDeckTypes()) {
+    DeckValidatorFactory.getInstance().addDeckType(plugin.getName(),loadPlugin(plugin));
+  }
   boolean testMode=false;
   for (  String arg : args) {
     if (arg.startsWith(testModeArg)) {
       testMode=Boolean.valueOf(arg.replace(testModeArg,""));
     }
   }
+  Copier.setLoader(classLoader);
   System.setProperty("java.rmi.server.hostname",config.getServerAddress());
   server=new ServerImpl(config.getPort(),config.getServerName(),testMode);
 }

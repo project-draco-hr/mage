@@ -1,11 +1,13 @@
 {
   try {
-    File jarFile=new File("plugins/" + plugin.getJar());
-    URLClassLoader urlClassLoader=URLClassLoader.newInstance(new URL[]{jarFile.toURI().toURL()},Main.class.getClassLoader());
-    logger.info("Loaded plugin: " + plugin.getClassName());
-    return Class.forName(plugin.getClassName(),true,urlClassLoader);
+    classLoader.addURL(new File(pluginFolder + "/" + plugin.getJar()).toURI().toURL());
+    logger.info("Loading plugin: " + plugin.getClassName());
+    return Class.forName(plugin.getClassName(),true,classLoader);
   }
- catch (  Exception ex) {
+ catch (  ClassNotFoundException ex) {
+    logger.log(Level.SEVERE,"Plugin not Found:" + plugin.getJar() + " - check plugin folder");
+  }
+catch (  Exception ex) {
     logger.log(Level.SEVERE,"Error loading plugin " + plugin.getJar(),ex);
   }
   return null;
