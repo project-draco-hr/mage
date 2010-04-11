@@ -1,0 +1,23 @@
+{
+  TurnPhase extraPhase=game.getState().getTurnMods().extraPhase(activePlayerId,afterPhase);
+  if (extraPhase == null)   return;
+  Phase phase;
+switch (extraPhase) {
+case BEGINNING:
+    phase=new BeginningPhase();
+  break;
+case PRECOMBAT_MAIN:
+phase=new PreCombatMainPhase();
+break;
+case COMBAT:
+phase=new CombatPhase();
+break;
+case POSTCOMBAT_MAIN:
+phase=new PostCombatMainPhase();
+break;
+default :
+phase=new EndPhase();
+}
+currentPhase=phase;
+phase.play(game,activePlayerId);
+}

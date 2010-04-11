@@ -1,0 +1,34 @@
+{
+switch (type) {
+case UNTAP:
+    return game.playUntapStep(activePlayerId);
+case UPKEEP:
+  return game.playUpkeepStep(activePlayerId);
+case DRAW:
+return game.playDrawStep(activePlayerId);
+case PRECOMBAT_MAIN:
+return game.playPreCombatMainStep(activePlayerId);
+case BEGIN_COMBAT:
+return game.playBeginCombatStep(activePlayerId);
+case DECLARE_ATTACKERS:
+return game.playDeclareAttackersStep(activePlayerId);
+case DECLARE_BLOCKERS:
+if (!game.getCombat().noAttackers()) return game.playDeclareBlockersStep(activePlayerId);
+return false;
+case FIRST_COMBAT_DAMAGE:
+if (!game.getCombat().noAttackers() && game.getCombat().hasFirstOrDoubleStrike(game)) return game.playCombatDamageStep(activePlayerId,true);
+return false;
+case COMBAT_DAMAGE:
+if (!game.getCombat().noAttackers()) return game.playCombatDamageStep(activePlayerId,false);
+return false;
+case END_COMBAT:
+return game.playEndCombatStep(activePlayerId);
+case POSTCOMBAT_MAIN:
+return game.playPostMainStep(activePlayerId);
+case END_TURN:
+return game.playEndStep(activePlayerId);
+case CLEANUP:
+return game.playCleanupStep(activePlayerId);
+}
+return false;
+}

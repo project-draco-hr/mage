@@ -1,6 +1,6 @@
 {
   for (  Player player : state.getPlayers().values()) {
-    player.init();
+    player.init(this);
   }
   fireInformEvent("game has started");
   saveState();
@@ -35,6 +35,7 @@
     state.setTurnNum(state.getTurnNum() + 1);
     fireInformEvent("Turn " + Integer.toString(state.getTurnNum()));
     for (    Player player : state.getPlayerList(startingPlayerId)) {
+      state.setActivePlayerId(player.getId());
       state.getTurn().play(this,player.getId());
       if (isGameOver())       break;
       endOfTurn();

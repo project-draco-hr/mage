@@ -1,0 +1,19 @@
+{
+  boolean played=false;
+  for (  Player player : getPlayerList(state.getActivePlayerId())) {
+    while (true) {
+      TriggeredAbilities abilities=state.getTriggered().getControlledBy(player.getId());
+      if (abilities.size() == 0)       break;
+      if (abilities.size() == 1) {
+        state.getTriggered().remove(abilities.get(0));
+        played|=player.triggerAbility(abilities.get(0),this);
+      }
+ else {
+        TriggeredAbility ability=player.chooseTriggeredAbility(abilities,this);
+        state.getTriggered().remove(ability);
+        played|=player.triggerAbility(ability,this);
+      }
+    }
+  }
+  return played;
+}

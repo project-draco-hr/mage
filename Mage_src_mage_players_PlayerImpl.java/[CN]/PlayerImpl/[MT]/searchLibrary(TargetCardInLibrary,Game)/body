@@ -1,10 +1,14 @@
 {
-  if (library.count(target.getFilter()) < target.getNumberOfTargets()) {
-    TargetCardInLibrary newTarget=new TargetCardInLibrary(library.count(target.getFilter()),target.getMaxNumberOfTargets(),target.getFilter());
-    searchCards(new CardsImpl(Zone.LIBRARY,getLibrary().getCards()),newTarget,game);
-  }
+  if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.SEARCH_LIBRARY,playerId,playerId))) {
+    if (library.count(target.getFilter()) < target.getNumberOfTargets()) {
+      TargetCardInLibrary newTarget=new TargetCardInLibrary(library.count(target.getFilter()),target.getMaxNumberOfTargets(),target.getFilter());
+      searchCards(new CardsImpl(Zone.LIBRARY,getLibrary().getCards()),newTarget,game);
+    }
  else {
-    searchCards(new CardsImpl(Zone.LIBRARY,getLibrary().getCards()),target,game);
+      searchCards(new CardsImpl(Zone.LIBRARY,getLibrary().getCards()),target,game);
+    }
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.LIBRARY_SEARCHED,playerId,playerId));
+    return true;
   }
-  return true;
+  return false;
 }

@@ -1,0 +1,16 @@
+{
+  Player player=game.getPlayer(this.source.getControllerId());
+  while (!isChosen()) {
+    chosen=targets.size() >= minNumberOfTargets;
+    if (!player.chooseTarget(outcome,this,game)) {
+      return chosen;
+    }
+    chosen=targets.size() >= minNumberOfTargets;
+  }
+  while (!doneChosing()) {
+    if (!player.chooseTarget(outcome,this,game)) {
+      break;
+    }
+  }
+  return true;
+}

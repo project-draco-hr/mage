@@ -11,10 +11,7 @@
  while (card.getCardType().contains(CardType.LAND) || card.getManaCost().convertedManaCost() >= sourceCost);
   if (card != null) {
     if (player.chooseUse(outcome,"Use cascade effect on " + card.getName() + "?",game)) {
-      PlayTargetWithoutPayingManaEffect playEffect=new PlayTargetWithoutPayingManaEffect();
-      playEffect.setSource(source);
-      playEffect.setTarget(card);
-      playEffect.apply(game);
+      player.cast(card,game,true);
       exile.remove(card.getId());
     }
   }

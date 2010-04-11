@@ -1,7 +1,7 @@
 {
   boolean somethingHappened=false;
   for (  Player player : state.getPlayers().values()) {
-    if (player.getLife() <= 0 || player.isEmptyDraw() || player.getCounters().getCount("Poison") >= 10) {
+    if (!player.hasLost() && (player.getLife() <= 0 || player.isEmptyDraw() || player.getCounters().getCount("Poison") >= 10)) {
       player.lost(this);
       somethingHappened=true;
     }
@@ -16,24 +16,37 @@
       somethingHappened=true;
     }
   }
-  FilterPlaneswalkerPermanent filter=new FilterPlaneswalkerPermanent();
-  if (getBattlefield().count(filter) > 1) {
-    for (    String planeswalkerType : Constants.PlaneswalkerTypes) {
-      filter.getSubtype().clear();
-      filter.getSubtype().add(planeswalkerType);
-      filter.setScopeSubtype(ComparisonScope.Any);
-      if (getBattlefield().count(filter) > 1) {
-        for (        Permanent perm : getBattlefield().getActivePermanents(filter)) {
-          perm.moveToZone(Zone.GRAVEYARD,this,false);
-          somethingHappened=true;
-        }
-      }
-    }
-  }
   for (  Permanent perm : getBattlefield().getActivePermanents(CardType.PLANESWALKER)) {
     if (perm.getLoyalty().getValue() == 0) {
       perm.moveToZone(Zone.GRAVEYARD,this,false);
       return true;
+    }
+  }
+  FilterPlaneswalkerPermanent filterPlaneswalker=new FilterPlaneswalkerPermanent();
+  if (getBattlefield().count(filterPlaneswalker) > 1) {
+    for (    String planeswalkerType : Constants.PlaneswalkerTypes) {
+      filterPlaneswalker.getSubtype().clear();
+      filterPlaneswalker.getSubtype().add(planeswalkerType);
+      filterPlaneswalker.setScopeSubtype(ComparisonScope.Any);
+      if (getBattlefield().count(filterPlaneswalker) > 1) {
+        for (        Permanent perm : getBattlefield().getActivePermanents(filterPlaneswalker)) {
+          perm.moveToZone(Zone.GRAVEYARD,this,false);
+        }
+        somethingHappened=true;
+      }
+    }
+  }
+  FilterLegendaryPermanent filterLegendary=new FilterLegendaryPermanent();
+  if (getBattlefield().count(filterPlaneswalker) > 1) {
+    for (    Permanent legend : getBattlefield().getActivePermanents(filterLegendary)) {
+      FilterLegendaryPermanent filterLegendName=new FilterLegendaryPermanent();
+      filterLegendName.getName().add(legend.getName());
+      if (getBattlefield().count(filterLegendName) > 1) {
+        for (        Permanent dupLegend : getBattlefield().getActivePermanents(filterLegendName)) {
+          dupLegend.moveToZone(Zone.GRAVEYARD,this,false);
+        }
+        return true;
+      }
     }
   }
   for (  Permanent perm : getBattlefield().getActivePermanents(new FilterEquipment())) {

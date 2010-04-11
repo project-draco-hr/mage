@@ -1,0 +1,16 @@
+{
+  if (!replaceEvent(new GameEvent(GameEvent.EventType.CLEANUP_STEP,null,null,activePlayerId))) {
+    fireEvent(new GameEvent(GameEvent.EventType.CLEANUP_STEP_PRE,null,null,activePlayerId));
+    Player player=getPlayer(activePlayerId);
+    player.discardToMax(this);
+    state.getBattlefield().endOfTurn(activePlayerId,this);
+    state.removeEotEffects(this);
+    if (checkStateAndTriggered()) {
+      playPriority(activePlayerId);
+      playCleanupStep(activePlayerId);
+    }
+    fireEvent(new GameEvent(GameEvent.EventType.CLEANUP_STEP_POST,null,null,activePlayerId));
+    return true;
+  }
+  return false;
+}

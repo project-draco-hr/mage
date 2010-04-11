@@ -1,0 +1,10 @@
+{
+  if (!replaceEvent(new GameEvent(GameEvent.EventType.END_COMBAT_STEP,null,null,activePlayerId))) {
+    fireEvent(new GameEvent(GameEvent.EventType.END_COMBAT_STEP_PRE,null,null,activePlayerId));
+    playPriority(activePlayerId);
+    fireEvent(new GameEvent(GameEvent.EventType.END_COMBAT_STEP_POST,null,null,activePlayerId));
+    removeCreaturesFromCombat();
+    return true;
+  }
+  return false;
+}

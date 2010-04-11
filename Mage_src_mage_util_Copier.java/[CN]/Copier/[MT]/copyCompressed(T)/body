@@ -1,0 +1,16 @@
+{
+  try {
+    FastByteArrayOutputStream fbos=new FastByteArrayOutputStream();
+    ObjectOutputStream out=new ObjectOutputStream(new GZIPOutputStream(fbos));
+    out.writeObject(obj);
+    out.flush();
+    out.close();
+    byte[] copy=new byte[fbos.getSize()];
+    System.arraycopy(fbos.getByteArray(),0,copy,0,fbos.getSize());
+    return copy;
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+  }
+  return null;
+}

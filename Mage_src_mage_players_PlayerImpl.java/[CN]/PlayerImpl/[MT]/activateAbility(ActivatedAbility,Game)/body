@@ -5,14 +5,13 @@
     result=playLand(hand.get(ability.getSourceId()),game);
   }
  else   if (ability instanceof ManaAbility) {
-    result=playManaAbility((ManaAbility)ability,game);
+    result=playManaAbility((ManaAbility)ability.copy(),game);
   }
  else   if (ability instanceof SpellAbility) {
     result=cast(hand.get(ability.getSourceId()),game,false);
   }
  else {
-    result=playAbility(ability,game);
+    result=playAbility((ActivatedAbility)ability.copy(),game);
   }
-  if (result && !(ability instanceof ManaAbility))   game.fireInformEvent(name + ability.getActivatedMessage(game));
   return result;
 }

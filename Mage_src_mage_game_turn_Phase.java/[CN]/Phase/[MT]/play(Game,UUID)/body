@@ -1,0 +1,20 @@
+{
+  if (game.isGameOver())   return false;
+  this.activePlayerId=activePlayerId;
+  if (!game.replaceEvent(new GameEvent(event,null,null,activePlayerId))) {
+    game.fireEvent(new GameEvent(preEvent,null,null,activePlayerId));
+    for (    Step step : steps) {
+      if (game.isGameOver())       return false;
+      currentStep=step;
+      if (step.play(game,activePlayerId)) {
+        game.emptyManaPools();
+        game.saveState();
+        playExtraSteps(game,step.getType());
+      }
+    }
+    count++;
+    game.fireEvent(new GameEvent(postEvent,null,null,activePlayerId));
+    return true;
+  }
+  return false;
+}

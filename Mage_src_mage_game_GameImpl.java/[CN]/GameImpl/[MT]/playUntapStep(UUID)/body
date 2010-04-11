@@ -1,0 +1,11 @@
+{
+  fireEvent(new GameEvent(GameEvent.EventType.BEGINNING_PHASE_PRE,null,null,activePlayerId));
+  if (!replaceEvent(new GameEvent(GameEvent.EventType.UNTAP_STEP,null,null,activePlayerId))) {
+    getPlayer(activePlayerId).phasing(this);
+    getPlayer(activePlayerId).untap(this);
+    fireEvent(new GameEvent(GameEvent.EventType.UNTAP_STEP_PRE,null,null,activePlayerId));
+    fireEvent(new GameEvent(GameEvent.EventType.UNTAP_STEP_POST,null,null,activePlayerId));
+    return true;
+  }
+  return false;
+}

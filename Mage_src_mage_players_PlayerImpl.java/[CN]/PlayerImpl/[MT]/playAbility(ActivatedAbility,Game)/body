@@ -4,6 +4,7 @@
     game.getStack().push(new StackAbility(ability,playerId));
     if (ability.activate(game,false)) {
       game.fireEvent(GameEvent.getEvent(GameEvent.EventType.ACTIVATED_ABILITY,ability.getId(),playerId));
+      game.fireInformEvent(name + ability.getActivatedMessage(game));
       game.removeLastBookmark();
       return true;
     }

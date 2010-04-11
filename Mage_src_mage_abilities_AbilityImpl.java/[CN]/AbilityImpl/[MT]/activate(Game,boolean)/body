@@ -1,5 +1,8 @@
 {
   if (choices.size() > 0 && choices.choose(game) == false)   return false;
   if (targets.size() > 0 && targets.choose(effects.get(0).getOutcome(),game) == false)   return false;
-  return getCosts().pay(game,noMana);
+  if (!useAlternativeCost(game)) {
+    if (!manaCosts.pay(game,noMana))     return false;
+  }
+  return costs.pay(game,noMana);
 }

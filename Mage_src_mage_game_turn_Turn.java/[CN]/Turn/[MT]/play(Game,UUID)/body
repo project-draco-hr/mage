@@ -1,11 +1,16 @@
 {
   if (game.isGameOver())   return;
-  phase=null;
-  step=null;
   this.activePlayerId=activePlayerId;
+  resetCounts();
   game.getPlayer(activePlayerId).beginTurn();
-  while (nextStep(game)) {
-    playStep(game);
-    game.saveState();
+  for (  Phase phase : phases) {
+    if (game.isGameOver())     return;
+    currentPhase=phase;
+    if (phase.play(game,activePlayerId)) {
+      game.emptyManaPools();
+      game.saveState();
+      playExtraPhases(game,phase.getType());
+    }
   }
+  playExtraTurns(game);
 }
