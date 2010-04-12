@@ -1,0 +1,27 @@
+{
+  logger.fine("simulateAttack");
+  List<Permanent> attackersList=attackers.getAttackers();
+  CombatSimulator best=new CombatSimulator();
+  int bestResult=0;
+  int powerElements=(int)Math.pow(2,attackersList.size());
+  for (int i=1; i < powerElements; i++) {
+    String binary=Integer.toBinaryString(i);
+    while (binary.length() < attackersList.size()) {
+      binary="0" + binary;
+    }
+    List<Permanent> trialAttackers=new ArrayList<Permanent>();
+    for (int j=0; j < attackersList.size(); j++) {
+      if (binary.charAt(j) == '1')       trialAttackers.add(attackersList.get(j));
+    }
+    CombatSimulator combat=new CombatSimulator();
+    for (    Permanent permanent : trialAttackers) {
+      combat.groups.add(new CombatGroupSimulator(opponentId,Arrays.asList(permanent.getId()),new ArrayList<UUID>(),game));
+    }
+    CombatSimulator test=simulateBlock(combat,blockers,game);
+    if (test.evaluate() > bestResult) {
+      best=test;
+      bestResult=test.evaluate();
+    }
+  }
+  return best;
+}

@@ -1,0 +1,11 @@
+{
+  logger.fine("selectBlockers");
+  List<Permanent> blockers=getAvailableBlockers(game);
+  CombatSimulator sim=simulateBlock(CombatSimulator.load(game),blockers,game);
+  List<CombatGroup> groups=game.getCombat().getGroups();
+  for (int i=0; i < groups.size(); i++) {
+    for (    CreatureSimulator creature : sim.groups.get(i).blockers) {
+      groups.get(i).addBlocker(creature.id,playerId,game);
+    }
+  }
+}

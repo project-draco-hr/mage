@@ -1,0 +1,13 @@
+{
+  logger.fine("getAvailableManaProducers");
+  List<Permanent> result=new ArrayList<Permanent>();
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(playerId)) {
+    for (    ManaAbility ability : permanent.getAbilities().getManaAbilities(Zone.BATTLEFIELD)) {
+      if (ability.canActivate(playerId,game)) {
+        result.add(permanent);
+        break;
+      }
+    }
+  }
+  return result;
+}

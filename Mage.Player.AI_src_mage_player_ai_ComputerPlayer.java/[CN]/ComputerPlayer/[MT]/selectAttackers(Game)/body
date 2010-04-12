@@ -1,0 +1,25 @@
+{
+  logger.fine("selectAttackers");
+  UUID opponentId=game.getOpponents(playerId).get(0);
+  Attackers attackers=getAvailableAttackers(game);
+  List<Permanent> blockers=getOpponentBlockers(opponentId,game);
+  List<Permanent> actualAttackers=new ArrayList<Permanent>();
+  if (blockers.isEmpty()) {
+    actualAttackers=attackers.getAttackers();
+  }
+ else   if (attackers.size() - blockers.size() >= game.getPlayer(opponentId).getLife()) {
+    actualAttackers=attackers.getAttackers();
+  }
+ else {
+    CombatSimulator combat=simulateAttack(attackers,blockers,opponentId,game);
+    if (combat.rating > 2) {
+      for (      CombatGroupSimulator group : combat.groups) {
+        this.declareAttacker(group.attackers.get(0).id,group.defenderId,game);
+      }
+    }
+  }
+  for (  Permanent attacker : actualAttackers) {
+    this.declareAttacker(attacker.getId(),opponentId,game);
+  }
+  return;
+}
