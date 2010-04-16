@@ -1,0 +1,21 @@
+{
+  try {
+    InputStream file=new FileInputStream("saved/" + gameId.toString() + ".game");
+    InputStream buffer=new BufferedInputStream(file);
+    ObjectInput input=new ObjectInputStream(buffer);
+    try {
+      GameStates gameStates=(GameStates)input.readObject();
+      return gameStates;
+    }
+  finally {
+      input.close();
+    }
+  }
+ catch (  ClassNotFoundException ex) {
+    logger.log(Level.SEVERE,"Cannot load game. Class not found.",ex);
+  }
+catch (  IOException ex) {
+    logger.log(Level.SEVERE,"Cannot load game:" + game.getId(),ex);
+  }
+  return null;
+}

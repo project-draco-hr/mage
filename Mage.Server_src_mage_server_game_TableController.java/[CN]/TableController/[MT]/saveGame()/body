@@ -1,0 +1,17 @@
+{
+  try {
+    OutputStream file=new FileOutputStream("saved/" + game.getId().toString() + ".game");
+    OutputStream buffer=new BufferedOutputStream(file);
+    ObjectOutput output=new ObjectOutputStream(buffer);
+    try {
+      output.writeObject(game.getGameStates());
+    }
+  finally {
+      output.close();
+      logger.log(Level.SEVERE,"Saved game:" + game.getId());
+    }
+  }
+ catch (  IOException ex) {
+    logger.log(Level.SEVERE,"Cannot save game.",ex);
+  }
+}
