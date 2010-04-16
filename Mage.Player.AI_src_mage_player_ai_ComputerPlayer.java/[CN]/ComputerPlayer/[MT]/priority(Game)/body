@@ -1,5 +1,6 @@
 {
   logger.fine("priority");
+  UUID opponentId=game.getOpponents(playerId).get(0);
   if (game.getActivePlayerId().equals(playerId)) {
     if (game.isMainPhase() && game.getStack().isEmpty()) {
       playLand(game);
@@ -10,20 +11,26 @@ case UPKEEP:
     break;
 case DRAW:
   logState(game);
-case DECLARE_BLOCKERS:
-playRemoval(game.getCombat().getAttackers(),game);
 case PRECOMBAT_MAIN:
 findPlayables(game);
 if (playableAbilities.size() > 0) {
 for (ActivatedAbility ability : playableAbilities) {
-if (ability.canActivate(playerId,game)) {
-  if (ability.getEffects().hasOutcome(Outcome.PutLandInPlay)) {
-    if (this.activateAbility(ability,game))     return;
+  if (ability.canActivate(playerId,game)) {
+    if (ability.getEffects().hasOutcome(Outcome.PutLandInPlay)) {
+      if (this.activateAbility(ability,game))       return;
+    }
+    if (ability.getEffects().hasOutcome(Outcome.PutCreatureInPlay)) {
+      if (getOpponentBlockers(opponentId,game).size() <= 1)       if (this.activateAbility(ability,game))       return;
+    }
   }
 }
 }
-}
 break;
+case DECLARE_BLOCKERS:
+playRemoval(game.getCombat().getBlockers(),game);
+playDamage(game.getCombat().getBlockers(),game);
+case END_COMBAT:
+playDamage(game.getCombat().getBlockers(),game);
 case POSTCOMBAT_MAIN:
 findPlayables(game);
 if (game.getStack().isEmpty()) {
@@ -37,7 +44,9 @@ if (this.activateAbility(card.getSpellAbility(),game)) return;
 if (playableAbilities.size() > 0) {
 for (ActivatedAbility ability : playableAbilities) {
 if (ability.canActivate(playerId,game)) {
+if (!(ability.getEffects().get(0) instanceof BecomesCreatureSourceEOTEffect)) {
 if (this.activateAbility(ability,game)) return;
+}
 }
 }
 }
@@ -46,6 +55,13 @@ break;
 }
 }
  else {
+switch (game.getTurn().getStep()) {
+case DECLARE_ATTACKERS:
+playRemoval(game.getCombat().getAttackers(),game);
+playDamage(game.getCombat().getAttackers(),game);
+case END_COMBAT:
+playDamage(game.getCombat().getAttackers(),game);
+}
 }
 this.passed=true;
 }

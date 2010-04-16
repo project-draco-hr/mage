@@ -32,6 +32,17 @@
       }
     }
   }
+  if (target instanceof TargetSacrificePermanent) {
+    List<Permanent> targets;
+    targets=threats(playerId,(TargetPermanent)target,game);
+    Collections.reverse(targets);
+    for (    Permanent permanent : targets) {
+      if (target.canTarget(permanent.getId(),game)) {
+        target.addTarget(permanent.getId(),game);
+        return true;
+      }
+    }
+  }
   if (target instanceof TargetPermanent) {
     List<Permanent> targets;
     if (outcome.isGood()) {

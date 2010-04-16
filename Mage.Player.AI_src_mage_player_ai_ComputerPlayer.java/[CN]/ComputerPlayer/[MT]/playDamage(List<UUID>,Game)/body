@@ -1,11 +1,14 @@
 {
   for (  UUID creatureId : creatures) {
+    Permanent creature=game.getPermanent(creatureId);
     for (    Card card : this.playableInstant) {
       if (card.getSpellAbility().canActivate(playerId,game)) {
         for (        Effect effect : card.getSpellAbility().getEffects()) {
-          if (effect.getOutcome().equals(Outcome.DestroyPermanent)) {
+          if (effect instanceof DamageTargetEffect) {
             if (card.getSpellAbility().getTargets().get(0).canTarget(creatureId,game)) {
-              if (this.activateAbility(card.getSpellAbility(),game))               return;
+              if (((DamageTargetEffect)effect).getAmount() > (creature.getPower().getValue() - creature.getDamage())) {
+                if (this.activateAbility(card.getSpellAbility(),game))                 return;
+              }
             }
           }
         }
