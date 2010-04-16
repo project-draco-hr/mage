@@ -1,0 +1,13 @@
+{
+  int amount=this.source.getManaCosts().getVariableCosts().get(0).getValue();
+  FilterCreaturePermanent filter=new FilterCreaturePermanent();
+  filter.getAbilities().add(FlyingAbility.getInstance());
+  filter.setNotAbilities(true);
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(filter)) {
+    permanent.damage(amount,source.getId(),game);
+  }
+  for (  Player player : game.getPlayers().values()) {
+    player.damage(amount,source.getId(),game);
+  }
+  return true;
+}
