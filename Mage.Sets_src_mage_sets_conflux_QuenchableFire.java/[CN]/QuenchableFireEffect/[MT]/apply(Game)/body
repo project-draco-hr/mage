@@ -1,0 +1,14 @@
+{
+  QuenchableFireDelayedTriggeredAbility delayedAbility=new QuenchableFireDelayedTriggeredAbility();
+  delayedAbility.setSourceId(this.source.getSourceId());
+  delayedAbility.setControllerId(this.source.getControllerId());
+  delayedAbility.getTargets().addAll(this.source.getTargets());
+  game.getState().addDelayedTriggeredAbility(delayedAbility);
+  QuenchableFireSpecialAction newAction=new QuenchableFireSpecialAction(delayedAbility.getId());
+  delayedAbility.setSpecialActionId(newAction.getId());
+  newAction.setSourceId(this.source.getSourceId());
+  newAction.setControllerId(this.source.getFirstTarget());
+  newAction.getTargets().addAll(this.source.getTargets());
+  game.getState().getSpecialActions().add(newAction);
+  return true;
+}

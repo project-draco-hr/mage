@@ -1,0 +1,13 @@
+{
+  if (event.getType() == EventType.UPKEEP_STEP_PRE && event.getPlayerId().equals(this.controllerId)) {
+    trigger(game,event.getPlayerId());
+    for (    SpecialAction action : game.getState().getSpecialActions()) {
+      if (action.getId().equals(specialActionId)) {
+        game.getState().getSpecialActions().remove(action);
+        break;
+      }
+    }
+    return true;
+  }
+  return false;
+}
