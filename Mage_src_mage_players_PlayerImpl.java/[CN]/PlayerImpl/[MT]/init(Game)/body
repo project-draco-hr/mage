@@ -10,6 +10,9 @@
   this.passedTurn=false;
   library.addAll(deck.getCards());
   for (  Card card : deck.getCards().values()) {
-    game.getState().getWatchers().addAll(card.getWatchers());
+    for (    Watcher watcher : card.getWatchers()) {
+      watcher.setControllerId(playerId);
+      game.getState().getWatchers().add(watcher);
+    }
   }
 }
