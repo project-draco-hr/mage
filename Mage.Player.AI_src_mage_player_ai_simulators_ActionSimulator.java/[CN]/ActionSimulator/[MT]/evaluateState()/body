@@ -1,0 +1,19 @@
+{
+  Player opponent=game.getPlayer(game.getOpponents(player.getId()).get(0));
+  if (game.isGameOver()) {
+    if (player.hasLost() || opponent.hasWon())     return Integer.MIN_VALUE;
+    if (opponent.hasLost() || player.hasWon())     return Integer.MAX_VALUE;
+  }
+  int value=player.getLife();
+  value-=opponent.getLife();
+  PermanentEvaluator evaluator=new PermanentEvaluator();
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(player.getId())) {
+    value+=evaluator.evaluate(permanent,game);
+  }
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(player.getId())) {
+    value-=evaluator.evaluate(permanent,game);
+  }
+  value+=player.getHand().size();
+  value-=opponent.getHand().size();
+  return value;
+}
