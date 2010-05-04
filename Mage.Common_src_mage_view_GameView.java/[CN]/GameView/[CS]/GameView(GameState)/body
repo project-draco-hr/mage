@@ -4,7 +4,9 @@
   }
   for (  StackObject stackObject : game.getStack()) {
     if (stackObject instanceof StackAbility) {
-      stack.add(new StackAbilityView((StackAbility)stackObject,game.getObject(stackObject.getSourceId()).getName()));
+      MageObject object=game.getObject(stackObject.getSourceId());
+      if (object != null)       stack.add(new StackAbilityView((StackAbility)stackObject,object.getName()));
+ else       stack.add(new StackAbilityView((StackAbility)stackObject,""));
     }
  else {
       stack.add(new CardView((Spell)stackObject));
