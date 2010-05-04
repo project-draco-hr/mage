@@ -8,8 +8,17 @@
     combatArea.add(combatGroup);
     combatGroup.revalidate();
   }
+  try {
+    this.setSelected(true);
+  }
+ catch (  PropertyVetoException ex) {
+    Logger.getLogger(CombatDialog.class.getName()).log(Level.SEVERE,null,ex);
+  }
   pack();
   this.revalidate();
   this.repaint();
-  this.setVisible(true);
+  if (!this.isVisible()) {
+    this.setVisible(true);
+    this.setLocation(lastX,lastY);
+  }
 }
