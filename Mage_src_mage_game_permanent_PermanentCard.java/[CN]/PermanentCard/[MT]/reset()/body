@@ -8,6 +8,14 @@
   this.manaCost=copy.getManaCost();
   this.power=copy.getPower();
   this.toughness=copy.getToughness();
+  if (card instanceof LevelerCard) {
+    LevelAbility level=((LevelerCard)card).getLevel(this.getCounters().getCount("Level"));
+    if (level != null) {
+      this.power.setValue(level.getPower());
+      this.toughness.setValue(level.getToughness());
+      this.abilities.addAll(level.getAbilities());
+    }
+  }
   this.subtype=copy.getSubtype();
   this.supertype=copy.getSupertype();
   this.art=copy.getArt();
