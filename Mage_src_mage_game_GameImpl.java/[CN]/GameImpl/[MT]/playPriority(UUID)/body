@@ -1,24 +1,27 @@
 {
+  state.getPlayers().resetPassed();
   while (!isGameOver()) {
-    while (!isGameOver()) {
-      int stackSize=state.getStack().size();
-      state.getPlayers().resetPriority();
-      for (      Player player : getPlayerList(activePlayerId)) {
-        state.setPriorityPlayerId(player.getId());
-        while (!player.isPassed() && !isGameOver()) {
-          checkStateAndTriggered();
-          if (isGameOver())           return;
-          player.priority(this);
-          if (isGameOver())           return;
-          applyEffects();
-          saveState();
-        }
+    for (    Player player : getPlayerList(activePlayerId)) {
+      state.setPriorityPlayerId(player.getId());
+      while (!player.isPassed() && !isGameOver()) {
+        checkStateAndTriggered();
+        if (isGameOver())         return;
+        player.priority(this);
+        if (isGameOver())         return;
+        applyEffects();
+        saveState();
       }
-      if (isGameOver() || stackSize == state.getStack().size())       break;
+      if (isGameOver())       return;
+      if (allPassed()) {
+        if (!state.getStack().isEmpty()) {
+          state.getStack().resolve(this);
+          applyEffects();
+          state.getPlayers().resetPassed();
+          saveState();
+          break;
+        }
+        return;
+      }
     }
-    if (isGameOver() || state.getStack().isEmpty())     break;
-    state.getStack().resolve(this);
-    applyEffects();
-    saveState();
   }
 }
