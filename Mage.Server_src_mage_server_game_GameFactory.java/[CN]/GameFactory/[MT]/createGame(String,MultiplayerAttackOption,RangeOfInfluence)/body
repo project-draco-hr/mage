@@ -1,0 +1,14 @@
+{
+  Game game;
+  Constructor<Game> con;
+  try {
+    con=games.get(gameType).getConstructor(new Class[]{MultiplayerAttackOption.class,RangeOfInfluence.class});
+    game=con.newInstance(new Object[]{attackOption,range});
+  }
+ catch (  Exception ex) {
+    logger.log(Level.SEVERE,null,ex);
+    return null;
+  }
+  logger.info("Game created: " + game.getId().toString());
+  return game;
+}
