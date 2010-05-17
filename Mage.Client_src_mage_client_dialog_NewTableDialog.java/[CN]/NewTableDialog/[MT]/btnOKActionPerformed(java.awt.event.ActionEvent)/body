@@ -1,27 +1,39 @@
 {
+  GameTypeView gameType=(GameTypeView)cbGameType.getSelectedItem();
+  List<String> playerTypes=new ArrayList<String>();
+  playerTypes.add("Human");
+  for (  TablePlayerPanel player : players) {
+    playerTypes.add(player.getPlayerType());
+  }
+  table=session.createTable(roomId,gameType.getName(),(String)this.cbDeckType.getSelectedItem(),playerTypes,(MultiplayerAttackOption)this.cbAttackOption.getSelectedItem(),(RangeOfInfluence)this.cbRange.getSelectedItem());
   try {
-    List<String> playerTypes=new ArrayList<String>();
-    playerTypes.add("Human");
-    playerTypes.add((String)this.cbPlayer2Type.getSelectedItem());
-    table=session.createTable(roomId,(String)this.cbGameType.getSelectedItem(),(String)this.cbDeckType.getSelectedItem(),playerTypes);
     if (session.joinTable(roomId,table.getTableId(),0,this.player1Panel.getPlayerName(),DeckCardLists.load(this.player1Panel.getDeckFile()))) {
-      if (!this.cbPlayer2Type.getSelectedItem().equals("Human")) {
-        if (session.joinTable(roomId,table.getTableId(),1,this.player2Panel.getPlayerName(),DeckCardLists.load(this.player2Panel.getDeckFile()))) {
-          this.setVisible(false);
-          return;
+      int seatNum=1;
+      for (      TablePlayerPanel player : players) {
+        if (!player.getPlayerType().equals("Human")) {
+          if (!player.joinTable(roomId,table.getTableId(),seatNum)) {
+            JOptionPane.showMessageDialog(MageFrame.getDesktop(),"Error joining table.","Error",JOptionPane.ERROR_MESSAGE);
+            session.removeTable(roomId,table.getTableId());
+            table=null;
+            return;
+          }
         }
-        JOptionPane.showMessageDialog(MageFrame.getDesktop(),"Error joining table.","Error",JOptionPane.ERROR_MESSAGE);
+        seatNum++;
       }
- else {
-        this.setVisible(false);
-        return;
-      }
-      JOptionPane.showMessageDialog(MageFrame.getDesktop(),"Error joining table.","Error",JOptionPane.ERROR_MESSAGE);
+      this.setVisible(false);
+      return;
     }
   }
- catch (  Exception ex) {
+ catch (  FileNotFoundException ex) {
     handleError(ex);
   }
+catch (  IOException ex) {
+    handleError(ex);
+  }
+catch (  ClassNotFoundException ex) {
+    handleError(ex);
+  }
+  JOptionPane.showMessageDialog(MageFrame.getDesktop(),"Error joining table.","Error",JOptionPane.ERROR_MESSAGE);
   session.removeTable(roomId,table.getTableId());
   table=null;
 }

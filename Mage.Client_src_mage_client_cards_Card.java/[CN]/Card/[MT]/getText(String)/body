@@ -5,15 +5,17 @@
     sb.append("\n").append(card.getManaCost());
   }
   sb.append("\n").append(cardType);
-  sb.append("\n").append(card.getColor().toString());
-  for (  String rule : getRules()) {
-    sb.append("\n").append(rule);
+  if (card.getColor().hasColor()) {
+    sb.append("\n").append(card.getColor().toString());
   }
   if (card.getCardTypes().contains(CardType.CREATURE)) {
-    sb.append(card.getPower()).append("/").append(card.getToughness());
+    sb.append("\n").append(card.getPower()).append("/").append(card.getToughness());
   }
  else   if (card.getCardTypes().contains(CardType.PLANESWALKER)) {
-    sb.append(card.getLoyalty());
+    sb.append("\n").append(card.getLoyalty());
+  }
+  for (  String rule : getRules()) {
+    sb.append("\n").append(rule);
   }
   return sb.toString();
 }

@@ -1,0 +1,17 @@
+{
+  int buffer[]=new int[dimensions.frameWidth * dimensions.frameHeight];
+  int rotate[]=new int[dimensions.frameHeight * dimensions.frameWidth];
+  PixelGrabber grabber=new PixelGrabber(image,0,0,dimensions.frameWidth,dimensions.frameHeight,buffer,0,dimensions.frameWidth);
+  try {
+    grabber.grabPixels();
+  }
+ catch (  InterruptedException e) {
+    e.printStackTrace();
+  }
+  for (int y=0; y < dimensions.frameHeight; y++) {
+    for (int x=0; x < dimensions.frameWidth; x++) {
+      rotate[((dimensions.frameWidth - x - 1) * dimensions.frameHeight) + y]=buffer[(y * dimensions.frameWidth) + x];
+    }
+  }
+  return new MemoryImageSource(dimensions.frameHeight,dimensions.frameWidth,rotate,0,dimensions.frameHeight);
+}

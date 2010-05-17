@@ -1,0 +1,21 @@
+{
+  if (numPlayers > players.size()) {
+    while (players.size() != numPlayers) {
+      TablePlayerPanel playerPanel=new TablePlayerPanel();
+      playerPanel.init(players.size() + 2);
+      players.add(playerPanel);
+      playerPanel.addPlayerTypeEventListener(new Listener<Event>(){
+        @Override public void event(        Event event){
+          drawPlayers();
+        }
+      }
+);
+    }
+  }
+ else   if (numPlayers < players.size()) {
+    while (players.size() != numPlayers) {
+      players.remove(players.size() - 1);
+    }
+  }
+  drawPlayers();
+}
