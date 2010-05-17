@@ -1,8 +1,15 @@
 {
   if (!game.replaceEvent(new GameEvent(GameEvent.EventType.WINS,null,null,playerId))) {
     if (!this.loses) {
-      this.wins=true;
-      game.end();
+      if (game.getPlayers().size() > 2) {
+        for (        UUID opponentId : game.getOpponents(playerId)) {
+          game.getPlayer(opponentId).lost(game);
+        }
+      }
+ else {
+        this.wins=true;
+        game.end();
+      }
     }
   }
 }

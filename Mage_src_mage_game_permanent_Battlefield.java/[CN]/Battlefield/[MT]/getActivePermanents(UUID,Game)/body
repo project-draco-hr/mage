@@ -1,0 +1,13 @@
+{
+  if (game.getRangeOfInfluence() == RangeOfInfluence.ALL) {
+    return getAllActivePermanents();
+  }
+ else {
+    List<Permanent> active=new ArrayList<Permanent>();
+    Set<UUID> range=game.getPlayer(sourcePlayerId).getInRange();
+    for (    Permanent perm : field.values()) {
+      if (perm.isPhasedIn() && range.contains(perm.getControllerId()))       active.add(perm);
+    }
+    return active;
+  }
+}

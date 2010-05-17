@@ -1,8 +1,10 @@
 {
   if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_BLOCKERS,attackerId,attackerId))) {
     for (    UUID defenderId : defenders) {
-      game.getPlayer(defenderId).selectBlockers(game);
-      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,defenderId,defenderId));
+      if (isAttacked(defenderId,game)) {
+        game.getPlayer(defenderId).selectBlockers(game);
+        game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,defenderId,defenderId));
+      }
     }
   }
 }

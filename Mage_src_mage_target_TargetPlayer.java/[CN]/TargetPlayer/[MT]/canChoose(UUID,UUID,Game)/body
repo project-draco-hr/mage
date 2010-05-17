@@ -1,0 +1,11 @@
+{
+  int count=0;
+  for (  UUID playerId : game.getPlayer(sourceControllerId).getInRange()) {
+    Player player=game.getPlayer(playerId);
+    if (player != null && !player.hasLeft() && filter.match(player)) {
+      if (player.canTarget(game.getObject(sourceId)))       count++;
+    }
+  }
+  if (count >= this.minNumberOfTargets)   return true;
+  return false;
+}

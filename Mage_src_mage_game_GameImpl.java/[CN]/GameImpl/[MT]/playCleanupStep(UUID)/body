@@ -2,7 +2,7 @@
   if (!replaceEvent(new GameEvent(GameEvent.EventType.CLEANUP_STEP,null,null,activePlayerId))) {
     fireEvent(new GameEvent(GameEvent.EventType.CLEANUP_STEP_PRE,null,null,activePlayerId));
     Player player=getPlayer(activePlayerId);
-    player.discardToMax(this);
+    if (!player.hasLeft() && !player.hasLost())     player.discardToMax(this);
     state.getBattlefield().endOfTurn(activePlayerId,this);
     state.removeEotEffects(this);
     if (checkStateAndTriggered()) {

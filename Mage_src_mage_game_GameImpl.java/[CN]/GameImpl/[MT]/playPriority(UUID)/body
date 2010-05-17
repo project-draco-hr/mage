@@ -3,7 +3,7 @@
   while (!isGameOver()) {
     for (    Player player : getPlayerList(activePlayerId)) {
       state.setPriorityPlayerId(player.getId());
-      while (!player.isPassed() && !isGameOver()) {
+      while (!player.isPassed() && !player.hasLost() && !player.hasLeft()&& !isGameOver()) {
         checkStateAndTriggered();
         if (isGameOver())         return;
         player.priority(this);
@@ -17,6 +17,7 @@
           state.getStack().resolve(this);
           applyEffects();
           state.getPlayers().resetPassed();
+          fireUpdatePlayersEvent();
           saveState();
           break;
         }

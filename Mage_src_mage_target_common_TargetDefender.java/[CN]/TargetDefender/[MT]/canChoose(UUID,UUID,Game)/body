@@ -1,0 +1,12 @@
+{
+  int count=0;
+  for (  UUID playerId : game.getPlayer(sourceControllerId).getInRange()) {
+    Player player=game.getPlayer(playerId);
+    if (player != null && player.canTarget(game.getObject(this.source.getSourceId())) && filter.match(player))     count++;
+  }
+  if (count >= this.minNumberOfTargets)   return true;
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(new FilterPlaneswalkerPermanent(),sourceControllerId,game)) {
+    if (permanent.canBeTargetedBy(game.getObject(this.source.getSourceId())) && filter.match(permanent))     count++;
+  }
+  return count >= this.minNumberOfTargets;
+}

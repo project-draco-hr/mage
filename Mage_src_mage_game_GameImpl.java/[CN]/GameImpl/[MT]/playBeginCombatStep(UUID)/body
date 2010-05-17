@@ -2,9 +2,7 @@
   if (!replaceEvent(new GameEvent(GameEvent.EventType.BEGIN_COMBAT_STEP,null,null,activePlayerId))) {
     state.getCombat().clear();
     state.getCombat().setAttacker(activePlayerId);
-    for (    Player player : state.getPlayers().values()) {
-      if (!player.getId().equals(state.getActivePlayerId()))       state.getCombat().getDefenders().add(player.getId());
-    }
+    state.getCombat().setDefenders(this);
     fireEvent(new GameEvent(GameEvent.EventType.BEGIN_COMBAT_STEP_PRE,null,null,activePlayerId));
     playPriority(activePlayerId);
     fireEvent(new GameEvent(GameEvent.EventType.PRECOMBAT_MAIN_STEP_POST,null,null,activePlayerId));

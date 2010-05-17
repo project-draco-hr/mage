@@ -6,7 +6,7 @@
       somethingHappened=true;
     }
   }
-  for (  Permanent perm : getBattlefield().getActivePermanents(CardType.CREATURE)) {
+  for (  Permanent perm : getBattlefield().getAllActivePermanents(CardType.CREATURE)) {
     if (perm.getToughness().getValue() == 0) {
       perm.moveToZone(Zone.GRAVEYARD,this,false);
       somethingHappened=true;
@@ -16,40 +16,42 @@
       somethingHappened=true;
     }
   }
-  for (  Permanent perm : getBattlefield().getActivePermanents(CardType.PLANESWALKER)) {
+  for (  Permanent perm : getBattlefield().getAllActivePermanents(CardType.PLANESWALKER)) {
     if (perm.getLoyalty().getValue() == 0) {
       perm.moveToZone(Zone.GRAVEYARD,this,false);
       return true;
     }
   }
   FilterPlaneswalkerPermanent filterPlaneswalker=new FilterPlaneswalkerPermanent();
-  if (getBattlefield().count(filterPlaneswalker) > 1) {
-    for (    String planeswalkerType : Constants.PlaneswalkerTypes) {
-      filterPlaneswalker.getSubtype().clear();
-      filterPlaneswalker.getSubtype().add(planeswalkerType);
-      filterPlaneswalker.setScopeSubtype(ComparisonScope.Any);
-      if (getBattlefield().count(filterPlaneswalker) > 1) {
-        for (        Permanent perm : getBattlefield().getActivePermanents(filterPlaneswalker)) {
-          perm.moveToZone(Zone.GRAVEYARD,this,false);
+  if (getBattlefield().countAll(filterPlaneswalker) > 1) {
+    for (    Permanent planeswalker : getBattlefield().getAllActivePermanents(CardType.PLANESWALKER)) {
+      for (      String planeswalkertype : planeswalker.getSubtype()) {
+        filterPlaneswalker.getSubtype().clear();
+        filterPlaneswalker.getSubtype().add(planeswalkertype);
+        filterPlaneswalker.setScopeSubtype(ComparisonScope.Any);
+        if (getBattlefield().count(filterPlaneswalker,planeswalker.getControllerId(),this) > 1) {
+          for (          Permanent perm : getBattlefield().getActivePermanents(filterPlaneswalker,planeswalker.getControllerId(),this)) {
+            perm.moveToZone(Zone.GRAVEYARD,this,false);
+          }
+          return true;
         }
-        somethingHappened=true;
       }
     }
   }
   FilterLegendaryPermanent filterLegendary=new FilterLegendaryPermanent();
-  if (getBattlefield().count(filterPlaneswalker) > 1) {
-    for (    Permanent legend : getBattlefield().getActivePermanents(filterLegendary)) {
+  if (getBattlefield().countAll(filterLegendary) > 1) {
+    for (    Permanent legend : getBattlefield().getAllActivePermanents(filterLegendary)) {
       FilterLegendaryPermanent filterLegendName=new FilterLegendaryPermanent();
       filterLegendName.getName().add(legend.getName());
-      if (getBattlefield().count(filterLegendName) > 1) {
-        for (        Permanent dupLegend : getBattlefield().getActivePermanents(filterLegendName)) {
+      if (getBattlefield().count(filterLegendName,legend.getControllerId(),this) > 1) {
+        for (        Permanent dupLegend : getBattlefield().getActivePermanents(filterLegendName,legend.getControllerId(),this)) {
           dupLegend.moveToZone(Zone.GRAVEYARD,this,false);
         }
         return true;
       }
     }
   }
-  for (  Permanent perm : getBattlefield().getActivePermanents(new FilterEquipment())) {
+  for (  Permanent perm : getBattlefield().getAllActivePermanents(new FilterEquipment())) {
     if (perm.getAttachedTo() != null) {
       Permanent creature=getPermanent(perm.getAttachedTo());
       if (creature == null) {
@@ -61,7 +63,7 @@
       }
     }
   }
-  for (  Permanent perm : getBattlefield().getActivePermanents(new FilterFortification())) {
+  for (  Permanent perm : getBattlefield().getAllActivePermanents(new FilterFortification())) {
     if (perm.getAttachedTo() != null) {
       Permanent land=getPermanent(perm.getAttachedTo());
       if (land == null) {
@@ -73,7 +75,7 @@
       }
     }
   }
-  for (  Permanent perm : getBattlefield().getActivePermanents()) {
+  for (  Permanent perm : getBattlefield().getAllActivePermanents()) {
     if (perm.getAttachments().size() > 0) {
       for (      UUID attachmentId : perm.getAttachments()) {
         Permanent attachment=getPermanent(attachmentId);
