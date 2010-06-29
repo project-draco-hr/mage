@@ -3,7 +3,7 @@
   for (  Mana mana : unplayable.keySet()) {
     for (    Card card : lands) {
       for (      ManaAbility ability : card.getAbilities().getManaAbilities(Zone.BATTLEFIELD)) {
-        if (ability.getNetMana().enough(mana)) {
+        if (ability.getNetMana(game).enough(mana)) {
           this.playLand(card,game);
           lands.remove(card);
           return;
@@ -14,7 +14,7 @@
   for (  Mana mana : unplayable.keySet()) {
     for (    Card card : lands) {
       for (      ManaAbility ability : card.getAbilities().getManaAbilities(Zone.BATTLEFIELD)) {
-        if (mana.contains(ability.getNetMana())) {
+        if (mana.contains(ability.getNetMana(game))) {
           this.playLand(card,game);
           lands.remove(card);
           return;
