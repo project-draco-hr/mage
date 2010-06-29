@@ -1,0 +1,18 @@
+{
+  game.fireSelectTargetEvent(playerId,target.getMessage() + "\n Amount remaining:" + target.getAmountRemaining(),target.isRequired());
+  while (!abort) {
+    waitForResponse();
+    if (response.getUUID() != null) {
+      if (target.canTarget(response.getUUID(),game)) {
+        UUID targetId=response.getUUID();
+        int amountSelected=getAmount(1,target.getAmountRemaining(),"Select amount",game);
+        target.addTarget(targetId,amountSelected,game);
+        return true;
+      }
+    }
+ else     if (!target.isRequired()) {
+      return false;
+    }
+  }
+  return false;
+}
