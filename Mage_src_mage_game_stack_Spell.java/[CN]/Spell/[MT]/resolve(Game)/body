@@ -1,18 +1,10 @@
 {
   boolean result=false;
   if (card.getCardType().contains(CardType.INSTANT) || card.getCardType().contains(CardType.SORCERY)) {
-    SpellAbility ability=card.getSpellAbility();
     if (ability.getTargets().stillLegal(game)) {
-      boolean replaced=false;
-      for (      KickerAbility kicker : card.getAbilities().getKickerAbilities()) {
-        if (kicker.isKicked()) {
-          if (kicker.isReplaces()) {
-            replaced=true;
-          }
-          kicker.resolve(game);
-        }
-      }
+      boolean replaced=resolveKicker(game);
       if (!replaced)       result=ability.resolve(game);
+ else       result=true;
       if (ability.getEffects().contains(ExileSpellEffect.getInstance()))       game.getExile().getPermanentExile().add(card);
  else       game.getPlayers().get(controllerId).putInGraveyard(card,game,false);
       return result;
@@ -20,8 +12,21 @@
     counter(game);
     return false;
   }
+ else   if (card.getCardType().contains(CardType.ENCHANTMENT) && card.getSubtype().contains("Aura")) {
+    if (ability.getTargets().stillLegal(game)) {
+      Player controller=game.getPlayers().get(controllerId);
+      if (controller.putOntoBattlefield(card,game)) {
+        return ability.resolve(game);
+      }
+      return false;
+    }
+    counter(game);
+    return false;
+  }
  else {
     Player controller=game.getPlayers().get(controllerId);
-    return controller.putOntoBattlefield(card,game);
+    result=controller.putOntoBattlefield(card,game);
+    resolveKicker(game);
+    return result;
   }
 }

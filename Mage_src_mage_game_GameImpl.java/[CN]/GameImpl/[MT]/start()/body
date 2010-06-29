@@ -1,45 +1,17 @@
 {
-  for (  Player player : state.getPlayers().values()) {
-    player.init(this);
-  }
-  fireInformEvent("game has started");
-  saveState();
-  for (  Player player : state.getPlayers().values()) {
-    player.shuffleLibrary(this);
-  }
-  if (startingPlayerId == null) {
-    TargetPlayer targetPlayer=new TargetPlayer();
-    targetPlayer.setRequired(true);
-    Player choosingPlayer=getPlayer(pickChoosingPlayer());
-    if (choosingPlayer.chooseTarget(Outcome.Benefit,targetPlayer,this)) {
-      startingPlayerId=targetPlayer.getTargets().get(0);
-      fireInformEvent(state.getPlayer(startingPlayerId).getName() + " will start");
-    }
- else {
-      return;
-    }
-  }
-  saveState();
-  for (  Player player : state.getPlayerList(startingPlayerId)) {
-    player.setLife(this.getLife(),this);
-    player.drawCards(7,this);
-  }
-  for (  Player player : state.getPlayerList(startingPlayerId)) {
-    while (player.getHand().size() > 0 && player.chooseMulligan(this)) {
-      mulligan(player.getId());
-    }
-    fireInformEvent(player.getName() + " keeps hand");
-    saveState();
-  }
+  init();
+  PlayerList players=state.getPlayerList(startingPlayerId);
+  Player player=getPlayer(players.get());
   while (!isGameOver()) {
-    state.setTurnNum(state.getTurnNum() + 1);
-    fireInformEvent("Turn " + Integer.toString(state.getTurnNum()));
-    for (    Player player : state.getPlayerList(startingPlayerId)) {
-      state.setActivePlayerId(player.getId());
-      state.getTurn().play(this,player.getId());
-      if (isGameOver())       break;
-      endOfTurn();
+    if (player.getId().equals(startingPlayerId)) {
+      state.setTurnNum(state.getTurnNum() + 1);
+      fireInformEvent("Turn " + Integer.toString(state.getTurnNum()));
     }
+    state.setActivePlayerId(player.getId());
+    state.getTurn().play(this,player.getId());
+    if (isGameOver())     break;
+    endOfTurn();
+    player=players.getNext(this);
   }
   winner=findWinner();
   saveState();

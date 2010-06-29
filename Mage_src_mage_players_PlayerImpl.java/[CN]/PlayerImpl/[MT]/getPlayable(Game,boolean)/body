@@ -1,0 +1,23 @@
+{
+  List<Ability> playable=new ArrayList<Ability>();
+  ManaOptions available=getManaAvailable(game);
+  available.addMana(manaPool.getMana());
+  if (hidden) {
+    for (    Card card : hand.getUniqueCards()) {
+      for (      ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
+        if (canPlay(ability,available,game))         playable.add(ability);
+      }
+    }
+  }
+  for (  Card card : graveyard.getUniqueCards()) {
+    for (    ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.GRAVEYARD)) {
+      if (canPlay(ability,available,game))       playable.add(ability);
+    }
+  }
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
+    for (    ActivatedAbility ability : permanent.getAbilities().getActivatedAbilities(Zone.BATTLEFIELD)) {
+      if (canPlay(ability,available,game))       playable.add(ability);
+    }
+  }
+  return playable;
+}

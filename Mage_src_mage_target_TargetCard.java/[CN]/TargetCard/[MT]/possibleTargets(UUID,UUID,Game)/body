@@ -1,0 +1,23 @@
+{
+  List<UUID> possibleTargets=new ArrayList<UUID>();
+  for (  UUID playerId : game.getPlayer(sourceControllerId).getInRange()) {
+    if (filter.matchOwner(playerId)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+switch (zone) {
+case HAND:
+          for (          Card card : player.getHand().getCards(filter)) {
+            possibleTargets.add(card.getId());
+          }
+        break;
+case GRAVEYARD:
+      for (      Card card : player.getGraveyard().getCards(filter)) {
+        possibleTargets.add(card.getId());
+      }
+    break;
+}
+}
+}
+}
+return possibleTargets;
+}

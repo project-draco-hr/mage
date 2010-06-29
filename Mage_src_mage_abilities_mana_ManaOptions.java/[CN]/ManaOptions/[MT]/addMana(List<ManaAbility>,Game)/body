@@ -1,0 +1,21 @@
+{
+  if (isEmpty())   this.add(new Mana());
+  if (!abilities.isEmpty()) {
+    if (abilities.size() == 1) {
+      addMana(abilities.get(0).getNetMana(game));
+    }
+ else     if (abilities.size() > 1) {
+      Copier<List<Mana>> copier=new Copier<List<Mana>>();
+      List<Mana> copy=copier.copy(this);
+      this.clear();
+      for (      ManaAbility ability : abilities) {
+        for (        Mana mana : copy) {
+          Mana newMana=new Mana();
+          newMana.add(mana);
+          newMana.add(ability.getNetMana(game));
+          this.add(newMana);
+        }
+      }
+    }
+  }
+}

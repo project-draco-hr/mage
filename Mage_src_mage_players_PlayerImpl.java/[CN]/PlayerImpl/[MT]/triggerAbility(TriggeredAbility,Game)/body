@@ -2,10 +2,12 @@
   game.saveState();
   game.bookmarkState();
   TriggeredAbility ability=(TriggeredAbility)source.copy();
-  game.getStack().push(new StackAbility(ability,playerId));
-  if (ability.activate(game,false)) {
-    game.removeLastBookmark();
-    return true;
+  if (ability.getTargets().canChoose(ability.getSourceId(),playerId,game)) {
+    game.getStack().push(new StackAbility(ability,playerId));
+    if (ability.activate(game,false)) {
+      game.removeLastBookmark();
+      return true;
+    }
   }
   game.restoreState();
   return false;

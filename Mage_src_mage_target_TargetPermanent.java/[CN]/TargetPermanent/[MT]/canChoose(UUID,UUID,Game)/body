@@ -1,12 +1,11 @@
 {
-  List<Permanent> permanents=game.getBattlefield().getActivePermanents(filter,sourceControllerId,game);
-  Iterator<Permanent> it=permanents.iterator();
-  while (it.hasNext()) {
-    Permanent permanent=it.next();
-    if (!permanent.canBeTargetedBy(game.getObject(sourceId))) {
-      it.remove();
+  int count=0;
+  MageObject targetSource=game.getObject(sourceId);
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(filter,sourceControllerId,game)) {
+    if (permanent.canBeTargetedBy(targetSource)) {
+      count++;
+      if (count >= this.minNumberOfTargets)       return true;
     }
   }
-  if (permanents.size() >= this.minNumberOfTargets)   return true;
   return false;
 }

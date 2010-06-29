@@ -1,0 +1,16 @@
+{
+  Target multiTarget=this.source.getTargets().get(0);
+  for (  UUID target : multiTarget.getTargets()) {
+    Permanent permanent=game.getPermanent(target);
+    if (permanent != null) {
+      permanent.damage(multiTarget.getTargetAmount(target),this.source.getSourceId(),game);
+    }
+ else {
+      Player player=game.getPlayer(target);
+      if (player != null) {
+        player.damage(multiTarget.getTargetAmount(target),this.source.getSourceId(),game);
+      }
+    }
+  }
+  return true;
+}

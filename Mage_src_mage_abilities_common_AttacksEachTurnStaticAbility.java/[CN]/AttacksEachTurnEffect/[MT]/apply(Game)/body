@@ -1,0 +1,13 @@
+{
+  Permanent creature=game.getPermanent(this.source.getSourceId());
+  if (creature != null) {
+    if (creature.canAttack(game)) {
+      TargetDefender target=new TargetDefender(game.getCombat().getDefenders(),creature.getControllerId());
+      Player controller=game.getPlayer(creature.getControllerId());
+      while (!target.isChosen())       controller.chooseTarget(Outcome.Damage,target,game);
+      game.getCombat().declareAttacker(creature.getId(),target.getFirstTarget(),game);
+      return true;
+    }
+  }
+  return false;
+}

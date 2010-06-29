@@ -1,0 +1,18 @@
+{
+  if (!(ability instanceof ManaAbility) && ability.canActivate(playerId,game)) {
+    ManaOptions abilityOptions=ability.getManaCosts().getOptions();
+    if (abilityOptions.size() == 0) {
+      return true;
+    }
+ else {
+      for (      Mana mana : abilityOptions) {
+        for (        Mana avail : available) {
+          if (mana.enough(avail)) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

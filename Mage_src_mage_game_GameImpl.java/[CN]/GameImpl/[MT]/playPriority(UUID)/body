@@ -1,7 +1,10 @@
 {
-  state.getPlayers().resetPassed();
   while (!isGameOver()) {
-    for (    Player player : getPlayerList(activePlayerId)) {
+    state.getPlayers().resetPassed();
+    state.getPlayerList().setCurrent(activePlayerId);
+    Player player;
+    while (!isGameOver()) {
+      player=getPlayer(state.getPlayerList().get());
       state.setPriorityPlayerId(player.getId());
       while (!player.isPassed() && !player.hasLost() && !player.hasLeft()&& !isGameOver()) {
         checkStateAndTriggered();
@@ -21,8 +24,9 @@
           saveState();
           break;
         }
-        return;
+ else         return;
       }
+      state.getPlayerList().getNext();
     }
   }
 }

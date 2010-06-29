@@ -6,11 +6,7 @@
     for (    Step step : steps) {
       if (game.isGameOver())       return false;
       currentStep=step;
-      if (step.play(game,activePlayerId)) {
-        game.emptyManaPools();
-        game.saveState();
-        playExtraSteps(game,step.getType());
-      }
+      if (!game.getState().getTurnMods().skipStep(activePlayerId,currentStep.getType()))       playStep(game,activePlayerId);
     }
     count++;
     game.fireEvent(new GameEvent(postEvent,null,null,activePlayerId));

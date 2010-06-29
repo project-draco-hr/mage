@@ -13,16 +13,16 @@
     }
  else {
       inRange.add(playerId);
-      PlayerList players=game.getPlayerList(playerId);
+      PlayerList players=game.getState().getPlayerList(playerId);
       for (int i=0; i < range.getRange(); i++) {
-        Player player=players.getNext();
-        while (player.hasLeft())         player=players.getNext();
+        Player player=players.getNext(game);
+        while (player.hasLeft())         player=players.getNext(game);
         inRange.add(player.getId());
       }
-      players=game.getPlayerList(playerId);
+      players=game.getState().getPlayerList(playerId);
       for (int i=0; i < range.getRange(); i++) {
-        Player player=players.getPrevious();
-        while (player.hasLeft())         player=players.getPrevious();
+        Player player=players.getPrevious(game);
+        while (player.hasLeft())         player=players.getPrevious(game);
         inRange.add(player.getId());
       }
     }

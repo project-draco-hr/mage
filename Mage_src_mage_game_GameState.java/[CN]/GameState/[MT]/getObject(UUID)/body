@@ -5,18 +5,8 @@
     object.setZone(Zone.BATTLEFIELD);
     return object;
   }
-  for (  Player player : players.values()) {
-    if (player.getHand().containsKey(objectId)) {
-      object=player.getHand().get(objectId);
-      object.setZone(Zone.HAND);
-      return object;
-    }
-    if (player.getGraveyard().containsKey(objectId)) {
-      object=player.getGraveyard().get(objectId);
-      object.setZone(Zone.GRAVEYARD);
-      return object;
-    }
-  }
+  object=getCard(objectId);
+  if (object != null)   return object;
   for (  StackObject item : stack) {
     if (item.getId().equals(objectId)) {
       item.setZone(Zone.STACK);

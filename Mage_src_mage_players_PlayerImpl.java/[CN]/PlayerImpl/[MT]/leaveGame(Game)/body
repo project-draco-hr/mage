@@ -9,6 +9,10 @@
   for (Iterator<Permanent> it=game.getBattlefield().getAllPermanents().iterator(); it.hasNext(); ) {
     Permanent perm=it.next();
     if (perm.getOwnerId().equals(playerId)) {
+      if (perm.getAttachedTo() != null) {
+        Permanent attachedTo=game.getPermanent(perm.getAttachedTo());
+        if (attachedTo != null)         attachedTo.removeAttachment(perm.getId(),game);
+      }
       it.remove();
     }
   }

@@ -3,7 +3,8 @@
   for (  StackObject stackObject : game.getStack()) {
     if (stackObject instanceof Spell && game.getPlayer(sourceControllerId).getInRange().contains(stackObject.getControllerId()) && filter.match((Spell)stackObject)) {
       count++;
+      if (count >= this.minNumberOfTargets)       return true;
     }
   }
-  return count >= this.minNumberOfTargets;
+  return false;
 }
