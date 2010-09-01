@@ -1,15 +1,14 @@
 {
   if (game.isGameOver())   return false;
   this.activePlayerId=activePlayerId;
-  if (!game.replaceEvent(new GameEvent(event,null,null,activePlayerId))) {
-    game.fireEvent(new GameEvent(preEvent,null,null,activePlayerId));
+  if (beginPhase(game,activePlayerId)) {
     for (    Step step : steps) {
       if (game.isGameOver())       return false;
       currentStep=step;
       if (!game.getState().getTurnMods().skipStep(activePlayerId,currentStep.getType()))       playStep(game,activePlayerId);
     }
     count++;
-    game.fireEvent(new GameEvent(postEvent,null,null,activePlayerId));
+    endPhase(game,activePlayerId);
     return true;
   }
   return false;

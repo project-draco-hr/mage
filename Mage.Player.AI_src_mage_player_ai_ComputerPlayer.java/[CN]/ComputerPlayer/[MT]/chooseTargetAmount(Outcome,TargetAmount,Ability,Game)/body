@@ -1,0 +1,26 @@
+{
+  if (logger.isLoggable(Level.FINE))   logger.fine("chooseTarget: " + outcome.toString() + ":"+ target.toString());
+  UUID opponentId=game.getOpponents(playerId).iterator().next();
+  if (target instanceof TargetCreatureOrPlayerAmount) {
+    if (game.getPlayer(opponentId).getLife() <= target.getAmountRemaining()) {
+      target.addTarget(opponentId,target.getAmountRemaining(),source,game);
+      return true;
+    }
+    List<Permanent> targets;
+    if (outcome.isGood()) {
+      targets=threats(playerId,new FilterCreaturePermanent(),game);
+    }
+ else {
+      targets=threats(opponentId,new FilterCreaturePermanent(),game);
+    }
+    for (    Permanent permanent : targets) {
+      if (target.canTarget(permanent.getId(),source,game)) {
+        if (permanent.getToughness().getValue() <= target.getAmountRemaining()) {
+          target.addTarget(permanent.getId(),permanent.getToughness().getValue(),source,game);
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

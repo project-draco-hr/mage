@@ -1,8 +1,21 @@
 {
-  if (choices.size() > 0 && choices.choose(game) == false)   return false;
-  if (targets.size() > 0 && targets.choose(effects.get(0).getOutcome(),game) == false)   return false;
-  if (!useAlternativeCost(game)) {
-    if (!manaCosts.pay(game,noMana))     return false;
+  if (choices.size() > 0 && choices.choose(game,this) == false) {
+    logger.fine("activate failed - choice");
+    return false;
   }
-  return costs.pay(game,noMana);
+  if (targets.size() > 0 && targets.choose(effects.get(0).getOutcome(),this.controllerId,this,game) == false) {
+    logger.fine("activate failed - target");
+    return false;
+  }
+  if (!useAlternativeCost(game)) {
+    if (!manaCosts.pay(game,this,noMana)) {
+      logger.fine("activate failed - mana");
+      return false;
+    }
+  }
+  if (!costs.pay(game,this,noMana)) {
+    logger.fine("activate failed - non mana costs");
+    return false;
+  }
+  return true;
 }

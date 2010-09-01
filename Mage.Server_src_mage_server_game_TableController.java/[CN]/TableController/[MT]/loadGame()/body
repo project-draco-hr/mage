@@ -4,8 +4,10 @@
     InputStream buffer=new BufferedInputStream(file);
     ObjectInput input=new CopierObjectInputStream(Main.classLoader,new GZIPInputStream(buffer));
     try {
-      GameStates gameStates=(GameStates)input.readObject();
-      return gameStates;
+      Game game=(Game)input.readObject();
+      GameStates states=(GameStates)input.readObject();
+      game.loadGameStates(states);
+      return game;
     }
   finally {
       input.close();

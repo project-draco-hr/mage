@@ -1,0 +1,53 @@
+{
+  if (id != null) {
+    if (object.getId().equals(id) == notId)     return notFilter;
+  }
+  if (name.size() > 0) {
+    if (name.contains(object.getName()) == notName)     return notFilter;
+  }
+  if (zone != null) {
+    if (object.getZone().match(zone) == notZone)     return notFilter;
+  }
+  if (useColor) {
+    if (scopeColor == ComparisonScope.All) {
+      if (object.getColor().equals(color) == notColor) {
+        return notFilter;
+      }
+    }
+ else     if (object.getColor().contains(color) == notColor) {
+      if (useColorless && colorless) {
+        if (object.getColor().isColorless() != colorless) {
+          return notFilter;
+        }
+      }
+ else {
+        return notFilter;
+      }
+    }
+  }
+ else   if (useColorless && object.getColor().isColorless() != colorless) {
+    return notFilter;
+  }
+  if (cardType.size() > 0) {
+    if (!compCardType.compare(cardType,object.getCardType(),scopeCardType,notCardType))     return notFilter;
+  }
+  if (subtype.size() > 0) {
+    if (!compString.compare(subtype,object.getSubtype(),scopeSubtype,notSubtype))     return notFilter;
+  }
+  if (supertype.size() > 0) {
+    if (!compString.compare(supertype,object.getSupertype(),scopeSupertype,notSupertype))     return notFilter;
+  }
+  if (abilities.size() > 0 && object.getAbilities().containsAll(abilities) == notAbilities) {
+    return notFilter;
+  }
+  if (convertedManaCostComparison != null) {
+    if (!compareInts(object.getManaCost().convertedManaCost(),convertedManaCost,convertedManaCostComparison))     return notFilter;
+  }
+  if (powerComparison != null) {
+    if (!compareInts(object.getPower().getValue(),power,powerComparison))     return notFilter;
+  }
+  if (toughnessComparison != null) {
+    if (!compareInts(object.getToughness().getValue(),toughness,toughnessComparison))     return notFilter;
+  }
+  return !notFilter;
+}

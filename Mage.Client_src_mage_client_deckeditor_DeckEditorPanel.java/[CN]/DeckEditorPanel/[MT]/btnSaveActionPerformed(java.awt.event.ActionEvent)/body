@@ -6,8 +6,10 @@
   if (ret == JFileChooser.APPROVE_OPTION) {
     File file=fcSelectDeck.getSelectedFile();
     try {
+      String fileName=file.getPath();
+      if (!fileName.endsWith(".dck"))       fileName+=".dck";
       setCursor(new Cursor(Cursor.WAIT_CURSOR));
-      deck.getDeckCardLists().save(file.getPath());
+      deck.getDeckCardLists().save(fileName);
     }
  catch (    Exception ex) {
       Logger.getLogger(DeckEditorPanel.class.getName()).log(Level.SEVERE,null,ex);

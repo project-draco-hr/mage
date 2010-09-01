@@ -1,9 +1,14 @@
 {
-  game.fireChooseEvent(playerId,choice);
   while (!abort) {
-    waitForStringResponse();
-    choice.setChoice(response.getString());
-    return true;
+    game.fireChooseEvent(playerId,choice);
+    waitForResponse();
+    if (response.getString() != null) {
+      choice.setChoice(response.getString());
+      return true;
+    }
+ else     if (!choice.isRequired()) {
+      return false;
+    }
   }
   return false;
 }

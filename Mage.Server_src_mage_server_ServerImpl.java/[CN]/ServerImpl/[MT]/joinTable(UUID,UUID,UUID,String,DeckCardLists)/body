@@ -1,0 +1,12 @@
+{
+  try {
+    boolean ret=GamesRoomManager.getInstance().getRoom(roomId).joinTable(sessionId,tableId,name,deckList);
+    logger.info("Session " + sessionId + " joined table "+ tableId);
+    return ret;
+  }
+ catch (  Exception ex) {
+    if (ex instanceof GameException)     throw (GameException)ex;
+    handleException(ex);
+  }
+  return false;
+}

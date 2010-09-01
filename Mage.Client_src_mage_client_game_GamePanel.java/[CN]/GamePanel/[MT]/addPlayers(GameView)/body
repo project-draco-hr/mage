@@ -1,0 +1,53 @@
+{
+  this.players.clear();
+  this.pnlBattlefield.removeAll();
+  int numSeats=game.getPlayers().size();
+  int numColumns=(numSeats + 1) / 2;
+  boolean oddNumber=(numColumns > 1 && numSeats % 2 == 1);
+  int col=0;
+  int row=1;
+  int playerSeat=0;
+  if (playerId != null) {
+    for (    PlayerView player : game.getPlayers()) {
+      if (playerId.equals(player.getPlayerId()))       break;
+      playerSeat++;
+    }
+  }
+  PlayerView player=game.getPlayers().get(playerSeat);
+  PlayAreaPanel sessionPlayer=new PlayAreaPanel(player,bigCard,gameId);
+  players.put(player.getPlayerId(),sessionPlayer);
+  GridBagConstraints c=new GridBagConstraints();
+  c.fill=GridBagConstraints.BOTH;
+  c.weightx=0.5;
+  c.weighty=0.5;
+  if (oddNumber)   c.gridwidth=2;
+  c.gridx=col;
+  c.gridy=row;
+  this.pnlBattlefield.add(sessionPlayer,c);
+  sessionPlayer.setVisible(true);
+  if (oddNumber)   col++;
+  int playerNum=playerSeat + 1;
+  if (playerNum >= numSeats)   playerNum=0;
+  while (true) {
+    if (row == 1)     col++;
+ else     col--;
+    if (col >= numColumns) {
+      row=0;
+      col=numColumns - 1;
+    }
+    player=game.getPlayers().get(playerNum);
+    PlayAreaPanel playerPanel=new PlayAreaPanel(player,bigCard,gameId);
+    players.put(player.getPlayerId(),playerPanel);
+    c=new GridBagConstraints();
+    c.fill=GridBagConstraints.BOTH;
+    c.weightx=0.5;
+    c.weighty=0.5;
+    c.gridx=col;
+    c.gridy=row;
+    this.pnlBattlefield.add(playerPanel,c);
+    playerPanel.setVisible(true);
+    playerNum++;
+    if (playerNum >= numSeats)     playerNum=0;
+    if (playerNum == playerSeat)     break;
+  }
+}

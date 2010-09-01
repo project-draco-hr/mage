@@ -1,11 +1,14 @@
 {
-  if (popup != null)   popup.hide();
-  PopupFactory factory=PopupFactory.getSharedInstance();
-  int x=(int)this.getLocationOnScreen().getX() + (permanent.isTapped() ? dimension.frameHeight : dimension.frameWidth);
-  int y=(int)this.getLocationOnScreen().getY() + 40;
-  popup=factory.getPopup(this,popupText,x,y);
-  popup.show();
-  popup.hide();
-  popup=factory.getPopup(this,popupText,x,y);
-  popup.show();
+  if (!popupShowing) {
+    if (popup != null)     popup.hide();
+    PopupFactory factory=PopupFactory.getSharedInstance();
+    int x=(int)this.getLocationOnScreen().getX() + (permanent.isTapped() ? Config.dimensions.frameHeight : Config.dimensions.frameWidth);
+    int y=(int)this.getLocationOnScreen().getY() + 40;
+    popup=factory.getPopup(this,popupText,x,y);
+    popup.show();
+    popup.hide();
+    popup=factory.getPopup(this,popupText,x,y);
+    popup.show();
+    popupShowing=true;
+  }
 }

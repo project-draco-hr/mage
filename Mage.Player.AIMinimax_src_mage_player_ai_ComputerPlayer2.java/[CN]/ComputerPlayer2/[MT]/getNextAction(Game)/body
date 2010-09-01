@@ -1,0 +1,21 @@
+{
+  if (root != null && root.children.size() > 0) {
+    SimulationNode test=root;
+    root=root.children.get(0);
+    while (root.children.size() > 0 && !root.playerId.equals(playerId)) {
+      test=root;
+      root=root.children.get(0);
+    }
+    logger.fine("simlating -- game value:" + game.getState().getValue() + " test value:"+ test.gameValue);
+    if (root.playerId.equals(playerId) && root.abilities != null && game.getState().getValue() == test.gameValue) {
+      logger.fine("simulating -- continuing previous action chain");
+      actions=new LinkedList<Ability>(root.abilities);
+      combat=root.combat;
+      return true;
+    }
+ else {
+      return false;
+    }
+  }
+  return false;
+}

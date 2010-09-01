@@ -1,8 +1,8 @@
 {
   List<ReplacementEffect> replacementEffects=new ArrayList<ReplacementEffect>();
-  for (  Effect effect : effects) {
-    if (effect instanceof ReplacementEffect && ((ReplacementEffect)effect).applies(event,game)) {
-      if (((ReplacementEffect)effect).getDuration() != Duration.OneUse || !((ReplacementEffect)effect).isUsed())       replacementEffects.add((ReplacementEffect)effect);
+  for (  ContinuousEffect effect : effects.keySet()) {
+    if (effect instanceof ReplacementEffect && ((ReplacementEffect)effect).applies(event,effects.get(effect),game)) {
+      if (effect.getDuration() != Duration.OneUse || !((ReplacementEffect)effect).isUsed())       replacementEffects.add((ReplacementEffect)effect);
     }
   }
   return replacementEffects;

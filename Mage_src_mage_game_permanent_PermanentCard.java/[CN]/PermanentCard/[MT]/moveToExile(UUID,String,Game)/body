@@ -2,10 +2,10 @@
   if (!game.replaceEvent(new ZoneChangeEvent(this.getId(),this.getControllerId(),Zone.BATTLEFIELD,Zone.EXILED))) {
     if (game.getPlayer(controllerId).removeFromBattlefield(this,game)) {
       if (exileId == null) {
-        game.getExile().getPermanentExile().add(card);
+        game.getExile().getPermanentExile().add(game.getCard(objectId));
       }
  else {
-        game.getExile().createZone(exileId,name).add(card);
+        game.getExile().createZone(exileId,name).add(game.getCard(objectId));
       }
       game.fireEvent(new ZoneChangeEvent(this.getId(),this.getControllerId(),Zone.BATTLEFIELD,Zone.EXILED));
       return true;

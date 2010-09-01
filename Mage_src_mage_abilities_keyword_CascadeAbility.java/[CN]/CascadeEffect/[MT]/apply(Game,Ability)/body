@@ -1,0 +1,24 @@
+{
+  Card card;
+  Player player=game.getPlayer(source.getControllerId());
+  ExileZone exile=game.getExile().createZone(source.getSourceId(),player.getName() + " Cascade");
+  int sourceCost=game.getObject(source.getSourceId()).getManaCost().convertedManaCost();
+  do {
+    card=player.getLibrary().removeFromTop(game);
+    if (card == null)     break;
+    exile.add(card);
+  }
+ while (card.getCardType().contains(CardType.LAND) || card.getManaCost().convertedManaCost() >= sourceCost);
+  if (card != null) {
+    if (player.chooseUse(outcome,"Use cascade effect on " + card.getName() + "?",game)) {
+      player.cast(card.getSpellAbility(),game,true);
+      exile.remove(card.getId());
+    }
+  }
+  while (exile.size() > 0) {
+    card=exile.getRandom(game);
+    exile.remove(card.getId());
+    player.getLibrary().putOnBottom(card,game);
+  }
+  return true;
+}

@@ -1,9 +1,10 @@
 {
-  if (index < states.size()) {
-    while (states.size() > index) {
-      states.remove(index);
+  if (states.size() > 0 && index < states.size()) {
+    while (states.size() > index + 1) {
+      states.remove(states.size() - 1);
     }
-    return new Copier<GameState>().uncompressCopy(states.get(index - 1));
+    logger.fine("Rolling back state: " + index);
+    return states.get(index);
   }
   return null;
 }

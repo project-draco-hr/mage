@@ -1,15 +1,15 @@
 {
-  removeAll();
   int maxWidth=this.getParent().getWidth();
   int numColumns=maxWidth / Config.dimensions.frameWidth;
   int curColumn=0;
   int curRow=0;
   if (cards.size() > 0) {
     Rectangle rectangle=new Rectangle(Config.dimensions.frameWidth,Config.dimensions.frameHeight);
-    for (    Card cardImg : cards) {
+    List<Card> sortedCards=new ArrayList<Card>(cards.values());
+    Collections.sort(sortedCards,new CardComparator());
+    for (    Card cardImg : sortedCards) {
       rectangle.setLocation(curColumn * Config.dimensions.frameWidth,curRow * 20);
       cardImg.setBounds(rectangle);
-      add(cardImg);
       moveToFront(cardImg);
       curColumn++;
       if (curColumn == numColumns) {

@@ -1,0 +1,62 @@
+{
+  if (Thread.interrupted()) {
+    Thread.currentThread().interrupt();
+    logger.fine("interrupted");
+    return GameStateEvaluator.evaluate(playerId,game);
+  }
+  node.setGameValue(game.getState().getValue());
+  SimulatedPlayer currentPlayer=(SimulatedPlayer)game.getPlayer(game.getPlayerList().get());
+  SimulationNode bestNode=null;
+  List<Ability> allActions=currentPlayer.simulatePriority(game,filter);
+  if (logger.isLoggable(Level.FINE))   logger.fine("simulating -- adding " + allActions.size() + " children:"+ allActions);
+  for (  Ability action : allActions) {
+    Game sim=game.copy();
+    if (sim.getPlayer(playerId).activateAbility((ActivatedAbility)action.copy(),sim)) {
+      sim.applyEffects();
+      if (!sim.isGameOver() && action.isUsesStack()) {
+        sim.getPlayer(currentPlayer.getId()).pass();
+        sim.getPlayerList().getNext();
+      }
+      SimulationNode newNode=new SimulationNode(sim,action,depth,currentPlayer.getId());
+      if (logger.isLoggable(Level.FINE))       logger.fine("simulating -- node #:" + SimulationNode.getCount() + " actions:"+ action);
+      sim.checkStateAndTriggered();
+      int val=addActions(newNode,filter,depth - 1,alpha,beta);
+      if (!currentPlayer.getId().equals(playerId)) {
+        if (val < beta) {
+          beta=val;
+          bestNode=newNode;
+          node.setCombat(newNode.getCombat());
+        }
+      }
+ else {
+        if (val > alpha) {
+          alpha=val;
+          bestNode=newNode;
+          node.setCombat(newNode.getCombat());
+          if (node.getTargets().size() > 0)           targets=node.getTargets();
+          if (node.getChoices().size() > 0)           choices=node.getChoices();
+        }
+      }
+      if (alpha >= beta) {
+        logger.fine("simulating -- pruning");
+        break;
+      }
+      if (SimulationNode.nodeCount > maxNodes) {
+        logger.fine("simulating -- reached end-state");
+        break;
+      }
+    }
+  }
+  if (bestNode != null) {
+    node.children.clear();
+    node.children.add(bestNode);
+  }
+  if (!currentPlayer.getId().equals(playerId)) {
+    logger.fine("returning priority beta: " + beta);
+    return beta;
+  }
+ else {
+    logger.fine("returning priority alpha: " + alpha);
+    return alpha;
+  }
+}

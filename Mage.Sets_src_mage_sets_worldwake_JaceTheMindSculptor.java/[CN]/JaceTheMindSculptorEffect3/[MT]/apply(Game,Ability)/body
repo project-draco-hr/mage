@@ -1,0 +1,16 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  ExileZone exile=game.getExile().getPermanentExile();
+  if (player != null) {
+    while (true) {
+      if (player.getLibrary().getFromTop(game) == null)       break;
+      Card card=player.getLibrary().removeFromTop(game);
+      exile.add(card);
+    }
+    player.getLibrary().addAll(player.getHand().getCards(game));
+    player.getLibrary().shuffle();
+    player.getHand().clear();
+    return true;
+  }
+  return false;
+}

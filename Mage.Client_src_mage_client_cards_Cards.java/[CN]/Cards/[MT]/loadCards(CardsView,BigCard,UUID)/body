@@ -1,13 +1,26 @@
 {
-  cardArea.removeAll();
-  for (  CardView card : cards) {
-    Card cardImg=new Card(card,bigCard,Config.dimensions,gameId);
-    cardArea.add(cardImg);
-    cardImg.update(card);
+  boolean changed=false;
+  for (  CardView card : cardsView.values()) {
+    if (!cards.containsKey(card.getId())) {
+      Card cardImg=new Card(card,bigCard,Config.dimensions,gameId);
+      cards.put(card.getId(),cardImg);
+      cardArea.add(cardImg);
+      changed=true;
+    }
+    cards.get(card.getId()).update(card);
+  }
+  for (Iterator<Entry<UUID,Card>> i=cards.entrySet().iterator(); i.hasNext(); ) {
+    Entry<UUID,Card> entry=i.next();
+    if (!cardsView.containsKey(entry.getKey())) {
+      removeCard(entry.getKey());
+      i.remove();
+      changed=true;
+    }
   }
   cardArea.setPreferredSize(new Dimension(cards.size() * Config.dimensions.frameWidth,Config.dimensions.frameHeight));
   cardArea.revalidate();
   cardArea.repaint();
   this.revalidate();
   this.repaint();
+  return changed;
 }

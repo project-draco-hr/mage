@@ -1,0 +1,14 @@
+{
+  StringBuilder sb=new StringBuilder(1024);
+  sb.append(turnNum).append(turn.getPhaseType()).append(turn.getStepType()).append(activePlayerId).append(priorityPlayerId);
+  for (  Player player : players.values()) {
+    sb.append("player").append(player.getLife()).append(player.getHand()).append(player.getLibrary().getCardList());
+  }
+  for (  UUID permanentId : battlefield.getAllPermanentIds()) {
+    sb.append("permanent").append(permanentId);
+  }
+  for (  StackObject spell : stack) {
+    sb.append("spell").append(spell.getId());
+  }
+  return sb.toString().hashCode();
+}

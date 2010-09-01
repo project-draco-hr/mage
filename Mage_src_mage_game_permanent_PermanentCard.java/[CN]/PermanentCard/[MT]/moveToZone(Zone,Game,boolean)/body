@@ -3,13 +3,13 @@
     if (game.getPlayer(controllerId).removeFromBattlefield(this,game)) {
 switch (zone) {
 case GRAVEYARD:
-        game.getPlayer(ownerId).putInGraveyard(card,game,!sacrificed);
+        game.getPlayer(ownerId).putInGraveyard(game.getCard(objectId),game,!sacrificed);
       break;
 case HAND:
-    game.getPlayer(ownerId).getHand().add(card);
+    game.getPlayer(ownerId).getHand().add(game.getCard(objectId));
   break;
 case EXILED:
-game.getExile().getPermanentExile().add(card);
+game.getExile().getPermanentExile().add(game.getCard(objectId));
 break;
 }
 game.fireEvent(new ZoneChangeEvent(this.getId(),this.getControllerId(),Zone.BATTLEFIELD,zone));

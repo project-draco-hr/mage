@@ -1,8 +1,11 @@
 {
   boolean result;
   if (!ability.canActivate(this.playerId,game))   return false;
-  if (ability instanceof PlayLandAbility) {
-    result=playLand(hand.get(ability.getSourceId()),game);
+  if (ability instanceof PassAbility) {
+    return true;
+  }
+ else   if (ability instanceof PlayLandAbility) {
+    result=playLand(hand.get(ability.getSourceId(),game),game);
   }
  else   if (ability instanceof SpecialAction) {
     result=specialAction((SpecialAction)ability.copy(),game);
@@ -11,7 +14,7 @@
     result=playManaAbility((ManaAbility)ability.copy(),game);
   }
  else   if (ability instanceof SpellAbility) {
-    result=cast((SpellAbility)ability,game,false);
+    result=cast((SpellAbility)ability.copy(),game,false);
   }
  else {
     result=playAbility((ActivatedAbility)ability.copy(),game);

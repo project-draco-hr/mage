@@ -1,0 +1,26 @@
+{
+  logState(game);
+  game.firePriorityEvent(playerId);
+switch (game.getTurn().getStepType()) {
+case UPKEEP:
+case DRAW:
+    pass();
+  break;
+case PRECOMBAT_MAIN:
+case BEGIN_COMBAT:
+case DECLARE_ATTACKERS:
+case DECLARE_BLOCKERS:
+case COMBAT_DAMAGE:
+case END_COMBAT:
+case POSTCOMBAT_MAIN:
+if (actions.size() == 0) {
+  calculateActions(game);
+}
+act(game);
+break;
+case END_TURN:
+case CLEANUP:
+pass();
+break;
+}
+}

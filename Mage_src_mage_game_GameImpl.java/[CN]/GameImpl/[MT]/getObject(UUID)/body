@@ -1,3 +1,17 @@
 {
-  return state.getObject(objectId);
+  MageObject object;
+  if (state.getBattlefield().containsPermanent(objectId)) {
+    object=state.getBattlefield().getPermanent(objectId);
+    object.setZone(Zone.BATTLEFIELD);
+    return object;
+  }
+  object=getCard(objectId);
+  if (object != null)   return object;
+  for (  StackObject item : state.getStack()) {
+    if (item.getId().equals(objectId)) {
+      item.setZone(Zone.STACK);
+      return item;
+    }
+  }
+  return null;
 }

@@ -1,0 +1,17 @@
+{
+  allActions.add(previousActions);
+  ManaOptions available=getManaAvailable(game);
+  available.addMana(manaPool.getMana());
+  List<Ability> playables=game.getPlayer(playerId).getPlayable(game,filter,available,isSimulatedPlayer);
+  for (  Ability ability : playables) {
+    List<Ability> options=game.getPlayer(playerId).getPlayableOptions(ability,game);
+    if (options.size() == 0) {
+      allActions.add(ability);
+    }
+ else {
+      for (      Ability option : options) {
+        allActions.add(option);
+      }
+    }
+  }
+}

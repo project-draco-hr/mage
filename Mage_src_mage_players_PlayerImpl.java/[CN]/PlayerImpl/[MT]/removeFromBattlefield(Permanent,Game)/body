@@ -1,5 +1,8 @@
 {
   permanent.removeFromCombat(game);
   game.getBattlefield().removePermanent(permanent.getId());
+  if (permanent.getAttachedTo() != null) {
+    game.getPermanent(permanent.getAttachedTo()).removeAttachment(permanent.getId(),game);
+  }
   return true;
 }

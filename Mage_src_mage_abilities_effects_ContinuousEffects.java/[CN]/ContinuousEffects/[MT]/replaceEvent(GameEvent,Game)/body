@@ -3,13 +3,15 @@
   if (!caught) {
     List<ReplacementEffect> rEffects=getApplicableReplacementEffects(event,game);
     if (rEffects.size() > 0) {
+      int index;
       if (rEffects.size() == 1) {
-        caught=rEffects.get(0).replaceEvent(event,game);
+        index=0;
       }
  else {
         Player player=game.getPlayer(event.getPlayerId());
-        caught=rEffects.get(player.chooseEffect(rEffects,game)).replaceEvent(event,game);
+        index=player.chooseEffect(rEffects,game);
       }
+      caught=rEffects.get(index).replaceEvent(event,effects.get(rEffects.get(index)),game);
     }
   }
   return caught;

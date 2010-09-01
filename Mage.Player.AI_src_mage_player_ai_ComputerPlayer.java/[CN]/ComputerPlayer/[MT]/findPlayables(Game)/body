@@ -3,7 +3,7 @@
   playableNonInstant.clear();
   unplayable.clear();
   playableAbilities.clear();
-  List<Card> nonLands=hand.getCards(new FilterNonlandCard());
+  Set<Card> nonLands=hand.getCards(new FilterNonlandCard(),game);
   ManaOptions available=getManaAvailable(game);
   available.addMana(manaPool.getMana());
   for (  Card card : nonLands) {
@@ -49,5 +49,5 @@
       }
     }
   }
-  logger.fine("findPlayables: " + playableInstant.toString() + "---"+ playableNonInstant.toString()+ "---"+ playableAbilities.toString());
+  if (logger.isLoggable(Level.FINE))   logger.fine("findPlayables: " + playableInstant.toString() + "---"+ playableNonInstant.toString()+ "---"+ playableAbilities.toString());
 }

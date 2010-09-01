@@ -1,0 +1,29 @@
+{
+  for (  Player player : state.getPlayers().values()) {
+    players.add(new PlayerView(player,state,game));
+  }
+  for (  StackObject stackObject : state.getStack()) {
+    if (stackObject instanceof StackAbility) {
+      MageObject object=game.getObject(stackObject.getSourceId());
+      if (object != null)       stack.put(stackObject.getId(),new StackAbilityView((StackAbility)stackObject,object.getName()));
+ else       stack.put(null,new StackAbilityView((StackAbility)stackObject,""));
+    }
+ else {
+      stack.put(stackObject.getId(),new CardView((Spell)stackObject));
+    }
+  }
+  for (  ExileZone exileZone : state.getExile().getExileZones()) {
+    exiles.add(new ExileView(exileZone,game));
+  }
+  this.phase=state.getTurn().getPhaseType();
+  this.step=state.getTurn().getStepType();
+  this.turn=state.getTurnNum();
+  if (state.getActivePlayerId() != null)   this.activePlayerName=state.getPlayer(state.getActivePlayerId()).getName();
+ else   this.activePlayerName="";
+  if (state.getPriorityPlayerId() != null)   this.priorityPlayerName=state.getPlayer(state.getPriorityPlayerId()).getName();
+ else   this.priorityPlayerName="";
+  for (  CombatGroup combatGroup : state.getCombat().getGroups()) {
+    combat.add(new CombatGroupView(combatGroup,state));
+  }
+  this.special=state.getSpecialActions().getControlledBy(state.getPriorityPlayerId()).size() > 0;
+}

@@ -1,0 +1,22 @@
+{
+  Player defender=null;
+  for (  CombatGroup group : game.getCombat().getGroups()) {
+    if (group.getAttackers().contains(source.getSourceId())) {
+      defender=game.getPlayer(group.getDefenderId());
+      break;
+    }
+  }
+  if (defender != null) {
+    Cards cards=new CardsImpl();
+    Card card=defender.getLibrary().getFromTop(game);
+    if (card != null) {
+      cards.add(card);
+      defender.revealCards(cards,game);
+      if (card.getCardType().contains(CardType.LAND)) {
+        defender.getLibrary().removeFromTop(game);
+        defender.putInHand(card,game);
+      }
+    }
+  }
+  return false;
+}

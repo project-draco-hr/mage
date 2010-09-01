@@ -1,8 +1,14 @@
 {
-  TargetDefender target=new TargetDefender(defenders,attackerId);
-  if (chooseTarget(Outcome.Damage,target,game)) {
-    declareAttacker(attackerId,response.getUUID(),game);
+  if (defenders.size() == 1) {
+    declareAttacker(attackerId,defenders.iterator().next(),game);
     return true;
+  }
+ else {
+    TargetDefender target=new TargetDefender(defenders,attackerId);
+    if (chooseTarget(Outcome.Damage,target,null,game)) {
+      declareAttacker(attackerId,response.getUUID(),game);
+      return true;
+    }
   }
   return false;
 }

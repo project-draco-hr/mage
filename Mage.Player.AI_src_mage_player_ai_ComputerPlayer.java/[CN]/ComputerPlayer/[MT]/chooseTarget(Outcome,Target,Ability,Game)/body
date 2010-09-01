@@ -1,0 +1,62 @@
+{
+  if (logger.isLoggable(Level.FINE))   logger.fine("chooseTarget: " + outcome.toString() + ":"+ target.toString());
+  UUID opponentId=game.getOpponents(playerId).iterator().next();
+  if (target instanceof TargetPlayer) {
+    if (outcome.isGood()) {
+      if (target.canTarget(playerId,source,game)) {
+        target.addTarget(playerId,source,game);
+        return true;
+      }
+    }
+ else {
+      if (target.canTarget(playerId,source,game)) {
+        target.addTarget(opponentId,source,game);
+        return true;
+      }
+    }
+  }
+  if (target instanceof TargetDiscard) {
+    findPlayables(game);
+    if (unplayable.size() > 0) {
+      for (int i=unplayable.size() - 1; i >= 0; i--) {
+        if (target.canTarget(unplayable.values().toArray(new Card[0])[i].getId(),source,game)) {
+          target.addTarget(unplayable.values().toArray(new Card[0])[i].getId(),source,game);
+          return true;
+        }
+      }
+    }
+    if (hand.size() > 0) {
+      if (target.canTarget(hand.toArray(new UUID[0])[0],source,game)) {
+        target.addTarget(hand.toArray(new UUID[0])[0],source,game);
+        return true;
+      }
+    }
+  }
+  if (target instanceof TargetControlledPermanent) {
+    List<Permanent> targets;
+    targets=threats(playerId,((TargetPermanent)target).getFilter(),game);
+    if (!outcome.isGood())     Collections.reverse(targets);
+    for (    Permanent permanent : targets) {
+      if (target.canTarget(permanent.getId(),source,game)) {
+        target.addTarget(permanent.getId(),source,game);
+        return true;
+      }
+    }
+  }
+  if (target instanceof TargetPermanent) {
+    List<Permanent> targets;
+    if (outcome.isGood()) {
+      targets=threats(playerId,((TargetPermanent)target).getFilter(),game);
+    }
+ else {
+      targets=threats(opponentId,((TargetPermanent)target).getFilter(),game);
+    }
+    for (    Permanent permanent : targets) {
+      if (target.canTarget(permanent.getId(),source,game)) {
+        target.addTarget(permanent.getId(),source,game);
+        return true;
+      }
+    }
+  }
+  return false;
+}

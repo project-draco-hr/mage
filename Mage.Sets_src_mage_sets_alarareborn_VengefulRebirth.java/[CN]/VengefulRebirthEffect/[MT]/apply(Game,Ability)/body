@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Card card=(Card)game.getObject(source.getFirstTarget());
+  if (player.removeFromGraveyard(card,game) && player.putInHand(card,game)) {
+    int damage=card.getManaCost().convertedManaCost();
+    if (!card.getCardType().contains(CardType.LAND)) {
+      Permanent permanent=game.getPermanent(source.getTargets().get(1).getTargets().get(0));
+      if (permanent != null) {
+        permanent.damage(damage,source.getSourceId(),game);
+        return true;
+      }
+      Player targetPlayer=game.getPlayer(source.getTargets().get(1).getTargets().get(0));
+      if (targetPlayer != null) {
+        targetPlayer.damage(damage,source.getSourceId(),game);
+        return true;
+      }
+      return false;
+    }
+  }
+  return true;
+}

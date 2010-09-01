@@ -5,6 +5,11 @@
       int actualDamage=event.getAmount();
       if (actualDamage > 0) {
         actualDamage=this.loseLife(actualDamage,game);
+        Permanent source=game.getPermanent(sourceId);
+        if (source != null && source.getAbilities().containsKey(LifelinkAbility.getInstance().getId())) {
+          Player player=game.getPlayer(source.getControllerId());
+          player.gainLife(actualDamage,game);
+        }
         game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DAMAGED_PLAYER,playerId,sourceId,playerId,actualDamage));
         return actualDamage;
       }

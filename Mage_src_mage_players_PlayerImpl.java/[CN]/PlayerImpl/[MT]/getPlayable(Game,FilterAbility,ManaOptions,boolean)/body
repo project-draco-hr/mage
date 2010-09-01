@@ -1,0 +1,21 @@
+{
+  List<Ability> playable=new ArrayList<Ability>();
+  if (hidden) {
+    for (    Card card : hand.getUniqueCards(game)) {
+      for (      ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND,filter)) {
+        if (canPlay(ability,available,game))         playable.add(ability);
+      }
+    }
+  }
+  for (  Card card : graveyard.getUniqueCards(game)) {
+    for (    ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.GRAVEYARD,filter)) {
+      if (canPlay(ability,available,game))       playable.add(ability);
+    }
+  }
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
+    for (    ActivatedAbility ability : permanent.getAbilities().getActivatedAbilities(Zone.BATTLEFIELD,filter)) {
+      if (canPlay(ability,available,game))       playable.add(ability);
+    }
+  }
+  return playable;
+}

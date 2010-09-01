@@ -1,3 +1,8 @@
 {
-  if (event.getType() == EventType.LAND_PLAYED && game.getOpponents(controllerId).contains(event.getPlayerId()))   condition=true;
+  if (event.getType() == EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).getToZone() == Zone.BATTLEFIELD) {
+    Permanent permanent=game.getPermanent(event.getTargetId());
+    if (permanent.getCardType().contains(CardType.LAND) && permanent.getControllerId().equals(event.getPlayerId())) {
+      condition=true;
+    }
+  }
 }

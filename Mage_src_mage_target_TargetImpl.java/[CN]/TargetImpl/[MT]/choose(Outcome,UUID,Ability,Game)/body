@@ -1,0 +1,16 @@
+{
+  Player player=game.getPlayer(playerId);
+  while (!isChosen() && !doneChosing()) {
+    chosen=targets.size() >= minNumberOfTargets;
+    if (!player.chooseTarget(outcome,this,source,game)) {
+      return chosen;
+    }
+    chosen=targets.size() >= minNumberOfTargets;
+  }
+  while (!doneChosing()) {
+    if (!player.chooseTarget(outcome,this,source,game)) {
+      break;
+    }
+  }
+  return chosen=true;
+}

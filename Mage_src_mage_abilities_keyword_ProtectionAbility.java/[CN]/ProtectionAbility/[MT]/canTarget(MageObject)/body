@@ -1,3 +1,18 @@
 {
-  return !filter.match(source);
+  if (filter instanceof FilterPermanent) {
+    if (source instanceof Permanent)     return !filter.match(source);
+    return true;
+  }
+  if (filter instanceof FilterSpell) {
+    if (source instanceof Spell)     return !filter.match(source);
+    return true;
+  }
+  if (filter instanceof FilterCard) {
+    if (source instanceof Card)     return !filter.match(source);
+    return true;
+  }
+  if (filter instanceof FilterObject) {
+    return !filter.match(source);
+  }
+  return true;
 }
