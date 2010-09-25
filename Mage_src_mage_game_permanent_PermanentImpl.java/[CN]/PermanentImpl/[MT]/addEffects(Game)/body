@@ -1,7 +1,12 @@
 {
   for (  StaticAbility ability : abilities.getStaticAbilities(Zone.BATTLEFIELD)) {
-    for (    Effect effect : ability.getEffects()) {
-      if (effect instanceof ContinuousEffect)       game.addEffect((ContinuousEffect)effect,ability);
+    if (ability.activate(game,false)) {
+      for (      Effect effect : ability.getEffects()) {
+        if (effect instanceof ContinuousEffect)         game.addEffect((ContinuousEffect)effect,ability);
+ else         if (ability instanceof EntersBattlefieldStaticAbility && effect instanceof OneShotEffect) {
+          effect.apply(game,ability);
+        }
+      }
     }
   }
 }

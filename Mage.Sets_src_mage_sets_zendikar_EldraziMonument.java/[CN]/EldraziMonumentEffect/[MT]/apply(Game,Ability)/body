@@ -1,19 +1,17 @@
 {
-  TargetControlledPermanent target=new TargetControlledPermanent(1,1,filter);
+  TargetControlledPermanent target=new TargetControlledPermanent(1,1,FilterCreaturePermanent.getDefault(),true);
   target.setRequired(true);
   Player player=game.getPlayer(source.getControllerId());
   if (target.canChoose(source.getId(),source.getControllerId(),game)) {
-    player.chooseTarget(this.outcome,target,source,game);
+    player.choose(this.outcome,target,game);
     Permanent permanent=game.getPermanent(target.getFirstTarget());
     if (permanent != null) {
       return permanent.sacrifice(source.getSourceId(),game);
     }
   }
- else {
-    Permanent permanent=game.getPermanent(source.getSourceId());
-    if (permanent != null) {
-      return permanent.sacrifice(source.getSourceId(),game);
-    }
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    return permanent.sacrifice(source.getSourceId(),game);
   }
   return false;
 }

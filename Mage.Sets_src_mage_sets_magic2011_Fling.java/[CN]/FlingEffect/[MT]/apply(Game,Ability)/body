@@ -1,0 +1,17 @@
+{
+  int amount=0;
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof SacrificeTargetCost) {
+      amount=((SacrificeTargetCost)cost).getPermanents().get(0).getPower().getValue();
+      break;
+    }
+  }
+  if (amount > 0) {
+    Permanent permanent=game.getPermanent(source.getFirstTarget());
+    if (permanent != null) {
+      permanent.damage(amount,source.getSourceId(),game,true);
+      return true;
+    }
+  }
+  return false;
+}

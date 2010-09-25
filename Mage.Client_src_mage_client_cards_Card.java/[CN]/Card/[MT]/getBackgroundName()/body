@@ -1,0 +1,14 @@
+{
+  if (card instanceof StackAbilityView || card instanceof AbilityView) {
+    return "effect";
+  }
+  StringBuilder sb=new StringBuilder();
+  if (card.getCardTypes().contains(CardType.LAND)) {
+    sb.append("land").append(card.getSuperTypes()).append(card.getSubTypes());
+  }
+ else   if (card.getCardTypes() != null && (card.getCardTypes().contains(CardType.CREATURE) || card.getCardTypes().contains(CardType.PLANESWALKER))) {
+    sb.append("creature");
+  }
+  sb.append(card.getColor()).append(card.getArt()).append(card.getRarity()).append(card.getExpansionSetCode());
+  return sb.toString();
+}

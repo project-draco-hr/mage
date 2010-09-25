@@ -1,0 +1,33 @@
+{
+  TargetCardInLibrary target=new TargetCardInLibrary(0,2,new FilterBasicLandCard());
+  Player player=game.getPlayer(source.getControllerId());
+  player.searchLibrary(target,game);
+  if (target.getTargets().size() > 0) {
+    Cards revealed=new CardsImpl();
+    for (    UUID cardId : (List<UUID>)target.getTargets()) {
+      Card card=player.getLibrary().remove(cardId,game);
+      revealed.add(card);
+    }
+    player.revealCards(revealed,game);
+    if (target.getTargets().size() == 2) {
+      TargetCard target2=new TargetCard(Zone.PICK,filter);
+      target2.setRequired(true);
+      player.chooseTarget(revealed,target2,source,game);
+      Card card=revealed.get(target2.getFirstTarget(),game);
+      player.putOntoBattlefield(card,game);
+      revealed.remove(card);
+      Permanent permanent=game.getPermanent(card.getId());
+      if (permanent != null)       permanent.setTapped(true);
+      card=revealed.getCards(game).iterator().next();
+      player.putInHand(card,game);
+    }
+ else     if (target.getTargets().size() == 1) {
+      Card card=revealed.getCards(game).iterator().next();
+      player.putOntoBattlefield(card,game);
+      Permanent permanent=game.getPermanent(card.getId());
+      if (permanent != null)       permanent.setTapped(true);
+    }
+    player.shuffleLibrary(game);
+  }
+  return true;
+}

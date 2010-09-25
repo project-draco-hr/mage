@@ -1,0 +1,20 @@
+{
+switch (source.getTargets().get(0).getZone()) {
+case BATTLEFIELD:
+    Permanent permanent=game.getPermanent(source.getFirstTarget());
+  if (permanent != null) {
+    return permanent.moveToZone(Zone.LIBRARY,game,onTop);
+  }
+case GRAVEYARD:
+Card card=game.getCard(source.getFirstTarget());
+for (Player player : game.getPlayers().values()) {
+if (player.getGraveyard().contains(card.getId())) {
+  player.getGraveyard().remove(card);
+  if (onTop)   player.getLibrary().putOnTop(card,game);
+ else   player.getLibrary().putOnBottom(card,game);
+  return true;
+}
+}
+}
+return false;
+}

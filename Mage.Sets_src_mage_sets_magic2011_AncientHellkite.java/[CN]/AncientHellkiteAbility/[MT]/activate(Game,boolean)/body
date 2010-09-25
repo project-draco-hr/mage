@@ -1,0 +1,15 @@
+{
+  UUID defenderId=null;
+  for (  CombatGroup group : game.getCombat().getGroups()) {
+    if (group.getAttackers().contains(this.sourceId)) {
+      defenderId=group.getDefenderId();
+      break;
+    }
+  }
+  if (defenderId != null) {
+    filter.getControllerId().clear();
+    filter.getControllerId().add(defenderId);
+    return super.activate(game,noMana);
+  }
+  return false;
+}

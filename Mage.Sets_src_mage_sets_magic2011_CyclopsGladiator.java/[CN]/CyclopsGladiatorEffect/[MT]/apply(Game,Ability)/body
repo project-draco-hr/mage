@@ -1,0 +1,24 @@
+{
+  Player defender=null;
+  for (  CombatGroup group : game.getCombat().getGroups()) {
+    if (group.getAttackers().contains(source.getSourceId())) {
+      defender=game.getPlayer(group.getDefenderId());
+      break;
+    }
+  }
+  if (defender != null) {
+    FilterCreaturePermanent filter=new FilterCreaturePermanent("creature defending player owns");
+    filter.getControllerId().add(defender.getId());
+    TargetCreaturePermanent target=new TargetCreaturePermanent(filter);
+    Player player=game.getPlayer(source.getControllerId());
+    player.choose(Outcome.Damage,target,game);
+    Permanent permanent=game.getPermanent(target.getFirstTarget());
+    Permanent cyclops=game.getPermanent(source.getSourceId());
+    if (permanent != null && cyclops != null) {
+      permanent.damage(cyclops.getPower().getValue(),cyclops.getId(),game,true);
+      cyclops.damage(permanent.getPower().getValue(),permanent.getId(),game,true);
+      return true;
+    }
+  }
+  return false;
+}

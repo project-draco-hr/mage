@@ -1,0 +1,20 @@
+{
+  Set<String> cardNames=Sets.getCardNames();
+  Choice cardChoice=new ChoiceImpl();
+  cardChoice.setChoices(Sets.getCardNames());
+  for (  Player player : game.getPlayers().values()) {
+    cardChoice.clearChoice();
+    player.choose(Outcome.DrawCard,cardChoice,game);
+    Card card=player.getLibrary().removeFromTop(game);
+    Cards cards=new CardsImpl();
+    cards.add(card);
+    player.revealCards(cards,game);
+    if (card.getName().equals(cardChoice.getChoice())) {
+      player.putInHand(card,game);
+    }
+ else {
+      player.getLibrary().putOnBottom(card,game);
+    }
+  }
+  return true;
+}

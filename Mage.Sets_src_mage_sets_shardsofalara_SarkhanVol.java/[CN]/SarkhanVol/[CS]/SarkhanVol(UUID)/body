@@ -1,16 +1,16 @@
 {
-  super(ownerId,"Sarkhan Vol",new CardType[]{CardType.PLANESWALKER},"{2}{R}{G}");
-  this.expansionSetId=ShardsOfAlara.getInstance().getId();
+  super(ownerId,"Sarkhan Vol",Rarity.MYTHIC,new CardType[]{CardType.PLANESWALKER},"{2}{R}{G}");
+  this.expansionSetCode="ALA";
   this.subtype.add("Sarkhan");
   this.color.setRed(true);
   this.color.setGreen(true);
   this.loyalty=new MageInt(4);
   Effects effects1=new Effects();
   effects1.add(new BoostControlledEffect(1,1,Duration.EndOfTurn));
-  effects1.add(new GainAbilityControlledEffect(HasteAbility.getInstance(),Duration.EndOfTurn,new FilterCreaturePermanent()));
+  effects1.add(new GainAbilityControlledEffect(HasteAbility.getInstance(),Duration.EndOfTurn,FilterCreaturePermanent.getDefault()));
   this.addAbility(new LoyaltyAbility(effects1,1));
   Effects effects2=new Effects();
-  effects2.add(new GainControlTargetEOTEffect());
+  effects2.add(new GainControlTargetEffect(Duration.EndOfTurn));
   effects2.add(new UntapTargetEffect());
   effects2.add(new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn));
   LoyaltyAbility ability=new LoyaltyAbility(effects2,-2);

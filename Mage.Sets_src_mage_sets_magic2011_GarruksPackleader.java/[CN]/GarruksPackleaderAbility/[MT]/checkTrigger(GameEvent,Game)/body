@@ -1,0 +1,13 @@
+{
+  if (event.getType() == EventType.ZONE_CHANGE && !event.getTargetId().equals(this.getSourceId())) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getToZone() == Zone.BATTLEFIELD) {
+      Permanent permanent=game.getPermanent(event.getTargetId());
+      if (permanent != null && permanent.getCardType().contains(CardType.CREATURE) && permanent.getPower().getValue() > 2) {
+        trigger(game,this.controllerId);
+        return true;
+      }
+    }
+  }
+  return false;
+}

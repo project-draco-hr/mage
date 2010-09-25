@@ -1,0 +1,12 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  player.searchLibrary(target,game);
+  if (target.getTargets().size() > 0) {
+    Card card=player.getLibrary().remove(target.getFirstTarget(),game);
+    if (card != null) {
+      game.getExile().add(exileId,"Hoarding Dragon exile",card);
+    }
+    player.shuffleLibrary(game);
+  }
+  return true;
+}

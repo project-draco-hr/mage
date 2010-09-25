@@ -1,22 +1,29 @@
 {
   StringBuilder sb=new StringBuilder();
-  sb.append(card.getName());
-  if (card.getManaCost().size() > 0) {
-    sb.append("\n").append(card.getManaCost());
+  if (card instanceof StackAbilityView || card instanceof AbilityView) {
+    for (    String rule : getRules()) {
+      sb.append("\n").append(rule);
+    }
   }
-  sb.append("\n").append(cardType);
-  if (card.getColor().hasColor()) {
-    sb.append("\n").append(card.getColor().toString());
+ else {
+    sb.append(card.getName());
+    if (card.getManaCost().size() > 0) {
+      sb.append("\n").append(card.getManaCost());
+    }
+    sb.append("\n").append(cardType);
+    if (card.getColor().hasColor()) {
+      sb.append("\n").append(card.getColor().toString());
+    }
+    if (card.getCardTypes().contains(CardType.CREATURE)) {
+      sb.append("\n").append(card.getPower()).append("/").append(card.getToughness());
+    }
+ else     if (card.getCardTypes().contains(CardType.PLANESWALKER)) {
+      sb.append("\n").append(card.getLoyalty());
+    }
+    for (    String rule : getRules()) {
+      sb.append("\n").append(rule);
+    }
+    sb.append("\n").append(Sets.getInstance().get(card.getExpansionSetCode()).getName()).append(" - ").append(card.getRarity().toString());
   }
-  if (card.getCardTypes().contains(CardType.CREATURE)) {
-    sb.append("\n").append(card.getPower()).append("/").append(card.getToughness());
-  }
- else   if (card.getCardTypes().contains(CardType.PLANESWALKER)) {
-    sb.append("\n").append(card.getLoyalty());
-  }
-  for (  String rule : getRules()) {
-    sb.append("\n").append(rule);
-  }
-  sb.append("\n").append(card.getId());
   return sb.toString();
 }

@@ -1,7 +1,9 @@
 {
   for (  Permanent perm : game.getBattlefield().getAllActivePermanents(filter,source.getControllerId())) {
-    perm.addPower(power);
-    perm.addToughness(toughness);
+    if (!(excludeSource && perm.getId().equals(source.getSourceId()))) {
+      perm.addPower(power);
+      perm.addToughness(toughness);
+    }
   }
   return true;
 }

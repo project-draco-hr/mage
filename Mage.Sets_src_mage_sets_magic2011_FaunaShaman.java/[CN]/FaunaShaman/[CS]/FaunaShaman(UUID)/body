@@ -1,0 +1,15 @@
+{
+  super(ownerId,"Fauna Shaman",Rarity.RARE,new CardType[]{CardType.CREATURE},"{1}{G}");
+  this.expansionSetCode="M11";
+  this.subtype.add("Elf");
+  this.subtype.add("Shaman");
+  this.color.setGreen(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Costs<Cost> costs=new CostsImpl();
+  costs.add(new ColoredManaCost(ColoredManaSymbol.G));
+  costs.add(new TapSourceCost());
+  costs.add(new DiscardTargetCost(new TargetCardInHand(new FilterCreatureCard())));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new SearchLibraryRevealPutInHandEffect(new TargetCardInLibrary(new FilterCreatureCard())),costs);
+  this.addAbility(ability);
+}

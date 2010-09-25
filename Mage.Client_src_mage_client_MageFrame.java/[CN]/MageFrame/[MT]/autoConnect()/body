@@ -1,0 +1,21 @@
+{
+  boolean autoConnect=Boolean.parseBoolean(prefs.get("autoConnect","false"));
+  if (autoConnect) {
+    String userName=prefs.get("userName","");
+    String server=prefs.get("serverAddress","");
+    int port=Integer.parseInt(prefs.get("serverPort",""));
+    try {
+      setCursor(new Cursor(Cursor.WAIT_CURSOR));
+      if (MageFrame.connect(userName,server,port)) {
+        return true;
+      }
+ else {
+        JOptionPane.showMessageDialog(rootPane,"Unable to connect to server");
+      }
+    }
+  finally {
+      setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
+  }
+  return false;
+}

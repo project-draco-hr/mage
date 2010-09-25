@@ -1,0 +1,12 @@
+{
+switch (event.getType()) {
+case DAMAGE_CREATURE:
+case DAMAGE_PLAYER:
+case DAMAGE_PLANESWALKER:
+    StackObject spell=game.getStack().getStackObject(event.getSourceId());
+  if (spell != null && spell.getControllerId().equals(source.getControllerId()) && spell.getColor().isRed() && (spell.getCardType().contains(CardType.INSTANT) || spell.getCardType().contains(CardType.SORCERY))) {
+    event.setAmount(event.getAmount() * 2);
+  }
+}
+return false;
+}

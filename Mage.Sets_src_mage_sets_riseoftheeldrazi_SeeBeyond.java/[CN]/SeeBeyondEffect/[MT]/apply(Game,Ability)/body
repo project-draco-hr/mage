@@ -1,0 +1,17 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  player.drawCards(2,game);
+  if (player.getHand().size() > 0) {
+    TargetCard target=new TargetCard(Zone.HAND,filter);
+    target.setRequired(true);
+    player.chooseTarget(player.getHand(),target,source,game);
+    Card card=player.getHand().get(target.getFirstTarget(),game);
+    if (card != null) {
+      player.removeFromHand(card,game);
+      player.getLibrary().putOnTop(card,game);
+      player.getLibrary().shuffle();
+      return true;
+    }
+  }
+  return true;
+}

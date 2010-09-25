@@ -3,14 +3,19 @@
   Graphics2D gImage=image.createGraphics();
   Graphics2D gSmall=small.createGraphics();
   String cardType=getType(card);
+  String testBackgroundName=getBackgroundName();
+  if (!testBackgroundName.equals(backgroundName)) {
+    backgroundName=testBackgroundName;
+    background=ImageHelper.getBackground(card,backgroundName);
+  }
   popupText.setText(getText(cardType));
   gImage.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
   gImage.setColor(Color.BLACK);
   gImage.drawImage(background,0,0,this);
-  if (card.getManaCost().size() > 0)   ImageHelper.DrawCosts(card.getManaCost(),gImage,FRAME_MAX_WIDTH - SYMBOL_MAX_XOFFSET,SYMBOL_MAX_YOFFSET,this);
+  if (card.getManaCost().size() > 0)   ImageHelper.drawCosts(card.getManaCost(),gImage,FRAME_MAX_WIDTH - SYMBOL_MAX_XOFFSET,SYMBOL_MAX_YOFFSET,this);
   gSmall.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
   gSmall.setColor(Color.BLACK);
-  gSmall.drawImage(ImageHelper.ScaleImage(image,Config.dimensions.frameWidth,Config.dimensions.frameHeight),0,0,this);
+  gSmall.drawImage(ImageHelper.scaleImage(image,Config.dimensions.frameWidth,Config.dimensions.frameHeight),0,0,this);
   gImage.setFont(new Font("Arial",Font.PLAIN,NAME_FONT_MAX_SIZE));
   gImage.drawString(card.getName(),CONTENT_MAX_XOFFSET,NAME_MAX_YOFFSET);
   if (card.getCardTypes().contains(CardType.CREATURE)) {

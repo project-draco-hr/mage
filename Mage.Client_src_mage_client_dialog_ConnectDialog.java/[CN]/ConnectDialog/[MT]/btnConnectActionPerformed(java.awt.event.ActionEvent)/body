@@ -1,40 +1,35 @@
 {
+  if (txtUserName.getText().isEmpty()) {
+    JOptionPane.showMessageDialog(rootPane,"Please provide a user name");
+    return;
+  }
+  if (txtServer.getText().isEmpty()) {
+    JOptionPane.showMessageDialog(rootPane,"Please provide a server address");
+    return;
+  }
+  if (txtPort.getText().isEmpty()) {
+    JOptionPane.showMessageDialog(rootPane,"Please provide a port number");
+    return;
+  }
+  if (Integer.valueOf(txtPort.getText()) < 1 || Integer.valueOf(txtPort.getText()) > 65535) {
+    JOptionPane.showMessageDialog(rootPane,"Invalid port number");
+    txtPort.setText(MageFrame.getPreferences().get("serverPort",Integer.toString(Config.port)));
+    return;
+  }
   try {
-    if (txtUserName.getText().isEmpty()) {
-      JOptionPane.showMessageDialog(rootPane,"Please provide a user name");
-      return;
-    }
-    if (txtServer.getText().isEmpty()) {
-      JOptionPane.showMessageDialog(rootPane,"Please provide a server address");
-      return;
-    }
-    if (txtPort.getText().isEmpty()) {
-      JOptionPane.showMessageDialog(rootPane,"Please provide a port number");
-      return;
-    }
-    if (Integer.valueOf(txtPort.getText()) < 1 || Integer.valueOf(txtPort.getText()) > 65535) {
-      JOptionPane.showMessageDialog(rootPane,"Invalid port number");
-      txtPort.setText(prefs.get("serverPort",Integer.toString(Config.port)));
-      return;
-    }
     setCursor(new Cursor(Cursor.WAIT_CURSOR));
-    session.connect(txtUserName.getText(),txtServer.getText(),Integer.valueOf(txtPort.getText()));
-    prefs.put("serverAddress",txtServer.getText());
-    prefs.put("serverPort",txtPort.getText());
-    prefs.put("userName",txtUserName.getText());
-    this.setVisible(false);
+    if (MageFrame.connect(txtUserName.getText(),txtServer.getText(),Integer.valueOf(txtPort.getText()))) {
+      MageFrame.getPreferences().put("serverAddress",txtServer.getText());
+      MageFrame.getPreferences().put("serverPort",txtPort.getText());
+      MageFrame.getPreferences().put("userName",txtUserName.getText());
+      MageFrame.getPreferences().put("autoConnect",Boolean.toString(chkAutoConnect.isSelected()));
+      this.setVisible(false);
+    }
+ else {
+      JOptionPane.showMessageDialog(rootPane,"Unable to connect to server");
+    }
   }
- catch (  RemoteException ex) {
-    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    logger.log(Level.SEVERE,"Unable to connect to server",ex);
-    JOptionPane.showMessageDialog(rootPane,"Unable to connect to server");
-  }
-catch (  NotBoundException ex) {
-    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-    logger.log(Level.SEVERE,"Unable to connect to server",ex);
-    JOptionPane.showMessageDialog(rootPane,"Unable to connect to server");
-  }
- finally {
+  finally {
     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
   }
 }

@@ -1,9 +1,8 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  int amount=source.getManaCosts().getVariableCosts().get(0).getValue();
-  FilterCreaturePermanent filter=new FilterCreaturePermanent();
+  int amount=source.getCosts().getVariableCosts().get(0).getAmount();
   if (amount > 4) {
-    for (    Permanent permanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(FilterCreaturePermanent.getDefault(),source.getControllerId(),game)) {
       permanent.destroy(source.getSourceId(),game,false);
     }
   }

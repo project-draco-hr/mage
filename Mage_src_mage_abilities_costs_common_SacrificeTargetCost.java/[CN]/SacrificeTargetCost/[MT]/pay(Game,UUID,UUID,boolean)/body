@@ -1,0 +1,11 @@
+{
+  if (targets.choose(Outcome.Sacrifice,controllerId,game)) {
+    for (    UUID targetId : targets.get(0).getTargets()) {
+      Permanent permanent=game.getPermanent(targetId);
+      if (permanent == null)       return false;
+      permanents.add(permanent.copy());
+      paid|=permanent.sacrifice(sourceId,game);
+    }
+  }
+  return paid;
+}

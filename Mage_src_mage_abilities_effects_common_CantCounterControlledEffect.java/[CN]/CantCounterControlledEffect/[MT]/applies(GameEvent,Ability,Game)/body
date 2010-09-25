@@ -1,10 +1,18 @@
 {
   if (event.getType() == EventType.COUNTER) {
-    filter.getControllerId().clear();
-    filter.getControllerId().add(source.getControllerId());
+    filterTarget.getControllerId().clear();
+    filterTarget.getControllerId().add(source.getControllerId());
     StackObject stackObject=game.getStack().getStackObject(event.getTargetId());
-    if (stackObject instanceof Spell) {
-      if (filter.match((Spell)stackObject))       return true;
+    if (stackObject != null && stackObject instanceof Spell) {
+      if (filterTarget.match((Spell)stackObject)) {
+        if (filterSource == null)         return true;
+ else {
+          MageObject sourceObject=game.getObject(source.getSourceId());
+          if (sourceObject != null && filterSource.match(sourceObject)) {
+            return true;
+          }
+        }
+      }
     }
   }
   return false;

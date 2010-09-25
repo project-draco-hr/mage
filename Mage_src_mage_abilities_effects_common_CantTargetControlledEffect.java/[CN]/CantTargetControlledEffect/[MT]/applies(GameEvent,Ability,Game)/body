@@ -1,0 +1,17 @@
+{
+  if (event.getType() == EventType.TARGET) {
+    filterTarget.getControllerId().clear();
+    filterTarget.getControllerId().add(source.getControllerId());
+    Permanent permanent=game.getPermanent(event.getTargetId());
+    if (permanent != null && filterTarget.match(permanent)) {
+      if (filterSource == null)       return true;
+ else {
+        MageObject sourceObject=game.getObject(source.getSourceId());
+        if (sourceObject != null && filterSource.match(sourceObject)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

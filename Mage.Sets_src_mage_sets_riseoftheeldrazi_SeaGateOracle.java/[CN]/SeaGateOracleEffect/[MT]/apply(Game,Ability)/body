@@ -1,0 +1,23 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player.getLibrary().size() > 0) {
+    if (player.getLibrary().size() == 1) {
+      player.putInHand(player.getLibrary().removeFromTop(game),game);
+    }
+ else {
+      Cards cards=new CardsImpl(Zone.PICK);
+      cards.add(player.getLibrary().removeFromTop(game));
+      cards.add(player.getLibrary().removeFromTop(game));
+      TargetCard target=new TargetCard(Zone.PICK,filter);
+      target.setRequired(true);
+      player.lookAtCards(cards,game);
+      player.chooseTarget(cards,target,source,game);
+      player.putInHand(cards.get(target.getFirstTarget(),game),game);
+      for (      UUID cardId : cards) {
+        player.getLibrary().putOnBottom(cards.get(cardId,game),game);
+      }
+    }
+    return true;
+  }
+  return false;
+}

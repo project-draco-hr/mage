@@ -1,11 +1,17 @@
 {
-  if (amount > life) {
-    int curLife=life;
-    setLife(0,game);
-    return curLife;
-  }
+  GameEvent event=new GameEvent(GameEvent.EventType.LOSE_LIFE,playerId,playerId,playerId,amount);
+  if (!game.replaceEvent(event)) {
+    if (amount > life) {
+      int curLife=life;
+      setLife(0,game);
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.LOST_LIFE,playerId,playerId,playerId,curLife));
+      return curLife;
+    }
  else {
-    setLife(this.life - amount,game);
-    return amount;
+      setLife(this.life - amount,game);
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.LOST_LIFE,playerId,playerId,playerId,amount));
+      return amount;
+    }
   }
+  return 0;
 }
