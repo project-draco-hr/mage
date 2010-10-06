@@ -2,7 +2,8 @@
   Player player=game.getPlayer(source.getControllerId());
   player.gainLife(5,game);
   player.removeFromBattlefield(game.getPermanent(source.getSourceId()),game);
-  player.getLibrary().putOnBottom(game.getCard(source.getSourceId()),game);
+  Card card=game.getCard(source.getSourceId());
+  card.moveToZone(Zone.LIBRARY,game,true);
   player.getLibrary().addAll(player.getGraveyard().getCards(game));
   player.getGraveyard().clear();
   player.getLibrary().shuffle();

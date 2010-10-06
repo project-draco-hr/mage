@@ -1,0 +1,25 @@
+{
+  int count;
+  List<Permanent> creatures=game.getBattlefield().getAllActivePermanents(FilterCreaturePermanent.getDefault(),source.getControllerId());
+  count=creatures.size();
+  for (  Permanent creature : creatures) {
+    creature.moveToExile(null,null,game);
+  }
+  Cards revealed=new CardsImpl();
+  Cards creatureCards=new CardsImpl();
+  Cards nonCreatureCards=new CardsImpl();
+  Player player=game.getPlayer(source.getControllerId());
+  while (creatureCards.size() < count && player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().removeFromTop(game);
+    revealed.add(card);
+    if (card.getCardType().contains(CardType.CREATURE))     creatureCards.add(card);
+ else     nonCreatureCards.add(card);
+  }
+  player.revealCards(revealed,game);
+  for (  Card creatureCard : creatureCards.getCards(game)) {
+    creatureCard.putOntoBattlefield(game,Zone.LIBRARY,source.getControllerId());
+  }
+  player.getLibrary().addAll(nonCreatureCards.getCards(game));
+  player.getLibrary().shuffle();
+  return true;
+}
