@@ -1,11 +1,13 @@
 {
   boolean result=true;
-  for (  Effect effect : getEffects()) {
-    if (effect instanceof OneShotEffect) {
-      result&=effect.apply(game,this);
-    }
+  if (checkIfClause(game)) {
+    for (    Effect effect : getEffects()) {
+      if (effect instanceof OneShotEffect) {
+        result&=effect.apply(game,this);
+      }
  else {
-      game.addEffect((ContinuousEffect)effect,this);
+        game.addEffect((ContinuousEffect)effect,this);
+      }
     }
   }
   return result;

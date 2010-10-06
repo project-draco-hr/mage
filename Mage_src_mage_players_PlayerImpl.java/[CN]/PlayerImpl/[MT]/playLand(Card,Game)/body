@@ -2,7 +2,7 @@
   if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.PLAY_LAND,card.getId(),playerId))) {
     game.bookmarkState();
     removeFromHand(card,game);
-    if (putOntoBattlefield(card,game)) {
+    if (card.putOntoBattlefield(game,Zone.HAND,playerId)) {
       landsPlayed++;
       game.fireEvent(GameEvent.getEvent(GameEvent.EventType.LAND_PLAYED,card.getId(),playerId));
       game.fireInformEvent(name + " plays " + card.getName());

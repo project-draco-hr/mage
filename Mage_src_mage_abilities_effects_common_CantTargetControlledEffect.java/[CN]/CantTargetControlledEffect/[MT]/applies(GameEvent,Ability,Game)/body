@@ -1,12 +1,11 @@
 {
   if (event.getType() == EventType.TARGET) {
-    filterTarget.getControllerId().clear();
-    filterTarget.getControllerId().add(source.getControllerId());
+    filterTarget.setTargetController(TargetController.YOU);
     Permanent permanent=game.getPermanent(event.getTargetId());
-    if (permanent != null && filterTarget.match(permanent)) {
+    if (permanent != null && filterTarget.match(permanent,source.getControllerId(),game)) {
       if (filterSource == null)       return true;
  else {
-        MageObject sourceObject=game.getObject(source.getSourceId());
+        StackObject sourceObject=game.getStack().getStackObject(source.getSourceId());
         if (sourceObject != null && filterSource.match(sourceObject)) {
           return true;
         }

@@ -6,7 +6,7 @@
       if (!replaced)       result=ability.resolve(game);
  else       result=true;
       if (ability.getEffects().contains(ExileSpellEffect.getInstance()))       game.getExile().getPermanentExile().add(card);
- else       game.getPlayers().get(controllerId).putInGraveyard(card,game,false);
+ else       card.moveToZone(Zone.GRAVEYARD,game,false);
       return result;
     }
     counter(game);
@@ -14,8 +14,7 @@
   }
  else   if (card.getCardType().contains(CardType.ENCHANTMENT) && card.getSubtype().contains("Aura")) {
     if (ability.getTargets().stillLegal(ability,game)) {
-      Player controller=game.getPlayers().get(controllerId);
-      if (controller.putOntoBattlefield(card,game)) {
+      if (card.putOntoBattlefield(game,Zone.HAND,controllerId)) {
         return ability.resolve(game);
       }
       return false;
@@ -24,8 +23,7 @@
     return false;
   }
  else {
-    Player controller=game.getPlayers().get(controllerId);
-    result=controller.putOntoBattlefield(card,game);
+    result=card.putOntoBattlefield(game,Zone.HAND,controllerId);
     resolveKicker(game);
     return result;
   }

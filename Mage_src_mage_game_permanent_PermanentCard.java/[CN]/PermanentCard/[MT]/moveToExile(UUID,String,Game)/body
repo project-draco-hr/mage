@@ -1,15 +1,6 @@
 {
-  if (!game.replaceEvent(new ZoneChangeEvent(this.getId(),this.getControllerId(),Zone.BATTLEFIELD,Zone.EXILED))) {
-    if (game.getPlayer(controllerId).removeFromBattlefield(this,game)) {
-      if (exileId == null) {
-        game.getExile().getPermanentExile().add(game.getCard(objectId));
-      }
- else {
-        game.getExile().createZone(exileId,name).add(game.getCard(objectId));
-      }
-      game.fireEvent(new ZoneChangeEvent(this.getId(),this.getControllerId(),Zone.BATTLEFIELD,Zone.EXILED));
-      return true;
-    }
+  if (game.getPlayer(controllerId).removeFromBattlefield(this,game)) {
+    return game.getCard(objectId).moveToExile(exileId,name,game);
   }
   return false;
 }

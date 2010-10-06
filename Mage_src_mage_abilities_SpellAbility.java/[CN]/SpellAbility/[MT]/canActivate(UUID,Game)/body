@@ -1,5 +1,6 @@
 {
-  if ((game.getObject(sourceId).getCardType().contains(CardType.INSTANT) || game.getObject(sourceId).getAbilities().containsKey(FlashAbility.getInstance().getId()) || game.canPlaySorcery(playerId))) {
+  MageObject object=game.getObject(sourceId);
+  if ((object.getCardType().contains(CardType.INSTANT) || object.getAbilities().containsKey(FlashAbility.getInstance().getId()) || game.getContinuousEffects().asThough(sourceId,AsThoughEffectType.CAST,game)|| game.canPlaySorcery(playerId))) {
     if (costs.canPay(sourceId,controllerId,game) && targets.canChoose(sourceId,playerId,game)) {
       return true;
     }

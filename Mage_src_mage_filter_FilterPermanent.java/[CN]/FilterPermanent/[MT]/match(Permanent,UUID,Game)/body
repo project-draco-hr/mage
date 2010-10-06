@@ -1,0 +1,17 @@
+{
+  if (!this.match(permanent))   return notFilter;
+  if (controller != TargetController.ANY && playerId != null) {
+switch (controller) {
+case YOU:
+      if (!permanent.getControllerId().equals(playerId))       return notFilter;
+    break;
+case OPPONENT:
+  if (!game.getOpponents(playerId).contains(permanent.getControllerId()))   return notFilter;
+break;
+case NOT_YOU:
+if (permanent.getControllerId().equals(playerId)) return notFilter;
+break;
+}
+}
+return !notFilter;
+}

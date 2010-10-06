@@ -2,8 +2,8 @@
   Player player=game.getPlayer(source.getControllerId());
   Card card=player.getGraveyard().get(source.getSourceId(),game);
   if (card != null) {
-    player.putOntoBattlefield(card,game);
     player.removeFromGraveyard(card,game);
+    card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getControllerId());
     return true;
   }
   return false;

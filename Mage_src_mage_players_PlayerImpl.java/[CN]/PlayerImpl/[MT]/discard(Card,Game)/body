@@ -1,9 +1,10 @@
 {
   if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DISCARD_CARD,playerId,playerId))) {
     removeFromHand(card,game);
-    putInGraveyard(card,game,false);
-    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DISCARDED_CARD,playerId,playerId));
-    return true;
+    if (card.moveToZone(Zone.GRAVEYARD,game,false)) {
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DISCARDED_CARD,playerId,playerId));
+      return true;
+    }
   }
   return false;
 }
