@@ -4,13 +4,18 @@
       final ClientCallback callback=server.callback(id);
       callbackExecutor.submit(new Runnable(){
         @Override public void run(){
-          client.processCallback(callback);
+          try {
+            client.processCallback(callback);
+          }
+ catch (          Exception ex) {
+            logger.log(Level.SEVERE,null,ex);
+          }
         }
       }
 );
     }
   }
  catch (  Exception ex) {
-    System.out.print(ex.getMessage());
+    logger.log(Level.SEVERE,null,ex);
   }
 }
