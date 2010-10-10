@@ -1,0 +1,13 @@
+{
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  if (permanent != null) {
+    if (permanent.moveToExile(source.getSourceId(),"Mystifying Maze Exile",game)) {
+      MystifyingMazeDelayedTriggeredAbility delayedAbility=new MystifyingMazeDelayedTriggeredAbility(source.getSourceId());
+      delayedAbility.setSourceId(source.getSourceId());
+      delayedAbility.setControllerId(source.getControllerId());
+      game.getState().addDelayedTriggeredAbility(delayedAbility);
+      return true;
+    }
+  }
+  return false;
+}
