@@ -1,20 +1,34 @@
 {
   initComponents();
-  this.setLayout(new BorderLayout());
-  final JLayeredPane j=new JLayeredPane();
-  j.add(ArrowBuilder.getArrowsPanel(),JLayeredPane.MODAL_LAYER);
-  j.setSize(1024,768);
-  j.add(jSplitPane1,JLayeredPane.DEFAULT_LAYER);
-  this.add(j);
-  addComponentListener(new ComponentAdapter(){
-    @Override public void componentResized(    ComponentEvent e){
-      int width=((JComponent)e.getSource()).getWidth();
-      int height=((JComponent)e.getSource()).getHeight();
-      j.setSize(width,height);
-      JPanel arrowsPanel=ArrowBuilder.getArrowsPanelRef();
-      if (arrowsPanel != null)       arrowsPanel.setSize(width,height);
-      jSplitPane1.setSize(width,height);
+  try {
+    BufferedImage background=ImageHelper.loadImage("/dk_gray.jpg");
+    ImagePanel bgPanel=new ImagePanel(background,ImagePanel.TILED);
+    this.setLayout(new BorderLayout());
+    final JLayeredPane j=new JLayeredPane();
+    j.add(ArrowBuilder.getArrowsPanel(),JLayeredPane.MODAL_LAYER);
+    j.setSize(1024,768);
+    j.add(jSplitPane1,JLayeredPane.DEFAULT_LAYER);
+    jSplitPane1.setOpaque(false);
+    pnlBattlefield.setOpaque(false);
+    jPanel3.setOpaque(false);
+    hand.setOpaque(false);
+    chatPanel.setOpaque(false);
+    bgPanel.add(j);
+    this.add(bgPanel);
+    addComponentListener(new ComponentAdapter(){
+      @Override public void componentResized(      ComponentEvent e){
+        int width=((JComponent)e.getSource()).getWidth();
+        int height=((JComponent)e.getSource()).getHeight();
+        j.setSize(width,height);
+        JPanel arrowsPanel=ArrowBuilder.getArrowsPanelRef();
+        if (arrowsPanel != null)         arrowsPanel.setSize(width,height);
+        jSplitPane1.setSize(width,height);
+      }
     }
-  }
 );
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    throw new RuntimeException(e);
+  }
 }
