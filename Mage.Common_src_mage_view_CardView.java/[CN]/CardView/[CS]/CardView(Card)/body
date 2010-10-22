@@ -27,4 +27,14 @@
     this.rarity=card.getRarity();
     this.expansionSetCode=card.getExpansionSetCode();
   }
+  if (card instanceof Spell) {
+    Spell<?> spell=(Spell<?>)card;
+    if (spell.getSpellAbility().getTargets().size() > 0) {
+      Target target=spell.getSpellAbility().getTargets().get(0);
+      if (target.isChosen()) {
+        firstTarget=target.getFirstTarget();
+        System.out.println("First target: " + firstTarget);
+      }
+    }
+  }
 }
