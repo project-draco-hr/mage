@@ -1,0 +1,16 @@
+{
+  if (amount >= hand.size()) {
+    int discardAmount=hand.size();
+    while (hand.size() > 0) {
+      discard(hand.get(hand.iterator().next(),game),source,game);
+    }
+    game.fireInformEvent(name + " discards " + Integer.toString(discardAmount)+ " card"+ (discardAmount > 1 ? "s" : ""));
+    return;
+  }
+  for (int i=0; i < amount; i++) {
+    TargetDiscard target=new TargetDiscard(playerId);
+    choose(Outcome.Discard,target,game);
+    discard(hand.get(target.getFirstTarget(),game),source,game);
+  }
+  game.fireInformEvent(name + " discards " + Integer.toString(amount)+ " card"+ (amount > 1 ? "s" : ""));
+}

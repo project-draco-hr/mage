@@ -15,6 +15,13 @@ break;
 case LIBRARY:
 if (flag) game.getPlayer(ownerId).getLibrary().putOnTop(this,game);
  else game.getPlayer(ownerId).getLibrary().putOnBottom(this,game);
+break;
+case BATTLEFIELD:
+PermanentCard permanent=new PermanentCard(this,ownerId);
+game.getBattlefield().addPermanent(permanent);
+permanent.entersBattlefield(game);
+game.applyEffects();
+break;
 }
 zone=event.getToZone();
 game.fireEvent(new ZoneChangeEvent(this.getId(),ownerId,fromZone,event.getToZone()));

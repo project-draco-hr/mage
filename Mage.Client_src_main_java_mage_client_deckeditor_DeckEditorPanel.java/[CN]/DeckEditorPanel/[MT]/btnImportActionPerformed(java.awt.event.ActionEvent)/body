@@ -1,0 +1,25 @@
+{
+  String lastFolder=MageFrame.getPreferences().get("lastImportFolder","");
+  if (!lastFolder.isEmpty())   fcImportDeck.setCurrentDirectory(new File(lastFolder));
+  int ret=fcImportDeck.showOpenDialog(this);
+  if (ret == JFileChooser.APPROVE_OPTION) {
+    File file=fcImportDeck.getSelectedFile();
+    try {
+      setCursor(new Cursor(Cursor.WAIT_CURSOR));
+      deck=Deck.load(importDeck(file.getPath()));
+    }
+ catch (    Exception ex) {
+      Logger.getLogger(DeckEditorPanel.class.getName()).log(Level.SEVERE,null,ex);
+    }
+ finally {
+      setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
+    refreshDeck();
+    try {
+      MageFrame.getPreferences().put("lastImportFolder",file.getCanonicalPath());
+    }
+ catch (    IOException ex) {
+    }
+  }
+  fcImportDeck.setSelectedFile(null);
+}
