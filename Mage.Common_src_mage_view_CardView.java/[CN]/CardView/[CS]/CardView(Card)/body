@@ -30,10 +30,15 @@
   if (card instanceof Spell) {
     Spell<?> spell=(Spell<?>)card;
     if (spell.getSpellAbility().getTargets().size() > 0) {
-      Target target=spell.getSpellAbility().getTargets().get(0);
-      if (target.isChosen()) {
-        firstTarget=target.getFirstTarget();
-        System.out.println("First target: " + firstTarget);
+      Targets targets=spell.getSpellAbility().getTargets();
+      for (      Target target : targets) {
+        if (target.isChosen()) {
+          for (          UUID targetUUID : target.getTargets()) {
+            if (this.targets == null)             this.targets=new ArrayList<UUID>();
+            this.targets.add(targetUUID);
+            System.out.println("Added target: " + targetUUID);
+          }
+        }
       }
     }
   }
