@@ -1,20 +1,14 @@
 {
   initComponents();
   try {
-    BufferedImage background=ImageIO.read(this.getClass().getResourceAsStream("/green.jpg"));
-    ImagePanel bgPanel=new ImagePanel(background,ImagePanel.TILED);
     this.setLayout(new BorderLayout());
     final JLayeredPane j=new JLayeredPane();
     j.add(ArrowBuilder.getArrowsPanel(),JLayeredPane.MODAL_LAYER);
     j.setSize(1024,768);
+    this.add(j);
     j.add(jSplitPane1,JLayeredPane.DEFAULT_LAYER);
-    jSplitPane1.setOpaque(false);
-    pnlBattlefield.setOpaque(false);
-    jPanel3.setOpaque(false);
-    hand.setOpaque(false);
-    chatPanel.setOpaque(false);
-    bgPanel.add(j);
-    this.add(bgPanel);
+    Map<String,JComponent> ui=getUIComponents(j);
+    Plugins.getInstance().updateGamePanel(ui);
     addComponentListener(new ComponentAdapter(){
       @Override public void componentResized(      ComponentEvent e){
         int width=((JComponent)e.getSource()).getWidth();
