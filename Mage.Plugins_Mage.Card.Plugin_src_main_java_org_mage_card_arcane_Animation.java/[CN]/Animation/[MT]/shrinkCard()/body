@@ -1,0 +1,44 @@
+{
+  CardPanel enlargedCardPanel, enlargedAnimationPanel;
+synchronized (enlargeLock) {
+    enlargedCardPanel=Animation.enlargedCardPanel;
+    enlargedAnimationPanel=Animation.enlargedAnimationPanel;
+    if (enlargedAnimationPanel == null)     return;
+    Animation.enlargedCardPanel=null;
+    Animation.enlargedAnimationPanel=null;
+  }
+  final CardPanel overPanel=enlargedCardPanel, animationPanel=enlargedAnimationPanel;
+  animationPanel.setAnimationPanel(true);
+  final JLayeredPane layeredPane=SwingUtilities.getRootPane(overPanel).getLayeredPane();
+  layeredPane.setLayer(animationPanel,JLayeredPane.MODAL_LAYER);
+  final int startWidth=animationPanel.getCardWidth();
+  final int startHeight=Math.round(startWidth * CardPanel.ASPECT_RATIO);
+  final int endWidth=overPanel.getCardWidth();
+  final int endHeight=Math.round(endWidth * CardPanel.ASPECT_RATIO);
+  new Animation(200){
+    protected void update(    float percentage){
+      int currentWidth=startWidth + Math.round((endWidth - startWidth) * percentage);
+      int currentHeight=startHeight + Math.round((endHeight - startHeight) * percentage);
+      Point startPos=SwingUtilities.convertPoint(overPanel.getParent(),overPanel.getCardLocation(),layeredPane);
+      int centerX=startPos.x + Math.round(endWidth / 2f);
+      int centerY=startPos.y + Math.round(endHeight / 2f);
+      int currentX=Math.max(0,centerX - Math.round(currentWidth / 2f));
+      currentX=Math.min(currentX,layeredPane.getWidth() - currentWidth);
+      int currentY=Math.max(0,centerY - Math.round(currentHeight / 2f));
+      currentY=Math.min(currentY,layeredPane.getHeight() - currentHeight);
+      animationPanel.tappedAngle=overPanel.tappedAngle * percentage;
+      animationPanel.setCardBounds(currentX,currentY,currentWidth,currentHeight);
+    }
+    protected void end(){
+      animationPanel.setVisible(false);
+      animationPanel.repaint();
+      EventQueue.invokeLater(new Runnable(){
+        public void run(){
+          layeredPane.remove(animationPanel);
+        }
+      }
+);
+    }
+  }
+;
+}

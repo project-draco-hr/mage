@@ -1,0 +1,40 @@
+{
+  UI.invokeLater(new Runnable(){
+    public void run(){
+      final int startHeight=Math.round(startWidth * CardPanel.ASPECT_RATIO);
+      final int endHeight=Math.round(endWidth * CardPanel.ASPECT_RATIO);
+      animationPanel.setCardBounds(startX,startY,startWidth,startHeight);
+      animationPanel.setAnimationPanel(true);
+      Container parent=animationPanel.getParent();
+      if (parent != layeredPane) {
+        layeredPane.add(animationPanel);
+        layeredPane.setLayer(animationPanel,JLayeredPane.MODAL_LAYER);
+      }
+      new Animation(speed){
+        protected void update(        float percentage){
+          int currentX=startX + Math.round((endX - startX) * percentage);
+          int currentY=startY + Math.round((endY - startY) * percentage);
+          int currentWidth=startWidth + Math.round((endWidth - startWidth) * percentage);
+          int currentHeight=startHeight + Math.round((endHeight - startHeight) * percentage);
+          animationPanel.setCardBounds(currentX,currentY,currentWidth,currentHeight);
+        }
+        protected void end(){
+          EventQueue.invokeLater(new Runnable(){
+            public void run(){
+              if (placeholder != null) {
+                placeholder.setDisplayEnabled(true);
+                placeholder.setImage(animationPanel);
+              }
+              animationPanel.setVisible(false);
+              animationPanel.repaint();
+              layeredPane.remove(animationPanel);
+            }
+          }
+);
+        }
+      }
+;
+    }
+  }
+);
+}

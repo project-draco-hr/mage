@@ -1,0 +1,14 @@
+{
+  if (EventQueue.isDispatchThread()) {
+    runnable.run();
+    return;
+  }
+  try {
+    EventQueue.invokeAndWait(runnable);
+  }
+ catch (  InterruptedException ex) {
+  }
+catch (  InvocationTargetException ex) {
+    throw new RuntimeException(ex);
+  }
+}

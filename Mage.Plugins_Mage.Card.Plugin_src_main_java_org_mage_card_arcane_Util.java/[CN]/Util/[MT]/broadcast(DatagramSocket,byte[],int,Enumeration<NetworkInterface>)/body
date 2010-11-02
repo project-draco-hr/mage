@@ -1,0 +1,12 @@
+{
+  for (  NetworkInterface iface : Collections.list(ifaces)) {
+    for (    InetAddress address : Collections.list(iface.getInetAddresses())) {
+      if (!address.isSiteLocalAddress())       continue;
+      byte[] ip=address.getAddress();
+      ip[3]=-1;
+      socket.send(new DatagramPacket(data,data.length,InetAddress.getByAddress(ip),port));
+      ip[2]=-1;
+      socket.send(new DatagramPacket(data,data.length,InetAddress.getByAddress(ip),port));
+    }
+  }
+}

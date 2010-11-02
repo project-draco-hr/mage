@@ -1,0 +1,14 @@
+{
+  long currentTime=System.currentTimeMillis();
+  int id=sampleIndex - 1;
+  if (id < 0)   id+=SAMPLES;
+  long timeSinceLastSample=currentTime - samples[id];
+  if (timeSinceLastSample > MAX_FRAME) {
+    long diff=timeSinceLastSample - MAX_FRAME;
+    for (int i=0; i < SAMPLES; i++)     samples[i]+=diff;
+  }
+  long timeSinceOldestSample=currentTime - samples[sampleIndex];
+  samples[sampleIndex]=currentTime;
+  sampleIndex=(sampleIndex + 1) % SAMPLES;
+  return timeSinceOldestSample / (long)SAMPLES;
+}

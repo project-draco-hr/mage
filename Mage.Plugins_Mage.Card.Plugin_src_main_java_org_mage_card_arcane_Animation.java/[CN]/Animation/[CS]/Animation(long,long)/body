@@ -1,0 +1,19 @@
+{
+  timerTask=new TimerTask(){
+    public void run(){
+      if (frameTimer == null) {
+        start();
+        frameTimer=new FrameTimer();
+      }
+      elapsed+=frameTimer.getTimeSinceLastFrame();
+      if (elapsed >= duration) {
+        cancel();
+        elapsed=duration;
+      }
+      update(elapsed / (float)duration);
+      if (elapsed == duration)       end();
+    }
+  }
+;
+  timer.scheduleAtFixedRate(timerTask,delay,TARGET_MILLIS_PER_FRAME);
+}

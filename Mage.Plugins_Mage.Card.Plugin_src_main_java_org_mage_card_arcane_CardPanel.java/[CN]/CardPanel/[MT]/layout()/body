@@ -1,0 +1,21 @@
+{
+  int borderSize=Math.round(cardWidth * BLACK_BORDER_SIZE);
+  imagePanel.setLocation(cardXOffset + borderSize,cardYOffset + borderSize);
+  imagePanel.setSize(cardWidth - borderSize * 2,cardHeight - borderSize * 2);
+  overlayPanel.setVisible(false);
+  int fontHeight=Math.round(cardHeight * (27f / 680));
+  boolean showText=(!isAnimationPanel && fontHeight < 12);
+  titleText.setVisible(showText);
+  ptText.setVisible(showText);
+  int titleX=Math.round(cardWidth * (20f / 480));
+  int titleY=Math.round(cardHeight * (9f / 680));
+  titleText.setBounds(cardXOffset + titleX,cardYOffset + titleY,cardWidth - titleX,cardHeight);
+  Dimension ptSize=ptText.getPreferredSize();
+  ptText.setSize(ptSize.width,ptSize.height);
+  int ptX=Math.round(cardWidth * (420f / 480)) - ptSize.width / 2;
+  int ptY=Math.round(cardHeight * (675f / 680)) - ptSize.height;
+  int offsetX=Math.round((CARD_SIZE_FULL.width - cardWidth) / 10.0f);
+  ptText.setLocation(cardXOffset + ptX - TEXT_GLOW_SIZE / 2 - offsetX,cardYOffset + ptY - TEXT_GLOW_SIZE / 2);
+  if (isAnimationPanel || cardWidth < 200)   imagePanel.setScalingType(ScalingType.nearestNeighbor);
+ else   imagePanel.setScalingType(ScalingType.bilinear);
+}
