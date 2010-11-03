@@ -2,9 +2,11 @@
   MagePermanent perm=Plugins.getInstance().getMagePermanent(permanent,bigCard,Config.dimensions,gameId);
   ;
   perm.addComponentListener(this);
-  perm.setBounds(findEmptySpace(new Dimension(Config.dimensions.frameWidth,Config.dimensions.frameHeight)));
+  if (!Plugins.getInstance().isCardPluginLoaded()) {
+    perm.setBounds(findEmptySpace(new Dimension(Config.dimensions.frameWidth,Config.dimensions.frameHeight)));
+  }
   permanents.put(permanent.getId(),perm);
   this.add(perm);
   moveToFront(perm);
-  perm.update(permanent);
+  perm.updateCard(permanent);
 }

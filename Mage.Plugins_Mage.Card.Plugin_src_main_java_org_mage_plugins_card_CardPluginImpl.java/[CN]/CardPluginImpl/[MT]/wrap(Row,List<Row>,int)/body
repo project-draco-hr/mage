@@ -1,0 +1,25 @@
+{
+  boolean allowHeightOverflow=cardWidth == cardWidthMin;
+  Row currentRow=new Row();
+  for (int i=0, n=sourceRow.size() - 1; i <= n; i++) {
+    Stack stack=sourceRow.get(i);
+    int rowWidth=currentRow.getWidth();
+    if (!currentRow.isEmpty() && rowWidth + stack.getWidth() > playAreaWidth) {
+      if (!allowHeightOverflow && rowWidth > playAreaWidth)       break;
+      if (!allowHeightOverflow && getRowsHeight(rows) + sourceRow.getHeight() > playAreaHeight)       break;
+      rows.add(insertIndex == -1 ? rows.size() : insertIndex,currentRow);
+      currentRow=new Row();
+    }
+    currentRow.add(stack);
+  }
+  if (!currentRow.isEmpty()) {
+    int rowWidth=currentRow.getWidth();
+    if (allowHeightOverflow || rowWidth <= playAreaWidth) {
+      if (allowHeightOverflow || getRowsHeight(rows) + sourceRow.getHeight() <= playAreaHeight) {
+        rows.add(insertIndex == -1 ? rows.size() : insertIndex,currentRow);
+      }
+    }
+  }
+  for (  Row row : rows)   for (  Stack stack : row)   sourceRow.remove(stack);
+  return insertIndex;
+}

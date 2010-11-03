@@ -1,7 +1,11 @@
 {
-  CardPlugin cp=pm.getPlugin(CardPlugin.class);
-  if (cp != null) {
-    return cp.getMagePermanent(card,dimension,gameId);
+  if (cardPlugin != null) {
+    return cardPlugin.getMagePermanent(card,dimension,gameId,new ActionCallback(){
+      @Override public void mouseClicked(      MouseEvent e){
+        defaultCallback.mouseClicked(e,gameId,MageFrame.getSession(),card);
+      }
+    }
+);
   }
  else {
     return new Permanent(card,bigCard,Config.dimensions,gameId);

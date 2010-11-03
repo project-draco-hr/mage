@@ -1,0 +1,100 @@
+{
+  if (ui == null)   throw new RuntimeException("Error: no components");
+  JComponent component=ui.get("jScrollPane");
+  if (component == null)   throw new RuntimeException("Error: jScrollPane is missing");
+  if (!(component instanceof JScrollPane))   throw new RuntimeException("Error: jScrollPane has wrong type.");
+  JScrollPane jScrollPane=(JScrollPane)component;
+  Row allLands=new Row();
+  outerLoop:   for (  MagePermanent permanent : permanents) {
+    if (!CardUtil.isLand(permanent) || CardUtil.isCreature(permanent))     continue;
+    int insertIndex=-1;
+    for (int i=0, n=allLands.size(); i < n; i++) {
+      Stack stack=allLands.get(i);
+      MagePermanent firstPanel=stack.get(0);
+      if (firstPanel.getOriginal().getName().equals(permanent.getOriginal().getName())) {
+        if (!empty(firstPanel.getLinks())) {
+          insertIndex=i;
+          break;
+        }
+        if (!empty(permanent.getLinks()) || stack.size() == landStackMax) {
+          insertIndex=i + 1;
+          continue;
+        }
+        stack.add(0,permanent);
+        continue outerLoop;
+      }
+      if (insertIndex != -1)       break;
+    }
+    Stack stack=new Stack();
+    stack.add(permanent);
+    allLands.add(insertIndex == -1 ? allLands.size() : insertIndex,stack);
+  }
+  Row allCreatures=new Row(permanents,RowType.creature);
+  Row allOthers=new Row(permanents,RowType.other);
+  cardWidth=cardWidthMax;
+  Rectangle rect=jScrollPane.getVisibleRect();
+  playAreaWidth=rect.width;
+  playAreaHeight=rect.height - MW_GUIDE_HEIGHT;
+  while (true) {
+    rows.clear();
+    cardHeight=Math.round(cardWidth * CardPanel.ASPECT_RATIO);
+    extraCardSpacingX=(int)Math.round(cardWidth * EXTRA_CARD_SPACING_X);
+    cardSpacingX=cardHeight - cardWidth + extraCardSpacingX;
+    cardSpacingY=(int)Math.round(cardHeight * CARD_SPACING_Y);
+    stackSpacingX=stackVertical ? 0 : (int)Math.round(cardWidth * STACK_SPACING_X);
+    stackSpacingY=(int)Math.round(cardHeight * STACK_SPACING_Y);
+    Row creatures=(Row)allCreatures.clone();
+    Row lands=(Row)allLands.clone();
+    Row others=(Row)allOthers.clone();
+    wrap(creatures,rows,-1);
+    int afterCreaturesIndex=rows.size();
+    wrap(lands,rows,afterCreaturesIndex);
+    List<Row> storedRows=new ArrayList<Row>(rows.size());
+    for (    Row row : rows)     storedRows.add((Row)row.clone());
+    Row storedOthers=(Row)others.clone();
+    for (    Row row : rows)     fillRow(others,rows,row);
+    if (creatures.isEmpty() && lands.isEmpty() && others.isEmpty())     break;
+    rows=storedRows;
+    others=storedOthers;
+    wrap(others,rows,afterCreaturesIndex);
+    for (    Row row : rows)     fillRow(others,rows,row);
+    if (creatures.isEmpty() && lands.isEmpty() && others.isEmpty())     break;
+    cardWidth--;
+  }
+  int x, y=GUTTER_Y;
+  int maxRowWidth=0;
+  for (  Row row : rows) {
+    int rowBottom=0;
+    x=GUTTER_X;
+    for (int stackIndex=0, stackCount=row.size(); stackIndex < stackCount; stackIndex++) {
+      Stack stack=row.get(stackIndex);
+      rowBottom=Math.max(rowBottom,y + stack.getHeight());
+      x+=stack.getWidth();
+    }
+    y=rowBottom;
+    maxRowWidth=Math.max(maxRowWidth,x);
+  }
+  x=0;
+  y=GUTTER_Y;
+  for (  Row row : rows) {
+    int rowBottom=0;
+    x=GUTTER_X;
+    for (int stackIndex=0, stackCount=row.size(); stackIndex < stackCount; stackIndex++) {
+      Stack stack=row.get(stackIndex);
+      if (RowType.other.isType(stack.get(0))) {
+        x=playAreaWidth - GUTTER_X + extraCardSpacingX;
+        for (int i=stackIndex, n=row.size(); i < n; i++)         x-=row.get(i).getWidth();
+      }
+      for (int panelIndex=0, panelCount=stack.size(); panelIndex < panelCount; panelIndex++) {
+        MagePermanent panel=stack.get(panelIndex);
+        int stackPosition=panelCount - panelIndex - 1;
+        int panelX=x + (stackPosition * stackSpacingX);
+        int panelY=y + (stackPosition * stackSpacingY);
+        panel.setCardBounds(panelX,panelY,cardWidth,cardHeight);
+      }
+      rowBottom=Math.max(rowBottom,y + stack.getHeight());
+      x+=stack.getWidth();
+    }
+    y=rowBottom;
+  }
+}
