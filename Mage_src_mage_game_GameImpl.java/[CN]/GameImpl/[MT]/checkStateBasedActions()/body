@@ -37,6 +37,23 @@
       }
     }
   }
+  for (  Permanent perm : getBattlefield().getAllActivePermanents(filterAura)) {
+    if (perm.getAttachedTo() == null) {
+      perm.moveToZone(Zone.GRAVEYARD,this,false);
+    }
+ else {
+      Permanent attachedTo=getPermanent(perm.getAttachedTo());
+      if (attachedTo == null) {
+        perm.moveToZone(Zone.GRAVEYARD,this,false);
+      }
+ else {
+        Filter auraFilter=perm.getSpellAbility().getTargets().get(0).getFilter();
+        if (!auraFilter.match(attachedTo)) {
+          perm.moveToZone(Zone.GRAVEYARD,this,false);
+        }
+      }
+    }
+  }
   if (getBattlefield().countAll(filterLegendary) > 1) {
     for (    Permanent legend : getBattlefield().getAllActivePermanents(filterLegendary)) {
       filterLegendName.getName().clear();

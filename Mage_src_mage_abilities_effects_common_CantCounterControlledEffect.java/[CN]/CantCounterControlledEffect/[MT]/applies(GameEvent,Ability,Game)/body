@@ -2,9 +2,9 @@
   if (event.getType() == EventType.COUNTER) {
     filterTarget.getControllerId().clear();
     filterTarget.getControllerId().add(source.getControllerId());
-    StackObject stackObject=game.getStack().getStackObject(event.getTargetId());
-    if (stackObject != null && stackObject instanceof Spell) {
-      if (filterTarget.match((Spell)stackObject)) {
+    Spell spell=game.getStack().getSpell(event.getTargetId());
+    if (spell != null) {
+      if (filterTarget.match(spell)) {
         if (filterSource == null)         return true;
  else {
           MageObject sourceObject=game.getObject(source.getSourceId());

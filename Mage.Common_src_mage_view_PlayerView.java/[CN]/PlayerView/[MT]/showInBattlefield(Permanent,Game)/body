@@ -1,4 +1,8 @@
 {
   if (permanent.getAttachedTo() == null)   return permanent.getControllerId().equals(playerId);
- else   return game.getPermanent(permanent.getAttachedTo()).getControllerId().equals(playerId);
+ else {
+    Permanent attachedTo=game.getPermanent(permanent.getAttachedTo());
+    if (attachedTo != null)     return attachedTo.getControllerId().equals(playerId);
+ else     return permanent.getControllerId().equals(playerId);
+  }
 }

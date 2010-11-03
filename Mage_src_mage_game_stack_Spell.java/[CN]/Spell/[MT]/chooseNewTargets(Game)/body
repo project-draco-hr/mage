@@ -1,0 +1,18 @@
+{
+  Player player=game.getPlayer(controllerId);
+  for (  Target target : ability.getTargets()) {
+    Target newTarget=target.copy();
+    newTarget.clearChosen();
+    for (    UUID targetId : target.getTargets()) {
+      MageObject object=game.getObject(targetId);
+      if (player.chooseUse(ability.getEffects().get(0).getOutcome(),"Change target from " + object.getName() + "?",game)) {
+        if (!player.chooseTarget(ability.getEffects().get(0).getOutcome(),newTarget,ability,game))         newTarget.addTarget(targetId,ability,game);
+      }
+    }
+    target.getTargets().clear();
+    for (    UUID newTargetId : newTarget.getTargets()) {
+      target.getTargets().add(newTargetId);
+    }
+  }
+  return true;
+}
