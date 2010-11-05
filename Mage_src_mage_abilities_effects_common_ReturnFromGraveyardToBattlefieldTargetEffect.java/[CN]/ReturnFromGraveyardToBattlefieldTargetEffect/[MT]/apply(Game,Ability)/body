@@ -1,0 +1,17 @@
+{
+  Card card=game.getCard(source.getFirstTarget());
+  if (card != null) {
+    Player player=game.getPlayer(card.getOwnerId());
+    if (player != null) {
+      player.removeFromGraveyard(card,game);
+      if (card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getControllerId())) {
+        if (tapped) {
+          Permanent permanent=game.getPermanent(card.getId());
+          if (permanent != null)           permanent.setTapped(true);
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}
