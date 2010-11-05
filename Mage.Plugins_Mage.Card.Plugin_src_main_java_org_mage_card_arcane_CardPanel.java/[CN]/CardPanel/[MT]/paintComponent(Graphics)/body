@@ -5,11 +5,24 @@
     AlphaComposite composite=AlphaComposite.getInstance(AlphaComposite.SRC_ATOP,alpha);
     g2d.setComposite(composite);
   }
-  g2d.setColor(new Color(30,200,200,120));
+  if (!hasImage) {
+    g2d.setColor(new Color(30,200,200,120));
+  }
+ else {
+    g2d.setColor(new Color(0,0,0,200));
+  }
   int cornerSize=Math.max(4,Math.round(cardWidth * ROUNDED_CORNER_SIZE));
   g2d.fillRoundRect(cardXOffset,cardYOffset,cardWidth,cardHeight,cornerSize,cornerSize);
   if (isSelected) {
     g2d.setColor(new Color(200,120,40,200));
     g2d.fillRoundRect(cardXOffset + 1,cardYOffset + 1,cardWidth - 2,cardHeight - 2,cornerSize,cornerSize);
   }
+  Point component=getLocation();
+  int cx=getCardX() + component.x;
+  int cy=getCardY() + component.y;
+  int cw=getCardWidth();
+  int ch=getCardHeight();
+  System.out.println("x=" + component.x);
+  g2d.setColor(Color.white);
+  g2d.drawRect(getCardX() - component.x,getCardY() - component.y,cw,ch);
 }
