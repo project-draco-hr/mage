@@ -40,12 +40,23 @@
   if (!loadImage)   return;
   Util.threadPool.submit(new Runnable(){
     public void run(){
-      tappedAngle=gameCard.isTapped() ? CardPanel.TAPPED_ANGLE : 0;
-      BufferedImage srcImage=ImageCache.getImageOriginal(gameCard);
-      if (srcImage != null) {
-        hasImage=true;
-        setText(gameCard);
-        setImage(srcImage,srcImage);
+      try {
+        tappedAngle=gameCard.isTapped() ? CardPanel.TAPPED_ANGLE : 0;
+        BufferedImage srcImage=ImageCache.getImageOriginal(gameCard);
+        if (srcImage != null) {
+          hasImage=true;
+          setText(gameCard);
+          setImage(srcImage,srcImage);
+        }
+ else {
+          log.warn("image wasn't found, card=" + gameCard.getName() + ", set="+ gameCard.getExpansionSetCode()+ ", cid="+ gameCard.getCardNumber());
+        }
+      }
+ catch (      Exception e) {
+        e.printStackTrace();
+      }
+catch (      Error err) {
+        err.printStackTrace();
       }
     }
   }
