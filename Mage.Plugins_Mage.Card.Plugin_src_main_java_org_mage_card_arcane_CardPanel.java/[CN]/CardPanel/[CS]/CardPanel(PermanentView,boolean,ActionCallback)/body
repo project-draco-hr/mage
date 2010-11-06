@@ -28,7 +28,7 @@
   overlayPanel.setScalingType(ScalingType.nearestNeighbor);
   overlayPanel.setScalingBlur(true);
   overlayPanel.setScalingMultiPassType(MultipassType.none);
-  Image sickness=null;
+  BufferedImage sickness=null;
   overlayPanel.setImage(sickness,sickness);
   imagePanel=new ScaledImagePanel();
   imagePanel.setBorder(BorderFactory.createLineBorder(Color.white));
@@ -43,6 +43,7 @@
       try {
         tappedAngle=gameCard.isTapped() ? CardPanel.TAPPED_ANGLE : 0;
         BufferedImage srcImage=ImageCache.getImageOriginal(gameCard);
+        srcImage=ImageCache.getNormalSizeImage(srcImage);
         if (srcImage != null) {
           hasImage=true;
           setText(gameCard);
