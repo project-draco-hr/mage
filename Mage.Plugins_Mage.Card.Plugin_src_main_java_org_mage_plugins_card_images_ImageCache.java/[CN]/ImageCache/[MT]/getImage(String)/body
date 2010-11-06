@@ -1,0 +1,14 @@
+{
+  try {
+    BufferedImage image=imageCache.get(key);
+    return image;
+  }
+ catch (  NullPointerException ex) {
+    return null;
+  }
+catch (  ComputationException ex) {
+    if (ex.getCause() instanceof NullPointerException)     return null;
+    log.error(ex,ex);
+    return null;
+  }
+}

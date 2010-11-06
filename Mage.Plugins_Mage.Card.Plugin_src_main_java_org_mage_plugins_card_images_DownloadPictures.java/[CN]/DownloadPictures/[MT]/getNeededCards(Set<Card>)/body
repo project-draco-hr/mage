@@ -1,0 +1,51 @@
+{
+  ArrayList<CardUrl> cardsToDownload=new ArrayList<CardUrl>();
+  ArrayList<CardUrl> allcards=new ArrayList<CardUrl>();
+  try {
+    offlineMode=true;
+    for (    Card card : allCards) {
+      if (card.getCardNumber() > 0 && !card.getExpansionSetCode().isEmpty()) {
+        CardUrl url=new CardUrl(card.getName(),card.getExpansionSetCode(),card.getCardNumber(),false);
+        allcards.add(url);
+      }
+ else {
+        if (card.getCardNumber() < 1) {
+          System.err.println("There was a critical error!");
+          log.error("Card has no collector ID and won't be sent to client: " + card);
+        }
+ else         if (card.getExpansionSetCode().isEmpty()) {
+          System.err.println("There was a critical error!");
+          log.error("Card has no set name and won't be sent to client:" + card);
+        }
+      }
+    }
+  }
+ catch (  Exception e) {
+    log.error(e);
+  }
+  File file;
+  for (  CardUrl card : allcards) {
+    boolean withCollectorId=false;
+    if (card.name.equals("Forest") || card.name.equals("Mountain") || card.name.equals("Swamp")|| card.name.equals("Island")|| card.name.equals("Plains")) {
+      withCollectorId=true;
+    }
+    file=new File(CardImageUtils.getImagePath(card,withCollectorId));
+    if (!file.exists()) {
+      cardsToDownload.add(card);
+    }
+  }
+  for (  CardUrl card : cardsToDownload) {
+    if (card.token) {
+      log.info("Card to download: " + card.name + " (Token) "+ card.url);
+    }
+ else {
+      try {
+        log.info("Card to download: " + card.name + " ("+ card.set+ ") "+ CardImageUtils.generateURL(card.collector,card.set));
+      }
+ catch (      Exception e) {
+        log.error(e);
+      }
+    }
+  }
+  return cardsToDownload;
+}

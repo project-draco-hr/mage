@@ -41,17 +41,11 @@
   Util.threadPool.submit(new Runnable(){
     public void run(){
       tappedAngle=gameCard.isTapped() ? CardPanel.TAPPED_ANGLE : 0;
-      try {
-        log.info(gameCard.getCardNumber() + " " + gameCard.getName()+ " "+ gameCard.getExpansionSetCode());
-        BufferedImage srcImage=ImageIO.read(CardPanel.class.getClassLoader().getResourceAsStream("Mountain.40.full.jpg"));
-        if (srcImage != null) {
-          hasImage=true;
-          setText(gameCard);
-          setImage(srcImage,srcImage);
-        }
-      }
- catch (      IOException io) {
-        io.printStackTrace();
+      BufferedImage srcImage=ImageCache.getImageOriginal(gameCard);
+      if (srcImage != null) {
+        hasImage=true;
+        setText(gameCard);
+        setImage(srcImage,srcImage);
       }
     }
   }

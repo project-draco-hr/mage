@@ -1,0 +1,40 @@
+{
+  String filePath;
+  String suffix=".jpg";
+  String cardname=c.name;
+  String set=c.set;
+  CardUrl card=new CardUrl(cardname,set,c.collectorId,c.isToken);
+  File file=null;
+  if (c.isToken) {
+    if (pathCache.containsKey(card)) {
+      return pathCache.get(card);
+    }
+    filePath=getTokenImagePath(card);
+    file=new File(filePath);
+    if (!file.exists()) {
+      filePath=searchForCardImage(card);
+      file=new File(filePath);
+    }
+    if (file.exists()) {
+      pathCache.put(card,filePath);
+    }
+  }
+ else {
+    filePath=getImagePath(card,false);
+    file=new File(filePath);
+    if (!file.exists()) {
+      filePath=getImagePath(card,true);
+      file=new File(filePath);
+    }
+  }
+  if (file == null || !file.exists()) {
+    filePath=cleanString(c.name) + suffix;
+    file=new File(filePath);
+  }
+  if (file.exists()) {
+    return filePath;
+  }
+ else {
+    return null;
+  }
+}
