@@ -6,7 +6,6 @@
       logger.warning("Couldn't find init file: " + INIT_FILE_PATH);
       return;
     }
-    logger.info("Parsing init.txt for player : " + player.getName());
     Scanner scanner=new Scanner(f);
     try {
       while (scanner.hasNextLine()) {
@@ -16,7 +15,8 @@
         if (m.matches()) {
           String zone=m.group(1);
           String nickname=m.group(2);
-          if (nickname.equals(player.getName())) {
+          Player player=findPlayer(game,nickname);
+          if (player != null) {
             Zone gameZone;
             if ("hand".equalsIgnoreCase(zone)) {
               gameZone=Zone.HAND;
