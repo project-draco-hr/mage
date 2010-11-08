@@ -1,0 +1,14 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    if (player.flipCoin()) {
+      Permanent perm=game.getPermanent(source.getSourceId());
+      if (perm != null) {
+        perm.sacrifice(source.getId(),game);
+      }
+      player.drawCards(3,game);
+      return true;
+    }
+  }
+  return false;
+}
