@@ -1,0 +1,17 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player != null && player.getHand().size() > 0) {
+    Card card=player.getHand().getRandom(game);
+    Cards cards=new CardsImpl();
+    cards.add(card);
+    player.revealCards(cards,game);
+    if (card.getCardType().contains(CardType.LAND)) {
+      card.putOntoBattlefield(game,Zone.HAND,player.getId());
+    }
+ else {
+      player.cast(card.getSpellAbility(),game,true);
+    }
+    return true;
+  }
+  return false;
+}
