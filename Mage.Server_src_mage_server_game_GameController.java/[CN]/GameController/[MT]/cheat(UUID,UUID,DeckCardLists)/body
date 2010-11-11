@@ -1,8 +1,14 @@
 {
-  Deck deck=Deck.load(deckList);
-  game.loadCards(deck.getCards(),playerId);
-  for (  Card card : deck.getCards()) {
-    card.putOntoBattlefield(game,Zone.OUTSIDE,playerId);
+  Deck deck;
+  try {
+    deck=Deck.load(deckList);
+    game.loadCards(deck.getCards(),playerId);
+    for (    Card card : deck.getCards()) {
+      card.putOntoBattlefield(game,Zone.OUTSIDE,playerId);
+    }
+  }
+ catch (  GameException ex) {
+    logger.warning(ex.getMessage());
   }
   addCardsForTesting(game);
   updateGame();
