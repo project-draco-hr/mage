@@ -1,7 +1,9 @@
 {
   if (!controlsAbility(playerId,game))   return false;
-  if ((timing == TimingRule.INSTANT || game.canPlaySorcery(playerId)) && costs.canPay(sourceId,controllerId,game) && targets.canChoose(sourceId,playerId,game)) {
-    return true;
+  if (timing == TimingRule.INSTANT || game.canPlaySorcery(playerId)) {
+    if (costs.canPay(sourceId,controllerId,game) && targets.canChoose(sourceId,playerId,game)) {
+      return true;
+    }
   }
   return false;
 }
