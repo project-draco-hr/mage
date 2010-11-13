@@ -1,9 +1,12 @@
 {
   if (this.attachments.contains(permanentId)) {
-    if (!game.replaceEvent(new GameEvent(GameEvent.EventType.UNATTACH,objectId,permanentId,controllerId,damage))) {
+    if (!game.replaceEvent(new GameEvent(GameEvent.EventType.UNATTACH,objectId,permanentId,controllerId))) {
       this.attachments.remove(permanentId);
-      game.getPermanent(permanentId).attachTo(null);
-      game.fireEvent(new GameEvent(GameEvent.EventType.UNATTACHED,objectId,permanentId,controllerId,damage));
+      Permanent attachment=game.getPermanent(permanentId);
+      if (attachment != null) {
+        attachment.attachTo(null);
+      }
+      game.fireEvent(new GameEvent(GameEvent.EventType.UNATTACHED,objectId,permanentId,controllerId));
       return true;
     }
   }
