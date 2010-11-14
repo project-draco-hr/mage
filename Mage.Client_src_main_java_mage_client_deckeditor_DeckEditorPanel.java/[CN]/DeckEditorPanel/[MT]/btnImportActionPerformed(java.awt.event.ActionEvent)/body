@@ -6,7 +6,13 @@
     File file=fcImportDeck.getSelectedFile();
     try {
       setCursor(new Cursor(Cursor.WAIT_CURSOR));
-      deck=Deck.load(importDeck(file.getPath()));
+      DeckImporter importer=getDeckImporter(file.getPath());
+      if (importer != null) {
+        deck=Deck.load(importer.importDeck(file.getPath()));
+      }
+ else {
+        JOptionPane.showMessageDialog(MageFrame.getDesktop(),"Unknown deck format","Error importing deck",JOptionPane.ERROR_MESSAGE);
+      }
     }
  catch (    Exception ex) {
       Logger.getLogger(DeckEditorPanel.class.getName()).log(Level.SEVERE,null,ex);

@@ -1,26 +1,15 @@
 {
   if (line.length() == 0 || line.startsWith("//"))   return;
-  boolean sideboard=false;
-  if (line.startsWith("SB:")) {
-    line=line.substring(3).trim();
+  if (line.startsWith("Sideboard")) {
     sideboard=true;
+    return;
   }
   int delim=line.indexOf(' ');
   String lineNum=line.substring(0,delim).trim();
-  int setStart=line.indexOf('[') + 1;
-  int setEnd=line.indexOf(']');
-  String setCode=line.substring(setStart,setEnd).trim();
-  String lineName=line.substring(setEnd + 1).trim();
+  String lineName=line.substring(delim).trim();
   try {
     int num=Integer.parseInt(lineNum);
-    ExpansionSet set=Sets.findSet(setCode);
-    String cardName;
-    if (set != null) {
-      cardName=set.findCard(lineName);
-    }
- else {
-      cardName=Sets.findCard(lineName);
-    }
+    String cardName=Sets.findCard(lineName);
     if (cardName == null)     sbMessage.append("Could not find card: '").append(lineName).append("' at line ").append(lineCount).append("\n");
  else {
       for (int i=0; i < num; i++) {
