@@ -1,23 +1,28 @@
 {
   List<Card> booster=new ArrayList<Card>();
+  if (!hasBoosters)   return booster;
   if (parentSet != null) {
-    parentSet.getRandom(Rarity.LAND);
+    for (int i=0; i < numBoosterLands; i++) {
+      addToBooster(booster,parentSet,Rarity.LAND);
+    }
   }
  else {
-    booster.add(getRandom(Rarity.LAND));
+    for (int i=0; i < numBoosterLands; i++) {
+      addToBooster(booster,this,Rarity.LAND);
+    }
   }
   for (int i=0; i < numBoosterCommon; i++) {
-    booster.add(getRandom(Rarity.COMMON));
+    addToBooster(booster,this,Rarity.COMMON);
   }
   for (int i=0; i < numBoosterUncommon; i++) {
-    booster.add(getRandom(Rarity.UNCOMMON));
+    addToBooster(booster,this,Rarity.UNCOMMON);
   }
   for (int i=0; i < numBoosterRare; i++) {
     if (rnd.nextInt(ratioBoosterMythic) == 1) {
-      booster.add(getRandom(Rarity.MYTHIC));
+      addToBooster(booster,this,Rarity.MYTHIC);
     }
  else {
-      booster.add(getRandom(Rarity.RARE));
+      addToBooster(booster,this,Rarity.RARE);
     }
   }
   return booster;
