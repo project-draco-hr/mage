@@ -1,0 +1,42 @@
+{
+  if (!isLoaded)   return -1;
+  File data=new File(PLUGIN_DATA_FOLDER_PATH + File.separator + DATA_STORAGE_FILE);
+  if (!data.exists()) {
+    return 0;
+  }
+  if (data.exists()) {
+    ObjectInputStream ois=null;
+    try {
+synchronized (this) {
+        ois=new ObjectInputStream(new FileInputStream(data));
+        Object o=ois.readObject();
+        CounterBean c=null;
+        if (o instanceof CounterBean) {
+          c=(CounterBean)o;
+        }
+        ois.close();
+        return c.getGamesPlayed();
+      }
+    }
+ catch (    EOFException e) {
+      return 0;
+    }
+catch (    IOException e) {
+      throw new PluginException(e);
+    }
+catch (    ClassNotFoundException e) {
+      throw new PluginException(e);
+    }
+ finally {
+      if (ois != null)       try {
+        ois.close();
+      }
+ catch (      Exception e) {
+      }
+    }
+  }
+ else {
+    log.error("Counter plugin: data file doesn't exist, please restart plugin.");
+    return 0;
+  }
+}
