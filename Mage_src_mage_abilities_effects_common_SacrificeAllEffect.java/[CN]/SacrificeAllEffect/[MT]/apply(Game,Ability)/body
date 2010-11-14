@@ -3,7 +3,7 @@
   for (  Player player : game.getPlayers().values()) {
     int numTargets=Math.min(amount,game.getBattlefield().countAll(filter,player.getId()));
     filter.setTargetController(TargetController.YOU);
-    TargetPermanent target=new TargetPermanent(numTargets,filter);
+    TargetControlledPermanent target=new TargetControlledPermanent(numTargets,numTargets,filter,false);
     while (!target.isChosen()) {
       player.choose(Outcome.Sacrifice,target,game);
     }
@@ -11,7 +11,7 @@
   }
   for (  UUID permID : perms) {
     Permanent permanent=game.getPermanent(permID);
-    permanent.sacrifice(source.getSourceId(),game);
+    if (permanent != null)     permanent.sacrifice(source.getSourceId(),game);
   }
   return true;
 }
