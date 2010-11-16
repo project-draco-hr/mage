@@ -1,3 +1,17 @@
 {
-  initComponents();
+  boolean initialized=false;
+  if (Plugins.getInstance().isThemePluginLoaded()) {
+    tablesPanel=new mage.client.table.TablesPanel();
+    Map<String,JComponent> ui=tablesPanel.getUIComponents();
+    JComponent container=Plugins.getInstance().updateTablePanel(ui);
+    if (container != null) {
+      initComponents(container);
+      container.add(tablesPanel);
+      container.setOpaque(false);
+      initialized=true;
+    }
+  }
+  if (!initialized) {
+    initComponents();
+  }
 }
