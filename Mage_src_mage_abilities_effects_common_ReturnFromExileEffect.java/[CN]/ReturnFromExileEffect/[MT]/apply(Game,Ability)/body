@@ -1,9 +1,12 @@
 {
-  Player player;
-  for (  UUID cardId : game.getExile().getExileZone(exileId)) {
-    Card card=game.getCard(cardId);
-    card.moveToZone(zone,game,false);
+  ExileZone exile=game.getExile().getExileZone(exileId);
+  if (exile != null) {
+    for (    UUID cardId : exile) {
+      Card card=game.getCard(cardId);
+      card.moveToZone(zone,game,false);
+    }
+    exile.clear();
+    return true;
   }
-  game.getExile().getExileZone(exileId).clear();
-  return true;
+  return false;
 }

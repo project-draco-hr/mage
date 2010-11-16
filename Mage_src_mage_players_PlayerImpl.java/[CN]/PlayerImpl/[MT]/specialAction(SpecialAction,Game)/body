@@ -1,8 +1,8 @@
 {
-  if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.ACTIVATE_ABILITY,action.getId(),playerId))) {
+  if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.ACTIVATE_ABILITY,action.getSourceId(),action.getId(),playerId))) {
     game.bookmarkState();
     if (action.activate(game,false)) {
-      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.ACTIVATED_ABILITY,action.getId(),playerId));
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.ACTIVATED_ABILITY,action.getSourceId(),action.getId(),playerId));
       game.fireInformEvent(name + action.getActivatedMessage(game));
       if (action.resolve(game)) {
         game.removeLastBookmark();

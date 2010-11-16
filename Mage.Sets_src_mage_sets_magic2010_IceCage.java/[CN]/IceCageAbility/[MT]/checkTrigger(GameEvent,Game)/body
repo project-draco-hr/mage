@@ -1,9 +1,11 @@
 {
-  Permanent enchantment=game.getPermanent(sourceId);
-  if (enchantment != null && enchantment.getAttachedTo() != null) {
-    if (event.getTargetId().equals(enchantment.getAttachedTo()) && event.getType() == EventType.TARGETED) {
-      trigger(game,event.getPlayerId());
-      return true;
+  if (event.getType() == EventType.TARGETED) {
+    Permanent enchantment=game.getPermanent(sourceId);
+    if (enchantment != null && enchantment.getAttachedTo() != null) {
+      if (event.getTargetId().equals(enchantment.getAttachedTo())) {
+        trigger(game,event.getPlayerId());
+        return true;
+      }
     }
   }
   return false;
