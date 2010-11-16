@@ -1,0 +1,27 @@
+{
+  String filename="/wood.png";
+  try {
+    InputStream is=this.getClass().getResourceAsStream(filename);
+    if (is == null)     throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
+    BufferedImage background=ImageIO.read(is);
+    if (background == null)     throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
+    if (ui.containsKey("gamePanel") && ui.containsKey("jLayeredPane")) {
+      ImagePanel bgPanel=new ImagePanel(background,ImagePanel.TILED);
+      unsetOpaque(ui.get("jSplitPane1"));
+      unsetOpaque(ui.get("pnlBattlefield"));
+      unsetOpaque(ui.get("jPanel3"));
+      unsetOpaque(ui.get("hand"));
+      unsetOpaque(ui.get("chatPanel"));
+      ui.get("gamePanel").remove(ui.get("jLayeredPane"));
+      bgPanel.add(ui.get("jLayeredPane"));
+      ui.get("gamePanel").add(bgPanel);
+    }
+ else {
+      log.error("error: no components");
+    }
+  }
+ catch (  Exception e) {
+    log.error(e.getMessage(),e);
+    return;
+  }
+}
