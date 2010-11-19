@@ -2,8 +2,8 @@
   ZoneChangeEvent event=new ZoneChangeEvent(this.getId(),this.getControllerId(),Zone.BATTLEFIELD,zone);
   if (!game.replaceEvent(event)) {
     if (game.getPlayer(controllerId).removeFromBattlefield(this,game)) {
-      Card card=game.getCard(objectId);
-      return card.moveToZone(event.getToZone(),game,flag);
+      CardImpl card=(CardImpl)game.getCard(objectId);
+      return card.moveToZone(event.getToZone(),controllerId,game,flag);
     }
   }
   return false;

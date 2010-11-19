@@ -1,31 +1,3 @@
 {
-  Zone fromZone=zone;
-  ZoneChangeEvent event=new ZoneChangeEvent(this.getId(),ownerId,fromZone,toZone);
-  if (!game.replaceEvent(event)) {
-switch (event.getToZone()) {
-case GRAVEYARD:
-      game.getPlayer(ownerId).putInGraveyard(this,game,!flag);
-    break;
-case HAND:
-  game.getPlayer(ownerId).getHand().add(this);
-break;
-case EXILED:
-game.getExile().getPermanentExile().add(this);
-break;
-case LIBRARY:
-if (flag) game.getPlayer(ownerId).getLibrary().putOnTop(this,game);
- else game.getPlayer(ownerId).getLibrary().putOnBottom(this,game);
-break;
-case BATTLEFIELD:
-PermanentCard permanent=new PermanentCard(this,ownerId);
-game.getBattlefield().addPermanent(permanent);
-permanent.entersBattlefield(game);
-game.applyEffects();
-break;
-}
-zone=event.getToZone();
-game.fireEvent(new ZoneChangeEvent(this.getId(),ownerId,fromZone,event.getToZone()));
-return zone == toZone;
-}
-return false;
+  return moveToZone(toZone,ownerId,game,flag);
 }
