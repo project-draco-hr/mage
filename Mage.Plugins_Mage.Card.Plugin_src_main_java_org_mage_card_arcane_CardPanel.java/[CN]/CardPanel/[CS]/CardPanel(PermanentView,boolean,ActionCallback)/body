@@ -3,6 +3,7 @@
   this.callback=callback;
   setBackground(Color.black);
   setOpaque(false);
+  addMouseListener(this);
   titleText=new GlowText();
   setText(gameCard);
   titleText.setFont(getFont().deriveFont(Font.BOLD,13f));
@@ -37,6 +38,8 @@
   imagePanel.setScalingType(ScalingType.nearestNeighbor);
   imagePanel.setScalingBlur(true);
   imagePanel.setScalingMultiPassType(MultipassType.none);
+  String cardType=getType(newGameCard);
+  popupText.setText(getText(cardType,newGameCard));
   if (!loadImage)   return;
   Util.threadPool.submit(new Runnable(){
     public void run(){

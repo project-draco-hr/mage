@@ -1,0 +1,33 @@
+{
+  StringBuilder sb=new StringBuilder();
+  if (card instanceof StackAbilityView || card instanceof AbilityView) {
+    for (    String rule : card.getRules()) {
+      sb.append("\n").append(rule);
+    }
+  }
+ else {
+    sb.append(card.getName());
+    if (card.getManaCost().size() > 0) {
+      sb.append("\n").append(card.getManaCost());
+    }
+    sb.append("\n").append(cardType);
+    if (card.getColor().hasColor()) {
+      sb.append("\n").append(card.getColor().toString());
+    }
+    if (card.getCardTypes().contains(CardType.CREATURE)) {
+      sb.append("\n").append(card.getPower()).append("/").append(card.getToughness());
+    }
+ else     if (card.getCardTypes().contains(CardType.PLANESWALKER)) {
+      sb.append("\n").append(card.getLoyalty());
+    }
+    for (    String rule : card.getRules()) {
+      sb.append("\n").append(rule);
+    }
+    if (card.getExpansionSetCode() != null && card.getExpansionSetCode().length() > 0) {
+      sb.append("\n").append(card.getCardNumber()).append(" - ");
+      sb.append(card.getExpansionSetCode()).append(" - ");
+      sb.append(card.getRarity().toString());
+    }
+  }
+  return sb.toString();
+}
