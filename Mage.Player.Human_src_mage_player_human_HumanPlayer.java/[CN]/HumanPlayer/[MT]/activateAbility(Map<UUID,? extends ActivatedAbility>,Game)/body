@@ -1,12 +1,14 @@
 {
   if (abilities.size() == 1) {
-    activateAbility(abilities.values().iterator().next(),game);
-  }
- else {
-    game.fireGetChoiceEvent(playerId,name,abilities.values());
-    waitForResponse();
-    if (response.getUUID() != null) {
-      if (abilities.containsKey(response.getUUID()))       activateAbility(abilities.get(response.getUUID()),game);
+    ActivatedAbility ability=abilities.values().iterator().next();
+    if (ability.getTargets().size() != 0 || !(ability.getCosts().size() == 1 && ability.getCosts().get(0) instanceof SacrificeSourceCost)) {
+      activateAbility(ability,game);
+      return;
     }
+  }
+  game.fireGetChoiceEvent(playerId,name,abilities.values());
+  waitForResponse();
+  if (response.getUUID() != null) {
+    if (abilities.containsKey(response.getUUID()))     activateAbility(abilities.get(response.getUUID()),game);
   }
 }
