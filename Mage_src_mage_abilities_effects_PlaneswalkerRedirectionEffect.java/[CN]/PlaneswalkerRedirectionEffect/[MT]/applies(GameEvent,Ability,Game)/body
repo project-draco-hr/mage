@@ -1,0 +1,23 @@
+{
+  if (event.getType() == EventType.DAMAGE_PLAYER) {
+    UUID playerId=getSourceControllerId(event.getSourceId(),game);
+    if (game.getOpponents(event.getTargetId()).contains(playerId)) {
+      Player target=game.getPlayer(event.getTargetId());
+      Player player=game.getPlayer(playerId);
+      if (target != null) {
+        int numPlaneswalkers=game.getBattlefield().countAll(filter,target.getId());
+        if (numPlaneswalkers > 0 && player.chooseUse(outcome,"Redirect damage to planeswalker?",game)) {
+          redirectTarget=new TargetPermanent(filter);
+          if (numPlaneswalkers == 1) {
+            redirectTarget.add(game.getBattlefield().getAllActivePermanents(filter,target.getId()).get(0).getId(),game);
+          }
+ else {
+            player.choose(Outcome.Damage,redirectTarget,game);
+          }
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

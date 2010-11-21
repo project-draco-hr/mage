@@ -1,8 +1,9 @@
 {
   List<ReplacementEffect> replaceEffects=new ArrayList<ReplacementEffect>();
+  if (planeswalkerRedirectionEffect.applies(event,null,game))   replaceEffects.add(planeswalkerRedirectionEffect);
   for (  ReplacementEffect effect : replacementEffects.keySet()) {
     if (effect.applies(event,replacementEffects.get(effect),game)) {
-      if (effect.getDuration() != Duration.OneUse || !effect.isUsed())       replaceEffects.add((ReplacementEffect)effect);
+      if (effect.getDuration() != Duration.OneUse || !effect.isUsed())       replaceEffects.add(effect);
     }
   }
   return replaceEffects;

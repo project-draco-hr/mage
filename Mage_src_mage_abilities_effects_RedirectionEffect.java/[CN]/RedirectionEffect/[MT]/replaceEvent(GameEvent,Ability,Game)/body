@@ -1,0 +1,14 @@
+{
+  Permanent permanent=game.getPermanent(redirectTarget.getFirstTarget());
+  Ability damageSource=getSource(event.getSourceId(),game);
+  if (permanent != null) {
+    permanent.damage(event.getAmount(),damageSource.getId(),game,event.getFlag());
+    return true;
+  }
+  Player player=game.getPlayer(redirectTarget.getFirstTarget());
+  if (player != null) {
+    player.damage(event.getAmount(),damageSource.getId(),game,false,event.getFlag());
+    return true;
+  }
+  return false;
+}

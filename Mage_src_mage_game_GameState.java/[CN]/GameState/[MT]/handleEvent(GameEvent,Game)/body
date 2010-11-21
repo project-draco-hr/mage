@@ -1,12 +1,18 @@
 {
   watchers.watch(event,game);
   if (!replaceEvent(event,game)) {
+    if (event.getType() == EventType.ZONE_CHANGE) {
+      ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+      if (zEvent.getFromZone() == Zone.BATTLEFIELD) {
+        zEvent.getTarget().checkTriggers(zEvent.getToZone(),event,game);
+      }
+    }
     for (    Player player : players.values()) {
       player.checkTriggers(event,game);
     }
+    battlefield.checkTriggers(event,game);
+    stack.checkTriggers(event,game);
+    delayed.checkTriggers(event,game);
+    exile.checkTriggers(event,game);
   }
-  battlefield.checkTriggers(event,game);
-  stack.checkTriggers(event,game);
-  delayed.checkTriggers(event,game);
-  exile.checkTriggers(event,game);
 }
