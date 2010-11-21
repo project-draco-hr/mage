@@ -2,19 +2,26 @@
   boolean changed=false;
   for (  CardView card : cardsView.values()) {
     if (!cards.containsKey(card.getId())) {
-      Card cardImg=new Card(card,bigCard,Config.dimensions,gameId);
-      cards.put(card.getId(),cardImg);
-      cardArea.add(cardImg);
+      addCard(card,bigCard,gameId);
       changed=true;
     }
     cards.get(card.getId()).update(card);
   }
-  for (Iterator<Entry<UUID,Card>> i=cards.entrySet().iterator(); i.hasNext(); ) {
-    Entry<UUID,Card> entry=i.next();
+  for (Iterator<Entry<UUID,MageCard>> i=cards.entrySet().iterator(); i.hasNext(); ) {
+    Entry<UUID,MageCard> entry=i.next();
     if (!cardsView.containsKey(entry.getKey())) {
       removeCard(entry.getKey());
       i.remove();
       changed=true;
+    }
+  }
+  if (!mouseHandlingEnabled) {
+synchronized (this) {
+      if (!mouseHandlingEnabled) {
+        mouseHandlingEnabled=true;
+        jScrollPane1.addMouseListener(new MageMouseAdapter(cardArea,gameId));
+        jScrollPane1.addMouseMotionListener(new MageMouseMotionAdapter(cardArea,bigCard));
+      }
     }
   }
   cardArea.setPreferredSize(new Dimension(cards.size() * Config.dimensions.frameWidth,Config.dimensions.frameHeight));
@@ -22,5 +29,8 @@
   cardArea.repaint();
   this.revalidate();
   this.repaint();
+  if (changed) {
+    layoutCards(Config.dimensions);
+  }
   return changed;
 }

@@ -1,6 +1,10 @@
 {
   this.gameCard=newGameCard;
   this.callback=callback;
+  this.isPermanent=this.gameCard instanceof PermanentView;
+  if (isPermanent) {
+    this.gamePermanent=(PermanentView)this.gameCard;
+  }
   setBackground(Color.black);
   setOpaque(false);
   titleText=new GlowText();
@@ -15,7 +19,7 @@
     ptText.setText(gameCard.getPower() + "/" + gameCard.getToughness());
   }
  else   if (CardUtil.isPlaneswalker(gameCard)) {
-    ptText.setText(gameCard.getOriginal().getLoyalty());
+    ptText.setText(gameCard.getLoyalty());
   }
   ptText.setFont(getFont().deriveFont(Font.BOLD,13f));
   ptText.setForeground(Color.white);
@@ -43,7 +47,7 @@
   Util.threadPool.submit(new Runnable(){
     public void run(){
       try {
-        tappedAngle=gameCard.isTapped() ? CardPanel.TAPPED_ANGLE : 0;
+        tappedAngle=isTapped() ? CardPanel.TAPPED_ANGLE : 0;
         BufferedImage srcImage=ImageCache.getImageOriginal(gameCard);
         srcImage=ImageCache.getNormalSizeImage(srcImage);
         if (srcImage != null) {
