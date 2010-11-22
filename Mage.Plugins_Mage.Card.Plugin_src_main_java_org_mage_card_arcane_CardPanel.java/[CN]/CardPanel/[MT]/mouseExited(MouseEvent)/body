@@ -1,7 +1,11 @@
 {
   if (getMousePosition(true) != null)   return;
-  if (popup != null) {
-    popup.hide();
-    popupShowing=false;
+  if (popupShowing) {
+synchronized (this) {
+      if (popupShowing) {
+        popupShowing=false;
+        callback.mouseExited(e);
+      }
+    }
   }
 }
