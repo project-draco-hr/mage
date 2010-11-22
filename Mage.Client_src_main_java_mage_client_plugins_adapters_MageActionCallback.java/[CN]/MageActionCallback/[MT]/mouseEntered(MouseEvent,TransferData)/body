@@ -6,4 +6,25 @@
   popup.hide();
   popup=factory.getPopup(data.component,data.popupText,(int)data.locationOnScreen.getX() + data.popupOffsetX,(int)data.locationOnScreen.getY() + data.popupOffsetY + 40);
   popup.show();
+  List<UUID> targets=data.card.getTargets();
+  if (targets != null) {
+    for (    UUID uuid : targets) {
+      PlayAreaPanel p=session.getGame().getPlayers().get(uuid);
+      if (p != null) {
+        Point target=p.getLocationOnScreen();
+        Point me=data.locationOnScreen;
+        ArrowBuilder.addArrow((int)me.getX() + 35,(int)me.getY(),(int)target.getX() + 40,(int)target.getY() - 40,Color.red);
+      }
+ else {
+        for (        PlayAreaPanel pa : session.getGame().getPlayers().values()) {
+          MagePermanent permanent=pa.getBattlefieldPanel().getPermanents().get(uuid);
+          if (permanent != null) {
+            Point target=permanent.getLocationOnScreen();
+            Point me=data.locationOnScreen;
+            ArrowBuilder.addArrow((int)me.getX() + 35,(int)me.getY(),(int)target.getX() + 40,(int)target.getY() + 10,Color.red);
+          }
+        }
+      }
+    }
+  }
 }
