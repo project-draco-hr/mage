@@ -3,15 +3,11 @@
   this.gameId=gameId;
   for (  CardView card : showCards.values()) {
     if (!cards.containsKey(card.getId())) {
-      Card cardImg=new Card(card,bigCard,Config.dimensions,gameId);
-      cardImg.addMouseListener(this);
-      add(cardImg);
-      cardImg.update(card);
-      cards.put(card.getId(),cardImg);
+      addCard(card,bigCard,gameId);
     }
   }
-  for (Iterator<Entry<UUID,Card>> i=cards.entrySet().iterator(); i.hasNext(); ) {
-    Entry<UUID,Card> entry=i.next();
+  for (Iterator<Entry<UUID,MageCard>> i=cards.entrySet().iterator(); i.hasNext(); ) {
+    Entry<UUID,MageCard> entry=i.next();
     if (!showCards.containsKey(entry.getKey())) {
       removeCard(entry.getKey());
       i.remove();
