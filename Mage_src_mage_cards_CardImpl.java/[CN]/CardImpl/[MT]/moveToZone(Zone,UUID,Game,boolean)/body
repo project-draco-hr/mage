@@ -1,6 +1,6 @@
 {
-  Zone fromZone=zone;
-  ZoneChangeEvent event=new ZoneChangeEvent(this.objectId,controllerId,fromZone,toZone);
+  Zone fromZone=game.getZone(objectId);
+  ZoneChangeEvent event=new ZoneChangeEvent(this.objectId,sourceId,ownerId,fromZone,toZone);
   if (!game.replaceEvent(event)) {
 switch (event.getToZone()) {
 case GRAVEYARD:
@@ -8,6 +8,9 @@ case GRAVEYARD:
     break;
 case HAND:
   game.getPlayer(ownerId).getHand().add(this);
+break;
+case STACK:
+game.getStack().push(new Spell(this,this.getSpellAbility().copy(),ownerId));
 break;
 case EXILED:
 game.getExile().getPermanentExile().add(this);
@@ -24,9 +27,9 @@ game.applyEffects();
 if (flag) permanent.setTapped(true);
 break;
 }
-zone=event.getToZone();
+game.setZone(objectId,event.getToZone());
 game.fireEvent(event);
-return zone == toZone;
+return game.getZone(objectId) == toZone;
 }
 return false;
 }

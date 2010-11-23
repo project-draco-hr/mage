@@ -1,8 +1,11 @@
 {
-  if (event.getType() == EventType.DISCARD_CARD && event.getTargetId().equals(source.getSourceId())) {
-    StackObject spell=game.getStack().getStackObject(event.getSourceId());
-    if (spell != null && game.getOpponents(source.getControllerId()).contains(spell.getControllerId())) {
-      return true;
+  if (event.getType() == EventType.ZONE_CHANGE && event.getTargetId().equals(source.getSourceId())) {
+    ZoneChangeEvent zcEvent=(ZoneChangeEvent)event;
+    if (zcEvent.getFromZone() == Zone.HAND && zcEvent.getToZone() == Zone.GRAVEYARD) {
+      StackObject spell=game.getStack().getStackObject(event.getSourceId());
+      if (spell != null && game.getOpponents(source.getControllerId()).contains(spell.getControllerId())) {
+        return true;
+      }
     }
   }
   return false;

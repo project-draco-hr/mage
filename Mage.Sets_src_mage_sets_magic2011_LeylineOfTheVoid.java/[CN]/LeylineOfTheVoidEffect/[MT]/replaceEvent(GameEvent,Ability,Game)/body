@@ -1,3 +1,15 @@
 {
-  return true;
+  if (((ZoneChangeEvent)event).getFromZone() == Zone.BATTLEFIELD) {
+    Permanent permanent=((ZoneChangeEvent)event).getTarget();
+    if (permanent != null) {
+      return permanent.moveToExile(null,"",source.getId(),game);
+    }
+  }
+ else {
+    Card card=game.getCard(event.getTargetId());
+    if (card != null) {
+      return card.moveToExile(null,"",source.getId(),game);
+    }
+  }
+  return false;
 }

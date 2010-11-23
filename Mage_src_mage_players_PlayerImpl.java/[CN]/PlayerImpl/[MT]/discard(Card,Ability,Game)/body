@@ -1,10 +1,6 @@
 {
-  if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DISCARD_CARD,card.getId(),source == null ? null : source.getId(),playerId))) {
-    removeFromHand(card,game);
-    if (card.moveToZone(Zone.GRAVEYARD,game,false)) {
-      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DISCARDED_CARD,card.getId(),source == null ? null : source.getId(),playerId));
-      return true;
-    }
-  }
-  return false;
+  removeFromHand(card,game);
+  card.moveToZone(Zone.GRAVEYARD,source == null ? null : source.getId(),game,false);
+  game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DISCARDED_CARD,card.getId(),source == null ? null : source.getId(),playerId));
+  return true;
 }

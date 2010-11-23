@@ -1,0 +1,16 @@
+{
+  while (!abort) {
+    game.fireSelectTargetEvent(playerId,target.getMessage(),cards,target.isRequired());
+    waitForResponse();
+    if (response.getUUID() != null) {
+      if (target.canTarget(response.getUUID(),cards,game)) {
+        target.add(response.getUUID(),game);
+        return true;
+      }
+    }
+ else     if (!target.isRequired()) {
+      return false;
+    }
+  }
+  return false;
+}

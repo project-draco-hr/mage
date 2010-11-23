@@ -1,9 +1,19 @@
 {
-  for (  Entry<AsThoughEffect,Ability> entry : asThoughEffects.entrySet()) {
-    AsThoughEffect effect=entry.getKey();
+  for (  Permanent permanent : game.getBattlefield().getAllPermanents()) {
+    for (    Ability ability : permanent.getAbilities().getStaticAbilities(Zone.BATTLEFIELD)) {
+      for (      Effect effect : ability.getEffects(EffectType.ASTHOUGH)) {
+        AsThoughEffect rEffect=(AsThoughEffect)effect;
+        if (rEffect.applies(objectId,ability,game)) {
+          return true;
+        }
+      }
+    }
+  }
+  for (  AsThoughEffect entry : asThoughEffects) {
+    AsThoughEffect effect=entry;
     if (effect.getAsThoughEffectType() == type) {
       if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
-        if (effect.applies(objectId,entry.getValue(),game)) {
+        if (effect.applies(objectId,abilityMap.get(entry),game)) {
           return true;
         }
       }

@@ -2,14 +2,14 @@
   MageObject object;
   if (state.getBattlefield().containsPermanent(objectId)) {
     object=state.getBattlefield().getPermanent(objectId);
-    object.setZone(Zone.BATTLEFIELD);
+    state.setZone(objectId,Zone.BATTLEFIELD);
     return object;
   }
   object=getCard(objectId);
   if (object != null)   return object;
   for (  StackObject item : state.getStack()) {
     if (item.getId().equals(objectId)) {
-      item.setZone(Zone.STACK);
+      state.setZone(objectId,Zone.STACK);
       return item;
     }
   }

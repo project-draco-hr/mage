@@ -6,7 +6,7 @@
   do {
     card=player.getLibrary().removeFromTop(game);
     if (card == null)     break;
-    card.moveToExile(exile.getId(),exile.getName(),game);
+    card.moveToExile(exile.getId(),exile.getName(),source.getId(),game);
   }
  while (card.getCardType().contains(CardType.LAND) || card.getManaCost().convertedManaCost() >= sourceCost);
   if (card != null) {
@@ -18,7 +18,7 @@
   while (exile.size() > 0) {
     card=exile.getRandom(game);
     exile.remove(card.getId());
-    card.moveToZone(Zone.LIBRARY,game,false);
+    card.moveToZone(Zone.LIBRARY,source.getId(),game,false);
   }
   return true;
 }

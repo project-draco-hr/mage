@@ -1,9 +1,35 @@
 {
   List<ReplacementEffect> replaceEffects=new ArrayList<ReplacementEffect>();
   if (planeswalkerRedirectionEffect.applies(event,null,game))   replaceEffects.add(planeswalkerRedirectionEffect);
-  for (  ReplacementEffect effect : replacementEffects.keySet()) {
-    if (effect.applies(event,replacementEffects.get(effect),game)) {
-      if (effect.getDuration() != Duration.OneUse || !effect.isUsed())       replaceEffects.add(effect);
+  for (  Card card : game.getCards()) {
+    if (game.getZone(card.getId()) == Zone.HAND || game.getZone(card.getId()) == Zone.GRAVEYARD) {
+      for (      Ability ability : card.getAbilities().getStaticAbilities(game.getZone(card.getId()))) {
+        for (        Effect effect : ability.getEffects(EffectType.REPLACEMENT)) {
+          ReplacementEffect rEffect=(ReplacementEffect)effect;
+          if (rEffect.applies(event,ability,game)) {
+            replaceEffects.add(rEffect);
+            abilityMap.put(rEffect,ability);
+          }
+        }
+      }
+    }
+  }
+  for (  Permanent permanent : game.getBattlefield().getAllPermanents()) {
+    for (    Ability ability : permanent.getAbilities().getStaticAbilities(Zone.BATTLEFIELD)) {
+      for (      Effect effect : ability.getEffects(EffectType.REPLACEMENT)) {
+        ReplacementEffect rEffect=(ReplacementEffect)effect;
+        if (rEffect.applies(event,ability,game)) {
+          replaceEffects.add(rEffect);
+          abilityMap.put(rEffect,ability);
+        }
+      }
+    }
+  }
+  for (  ReplacementEffect effect : replacementEffects) {
+    if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
+      if (effect.applies(event,abilityMap.get(effect),game)) {
+        replaceEffects.add(effect);
+      }
     }
   }
   return replaceEffects;

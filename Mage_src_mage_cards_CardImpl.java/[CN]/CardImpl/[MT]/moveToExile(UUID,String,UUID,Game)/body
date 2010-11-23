@@ -1,0 +1,16 @@
+{
+  Zone fromZone=game.getZone(objectId);
+  ZoneChangeEvent event=new ZoneChangeEvent(this.objectId,sourceId,ownerId,fromZone,Zone.EXILED);
+  if (!game.replaceEvent(event)) {
+    if (exileId == null) {
+      game.getExile().getPermanentExile().add(this);
+    }
+ else {
+      game.getExile().createZone(exileId,name).add(this);
+    }
+    game.setZone(objectId,event.getToZone());
+    game.fireEvent(event);
+    return true;
+  }
+  return false;
+}

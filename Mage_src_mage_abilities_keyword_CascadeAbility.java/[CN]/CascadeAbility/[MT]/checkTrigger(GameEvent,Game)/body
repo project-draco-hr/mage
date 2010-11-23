@@ -1,7 +1,10 @@
 {
-  if (event.getType() == EventType.SPELL_CAST && event.getTargetId().equals(this.getSourceId())) {
-    trigger(game,event.getPlayerId());
-    return true;
+  if (event.getType() == EventType.SPELL_CAST) {
+    Spell spell=game.getStack().getSpell(event.getTargetId());
+    if (spell != null && spell.getSourceId().equals(this.getSourceId())) {
+      trigger(game,event.getPlayerId());
+      return true;
+    }
   }
   return false;
 }

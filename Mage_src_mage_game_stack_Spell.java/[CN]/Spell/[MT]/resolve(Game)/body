@@ -6,10 +6,10 @@
       if (!replaced)       result=ability.resolve(game);
  else       result=true;
       if (ability.getEffects().contains(ExileSpellEffect.getInstance()))       game.getExile().getPermanentExile().add(card);
- else       card.moveToZone(Zone.GRAVEYARD,game,false);
+ else       card.moveToZone(Zone.GRAVEYARD,ability.getId(),game,false);
       return result;
     }
-    counter(game);
+    counter(null,game);
     return false;
   }
  else   if (card.getCardType().contains(CardType.ENCHANTMENT) && card.getSubtype().contains("Aura")) {
@@ -19,7 +19,7 @@
       }
       return false;
     }
-    counter(game);
+    counter(null,game);
     return false;
   }
  else {

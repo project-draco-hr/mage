@@ -1,22 +1,28 @@
 {
-  if (effect instanceof ReplacementEffect) {
-    ReplacementEffect newEffect=(ReplacementEffect)effect.copy();
-    newEffect.setTimestamp();
-    replacementEffects.put(newEffect,source);
-  }
- else   if (effect instanceof PreventionEffect) {
-    PreventionEffect newEffect=(PreventionEffect)effect.copy();
-    newEffect.setTimestamp();
-    preventionEffects.put(newEffect,source);
-  }
- else   if (effect instanceof AsThoughEffect) {
-    AsThoughEffect newEffect=(AsThoughEffect)effect.copy();
-    newEffect.setTimestamp();
-    asThoughEffects.put(newEffect,source);
-  }
- else {
-    ContinuousEffect newEffect=(ContinuousEffect)effect.copy();
-    newEffect.setTimestamp();
-    layeredEffects.put(newEffect,source);
-  }
+switch (effect.getEffectType()) {
+case REPLACEMENT:
+    ReplacementEffect newReplacementEffect=(ReplacementEffect)effect.copy();
+  newReplacementEffect.setTimestamp();
+replacementEffects.add(newReplacementEffect);
+abilityMap.put(newReplacementEffect,source);
+break;
+case PREVENTION:
+PreventionEffect newPreventionEffect=(PreventionEffect)effect.copy();
+newPreventionEffect.setTimestamp();
+preventionEffects.add(newPreventionEffect);
+abilityMap.put(newPreventionEffect,source);
+break;
+case ASTHOUGH:
+AsThoughEffect newAsThoughEffect=(AsThoughEffect)effect.copy();
+newAsThoughEffect.setTimestamp();
+asThoughEffects.add(newAsThoughEffect);
+abilityMap.put(newAsThoughEffect,source);
+break;
+default :
+ContinuousEffect newEffect=(ContinuousEffect)effect.copy();
+newEffect.setTimestamp();
+layeredEffects.add(newEffect);
+abilityMap.put(newEffect,source);
+break;
+}
 }
