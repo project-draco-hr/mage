@@ -1,0 +1,22 @@
+{
+  super(new BorderLayout());
+  this.d=d;
+  d.addPropertyChangeListener(l);
+  JPanel p=new JPanel(new BorderLayout());
+  p.setBorder(BorderFactory.createTitledBorder("Progress:"));
+  p.add(progress);
+  JButton b=new JButton("X");
+  b.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      getDownloader().dispose();
+    }
+  }
+);
+  p.add(b,BorderLayout.EAST);
+  add(p,BorderLayout.NORTH);
+  panel.setLayout(new BoxLayout(panel,BoxLayout.Y_AXIS));
+  JScrollPane pane=new JScrollPane(panel);
+  pane.setPreferredSize(new Dimension(500,300));
+  add(pane);
+  for (int i=0; i < d.getJobs().size(); i++)   addJob(i,d.getJobs().get(i));
+}

@@ -1,0 +1,7 @@
+{
+  if (job.getState() == State.WORKING)   throw new IllegalArgumentException("Job already running");
+  if (job.getState() == State.FINISHED)   throw new IllegalArgumentException("Job already finished");
+  job.setState(State.NEW);
+  jobs.add(job);
+  channel.publish(job);
+}

@@ -1,0 +1,31 @@
+{
+  return new AbstractIterator<DownloadJob>(){
+    private int sizeIndex, symIndex, numeric=minNumeric;
+    private File dir=new File(outDir,sizes[sizeIndex]);
+    @Override protected DownloadJob computeNext(){
+      String sym;
+      if (symIndex < symbols.length) {
+        sym=symbols[symIndex++];
+      }
+ else       if (numeric <= maxNumeric) {
+        sym="" + (numeric++);
+      }
+ else {
+        sizeIndex++;
+        if (sizeIndex == sizes.length)         return endOfData();
+        symIndex=0;
+        numeric=0;
+        dir=new File(outDir,sizes[sizeIndex]);
+        return computeNext();
+      }
+      String symbol=sym.replaceAll("/","");
+      File dst=new File(dir,symbol + ".jpg");
+      if (symbol.equals("T"))       symbol="tap";
+ else       if (symbol.equals("Q"))       symbol="untap";
+ else       if (symbol.equals("S"))       symbol="snow";
+      String url=format(urlFmt,sizes[sizeIndex],symbol);
+      return new DownloadJob(sym,fromURL(url),toFile(dst));
+    }
+  }
+;
+}

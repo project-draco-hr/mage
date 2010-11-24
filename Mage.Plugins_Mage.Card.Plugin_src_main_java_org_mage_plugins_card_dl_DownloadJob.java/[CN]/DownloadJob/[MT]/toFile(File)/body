@@ -1,0 +1,16 @@
+{
+  return new Destination(){
+    @Override public OutputStream open() throws IOException {
+      File parent=file.getAbsoluteFile().getParentFile();
+      if (!parent.mkdirs() && !parent.exists())       throw new IOException(parent + ": directory could not be created");
+      return new FileOutputStream(file);
+    }
+    @Override public boolean exists(){
+      return file.isFile();
+    }
+    @Override public void delete() throws IOException {
+      if (file.exists() && !file.delete())       throw new IOException(file + " couldn't be deleted");
+    }
+  }
+;
+}

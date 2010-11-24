@@ -1,0 +1,16 @@
+{
+  return new Source(){
+    private URLConnection c;
+    public URLConnection getConnection() throws IOException {
+      if (c == null)       c=proxy == null ? url.openConnection() : url.openConnection(proxy);
+      return c;
+    }
+    @Override public InputStream open() throws IOException {
+      return getConnection().getInputStream();
+    }
+    @Override public int length() throws IOException {
+      return getConnection().getContentLength();
+    }
+  }
+;
+}

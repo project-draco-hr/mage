@@ -1,0 +1,9 @@
+{
+  PoolFiberFactory f=new PoolFiberFactory(pool);
+  for (int i=0, numThreads=10; i < numThreads; i++) {
+    Fiber fiber=f.create();
+    fiber.start();
+    fibers.add(fiber);
+    channel.subscribe(fiber,new DownloadCallback());
+  }
+}

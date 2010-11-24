@@ -1,0 +1,60 @@
+{
+synchronized (job) {
+    if (job.getState() != State.NEW)     return;
+    job.setState(State.WORKING);
+  }
+  try {
+    Source src=job.getSource();
+    Destination dst=job.getDestination();
+    BoundedRangeModel progress=job.getProgress();
+    if (dst.exists()) {
+      progress.setMaximum(1);
+      progress.setValue(1);
+    }
+ else {
+      progress.setMaximum(src.length());
+      InputStream is=new BufferedInputStream(src.open());
+      try {
+        OutputStream os=new BufferedOutputStream(dst.open());
+        try {
+          byte[] buf=new byte[8 * 1024];
+          int total=0;
+          for (int len; (len=is.read(buf)) != -1; ) {
+            if (job.getState() == State.ABORTED)             throw new IOException("Job was aborted");
+            progress.setValue(total+=len);
+            os.write(buf,0,len);
+          }
+        }
+ catch (        IOException ex) {
+          try {
+            dst.delete();
+          }
+ catch (          IOException ex1) {
+            log.warn("While deleting",ex1);
+          }
+          throw ex;
+        }
+ finally {
+          try {
+            os.close();
+          }
+ catch (          IOException ex) {
+            log.warn("While closing",ex);
+          }
+        }
+      }
+  finally {
+        try {
+          is.close();
+        }
+ catch (        IOException ex) {
+          log.warn("While closing",ex);
+        }
+      }
+    }
+    job.setState(State.FINISHED);
+  }
+ catch (  IOException ex) {
+    job.setError(ex);
+  }
+}

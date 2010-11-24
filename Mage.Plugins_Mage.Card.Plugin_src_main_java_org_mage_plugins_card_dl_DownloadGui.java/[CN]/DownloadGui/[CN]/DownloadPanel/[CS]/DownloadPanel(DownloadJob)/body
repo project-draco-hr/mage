@@ -1,0 +1,28 @@
+{
+  super(new BorderLayout());
+  this.job=job;
+  setBorder(BorderFactory.createTitledBorder(job.getName()));
+  add(bar=new JProgressBar(job.getProgress()));
+  JButton b=new JButton("X");
+  b.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+switch (getJob().getState()) {
+case NEW:
+case WORKING:
+        getJob().setState(State.ABORTED);
+    }
+  }
+}
+);
+add(b,BorderLayout.EAST);
+if (job.getState() == State.FINISHED | job.getState() == State.ABORTED) {
+  changeProgress(+1,0);
+}
+setVisible(job.getState() != State.FINISHED);
+String message=job.getMessage();
+bar.setStringPainted(message != null);
+bar.setString(message);
+Dimension d=getPreferredSize();
+d.width=Integer.MAX_VALUE;
+setMaximumSize(d);
+}
