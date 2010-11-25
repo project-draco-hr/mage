@@ -1,0 +1,12 @@
+{
+  Spell spell=game.getStack().getSpell(event.getSourceId());
+  for (  Effect effect : baseEffects) {
+    if (effect instanceof ContinuousEffect) {
+      if (spell != null)       game.addEffect((ContinuousEffect)effect,spell.getSpellAbility());
+ else       game.addEffect((ContinuousEffect)effect,source);
+    }
+ else     if (spell != null)     effect.apply(game,spell.getSpellAbility());
+ else     effect.apply(game,source);
+  }
+  return false;
+}

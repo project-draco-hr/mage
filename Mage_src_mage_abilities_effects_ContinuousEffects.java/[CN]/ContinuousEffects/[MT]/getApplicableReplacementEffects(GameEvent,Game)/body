@@ -8,7 +8,14 @@
           ReplacementEffect rEffect=(ReplacementEffect)effect;
           if (rEffect.applies(event,ability,game)) {
             replaceEffects.add(rEffect);
-            abilityMap.put(rEffect,ability);
+            abilityMap.put(rEffect.getId(),ability);
+          }
+        }
+        for (        Effect effect : ability.getEffects(EffectType.PREVENTION)) {
+          ReplacementEffect rEffect=(ReplacementEffect)effect;
+          if (rEffect.applies(event,ability,game)) {
+            replaceEffects.add(rEffect);
+            abilityMap.put(rEffect.getId(),ability);
           }
         }
       }
@@ -20,14 +27,28 @@
         ReplacementEffect rEffect=(ReplacementEffect)effect;
         if (rEffect.applies(event,ability,game)) {
           replaceEffects.add(rEffect);
-          abilityMap.put(rEffect,ability);
+          abilityMap.put(rEffect.getId(),ability);
+        }
+      }
+      for (      Effect effect : ability.getEffects(EffectType.PREVENTION)) {
+        ReplacementEffect rEffect=(ReplacementEffect)effect;
+        if (rEffect.applies(event,ability,game)) {
+          replaceEffects.add(rEffect);
+          abilityMap.put(rEffect.getId(),ability);
         }
       }
     }
   }
   for (  ReplacementEffect effect : replacementEffects) {
     if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
-      if (effect.applies(event,abilityMap.get(effect),game)) {
+      if (effect.applies(event,abilityMap.get(effect.getId()),game)) {
+        replaceEffects.add(effect);
+      }
+    }
+  }
+  for (  PreventionEffect effect : preventionEffects) {
+    if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
+      if (effect.applies(event,abilityMap.get(effect.getId()),game)) {
         replaceEffects.add(effect);
       }
     }

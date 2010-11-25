@@ -14,7 +14,7 @@
   }
  else   if (card.getCardType().contains(CardType.ENCHANTMENT) && card.getSubtype().contains("Aura")) {
     if (ability.getTargets().stillLegal(ability,game)) {
-      if (card.putOntoBattlefield(game,Zone.HAND,controllerId)) {
+      if (card.putOntoBattlefield(game,Zone.HAND,ability.getId(),controllerId)) {
         return ability.resolve(game);
       }
       return false;
@@ -23,7 +23,7 @@
     return false;
   }
  else {
-    result=card.putOntoBattlefield(game,Zone.HAND,controllerId);
+    result=card.putOntoBattlefield(game,Zone.HAND,ability.getId(),controllerId);
     resolveKicker(game);
     return result;
   }

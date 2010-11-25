@@ -3,7 +3,6 @@
   for (  Player player : state.getPlayers().values()) {
     if (!player.hasLost() && (player.getLife() <= 0 || player.isEmptyDraw() || player.getCounters().getCount("Poison") >= 10)) {
       player.lost(this);
-      return false;
     }
   }
   for (  Permanent perm : getBattlefield().getAllActivePermanents(CardType.CREATURE)) {
@@ -45,7 +44,7 @@
       }
  else {
         Filter auraFilter=perm.getSpellAbility().getTargets().get(0).getFilter();
-        if (!auraFilter.match(attachedTo)) {
+        if (!auraFilter.match(attachedTo) || attachedTo.hasProtectionFrom(perm)) {
           if (perm.moveToZone(Zone.GRAVEYARD,null,this,false))           somethingHappened=true;
         }
       }
@@ -69,7 +68,7 @@
       if (creature == null) {
         perm.attachTo(null);
       }
- else       if (!creature.getCardType().contains(CardType.CREATURE)) {
+ else       if (!creature.getCardType().contains(CardType.CREATURE) || creature.hasProtectionFrom(perm)) {
         if (creature.removeAttachment(perm.getId(),this))         somethingHappened=true;
       }
     }
@@ -80,7 +79,7 @@
       if (land == null) {
         perm.attachTo(null);
       }
- else       if (!land.getCardType().contains(CardType.LAND)) {
+ else       if (!land.getCardType().contains(CardType.LAND) || land.hasProtectionFrom(perm)) {
         if (land.removeAttachment(perm.getId(),this))         somethingHappened=true;
       }
     }
