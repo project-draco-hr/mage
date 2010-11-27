@@ -1,12 +1,5 @@
 {
   boolean changed=false;
-  for (  CardView card : cardsView.values()) {
-    if (!cards.containsKey(card.getId())) {
-      addCard(card,bigCard,gameId);
-      changed=true;
-    }
-    cards.get(card.getId()).update(card);
-  }
   for (Iterator<Entry<UUID,MageCard>> i=cards.entrySet().iterator(); i.hasNext(); ) {
     Entry<UUID,MageCard> entry=i.next();
     if (!cardsView.containsKey(entry.getKey())) {
@@ -14,6 +7,20 @@
       i.remove();
       changed=true;
     }
+  }
+  for (  CardView card : cardsView.values()) {
+    if (card instanceof StackAbilityView) {
+      CardView tmp=((StackAbilityView)card).getSourceCard();
+      tmp.overrideRules(card.getRules());
+      tmp.setIsAbility(true);
+      tmp.overrideTargets(card.getTargets());
+      card=tmp;
+    }
+    if (!cards.containsKey(card.getId())) {
+      addCard(card,bigCard,gameId);
+      changed=true;
+    }
+    cards.get(card.getId()).update(card);
   }
   cardArea.setPreferredSize(new Dimension(cards.size() * Config.dimensions.frameWidth,Config.dimensions.frameHeight));
   cardArea.revalidate();
