@@ -2,7 +2,13 @@
   int borderSize=Math.round(cardWidth * BLACK_BORDER_SIZE);
   imagePanel.setLocation(cardXOffset + borderSize,cardYOffset + borderSize);
   imagePanel.setSize(cardWidth - borderSize * 2,cardHeight - borderSize * 2);
-  overlayPanel.setVisible(false);
+  if (hasSickness && CardUtil.isCreature(gameCard) && isPermanent) {
+    overlayPanel.setLocation(cardXOffset + borderSize,cardYOffset + borderSize);
+    overlayPanel.setSize(cardWidth - borderSize * 2,cardHeight - borderSize * 2);
+  }
+ else {
+    overlayPanel.setVisible(false);
+  }
   int fontHeight=Math.round(cardHeight * (27f / 680));
   boolean showText=(!isAnimationPanel && fontHeight < 12);
   titleText.setVisible(showText);
