@@ -9,14 +9,14 @@
 );
   try {
     UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-    MageSynthStyleFactory f=new MageSynthStyleFactory(SynthLookAndFeel.getStyleFactory());
-    SynthLookAndFeel.setStyleFactory(f);
   }
  catch (  Exception ex) {
     logger.log(Level.SEVERE,null,ex);
   }
   Plugins.getInstance().loadPlugins();
   initComponents();
+  setSize(1024,768);
+  this.setExtendedState(JFrame.MAXIMIZED_BOTH);
   session=new Session(this);
   connectDialog=new ConnectDialog();
   combat=new CombatDialog();
@@ -65,4 +65,5 @@
     label.setForeground(Color.white);
     label.setBounds(0,0,180,30);
   }
+  session.getUI().addButton(MageComponents.TABLES_MENU_BUTTON,btnGames);
 }
