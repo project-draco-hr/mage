@@ -1,0 +1,19 @@
+{
+  Object buttonSync;
+synchronized (ui) {
+    if (ui.containsKey(name)) {
+      return (JButton)ui.get(name);
+    }
+ else {
+      buttonSync=new Object();
+      sync.put(name,buttonSync);
+    }
+  }
+synchronized (buttonSync) {
+    buttonSync.wait();
+    if (!ui.containsKey(name)) {
+      throw new IllegalStateException("Component wasn't initialized. This should not happen.");
+    }
+    return (JButton)ui.get(name);
+  }
+}

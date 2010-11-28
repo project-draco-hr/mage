@@ -1,0 +1,31 @@
+{
+  frame=null;
+  Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
+    public void uncaughtException(    Thread t,    Throwable e){
+      logger.log(Level.SEVERE,null,e);
+    }
+  }
+);
+  SwingUtilities.invokeLater(new Runnable(){
+    public void run(){
+synchronized (sync) {
+        frame=new MageFrame();
+        frame.setVisible(true);
+        sync.notify();
+      }
+    }
+  }
+);
+synchronized (sync) {
+    if (frame == null) {
+      sync.wait();
+    }
+    ui=MageFrame.getSession().getUI();
+    ui.doClick(MageComponents.TABLES_MENU_BUTTON);
+    ui.doClick(MageComponents.NEW_GAME_BUTTON);
+    ui.doClick(MageComponents.NEW_TABLE_OK_BUTTON,500);
+    ui.doClick(MageComponents.TABLE_WAITING_START_BUTTON);
+  }
+  sleep(3000);
+  frame.setVisible(false);
+}
