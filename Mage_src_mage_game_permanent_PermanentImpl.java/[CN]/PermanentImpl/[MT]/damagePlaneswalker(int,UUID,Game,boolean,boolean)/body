@@ -1,0 +1,15 @@
+{
+  GameEvent event=new DamagePlaneswalkerEvent(objectId,sourceId,controllerId,damage,preventable,combat);
+  if (!game.replaceEvent(event)) {
+    int actualDamage=event.getAmount();
+    if (actualDamage > 0) {
+      if (event.getAmount() > this.loyalty.getValue()) {
+        actualDamage=this.loyalty.getValue();
+      }
+      this.loyalty.boostValue(-actualDamage);
+      game.fireEvent(new DamagedPlaneswalkerEvent(objectId,sourceId,controllerId,actualDamage,combat));
+      return actualDamage;
+    }
+  }
+  return 0;
+}

@@ -1,7 +1,10 @@
 {
-  if (event.getType() == EventType.NONCOMBAT_DAMAGED_PLAYER && game.getOpponents(controllerId).contains(event.getTargetId()) && game.getTurn().getStepType() != PhaseStep.COMBAT_DAMAGE) {
-    trigger(game,this.controllerId);
-    return true;
+  if (event instanceof DamagedPlayerEvent) {
+    DamagedPlayerEvent damageEvent=(DamagedPlayerEvent)event;
+    if (!damageEvent.isCombatDamage() && game.getOpponents(controllerId).contains(event.getTargetId())) {
+      trigger(game,this.controllerId);
+      return true;
+    }
   }
   return false;
 }

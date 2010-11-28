@@ -7,7 +7,7 @@ case LEFT:
   while (true) {
     Player opponent=players.getNext(game);
     if (opponents.contains(opponent.getId())) {
-      defenders.add(opponent.getId());
+      addDefender(opponent.getId(),game);
       break;
     }
   }
@@ -17,13 +17,15 @@ players=game.getState().getPlayerList(attackerId);
 while (true) {
 Player opponent=players.getPrevious(game);
 if (opponents.contains(opponent.getId())) {
-defenders.add(opponent.getId());
+addDefender(opponent.getId(),game);
 break;
 }
 }
 break;
 case MULITPLE:
-defenders.addAll(game.getOpponents(attackerId));
+for (UUID opponentId : game.getOpponents(attackerId)) {
+addDefender(opponentId,game);
+}
 break;
 }
 }
