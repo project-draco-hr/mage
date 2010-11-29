@@ -1,7 +1,7 @@
 {
   if (event.getType() == EventType.ZONE_CHANGE && event.getTargetId().equals(this.getSourceId())) {
     ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
-    if (zEvent.getFromZone() == Zone.BATTLEFIELD) {
+    if ((fromZone == null || zEvent.getFromZone() == fromZone) && (toZone == null || zEvent.getToZone() == toZone)) {
       trigger(game,this.controllerId);
       return true;
     }
