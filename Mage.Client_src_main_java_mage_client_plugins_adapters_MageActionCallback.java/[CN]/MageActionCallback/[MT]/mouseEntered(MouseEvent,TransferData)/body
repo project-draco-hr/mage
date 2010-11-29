@@ -1,11 +1,8 @@
 {
-  if (popup != null)   popup.hide();
-  PopupFactory factory=PopupFactory.getSharedInstance();
-  popup=factory.getPopup(data.component,data.popupText,(int)data.locationOnScreen.getX() + data.popupOffsetX,(int)data.locationOnScreen.getY() + data.popupOffsetY + 40);
-  popup.show();
-  popup.hide();
-  popup=factory.getPopup(data.component,data.popupText,(int)data.locationOnScreen.getX() + data.popupOffsetX,(int)data.locationOnScreen.getY() + data.popupOffsetY + 40);
-  popup.show();
+  this.popupCard=data.card;
+  if (popup != null) {
+    popup.hide();
+  }
   List<UUID> targets=data.card.getTargets();
   if (targets != null) {
     Point parent=SwingUtilities.getRoot(data.component).getLocationOnScreen();
@@ -44,4 +41,20 @@
       }
     }
   }
+  Thread t=new Thread(new Runnable(){
+    @Override public void run(){
+      try {
+        Thread.sleep(500);
+      }
+ catch (      InterruptedException e1) {
+      }
+      if (MageActionCallback.this.popupCard == data.card) {
+        PopupFactory factory=PopupFactory.getSharedInstance();
+        popup=factory.getPopup(data.component,data.popupText,(int)data.locationOnScreen.getX() + data.popupOffsetX,(int)data.locationOnScreen.getY() + data.popupOffsetY + 40);
+        popup.show();
+      }
+    }
+  }
+);
+  t.start();
 }
