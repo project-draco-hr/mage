@@ -1,4 +1,27 @@
 {
-  String s=value.replace("b","{B}").replace("r","{R}").replace("g","{G}").replace("w","{W}").replace("u","{U}");
-  panel.add(new JLabel(s));
+  List<Image> images=new ArrayList<Image>();
+  value=value.toUpperCase();
+  for (int i=0; i < value.length(); i++) {
+    char symbol=value.charAt(i);
+    Image image=Plugins.getInstance().getManaSymbolImage(String.valueOf(symbol));
+    if (image != null) {
+      images.add(image);
+    }
+  }
+  if (images.size() == value.length()) {
+    int dx=0;
+    for (    Image image : images) {
+      ImageIcon icon=new ImageIcon(image);
+      JLabel imageLabel=new JLabel();
+      imageLabel.setSize(11,11);
+      imageLabel.setLocation(dx,0);
+      imageLabel.setIcon(icon);
+      panel.add(imageLabel);
+      dx+=13;
+    }
+  }
+ else {
+    String s=value.replace("B","{B}").replace("R","{R}").replace("G","{G}").replace("W","{W}").replace("U","{U}");
+    panel.add(new JLabel(s));
+  }
 }
