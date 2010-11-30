@@ -1,0 +1,48 @@
+{
+  JPanel p0=new JPanel();
+  p0.setLayout(new BoxLayout(p0,BoxLayout.Y_AXIS));
+  JLabel text=new JLabel("Choose color for your deck: ");
+  p0.add(text);
+  p0.add(Box.createVerticalStrut(5));
+  final ColorsChooser colorsChooser=new ColorsChooser("bu");
+  p0.add(colorsChooser);
+  final JButton btnGenerate=new JButton("Ok");
+  btnGenerate.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      btnGenerate.setEnabled(false);
+      colorsChooser.setEnabled(false);
+      selectedColors=(String)colorsChooser.getSelectedItem();
+      dlg.setVisible(false);
+    }
+  }
+);
+  final JButton btnCancel=new JButton("Cancel");
+  btnCancel.addActionListener(new ActionListener(){
+    public void actionPerformed(    ActionEvent e){
+      dlg.setVisible(false);
+      selectedColors=null;
+    }
+  }
+);
+  Object[] options={btnGenerate,btnCancel};
+  JOptionPane optionPane=new JOptionPane(p0,JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,options,options[1]);
+  dlg=optionPane.createDialog("Generating deck");
+  dlg.setVisible(true);
+  dlg.dispose();
+  if (selectedColors != null) {
+    buildDeck();
+    try {
+      File tmp=File.createTempFile("tempDeck" + UUID.randomUUID().toString(),".dck");
+      tmp.createNewFile();
+      deck.setName("Generated-Deck-" + UUID.randomUUID());
+      deck.getDeckCardLists().save(tmp.getAbsolutePath());
+      JOptionPane.showMessageDialog(null,"Deck has been generated.");
+      return tmp.getAbsolutePath();
+    }
+ catch (    Exception e) {
+      e.printStackTrace();
+      JOptionPane.showMessageDialog(null,"Couldn't generate deck. Try once again.");
+    }
+  }
+  return selectedColors;
+}

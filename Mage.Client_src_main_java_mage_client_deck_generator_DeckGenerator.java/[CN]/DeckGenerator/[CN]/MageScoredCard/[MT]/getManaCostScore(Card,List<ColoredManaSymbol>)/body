@@ -1,0 +1,27 @@
+{
+  int converted=card.getManaCost().convertedManaCost();
+  final Map<String,Integer> singleCount=new HashMap<String,Integer>();
+  int maxSingleCount=0;
+  for (  String symbol : card.getManaCost().getSymbols()) {
+    int count=0;
+    symbol=symbol.replace("{","").replace("}","");
+    if (isColoredMana(symbol)) {
+      for (      ColoredManaSymbol allowed : allowedColors) {
+        if (allowed.toString().equals(symbol)) {
+          count++;
+        }
+      }
+      if (count == 0) {
+        return 0;
+      }
+      Integer typeCount=singleCount.get(symbol);
+      if (typeCount == null) {
+        typeCount=new Integer(0);
+      }
+      typeCount+=1;
+      singleCount.put(symbol,typeCount);
+      maxSingleCount=Math.max(maxSingleCount,typeCount);
+    }
+  }
+  return 2 * converted + +3 * (10 - SINGLE_PENALTY[maxSingleCount]);
+}

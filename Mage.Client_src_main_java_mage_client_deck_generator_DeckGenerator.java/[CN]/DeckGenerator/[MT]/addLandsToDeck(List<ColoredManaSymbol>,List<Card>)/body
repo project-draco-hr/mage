@@ -1,0 +1,56 @@
+{
+  final Map<String,Integer> colorCount=new HashMap<String,Integer>();
+  for (  final Card card : deck.getCards()) {
+    for (    String symbol : card.getManaCost().getSymbols()) {
+      int count=0;
+      symbol=symbol.replace("{","").replace("}","");
+      if (isColoredMana(symbol)) {
+        for (        ColoredManaSymbol allowed : allowedColors) {
+          if (allowed.toString().equals(symbol)) {
+            count++;
+          }
+        }
+        if (count > 0) {
+          Integer typeCount=colorCount.get(symbol);
+          if (typeCount == null) {
+            typeCount=new Integer(0);
+          }
+          typeCount+=1;
+          colorCount.put(symbol,typeCount);
+        }
+      }
+    }
+  }
+  final Map<String,Integer> colorSource=new HashMap<String,Integer>();
+  for (  final ColoredManaSymbol color : ColoredManaSymbol.values()) {
+    colorSource.put(color.toString(),0);
+  }
+  for (  final Card card : landCardPool) {
+  }
+  while (deck.getCards().size() < DECK_SIZE) {
+    ColoredManaSymbol bestColor=null;
+    int lowestRatio=Integer.MAX_VALUE;
+    for (    final ColoredManaSymbol color : ColoredManaSymbol.values()) {
+      final Integer count=colorCount.get(color.toString());
+      if (count != null && count > 0) {
+        final int source=colorSource.get(color.toString());
+        final int ratio;
+        if (source < MIN_SOURCE) {
+          ratio=source - count;
+        }
+ else {
+          ratio=source * 100 / count;
+        }
+        if (ratio < lowestRatio) {
+          lowestRatio=ratio;
+          bestColor=color;
+        }
+      }
+    }
+    final Card landCard=getBestBasicLand(bestColor);
+    Integer count=colorSource.get(bestColor.toString());
+    count++;
+    colorSource.put(bestColor.toString(),count);
+    deck.getCards().add(landCard);
+  }
+}

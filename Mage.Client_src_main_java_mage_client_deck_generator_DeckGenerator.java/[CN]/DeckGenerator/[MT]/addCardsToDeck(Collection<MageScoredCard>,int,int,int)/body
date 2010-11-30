@@ -1,0 +1,19 @@
+{
+  for (int c=count; c > 0; c--) {
+    MageScoredCard bestCard=null;
+    int bestScore=-1;
+    for (    final MageScoredCard draftedCard : remainingCards) {
+      final int score=draftedCard.getScore();
+      final int cost=draftedCard.getConvertedCost();
+      if (score > bestScore && cost >= minCost && cost <= maxCost) {
+        bestScore=score;
+        bestCard=draftedCard;
+      }
+    }
+    if (bestCard == null || bestScore < MIN_CARD_SCORE) {
+      break;
+    }
+    deck.getCards().add(bestCard.card);
+    remainingCards.remove(bestCard);
+  }
+}
