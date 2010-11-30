@@ -2,6 +2,7 @@
   this.popupCard=data.card;
   if (popup != null) {
     popup.hide();
+    state=0;
   }
   List<UUID> targets=data.card.getTargets();
   if (targets != null) {
@@ -48,13 +49,10 @@
       }
  catch (      InterruptedException e1) {
       }
-      if (MageActionCallback.this.popupCard == data.card) {
-        PopupFactory factory=PopupFactory.getSharedInstance();
-        popup=factory.getPopup(data.component,data.popupText,(int)data.locationOnScreen.getX() + data.popupOffsetX,(int)data.locationOnScreen.getY() + data.popupOffsetY + 40);
-        popup.show();
-      }
+      state=1;
     }
   }
 );
   t.start();
+  showPopup(data);
 }
