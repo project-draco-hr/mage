@@ -1,0 +1,40 @@
+{
+  setTitle("Mage Rate Cards, version 0.1");
+  try {
+    UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+  }
+ catch (  Exception ex) {
+    log.error(ex.getMessage(),ex);
+  }
+  int width=621;
+  int height=384;
+  setSize(width,height);
+  int w=getGraphicsConfiguration().getBounds().width;
+  int h=getGraphicsConfiguration().getBounds().height;
+  setLocation((w - width) / 2,(h - height) / 2);
+  setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+  setLayout(null);
+  bigCard=new BigCard();
+  bigCard.setBounds(20,10,RateThread.bigCardDimension.frameWidth,RateThread.bigCardDimension.frameHeight);
+  bigCard.setBorder(BorderFactory.createLineBorder(Color.gray));
+  add(bigCard);
+  JLabel label=new JLabel("The results are stored for every 10 compare.");
+  label.setBounds(290,270,300,30);
+  add(label);
+  JButton rate=new JButton("Create results.txt");
+  rate.setBounds(340,230,120,25);
+  rate.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      try {
+        ResultHandler.getInstance().rate();
+        JOptionPane.showMessageDialog(null,"Done! Find results in ratings.txt file.");
+      }
+ catch (      Exception e1) {
+        e1.printStackTrace();
+        JOptionPane.showMessageDialog(null,"Some error occured! Find more details in logs.");
+      }
+    }
+  }
+);
+  add(rate);
+}
