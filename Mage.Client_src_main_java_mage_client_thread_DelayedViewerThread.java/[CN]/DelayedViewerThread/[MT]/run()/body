@@ -1,0 +1,22 @@
+{
+  while (true) {
+    try {
+      if (delayedViewers.isEmpty()) {
+        wait();
+      }
+      final long time=System.currentTimeMillis();
+      for (Iterator<Component> it=delayedViewers.keySet().iterator(); it.hasNext(); ) {
+        Component component=it.next();
+        final long delayedTime=delayedViewers.get(component);
+        if (delayedTime <= time) {
+          component.setVisible(true);
+          it.remove();
+        }
+      }
+      wait(100);
+    }
+ catch (    final InterruptedException ex) {
+      System.out.println("Interrupted : " + ex.getMessage());
+    }
+  }
+}
