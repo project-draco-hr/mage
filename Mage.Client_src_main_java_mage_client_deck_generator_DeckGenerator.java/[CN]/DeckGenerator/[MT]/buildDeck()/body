@@ -19,17 +19,39 @@
  else {
           if (!CardUtil.isBasicLand(card)) {
             if (nonBasicLandCount < MAX_NON_BASIC_SOURCE) {
-              nonBasicLandCount++;
-              landCardPool.add(card);
+              int score=0;
+              for (              Mana mana : card.getMana()) {
+                for (                ColoredManaSymbol color : allowedColors) {
+                  score+=mana.getColor(color);
+                }
+              }
+              if (score > 1) {
+                nonBasicLandCount++;
+                landCardPool.add(card);
+              }
             }
-          }
- else {
-            landCardPool.add(card);
           }
         }
       }
     }
  catch (    Exception e) {
+    }
+  }
+  out:   while (nonBasicLandCount < MAX_NON_BASIC_SOURCE) {
+    for (    Card card : CardsStorage.getLandCards()) {
+      int score=0;
+      for (      Mana mana : card.getMana()) {
+        for (        ColoredManaSymbol color : allowedColors) {
+          score+=mana.getColor(color);
+        }
+      }
+      if (score > 1) {
+        nonBasicLandCount++;
+        landCardPool.add(card);
+      }
+      if (nonBasicLandCount > MAX_NON_BASIC_SOURCE) {
+        break out;
+      }
     }
   }
   System.out.println("deck generator card pool: spells=" + spellCardPool.size() + ", lands="+ landCardPool.size());
