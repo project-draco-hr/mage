@@ -1,12 +1,12 @@
 {
   ArrayList<CardUrl> cardsToDownload=new ArrayList<CardUrl>();
-  ArrayList<CardUrl> allcards=new ArrayList<CardUrl>();
+  ArrayList<CardUrl> allCardsUrls=new ArrayList<CardUrl>();
   try {
     offlineMode=true;
     for (    Card card : allCards) {
       if (card.getCardNumber() > 0 && !card.getExpansionSetCode().isEmpty()) {
         CardUrl url=new CardUrl(card.getName(),card.getExpansionSetCode(),card.getCardNumber(),false);
-        allcards.add(url);
+        allCardsUrls.add(url);
       }
  else {
         if (card.getCardNumber() < 1) {
@@ -19,12 +19,13 @@
         }
       }
     }
+    allCardsUrls.addAll(getTokenCardUrls());
   }
  catch (  Exception e) {
     log.error(e);
   }
   File file;
-  for (  CardUrl card : allcards) {
+  for (  CardUrl card : allCardsUrls) {
     boolean withCollectorId=false;
     if (card.name.equals("Forest") || card.name.equals("Mountain") || card.name.equals("Swamp")|| card.name.equals("Island")|| card.name.equals("Plains")) {
       withCollectorId=true;

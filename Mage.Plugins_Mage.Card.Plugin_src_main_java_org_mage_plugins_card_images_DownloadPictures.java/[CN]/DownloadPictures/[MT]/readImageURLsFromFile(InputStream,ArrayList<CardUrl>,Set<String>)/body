@@ -1,0 +1,64 @@
+{
+  if (in == null) {
+    log.error("resources input stream is null");
+    return;
+  }
+  BufferedReader reader=null;
+  InputStreamReader input=null;
+  try {
+    input=new InputStreamReader(in);
+    reader=new BufferedReader(input);
+    String line;
+    line=reader.readLine();
+    while (line != null) {
+      line=line.trim();
+      if (line.startsWith("|")) {
+        String[] params=line.split("\\|");
+        if (params.length >= 4) {
+          if (params[1].toLowerCase().equals("generate") && params[2].startsWith("TOK:")) {
+            String set=params[2].substring(4);
+            CardUrl cardUrl=new CardUrl(params[3],set,0,true);
+            cardUrl.token=true;
+            cardUrl.url=generateTokenUrl(params[3],set);
+            list.add(cardUrl);
+          }
+ else {
+            CardUrl cardUrl=new CardUrl(params[2],params[1].toUpperCase(),0,false);
+            cardUrl.url=params[3];
+            if (cardUrl.set.startsWith("TOK:")) {
+              cardUrl.token=true;
+              cardUrl.set=cardUrl.set.substring(4);
+            }
+            list.add(cardUrl);
+          }
+        }
+ else {
+          log.error("wrong format for image urls: " + line);
+        }
+      }
+      line=reader.readLine();
+    }
+  }
+ catch (  Exception ex) {
+    log.error(ex);
+    throw new RuntimeException("DownloadPictures : readFile() error");
+  }
+ finally {
+    if (input != null) {
+      try {
+        input.close();
+      }
+ catch (      Exception e) {
+        e.printStackTrace();
+      }
+    }
+    if (reader != null) {
+      try {
+        reader.close();
+      }
+ catch (      Exception e) {
+        e.printStackTrace();
+      }
+    }
+  }
+}
