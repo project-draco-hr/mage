@@ -1,10 +1,10 @@
 {
-  Map<Integer,UUID> possibleTargets=new HashMap<Integer,UUID>();
+  Set<UUID> possibleTargets=new HashSet<UUID>();
   MageObject targetSource=game.getObject(sourceId);
   for (  Permanent permanent : game.getBattlefield().getActivePermanents(filter,sourceControllerId,game)) {
     if (permanent.canBeTargetedBy(targetSource)) {
-      possibleTargets.put(permanent.getValue().hashCode(),permanent.getId());
+      possibleTargets.add(permanent.getId());
     }
   }
-  return new ArrayList<UUID>(possibleTargets.values());
+  return possibleTargets;
 }
