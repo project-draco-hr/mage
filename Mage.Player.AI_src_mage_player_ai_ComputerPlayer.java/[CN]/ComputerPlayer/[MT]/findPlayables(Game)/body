@@ -28,12 +28,32 @@
   for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
     for (    ActivatedAbility ability : permanent.getAbilities().getActivatedAbilities(Zone.BATTLEFIELD)) {
       if (!(ability instanceof ManaAbility) && ability.canActivate(playerId,game)) {
+        if (ability instanceof EquipAbility && permanent.getAttachedTo() != null)         continue;
         ManaOptions abilityOptions=ability.getManaCosts().getOptions();
         if (ability.getManaCosts().getVariableCosts().size() > 0) {
           for (          Mana option : abilityOptions) {
             option.add(Mana.ColorlessMana(3));
           }
         }
+        if (abilityOptions.size() == 0) {
+          playableAbilities.add(ability);
+        }
+ else {
+          for (          Mana mana : abilityOptions) {
+            for (            Mana avail : available) {
+              if (mana.enough(avail)) {
+                playableAbilities.add(ability);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  for (  Card card : graveyard.getCards(game)) {
+    for (    ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.GRAVEYARD)) {
+      if (ability.canActivate(playerId,game)) {
+        ManaOptions abilityOptions=ability.getManaCosts().getOptions();
         if (abilityOptions.size() == 0) {
           playableAbilities.add(ability);
         }
