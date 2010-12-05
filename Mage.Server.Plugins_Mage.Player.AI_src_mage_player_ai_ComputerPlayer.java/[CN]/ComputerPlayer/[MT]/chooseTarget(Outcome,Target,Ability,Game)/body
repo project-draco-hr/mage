@@ -34,10 +34,10 @@
   }
   if (target instanceof TargetControlledPermanent) {
     List<Permanent> targets;
-    targets=threats(playerId,((TargetPermanent)target).getFilter(),game);
+    targets=threats(playerId,((TargetControlledPermanent)target).getFilter(),game);
     if (!outcome.isGood())     Collections.reverse(targets);
     for (    Permanent permanent : targets) {
-      if (target.canTarget(permanent.getId(),source,game)) {
+      if (((TargetControlledPermanent)target).canTarget(playerId,permanent.getId(),source,game)) {
         target.addTarget(permanent.getId(),source,game);
         return true;
       }
@@ -52,7 +52,7 @@
       targets=threats(opponentId,((TargetPermanent)target).getFilter(),game);
     }
     for (    Permanent permanent : targets) {
-      if (target.canTarget(permanent.getId(),source,game)) {
+      if (((TargetPermanent)target).canTarget(playerId,permanent.getId(),source,game)) {
         target.addTarget(permanent.getId(),source,game);
         return true;
       }
