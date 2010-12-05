@@ -27,13 +27,13 @@
     }
     cards.get(card.getId()).update(card);
   }
-  cardArea.setPreferredSize(new Dimension(cards.size() * Config.dimensions.frameWidth,Config.dimensions.frameHeight));
+  if (changed) {
+    layoutCards(Config.dimensions);
+  }
+  cardArea.setPreferredSize(new Dimension(cards.size() * (Config.dimensions.frameWidth + GAP_X),Config.dimensions.frameHeight));
   cardArea.revalidate();
   cardArea.repaint();
   this.revalidate();
   this.repaint();
-  if (changed) {
-    layoutCards(Config.dimensions);
-  }
   return changed;
 }
