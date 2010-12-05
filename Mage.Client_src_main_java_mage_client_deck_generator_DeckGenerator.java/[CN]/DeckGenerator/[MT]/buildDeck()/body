@@ -38,6 +38,7 @@
     }
   }
   out:   while (nonBasicLandCount < MAX_NON_BASIC_SOURCE) {
+    boolean found=false;
     for (    Card card : CardsStorage.getLandCards()) {
       int score=0;
       for (      Mana mana : card.getMana()) {
@@ -48,10 +49,14 @@
       if (score > 1) {
         nonBasicLandCount++;
         landCardPool.add(card);
+        found=true;
       }
       if (nonBasicLandCount > MAX_NON_BASIC_SOURCE) {
         break out;
       }
+    }
+    if (!found) {
+      break out;
     }
   }
   System.out.println("deck generator card pool: spells=" + spellCardPool.size() + ", lands="+ landCardPool.size());
