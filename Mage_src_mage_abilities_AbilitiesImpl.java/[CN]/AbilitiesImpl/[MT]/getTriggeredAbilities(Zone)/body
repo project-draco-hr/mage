@@ -4,6 +4,12 @@
     if (ability instanceof TriggeredAbility && ability.getZone().match(zone)) {
       zonedAbilities.add((TriggeredAbility)ability);
     }
+ else     if (ability instanceof ZoneChangeTriggeredAbility) {
+      ZoneChangeTriggeredAbility zcAbility=(ZoneChangeTriggeredAbility)ability;
+      if (zcAbility.getToZone() != null && zcAbility.getToZone().match(zone)) {
+        zonedAbilities.add((ZoneChangeTriggeredAbility)ability);
+      }
+    }
   }
   return zonedAbilities;
 }
