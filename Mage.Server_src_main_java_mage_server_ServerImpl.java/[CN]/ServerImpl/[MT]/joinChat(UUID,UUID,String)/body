@@ -1,6 +1,11 @@
 {
   try {
-    ChatManager.getInstance().joinChat(chatId,sessionId,userName);
+    rmiExecutor.execute(new Runnable(){
+      @Override public void run(){
+        ChatManager.getInstance().joinChat(chatId,sessionId,userName);
+      }
+    }
+);
   }
  catch (  Exception ex) {
     handleException(ex);

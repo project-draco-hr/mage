@@ -1,6 +1,11 @@
 {
   try {
-    GameManager.getInstance().sendPlayerBoolean(gameId,sessionId,data);
+    rmiExecutor.execute(new Runnable(){
+      @Override public void run(){
+        GameManager.getInstance().sendPlayerBoolean(gameId,sessionId,data);
+      }
+    }
+);
   }
  catch (  Exception ex) {
     handleException(ex);

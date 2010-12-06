@@ -1,7 +1,12 @@
 {
   try {
-    SessionManager.getInstance().getSession(sessionId).kill();
-    logger.info("Client deregistered ...");
+    rmiExecutor.execute(new Runnable(){
+      @Override public void run(){
+        SessionManager.getInstance().getSession(sessionId).kill();
+        logger.info("Client deregistered ...");
+      }
+    }
+);
   }
  catch (  Exception ex) {
     handleException(ex);

@@ -1,6 +1,11 @@
 {
   try {
-    GameManager.getInstance().concedeGame(gameId,sessionId);
+    rmiExecutor.execute(new Runnable(){
+      @Override public void run(){
+        GameManager.getInstance().concedeGame(gameId,sessionId);
+      }
+    }
+);
   }
  catch (  Exception ex) {
     handleException(ex);

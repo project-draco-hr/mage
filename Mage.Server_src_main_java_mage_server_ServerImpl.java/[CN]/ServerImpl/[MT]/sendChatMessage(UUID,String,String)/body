@@ -1,6 +1,11 @@
 {
   try {
-    ChatManager.getInstance().broadcast(chatId,userName,message,MessageColor.BLUE);
+    rmiExecutor.execute(new Runnable(){
+      @Override public void run(){
+        ChatManager.getInstance().broadcast(chatId,userName,message,MessageColor.BLUE);
+      }
+    }
+);
   }
  catch (  Exception ex) {
     handleException(ex);

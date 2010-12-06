@@ -1,6 +1,11 @@
 {
   try {
-    if (testMode)     GameManager.getInstance().cheat(gameId,sessionId,playerId,deckList);
+    rmiExecutor.execute(new Runnable(){
+      @Override public void run(){
+        if (testMode)         GameManager.getInstance().cheat(gameId,sessionId,playerId,deckList);
+      }
+    }
+);
   }
  catch (  Exception ex) {
     handleException(ex);

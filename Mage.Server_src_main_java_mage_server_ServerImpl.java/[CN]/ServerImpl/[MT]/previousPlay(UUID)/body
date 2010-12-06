@@ -1,6 +1,11 @@
 {
   try {
-    ReplayManager.getInstance().previousPlay(sessionId);
+    rmiExecutor.execute(new Runnable(){
+      @Override public void run(){
+        ReplayManager.getInstance().previousPlay(sessionId);
+      }
+    }
+);
   }
  catch (  Exception ex) {
     handleException(ex);

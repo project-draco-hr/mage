@@ -1,6 +1,11 @@
 {
   try {
-    TableManager.getInstance().startGame(sessionId,roomId,tableId);
+    rmiExecutor.execute(new Runnable(){
+      @Override public void run(){
+        TableManager.getInstance().startGame(sessionId,roomId,tableId);
+      }
+    }
+);
   }
  catch (  Exception ex) {
     handleException(ex);
