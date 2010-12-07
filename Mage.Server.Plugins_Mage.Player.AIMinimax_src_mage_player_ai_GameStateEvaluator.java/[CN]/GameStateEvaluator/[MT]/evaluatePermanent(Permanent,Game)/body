@@ -1,14 +1,14 @@
 {
-  int value=permanent.isTapped() ? 1 : 2;
+  int value=permanent.isTapped() ? 4 : 5;
   if (permanent.getCardType().contains(CardType.CREATURE)) {
     value+=evaluateCreature(permanent,game) * CREATURE_FACTOR;
   }
   value+=permanent.getAbilities().getManaAbilities(Zone.BATTLEFIELD).size();
   for (  ActivatedAbility ability : permanent.getAbilities().getActivatedAbilities(Zone.BATTLEFIELD)) {
-    if (!(ability instanceof ManaAbility) && ability.canActivate(ability.getControllerId(),game))     value+=ability.getEffects().getOutcomeTotal();
+    if (!(ability instanceof ManaAbility) && ability.canActivate(ability.getControllerId(),game))     value+=ability.getEffects().size();
   }
-  value+=permanent.getAbilities().getStaticAbilities(Zone.BATTLEFIELD).getOutcomeTotal();
-  value+=permanent.getAbilities().getTriggeredAbilities(Zone.BATTLEFIELD).getOutcomeTotal();
+  value+=permanent.getAbilities().getStaticAbilities(Zone.BATTLEFIELD).size();
+  value+=permanent.getAbilities().getTriggeredAbilities(Zone.BATTLEFIELD).size();
   value+=permanent.getManaCost().convertedManaCost();
   return value;
 }
