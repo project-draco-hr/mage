@@ -1,3 +1,18 @@
 {
-  System.out.println("Done! Path: " + generateDeck());
+  for (  Card card : CardsStorage.getAllCards()) {
+    System.out.println(card.getName());
+    System.out.print("     ");
+    for (    String symbol : card.getManaCost().getSymbols()) {
+      symbol=symbol.replace("{","").replace("}","");
+      System.out.print(symbol + " ");
+    }
+    System.out.println(CardUtil.isBasicLand(card));
+    List<ColoredManaSymbol> allowedColors=new ArrayList<ColoredManaSymbol>();
+    allowedColors.add(ColoredManaSymbol.lookup('B'));
+    allowedColors.add(ColoredManaSymbol.lookup('G'));
+    DeckGenerator.MageScoredCard m=new DeckGenerator.MageScoredCard(card,allowedColors);
+    System.out.println();
+    System.out.println("  score: " + m.getScore());
+    System.out.println();
+  }
 }
