@@ -11,26 +11,31 @@ case UPKEEP:
     break;
 case DRAW:
   logState(game);
+break;
 case PRECOMBAT_MAIN:
 findPlayables(game);
 if (playableAbilities.size() > 0) {
 for (ActivatedAbility ability : playableAbilities) {
-  if (ability.canActivate(playerId,game)) {
-    if (ability.getEffects().hasOutcome(Outcome.PutLandInPlay)) {
-      if (this.activateAbility(ability,game))       return;
-    }
-    if (ability.getEffects().hasOutcome(Outcome.PutCreatureInPlay)) {
-      if (getOpponentBlockers(opponentId,game).size() <= 1)       if (this.activateAbility(ability,game))       return;
-    }
+if (ability.canActivate(playerId,game)) {
+  if (ability.getEffects().hasOutcome(Outcome.PutLandInPlay)) {
+    if (this.activateAbility(ability,game))     return;
   }
+  if (ability.getEffects().hasOutcome(Outcome.PutCreatureInPlay)) {
+    if (getOpponentBlockers(opponentId,game).size() <= 1)     if (this.activateAbility(ability,game))     return;
+  }
+}
 }
 }
 break;
 case DECLARE_BLOCKERS:
+findPlayables(game);
 playRemoval(game.getCombat().getBlockers(),game);
 playDamage(game.getCombat().getBlockers(),game);
+break;
 case END_COMBAT:
+findPlayables(game);
 playDamage(game.getCombat().getBlockers(),game);
+break;
 case POSTCOMBAT_MAIN:
 findPlayables(game);
 if (game.getStack().isEmpty()) {
@@ -58,11 +63,16 @@ break;
 switch (game.getTurn().getStepType()) {
 case UPKEEP:
 findPlayables(game);
+break;
 case DECLARE_ATTACKERS:
+findPlayables(game);
 playRemoval(game.getCombat().getAttackers(),game);
 playDamage(game.getCombat().getAttackers(),game);
+break;
 case END_COMBAT:
+findPlayables(game);
 playDamage(game.getCombat().getAttackers(),game);
+break;
 }
 }
 pass();
