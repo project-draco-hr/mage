@@ -1,0 +1,16 @@
+{
+  try {
+    if (ip.equals("localhost")) {
+      ip=InetAddress.getLocalHost().getHostAddress();
+    }
+  }
+ catch (  UnknownHostException ex) {
+    logger.log(Level.WARNING,"Could not get server address: ",ex);
+  }
+  String ipParam=System.getProperty("server");
+  if (ipParam != null) {
+    ip=ipParam;
+  }
+  System.setProperty("java.rmi.server.hostname",ip);
+  logger.info("MAGE server - using address " + ip);
+}
