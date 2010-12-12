@@ -1,0 +1,36 @@
+{
+  OKButton.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      Preferences prefs=MageFrame.getPreferences();
+      save(prefs,dialog.checkBoxUpkeepYou,"upkeepYou");
+      save(prefs,dialog.checkBoxDrawYou,"drawYou");
+      save(prefs,dialog.checkBoxMainYou,"mainYou");
+      save(prefs,dialog.checkBoxBeforeCYou,"beforeCombatYou");
+      save(prefs,dialog.checkBoxEndCYou,"endOfCombatYou");
+      save(prefs,dialog.checkBoxMain2You,"main2You");
+      save(prefs,dialog.checkBoxEndTurnYou,"endOfTurnYou");
+      save(prefs,dialog.checkBoxUpkeepOthers,UPKEEP_OTHERS);
+      save(prefs,dialog.checkBoxDrawOthers,DRAW_OTHERS);
+      save(prefs,dialog.checkBoxMainOthers,MAIN_OTHERS);
+      save(prefs,dialog.checkBoxBeforeCOthers,BEFORE_COMBAT_OTHERS);
+      save(prefs,dialog.checkBoxEndCOthers,END_OF_COMBAT_OTHERS);
+      save(prefs,dialog.checkBoxMain2Others,MAIN_2_OTHERS);
+      save(prefs,dialog.checkBoxEndTurnOthers,END_OF_TURN_OTHERS);
+      try {
+        prefs.flush();
+      }
+ catch (      BackingStoreException ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(null,"Error: couldn't save phase stops. Please try again.");
+      }
+      fInstance.setVisible(false);
+    }
+  }
+);
+  cancelButton.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      fInstance.setVisible(false);
+    }
+  }
+);
+}
