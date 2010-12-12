@@ -1,0 +1,11 @@
+{
+  Map<String,String> map=gameView.getActivePlayerName().equals(DEFAULT_PLAYER_NAME) ? mapYou : mapOthers;
+  for (  Map.Entry<String,String> entry : map.entrySet()) {
+    if (message.equals(entry.getKey())) {
+      Preferences prefs=MageFrame.getPreferences();
+      String prop=prefs.get(entry.getValue(),PHASE_ON);
+      return !prop.equals(PHASE_ON);
+    }
+  }
+  return false;
+}
