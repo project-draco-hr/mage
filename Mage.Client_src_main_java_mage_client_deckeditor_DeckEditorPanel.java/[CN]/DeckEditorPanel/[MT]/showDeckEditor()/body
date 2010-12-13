@@ -9,6 +9,9 @@
         for (        Card card : cardSelector.getCards()) {
           if (card.getId().equals((UUID)event.getSource())) {
             deck.getCards().add(createCard(card.getClass()));
+            if (System.getProperty("draft") != null) {
+              cardSelector.getCardsList().removeCard(card.getId());
+            }
             break;
           }
         }
@@ -20,6 +23,9 @@
   this.deckArea.getDeckList().clearCardEventListeners();
   this.deckArea.getDeckList().addCardEventListener(new Listener<Event>(){
     @Override public void event(    Event event){
+      if (System.getProperty("draft") != null) {
+        return;
+      }
       if (event.getEventName().equals("double-click")) {
         for (        Card card : deck.getCards()) {
           if (card.getId().equals((UUID)event.getSource())) {
