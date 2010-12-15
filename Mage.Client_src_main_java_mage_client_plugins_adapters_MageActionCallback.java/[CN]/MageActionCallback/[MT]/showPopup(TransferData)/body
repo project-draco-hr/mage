@@ -1,8 +1,37 @@
 {
-  PopupFactory factory=PopupFactory.getSharedInstance();
-  popup=factory.getPopup(data.component,data.popupText,(int)data.locationOnScreen.getX() + data.popupOffsetX,(int)data.locationOnScreen.getY() + data.popupOffsetY + 40);
-  popup.show();
-  popup.hide();
-  popup=factory.getPopup(data.component,data.popupText,(int)data.locationOnScreen.getX() + data.popupOffsetX,(int)data.locationOnScreen.getY() + data.popupOffsetY + 40);
-  popup.show();
+  if (cardInfoPane == null) {
+    PopupFactory factory=PopupFactory.getSharedInstance();
+    popup=factory.getPopup(data.component,data.popupText,(int)data.locationOnScreen.getX() + data.popupOffsetX,(int)data.locationOnScreen.getY() + data.popupOffsetY + 40);
+    popup.show();
+    popup.hide();
+    popup=factory.getPopup(data.component,data.popupText,(int)data.locationOnScreen.getX() + data.popupOffsetX,(int)data.locationOnScreen.getY() + data.popupOffsetY + 40);
+    popup.show();
+  }
+ else {
+    ThreadUtils.threadPool2.submit(new Runnable(){
+      @Override public void run(){
+        ThreadUtils.threadPool2.submit(new Runnable(){
+          @Override public void run(){
+            try {
+              Thread.sleep(900);
+            }
+ catch (            InterruptedException ie) {
+              ie.printStackTrace();
+            }
+            if (!popupCard.equals(data.card)) {
+              return;
+            }
+            PopupFactory factory=PopupFactory.getSharedInstance();
+            ((CardInfoPane)cardInfoPane).setCard(data.card);
+            cardInfoPane.setSize(161,221);
+            cardInfoPane.setPreferredSize(new Dimension(161,221));
+            popup=factory.getPopup(data.component,cardInfoPane,(int)data.locationOnScreen.getX() + data.popupOffsetX,(int)data.locationOnScreen.getY() + data.popupOffsetY + 40);
+            popup.show();
+          }
+        }
+);
+      }
+    }
+);
+  }
 }

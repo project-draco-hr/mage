@@ -5,7 +5,11 @@
   ThreadUtils.threadPool.submit(new Runnable(){
     public void run(){
       if (!card.equals(currentCard))       return;
-      String castingCost=UI.getDisplayManaCost(card.getManaCost().getText());
+      String manaCost="";
+      for (      String m : card.getManaCost()) {
+        manaCost+=m;
+      }
+      String castingCost=UI.getDisplayManaCost(manaCost);
       castingCost=ManaSymbols.replaceSymbolsWithHTML(castingCost,false);
       int symbolCount=0;
       int offset=0;
@@ -65,14 +69,14 @@ legal=legal.replaceAll("\\{source\\}",card.getName());
 buffer.append(ManaSymbols.replaceSymbolsWithHTML(legal,smallImages));
 }
 String pt="";
-if (card.getCardType().contains(Constants.CardType.CREATURE)) {
+if (CardUtil.isCreature(card)) {
 pt=card.getPower() + "/" + card.getToughness();
 }
- else if (card.getCardType().contains(Constants.CardType.PLANESWALKER)) {
+ else if (CardUtil.isPlaneswalker(card)) {
 pt=card.getLoyalty().toString();
 }
 if (pt.length() > 0) {
-buffer.append("<table cellspacing=0 cellpadding=0 border=0 width='100%'><tr><td>");
+buffer.append("<table cellspacing=0 cellpadding=0 border=0 width='100%' valign='bottom'><tr><td>");
 buffer.append("</td><td align='right'>");
 buffer.append("<b>");
 buffer.append(pt);
@@ -84,7 +88,6 @@ SwingUtilities.invokeLater(new Runnable(){
 public void run(){
 if (!card.equals(currentCard)) return;
 setText(buffer.toString());
-System.out.println(buffer.toString());
 setCaretPosition(0);
 }
 }
