@@ -1,0 +1,40 @@
+{
+  DeckCardLists deckList=new DeckCardLists();
+  File f=new File(file);
+  Scanner scanner=new Scanner(f);
+  Pattern pattern=Pattern.compile("(SB:)?\\s*(\\d*)\\s*\\[([a-zA-Z0-9]{3}):(\\d*)\\].*");
+  try {
+    while (scanner.hasNextLine()) {
+      String line=scanner.nextLine().trim();
+      if (line.startsWith("#"))       continue;
+      Matcher m=pattern.matcher(line);
+      if (m.matches()) {
+        boolean sideboard=false;
+        if (m.group(1) != null && m.group(1).equals("SB:"))         sideboard=true;
+        int count=Integer.parseInt(m.group(2));
+        String setCode=m.group(3);
+        int cardNum=Integer.parseInt(m.group(4));
+        ExpansionSet set=Sets.findSet(setCode);
+        String card=set.findCard(cardNum);
+        for (int i=0; i < count; i++) {
+          if (!sideboard) {
+            deckList.getCards().add(card);
+          }
+ else {
+            deckList.getSideboard().add(card);
+          }
+        }
+      }
+ else       if (line.startsWith("NAME:")) {
+        deckList.setName(line.substring(5,line.length()));
+      }
+ else       if (line.startsWith("AUTHOR:")) {
+        deckList.setAuthor(line.substring(7,line.length()));
+      }
+    }
+  }
+  finally {
+    scanner.close();
+  }
+  return deckList;
+}
