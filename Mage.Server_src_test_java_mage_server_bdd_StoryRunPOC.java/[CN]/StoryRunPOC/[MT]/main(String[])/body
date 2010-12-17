@@ -1,0 +1,14 @@
+{
+  String[] args=new String[]{"-testMode=true"};
+  Main.main(args);
+  connect("player","localhost",17171);
+  UUID roomId=server.getMainRoomId();
+  List<String> playerTypes=new ArrayList<String>();
+  playerTypes.add("Human");
+  playerTypes.add("Computer - default");
+  TableView table=server.createTable(sessionId,roomId,"Two Player Duel","Limited",playerTypes,null,null);
+  System.out.println("Cards in the deck: " + Sets.loadDeck("UW Control.dck").getCards().size());
+  server.joinTable(sessionId,roomId,table.getTableId(),"Human",Sets.loadDeck("UW Control.dck"));
+  server.joinTable(sessionId,roomId,table.getTableId(),"Computer",Sets.loadDeck("UW Control.dck"));
+  server.startGame(sessionId,roomId,table.getTableId());
+}
