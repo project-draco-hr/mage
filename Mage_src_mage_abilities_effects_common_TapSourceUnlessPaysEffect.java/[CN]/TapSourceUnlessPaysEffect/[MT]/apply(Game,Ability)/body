@@ -1,0 +1,10 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null && player.chooseUse(Outcome.Benefit,cost.getText() + " or {this} comes into play tapped?",game)) {
+    cost.clearPaid();
+    if (cost.pay(game,source.getId(),source.getControllerId(),false))     return true;
+  }
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null)   permanent.setTapped(true);
+  return true;
+}
