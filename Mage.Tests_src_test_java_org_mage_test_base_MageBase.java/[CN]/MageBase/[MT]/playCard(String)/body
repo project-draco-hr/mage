@@ -1,0 +1,18 @@
+{
+  gameView=server.getGameView(gameId,sessionId,playerId);
+  CardsView cards=gameView.getHand();
+  CardView cardToPlay=null;
+  for (  CardView card : cards.values()) {
+    if (card.getName().equals(cardName)) {
+      cardToPlay=card;
+    }
+  }
+  if (cardToPlay == null) {
+    throw new IllegalArgumentException("Couldn't find " + cardName + " in the hand.");
+  }
+  if (cardToPlay != null) {
+    logger.info("Playing " + cardToPlay);
+    server.sendPlayerUUID(gameId,sessionId,cardToPlay.getId());
+    cardPlayed=cardToPlay;
+  }
+}

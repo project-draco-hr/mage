@@ -1,0 +1,69 @@
+{
+  try {
+    System.setSecurityManager(null);
+    Registry reg=LocateRegistry.getRegistry(serverName,port);
+    server=(Server)reg.lookup("mage-server");
+    sessionId=server.registerClient(userName,UUID.randomUUID());
+    CallbackClient client=new CallbackClient(){
+      @Override public void processCallback(      ClientCallback callback){
+        logger.info("IN >> " + callback.getMessageId() + " - "+ callback.getMethod());
+        try {
+          if (callback.getMethod().equals("startGame")) {
+            UUID[] data=(UUID[])callback.getData();
+            gameId=data[0];
+            playerId=data[1];
+            server.joinGame(gameId,sessionId);
+          }
+ else           if (callback.getMethod().equals("gameInit")) {
+            server.ack("gameInit",sessionId);
+          }
+ else           if (callback.getMethod().equals("gameAsk")) {
+            GameClientMessage message=(GameClientMessage)callback.getData();
+            logger.info("ASK >> " + message.getMessage());
+            if (message.getMessage().equals("Do you want to take a mulligan?")) {
+              server.sendPlayerBoolean(gameId,sessionId,false);
+            }
+          }
+ else           if (callback.getMethod().equals("gameTarget")) {
+            GameClientMessage message=(GameClientMessage)callback.getData();
+            logger.info("TARGET >> " + message.getMessage() + " >> "+ message.getTargets());
+            if (message.getMessage().equals("Select a starting player")) {
+              logger.info("  Sending >> " + playerId);
+              server.sendPlayerUUID(gameId,sessionId,playerId);
+            }
+          }
+ else           if (callback.getMethod().equals("gameSelect")) {
+            GameClientMessage message=(GameClientMessage)callback.getData();
+            logger.info("SELECT >> " + message.getMessage());
+            if (phaseToWait == null) {
+synchronized (sync) {
+                sync.wait();
+              }
+            }
+            if (!message.getMessage().startsWith(phaseToWait)) {
+              server.sendPlayerBoolean(gameId,sessionId,false);
+            }
+ else {
+              phaseToWait=null;
+            }
+          }
+        }
+ catch (        Exception e) {
+          logger.info(e.getMessage());
+        }
+      }
+    }
+;
+    callbackDaemon=new CallbackClientDaemon(sessionId,client,server);
+    serverState=server.getServerState();
+  }
+ catch (  MageException ex) {
+    logger.log(Level.SEVERE,null,ex);
+  }
+catch (  RemoteException ex) {
+    logger.log(Level.SEVERE,"Unable to connect to server - ",ex);
+  }
+catch (  NotBoundException ex) {
+    logger.log(Level.SEVERE,"Unable to connect to server - ",ex);
+  }
+}
