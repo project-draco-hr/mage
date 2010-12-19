@@ -1,5 +1,7 @@
 {
   if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_BLOCKERS,attackerId,attackerId))) {
+    Player player=game.getPlayer(attackerId);
+    checkBlockRequirements(player,game);
     for (    UUID defenderId : getPlayerDefenders(game)) {
       game.getPlayer(defenderId).selectBlockers(game);
       game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,defenderId,defenderId));

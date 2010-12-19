@@ -1,7 +1,9 @@
 {
   if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_ATTACKERS,attackerId,attackerId))) {
-    game.getPlayer(attackerId).selectAttackers(game);
+    Player player=game.getPlayer(attackerId);
+    checkAttackRequirements(player,game);
+    player.selectAttackers(game);
     game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_ATTACKERS,attackerId,attackerId));
-    game.fireInformEvent(game.getPlayer(attackerId).getName() + " attacks with " + groups.size()+ " creatures");
+    game.fireInformEvent(player.getName() + " attacks with " + groups.size()+ " creatures");
   }
 }

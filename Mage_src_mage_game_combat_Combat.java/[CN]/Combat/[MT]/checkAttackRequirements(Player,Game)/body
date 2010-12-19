@@ -1,0 +1,24 @@
+{
+  for (  Permanent creature : game.getBattlefield().getAllActivePermanents(filterAttackers,player.getId())) {
+    for (    RequirementEffect effect : game.getContinuousEffects().getApplicableRequirementEffects(creature,game)) {
+      if (effect.mustAttack(game)) {
+        UUID defenderId=effect.mustAttackDefender(game.getContinuousEffects().getAbility(effect.getId()),game);
+        if (defenderId == null) {
+          if (defenders.size() == 1) {
+            player.declareAttacker(creature.getId(),defenders.iterator().next(),game);
+          }
+ else {
+            TargetDefender target=new TargetDefender(defenders,creature.getId());
+            target.setRequired(true);
+            if (player.chooseTarget(Outcome.Damage,target,null,game)) {
+              player.declareAttacker(creature.getId(),target.getFirstTarget(),game);
+            }
+          }
+        }
+ else {
+          player.declareAttacker(creature.getId(),defenderId,game);
+        }
+      }
+    }
+  }
+}

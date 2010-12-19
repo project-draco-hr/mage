@@ -1,0 +1,17 @@
+{
+  List<RestrictionEffect> effects=new ArrayList<RestrictionEffect>();
+  for (  Permanent perm : game.getBattlefield().getActivePermanents(permanent.getControllerId(),game)) {
+    for (    StaticAbility ability : perm.getAbilities().getStaticAbilities(Zone.BATTLEFIELD)) {
+      for (      Effect effect : ability.getEffects(EffectType.RESTRICTION)) {
+        if (((RestrictionEffect)effect).applies(permanent,ability,game)) {
+          effects.add((RestrictionEffect)effect);
+          abilityMap.put(effect.getId(),ability);
+        }
+      }
+    }
+  }
+  for (  RestrictionEffect effect : restrictionEffects) {
+    if (effect.applies(permanent,abilityMap.get(effect.getId()),game))     effects.add(effect);
+  }
+  return effects;
+}

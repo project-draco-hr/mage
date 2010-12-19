@@ -1,0 +1,15 @@
+{
+  for (  Permanent creature : game.getBattlefield().getActivePermanents(filterBlockers,player.getId(),game)) {
+    if (game.getOpponents(attackerId).contains(creature.getControllerId())) {
+      for (      RequirementEffect effect : game.getContinuousEffects().getApplicableRequirementEffects(creature,game)) {
+        if (effect.mustBlock(game)) {
+          UUID attackId=effect.mustBlockAttacker(game.getContinuousEffects().getAbility(effect.getId()),game);
+          Player defender=game.getPlayer(creature.getControllerId());
+          if (attackId != null && defender != null) {
+            defender.declareBlocker(creature.getId(),attackId,game);
+          }
+        }
+      }
+    }
+  }
+}
