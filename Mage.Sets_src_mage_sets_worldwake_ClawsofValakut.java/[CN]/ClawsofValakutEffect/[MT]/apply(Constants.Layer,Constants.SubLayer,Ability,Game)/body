@@ -1,0 +1,23 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment != null && enchantment.getAttachedTo() != null) {
+    Permanent creature=game.getPermanent(enchantment.getAttachedTo());
+    if (creature != null) {
+switch (layer) {
+case PTChangingEffects_7:
+        if (sublayer == Constants.SubLayer.ModifyPT_7c) {
+          int amount=game.getBattlefield().countAll(filter,source.getControllerId());
+          creature.addPower(amount);
+        }
+      break;
+case AbilityAddingRemovingEffects_6:
+    if (sublayer == Constants.SubLayer.NA) {
+      creature.addAbility(FirstStrikeAbility.getInstance());
+    }
+  break;
+}
+return true;
+}
+}
+return false;
+}
