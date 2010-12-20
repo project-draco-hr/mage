@@ -23,6 +23,9 @@
             if (message.getMessage().equals("Do you want to take a mulligan?")) {
               server.sendPlayerBoolean(gameId,sessionId,false);
             }
+synchronized (syncStart) {
+              syncStart.notify();
+            }
           }
  else           if (callback.getMethod().equals("gameTarget")) {
             GameClientMessage message=(GameClientMessage)callback.getData();

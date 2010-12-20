@@ -1,9 +1,14 @@
 {
-  if ("Precombat Main".equals(phase) && (owner.equals(mine) || owner.equals(me))) {
-    MageBase.getInstance().goToPhase("Precombat Main - play spells and sorceries.");
-    Thread.sleep(3000);
-    return;
+  StepState current=MageAPI.defineStep(this.step);
+  if (current.equals(StepState.GIVEN)) {
+    if ("Precombat Main".equals(phase) && (owner.equals(mine) || owner.equals(me))) {
+      MageBase.getInstance().goToPhase("Precombat Main - play spells and sorceries.");
+      return;
+    }
+    System.err.println("waitForPhase not implemented for phase=" + phase + ", owner="+ owner.name());
+    throw new RuntimeException("Not implemented.");
   }
-  System.err.println("waitForPhase not implemented for phase=" + phase + ", owner="+ owner.name());
-  throw new NotImplementedException();
+ else {
+    throw new RuntimeException("Not implemented for step = " + current);
+  }
 }
