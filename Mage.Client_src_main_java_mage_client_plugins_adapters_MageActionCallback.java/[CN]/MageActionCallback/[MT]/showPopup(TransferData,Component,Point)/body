@@ -12,21 +12,22 @@
       @Override public void run(){
         ThreadUtils.threadPool2.submit(new Runnable(){
           @Override public void run(){
-            try {
-              Thread.sleep(900);
-            }
- catch (            InterruptedException ie) {
-              ie.printStackTrace();
-            }
+            ThreadUtils.sleep(900);
             if (!popupCard.equals(data.card)) {
               return;
             }
-            PopupFactory factory=PopupFactory.getSharedInstance();
-            ((CardInfoPane)cardInfoPane).setCard(data.card);
-            cardInfoPane.setSize(161,221);
-            cardInfoPane.setPreferredSize(new Dimension(161,221));
-            popup=factory.getPopup(data.component,cardInfoPane,(int)data.locationOnScreen.getX() + data.popupOffsetX,(int)data.locationOnScreen.getY() + data.popupOffsetY + 40);
-            popup.show();
+            try {
+              Component popup2=session.getUI().getComponent(MageComponents.CARD_INFO_PANE);
+              ((CardInfoPane)popup2).setCard(data.card);
+              Point location=new Point((int)data.locationOnScreen.getX() + data.popupOffsetX,(int)data.locationOnScreen.getY() + data.popupOffsetY + 40);
+              location=GuiDisplayUtil.keepComponentInsideParent(location,parentPoint,popup2,parentComponent);
+              location.translate(-parentPoint.x,-parentPoint.y);
+              popup2.setLocation(location);
+              popup2.setVisible(true);
+            }
+ catch (            Exception e) {
+              e.printStackTrace();
+            }
           }
         }
 );
