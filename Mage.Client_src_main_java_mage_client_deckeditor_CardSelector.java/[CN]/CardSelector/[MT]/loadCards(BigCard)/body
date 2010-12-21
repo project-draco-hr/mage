@@ -1,6 +1,13 @@
 {
   this.bigCard=bigCard;
-  cbExpansionSet.setModel(new DefaultComboBoxModel(Sets.getInstance().values().toArray()));
+  Object[] l=Sets.getInstance().values().toArray();
+  Arrays.sort(l,new Comparator<Object>(){
+    @Override public int compare(    Object o1,    Object o2){
+      return ((ExpansionSet)o1).getName().compareTo(((ExpansionSet)o2).getName());
+    }
+  }
+);
+  cbExpansionSet.setModel(new DefaultComboBoxModel(l));
   cbExpansionSet.setSelectedIndex(0);
   filter.setUseColor(true);
   filter.getColor().setBlack(true);
