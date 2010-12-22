@@ -1,0 +1,13 @@
+{
+  super(ownerId,14,"Journey to Nowhere",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{1}{W}");
+  this.expansionSetCode="ZEN";
+  this.color.setWhite(true);
+  FilterCreaturePermanent filter=new FilterCreaturePermanent();
+  filter.setId(this.getId());
+  filter.setNotId(true);
+  Ability ability1=new EntersBattlefieldTriggeredAbility(new ExileTargetEffect(this.getId(),"Journey to Nowhere exile"),false);
+  ability1.addTarget(new TargetPermanent(filter));
+  this.addAbility(ability1);
+  Ability ability2=new LeavesBattlefieldTriggeredAbility(new ReturnFromExileEffect(this.getId(),Zone.BATTLEFIELD),false);
+  this.addAbility(ability2);
+}
