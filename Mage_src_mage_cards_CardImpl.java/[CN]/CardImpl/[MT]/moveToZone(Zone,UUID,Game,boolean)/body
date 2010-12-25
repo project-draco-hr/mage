@@ -2,12 +2,21 @@
   Zone fromZone=game.getZone(objectId);
   ZoneChangeEvent event=new ZoneChangeEvent(this.objectId,sourceId,ownerId,fromZone,toZone);
   if (!game.replaceEvent(event)) {
+    if (event.getFromZone() != null) {
+switch (event.getFromZone()) {
+case GRAVEYARD:
+        game.getPlayer(ownerId).removeFromGraveyard(this,game);
+      break;
+default :
+    logger.warning("moveToZone, not fully implemented: from=" + event.getFromZone() + ", to="+ event.getToZone());
+}
+}
 switch (event.getToZone()) {
 case GRAVEYARD:
-      game.getPlayer(ownerId).putInGraveyard(this,game,!flag);
-    break;
+game.getPlayer(ownerId).putInGraveyard(this,game,!flag);
+break;
 case HAND:
-  game.getPlayer(ownerId).getHand().add(this);
+game.getPlayer(ownerId).getHand().add(this);
 break;
 case STACK:
 game.getStack().push(new Spell(this,this.getSpellAbility().copy(),ownerId));
