@@ -1,0 +1,14 @@
+{
+  try {
+    InputStream stream;
+    stream=UI.class.getResourceAsStream(path);
+    if (stream == null && new File(path).exists())     stream=new FileInputStream(path);
+    if (stream == null)     throw new RuntimeException("Image not found: " + path);
+    byte[] data=new byte[stream.available()];
+    stream.read(data);
+    return new ImageIcon(data);
+  }
+ catch (  IOException ex) {
+    throw new RuntimeException("Error reading image: " + path);
+  }
+}
