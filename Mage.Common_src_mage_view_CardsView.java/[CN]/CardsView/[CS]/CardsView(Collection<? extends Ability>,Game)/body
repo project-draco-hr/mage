@@ -1,0 +1,18 @@
+{
+  for (  Ability ability : abilities) {
+    Card sourceCard=null;
+    String sourceName=null;
+switch (ability.getZone()) {
+case EXILED:
+case GRAVEYARD:
+      sourceCard=game.getCard(ability.getSourceId());
+    sourceName=sourceCard.getName();
+  break;
+case BATTLEFIELD:
+sourceCard=game.getState().getPermanent(ability.getSourceId());
+sourceName=sourceCard.getName();
+break;
+}
+this.put(ability.getId(),new AbilityView(ability,sourceName,new CardView(sourceCard)));
+}
+}
