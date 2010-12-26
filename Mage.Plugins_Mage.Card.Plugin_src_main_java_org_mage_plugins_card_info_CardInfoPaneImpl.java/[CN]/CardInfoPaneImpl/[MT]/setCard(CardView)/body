@@ -32,12 +32,12 @@
       buffer.append("px'>");
       buffer.append(castingCost);
       buffer.append("</td></tr></table>");
-      buffer.append("<table cellspacing=0 cellpadding=0 border=0 width='100%'><tr><td>");
+      buffer.append("<table cellspacing=0 cellpadding=0 border=0 width='100%'><tr><td style='margin-left: 1px'>");
       buffer.append(getTypes(card));
       buffer.append("</td><td align='right'>");
 switch (card.getRarity()) {
 case RARE:
-        buffer.append("<b color='#E1D519'>");
+        buffer.append("<b color='#FFBF00'>");
       break;
 case UNCOMMON:
     buffer.append("<b color='silver'>");
@@ -51,6 +51,20 @@ break;
 }
 buffer.append(card.getExpansionSetCode().toUpperCase());
 buffer.append("</td></tr></table>");
+String pt="";
+if (CardUtil.isCreature(card)) {
+pt=card.getPower() + "/" + card.getToughness();
+}
+ else if (CardUtil.isPlaneswalker(card)) {
+pt=card.getLoyalty().toString();
+}
+if (pt.length() > 0) {
+buffer.append("<table cellspacing=0 cellpadding=0 border=0 width='100%' valign='bottom'><tr><td>");
+buffer.append("<b>");
+buffer.append(pt);
+buffer.append("</b>");
+buffer.append("</td></tr></table>");
+}
 String legal="";
 if (rulings.size() > 0) {
 legal=legal.replaceAll("#([^#]+)#","<i>$1</i>");
@@ -64,25 +78,9 @@ legal+="</p>";
 }
 }
 if (legal.length() > 0) {
-buffer.append("<br>");
 legal=legal.replaceAll("\\{this\\}",card.getName());
 legal=legal.replaceAll("\\{source\\}",card.getName());
 buffer.append(ManaSymbols.replaceSymbolsWithHTML(legal,smallImages));
-}
-String pt="";
-if (CardUtil.isCreature(card)) {
-pt=card.getPower() + "/" + card.getToughness();
-}
- else if (CardUtil.isPlaneswalker(card)) {
-pt=card.getLoyalty().toString();
-}
-if (pt.length() > 0) {
-buffer.append("<table cellspacing=0 cellpadding=0 border=0 width='100%' valign='bottom'><tr><td>");
-buffer.append("</td><td align='right'>");
-buffer.append("<b>");
-buffer.append(pt);
-buffer.append("</b>");
-buffer.append("</td></tr></table>");
 }
 buffer.append("<br></body></html>");
 SwingUtilities.invokeLater(new Runnable(){

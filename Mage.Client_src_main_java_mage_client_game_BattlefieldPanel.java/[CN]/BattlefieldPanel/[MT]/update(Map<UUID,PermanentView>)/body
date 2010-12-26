@@ -1,8 +1,9 @@
 {
   boolean changed=false;
+  List<PermanentView> permanentsToAdd=new ArrayList<PermanentView>();
   for (  PermanentView permanent : battlefield.values()) {
     if (!permanents.containsKey(permanent.getId())) {
-      addPermanent(permanent);
+      permanentsToAdd.add(permanent);
       changed=true;
     }
  else {
@@ -17,10 +18,14 @@
       permanents.get(permanent.getId()).update(permanent);
     }
   }
+  int count=permanentsToAdd.size();
+  for (  PermanentView permanent : permanentsToAdd) {
+    addPermanent(permanent,count);
+  }
   for (Iterator<Entry<UUID,MagePermanent>> i=permanents.entrySet().iterator(); i.hasNext(); ) {
     Entry<UUID,MagePermanent> entry=i.next();
     if (!battlefield.containsKey(entry.getKey())) {
-      removePermanent(entry.getKey());
+      removePermanent(entry.getKey(),1);
       i.remove();
       changed=true;
     }

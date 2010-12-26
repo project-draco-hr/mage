@@ -8,6 +8,7 @@
   }
 );
   try {
+    UIManager.put("desktop",new Color(0,0,0,0));
     UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
   }
  catch (  Exception ex) {
@@ -26,12 +27,18 @@
   combat.hideDialog();
   desktopPane.add(pickNumber,JLayeredPane.POPUP_LAYER);
   session.getUI().addComponent(MageComponents.DESKTOP_PANE,desktopPane);
-  JComponent cardInfoPane=Plugins.getInstance().getCardInfoPane();
-  cardInfoPane.setSize(161,221);
-  cardInfoPane.setPreferredSize(new Dimension(161,221));
-  cardInfoPane.setVisible(false);
+  final JEditorPane cardInfoPane=(JEditorPane)Plugins.getInstance().getCardInfoPane();
+  cardInfoPane.setSize(320,201);
+  cardInfoPane.setLocation(40,40);
+  cardInfoPane.setBackground(new Color(0,0,0,0));
+  MageRoundPane popupContainer=new MageRoundPane();
+  popupContainer.setLayout(null);
+  popupContainer.add(cardInfoPane);
+  popupContainer.setVisible(false);
+  popupContainer.setBounds(0,0,320 + 80,201 + 80);
+  desktopPane.add(popupContainer,JLayeredPane.POPUP_LAYER);
   session.getUI().addComponent(MageComponents.CARD_INFO_PANE,cardInfoPane);
-  desktopPane.add(cardInfoPane,JLayeredPane.POPUP_LAYER);
+  session.getUI().addComponent(MageComponents.POPUP_CONTAINER,popupContainer);
   ManaSymbols.loadImages();
   String filename="/background.jpg";
   try {
