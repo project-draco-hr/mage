@@ -1,6 +1,15 @@
 {
+  match.endGame();
   table.endGame();
   saveGame();
-  GameManager.getInstance().removeGame(game.getId());
-  game=null;
+  GameManager.getInstance().removeGame(match.getGame().getId());
+  try {
+    if (!match.isMatchOver()) {
+      startGame();
+    }
+  }
+ catch (  GameException ex) {
+    logger.log(Level.SEVERE,null,ex);
+  }
+  endMatch();
 }

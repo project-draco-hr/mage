@@ -1,0 +1,8 @@
+{
+  match.startGame();
+  GameManager.getInstance().createGameSession(match.getGame(),sessionPlayerMap,table.getId());
+  SessionManager sessionManager=SessionManager.getInstance();
+  for (  Entry<UUID,UUID> entry : sessionPlayerMap.entrySet()) {
+    sessionManager.getSession(entry.getKey()).gameStarted(match.getGame().getId(),entry.getValue());
+  }
+}
