@@ -1,15 +1,9 @@
 {
-  if (sessionId.equals(this.sessionId) && table.getState() == TableState.STARTING) {
-    try {
-      table.initGame(game);
-    }
- catch (    GameException ex) {
-      logger.log(Level.SEVERE,null,ex);
-    }
-    GameManager.getInstance().createGameSession(game,sessionPlayerMap,table.getId());
-    SessionManager sessionManager=SessionManager.getInstance();
-    for (    Entry<UUID,UUID> entry : sessionPlayerMap.entrySet()) {
-      sessionManager.getSession(entry.getKey()).gameStarted(game.getId(),entry.getValue());
-    }
+  match.startGame();
+  table.initGame();
+  GameManager.getInstance().createGameSession(match.getGame(),sessionPlayerMap,table.getId(),choosingPlayerId);
+  SessionManager sessionManager=SessionManager.getInstance();
+  for (  Entry<UUID,UUID> entry : sessionPlayerMap.entrySet()) {
+    sessionManager.getSession(entry.getKey()).gameStarted(match.getGame().getId(),entry.getValue());
   }
 }

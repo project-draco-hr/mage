@@ -1,10 +1,14 @@
 {
   TableView table;
   try {
-    List<String> playerTypes=new ArrayList<String>();
-    playerTypes.add("Human");
-    playerTypes.add("Computer - default");
-    table=session.createTable(roomId,"Two Player Duel","Constructed",playerTypes,null,null);
+    MatchOptions options=new MatchOptions("1","Two Player Duel");
+    options.getPlayerTypes().add("Human");
+    options.getPlayerTypes().add("Computer - default");
+    options.setDeckType("Limited");
+    options.setAttackOption(MultiplayerAttackOption.LEFT);
+    options.setRange(RangeOfInfluence.ALL);
+    options.setWinsNeeded(1);
+    table=session.createTable(roomId,options);
     session.joinTable(roomId,table.getTableId(),"Human",Sets.loadDeck("test.dck"));
     session.joinTable(roomId,table.getTableId(),"Computer",Sets.loadDeck("test.dck"));
     hideTables();

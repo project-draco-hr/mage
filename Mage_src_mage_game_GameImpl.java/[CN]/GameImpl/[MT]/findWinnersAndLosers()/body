@@ -1,0 +1,16 @@
+{
+  UUID winner=null;
+  for (  Player player : state.getPlayers().values()) {
+    if (player.hasWon() || (!player.hasLost() && !player.hasLeft())) {
+      player.won(this);
+      winner=player.getId();
+      break;
+    }
+  }
+  for (  Player player : state.getPlayers().values()) {
+    if (winner != null && !player.getId().equals(winner)) {
+      player.lost(this);
+    }
+  }
+  return winner;
+}

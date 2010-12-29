@@ -1,0 +1,14 @@
+{
+  Match match;
+  Constructor<Match> con;
+  try {
+    con=games.get(gameType).getConstructor(new Class[]{MatchOptions.class});
+    match=con.newInstance(new Object[]{options});
+  }
+ catch (  Exception ex) {
+    logger.log(Level.SEVERE,null,ex);
+    return null;
+  }
+  logger.info("Game created: " + gameType);
+  return match;
+}
