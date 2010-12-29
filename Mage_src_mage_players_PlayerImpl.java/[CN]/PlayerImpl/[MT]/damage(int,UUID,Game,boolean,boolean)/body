@@ -4,8 +4,13 @@
     if (!game.replaceEvent(event)) {
       int actualDamage=event.getAmount();
       if (actualDamage > 0) {
-        actualDamage=this.loseLife(actualDamage,game);
         Permanent source=game.getPermanent(sourceId);
+        if (source != null && (source.getAbilities().containsKey(InfectAbility.getInstance().getId()))) {
+          getCounters().addCounter(CounterType.POISON.getInstance());
+        }
+ else {
+          actualDamage=this.loseLife(actualDamage,game);
+        }
         if (source != null && source.getAbilities().containsKey(LifelinkAbility.getInstance().getId())) {
           Player player=game.getPlayer(source.getControllerId());
           player.gainLife(actualDamage,game);

@@ -6,7 +6,13 @@
       if (this.damage + event.getAmount() > this.toughness.getValue()) {
         actualDamage=this.toughness.getValue() - this.damage;
       }
-      this.damage+=actualDamage;
+      Permanent source=game.getPermanent(sourceId);
+      if (source != null && (source.getAbilities().containsKey(InfectAbility.getInstance().getId()) || source.getAbilities().containsKey(WitherAbility.getInstance().getId()))) {
+        addCounters(new MinusOneCounter(actualDamage));
+      }
+ else {
+        this.damage+=actualDamage;
+      }
       game.fireEvent(new DamagedCreatureEvent(objectId,sourceId,controllerId,actualDamage,combat));
       return actualDamage;
     }
