@@ -1,0 +1,28 @@
+{
+  List<Card> spellCardPool=new ArrayList<Card>();
+  int count=0;
+  List<Card> allCards=new ArrayList<Card>();
+  allCards.addAll(CardsStorage.getAllCards());
+  int allCount=allCards.size();
+  Random random=new Random();
+  if (allCount > 0) {
+    int tries=0;
+    while (count < cardsCount) {
+      Card card=allCards.get(random.nextInt(allCount));
+      if (!card.getCardType().contains(CardType.LAND)) {
+        if (cardFitsChosenColors(card,allowedColors)) {
+          spellCardPool.add(card);
+          count++;
+        }
+      }
+      tries++;
+      if (tries > MAX_TRIES) {
+        throw new IllegalStateException("Not enough cards for chosen colors to generate deck: " + selectedColors);
+      }
+    }
+  }
+ else {
+    throw new IllegalStateException("Not enough cards to generate deck.");
+  }
+  return spellCardPool;
+}

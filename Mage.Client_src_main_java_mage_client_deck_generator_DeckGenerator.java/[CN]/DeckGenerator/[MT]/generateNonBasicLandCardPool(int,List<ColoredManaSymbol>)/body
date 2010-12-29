@@ -1,0 +1,25 @@
+{
+  List<Card> nonBasicLandCardPool=new ArrayList<Card>();
+  int count=0;
+  List<Card> landCards=new ArrayList<Card>();
+  landCards.addAll(CardsStorage.getNonBasicLandCards());
+  int allCount=landCards.size();
+  Random random=new Random();
+  if (allCount > 0) {
+    int tries=0;
+    while (count < landsCount) {
+      Card card=landCards.get(random.nextInt(allCount));
+      if (!CardUtil.isBasicLand(card)) {
+        if (cardCardProduceChosenColors(card,allowedColors)) {
+          nonBasicLandCardPool.add(card);
+          count++;
+        }
+      }
+      tries++;
+      if (tries > MAX_TRIES) {
+        return nonBasicLandCardPool;
+      }
+    }
+  }
+  return nonBasicLandCardPool;
+}

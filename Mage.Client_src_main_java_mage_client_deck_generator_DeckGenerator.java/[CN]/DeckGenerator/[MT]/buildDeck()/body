@@ -6,59 +6,12 @@
     char c=selectedColors.charAt(i);
     allowedColors.add(ColoredManaSymbol.lookup(c));
   }
-  List<Card> spellCardPool=new ArrayList<Card>();
-  List<Card> landCardPool=new ArrayList<Card>();
-  int nonBasicLandCount=0;
-  for (  ExpansionSet set : Sets.getInstance().values()) {
-    try {
-      List<Card> booster=set.createBooster();
-      for (      Card card : booster) {
-        if (!card.getCardType().contains(CardType.LAND)) {
-          spellCardPool.add(card);
-        }
- else {
-          if (!CardUtil.isBasicLand(card)) {
-            if (nonBasicLandCount < MAX_NON_BASIC_SOURCE) {
-              int score=0;
-              for (              Mana mana : card.getMana()) {
-                for (                ColoredManaSymbol color : allowedColors) {
-                  score+=mana.getColor(color);
-                }
-              }
-              if (score > 1) {
-                nonBasicLandCount++;
-                landCardPool.add(card);
-              }
-            }
-          }
-        }
-      }
-    }
- catch (    Exception e) {
-    }
+  int cardPoolSize=SPELL_CARD_POOL_SIZE;
+  if (selectedColors.length() > 2) {
+    cardPoolSize+=ADDITIONAL_CARDS_FOR_3_COLOR_DECKS;
   }
-  out:   while (nonBasicLandCount < MAX_NON_BASIC_SOURCE) {
-    boolean found=false;
-    for (    Card card : CardsStorage.getLandCards()) {
-      int score=0;
-      for (      Mana mana : card.getMana()) {
-        for (        ColoredManaSymbol color : allowedColors) {
-          score+=mana.getColor(color);
-        }
-      }
-      if (score > 1) {
-        nonBasicLandCount++;
-        landCardPool.add(card);
-        found=true;
-      }
-      if (nonBasicLandCount > MAX_NON_BASIC_SOURCE) {
-        break out;
-      }
-    }
-    if (!found) {
-      break out;
-    }
-  }
+  List<Card> spellCardPool=generateSpellCardPool(cardPoolSize,allowedColors);
+  List<Card> landCardPool=generateNonBasicLandCardPool(MAX_NON_BASIC_SOURCE,allowedColors);
   System.out.println("deck generator card pool: spells=" + spellCardPool.size() + ", lands="+ landCardPool.size());
   final Collection<MageScoredCard> remainingCards=new ArrayList<MageScoredCard>();
   for (  final Card card : spellCardPool) {
