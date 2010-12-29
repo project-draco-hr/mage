@@ -1,0 +1,48 @@
+{
+  this.cardSelector.loadCards(this.bigCard);
+  this.cardSelector.setVisible(true);
+  this.jPanel1.setVisible(true);
+  this.btnSubmit.setVisible(mode == DeckEditorMode.Sideboard);
+  this.cardSelector.getCardsList().clearCardEventListeners();
+  this.cardSelector.getCardsList().addCardEventListener(new Listener<Event>(){
+    @Override public void event(    Event event){
+      if (event.getEventName().equals("double-click")) {
+        for (        Card card : cardSelector.getCards()) {
+          if (card.getId().equals((UUID)event.getSource())) {
+            deck.getCards().add(createCard(card.getClass()));
+            if (System.getProperty("draft") != null) {
+              cardSelector.getCardsList().removeCard(card.getId());
+            }
+            if (cardInfoPane instanceof CardInfoPane) {
+              ((CardInfoPane)cardInfoPane).setCard(new CardView(card));
+            }
+            break;
+          }
+        }
+        refreshDeck();
+      }
+    }
+  }
+);
+  this.deckArea.getDeckList().clearCardEventListeners();
+  this.deckArea.getDeckList().addCardEventListener(new Listener<Event>(){
+    @Override public void event(    Event event){
+      if (System.getProperty("draft") != null) {
+        return;
+      }
+      if (event.getEventName().equals("double-click")) {
+        for (        Card card : deck.getCards()) {
+          if (card.getId().equals((UUID)event.getSource())) {
+            deck.getCards().remove(card);
+            break;
+          }
+        }
+        refreshDeck();
+      }
+    }
+  }
+);
+  refreshDeck();
+  this.setVisible(true);
+  this.repaint();
+}

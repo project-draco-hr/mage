@@ -1,0 +1,12 @@
+{
+  if (table.getState() != TableState.SIDEBOARDING) {
+    return false;
+  }
+  MatchPlayer player=match.getPlayer(sessionPlayerMap.get(sessionId));
+  Deck deck=Deck.load(deckList);
+  if (!Main.server.isTestMode() && !validDeck(deck)) {
+    throw new GameException(player.getPlayer().getName() + " has an invalid deck for this format");
+  }
+  submitDeck(sessionPlayerMap.get(sessionId),deck);
+  return true;
+}
