@@ -1,3 +1,18 @@
 {
-  return game.getBattlefield().countAll(filter,source.getControllerId()) > 0;
+  boolean conditionApplies=false;
+switch (this.type) {
+case FEWER_THAN:
+    conditionApplies=game.getBattlefield().countAll(filter,source.getControllerId()) < this.count;
+  break;
+case MORE_THAN:
+conditionApplies=game.getBattlefield().countAll(filter,source.getControllerId()) > this.count;
+break;
+case EQUAL_TO:
+conditionApplies=game.getBattlefield().countAll(filter,source.getControllerId()) == this.count;
+break;
+}
+if (this.condition != null) {
+conditionApplies=conditionApplies && this.condition.apply(game,source);
+}
+return conditionApplies;
 }
