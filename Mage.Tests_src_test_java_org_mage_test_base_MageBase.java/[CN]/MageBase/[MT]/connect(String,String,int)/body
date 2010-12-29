@@ -9,9 +9,9 @@
         logger.info("IN >> " + callback.getMessageId() + " - "+ callback.getMethod());
         try {
           if (callback.getMethod().equals("startGame")) {
-            UUID[] data=(UUID[])callback.getData();
-            gameId=data[0];
-            playerId=data[1];
+            TableClientMessage data=(TableClientMessage)callback.getData();
+            gameId=data.getGameId();
+            playerId=data.getPlayerId();
             server.joinGame(gameId,sessionId);
           }
  else           if (callback.getMethod().equals("gameInit")) {
