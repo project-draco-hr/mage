@@ -1,0 +1,14 @@
+{
+  Player player=game.getPlayer(source.getTargets().getFirstTarget());
+  int numTargets=Math.min(1,game.getBattlefield().countAll(filter,player.getId()));
+  filter.setTargetController(TargetController.YOU);
+  TargetControlledPermanent target=new TargetControlledPermanent(numTargets,numTargets,filter,false);
+  while (!target.isChosen()) {
+    player.choose(Outcome.Sacrifice,target,game);
+  }
+  Permanent permanent=game.getPermanent(target.getFirstTarget());
+  if (permanent != null) {
+    return permanent.sacrifice(source.getId(),game);
+  }
+  return false;
+}
