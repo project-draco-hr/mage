@@ -1,0 +1,20 @@
+{
+  boolean applied=false;
+  boolean twoDamageDone=false;
+  int damage=2;
+  for (  UUID target : source.getTargets().get(0).getTargets()) {
+    Permanent permanent=game.getPermanent(target);
+    if (twoDamageDone) {
+      damage=1;
+    }
+    if (permanent != null) {
+      applied|=(permanent.damage(damage,source.getId(),game,false,true) > 0);
+    }
+    Player player=game.getPlayer(target);
+    if (player != null) {
+      applied|=(player.damage(damage,source.getId(),game,false,true) > 0);
+    }
+    twoDamageDone=true;
+  }
+  return applied;
+}
