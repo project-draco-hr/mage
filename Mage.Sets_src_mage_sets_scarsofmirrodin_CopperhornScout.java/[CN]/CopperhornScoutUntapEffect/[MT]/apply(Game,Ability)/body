@@ -1,0 +1,11 @@
+{
+  FilterCreaturePermanent filter=new FilterCreaturePermanent();
+  filter.getControllerId().add(source.getControllerId());
+  List<Permanent> creatures=game.getBattlefield().getAllActivePermanents(filter);
+  for (  Permanent creature : creatures) {
+    if (!creature.getId().equals(source.getSourceId())) {
+      creature.untap(game);
+    }
+  }
+  return true;
+}
