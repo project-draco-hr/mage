@@ -1,0 +1,16 @@
+{
+  for (  DraftPlayer player : players.values()) {
+    if (player.getBooster().size() == 0)     return false;
+    player.getPlayer().pickCard(player.getBooster(),player.getDeck(),this);
+    player.setPicking();
+  }
+  while (!donePicking()) {
+    try {
+      Thread.sleep(1000);
+    }
+ catch (    InterruptedException ex) {
+      Logger.getLogger(DraftImpl.class.getName()).log(Level.SEVERE,null,ex);
+    }
+  }
+  return true;
+}

@@ -1,0 +1,18 @@
+{
+  UUID startId=table.get(0);
+  UUID currentId=startId;
+  UUID nextId=table.getNext();
+  DraftPlayer current=players.get(currentId);
+  DraftPlayer next=players.get(nextId);
+  List<Card> currentBooster=current.booster;
+  while (true) {
+    List<Card> nextBooster=next.booster;
+    next.setBooster(currentBooster);
+    if (nextId == startId)     break;
+    currentBooster=nextBooster;
+    current=next;
+    currentId=nextId;
+    nextId=table.getNext();
+    next=players.get(nextId);
+  }
+}
