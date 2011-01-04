@@ -1,0 +1,16 @@
+{
+  if (event.getType() == EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).getFromZone() == Zone.HAND && ((ZoneChangeEvent)event).getToZone() == Zone.STACK) {
+    Card card=(Card)game.getObject(event.getTargetId());
+    if (card.getAbilities().contains(this)) {
+      this.installReboundEffect=true;
+    }
+  }
+  if (event.getType() == EventType.SPELL_CAST && this.installReboundEffect) {
+    Spell spell=game.getStack().getSpell(event.getTargetId());
+    if (spell != null && spell.getSourceId().equals(this.getSourceId())) {
+      spell.getSpellAbility().addEffect(new ReboundEffect());
+      this.installReboundEffect=false;
+    }
+  }
+  return false;
+}
