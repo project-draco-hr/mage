@@ -1,0 +1,14 @@
+{
+  Draft draft;
+  Constructor<Draft> con;
+  try {
+    con=drafts.get(draftType).getConstructor(new Class[]{DraftOptions.class});
+    draft=con.newInstance(new Object[]{options});
+  }
+ catch (  Exception ex) {
+    logger.log(Level.SEVERE,null,ex);
+    return null;
+  }
+  logger.info("Draft created: " + draftType);
+  return draft;
+}
