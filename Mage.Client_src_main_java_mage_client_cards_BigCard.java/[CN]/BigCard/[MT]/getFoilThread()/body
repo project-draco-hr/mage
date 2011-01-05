@@ -1,0 +1,41 @@
+{
+  return new Thread(new Runnable(){
+    @Override public void run(){
+      if (bigImage == null) {
+        return;
+      }
+      final HueFilter filter=FilterFactory.getHueFilter();
+      while (true) {
+        boolean prevState=foilState;
+        while (!foilState) {
+          ThreadUtils.sleep(10);
+        }
+        if (prevState == foilState) {
+          ThreadUtils.sleep(DEFAULT_DELAY_PERIOD);
+        }
+        hue+=0.005F;
+        if (hue >= 1.0D) {
+          hue=0.000F;
+        }
+        filter.setHue(hue);
+        BufferedImage f=null;
+synchronized (BigCard.this) {
+          if (source == null) {
+            source=BufferedImageBuilder.bufferImage(bigImage);
+          }
+          f=filter.filter(source,null);
+        }
+synchronized (BigCard.class) {
+          foil=f;
+        }
+        SwingUtilities.invokeLater(new Runnable(){
+          @Override public void run(){
+            BigCard.this.repaint();
+          }
+        }
+);
+      }
+    }
+  }
+);
+}
