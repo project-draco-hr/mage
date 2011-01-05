@@ -1,0 +1,20 @@
+{
+  for (  UUID target : source.getTargets().get(0).getTargets()) {
+    Permanent creature=game.getPermanent(target);
+    List<UUID> copiedAttachments=new ArrayList<UUID>(creature.getAttachments());
+    for (    UUID equipmentId : copiedAttachments) {
+      Permanent equipment=game.getPermanent(equipmentId);
+      boolean isEquipment=false;
+      for (      Ability ability : equipment.getAbilities()) {
+        if (ability instanceof EquipAbility) {
+          isEquipment=true;
+        }
+      }
+      if (isEquipment) {
+        creature.removeAttachment(equipmentId,game);
+      }
+    }
+    creature.tap(game);
+  }
+  return true;
+}
