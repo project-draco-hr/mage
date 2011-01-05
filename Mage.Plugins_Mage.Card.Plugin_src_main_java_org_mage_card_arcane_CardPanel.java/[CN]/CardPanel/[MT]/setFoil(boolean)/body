@@ -1,38 +1,11 @@
 {
   this.isFoil=foil;
   if (foil) {
-    Thread thread=new Thread(new Runnable(){
-      @Override public void run(){
-        if (imagePanel.getSrcImage() == null) {
-          return;
-        }
-        BufferedImage source=BufferedImageBuilder.bufferImage(imagePanel.getSrcImage());
-        HueFilter filter=FilterFactory.getHueFilter();
-        float hue=0.005f;
-        while (true) {
-          try {
-            Thread.sleep(DEFAULT_DELAY_PERIOD);
-          }
- catch (          InterruptedException e) {
-          }
-          hue+=0.015F;
-          if (hue >= 1.0D) {
-            hue=0.005F;
-          }
-          filter.setHue(hue);
-          final BufferedImage dest=filter.filter(source,null);
-          SwingUtilities.invokeLater(new Runnable(){
-            @Override public void run(){
-              imagePanel.setImage(dest);
-              imagePanel.repaint();
-            }
-          }
-);
-        }
-      }
-    }
-);
-    thread.setDaemon(false);
-    thread.start();
+    BufferedImage source=BufferedImageBuilder.bufferImage(imagePanel.getSrcImage());
+    HueFilter filter=FilterFactory.getHueFilter();
+    filter.setHue(0.1f);
+    BufferedImage dest=filter.filter(source,null);
+    imagePanel.setImage(dest);
+    imagePanel.repaint();
   }
 }
