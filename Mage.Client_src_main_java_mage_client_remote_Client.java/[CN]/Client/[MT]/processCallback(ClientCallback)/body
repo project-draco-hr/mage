@@ -89,6 +89,19 @@
       TableClientMessage message=(TableClientMessage)callback.getData();
       sideboard(message.getDeck(),message.getTableId());
     }
+ else     if (callback.getMethod().equals("draftPick")) {
+      DraftClientMessage message=(DraftClientMessage)callback.getData();
+    }
+ else     if (callback.getMethod().equals("draftInform")) {
+      if (callback.getMessageId() > messageId) {
+        DraftClientMessage message=(DraftClientMessage)callback.getData();
+      }
+ else {
+        logger.warning("message out of sequence - ignoring");
+      }
+    }
+ else     if (callback.getMethod().equals("draftInit")) {
+    }
     messageId=callback.getMessageId();
   }
  catch (  Exception ex) {
