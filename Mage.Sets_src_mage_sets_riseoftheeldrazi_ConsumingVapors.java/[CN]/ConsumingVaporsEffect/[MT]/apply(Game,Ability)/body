@@ -1,13 +1,15 @@
 {
   Player player=game.getPlayer(source.getTargets().getFirstTarget());
+  Player controller=game.getPlayer(source.getControllerId());
   filter.setTargetController(TargetController.YOU);
-  TargetPermanent target=new TargetPermanent(count,count,filter,false);
+  TargetPermanent target=new TargetPermanent(1,1,filter,false);
   if (target.canChoose(player.getId(),game)) {
     while (!target.isChosen()) {
       player.choose(Outcome.Sacrifice,target,game);
     }
     Permanent permanent=game.getPermanent(target.getFirstTarget());
     if (permanent != null) {
+      controller.gainLife(permanent.getToughness().getValue(),game);
       return permanent.sacrifice(source.getId(),game);
     }
   }
