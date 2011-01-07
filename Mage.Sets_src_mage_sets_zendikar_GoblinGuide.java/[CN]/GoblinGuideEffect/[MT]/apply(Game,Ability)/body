@@ -1,11 +1,6 @@
 {
-  Player defender=null;
-  for (  CombatGroup group : game.getCombat().getGroups()) {
-    if (group.getAttackers().contains(source.getSourceId())) {
-      defender=game.getPlayer(group.getDefenderId());
-      break;
-    }
-  }
+  UUID defenderId=game.getCombat().getDefendingPlayer(source.getSourceId());
+  Player defender=game.getPlayer(defenderId);
   if (defender != null) {
     Cards cards=new CardsImpl();
     Card card=defender.getLibrary().getFromTop(game);
