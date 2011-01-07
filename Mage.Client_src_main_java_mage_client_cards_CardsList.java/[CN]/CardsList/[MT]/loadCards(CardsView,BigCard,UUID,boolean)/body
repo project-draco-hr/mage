@@ -1,0 +1,25 @@
+{
+  cardArea.removeAll();
+  if (showCards != null && showCards.size() > 0) {
+    Rectangle rectangle=new Rectangle(Config.dimensions.frameWidth,Config.dimensions.frameHeight);
+    int count=0;
+    List<CardView> sortedCards=new ArrayList<CardView>(showCards.values());
+    if (sorted)     Collections.sort(sortedCards,new CardViewComparator());
+    for (    CardView card : sortedCards) {
+      addCard(card,bigCard,gameId,rectangle);
+      if (count >= 10) {
+        rectangle.translate(Config.dimensions.frameWidth,-200);
+        count=0;
+      }
+ else {
+        rectangle.translate(0,20);
+        count++;
+      }
+    }
+  }
+  cardArea.setPreferredSize(new Dimension(Config.dimensions.frameWidth,Config.dimensions.frameHeight + 200));
+  cardArea.revalidate();
+  this.revalidate();
+  this.repaint();
+  this.setVisible(true);
+}
