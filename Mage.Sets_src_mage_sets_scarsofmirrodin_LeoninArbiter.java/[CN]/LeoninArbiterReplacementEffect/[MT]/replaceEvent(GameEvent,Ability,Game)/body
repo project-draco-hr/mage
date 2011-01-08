@@ -1,0 +1,17 @@
+{
+  if (event.getType() == EventType.SEARCH_LIBRARY && !paidPlayers.contains(event.getPlayerId())) {
+    Player player=game.getPlayer(event.getPlayerId());
+    if (player != null) {
+      ManaCostsImpl arbiterTax=new ManaCostsImpl("{2}");
+      if (arbiterTax.canPay(source.getSourceId(),event.getPlayerId(),game) && player.chooseUse(Outcome.Neutral,"Pay {2} to search your library?",game)) {
+        arbiterTax.pay(game,this.getId(),event.getPlayerId(),false);
+        if (arbiterTax.isPaid()) {
+          paidPlayers.add(event.getPlayerId());
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
