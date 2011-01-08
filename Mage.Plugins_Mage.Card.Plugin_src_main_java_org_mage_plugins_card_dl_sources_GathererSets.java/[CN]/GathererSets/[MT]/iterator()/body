@@ -1,0 +1,17 @@
+{
+  return new AbstractIterator<DownloadJob>(){
+    private int idx=0;
+    @Override protected DownloadJob computeNext(){
+      if (idx == symbols.length)       return endOfData();
+      String symbol=symbols[idx];
+      File dst=new File(outDir,symbol + ".jpg");
+      if (symbol.equals("CFX")) {
+        symbol="CON";
+      }
+      String url="http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=" + symbol + "&size=small&rarity=R";
+      idx++;
+      return new DownloadJob(symbol,fromURL(url),toFile(dst));
+    }
+  }
+;
+}
