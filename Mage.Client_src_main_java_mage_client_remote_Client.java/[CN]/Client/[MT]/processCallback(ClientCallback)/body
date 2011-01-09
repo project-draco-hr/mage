@@ -8,6 +8,7 @@
     }
  else     if (callback.getMethod().equals("startDraft")) {
       TableClientMessage message=(TableClientMessage)callback.getData();
+      draftStarted(message.getGameId(),message.getPlayerId());
     }
  else     if (callback.getMethod().equals("replayGame")) {
       replayGame();
@@ -89,8 +90,13 @@
       TableClientMessage message=(TableClientMessage)callback.getData();
       sideboard(message.getDeck(),message.getTableId());
     }
+ else     if (callback.getMethod().equals("construct")) {
+      TableClientMessage message=(TableClientMessage)callback.getData();
+      construct(message.getDeck(),message.getTableId());
+    }
  else     if (callback.getMethod().equals("draftPick")) {
       DraftClientMessage message=(DraftClientMessage)callback.getData();
+      session.getDraft().loadBooster(message.getDraftPickView());
     }
  else     if (callback.getMethod().equals("draftInform")) {
       if (callback.getMessageId() > messageId) {
@@ -101,6 +107,7 @@
       }
     }
  else     if (callback.getMethod().equals("draftInit")) {
+      session.ack("draftInit");
     }
     messageId=callback.getMessageId();
   }

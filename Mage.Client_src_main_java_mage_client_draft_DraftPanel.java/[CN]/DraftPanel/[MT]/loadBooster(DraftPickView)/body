@@ -1,0 +1,13 @@
+{
+  draftBooster.loadBooster(draftPickView.getBooster(),bigCard);
+  draftPicks.loadCards(draftPickView.getPicks(),bigCard,null);
+  this.draftBooster.clearCardEventListeners();
+  this.draftBooster.addCardEventListener(new Listener<Event>(){
+    @Override public void event(    Event event){
+      if (event.getEventName().equals("double-click")) {
+        session.sendCardPick(draftId,(UUID)event.getSource());
+      }
+    }
+  }
+);
+}
