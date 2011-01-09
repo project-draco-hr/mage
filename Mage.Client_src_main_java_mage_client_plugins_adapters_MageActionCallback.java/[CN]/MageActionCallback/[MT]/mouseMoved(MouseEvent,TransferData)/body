@@ -6,14 +6,17 @@
     return;
   }
   MageCard card=(MageCard)data.component;
-  if (card.getOriginal().getId() != bigCard.getCardId()) {
+  if (!state || card.getOriginal().getId() != bigCard.getCardId()) {
 synchronized (MageActionCallback.class) {
-      if (card.getOriginal().getId() != bigCard.getCardId()) {
+      if (!state || card.getOriginal().getId() != bigCard.getCardId()) {
+        if (!state) {
+          bigCard.resetCardId();
+        }
+        state=true;
         Image image=card.getImage();
         if (image != null && image instanceof BufferedImage) {
           image=ImageHelper.getResizedImage((BufferedImage)image,bigCard.getWidth(),bigCard.getHeight());
           bigCard.setCard(card.getOriginal().getId(),image,card.getOriginal().getRules(),card.isFoil());
-          bigCard.showTextComponent();
           if (card.getOriginal().isAbility()) {
             bigCard.showTextComponent();
           }
