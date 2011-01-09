@@ -6,6 +6,10 @@
       return cards;
     }
     Card tmp=allCards.get(0);
+    Set<String> names=new HashSet<String>();
+    for (    Card card : allCards) {
+      names.add(card.getExpansionSetCode() + card.getName());
+    }
     try {
       InputStream is=CardsStorage.class.getResourceAsStream(filename);
       Scanner scanner=new Scanner(is);
@@ -15,20 +19,24 @@
         String[] s=line.split("\\|");
         if (s.length == 6) {
           String name=s[1].trim();
-          Integer cid=Integer.parseInt(s[5]);
-          Card card=tmp.copy();
-          card.setName(name);
-          card.setExpansionSetCode(set);
-          card.setCardNumber(cid);
-          card.getRules().clear();
-          card.getRules().add("Not implemented");
-          cards.add(card);
+          if (!names.contains(set + name)) {
+            Integer cid=Integer.parseInt(s[5]);
+            Card card=tmp.copy();
+            card.setName(name);
+            card.setExpansionSetCode(set);
+            card.setCardNumber(cid);
+            card.setRarity(Constants.Rarity.NA);
+            card.getCardType().clear();
+            cards.add(card);
+          }
         }
       }
     }
  catch (    Exception e) {
       e.printStackTrace();
     }
+    names.clear();
+    names=null;
   }
   return cards;
 }
