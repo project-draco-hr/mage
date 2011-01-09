@@ -1,0 +1,46 @@
+{
+  jPanelLeft.removeAll();
+  jPanelRight.removeAll();
+  Image image=ImageHelper.loadImage(LEFT_TAB_IMAGE_PATH);
+  Image imageRight=ImageHelper.loadImage(RIGHT_TAB_IMAGE_PATH);
+  int y=0;
+  int dy=0;
+  if (CardsStorage.getSetCodes().size() > 1) {
+    dy=(HEIGHT - 120) / (CardsStorage.getSetCodes().size() - 1) + 1;
+  }
+  int count=0;
+  JPanel currentPanel=jPanelLeft;
+  for (  String set : CardsStorage.getSetCodes()) {
+    HoverButton tab=new HoverButton(null,image,image,image,new Rectangle(39,120));
+    Image setImage=ManaSymbols.getSetSymbolImage(set);
+    if (setImage != null) {
+      tab.setOverlayImage(setImage);
+    }
+ else {
+      System.out.println("Couldn't find: " + "/plugins/images/sets/" + set + ".jpg");
+    }
+    tab.setBounds(0,y,39,120);
+    final String _set=set;
+    tab.setObserver(new Command(){
+      public void execute(){
+        currentPage=0;
+        currentSet=_set;
+        pageLeft.setVisible(false);
+        pageRight.setVisible(false);
+        addSetTabs();
+        showCards();
+      }
+    }
+);
+    currentPanel.add(tab,JLayeredPane.DEFAULT_LAYER + count++,0);
+    y+=dy;
+    if (set.equals(currentSet)) {
+      currentPanel=jPanelRight;
+      image=imageRight;
+    }
+  }
+  jPanelLeft.revalidate();
+  jPanelLeft.repaint();
+  jPanelRight.revalidate();
+  jPanelRight.repaint();
+}

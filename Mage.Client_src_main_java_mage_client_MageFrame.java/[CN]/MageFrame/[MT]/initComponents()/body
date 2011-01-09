@@ -3,6 +3,7 @@
   tablesPane=new mage.client.table.TablesPane();
   gamePane=new mage.client.game.GamePane();
   deckEditorPane=new mage.client.deckeditor.DeckEditorPane();
+  collectionViewerPane=new CollectionViewerPane();
   mageToolbar=new javax.swing.JToolBar();
   btnConnect=new javax.swing.JButton();
   jSeparator5=new javax.swing.JToolBar.Separator();
@@ -16,6 +17,8 @@
   jSeparator1=new javax.swing.JToolBar.Separator();
   btnExit=new javax.swing.JButton();
   lblStatus=new javax.swing.JLabel();
+  jSeparator6=new javax.swing.JToolBar.Separator();
+  btnCollectionViewer=new JButton();
   setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
   tablesPane.setBounds(20,10,560,440);
   desktopPane.add(tablesPane,javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -37,6 +40,14 @@
   desktopPane.add(deckEditorPane,javax.swing.JLayeredPane.DEFAULT_LAYER);
   try {
     deckEditorPane.setMaximum(true);
+  }
+ catch (  java.beans.PropertyVetoException e1) {
+    e1.printStackTrace();
+  }
+  collectionViewerPane.setBounds(140,50,-1,-1);
+  desktopPane.add(collectionViewerPane,javax.swing.JLayeredPane.DEFAULT_LAYER);
+  try {
+    collectionViewerPane.setMaximum(true);
   }
  catch (  java.beans.PropertyVetoException e1) {
     e1.printStackTrace();
@@ -82,6 +93,19 @@
 );
   mageToolbar.add(btnDeckEditor);
   mageToolbar.add(jSeparator2);
+  btnCollectionViewer.setText("Collection Viewer");
+  btnCollectionViewer.setBorder(javax.swing.BorderFactory.createEmptyBorder(1,1,1,1));
+  btnCollectionViewer.setFocusable(false);
+  btnCollectionViewer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+  btnCollectionViewer.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+  btnCollectionViewer.addActionListener(new java.awt.event.ActionListener(){
+    public void actionPerformed(    java.awt.event.ActionEvent evt){
+      btnCollectionViewerActionPerformed(evt);
+    }
+  }
+);
+  mageToolbar.add(btnCollectionViewer);
+  mageToolbar.add(jSeparator6);
   btnPreferences.setText("Preferences");
   btnPreferences.setBorder(javax.swing.BorderFactory.createEmptyBorder(1,1,1,1));
   btnPreferences.setFocusable(false);

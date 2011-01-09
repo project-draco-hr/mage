@@ -1,0 +1,56 @@
+{
+  setOpaque(false);
+  setSize(WIDTH,HEIGHT);
+  setPreferredSize(new Dimension(WIDTH,HEIGHT));
+  setMinimumSize(new Dimension(WIDTH,HEIGHT));
+  jPanelLeft=getImagePanel(LEFT_PANEL_IMAGE_PATH,ImagePanel.TILED);
+  jPanelLeft.setPreferredSize(new Dimension(LEFT_RIGHT_PAGES_WIDTH,0));
+  jPanelLeft.setLayout(null);
+  jPanelCenter=getImagePanel(CENTER_PANEL_IMAGE_PATH,ImagePanel.SCALED);
+  jPanelCenter.setLayout(new BorderLayout());
+  jPanelRight=getImagePanel(RIGHT_PANEL_IMAGE_PATH,ImagePanel.TILED);
+  jPanelRight.setPreferredSize(new Dimension(LEFT_RIGHT_PAGES_WIDTH,0));
+  jPanelRight.setLayout(null);
+  jLayeredPane=new JLayeredPane();
+  jPanelCenter.add(jLayeredPane,BorderLayout.CENTER);
+  Image image=ImageHelper.loadImage(LEFT_PAGE_BUTTON_IMAGE_PATH);
+  pageLeft=new HoverButton(null,image,image,image,new Rectangle(64,64));
+  pageLeft.setBounds(0,0,64,64);
+  pageLeft.setVisible(false);
+  pageLeft.setObserver(new Command(){
+    public void execute(){
+      currentPage--;
+      if (currentPage == 0) {
+        pageLeft.setVisible(false);
+      }
+      pageRight.setVisible(true);
+      showCards();
+    }
+  }
+);
+  image=ImageHelper.loadImage(RIGHT_PAGE_BUTTON_IMAGE_PATH);
+  pageRight=new HoverButton(null,image,image,image,new Rectangle(64,64));
+  pageRight.setBounds(WIDTH - 2 * LEFT_RIGHT_PAGES_WIDTH - 64,0,64,64);
+  pageRight.setVisible(false);
+  pageRight.setObserver(new Command(){
+    public void execute(){
+      currentPage++;
+      pageLeft.setVisible(true);
+      pageRight.setVisible(false);
+      showCards();
+    }
+  }
+);
+  addSetTabs();
+  setLayout(new BorderLayout());
+  add(jPanelLeft,BorderLayout.LINE_START);
+  add(jPanelCenter,BorderLayout.CENTER);
+  add(jPanelRight,BorderLayout.LINE_END);
+  cardDimensions=new CardDimensions(0.45d);
+  SwingUtilities.invokeLater(new Runnable(){
+    @Override public void run(){
+      showCards();
+    }
+  }
+);
+}

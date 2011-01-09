@@ -1,0 +1,17 @@
+{
+  try {
+    InputStream is=this.getClass().getResourceAsStream(filename);
+    if (is == null) {
+      throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
+    }
+    BufferedImage background=ImageIO.read(is);
+    if (background == null) {
+      throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
+    }
+    return new ImagePanel(background,type);
+  }
+ catch (  Exception e) {
+    log.error(e.getMessage(),e);
+    return null;
+  }
+}
