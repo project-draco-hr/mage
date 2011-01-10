@@ -5,16 +5,14 @@
   this.cardSelector.getCardsList().addCardEventListener(new Listener<Event>(){
     @Override public void event(    Event event){
       if (event.getEventName().equals("double-click")) {
-        for (        Card card : cardSelector.getCards()) {
-          if (card.getId().equals((UUID)event.getSource())) {
-            deck.getCards().add(createCard(card.getClass()));
-            if (System.getProperty("draft") != null) {
-              cardSelector.getCardsList().removeCard(card.getId());
-            }
-            if (cardInfoPane instanceof CardInfoPane) {
-              ((CardInfoPane)cardInfoPane).setCard(new CardView(card));
-            }
-            break;
+        Card card=cardSelector.getCard((UUID)event.getSource());
+        if (card != null) {
+          deck.getCards().add(createCard(card.getClass()));
+          if (mode == DeckEditorMode.Sideboard || mode == DeckEditorMode.Limited) {
+            cardSelector.getCardsList().removeCard(card.getId());
+          }
+          if (cardInfoPane instanceof CardInfoPane) {
+            ((CardInfoPane)cardInfoPane).setCard(new CardView(card));
           }
         }
         refreshDeck();
