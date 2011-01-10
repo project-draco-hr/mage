@@ -1,11 +1,18 @@
 {
   try {
+    List<Card> filteredCards=new ArrayList<Card>();
     setCursor(new Cursor(Cursor.WAIT_CURSOR));
-    cards.clear();
-    for (    Card card : CardsStorage.getAllCards()) {
-      if (filter.match(card))       cards.add(card);
+    if (!cards.isEmpty()) {
+      for (      Card card : cards) {
+        if (filter.match(card))         filteredCards.add(card);
+      }
     }
-    this.cardGrid.loadCards(new CardsView(cards),bigCard,null);
+ else {
+      for (      Card card : CardsStorage.getAllCards()) {
+        if (filter.match(card))         filteredCards.add(card);
+      }
+    }
+    this.cardGrid.loadCards(new CardsView(filteredCards),bigCard,null);
   }
   finally {
     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));

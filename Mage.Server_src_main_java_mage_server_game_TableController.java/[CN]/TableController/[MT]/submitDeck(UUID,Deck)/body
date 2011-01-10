@@ -1,4 +1,10 @@
 {
-  MatchPlayer player=match.getPlayer(playerId);
-  player.submitDeck(deck);
+  if (table.getState() == TableState.SIDEBOARDING) {
+    MatchPlayer player=match.getPlayer(playerId);
+    player.submitDeck(deck);
+  }
+ else   if (table.getState() == TableState.CONSTRUCTING) {
+    DraftPlayer player=draft.getPlayer(playerId);
+    player.submitDeck(deck);
+  }
 }
