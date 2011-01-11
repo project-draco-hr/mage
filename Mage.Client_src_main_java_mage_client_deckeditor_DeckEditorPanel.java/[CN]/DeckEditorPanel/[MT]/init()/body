@@ -7,8 +7,9 @@
       if (event.getEventName().equals("double-click")) {
         Card card=cardSelector.getCard((UUID)event.getSource());
         if (card != null) {
-          deck.getCards().add(createCard(card.getClass()));
+          deck.getCards().add(Sets.createCard(card.getClass()));
           if (mode == DeckEditorMode.Sideboard || mode == DeckEditorMode.Limited) {
+            deck.getSideboard().remove(card);
             cardSelector.getCardsList().removeCard(card.getId());
           }
           if (cardInfoPane instanceof CardInfoPane) {
@@ -20,16 +21,17 @@
     }
   }
 );
-  this.deckArea.getDeckList().clearCardEventListeners();
-  this.deckArea.getDeckList().addCardEventListener(new Listener<Event>(){
+  this.deckArea.clearDeckEventListeners();
+  this.deckArea.addDeckEventListener(new Listener<Event>(){
     @Override public void event(    Event event){
-      if (System.getProperty("draft") != null) {
-        return;
-      }
       if (event.getEventName().equals("double-click")) {
         for (        Card card : deck.getCards()) {
           if (card.getId().equals((UUID)event.getSource())) {
             deck.getCards().remove(card);
+            if (mode == DeckEditorMode.Limited || mode == DeckEditorMode.Sideboard) {
+              deck.getSideboard().add(card);
+              cardSelector.loadCards(new ArrayList<Card>(deck.getSideboard()),getBigCard(),mode == DeckEditorMode.Limited);
+            }
             break;
           }
         }

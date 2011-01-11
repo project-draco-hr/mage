@@ -1,4 +1,13 @@
 {
-  deck=new Deck();
+  if (mode == DeckEditorMode.Sideboard || mode == DeckEditorMode.Limited) {
+    for (    Card card : deck.getCards()) {
+      deck.getSideboard().add(card);
+    }
+    deck.getCards().clear();
+    cardSelector.loadCards(new ArrayList<Card>(deck.getSideboard()),this.bigCard,mode == DeckEditorMode.Limited);
+  }
+ else {
+    deck=new Deck();
+  }
   refreshDeck();
 }
