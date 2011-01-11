@@ -1,0 +1,16 @@
+{
+  super(ownerId,214,"Sarkhan the Mad",Rarity.MYTHIC,new CardType[]{CardType.PLANESWALKER},"{3}{B}{R}");
+  this.expansionSetCode="ROE";
+  this.subtype.add("Sarkhan");
+  this.loyalty=new MageInt(7);
+  this.color.setBlack(true);
+  this.color.setRed(true);
+  this.addAbility(new LoyaltyAbility(new SarkhantheMadRevealAndDrawEffect(),0));
+  Target targetCreature=new TargetCreaturePermanent();
+  Ability sacAbility=new LoyaltyAbility(new SarkhantheMadSacEffect(),-2);
+  sacAbility.addTarget(targetCreature);
+  this.addAbility(sacAbility);
+  Ability damageAbility=new LoyaltyAbility(new SarkhantheMadDragonDamageEffect(),-4);
+  damageAbility.addTarget(new TargetPlayer());
+  this.addAbility(damageAbility);
+}
