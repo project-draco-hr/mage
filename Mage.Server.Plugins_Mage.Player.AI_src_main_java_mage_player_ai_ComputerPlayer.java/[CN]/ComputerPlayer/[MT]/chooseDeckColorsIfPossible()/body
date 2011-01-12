@@ -1,0 +1,43 @@
+{
+  if (pickedCards.size() > 2) {
+    Collections.sort(pickedCards,new Comparator<PickedCard>(){
+      @Override public int compare(      PickedCard o1,      PickedCard o2){
+        if (o1.score.equals(o2.score)) {
+          Integer i1=RateCard.getColorManaCount(o1.card);
+          Integer i2=RateCard.getColorManaCount(o2.card);
+          return -i1.compareTo(i2);
+        }
+        return -o1.score.compareTo(o2.score);
+      }
+    }
+);
+    Set<String> chosenSymbols=new HashSet<String>();
+    for (    PickedCard picked : pickedCards) {
+      int differentColorsInCost=RateCard.getDifferentColorManaCount(picked.card);
+      if (differentColorsInCost > 0 && differentColorsInCost < 3) {
+        if (chosenSymbols.size() + differentColorsInCost < 4) {
+          for (          String symbol : picked.card.getManaCost().getSymbols()) {
+            symbol=symbol.replace("{","").replace("}","");
+            if (RateCard.isColoredMana(symbol)) {
+              chosenSymbols.add(symbol);
+            }
+          }
+        }
+      }
+      if (chosenSymbols.size() > 1 && chosenSymbols.size() < 4) {
+        List<Constants.ColoredManaSymbol> chosenColors=new ArrayList<Constants.ColoredManaSymbol>();
+        for (        String symbol : chosenSymbols) {
+          Constants.ColoredManaSymbol manaSymbol=Constants.ColoredManaSymbol.lookup(symbol.charAt(0));
+          if (manaSymbol != null) {
+            chosenColors.add(manaSymbol);
+          }
+        }
+        if (chosenColors.size() > 1) {
+          pickedCards=null;
+          return chosenColors;
+        }
+      }
+    }
+  }
+  return null;
+}

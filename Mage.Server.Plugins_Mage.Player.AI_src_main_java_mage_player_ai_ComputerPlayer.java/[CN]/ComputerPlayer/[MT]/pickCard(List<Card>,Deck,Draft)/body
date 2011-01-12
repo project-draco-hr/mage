@@ -6,16 +6,28 @@
     Card bestCard=null;
     int maxScore=0;
     for (    Card card : cards) {
-      int score=RateCard.rateCard(card,null);
+      int score=RateCard.rateCard(card,chosenColors);
       if (bestCard == null || score > maxScore) {
         maxScore=score;
         bestCard=card;
       }
     }
-    System.out.println("[DEBUG] AI picked: " + bestCard.getName() + ", score="+ maxScore);
+    String colors="not chosen yet";
+    if (chosenColors == null) {
+      rememberPick(bestCard,maxScore);
+      chosenColors=chooseDeckColorsIfPossible();
+    }
+    if (chosenColors != null) {
+      colors="";
+      for (      Constants.ColoredManaSymbol symbol : chosenColors) {
+        colors+=symbol.toString();
+      }
+    }
+    System.out.println("[DEBUG] AI picked: " + bestCard.getName() + ", score="+ maxScore+ ", deck colors="+ colors);
     draft.addPick(playerId,bestCard.getId());
   }
  catch (  Exception e) {
+    e.printStackTrace();
     draft.addPick(playerId,cards.get(0).getId());
   }
 }
