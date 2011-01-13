@@ -1,9 +1,11 @@
 {
   cancelTimeout();
-  futureTimeout=timeoutExecutor.schedule(new Runnable(){
-    @Override public void run(){
-      DraftManager.getInstance().timeout(draftId,sessionId);
+  if (seconds > 0) {
+    futureTimeout=timeoutExecutor.schedule(new Runnable(){
+      @Override public void run(){
+        DraftManager.getInstance().timeout(draft.getId(),sessionId);
+      }
     }
-  }
 ,seconds,TimeUnit.SECONDS);
+  }
 }

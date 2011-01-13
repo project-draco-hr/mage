@@ -5,9 +5,15 @@
   this.draftBooster.addCardEventListener(new Listener<Event>(){
     @Override public void event(    Event event){
       if (event.getEventName().equals("pick-a-card")) {
+        countdown.stop();
         session.sendCardPick(draftId,(UUID)event.getSource());
       }
     }
   }
 );
+  this.timeout=draftPickView.getTimeout();
+  setTimeout(Integer.toString(timeout));
+  if (timeout != 0) {
+    countdown.start();
+  }
 }
