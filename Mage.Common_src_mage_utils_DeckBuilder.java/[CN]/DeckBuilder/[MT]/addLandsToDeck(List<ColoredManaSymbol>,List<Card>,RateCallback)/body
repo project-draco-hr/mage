@@ -25,15 +25,17 @@
   for (  final ColoredManaSymbol color : ColoredManaSymbol.values()) {
     colorSource.put(color.toString(),0);
   }
-  for (  final Card landCard : landCardPool) {
-    deck.getCards().add(landCard);
-    for (    Mana mana : landCard.getMana()) {
-      for (      ColoredManaSymbol color : allowedColors) {
-        int amount=mana.getColor(color);
-        if (amount > 0) {
-          Integer count=colorSource.get(color.toString());
-          count+=amount;
-          colorSource.put(color.toString(),count);
+  if (landCardPool != null) {
+    for (    final Card landCard : landCardPool) {
+      deck.getCards().add(landCard);
+      for (      Mana mana : landCard.getMana()) {
+        for (        ColoredManaSymbol color : allowedColors) {
+          int amount=mana.getColor(color);
+          if (amount > 0) {
+            Integer count=colorSource.get(color.toString());
+            count+=amount;
+            colorSource.put(color.toString(),count);
+          }
         }
       }
     }
@@ -58,7 +60,7 @@
         }
       }
     }
-    final Card landCard=getBestBasicLand(bestColor);
+    final Card landCard=callback.getBestBasicLand(bestColor);
     Integer count=colorSource.get(bestColor.toString());
     count++;
     colorSource.put(bestColor.toString(),count);

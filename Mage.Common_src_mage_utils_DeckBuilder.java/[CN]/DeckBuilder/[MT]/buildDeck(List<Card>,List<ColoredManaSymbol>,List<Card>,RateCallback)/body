@@ -1,0 +1,17 @@
+{
+  deck=new Deck();
+  final Collection<MageScoredCard> remainingCards=new ArrayList<MageScoredCard>();
+  for (  final Card card : spellCardPool) {
+    remainingCards.add(new MageScoredCard(card,allowedColors,callback));
+  }
+  int min=0;
+  for (int index=0; index < DECK_COUNT.length; index++) {
+    final int max=DECK_COST[index];
+    addCardsToDeck(remainingCards,min,max,DECK_COUNT[index]);
+    min=max + 1;
+  }
+  addCardsToDeck(remainingCards,0,4,DECK_SPELLS - deck.getCards().size());
+  addCardsToDeck(remainingCards,5,10,DECK_SPELLS - deck.getCards().size());
+  addLandsToDeck(allowedColors,landCardPool,callback);
+  return deck;
+}
