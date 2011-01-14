@@ -1,17 +1,15 @@
 {
-  return new AbstractIterator<DownloadJob>(){
-    private int idx=0;
-    @Override protected DownloadJob computeNext(){
-      if (idx == symbols.length)       return endOfData();
-      String symbol=symbols[idx];
-      File dst=new File(outDir,symbol + ".jpg");
-      if (symbol.equals("CFX")) {
-        symbol="CON";
-      }
-      String url="http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set=" + symbol + "&size=small&rarity=R";
-      idx++;
-      return new DownloadJob(symbol,fromURL(url),toFile(dst));
-    }
+  ArrayList<DownloadJob> jobs=new ArrayList<DownloadJob>();
+  for (  String symbol : symbols) {
+    jobs.add(generateDownloadJob(symbol,"C"));
+    jobs.add(generateDownloadJob(symbol,"U"));
+    jobs.add(generateDownloadJob(symbol,"R"));
   }
-;
+  for (  String symbol : withMythics) {
+    jobs.add(generateDownloadJob(symbol,"C"));
+    jobs.add(generateDownloadJob(symbol,"U"));
+    jobs.add(generateDownloadJob(symbol,"R"));
+    jobs.add(generateDownloadJob(symbol,"M"));
+  }
+  return jobs.iterator();
 }
