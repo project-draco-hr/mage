@@ -1,0 +1,16 @@
+{
+  Mana oldPayment=ability.getManaCosts().getPayment();
+  ManaPool tmpPool=new ManaPool();
+  tmpPool.changeMana(oldPayment);
+  List<AlternativeCost> oldAltCosts=ability.getAlternativeCosts();
+  Costs<Cost> oldOptionalCosts=ability.getOptionalCosts();
+  Costs<Cost> oldCosts=ability.getCosts();
+  ability=card.getSpellAbility().copy();
+  ability.getManaCosts().assignPayment(tmpPool);
+  ability.getAlternativeCosts().clear();
+  ability.getAlternativeCosts().addAll(oldAltCosts);
+  ability.getOptionalCosts().clear();
+  ability.getOptionalCosts().addAll(oldOptionalCosts);
+  ability.getCosts().clear();
+  ability.getCosts().addAll(oldCosts);
+}
