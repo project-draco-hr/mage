@@ -39,5 +39,41 @@
     }
  catch (    Exception e) {
     }
+    String[] codes=new String[]{"C","U","R","M"};
+    try {
+      file=new File(Constants.RESOURCE_PATH_SET_SMALL);
+      if (!file.exists()) {
+        file.mkdirs();
+      }
+      for (      String code : codes) {
+        file=new File(Constants.RESOURCE_PATH_SET_SMALL + set + "-"+ code+ ".png");
+        if (file.exists()) {
+          continue;
+        }
+        file=new File(Constants.RESOURCE_PATH_SET + _set + "-"+ code+ ".jpg");
+        Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
+        try {
+          int width=image.getWidth(null);
+          int height=image.getHeight(null);
+          if (height > 0) {
+            int dx=0;
+            if (set.equals("M10") || set.equals("M11")) {
+              dx=6;
+            }
+            Rectangle r=new Rectangle(15 + dx,(int)(height * (15.0f + dx) / width));
+            BufferedImage resized=ImageResizeUtil.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
+            File newFile=new File(Constants.RESOURCE_PATH_SET_SMALL + File.separator + _set+ "-"+ code+ ".png");
+            ImageIO.write(resized,"png",newFile);
+          }
+        }
+ catch (        Exception e) {
+          if (file != null && file.exists()) {
+            file.delete();
+          }
+        }
+      }
+    }
+ catch (    Exception e) {
+    }
   }
 }
