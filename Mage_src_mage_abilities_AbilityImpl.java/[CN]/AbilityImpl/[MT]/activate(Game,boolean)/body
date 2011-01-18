@@ -9,7 +9,8 @@
   }
   if (game.getObject(sourceId) != null)   game.getObject(sourceId).adjustCosts(this,game);
   if (!useAlternativeCost(game)) {
-    if (!manaCosts.pay(game,sourceId,controllerId,noMana)) {
+    game.getContinuousEffects().costModification(this,game);
+    if (!manaCostsToPay.pay(game,sourceId,controllerId,noMana)) {
       logger.fine("activate failed - mana");
       return false;
     }
