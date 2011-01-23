@@ -1,0 +1,13 @@
+{
+  Permanent p=game.getBattlefield().getPermanent(source.getFirstTarget());
+  if (p == null) {
+    p=(Permanent)game.getLastKnownInformation(source.getFirstTarget(),Zone.BATTLEFIELD);
+  }
+  if (p != null) {
+    Player player=game.getPlayer(p.getControllerId());
+    if (player != null) {
+      player.damage(2,source.getSourceId(),game,false,true);
+    }
+  }
+  return false;
+}
