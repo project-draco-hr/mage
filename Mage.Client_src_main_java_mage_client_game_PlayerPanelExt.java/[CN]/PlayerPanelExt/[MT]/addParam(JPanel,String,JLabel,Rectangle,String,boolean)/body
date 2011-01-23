@@ -1,0 +1,20 @@
+{
+  if (text != null) {
+    text.setForeground(Color.black);
+    containerPanel.add(text);
+    text.setToolTipText(tooltip);
+  }
+  Image image=ImageHelper.getImageFromResources(imagePath);
+  BufferedImage resized=ImageResizeUtil.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
+  JComponent component=null;
+  if (isButton) {
+    component=new HoverButton(null,resized,resized,resized,r);
+  }
+ else {
+    component=new ImagePanel(resized,ImagePanel.ACTUAL);
+  }
+  component.setToolTipText(tooltip);
+  component.setOpaque(false);
+  containerPanel.add(component);
+  return component;
+}
