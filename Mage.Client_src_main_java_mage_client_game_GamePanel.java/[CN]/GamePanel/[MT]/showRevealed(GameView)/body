@@ -1,0 +1,12 @@
+{
+  for (  ShowCardsDialog reveal : revealed.values()) {
+    reveal.clearReloaded();
+  }
+  for (  RevealedView reveal : game.getRevealed()) {
+    if (!revealed.containsKey(reveal.getName())) {
+      ShowCardsDialog newReveal=new ShowCardsDialog();
+      revealed.put(reveal.getName(),newReveal);
+    }
+    revealed.get(reveal.getName()).loadCards("Revealed " + reveal.getName(),reveal.getCards(),bigCard,Config.dimensions,gameId,false);
+  }
+}
