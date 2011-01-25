@@ -4,5 +4,9 @@
   logger.log(Level.FINE,"players clear.");
   this.pnlBattlefield.removeAll();
   MageFrame.getCombatDialog().hideDialog();
-  this.setVisible(false);
+  Component c=this.getParent();
+  while (c != null && !(c instanceof GamePane)) {
+    c=c.getParent();
+  }
+  if (c != null)   c.setVisible(false);
 }
