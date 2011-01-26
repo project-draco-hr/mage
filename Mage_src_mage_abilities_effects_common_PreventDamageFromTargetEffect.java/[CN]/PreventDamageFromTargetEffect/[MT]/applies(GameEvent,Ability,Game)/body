@@ -1,6 +1,12 @@
 {
-  if (!this.used && super.applies(event,source,game) && event.getSourceId().equals(source.getFirstTarget())) {
-    return true;
+  if (!this.used && super.applies(event,source,game)) {
+    for (    Target target : source.getTargets()) {
+      for (      UUID chosen : target.getTargets()) {
+        if (event.getSourceId().equals(chosen)) {
+          return true;
+        }
+      }
+    }
   }
   return false;
 }

@@ -1,0 +1,24 @@
+{
+  GameEvent preventEvent=new GameEvent(GameEvent.EventType.PREVENT_DAMAGE,target,source.getId(),source.getControllerId(),event.getAmount(),false);
+  if (!game.replaceEvent(preventEvent)) {
+    if (all) {
+      int damage=event.getAmount();
+      event.setAmount(0);
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.PREVENTED_DAMAGE,target,source.getId(),source.getControllerId(),damage));
+    }
+ else {
+      if (event.getAmount() >= this.amount) {
+        int damage=event.getAmount();
+        event.setAmount(event.getAmount() - amount);
+        this.used=true;
+        game.fireEvent(GameEvent.getEvent(GameEvent.EventType.PREVENTED_DAMAGE,target,source.getId(),source.getControllerId(),damage));
+      }
+ else {
+        int damage=event.getAmount();
+        event.setAmount(0);
+        amount-=damage;
+        game.fireEvent(GameEvent.getEvent(GameEvent.EventType.PREVENTED_DAMAGE,target,source.getId(),source.getControllerId(),damage));
+      }
+    }
+  }
+}
