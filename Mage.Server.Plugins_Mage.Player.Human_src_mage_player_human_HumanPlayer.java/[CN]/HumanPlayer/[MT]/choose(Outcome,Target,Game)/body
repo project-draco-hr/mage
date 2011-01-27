@@ -1,22 +1,3 @@
 {
-  while (!abort) {
-    game.fireSelectTargetEvent(playerId,target.getMessage(),target.possibleTargets(null,playerId,game),target.isRequired());
-    waitForResponse();
-    if (response.getUUID() != null) {
-      if (target instanceof TargetPermanent) {
-        if (((TargetPermanent)target).canTarget(playerId,response.getUUID(),null,game)) {
-          target.add(response.getUUID(),game);
-          return true;
-        }
-      }
- else       if (target.canTarget(response.getUUID(),game)) {
-        target.add(response.getUUID(),game);
-        return true;
-      }
-    }
- else     if (!target.isRequired()) {
-      return false;
-    }
-  }
-  return false;
+  return choose(outcome,target,game,null);
 }
