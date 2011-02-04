@@ -1,22 +1,27 @@
 {
   TableView table=session.getTable(roomId,tableId);
   if (table != null) {
-    if (table.getTableState() == TableState.STARTING) {
+switch (table.getTableState()) {
+case STARTING:
       this.btnStart.setEnabled(true);
-      this.btnMoveDown.setEnabled(true);
-      this.btnMoveUp.setEnabled(true);
-    }
+    this.btnMoveDown.setEnabled(true);
+  this.btnMoveUp.setEnabled(true);
+break;
+case DUELING:
+closeDialog();
+return;
+default :
+this.btnStart.setEnabled(false);
+this.btnMoveDown.setEnabled(false);
+this.btnMoveUp.setEnabled(false);
+break;
+}
+int row=this.tableSeats.getSelectedRow();
+tableWaitModel.loadData(table);
+this.tableSeats.repaint();
+this.tableSeats.getSelectionModel().setSelectionInterval(row,row);
+}
  else {
-      this.btnStart.setEnabled(false);
-      this.btnMoveDown.setEnabled(false);
-      this.btnMoveUp.setEnabled(false);
-    }
-    int row=this.tableSeats.getSelectedRow();
-    tableWaitModel.loadData(table);
-    this.tableSeats.repaint();
-    this.tableSeats.getSelectionModel().setSelectionInterval(row,row);
-  }
- else {
-    closeDialog();
-  }
+closeDialog();
+}
 }
