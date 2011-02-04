@@ -1,0 +1,12 @@
+{
+  Permanent p=game.getBattlefield().getPermanent(source.getSourceId());
+  Player player=game.getPlayer(source.getControllerId());
+  if (p == null) {
+    p=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+  }
+  if (p != null && player != null) {
+    player.gainLife(p.getCounters().getCount(CounterType.CHARGE),game);
+    return true;
+  }
+  return false;
+}
