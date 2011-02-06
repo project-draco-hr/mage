@@ -1,0 +1,32 @@
+{
+  draft.addTableEventListener(new Listener<TableEvent>(){
+    @Override public void event(    TableEvent event){
+switch (event.getEventType()) {
+case UPDATE:
+        updateDraft();
+      break;
+case END:
+    endDraft();
+  break;
+}
+}
+}
+);
+draft.addPlayerQueryEventListener(new Listener<PlayerQueryEvent>(){
+@Override public void event(PlayerQueryEvent event){
+switch (event.getQueryType()) {
+case PICK_CARD:
+pickCard(event.getPlayerId(),event.getMax());
+break;
+}
+}
+}
+);
+for (DraftPlayer player : draft.getPlayers()) {
+if (!player.getPlayer().isHuman()) {
+player.setJoined();
+logger.info("player " + player.getPlayer().getId() + " has joined draft "+ draft.getId());
+}
+}
+checkStart();
+}

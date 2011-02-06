@@ -8,6 +8,10 @@
           GameManager.getInstance().setCurrentPlayerUUID(message.getPlayerId());
           gameStarted(message.getGameId(),message.getPlayerId());
         }
+ else         if (callback.getMethod().equals("startTournament")) {
+          TableClientMessage message=(TableClientMessage)callback.getData();
+          tournamentStarted(message.getGameId(),message.getPlayerId());
+        }
  else         if (callback.getMethod().equals("startDraft")) {
           TableClientMessage message=(TableClientMessage)callback.getData();
           draftStarted(message.getGameId(),message.getPlayerId());
@@ -92,6 +96,9 @@
           TableClientMessage message=(TableClientMessage)callback.getData();
           construct(message.getDeck(),message.getTableId());
         }
+ else         if (callback.getMethod().equals("draftOver")) {
+          session.getDraft().hideDraft();
+        }
  else         if (callback.getMethod().equals("draftPick")) {
           DraftClientMessage message=(DraftClientMessage)callback.getData();
           session.getDraft().loadBooster(message.getDraftPickView());
@@ -109,6 +116,9 @@
         }
  else         if (callback.getMethod().equals("draftInit")) {
           session.ack("draftInit");
+        }
+ else         if (callback.getMethod().equals("tournamentInit")) {
+          session.ack("tournamentInit");
         }
         messageId=callback.getMessageId();
       }

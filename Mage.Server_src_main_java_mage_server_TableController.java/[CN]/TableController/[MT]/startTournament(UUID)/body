@@ -1,0 +1,9 @@
+{
+  if (sessionId.equals(this.sessionId) && table.getState() == TableState.STARTING) {
+    TournamentManager.getInstance().createTournamentSession(tournament,sessionPlayerMap,table.getId());
+    SessionManager sessionManager=SessionManager.getInstance();
+    for (    Entry<UUID,UUID> entry : sessionPlayerMap.entrySet()) {
+      sessionManager.getSession(entry.getKey()).tournamentStarted(tournament.getId(),entry.getValue());
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  tableEventSource.fireTableEvent(EventType.CONSTRUCT);
+synchronized (this) {
+    while (!isDoneConstructing()) {
+      try {
+        this.wait();
+      }
+ catch (      InterruptedException ex) {
+      }
+    }
+  }
+  nextStep();
+}

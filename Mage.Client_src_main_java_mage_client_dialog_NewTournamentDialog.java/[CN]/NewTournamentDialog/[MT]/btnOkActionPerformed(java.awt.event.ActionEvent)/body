@@ -1,0 +1,38 @@
+{
+  TournamentTypeView tournamentType=(TournamentTypeView)cbTournamentType.getSelectedItem();
+  TournamentOptions tOptions=new TournamentOptions(tournamentType.getName());
+  tOptions.setTournamentType(tournamentType.getName());
+  tOptions.getPlayerTypes().add("Human");
+  for (  TournamentPlayerPanel player : players) {
+    tOptions.getPlayerTypes().add(player.getPlayerType());
+  }
+  if (tournamentType.isDraft()) {
+    tOptions.getDraftOptions().setDraftType("");
+    tOptions.getDraftOptions().setTiming(DraftOptions.TimingOption.REGULAR);
+    for (    JComboBox pack : packs) {
+      tOptions.getDraftOptions().getSets().add((ExpansionSet)pack.getSelectedItem());
+    }
+  }
+  tOptions.getMatchOptions().setDeckType("Limited");
+  tOptions.getMatchOptions().setWinsNeeded(2);
+  tOptions.getMatchOptions().setAttackOption(MultiplayerAttackOption.LEFT);
+  tOptions.getMatchOptions().setRange(RangeOfInfluence.ALL);
+  table=session.createTournamentTable(roomId,tOptions);
+  if (session.joinTournamentTable(roomId,table.getTableId(),this.txtPlayer1Name.getText())) {
+    for (    TournamentPlayerPanel player : players) {
+      if (!player.getPlayerType().equals("Human")) {
+        if (!player.joinTournamentTable(roomId,table.getTableId())) {
+          JOptionPane.showMessageDialog(MageFrame.getDesktop(),"Error joining tournament.","Error",JOptionPane.ERROR_MESSAGE);
+          session.removeTable(roomId,table.getTableId());
+          table=null;
+          return;
+        }
+      }
+    }
+    this.setVisible(false);
+    return;
+  }
+  JOptionPane.showMessageDialog(MageFrame.getDesktop(),"Error joining tournament.","Error",JOptionPane.ERROR_MESSAGE);
+  session.removeTable(roomId,table.getTableId());
+  table=null;
+}

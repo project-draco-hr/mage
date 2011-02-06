@@ -5,13 +5,13 @@
     player.setPicking();
     player.getPlayer().pickCard(player.getBooster(),player.getDeck(),this);
   }
-  while (!donePicking()) {
-    try {
-      Thread.sleep(1000);
-    }
- catch (    InterruptedException ex) {
-      Logger.getLogger(DraftImpl.class.getName()).log(Level.SEVERE,null,ex);
-      break;
+synchronized (this) {
+    while (!donePicking()) {
+      try {
+        this.wait();
+      }
+ catch (      InterruptedException ex) {
+      }
     }
   }
   return true;

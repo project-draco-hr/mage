@@ -1,5 +1,8 @@
 {
-  Session session=new Session(userName,clientId);
-  sessions.put(session.getId(),session);
-  return session.getId();
+  if (!isNameUsed(userName)) {
+    Session session=new Session(userName,clientId);
+    sessions.put(session.getId(),session);
+    return session.getId();
+  }
+  throw new MageException("User name already in use");
 }

@@ -1,0 +1,15 @@
+{
+  this.tournamentId=tournamentId;
+  session=MageFrame.getSession();
+  session.setTournament(this);
+  UUID chatRoomId=session.getTournamentChatId(tournamentId);
+  if (session.joinTournament(tournamentId) && chatRoomId != null) {
+    this.chatPanel1.connect(chatRoomId);
+    tournamentWatchdog.addObserver(this);
+    this.setVisible(true);
+    this.repaint();
+  }
+ else {
+    hideTournament();
+  }
+}

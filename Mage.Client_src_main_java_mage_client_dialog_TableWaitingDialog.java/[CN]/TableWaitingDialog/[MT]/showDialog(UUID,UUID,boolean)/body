@@ -1,0 +1,27 @@
+{
+  this.roomId=roomId;
+  this.tableId=tableId;
+  this.isTournament=isTournament;
+  session=MageFrame.getSession();
+  if (session.isTableOwner(roomId,tableId)) {
+    this.btnStart.setVisible(true);
+    this.btnMoveDown.setVisible(true);
+    this.btnMoveUp.setVisible(true);
+  }
+ else {
+    this.btnStart.setVisible(false);
+    this.btnMoveDown.setVisible(false);
+    this.btnMoveUp.setVisible(false);
+  }
+  UUID chatId=session.getTableChatId(tableId);
+  if (chatId != null) {
+    this.chatPanel.connect(chatId);
+    seatsWatchdog.addObserver(this);
+    this.setModal(true);
+    this.setLocation(100,100);
+    this.setVisible(true);
+  }
+ else {
+    closeDialog();
+  }
+}

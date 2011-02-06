@@ -4,12 +4,5 @@
   gameSessions.put(playerId,gameSession);
   logger.info("player " + playerId + " has joined game "+ game.getId());
   ChatManager.getInstance().broadcast(chatId,"",game.getPlayer(playerId).getName() + " has joined the game",MessageColor.BLACK);
-  if (allJoined()) {
-    ThreadExecutor.getInstance().getRMIExecutor().execute(new Runnable(){
-      @Override public void run(){
-        startGame();
-      }
-    }
-);
-  }
+  checkStart();
 }

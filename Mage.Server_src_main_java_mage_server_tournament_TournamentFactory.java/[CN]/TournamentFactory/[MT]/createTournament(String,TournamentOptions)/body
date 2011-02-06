@@ -1,0 +1,14 @@
+{
+  Tournament tournament;
+  Constructor<Tournament> con;
+  try {
+    con=tournaments.get(tournamentType).getConstructor(new Class[]{TournamentOptions.class});
+    tournament=con.newInstance(new Object[]{options});
+  }
+ catch (  Exception ex) {
+    logger.log(Level.SEVERE,null,ex);
+    return null;
+  }
+  logger.info("Tournament created: " + tournamentType);
+  return tournament;
+}
