@@ -1,0 +1,15 @@
+{
+  int value=0;
+  if (card.getCardType().contains(Constants.CardType.LAND)) {
+    int score=(int)((value / 2.0f) * 50);
+    score+=card.getMana().size() * 50;
+    return score;
+  }
+  final int score=value * 100 - card.getManaCost().convertedManaCost() * 20;
+  if (card.getCardType().contains(Constants.CardType.CREATURE)) {
+    return score + (card.getPower().getValue() + card.getToughness().getValue()) * 10;
+  }
+ else {
+    return score + (+card.getRarity().getRating() * 30);
+  }
+}

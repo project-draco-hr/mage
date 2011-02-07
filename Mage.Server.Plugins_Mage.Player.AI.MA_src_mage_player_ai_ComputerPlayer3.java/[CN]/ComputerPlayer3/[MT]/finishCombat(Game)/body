@@ -1,0 +1,10 @@
+{
+  if (Thread.interrupted()) {
+    Thread.currentThread().interrupt();
+    logger.fine("interrupted");
+    return;
+  }
+  simulateStep(game,new CombatDamageStep(true));
+  simulateStep(game,new CombatDamageStep(false));
+  simulateStep(game,new EndOfCombatStep());
+}

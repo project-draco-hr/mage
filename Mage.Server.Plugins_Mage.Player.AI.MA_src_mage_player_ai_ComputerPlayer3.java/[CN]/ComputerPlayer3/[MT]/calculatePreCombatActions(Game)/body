@@ -1,0 +1,15 @@
+{
+  if (!getNextAction(game)) {
+    currentScore=GameStateEvaluator.evaluate(playerId,game);
+    Game sim=createSimulation(game);
+    SimulationNode.resetCount();
+    root=new SimulationNode(sim,maxDepth,playerId);
+    logger.fine("simulating pre combat actions -----------------------------------------------------------------------------------------");
+    addActionsTimed(new FilterAbility());
+    if (root.children.size() > 0) {
+      root=root.children.get(0);
+      actions=new LinkedList<Ability>(root.abilities);
+      combat=root.combat;
+    }
+  }
+}

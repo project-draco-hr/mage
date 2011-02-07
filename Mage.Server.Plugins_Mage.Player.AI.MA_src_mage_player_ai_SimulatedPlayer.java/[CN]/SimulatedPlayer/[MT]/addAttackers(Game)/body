@@ -1,0 +1,25 @@
+{
+  Map<Integer,Combat> engagements=new HashMap<Integer,Combat>();
+  UUID defenderId=game.getOpponents(playerId).iterator().next();
+  List<Permanent> attackersList=super.getAvailableAttackers(game);
+  int powerElements=(int)Math.pow(2,attackersList.size());
+  StringBuilder binary=new StringBuilder();
+  for (int i=powerElements - 1; i >= 0; i--) {
+    Game sim=game.copy();
+    binary.setLength(0);
+    binary.append(Integer.toBinaryString(i));
+    while (binary.length() < attackersList.size()) {
+      binary.insert(0,"0");
+    }
+    for (int j=0; j < attackersList.size(); j++) {
+      if (binary.charAt(j) == '1')       sim.getCombat().declareAttacker(attackersList.get(j).getId(),defenderId,sim);
+    }
+    if (engagements.put(sim.getCombat().getValue(sim),sim.getCombat()) != null) {
+      logger.fine("simulating -- found redundant attack combination");
+    }
+ else     if (logger.isLoggable(Level.FINE)) {
+      logger.fine("simulating -- attack:" + sim.getCombat().getGroups().size());
+    }
+  }
+  return new ArrayList<Combat>(engagements.values());
+}

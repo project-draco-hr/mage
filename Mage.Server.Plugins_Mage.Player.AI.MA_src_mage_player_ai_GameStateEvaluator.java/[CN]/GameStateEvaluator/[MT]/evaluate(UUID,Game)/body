@@ -1,0 +1,28 @@
+{
+  Player player=game.getPlayer(playerId);
+  Player opponent=game.getPlayer(game.getOpponents(playerId).iterator().next());
+  if (game.isGameOver()) {
+    if (player.hasLost() || opponent.hasWon())     return Integer.MIN_VALUE;
+    if (opponent.hasLost() || player.hasWon())     return Integer.MAX_VALUE;
+  }
+  int lifeScore=0;
+  if (player.getLife() <= 0) {
+    lifeScore=ArtificialScoringSystem.LOSE_GAME_SCORE;
+  }
+ else   if (opponent.getLife() <= 0) {
+    lifeScore=ArtificialScoringSystem.WIN_GAME_SCORE;
+  }
+ else {
+    lifeScore=ArtificialScoringSystem.getLifeScore(player.getLife()) - ArtificialScoringSystem.getLifeScore(opponent.getLife());
+  }
+  int permanentScore=0;
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
+    permanentScore+=evaluatePermanent(permanent,game);
+  }
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(opponent.getId())) {
+    permanentScore-=evaluatePermanent(permanent,game);
+  }
+  int score=lifeScore + permanentScore;
+  logger.fine("game state evaluated to- lifeScore:" + lifeScore + " permanentScore:"+ permanentScore+ "total:"+ score);
+  return score;
+}

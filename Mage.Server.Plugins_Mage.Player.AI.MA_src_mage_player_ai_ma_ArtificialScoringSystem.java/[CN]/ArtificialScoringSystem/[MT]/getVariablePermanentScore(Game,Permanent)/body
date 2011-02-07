@@ -1,0 +1,30 @@
+{
+  int score=permanent.getCounters().getCount(CounterType.CHARGE) * 30;
+  if (!canTap(permanent)) {
+    score+=getTappedScore(permanent);
+  }
+  if (permanent.getCardType().contains(Constants.CardType.CREATURE)) {
+    final int power=permanent.getPower().getValue();
+    final int toughness=permanent.getToughness().getValue();
+    int abilityScore=0;
+    for (    Ability ability : permanent.getAbilities()) {
+      abilityScore+=MagicAbility.getAbilityScore(ability);
+    }
+    score+=power * 300 + getPositive(toughness) * 200 + abilityScore * (getPositive(power) + 1) / 2;
+    int enchantments=0;
+    int equipments=0;
+    for (    UUID uuid : permanent.getAttachments()) {
+      Card card=game.getCard(uuid);
+      if (card != null) {
+        if (card.getCardType().contains(Constants.CardType.ENCHANTMENT)) {
+          enchantments++;
+        }
+ else {
+          equipments++;
+        }
+      }
+    }
+    score+=equipments * 50 + enchantments * 100;
+  }
+  return score;
+}

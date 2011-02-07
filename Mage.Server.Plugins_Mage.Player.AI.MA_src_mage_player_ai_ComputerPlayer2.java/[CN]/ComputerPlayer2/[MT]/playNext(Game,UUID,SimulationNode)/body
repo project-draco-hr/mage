@@ -1,0 +1,106 @@
+{
+  boolean skip=false;
+  while (true) {
+    Phase currentPhase=game.getPhase();
+    if (!skip)     currentPhase.getStep().endStep(game,activePlayerId);
+    game.applyEffects();
+switch (currentPhase.getStep().getType()) {
+case UNTAP:
+      game.getPhase().setStep(new UpkeepStep());
+    break;
+case UPKEEP:
+  game.getPhase().setStep(new DrawStep());
+break;
+case DRAW:
+game.getTurn().setPhase(new PreCombatMainPhase());
+game.getPhase().setStep(new PreCombatMainStep());
+break;
+case PRECOMBAT_MAIN:
+game.getTurn().setPhase(new CombatPhase());
+game.getPhase().setStep(new BeginCombatStep());
+break;
+case BEGIN_COMBAT:
+game.getPhase().setStep(new DeclareAttackersStep());
+break;
+case DECLARE_ATTACKERS:
+game.getPhase().setStep(new DeclareBlockersStep());
+break;
+case DECLARE_BLOCKERS:
+game.getPhase().setStep(new CombatDamageStep(true));
+break;
+case COMBAT_DAMAGE:
+if (((CombatDamageStep)currentPhase.getStep()).getFirst()) game.getPhase().setStep(new CombatDamageStep(false));
+ else game.getPhase().setStep(new EndOfCombatStep());
+break;
+case END_COMBAT:
+game.getTurn().setPhase(new PostCombatMainPhase());
+game.getPhase().setStep(new PostCombatMainStep());
+break;
+case POSTCOMBAT_MAIN:
+game.getTurn().setPhase(new EndPhase());
+game.getPhase().setStep(new EndStep());
+break;
+case END_TURN:
+game.getPhase().setStep(new CleanupStep());
+break;
+case CLEANUP:
+game.getPhase().getStep().beginStep(game,activePlayerId);
+if (!game.checkStateAndTriggered() && !game.isGameOver()) {
+game.getState().setActivePlayerId(game.getState().getPlayerList(game.getActivePlayerId()).getNext());
+game.getTurn().setPhase(new BeginningPhase());
+game.getPhase().setStep(new UntapStep());
+}
+}
+if (!game.getStep().skipStep(game,game.getActivePlayerId())) {
+if (game.getTurn().getStepType() == PhaseStep.DECLARE_ATTACKERS) {
+game.fireEvent(new GameEvent(GameEvent.EventType.DECLARE_ATTACKERS_STEP_PRE,null,null,activePlayerId));
+if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_ATTACKERS,activePlayerId,activePlayerId))) {
+for (Combat engagement : ((SimulatedPlayer)game.getPlayer(activePlayerId)).addAttackers(game)) {
+Game sim=game.copy();
+UUID defenderId=game.getOpponents(playerId).iterator().next();
+for (CombatGroup group : engagement.getGroups()) {
+for (UUID attackerId : group.getAttackers()) {
+sim.getPlayer(activePlayerId).declareAttacker(attackerId,defenderId,sim);
+}
+}
+sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_ATTACKERS,playerId,playerId));
+SimulationNode newNode=new SimulationNode(sim,node.getDepth() - 1,activePlayerId);
+logger.fine("simulating -- node #:" + SimulationNode.getCount() + " declare attakers");
+newNode.setCombat(sim.getCombat());
+node.children.add(newNode);
+}
+}
+}
+ else if (game.getTurn().getStepType() == PhaseStep.DECLARE_BLOCKERS) {
+game.fireEvent(new GameEvent(GameEvent.EventType.DECLARE_BLOCKERS_STEP_PRE,null,null,activePlayerId));
+if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_BLOCKERS,activePlayerId,activePlayerId))) {
+for (UUID defenderId : game.getCombat().getDefenders()) {
+if (game.getCombat().isAttacked(defenderId,game)) {
+for (Combat engagement : ((SimulatedPlayer)game.getPlayer(defenderId)).addBlockers(game)) {
+Game sim=game.copy();
+for (CombatGroup group : engagement.getGroups()) {
+for (UUID blockerId : group.getBlockers()) {
+group.addBlocker(blockerId,defenderId,sim);
+}
+}
+sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,playerId,playerId));
+SimulationNode newNode=new SimulationNode(sim,node.getDepth() - 1,defenderId);
+logger.fine("simulating -- node #:" + SimulationNode.getCount() + " declare blockers");
+newNode.setCombat(sim.getCombat());
+node.children.add(newNode);
+}
+}
+}
+}
+}
+ else {
+game.getStep().beginStep(game,activePlayerId);
+}
+if (game.getStep().getHasPriority()) break;
+}
+ else {
+skip=true;
+}
+}
+game.checkStateAndTriggered();
+}
