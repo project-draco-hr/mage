@@ -5,12 +5,18 @@
   this.draftBooster.addCardEventListener(new Listener<Event>(){
     @Override public void event(    Event event){
       if (event.getEventName().equals("pick-a-card")) {
-        countdown.stop();
-        session.sendCardPick(draftId,(UUID)event.getSource());
+        DraftPickView view=session.sendCardPick(draftId,(UUID)event.getSource());
+        if (view != null) {
+          draftBooster.loadBooster(view.getBooster(),bigCard);
+          draftPicks.loadCards(view.getPicks(),bigCard,null);
+          setMessage("Waiting for other players");
+        }
       }
     }
   }
 );
+  setMessage("");
+  countdown.stop();
   this.timeout=draftPickView.getTimeout();
   setTimeout(Integer.toString(timeout));
   if (timeout != 0) {
