@@ -1,0 +1,50 @@
+{
+  logState(game);
+  game.firePriorityEvent(playerId);
+switch (game.getTurn().getStepType()) {
+case UPKEEP:
+case DRAW:
+    pass();
+  break;
+case PRECOMBAT_MAIN:
+if (game.getActivePlayerId().equals(playerId)) {
+  System.out.println("[" + game.getPlayer(playerId).getName() + "] Precombat Main, life="+ game.getPlayer(playerId).getLife());
+  if (actions.size() == 0) {
+    calculatePreCombatActions(game);
+  }
+  act(game);
+}
+ else pass();
+break;
+case BEGIN_COMBAT:
+pass();
+break;
+case DECLARE_ATTACKERS:
+if (!game.getActivePlayerId().equals(playerId)) {
+if (actions.size() == 0) {
+calculatePreCombatActions(game);
+}
+act(game);
+}
+ else pass();
+break;
+case DECLARE_BLOCKERS:
+case COMBAT_DAMAGE:
+case END_COMBAT:
+pass();
+break;
+case POSTCOMBAT_MAIN:
+if (game.getActivePlayerId().equals(playerId)) {
+if (actions.size() == 0) {
+calculatePostCombatActions(game);
+}
+act(game);
+}
+ else pass();
+break;
+case END_TURN:
+case CLEANUP:
+pass();
+break;
+}
+}

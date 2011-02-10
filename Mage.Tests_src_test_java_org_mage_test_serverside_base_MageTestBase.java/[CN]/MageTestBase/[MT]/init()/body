@@ -1,0 +1,19 @@
+{
+  logger.info("Starting MAGE tests");
+  logger.info("Logging level: " + Logging.getLevel(logger));
+  deleteSavedGames();
+  ConfigSettings config=ConfigSettings.getInstance();
+  for (  GamePlugin plugin : config.getGameTypes()) {
+    GameFactory.getInstance().addGameType(plugin.getName(),loadGameType(plugin),loadPlugin(plugin));
+  }
+  for (  GamePlugin plugin : config.getTournamentTypes()) {
+    TournamentFactory.getInstance().addTournamentType(plugin.getName(),loadTournamentType(plugin),loadPlugin(plugin));
+  }
+  for (  Plugin plugin : config.getPlayerTypes()) {
+    PlayerFactory.getInstance().addPlayerType(plugin.getName(),loadPlugin(plugin));
+  }
+  for (  Plugin plugin : config.getDeckTypes()) {
+    DeckValidatorFactory.getInstance().addDeckType(plugin.getName(),loadPlugin(plugin));
+  }
+  Copier.setLoader(classLoader);
+}

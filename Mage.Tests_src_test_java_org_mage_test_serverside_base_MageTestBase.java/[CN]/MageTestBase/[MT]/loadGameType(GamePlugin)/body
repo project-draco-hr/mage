@@ -1,0 +1,14 @@
+{
+  try {
+    classLoader.addURL(new File(pluginFolder + "/" + plugin.getJar()).toURI().toURL());
+    logger.info("Loading game type: " + plugin.getClassName());
+    return (MatchType)Class.forName(plugin.getTypeName(),true,classLoader).newInstance();
+  }
+ catch (  ClassNotFoundException ex) {
+    logger.log(Level.SEVERE,"Game type not found:" + plugin.getJar() + " - check plugin folder");
+  }
+catch (  Exception ex) {
+    logger.log(Level.SEVERE,"Error loading game type " + plugin.getJar(),ex);
+  }
+  return null;
+}
