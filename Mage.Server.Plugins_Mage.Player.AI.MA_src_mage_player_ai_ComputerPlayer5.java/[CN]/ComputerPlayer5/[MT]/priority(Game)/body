@@ -8,7 +8,22 @@ case DRAW:
   break;
 case PRECOMBAT_MAIN:
 if (game.getActivePlayerId().equals(playerId)) {
-  System.out.println("[" + game.getPlayer(playerId).getName() + "] Precombat Main, life="+ game.getPlayer(playerId).getLife());
+  Player player=game.getPlayer(playerId);
+  System.out.println("[" + game.getPlayer(playerId).getName() + "] Precombat Main, life="+ player.getLife());
+  String s="[";
+  for (  Card card : player.getHand().getCards(game)) {
+    s+=card.getName() + ";";
+  }
+  s+="]";
+  System.out.println("Hand: " + s);
+  s="[";
+  for (  Permanent permanent : game.getBattlefield().getAllPermanents()) {
+    if (permanent.getOwnerId().equals(player.getId())) {
+      s+=permanent.getName() + ";";
+    }
+  }
+  s+="]";
+  System.out.println("Permanents: " + s);
   if (actions.size() == 0) {
     calculatePreCombatActions(game);
   }

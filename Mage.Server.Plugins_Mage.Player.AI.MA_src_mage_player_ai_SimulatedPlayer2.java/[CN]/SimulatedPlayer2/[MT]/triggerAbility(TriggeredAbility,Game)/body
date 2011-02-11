@@ -1,0 +1,21 @@
+{
+  Ability ability=source.copy();
+  List<Ability> options=getPlayableOptions(ability,game);
+  if (options.size() == 0) {
+    if (logger.isLoggable(Level.FINE))     logger.fine("simulating -- triggered ability:" + ability);
+    game.getStack().push(new StackAbility(ability,playerId));
+    ability.activate(game,false);
+    game.applyEffects();
+    game.getPlayers().resetPassed();
+  }
+ else {
+    SimulationNode2 parent=(SimulationNode2)game.getCustomData();
+    int depth=parent.getDepth() - 1;
+    if (depth == 0)     return true;
+    logger.fine("simulating -- triggered ability - adding children:" + options.size());
+    for (    Ability option : options) {
+      addAbilityNode(parent,option,depth,game);
+    }
+  }
+  return true;
+}
