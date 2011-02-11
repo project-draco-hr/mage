@@ -6,14 +6,24 @@ case INFO:
         ChatManager.getInstance().broadcast(chatId,"",event.getMessage(),MessageColor.BLACK);
       logger.finest(tournament.getId() + " " + event.getMessage());
     break;
-case CONSTRUCT:
-  construct();
-break;
 case START_DRAFT:
-startDraft(event.getDraft());
+  startDraft(event.getDraft());
 break;
 case START_MATCH:
 startMatch(event.getPair(),event.getMatchOptions());
+break;
+case SUBMIT_DECK:
+submitDeck(event.getPlayerId(),event.getDeck());
+break;
+}
+}
+}
+);
+tournament.addPlayerQueryEventListener(new Listener<PlayerQueryEvent>(){
+@Override public void event(PlayerQueryEvent event){
+switch (event.getQueryType()) {
+case CONSTRUCT:
+construct(event.getPlayerId(),event.getDeck(),event.getMax());
 break;
 }
 }

@@ -2,19 +2,10 @@
   if (table.getState() != TableState.SIDEBOARDING && table.getState() != TableState.CONSTRUCTING) {
     return false;
   }
-  String playerName;
-  if (table.getState() == TableState.SIDEBOARDING) {
-    MatchPlayer player=match.getPlayer(sessionPlayerMap.get(sessionId));
-    playerName=player.getPlayer().getName();
-  }
- else {
-    TournamentPlayer player=tournament.getPlayer(sessionPlayerMap.get(sessionId));
-    playerName=player.getPlayer().getName();
-  }
   Deck deck=Deck.load(deckList);
   if (!Main.server.isTestMode() && !validDeck(deck)) {
-    throw new GameException(playerName + " has an invalid deck for this format");
+    throw new GameException("Invalid deck for this format");
   }
-  submitDeck(sessionPlayerMap.get(sessionId),deck);
+  submitDeck(sessionId,deck);
   return true;
 }

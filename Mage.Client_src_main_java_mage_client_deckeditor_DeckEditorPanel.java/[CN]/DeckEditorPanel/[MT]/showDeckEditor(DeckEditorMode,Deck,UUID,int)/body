@@ -1,0 +1,35 @@
+{
+  if (deck != null)   this.deck=deck;
+  this.tableId=tableId;
+  this.mode=mode;
+  this.btnAddLand.setVisible(false);
+switch (mode) {
+case Limited:
+    this.btnAddLand.setVisible(true);
+  this.txtTimeRemaining.setVisible(true);
+case Sideboard:
+this.btnSubmit.setVisible(true);
+this.cardSelector.loadCards(new ArrayList<Card>(deck.getSideboard()),this.bigCard,mode == DeckEditorMode.Limited);
+this.btnExit.setVisible(false);
+this.btnImport.setVisible(false);
+this.btnLoad.setVisible(false);
+this.deckArea.showSideboard(false);
+countdown.stop();
+this.timeout=time;
+setTimeout(Integer.toString(timeout));
+if (timeout != 0) {
+countdown.start();
+}
+break;
+case Constructed:
+this.btnSubmit.setVisible(false);
+this.cardSelector.loadCards(this.bigCard);
+this.btnExit.setVisible(true);
+this.btnImport.setVisible(true);
+this.btnLoad.setVisible(true);
+this.deckArea.showSideboard(true);
+this.txtTimeRemaining.setVisible(false);
+break;
+}
+init();
+}

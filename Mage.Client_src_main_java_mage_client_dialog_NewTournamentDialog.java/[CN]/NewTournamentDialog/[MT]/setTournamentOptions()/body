@@ -3,5 +3,12 @@
   this.spnNumPlayers.setModel(new SpinnerNumberModel(tournamentType.getMinPlayers(),tournamentType.getMinPlayers(),tournamentType.getMaxPlayers(),1));
   this.spnNumPlayers.setEnabled(tournamentType.getMinPlayers() != tournamentType.getMaxPlayers());
   createPlayers(tournamentType.getMinPlayers() - 1);
-  createPacks(tournamentType.getNumBoosters());
+  if (tournamentType.isLimited()) {
+    this.pnlPacks.setVisible(true);
+    createPacks(tournamentType.getNumBoosters());
+  }
+ else {
+    this.pnlPacks.setVisible(false);
+  }
+  this.pnlDraftOptions.setVisible(tournamentType.isDraft());
 }
