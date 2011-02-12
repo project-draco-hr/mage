@@ -16,11 +16,16 @@
     lifeScore=ArtificialScoringSystem.getLifeScore(player.getLife()) - ArtificialScoringSystem.getLifeScore(opponent.getLife());
   }
   int permanentScore=0;
-  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
-    permanentScore+=evaluatePermanent(permanent,game);
+  try {
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
+      permanentScore+=evaluatePermanent(permanent,game);
+    }
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(opponent.getId())) {
+      permanentScore-=evaluatePermanent(permanent,game);
+    }
   }
-  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(opponent.getId())) {
-    permanentScore-=evaluatePermanent(permanent,game);
+ catch (  Throwable t) {
+    t.printStackTrace();
   }
   int score=lifeScore + permanentScore;
   logger.fine("game state evaluated to- lifeScore:" + lifeScore + " permanentScore:"+ permanentScore+ "total:"+ score);
