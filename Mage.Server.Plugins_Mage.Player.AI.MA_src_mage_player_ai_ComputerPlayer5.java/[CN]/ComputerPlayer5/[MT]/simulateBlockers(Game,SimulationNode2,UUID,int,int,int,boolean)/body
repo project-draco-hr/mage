@@ -15,9 +15,11 @@
       }
       Game sim=game.copy();
       for (      CombatGroup group : engagement.getGroups()) {
-        UUID attackerId=group.getAttackers().get(0);
-        for (        UUID blockerId : group.getBlockers()) {
-          sim.getPlayer(defenderId).declareBlocker(blockerId,attackerId,sim);
+        if (group.getAttackers().size() > 0) {
+          UUID attackerId=group.getAttackers().get(0);
+          for (          UUID blockerId : group.getBlockers()) {
+            sim.getPlayer(defenderId).declareBlocker(blockerId,attackerId,sim);
+          }
         }
       }
       sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,playerId,playerId));
