@@ -58,5 +58,33 @@
       }
     }
   }
+  if (target instanceof TargetCreatureOrPlayer) {
+    List<Permanent> targets;
+    TargetCreatureOrPlayer t=((TargetCreatureOrPlayer)target);
+    if (outcome.isGood()) {
+      targets=threats(playerId,((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game);
+    }
+ else {
+      targets=threats(opponentId,((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game);
+    }
+    for (    Permanent permanent : targets) {
+      if (((TargetPermanent)target).canTarget(playerId,permanent.getId(),source,game)) {
+        target.addTarget(permanent.getId(),source,game);
+        return true;
+      }
+    }
+    if (outcome.isGood()) {
+      if (target.canTarget(playerId,source,game)) {
+        target.addTarget(playerId,source,game);
+        return true;
+      }
+    }
+ else {
+      if (target.canTarget(playerId,source,game)) {
+        target.addTarget(opponentId,source,game);
+        return true;
+      }
+    }
+  }
   return false;
 }
