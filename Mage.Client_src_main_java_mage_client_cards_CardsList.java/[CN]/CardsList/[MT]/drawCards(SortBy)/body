@@ -1,0 +1,47 @@
+{
+  int maxWidth=this.getParent().getWidth();
+  int numColumns=maxWidth / Config.dimensions.frameWidth;
+  int curColumn=0;
+  int curRow=0;
+  int landCount=0;
+  int creatureCount=0;
+  cardArea.removeAll();
+  if (cards != null && cards.size() > 0) {
+    Rectangle rectangle=new Rectangle(Config.dimensions.frameWidth,Config.dimensions.frameHeight);
+    int count=0;
+    List<CardView> sortedCards=new ArrayList<CardView>(cards.values());
+switch (sortBy) {
+case NAME:
+      Collections.sort(sortedCards,new CardViewNameComparator());
+    break;
+case RARITY:
+  Collections.sort(sortedCards,new CardViewRarityComparator());
+break;
+case COLOR:
+Collections.sort(sortedCards,new CardViewColorComparator());
+break;
+case CASTING_COST:
+Collections.sort(sortedCards,new CardViewCostComparator());
+break;
+}
+for (CardView card : sortedCards) {
+rectangle.setLocation(curColumn * Config.dimensions.frameWidth,curRow * 20);
+addCard(card,bigCard,gameId,rectangle);
+if (card.getCardTypes().contains(CardType.LAND)) landCount++;
+if (card.getCardTypes().contains(CardType.CREATURE)) creatureCount++;
+curColumn++;
+if (curColumn == numColumns) {
+curColumn=0;
+curRow++;
+}
+}
+}
+this.lblCount.setText("Count: " + Integer.toString(cards.size()));
+this.lblCreatureCount.setText("Creatures: " + Integer.toString(creatureCount));
+this.lblLandCount.setText("Lands: " + Integer.toString(landCount));
+cardArea.setPreferredSize(new Dimension(Config.dimensions.frameWidth,Config.dimensions.frameHeight + 200));
+cardArea.revalidate();
+this.revalidate();
+this.repaint();
+this.setVisible(true);
+}

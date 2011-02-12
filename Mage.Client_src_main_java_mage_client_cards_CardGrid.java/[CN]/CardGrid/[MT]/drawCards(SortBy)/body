@@ -1,0 +1,38 @@
+{
+  int maxWidth=this.getParent().getWidth();
+  int numColumns=maxWidth / Config.dimensions.frameWidth;
+  int curColumn=0;
+  int curRow=0;
+  if (cards.size() > 0) {
+    Rectangle rectangle=new Rectangle(Config.dimensions.frameWidth,Config.dimensions.frameHeight);
+    List<MageCard> sortedCards=new ArrayList<MageCard>(cards.values());
+switch (sortBy) {
+case NAME:
+      Collections.sort(sortedCards,new CardNameComparator());
+    break;
+case RARITY:
+  Collections.sort(sortedCards,new CardRarityComparator());
+break;
+case COLOR:
+Collections.sort(sortedCards,new CardColorComparator());
+break;
+case CASTING_COST:
+Collections.sort(sortedCards,new CardCostComparator());
+break;
+}
+for (MageCard cardImg : sortedCards) {
+rectangle.setLocation(curColumn * Config.dimensions.frameWidth,curRow * 20);
+cardImg.setBounds(rectangle);
+cardImg.setCardBounds(rectangle.x,rectangle.y,Config.dimensions.frameWidth,Config.dimensions.frameHeight);
+moveToFront(cardImg);
+curColumn++;
+if (curColumn == numColumns) {
+curColumn=0;
+curRow++;
+}
+}
+}
+resizeArea();
+revalidate();
+repaint();
+}
