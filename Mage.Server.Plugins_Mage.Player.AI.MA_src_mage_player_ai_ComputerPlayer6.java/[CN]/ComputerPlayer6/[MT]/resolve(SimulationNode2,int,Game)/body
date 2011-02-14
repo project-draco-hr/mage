@@ -1,0 +1,27 @@
+{
+  StackObject ability=game.getStack().pop();
+  if (ability instanceof StackAbility) {
+    SearchEffect effect=getSearchEffect((StackAbility)ability);
+    if (effect != null && ability.getControllerId().equals(playerId)) {
+      Target target=effect.getTarget();
+      if (!target.doneChosing()) {
+        for (        UUID targetId : target.possibleTargets(ability.getSourceId(),ability.getControllerId(),game)) {
+          Game sim=game.copy();
+          StackAbility newAbility=(StackAbility)ability.copy();
+          SearchEffect newEffect=getSearchEffect((StackAbility)newAbility);
+          newEffect.getTarget().addTarget(targetId,newAbility,sim);
+          sim.getStack().push(newAbility);
+          SimulationNode2 newNode=new SimulationNode2(sim,depth,ability.getControllerId());
+          node.children.add(newNode);
+          newNode.getTargets().add(targetId);
+          logger.fine("simulating search -- node#: " + SimulationNode2.getCount() + "for player: "+ sim.getPlayer(ability.getControllerId()).getName());
+        }
+        return;
+      }
+    }
+  }
+  ability.resolve(game);
+  game.applyEffects();
+  game.getPlayers().resetPassed();
+  game.getPlayerList().setCurrent(game.getActivePlayerId());
+}

@@ -1,0 +1,28 @@
+{
+  Player player=getPlayer(ownerId);
+  if (player != null) {
+    loadCards(ownerId,library);
+    loadCards(ownerId,hand);
+    loadCards(ownerId,battlefield);
+    loadCards(ownerId,graveyard);
+    for (    Card card : library) {
+      setZone(card.getId(),Zone.LIBRARY);
+      player.getLibrary().putOnTop(card,this);
+    }
+    for (    Card card : hand) {
+      setZone(card.getId(),Zone.HAND);
+      player.getHand().add(card);
+    }
+    for (    Card card : graveyard) {
+      setZone(card.getId(),Zone.GRAVEYARD);
+      player.getGraveyard().add(card);
+    }
+    List<Card> permanents=new ArrayList<Card>();
+    for (    Card card : battlefield) {
+      card.setOwnerId(ownerId);
+      PermanentCard permanent=new PermanentCard(card,ownerId);
+      getBattlefield().addPermanent(permanent);
+    }
+    applyEffects();
+  }
+}

@@ -1,0 +1,24 @@
+{
+  FutureTask<Integer> task=new FutureTask<Integer>(new Callable<Integer>(){
+    public Integer call() throws Exception {
+      return addActions(root,filter,maxDepth,Integer.MIN_VALUE,Integer.MAX_VALUE);
+    }
+  }
+);
+  pool.execute(task);
+  try {
+    task.get(Config2.maxThinkSeconds,TimeUnit.MINUTES);
+  }
+ catch (  TimeoutException e) {
+    logger.info("simulating - timed out");
+    task.cancel(true);
+  }
+catch (  ExecutionException e) {
+    e.printStackTrace();
+    task.cancel(true);
+  }
+catch (  InterruptedException e) {
+    e.printStackTrace();
+    task.cancel(true);
+  }
+}
