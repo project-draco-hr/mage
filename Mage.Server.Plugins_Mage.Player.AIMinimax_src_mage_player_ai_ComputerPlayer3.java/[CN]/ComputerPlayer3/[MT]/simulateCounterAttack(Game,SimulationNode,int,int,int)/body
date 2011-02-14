@@ -1,12 +1,12 @@
 {
   if (Thread.interrupted()) {
     Thread.currentThread().interrupt();
-    logger.fine("interrupted");
+    logger.debug("interrupted");
     return GameStateEvaluator.evaluate(playerId,game);
   }
   Integer val=null;
   if (!game.isGameOver()) {
-    logger.fine("simulating -- counter attack");
+    logger.debug("simulating -- counter attack");
     simulateToEnd(game);
     game.getState().setActivePlayerId(game.getState().getPlayerList(game.getActivePlayerId()).getNext());
     game.getTurn().setPhase(new BeginningPhase());
@@ -17,7 +17,7 @@
       game.getPhase().endPhase(game,game.getActivePlayerId());
     }
     val=simulateCombat(game,node,depth - 1,alpha,beta,true);
-    if (logger.isLoggable(Level.FINE))     logger.fine("returning -- counter attack score: " + val + " depth:"+ depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
+    if (logger.isDebugEnabled())     logger.debug("returning -- counter attack score: " + val + " depth:"+ depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
   }
   if (val == null)   val=GameStateEvaluator.evaluate(playerId,game);
   return val;

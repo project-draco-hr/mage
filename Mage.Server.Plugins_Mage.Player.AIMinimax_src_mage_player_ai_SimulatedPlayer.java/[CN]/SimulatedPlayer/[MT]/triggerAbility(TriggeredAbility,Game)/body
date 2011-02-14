@@ -2,7 +2,7 @@
   Ability ability=source.copy();
   List<Ability> options=getPlayableOptions(ability,game);
   if (options.size() == 0) {
-    if (logger.isLoggable(Level.FINE))     logger.fine("simulating -- triggered ability:" + ability);
+    if (logger.isDebugEnabled())     logger.debug("simulating -- triggered ability:" + ability);
     game.getStack().push(new StackAbility(ability,playerId));
     ability.activate(game,false);
     game.applyEffects();
@@ -12,7 +12,7 @@
     SimulationNode parent=(SimulationNode)game.getCustomData();
     int depth=parent.getDepth() - 1;
     if (depth == 0)     return true;
-    logger.fine("simulating -- triggered ability - adding children:" + options.size());
+    logger.debug("simulating -- triggered ability - adding children:" + options.size());
     for (    Ability option : options) {
       addAbilityNode(parent,option,depth,game);
     }

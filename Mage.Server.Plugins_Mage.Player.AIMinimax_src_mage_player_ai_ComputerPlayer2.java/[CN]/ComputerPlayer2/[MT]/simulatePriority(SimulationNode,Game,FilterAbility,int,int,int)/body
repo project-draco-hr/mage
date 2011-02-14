@@ -1,15 +1,15 @@
 {
   if (Thread.interrupted()) {
     Thread.currentThread().interrupt();
-    logger.fine("interrupted");
+    logger.debug("interrupted");
     return GameStateEvaluator.evaluate(playerId,game);
   }
   node.setGameValue(game.getState().getValue());
   SimulatedPlayer currentPlayer=(SimulatedPlayer)game.getPlayer(game.getPlayerList().get());
-  logger.fine("simulating -- player " + currentPlayer.getName());
+  logger.debug("simulating -- player " + currentPlayer.getName());
   SimulationNode bestNode=null;
   List<Ability> allActions=currentPlayer.simulatePriority(game,filter);
-  if (logger.isLoggable(Level.FINE))   logger.fine("simulating -- adding " + allActions.size() + " children:"+ allActions);
+  if (logger.isDebugEnabled())   logger.debug("simulating -- adding " + allActions.size() + " children:"+ allActions);
   for (  Ability action : allActions) {
     Game sim=game.copy();
     if (sim.getPlayer(currentPlayer.getId()).activateAbility((ActivatedAbility)action.copy(),sim)) {
@@ -19,7 +19,7 @@
         sim.getPlayerList().getNext();
       }
       SimulationNode newNode=new SimulationNode(sim,action,depth,currentPlayer.getId());
-      if (logger.isLoggable(Level.FINE))       logger.fine("simulating -- node #:" + SimulationNode.getCount() + " actions:"+ action);
+      if (logger.isDebugEnabled())       logger.debug("simulating -- node #:" + SimulationNode.getCount() + " actions:"+ action);
       sim.checkStateAndTriggered();
       int val=addActions(newNode,filter,depth - 1,alpha,beta);
       if (!currentPlayer.getId().equals(playerId)) {
@@ -39,11 +39,11 @@
         }
       }
       if (alpha >= beta) {
-        logger.fine("simulating -- pruning");
+        logger.debug("simulating -- pruning");
         break;
       }
       if (SimulationNode.nodeCount > maxNodes) {
-        logger.fine("simulating -- reached end-state");
+        logger.debug("simulating -- reached end-state");
         break;
       }
     }
@@ -53,11 +53,11 @@
     node.children.add(bestNode);
   }
   if (!currentPlayer.getId().equals(playerId)) {
-    logger.fine("returning priority beta: " + beta);
+    logger.debug("returning priority beta: " + beta);
     return beta;
   }
  else {
-    logger.fine("returning priority alpha: " + alpha);
+    logger.debug("returning priority alpha: " + alpha);
     return alpha;
   }
 }

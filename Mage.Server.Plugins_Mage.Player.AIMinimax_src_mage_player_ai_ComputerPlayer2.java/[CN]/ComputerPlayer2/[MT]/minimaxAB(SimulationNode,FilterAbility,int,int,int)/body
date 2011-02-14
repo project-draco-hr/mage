@@ -3,11 +3,11 @@
   SimulationNode bestChild=null;
   for (  SimulationNode child : node.getChildren()) {
     if (alpha >= beta) {
-      logger.fine("alpha beta pruning");
+      logger.debug("alpha beta pruning");
       break;
     }
     if (SimulationNode.nodeCount > maxNodes) {
-      logger.fine("simulating -- reached end-state");
+      logger.debug("simulating -- reached end-state");
       break;
     }
     int val=addActions(child,filter,depth - 1,alpha,beta);
@@ -29,11 +29,11 @@
   node.children.clear();
   if (bestChild != null)   node.children.add(bestChild);
   if (!currentPlayerId.equals(playerId)) {
-    logger.fine("returning minimax beta: " + beta);
+    logger.debug("returning minimax beta: " + beta);
     return beta;
   }
  else {
-    logger.fine("returning minimax alpha: " + alpha);
+    logger.debug("returning minimax alpha: " + alpha);
     return alpha;
   }
 }

@@ -2,7 +2,7 @@
   Integer val=null;
   if (Thread.interrupted()) {
     Thread.currentThread().interrupt();
-    logger.fine("interrupted");
+    logger.debug("interrupted");
     return GameStateEvaluator.evaluate(playerId,game);
   }
   if (game.getTurn().getStepType() != PhaseStep.DECLARE_BLOCKERS) {
@@ -35,6 +35,6 @@
     }
   }
   if (val == null)   val=GameStateEvaluator.evaluate(playerId,game);
-  if (logger.isLoggable(Level.FINE))   logger.fine("returning -- combat score: " + val + " depth:"+ depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
+  if (logger.isDebugEnabled())   logger.debug("returning -- combat score: " + val + " depth:"+ depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
   return val;
 }
