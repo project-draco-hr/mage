@@ -1,0 +1,13 @@
+{
+  if (actions == null || actions.size() == 0)   pass();
+ else {
+    boolean usedStack=false;
+    while (actions.peek() != null) {
+      Ability ability=actions.poll();
+      System.out.println("[" + game.getPlayer(playerId).getName() + "] Action: "+ ability.toString());
+      this.activateAbility((ActivatedAbility)ability,game);
+      if (ability.isUsesStack())       usedStack=true;
+    }
+    if (usedStack)     pass();
+  }
+}

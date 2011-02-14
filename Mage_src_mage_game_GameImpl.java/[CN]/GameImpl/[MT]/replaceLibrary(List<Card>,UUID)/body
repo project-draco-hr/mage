@@ -1,0 +1,17 @@
+{
+  Player player=getPlayer(ownerId);
+  if (player != null) {
+    for (    UUID card : player.getLibrary().getCardList()) {
+      gameCards.remove(card);
+    }
+    player.getLibrary().clear();
+    Set<Card> cards=new HashSet<Card>();
+    for (    Card card : cardsDownToTop) {
+      cards.add(card);
+    }
+    loadCards(cards,ownerId);
+    for (    Card card : cards) {
+      player.getLibrary().putOnTop(card,this);
+    }
+  }
+}

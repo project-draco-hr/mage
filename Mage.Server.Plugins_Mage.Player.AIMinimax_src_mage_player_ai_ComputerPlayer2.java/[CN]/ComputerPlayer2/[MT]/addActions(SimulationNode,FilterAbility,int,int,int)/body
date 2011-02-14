@@ -3,19 +3,19 @@
   int val;
   if (Thread.interrupted()) {
     Thread.currentThread().interrupt();
-    logger.fine("interrupted");
+    logger.debug("interrupted");
     return GameStateEvaluator.evaluate(playerId,game);
   }
   if (depth <= 0 || SimulationNode.nodeCount > maxNodes || game.isGameOver()) {
-    logger.fine("simulating -- reached end state");
+    logger.debug("simulating -- reached end state");
     val=GameStateEvaluator.evaluate(playerId,game);
   }
  else   if (node.getChildren().size() > 0) {
-    logger.fine("simulating -- somthing added children:" + node.getChildren().size());
+    logger.debug("simulating -- somthing added children:" + node.getChildren().size());
     val=minimaxAB(node,filter,depth - 1,alpha,beta);
   }
  else {
-    if (logger.isLoggable(Level.FINE))     logger.fine("simulating -- alpha: " + alpha + " beta: "+ beta+ " depth:"+ depth+ " step:"+ game.getTurn().getStepType()+ " for player:"+ (node.getPlayerId().equals(playerId) ? "yes" : "no"));
+    if (logger.isDebugEnabled())     logger.debug("simulating -- alpha: " + alpha + " beta: "+ beta+ " depth:"+ depth+ " step:"+ game.getTurn().getStepType()+ " for player:"+ (node.getPlayerId().equals(playerId) ? "yes" : "no"));
     if (allPassed(game)) {
       if (!game.getStack().isEmpty()) {
         resolve(node,depth,game);
@@ -29,13 +29,13 @@
       val=GameStateEvaluator.evaluate(playerId,game);
     }
  else     if (node.getChildren().size() > 0) {
-      logger.fine("simulating -- attack/block/trigger added children:" + node.getChildren().size());
+      logger.debug("simulating -- attack/block/trigger added children:" + node.getChildren().size());
       val=minimaxAB(node,filter,depth - 1,alpha,beta);
     }
  else {
       val=simulatePriority(node,game,filter,depth,alpha,beta);
     }
   }
-  if (logger.isLoggable(Level.FINE))   logger.fine("returning -- score: " + val + " depth:"+ depth+ " step:"+ game.getTurn().getStepType()+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
+  if (logger.isDebugEnabled())   logger.debug("returning -- score: " + val + " depth:"+ depth+ " step:"+ game.getTurn().getStepType()+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
   return val;
 }

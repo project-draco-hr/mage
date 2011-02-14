@@ -1,7 +1,7 @@
 {
   if (Thread.interrupted()) {
     Thread.currentThread().interrupt();
-    logger.fine("interrupted");
+    logger.debug("interrupted");
     return GameStateEvaluator.evaluate(playerId,game);
   }
   Integer val=null;
@@ -10,23 +10,25 @@
     SimulatedPlayer defender=(SimulatedPlayer)game.getPlayer(defenderId);
     for (    Combat engagement : defender.addBlockers(game)) {
       if (alpha >= beta) {
-        logger.fine("simulating -- pruning blockers");
+        logger.debug("simulating -- pruning blockers");
         break;
       }
       Game sim=game.copy();
       for (      CombatGroup group : engagement.getGroups()) {
-        UUID attackerId=group.getAttackers().get(0);
-        for (        UUID blockerId : group.getBlockers()) {
-          sim.getPlayer(defenderId).declareBlocker(blockerId,attackerId,sim);
+        if (group.getAttackers().size() > 0) {
+          UUID attackerId=group.getAttackers().get(0);
+          for (          UUID blockerId : group.getBlockers()) {
+            sim.getPlayer(defenderId).declareBlocker(blockerId,attackerId,sim);
+          }
         }
       }
       sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,playerId,playerId));
       SimulationNode newNode=new SimulationNode(sim,depth,defenderId);
-      if (logger.isLoggable(Level.FINE))       logger.fine("simulating block -- node#: " + SimulationNode.getCount());
+      if (logger.isDebugEnabled())       logger.debug("simulating block -- node#: " + SimulationNode.getCount());
       sim.checkStateAndTriggered();
       while (!sim.getStack().isEmpty()) {
         sim.getStack().resolve(sim);
-        logger.fine("resolving triggered abilities");
+        logger.debug("resolving triggered abilities");
         sim.applyEffects();
       }
       sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARE_BLOCKERS_STEP_POST,sim.getActivePlayerId(),sim.getActivePlayerId()));
@@ -60,6 +62,6 @@
     node.children.clear();
     node.children.add(bestNode);
   }
-  if (logger.isLoggable(Level.FINE))   logger.fine("returning -- combat blocker score: " + val + " depth:"+ depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
+  if (logger.isDebugEnabled())   logger.debug("returning -- combat blocker score: " + val + " depth:"+ depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
   return val;
 }
