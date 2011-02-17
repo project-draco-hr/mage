@@ -25,6 +25,7 @@
         if (val < beta) {
           beta=val;
           bestNode=newNode;
+          bestNode.setScore(val);
           node.setCombat(newNode.getCombat());
         }
       }
@@ -32,6 +33,7 @@
         if (val > alpha) {
           alpha=val;
           bestNode=newNode;
+          bestNode.setScore(val);
           node.setCombat(newNode.getCombat());
           if (node.getTargets().size() > 0)           targets=node.getTargets();
           if (node.getChoices().size() > 0)           choices=node.getChoices();
@@ -49,6 +51,7 @@
   if (bestNode != null) {
     node.children.clear();
     node.children.add(bestNode);
+    node.setScore(bestNode.getScore());
   }
   if (!currentPlayer.getId().equals(playerId)) {
     return beta;

@@ -7,7 +7,7 @@
 );
   pool.execute(task);
   try {
-    task.get(Config2.maxThinkSeconds,TimeUnit.MINUTES);
+    return task.get(Config2.maxThinkSeconds,TimeUnit.MINUTES);
   }
  catch (  TimeoutException e) {
     logger.info("simulating - timed out");
@@ -21,4 +21,5 @@ catch (  InterruptedException e) {
     e.printStackTrace();
     task.cancel(true);
   }
+  return 0;
 }
