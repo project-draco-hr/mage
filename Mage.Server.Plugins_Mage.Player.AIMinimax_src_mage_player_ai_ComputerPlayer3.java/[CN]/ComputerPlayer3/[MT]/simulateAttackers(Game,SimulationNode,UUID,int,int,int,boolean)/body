@@ -7,6 +7,7 @@
   Integer val=null;
   SimulationNode bestNode=null;
   SimulatedPlayer attacker=(SimulatedPlayer)game.getPlayer(attackerId);
+  if (logger.isDebugEnabled())   logger.debug(attacker.getName() + "'s possible attackers: " + attacker.getAvailableAttackers(game));
   for (  Combat engagement : attacker.addAttackers(game)) {
     if (alpha >= beta) {
       logger.debug("simulating -- pruning attackers");
@@ -20,8 +21,8 @@
       }
     }
     sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_ATTACKERS,playerId,playerId));
-    SimulationNode newNode=new SimulationNode(sim,depth,game.getActivePlayerId());
-    if (logger.isDebugEnabled())     logger.debug("simulating attack -- node#: " + SimulationNode.getCount());
+    SimulationNode newNode=new SimulationNode(node,sim,depth,attackerId);
+    if (logger.isDebugEnabled())     logger.debug("simulating attack for player:" + game.getPlayer(newNode.getPlayerId()).getName());
     sim.checkStateAndTriggered();
     while (!sim.getStack().isEmpty()) {
       sim.getStack().resolve(sim);
