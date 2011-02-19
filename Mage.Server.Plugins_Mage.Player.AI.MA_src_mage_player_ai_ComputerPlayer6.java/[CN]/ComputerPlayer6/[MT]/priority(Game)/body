@@ -7,35 +7,37 @@ case DRAW:
     pass();
   break;
 case PRECOMBAT_MAIN:
-case BEGIN_COMBAT:
-case DECLARE_ATTACKERS:
 case DECLARE_BLOCKERS:
-case COMBAT_DAMAGE:
-case END_COMBAT:
 case POSTCOMBAT_MAIN:
 if (game.getActivePlayerId().equals(playerId)) {
-  Player player=game.getPlayer(playerId);
-  System.out.println("Turn::" + game.getTurnNum());
-  System.out.println("[" + game.getPlayer(playerId).getName() + "] "+ game.getTurn().getStepType().name()+ ", life="+ player.getLife());
-  String s="[";
-  for (  Card card : player.getHand().getCards(game)) {
-    s+=card.getName() + ";";
+  printOutState(game,playerId);
+  if (actions.size() == 0) {
+    calculateActions(game);
   }
-  s+="]";
-  System.out.println("Hand: " + s);
-  s="[";
-  for (  Permanent permanent : game.getBattlefield().getAllPermanents()) {
-    if (permanent.getOwnerId().equals(player.getId())) {
-      s+=permanent.getName() + ";";
-    }
-  }
-  s+="]";
-  System.out.println("Permanents: " + s);
+  act(game);
 }
+ else {
+  pass();
+}
+break;
+case BEGIN_COMBAT:
+case COMBAT_DAMAGE:
+case END_COMBAT:
+pass();
+break;
+case DECLARE_ATTACKERS:
+if (!game.getActivePlayerId().equals(playerId)) {
+printOutState(game,playerId);
+printOutState(game,game.getOpponents(playerId).iterator().next());
 if (actions.size() == 0) {
 calculateActions(game);
 }
 act(game);
+printOutState(game,playerId);
+}
+ else {
+pass();
+}
 break;
 case END_TURN:
 pass();

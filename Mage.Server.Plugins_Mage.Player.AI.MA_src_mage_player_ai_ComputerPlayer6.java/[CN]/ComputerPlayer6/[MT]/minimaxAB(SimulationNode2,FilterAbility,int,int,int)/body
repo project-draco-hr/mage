@@ -2,6 +2,7 @@
   UUID currentPlayerId=node.getGame().getPlayerList().get();
   SimulationNode2 bestChild=null;
   for (  SimulationNode2 child : node.getChildren()) {
+    Combat _combat=child.getCombat();
     if (alpha >= beta) {
       logger.info("alpha beta pruning");
       break;
@@ -15,14 +16,20 @@
       if (val < beta) {
         beta=val;
         bestChild=child;
-        if (node.getCombat() == null)         node.setCombat(child.getCombat());
+        if (node.getCombat() == null) {
+          node.setCombat(_combat);
+          bestChild.setCombat(_combat);
+        }
       }
     }
  else {
       if (val > alpha) {
         alpha=val;
         bestChild=child;
-        if (node.getCombat() == null)         node.setCombat(child.getCombat());
+        if (node.getCombat() == null) {
+          node.setCombat(_combat);
+          bestChild.setCombat(_combat);
+        }
       }
     }
   }

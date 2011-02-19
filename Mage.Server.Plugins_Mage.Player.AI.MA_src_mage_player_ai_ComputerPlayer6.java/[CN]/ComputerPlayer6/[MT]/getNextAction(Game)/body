@@ -8,6 +8,14 @@
     }
     logger.info("simlating -- game value:" + game.getState().getValue() + " test value:"+ test.gameValue);
     if (root.playerId.equals(playerId) && root.abilities != null && game.getState().getValue() == test.gameValue) {
+      if (root.combat == null || root.combat.getAttackers().size() == 0) {
+        FilterCreatureForAttack attackFilter=new FilterCreatureForAttack();
+        attackFilter.getControllerId().add(playerId);
+        List<Permanent> attackers=game.getBattlefield().getAllActivePermanents(attackFilter);
+        if (attackers.size() > 0) {
+          return false;
+        }
+      }
       logger.info("simulating -- continuing previous action chain");
       actions=new LinkedList<Ability>(root.abilities);
       combat=root.combat;

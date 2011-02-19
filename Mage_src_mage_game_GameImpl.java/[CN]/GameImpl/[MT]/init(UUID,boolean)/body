@@ -27,7 +27,9 @@
   saveState();
   for (  UUID playerId : state.getPlayerList(startingPlayerId)) {
     Player player=getPlayer(playerId);
-    player.setLife(this.getLife(),this);
+    if (!testMode || player.getLife() == 0) {
+      player.setLife(this.getLife(),this);
+    }
     if (!testMode) {
       player.drawCards(7,this);
     }

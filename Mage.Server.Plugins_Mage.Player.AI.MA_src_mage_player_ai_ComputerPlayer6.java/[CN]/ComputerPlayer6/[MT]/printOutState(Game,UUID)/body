@@ -1,0 +1,28 @@
+{
+  Player player=game.getPlayer(playerId);
+  System.out.println("Turn::" + game.getTurnNum());
+  System.out.println("[" + game.getPlayer(playerId).getName() + "] "+ game.getTurn().getStepType().name()+ ", life="+ player.getLife());
+  Player opponent=game.getPlayer(game.getOpponents(playerId).iterator().next());
+  System.out.println("[Opponent] life=" + opponent.getLife());
+  String s="[";
+  for (  Card card : player.getHand().getCards(game)) {
+    s+=card.getName() + ";";
+  }
+  s+="]";
+  System.out.println("Hand: " + s);
+  s="[";
+  for (  Permanent permanent : game.getBattlefield().getAllPermanents()) {
+    if (permanent.getOwnerId().equals(player.getId())) {
+      s+=permanent.getName();
+      if (permanent.isTapped()) {
+        s+="(tapped)";
+      }
+      if (permanent.isAttacking()) {
+        s+="(attacking)";
+      }
+      s+=";";
+    }
+  }
+  s+="]";
+  System.out.println("Permanents: " + s);
+}
