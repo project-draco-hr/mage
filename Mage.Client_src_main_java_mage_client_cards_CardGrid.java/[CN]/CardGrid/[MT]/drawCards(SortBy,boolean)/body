@@ -20,7 +20,44 @@ case CASTING_COST:
 Collections.sort(sortedCards,new CardCostComparator());
 break;
 }
+MageCard lastCard=null;
 for (MageCard cardImg : sortedCards) {
+if (piles) {
+if (lastCard == null) lastCard=cardImg;
+switch (sortBy) {
+case NAME:
+if (!cardImg.getOriginal().getName().equals(lastCard.getOriginal().getName())) {
+curColumn++;
+curRow=0;
+}
+break;
+case RARITY:
+if (!cardImg.getOriginal().getRarity().equals(lastCard.getOriginal().getRarity())) {
+curColumn++;
+curRow=0;
+}
+break;
+case COLOR:
+if (cardImg.getOriginal().getColor().compareTo(lastCard.getOriginal().getColor()) != 0) {
+curColumn++;
+curRow=0;
+}
+break;
+case CASTING_COST:
+if (cardImg.getOriginal().getConvertedManaCost() != lastCard.getOriginal().getConvertedManaCost()) {
+curColumn++;
+curRow=0;
+}
+break;
+}
+rectangle.setLocation(curColumn * Config.dimensions.frameWidth,curRow * 20);
+cardImg.setBounds(rectangle);
+cardImg.setCardBounds(rectangle.x,rectangle.y,Config.dimensions.frameWidth,Config.dimensions.frameHeight);
+moveToFront(cardImg);
+curRow++;
+lastCard=cardImg;
+}
+ else {
 rectangle.setLocation(curColumn * Config.dimensions.frameWidth,curRow * 20);
 cardImg.setBounds(rectangle);
 cardImg.setCardBounds(rectangle.x,rectangle.y,Config.dimensions.frameWidth,Config.dimensions.frameHeight);
@@ -29,6 +66,7 @@ curColumn++;
 if (curColumn == numColumns) {
 curColumn=0;
 curRow++;
+}
 }
 }
 }
