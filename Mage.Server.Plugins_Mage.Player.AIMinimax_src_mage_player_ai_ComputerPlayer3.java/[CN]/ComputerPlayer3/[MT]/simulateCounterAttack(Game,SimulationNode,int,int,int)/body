@@ -6,9 +6,9 @@
   }
   Integer val=null;
   if (!game.isGameOver()) {
-    logger.debug("simulating -- counter attack");
     simulateToEnd(game);
     game.getState().setActivePlayerId(game.getState().getPlayerList(game.getActivePlayerId()).getNext());
+    logger.debug("simulating -- counter attack for player " + game.getPlayer(game.getActivePlayerId()).getName());
     game.getTurn().setPhase(new BeginningPhase());
     if (game.getPhase().beginPhase(game,game.getActivePlayerId())) {
       simulateStep(game,new UntapStep());

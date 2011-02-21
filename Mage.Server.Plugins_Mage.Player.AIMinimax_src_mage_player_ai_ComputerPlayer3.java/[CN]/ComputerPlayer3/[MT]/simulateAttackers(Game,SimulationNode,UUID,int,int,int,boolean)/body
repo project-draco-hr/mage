@@ -14,15 +14,15 @@
       break;
     }
     Game sim=game.copy();
-    UUID defenderId=game.getOpponents(playerId).iterator().next();
+    UUID defenderId=game.getOpponents(attackerId).iterator().next();
     for (    CombatGroup group : engagement.getGroups()) {
       for (      UUID attackId : group.getAttackers()) {
         sim.getPlayer(attackerId).declareAttacker(attackId,defenderId,sim);
       }
     }
-    sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_ATTACKERS,playerId,playerId));
+    sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_ATTACKERS,attackerId,attackerId));
     SimulationNode newNode=new SimulationNode(node,sim,depth,attackerId);
-    if (logger.isDebugEnabled())     logger.debug("simulating attack for player:" + game.getPlayer(newNode.getPlayerId()).getName());
+    if (logger.isDebugEnabled())     logger.debug("simulating attack for player:" + game.getPlayer(attackerId).getName());
     sim.checkStateAndTriggered();
     while (!sim.getStack().isEmpty()) {
       sim.getStack().resolve(sim);
