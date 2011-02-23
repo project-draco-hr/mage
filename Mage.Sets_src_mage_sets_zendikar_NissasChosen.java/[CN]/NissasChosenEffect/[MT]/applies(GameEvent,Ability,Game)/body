@@ -1,6 +1,9 @@
 {
-  if (event.getType() == EventType.DESTROY_PERMANENT || event.getType() == EventType.DESTROYED_PERMANENT) {
-    return true;
+  if (event.getType() == EventType.ZONE_CHANGE) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getFromZone() == Zone.BATTLEFIELD && zEvent.getToZone() == Zone.GRAVEYARD) {
+      return true;
+    }
   }
   return false;
 }
