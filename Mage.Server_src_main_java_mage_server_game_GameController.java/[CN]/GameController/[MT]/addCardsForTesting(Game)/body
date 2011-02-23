@@ -3,14 +3,14 @@
     File f=new File(INIT_FILE_PATH);
     Pattern pattern=Pattern.compile("([a-zA-Z]*):([\\w]*):([a-zA-Z ,\\-.!'\\d]*):([\\d]*)");
     if (!f.exists()) {
-      logger.warning("Couldn't find init file: " + INIT_FILE_PATH);
+      logger.warn("Couldn't find init file: " + INIT_FILE_PATH);
       return;
     }
     Scanner scanner=new Scanner(f);
     try {
       while (scanner.hasNextLine()) {
         String line=scanner.nextLine().trim();
-        if (line.startsWith("#"))         continue;
+        if (line.trim().length() == 0 || line.startsWith("#"))         continue;
         Matcher m=pattern.matcher(line);
         if (m.matches()) {
           String zone=m.group(1);
@@ -44,16 +44,16 @@
                 swapWithAnyCard(game,player,card,gameZone);
               }
  else {
-                logger.severe("Couldn't find a card: " + cardName);
+                logger.fatal("Couldn't find a card: " + cardName);
               }
             }
           }
  else {
-            logger.warning("Was skipped: " + line);
+            logger.warn("Was skipped: " + line);
           }
         }
  else {
-          logger.warning("Init string wasn't parsed: " + line);
+          logger.warn("Init string wasn't parsed: " + line);
         }
       }
     }
@@ -62,6 +62,6 @@
     }
   }
  catch (  Exception e) {
-    logger.log(Level.SEVERE,"",e);
+    logger.fatal("",e);
   }
 }
