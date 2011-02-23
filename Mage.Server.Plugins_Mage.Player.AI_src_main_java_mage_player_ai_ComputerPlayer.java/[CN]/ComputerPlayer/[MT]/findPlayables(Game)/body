@@ -16,8 +16,11 @@
     for (    Mana mana : options) {
       for (      Mana avail : available) {
         if (mana.enough(avail)) {
-          if (card.getCardType().contains(CardType.INSTANT))           playableInstant.add(card);
- else           playableNonInstant.add(card);
+          SpellAbility ability=card.getSpellAbility();
+          if (ability != null && ability.canActivate(playerId,game)) {
+            if (card.getCardType().contains(CardType.INSTANT))             playableInstant.add(card);
+ else             playableNonInstant.add(card);
+          }
         }
  else {
           if (!playableInstant.contains(card) && !playableNonInstant.contains(card))           unplayable.put(mana.needed(avail),card);
