@@ -7,6 +7,11 @@
   for (  ActivatedAbility ability : permanent.getAbilities().getActivatedAbilities(Zone.BATTLEFIELD)) {
     if (!(ability instanceof ManaAbility) && ability.canActivate(ability.getControllerId(),game))     value+=ability.getEffects().size();
   }
+  for (  Counter counter : permanent.getCounters().values()) {
+    if (!(counter instanceof BoostCounter)) {
+      value+=counter.getCount();
+    }
+  }
   value+=permanent.getAbilities().getStaticAbilities(Zone.BATTLEFIELD).size();
   value+=permanent.getAbilities().getTriggeredAbilities(Zone.BATTLEFIELD).size();
   value+=permanent.getManaCost().convertedManaCost();

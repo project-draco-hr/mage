@@ -1,9 +1,10 @@
 {
-  logger.debug("selectAttackers");
+  if (logger.isDebugEnabled() && combat == null || combat.getGroups().isEmpty())   logger.debug("not attacking");
   if (combat != null) {
     UUID opponentId=game.getCombat().getDefenders().iterator().next();
     for (    UUID attackerId : combat.getAttackers()) {
       this.declareAttacker(attackerId,opponentId,game);
+      if (logger.isDebugEnabled())       logger.debug("attacking with:" + game.getPermanent(attackerId).getName());
     }
   }
 }
