@@ -6,6 +6,7 @@
   }
   node.setGameValue(game.getState().getValue());
   SimulatedPlayer currentPlayer=(SimulatedPlayer)game.getPlayer(game.getPlayerList().get());
+  boolean isSimulatedPlayer=currentPlayer.getId().equals(playerId);
   logger.debug("simulating -- player " + currentPlayer.getName());
   SimulationNode bestNode=null;
   List<Ability> allActions=currentPlayer.simulatePriority(game,filter);
@@ -23,11 +24,15 @@
       if (logger.isDebugEnabled())       logger.debug("simulating -- node #:" + SimulationNode.getCount() + " actions:"+ action);
       sim.checkStateAndTriggered();
       int val=addActions(newNode,filter,depth - 1,alpha,beta);
-      if (!currentPlayer.getId().equals(playerId)) {
+      if (!isSimulatedPlayer) {
         if (val < beta) {
           beta=val;
           bestNode=newNode;
           node.setCombat(newNode.getCombat());
+        }
+        if (val == GameStateEvaluator.LOSE_SCORE) {
+          logger.debug("simulating -- lose, can't do worse than this");
+          break;
         }
       }
  else {
@@ -37,6 +42,10 @@
           node.setCombat(newNode.getCombat());
           if (node.getTargets().size() > 0)           targets=node.getTargets();
           if (node.getChoices().size() > 0)           choices=node.getChoices();
+        }
+        if (val == GameStateEvaluator.WIN_SCORE) {
+          logger.debug("simulating -- win, can't do better than this");
+          break;
         }
       }
       if (alpha >= beta) {
@@ -53,7 +62,7 @@
     node.children.clear();
     node.children.add(bestNode);
   }
-  if (!currentPlayer.getId().equals(playerId)) {
+  if (!isSimulatedPlayer) {
     logger.debug("returning priority beta: " + beta);
     return beta;
   }
