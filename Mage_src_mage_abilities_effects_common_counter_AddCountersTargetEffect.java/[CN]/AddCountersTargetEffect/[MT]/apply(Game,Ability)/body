@@ -1,12 +1,15 @@
 {
-  Permanent permanent=game.getPermanent(source.getFirstTarget());
-  if (permanent != null) {
-    if (counter != null) {
-      permanent.addCounters(counter);
-    }
+  int affectedTargets=0;
+  for (  UUID permanentId : source.getTargets().get(0).getTargets()) {
+    Permanent permanent=game.getPermanent(permanentId);
+    if (permanent != null) {
+      if (counter != null) {
+        permanent.addCounters(counter);
+      }
  else {
-      permanent.addCounters(name,amount);
+        permanent.addCounters(name,amount);
+      }
     }
   }
-  return true;
+  return affectedTargets > 0;
 }
