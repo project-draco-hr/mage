@@ -2,9 +2,11 @@
   logger.debug("selectAttackers");
   if (combat != null) {
     UUID opponentId=game.getCombat().getDefenders().iterator().next();
+    String attackers="";
     for (    UUID attackerId : combat.getAttackers()) {
-      logger.debug("declare attacker: " + game.getCard(attackerId).getName());
+      attackers="[" + game.getCard(attackerId).getName() + "]";
       this.declareAttacker(attackerId,opponentId,game);
     }
+    logger.info("declare attackers: " + (attackers.isEmpty() ? "none" : attackers));
   }
 }

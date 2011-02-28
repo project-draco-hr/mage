@@ -1,0 +1,15 @@
+{
+  if (Thread.interrupted()) {
+    Thread.currentThread().interrupt();
+    logger.debug("interrupted");
+    return;
+  }
+  if (!game.isGameOver()) {
+    game.getTurn().getPhase().endPhase(game,game.getActivePlayerId());
+    game.getTurn().setPhase(new EndPhase());
+    if (game.getTurn().getPhase().beginPhase(game,game.getActivePlayerId())) {
+      simulateStep(game,new EndStep());
+      simulateStep(game,new CleanupStep());
+    }
+  }
+}
