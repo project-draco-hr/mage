@@ -1,0 +1,19 @@
+{
+  if (Thread.interrupted()) {
+    Thread.currentThread().interrupt();
+    logger.debug("interrupted");
+    return;
+  }
+  if (!game.isGameOver()) {
+    game.getPhase().setStep(step);
+    if (!step.skipStep(game,game.getActivePlayerId())) {
+      step.beginStep(game,game.getActivePlayerId());
+      game.checkStateAndTriggered();
+      while (!game.getStack().isEmpty()) {
+        game.getStack().resolve(game);
+        game.applyEffects();
+      }
+      step.endStep(game,game.getActivePlayerId());
+    }
+  }
+}

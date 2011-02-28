@@ -35,6 +35,10 @@
           bestNode.setScore(val);
           node.setCombat(newNode.getCombat());
         }
+        if (val == GameStateEvaluator2.LOSE_GAME_SCORE) {
+          logger.debug("lose - break");
+          break;
+        }
       }
  else {
         if (val > alpha) {
@@ -44,7 +48,7 @@
           node.setCombat(newNode.getCombat());
           if (node.getTargets().size() > 0)           targets=node.getTargets();
           if (node.getChoices().size() > 0)           choices=node.getChoices();
-          if (depth == 20) {
+          if (depth == Config2.maxDepth) {
             logger.info("saved");
             node.children.clear();
             node.children.add(bestNode);
@@ -52,7 +56,7 @@
           }
         }
         if (val == GameStateEvaluator2.WIN_GAME_SCORE) {
-          logger.info("win - break");
+          logger.debug("win - break");
           break;
         }
       }
