@@ -1,0 +1,68 @@
+{
+  boolean stepFinished=false;
+  int val;
+  Game game=node.getGame();
+  if (Thread.interrupted()) {
+    Thread.currentThread().interrupt();
+    logger.debug("interrupted");
+    return GameStateEvaluator2.evaluate(playerId,game);
+  }
+  if (depth <= 0 || SimulationNode2.nodeCount > maxNodes || game.isGameOver()) {
+    logger.debug("simulating -- reached end state");
+    val=GameStateEvaluator2.evaluate(playerId,game);
+  }
+ else   if (node.getChildren().size() > 0) {
+    logger.debug("simulating -- somthing added children:" + node.getChildren().size());
+    val=minimaxAB(node,filter,depth - 1,alpha,beta);
+  }
+ else {
+    if (logger.isDebugEnabled())     logger.debug("simulating -- alpha: " + alpha + " beta: "+ beta+ " depth:"+ depth+ " step:"+ game.getTurn().getStepType()+ " for player:"+ game.getPlayer(game.getPlayerList().get()).getName());
+    if (allPassed(game)) {
+      if (!game.getStack().isEmpty()) {
+        resolve(node,depth,game);
+      }
+ else {
+        stepFinished=true;
+      }
+    }
+    if (game.isGameOver()) {
+      val=GameStateEvaluator2.evaluate(playerId,game);
+    }
+ else     if (stepFinished) {
+      logger.debug("step finished");
+      int testScore=GameStateEvaluator2.evaluate(playerId,game);
+      if (game.getActivePlayerId().equals(playerId)) {
+        if (testScore < currentScore) {
+          logger.debug("simulating -- abandoning check, no immediate benefit");
+          val=testScore;
+        }
+ else {
+switch (game.getTurn().getStepType()) {
+case PRECOMBAT_MAIN:
+            val=simulateCombat(game,node,depth - 1,alpha,beta,false);
+          break;
+case POSTCOMBAT_MAIN:
+        val=simulateCounterAttack(game,node,depth - 1,alpha,beta);
+      break;
+default :
+    val=GameStateEvaluator2.evaluate(playerId,game);
+  break;
+}
+}
+}
+ else {
+if (game.getTurn().getStepType() == PhaseStep.DECLARE_ATTACKERS) val=simulateBlockers(game,node,playerId,depth - 1,alpha,beta,true);
+ else val=GameStateEvaluator2.evaluate(playerId,game);
+}
+}
+ else if (node.getChildren().size() > 0) {
+logger.debug("simulating -- trigger added children:" + node.getChildren().size());
+val=minimaxAB(node,filter,depth,alpha,beta);
+}
+ else {
+val=simulatePriority(node,game,filter,depth,alpha,beta);
+}
+}
+if (logger.isDebugEnabled()) logger.debug("returning -- score: " + val + " depth:"+ depth+ " step:"+ game.getTurn().getStepType()+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
+return val;
+}

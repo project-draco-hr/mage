@@ -1,0 +1,40 @@
+{
+  Integer val=null;
+  if (Thread.interrupted()) {
+    Thread.currentThread().interrupt();
+    logger.debug("interrupted");
+    return GameStateEvaluator2.evaluate(playerId,game);
+  }
+  if (game.getTurn().getStepType() != PhaseStep.DECLARE_BLOCKERS) {
+    game.getTurn().setPhase(new CombatPhase());
+    if (game.getPhase().beginPhase(game,game.getActivePlayerId())) {
+      simulateStep(game,new BeginCombatStep());
+      game.getPhase().setStep(new DeclareAttackersStep());
+      if (!game.getStep().skipStep(game,game.getActivePlayerId())) {
+        game.fireEvent(new GameEvent(GameEvent.EventType.DECLARE_ATTACKERS_STEP_PRE,null,null,game.getActivePlayerId()));
+        if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_ATTACKERS,game.getActivePlayerId(),game.getActivePlayerId()))) {
+          val=simulateAttackers(game,node,game.getActivePlayerId(),depth,alpha,beta,counter);
+        }
+      }
+ else       if (!counter) {
+        simulateToEnd(game);
+        val=simulatePostCombatMain(game,node,depth,alpha,beta);
+      }
+    }
+  }
+ else {
+    if (!game.getStep().skipStep(game,game.getActivePlayerId())) {
+      game.fireEvent(new GameEvent(GameEvent.EventType.DECLARE_BLOCKERS_STEP_PRE,null,null,game.getActivePlayerId()));
+      if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_BLOCKERS,game.getActivePlayerId(),game.getActivePlayerId()))) {
+        val=simulateBlockers(game,node,game.getCombat().getDefenders().iterator().next(),depth,alpha,beta,counter);
+      }
+    }
+ else     if (!counter) {
+      finishCombat(game);
+      val=simulateCounterAttack(game,node,depth,alpha,beta);
+    }
+  }
+  if (val == null)   val=GameStateEvaluator2.evaluate(playerId,game);
+  if (logger.isDebugEnabled())   logger.debug("returning -- combat score: " + val + " depth:"+ depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
+  return val;
+}
