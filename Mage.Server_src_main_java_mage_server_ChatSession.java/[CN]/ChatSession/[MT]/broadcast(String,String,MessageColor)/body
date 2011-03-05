@@ -3,7 +3,7 @@
   final String msg=timeFormatter.format(cal.getTime()) + " " + userName+ ":"+ message;
   for (  UUID sessionId : clients.keySet()) {
     Session session=SessionManager.getInstance().getSession(sessionId);
-    if (session != null)     session.fireCallback(new ClientCallback("chatMessage",new ChatMessage(chatId,msg,color)));
+    if (session != null)     session.fireCallback(new ClientCallback("chatMessage",chatId,new ChatMessage(msg,color)));
  else     kill(sessionId);
   }
 }

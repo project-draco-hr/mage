@@ -12,7 +12,7 @@
     UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
   }
  catch (  Exception ex) {
-    logger.log(Level.SEVERE,null,ex);
+    logger.fatal(null,ex);
   }
   ManaSymbols.loadImages();
   Plugins.getInstance().loadPlugins();
@@ -21,28 +21,18 @@
   this.setExtendedState(JFrame.MAXIMIZED_BOTH);
   session=new Session(this);
   connectDialog=new ConnectDialog();
-  combat=new CombatDialog();
-  pickNumber=new PickNumberDialog();
   desktopPane.add(connectDialog,JLayeredPane.POPUP_LAYER);
-  desktopPane.add(combat,JLayeredPane.POPUP_LAYER);
-  combat.hideDialog();
-  desktopPane.add(pickNumber,JLayeredPane.POPUP_LAYER);
   session.getUI().addComponent(MageComponents.DESKTOP_PANE,desktopPane);
-  draftPane=new DraftPane();
-  desktopPane.add(draftPane,javax.swing.JLayeredPane.DEFAULT_LAYER);
   try {
-    draftPane.setMaximum(true);
+    tablesPane=new TablesPane();
+    desktopPane.add(tablesPane,javax.swing.JLayeredPane.DEFAULT_LAYER);
+    tablesPane.setMaximum(true);
+    collectionViewerPane=new CollectionViewerPane();
+    desktopPane.add(collectionViewerPane,javax.swing.JLayeredPane.DEFAULT_LAYER);
+    collectionViewerPane.setMaximum(true);
   }
- catch (  java.beans.PropertyVetoException e1) {
-    e1.printStackTrace();
-  }
-  tournamentPane=new TournamentPane();
-  desktopPane.add(tournamentPane,javax.swing.JLayeredPane.DEFAULT_LAYER);
-  try {
-    tournamentPane.setMaximum(true);
-  }
- catch (  java.beans.PropertyVetoException e1) {
-    e1.printStackTrace();
+ catch (  PropertyVetoException ex) {
+    logger.fatal(null,ex);
   }
   addTooltipContainer();
   setBackground();

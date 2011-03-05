@@ -4,4 +4,17 @@
   initComponents();
   tablePlayers.createDefaultColumnsFromModel();
   tableMatches.createDefaultColumnsFromModel();
+  Action action=new AbstractAction(){
+    @Override public void actionPerformed(    ActionEvent e){
+      int modelRow=Integer.valueOf(e.getActionCommand());
+      UUID tableId=UUID.fromString((String)tableMatches.getValueAt(modelRow,3));
+      String state=(String)tableMatches.getValueAt(modelRow,4);
+      if (state.equals("Finished")) {
+        logger.info("Replaying table " + tableId);
+        session.replayTable(null,tableId);
+      }
+    }
+  }
+;
+  ButtonColumn buttonColumn=new ButtonColumn(tableMatches,action,6);
 }
