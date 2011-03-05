@@ -10,7 +10,8 @@
         String zone=m.group(1);
         String nickname=m.group(2);
         if (nickname.equals("ComputerA") || nickname.equals("ComputerB")) {
-          List<Card> cards;
+          List<Card> cards=null;
+          List<PermanentCard> perms=null;
           Constants.Zone gameZone;
           if ("hand".equalsIgnoreCase(zone)) {
             gameZone=Constants.Zone.HAND;
@@ -18,7 +19,7 @@
           }
  else           if ("battlefield".equalsIgnoreCase(zone)) {
             gameZone=Constants.Zone.BATTLEFIELD;
-            cards=nickname.equals("ComputerA") ? battlefieldCardsA : battlefieldCardsB;
+            perms=nickname.equals("ComputerA") ? battlefieldCardsA : battlefieldCardsB;
           }
  else           if ("graveyard".equalsIgnoreCase(zone)) {
             gameZone=Constants.Zone.GRAVEYARD;
@@ -61,7 +62,7 @@
                 if (gameZone.equals(Constants.Zone.BATTLEFIELD)) {
                   PermanentCard p=new PermanentCard(card,null);
                   p.setTapped(tapped);
-                  cards.add(p);
+                  perms.add(p);
                 }
  else {
                   cards.add(card);
