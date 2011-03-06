@@ -1,0 +1,11 @@
+{
+  int count=0;
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(FilterCreaturePermanent.getDefault(),source.getControllerId(),game)) {
+    count+=permanent.destroy(source.getId(),game,false) ? 1 : 0;
+  }
+  HorrorToken horrorToken=new HorrorToken();
+  horrorToken.getPower().setValue(count);
+  horrorToken.getToughness().setValue(count);
+  horrorToken.putOntoBattlefield(game,source.getId(),source.getControllerId());
+  return true;
+}
