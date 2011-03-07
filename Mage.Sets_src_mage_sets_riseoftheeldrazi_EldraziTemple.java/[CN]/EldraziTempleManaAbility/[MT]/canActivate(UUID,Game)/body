@@ -1,0 +1,11 @@
+{
+  boolean eldraziSpellBeingCast=false;
+  SpellStack stack=game.getStack();
+  for (int idx=0; idx < stack.size(); idx++) {
+    StackObject stackObject=stack.get(idx);
+    if (stackObject.getControllerId().equals(playerId)) {
+      eldraziSpellBeingCast|=stackObject.getSubtype().contains("Eldrazi");
+    }
+  }
+  return super.canActivate(playerId,game) && eldraziSpellBeingCast;
+}
