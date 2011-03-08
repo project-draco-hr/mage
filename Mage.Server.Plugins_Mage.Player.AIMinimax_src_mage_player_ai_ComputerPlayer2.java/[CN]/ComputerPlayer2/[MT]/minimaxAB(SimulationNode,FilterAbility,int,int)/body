@@ -1,0 +1,44 @@
+{
+  UUID currentPlayerId=node.getGame().getPlayerList().get();
+  SimulationNode bestChild=null;
+  boolean isSimulatedPlayer=currentPlayerId.equals(playerId);
+  for (  SimulationNode child : node.getChildren()) {
+    if (alpha >= beta) {
+      logger.debug(indent(node.depth) + "alpha beta pruning");
+      break;
+    }
+    int val=addActions(child,filter,alpha,beta);
+    if (!isSimulatedPlayer) {
+      if (val < beta) {
+        beta=val;
+        bestChild=child;
+        node.setCombat(child.getCombat());
+      }
+      if (val == GameStateEvaluator.LOSE_SCORE) {
+        logger.debug(indent(node.depth) + "simulating -- lose, can't do worse than this");
+        break;
+      }
+    }
+ else {
+      if (val > alpha) {
+        alpha=val;
+        bestChild=child;
+        node.setCombat(child.getCombat());
+      }
+      if (val == GameStateEvaluator.WIN_SCORE) {
+        logger.debug(indent(node.depth) + "simulating -- win, can't do better than this");
+        break;
+      }
+    }
+  }
+  node.children.clear();
+  if (bestChild != null)   node.children.add(bestChild);
+  if (!isSimulatedPlayer) {
+    logger.debug(indent(node.depth) + "returning minimax beta: " + beta);
+    return beta;
+  }
+ else {
+    logger.debug(indent(node.depth) + "returning minimax alpha: " + alpha);
+    return alpha;
+  }
+}

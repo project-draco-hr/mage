@@ -3,13 +3,15 @@
     currentScore=GameStateEvaluator.evaluate(playerId,game);
     Game sim=createSimulation(game);
     SimulationNode.resetCount();
-    root=new SimulationNode(null,sim,maxDepth,playerId);
+    root=new SimulationNode(null,sim,playerId);
     logger.debug("simulating post combat actions ----------------------------------------------------------------------------------------");
     addActionsTimed(new FilterAbility());
     if (root.children.size() > 0) {
       root=root.children.get(0);
       actions=new LinkedList<Ability>(root.abilities);
       combat=root.combat;
+      if (logger.isDebugEnabled())       logger.debug("adding post-combat actions:" + actions);
     }
+ else     logger.debug("no post-combat actions added");
   }
 }

@@ -1,0 +1,24 @@
+{
+  if (Thread.interrupted()) {
+    Thread.currentThread().interrupt();
+    logger.debug(indent(node.depth) + "interrupted");
+    return GameStateEvaluator.evaluate(playerId,game);
+  }
+  Integer val=null;
+  if (!game.isGameOver()) {
+    simulateToEnd(game);
+    game.getState().setActivePlayerId(game.getState().getPlayerList(game.getActivePlayerId()).getNext());
+    logger.debug(indent(node.depth) + "simulating -- counter attack for player " + game.getPlayer(game.getActivePlayerId()).getName());
+    game.getTurn().setPhase(new BeginningPhase());
+    if (game.getPhase().beginPhase(game,game.getActivePlayerId())) {
+      simulateStep(game,new UntapStep());
+      simulateStep(game,new UpkeepStep());
+      simulateStep(game,new DrawStep());
+      game.getPhase().endPhase(game,game.getActivePlayerId());
+    }
+    val=simulateCombat(game,node,alpha,beta,true);
+    if (logger.isDebugEnabled())     logger.debug(indent(node.depth) + "returning -- counter attack score: " + val+ " depth:"+ node.depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
+  }
+  if (val == null)   val=GameStateEvaluator.evaluate(playerId,game);
+  return val;
+}

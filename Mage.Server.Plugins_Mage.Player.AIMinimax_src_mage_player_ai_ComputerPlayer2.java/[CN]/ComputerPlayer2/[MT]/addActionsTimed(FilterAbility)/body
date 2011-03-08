@@ -1,7 +1,7 @@
 {
   FutureTask<Integer> task=new FutureTask<Integer>(new Callable<Integer>(){
     public Integer call() throws Exception {
-      return addActions(root,filter,maxDepth,Integer.MIN_VALUE,Integer.MAX_VALUE);
+      return addActions(root,filter,Integer.MIN_VALUE,Integer.MAX_VALUE);
     }
   }
 );
@@ -12,6 +12,12 @@
  catch (  TimeoutException e) {
     logger.debug("simulating - timed out");
     task.cancel(true);
+    try {
+      Thread.sleep(1000);
+    }
+ catch (    InterruptedException ex) {
+      logger.fatal("can't sleep");
+    }
   }
 catch (  ExecutionException e) {
     logger.fatal("Simulation error",e);

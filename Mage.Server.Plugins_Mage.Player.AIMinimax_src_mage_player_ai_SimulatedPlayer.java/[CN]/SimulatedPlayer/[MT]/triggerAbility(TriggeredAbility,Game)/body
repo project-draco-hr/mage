@@ -10,11 +10,10 @@
   }
  else {
     SimulationNode parent=(SimulationNode)game.getCustomData();
-    int depth=parent.getDepth() - 1;
-    if (depth == 0)     return true;
-    logger.debug("simulating -- triggered ability - adding children:" + options.size());
+    if (parent.getDepth() == maxDepth)     return true;
+    logger.debug(indent(parent.getDepth()) + "simulating -- triggered ability - adding children:" + options.size());
     for (    Ability option : options) {
-      addAbilityNode(parent,option,depth,game);
+      addAbilityNode(parent,option,game);
     }
   }
   return true;

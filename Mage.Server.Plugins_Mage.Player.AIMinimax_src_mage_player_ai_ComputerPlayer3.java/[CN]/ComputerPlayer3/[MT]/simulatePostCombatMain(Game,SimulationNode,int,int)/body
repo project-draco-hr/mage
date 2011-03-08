@@ -1,0 +1,16 @@
+{
+  if (Thread.interrupted()) {
+    Thread.currentThread().interrupt();
+    logger.debug(indent(node.depth) + "interrupted");
+    return GameStateEvaluator.evaluate(playerId,game);
+  }
+  logger.debug(indent(node.depth) + "simulating -- post combat main");
+  game.getTurn().setPhase(new PostCombatMainPhase());
+  if (game.getPhase().beginPhase(game,game.getActivePlayerId())) {
+    game.getPhase().setStep(new PostCombatMainStep());
+    game.getStep().beginStep(game,playerId);
+    game.getPlayers().resetPassed();
+    return addActions(node,new FilterAbility(),alpha,beta);
+  }
+  return simulateCounterAttack(game,node,alpha,beta);
+}

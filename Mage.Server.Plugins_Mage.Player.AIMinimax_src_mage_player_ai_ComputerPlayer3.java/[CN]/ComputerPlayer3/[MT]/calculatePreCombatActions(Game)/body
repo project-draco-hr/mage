@@ -3,13 +3,15 @@
     currentScore=GameStateEvaluator.evaluate(playerId,game);
     Game sim=createSimulation(game);
     SimulationNode.resetCount();
-    root=new SimulationNode(null,sim,maxDepth,playerId);
+    root=new SimulationNode(null,sim,playerId);
     logger.debug("simulating pre combat actions -----------------------------------------------------------------------------------------");
     addActionsTimed(new FilterAbility());
     if (root.children.size() > 0) {
       root=root.children.get(0);
       actions=new LinkedList<Ability>(root.abilities);
       combat=root.combat;
+      if (logger.isDebugEnabled())       logger.debug("adding pre-combat actions:" + actions);
     }
+ else     logger.debug("no pre-combat actions added");
   }
 }

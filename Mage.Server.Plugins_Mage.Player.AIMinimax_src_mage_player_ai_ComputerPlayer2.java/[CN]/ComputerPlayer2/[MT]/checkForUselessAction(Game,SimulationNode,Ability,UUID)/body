@@ -1,0 +1,19 @@
+{
+  int currentVal=0;
+  int prevVal=0;
+  if (action instanceof PassAbility)   return false;
+  SimulationNode test=node.getParent();
+  if (test == null)   return false;
+  if (action.isUsesStack()) {
+    Game testSim=sim.copy();
+    StackObject ability=testSim.getStack().pop();
+    ability.resolve(testSim);
+    testSim.applyEffects();
+    currentVal=GameStateEvaluator.evaluate(playerId,testSim,true);
+  }
+ else {
+    currentVal=GameStateEvaluator.evaluate(playerId,sim,true);
+  }
+  prevVal=GameStateEvaluator.evaluate(playerId,test.getGame(),true);
+  return currentVal == prevVal;
+}

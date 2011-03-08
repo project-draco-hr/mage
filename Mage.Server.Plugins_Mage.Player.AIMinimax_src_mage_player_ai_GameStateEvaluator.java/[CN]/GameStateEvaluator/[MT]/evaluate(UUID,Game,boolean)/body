@@ -1,0 +1,23 @@
+{
+  Player player=game.getPlayer(playerId);
+  Player opponent=game.getPlayer(game.getOpponents(playerId).iterator().next());
+  if (game.isGameOver()) {
+    if (player.hasLost() || opponent.hasWon())     return LOSE_SCORE;
+    if (opponent.hasLost() || player.hasWon())     return WIN_SCORE;
+  }
+  int lifeScore=(player.getLife() - opponent.getLife()) * LIFE_FACTOR;
+  int permanentScore=0;
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
+    permanentScore+=evaluatePermanent(permanent,game,ignoreTapped);
+  }
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(opponent.getId())) {
+    permanentScore-=evaluatePermanent(permanent,game,ignoreTapped);
+  }
+  permanentScore*=PERMANENT_FACTOR;
+  int handScore=0;
+  handScore=player.getHand().size() - opponent.getHand().size();
+  handScore*=HAND_FACTOR;
+  int score=lifeScore + permanentScore + handScore;
+  if (logger.isDebugEnabled())   logger.debug("game state for player " + player.getName() + " evaluated to- lifeScore:"+ lifeScore+ " permanentScore:"+ permanentScore+ " handScore:"+ handScore+ " total:"+ score);
+  return score;
+}
