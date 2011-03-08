@@ -1,0 +1,25 @@
+{
+  Card artifact=game.getLastKnownInformation(source.getFirstTarget(),Constants.Zone.BATTLEFIELD);
+  if (artifact == null) {
+    return false;
+  }
+  Player controller=game.getPlayer(((Permanent)artifact).getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  Cards revealed=new CardsImpl();
+  Card artifactCard=null;
+  Cards nonArtifactCards=new CardsImpl();
+  Player player=game.getPlayer(source.getControllerId());
+  while (artifactCard == null && player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().removeFromTop(game);
+    revealed.add(card);
+    if (card.getCardType().contains(CardType.ARTIFACT))     artifactCard=card;
+ else     nonArtifactCards.add(card);
+  }
+  player.revealCards("Shape Anew",revealed,game);
+  artifactCard.putOntoBattlefield(game,Constants.Zone.LIBRARY,source.getId(),controller.getId());
+  player.getLibrary().addAll(nonArtifactCards.getCards(game),game);
+  player.getLibrary().shuffle();
+  return true;
+}

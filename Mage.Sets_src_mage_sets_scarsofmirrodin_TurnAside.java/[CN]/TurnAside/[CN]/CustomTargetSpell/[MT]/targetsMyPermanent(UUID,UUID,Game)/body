@@ -1,0 +1,13 @@
+{
+  StackObject spell=game.getStack().getStackObject(id);
+  if (spell != null) {
+    Ability ability=spell.getStackAbility();
+    for (    UUID permanentId : ability.getTargets().get(0).getTargets()) {
+      Permanent permanent=game.getPermanent(permanentId);
+      if (permanent != null && permanent.getControllerId().equals(controllerId)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.DAMAGED_PLAYER && event.getTargetId().equals(this.controllerId)) {
+    Permanent permanent=game.getPermanent(event.getSourceId());
+    if (permanent != null) {
+      this.getTargets().clear();
+      TargetCreaturePermanent target=new TargetCreaturePermanent();
+      target.add(permanent.getId(),game);
+      this.addTarget(target);
+      return true;
+    }
+  }
+  return false;
+}

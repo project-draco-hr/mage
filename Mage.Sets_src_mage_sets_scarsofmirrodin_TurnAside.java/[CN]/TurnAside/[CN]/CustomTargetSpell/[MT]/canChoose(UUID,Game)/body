@@ -1,0 +1,12 @@
+{
+  int count=0;
+  for (  StackObject stackObject : game.getStack()) {
+    if (stackObject instanceof Spell && game.getPlayer(sourceControllerId).getInRange().contains(stackObject.getControllerId()) && filter.match((Spell)stackObject)) {
+      if (targetsMyPermanent(stackObject.getId(),sourceControllerId,game)) {
+        count++;
+        if (count >= this.minNumberOfTargets)         return true;
+      }
+    }
+  }
+  return false;
+}
