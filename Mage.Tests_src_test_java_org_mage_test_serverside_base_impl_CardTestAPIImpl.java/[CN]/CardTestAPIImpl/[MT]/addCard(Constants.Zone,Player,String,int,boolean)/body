@@ -1,0 +1,25 @@
+{
+  if (gameZone.equals(Constants.Zone.BATTLEFIELD)) {
+    for (int i=0; i < count; i++) {
+      Card card=Sets.findCard(cardName,true);
+      PermanentCard p=new PermanentCard(card,null);
+      p.setTapped(tapped);
+      if (player.equals(computerA)) {
+        battlefieldCardsA.add(p);
+      }
+ else       if (player.equals(computerB)) {
+        battlefieldCardsB.add(p);
+      }
+    }
+  }
+ else {
+    if (tapped) {
+      throw new IllegalArgumentException("Parameter tapped=true can be used only for Zone.BATTLEFIELD.");
+    }
+    List<Card> cards=getCardList(gameZone,player);
+    for (int i=0; i < count; i++) {
+      Card card=Sets.findCard(cardName,true);
+      cards.add(card);
+    }
+  }
+}

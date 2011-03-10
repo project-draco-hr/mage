@@ -1,0 +1,23 @@
+{
+  int count=0;
+  int fit=0;
+  for (  Permanent permanent : currentGame.getBattlefield().getAllActivePermanents(player.getId())) {
+    if (permanent.getName().equals(cardName)) {
+      count++;
+      if (scope.equals(Filter.ComparisonScope.All)) {
+        Assert.assertEquals("Power is not the same (" + power + " vs. "+ permanent.getPower().getValue()+ ")",power,permanent.getPower().getValue());
+        Assert.assertEquals("Toughness is not the same (" + toughness + " vs. "+ permanent.getToughness().getValue()+ ")",toughness,permanent.getToughness().getValue());
+      }
+ else       if (scope.equals(Filter.ComparisonScope.Any)) {
+        if (power == permanent.getPower().getValue() && toughness == permanent.getToughness().getValue()) {
+          fit++;
+          break;
+        }
+      }
+    }
+  }
+  Assert.assertTrue("There is no such permanent under player's control, player=" + player.getName() + ", cardName="+ cardName,count > 0);
+  if (scope.equals(Filter.ComparisonScope.Any)) {
+    Assert.assertTrue("There is no such creature under player's control with specified power&toughness, player=" + player.getName() + ", cardName="+ cardName,fit > 0);
+  }
+}
