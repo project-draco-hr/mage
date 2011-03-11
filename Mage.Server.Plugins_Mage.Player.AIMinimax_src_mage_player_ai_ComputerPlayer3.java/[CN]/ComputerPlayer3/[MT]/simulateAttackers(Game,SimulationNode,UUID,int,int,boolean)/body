@@ -8,7 +8,8 @@
   SimulationNode bestNode=null;
   SimulatedPlayer attacker=(SimulatedPlayer)game.getPlayer(attackerId);
   if (logger.isDebugEnabled())   logger.debug(indent(node.depth) + attacker.getName() + "'s possible attackers: "+ attacker.getAvailableAttackers(game));
-  for (  Combat engagement : attacker.addAttackers(game)) {
+  List<Combat> engagements=attacker.addAttackers(game);
+  for (  Combat engagement : engagements) {
     if (alpha >= beta) {
       logger.debug(indent(node.depth) + "simulating -- pruning attackers");
       break;
