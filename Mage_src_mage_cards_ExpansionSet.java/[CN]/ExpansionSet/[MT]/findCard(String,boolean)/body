@@ -1,12 +1,14 @@
 {
-  List<Card> cards=new ArrayList<Card>();
-  for (  Card card : createCards()) {
+  List<Card> foundCards=new ArrayList<Card>();
+  for (  Card card : cards) {
     if (name.equals(card.getName())) {
-      cards.add(card);
+      foundCards.add(card);
     }
   }
-  if (cards.size() > 0) {
-    return cards.get(rnd.nextInt(cards.size()));
+  if (foundCards.size() > 0) {
+    Card newCard=foundCards.get(rnd.nextInt(foundCards.size())).copy();
+    newCard.assignNewId();
+    return newCard;
   }
   return null;
 }

@@ -1,0 +1,26 @@
+{
+  Player player=getPlayer(playerId);
+  player.leave();
+  for (Iterator<Permanent> it=getBattlefield().getAllPermanents().iterator(); it.hasNext(); ) {
+    Permanent perm=it.next();
+    if (perm.getOwnerId().equals(playerId)) {
+      if (perm.getAttachedTo() != null) {
+        Permanent attachedTo=getPermanent(perm.getAttachedTo());
+        if (attachedTo != null)         attachedTo.removeAttachment(perm.getId(),this);
+      }
+      it.remove();
+    }
+  }
+  for (Iterator<StackObject> it=getStack().iterator(); it.hasNext(); ) {
+    StackObject object=it.next();
+    if (object.getControllerId().equals(playerId)) {
+      it.remove();
+    }
+  }
+  for (Iterator<Permanent> it=getBattlefield().getAllPermanents().iterator(); it.hasNext(); ) {
+    Permanent perm=it.next();
+    if (perm.getControllerId().equals(playerId)) {
+      perm.moveToExile(null,"",null,this);
+    }
+  }
+}
