@@ -1,0 +1,12 @@
+{
+  if (event.getType() == GameEvent.EventType.TARGET) {
+    Permanent permanent=game.getBattlefield().getPermanent(event.getTargetId());
+    if (permanent != null && permanent.getControllerId().equals(source.getControllerId()) && permanent.getCardType().contains(CardType.CREATURE)) {
+      StackObject sourceObject=game.getStack().getStackObject(event.getSourceId());
+      if (sourceObject != null && filterSource.match(sourceObject,source.getControllerId(),game)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
