@@ -3,15 +3,8 @@
     throw new IllegalArgumentException("No cards to pick from.");
   }
   try {
-    Card bestCard=null;
-    int maxScore=0;
-    for (    Card card : cards) {
-      int score=RateCard.rateCard(card,chosenColors);
-      if (bestCard == null || score > maxScore) {
-        maxScore=score;
-        bestCard=card;
-      }
-    }
+    Card bestCard=pickBestCard(cards,chosenColors);
+    int maxScore=RateCard.rateCard(bestCard,chosenColors);
     String colors="not chosen yet";
     if (chosenColors == null) {
       rememberPick(bestCard,maxScore);
