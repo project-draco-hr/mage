@@ -2,7 +2,7 @@
   UUID choosingPlayerId=match.getChooser();
   match.endGame();
   table.endGame();
-  saveGame();
+  GameManager.getInstance().saveGame(match.getGame().getId());
   GameManager.getInstance().removeGame(match.getGame().getId());
   try {
     if (!match.isMatchOver()) {
@@ -12,6 +12,6 @@
     }
   }
  catch (  GameException ex) {
-    logger.log(Level.SEVERE,null,ex);
+    logger.fatal(null,ex);
   }
 }

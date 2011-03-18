@@ -1,0 +1,18 @@
+{
+  try {
+    OutputStream file=new FileOutputStream("saved/" + game.getId().toString() + ".game");
+    OutputStream buffer=new BufferedOutputStream(file);
+    ObjectOutput output=new ObjectOutputStream(new GZIPOutputStream(buffer));
+    try {
+      output.writeObject(game);
+      output.writeObject(game.getGameStates());
+    }
+  finally {
+      output.close();
+    }
+    logger.info("Saved game:" + game.getId());
+  }
+ catch (  IOException ex) {
+    logger.fatal("Cannot save game.",ex);
+  }
+}

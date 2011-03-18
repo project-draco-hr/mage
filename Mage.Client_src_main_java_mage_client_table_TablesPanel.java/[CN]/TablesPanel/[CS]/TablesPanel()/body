@@ -6,6 +6,7 @@
     @Override public void actionPerformed(    ActionEvent e){
       int modelRow=Integer.valueOf(e.getActionCommand());
       UUID tableId=UUID.fromString((String)tableModel.getValueAt(modelRow,0));
+      UUID gameId=(UUID)tableModel.getValueAt(modelRow,6);
       String state=(String)tableModel.getValueAt(modelRow,4);
       boolean isTournament=(Boolean)tableModel.getValueAt(modelRow,5);
       if (state.equals("Join")) {
@@ -24,8 +25,8 @@
         if (!session.watchTable(roomId,tableId))         hideTables();
       }
  else       if (state.equals("Replay")) {
-        logger.info("Replaying table " + tableId);
-        if (!session.replayTable(roomId,tableId))         hideTables();
+        logger.info("Replaying game " + gameId);
+        if (!session.replayGame(gameId))         hideTables();
       }
     }
   }
