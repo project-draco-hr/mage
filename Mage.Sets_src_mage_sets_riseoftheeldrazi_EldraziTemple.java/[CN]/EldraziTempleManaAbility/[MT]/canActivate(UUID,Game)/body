@@ -5,6 +5,8 @@
     StackObject stackObject=stack.get(idx);
     if (stackObject.getControllerId().equals(playerId)) {
       eldraziSpellBeingCast|=stackObject.getSubtype().contains("Eldrazi");
+      MageObject source=game.getObject(stackObject.getSourceId());
+      if (source != null)       eldraziSpellBeingCast|=source.getSubtype().contains("Eldrazi");
     }
   }
   return super.canActivate(playerId,game) && eldraziSpellBeingCast;
