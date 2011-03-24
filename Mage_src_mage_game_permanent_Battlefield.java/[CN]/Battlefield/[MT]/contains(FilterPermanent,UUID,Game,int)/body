@@ -1,0 +1,21 @@
+{
+  int count=0;
+  if (game.getRangeOfInfluence() == RangeOfInfluence.ALL) {
+    for (    Permanent permanent : field.values()) {
+      if (filter.match(permanent,sourcePlayerId,game)) {
+        count++;
+        if (num == count)         return true;
+      }
+    }
+  }
+ else {
+    Set<UUID> range=game.getPlayer(sourcePlayerId).getInRange();
+    for (    Permanent permanent : field.values()) {
+      if (range.contains(permanent.getControllerId()) && filter.match(permanent,sourcePlayerId,game)) {
+        count++;
+        if (num == count)         return true;
+      }
+    }
+  }
+  return false;
+}

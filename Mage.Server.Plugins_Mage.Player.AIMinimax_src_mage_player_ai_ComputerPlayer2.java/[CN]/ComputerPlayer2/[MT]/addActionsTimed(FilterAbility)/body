@@ -5,9 +5,15 @@
     }
   }
 );
+  long startTime=System.nanoTime();
   pool.execute(task);
   try {
     task.get(Config.maxThinkSeconds,TimeUnit.SECONDS);
+    long endTime=System.nanoTime();
+    long duration=endTime - startTime;
+    logger.info("Calculated " + root.nodeCount + " nodes in "+ duration / 1000000000.0 + "s");
+    nodeCount+=root.nodeCount;
+    thinkTime+=duration;
   }
  catch (  TimeoutException e) {
     logger.debug("simulating - timed out");
@@ -18,6 +24,7 @@
  catch (    InterruptedException ex) {
       logger.fatal("can't sleep");
     }
+    logger.info("Calculated " + root.nodeCount + " nodes in 30s");
   }
 catch (  ExecutionException e) {
     logger.fatal("Simulation error",e);

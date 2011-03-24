@@ -1,7 +1,9 @@
 {
   Set<UUID> possibleTargets=new HashSet<UUID>();
   for (  Permanent permanent : game.getBattlefield().getActivePermanents(filter,sourceControllerId,game)) {
-    possibleTargets.add(permanent.getId());
+    if (!targets.containsKey(permanent.getId())) {
+      possibleTargets.add(permanent.getId());
+    }
   }
   return possibleTargets;
 }
