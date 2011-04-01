@@ -1,0 +1,14 @@
+{
+  logger.debug("chooseTarget");
+  while (!target.doneChosing()) {
+    if (cards.isEmpty()) {
+      if (!target.isRequired())       return false;
+      return true;
+    }
+    Card card=pickTarget(new ArrayList<Card>(cards.getCards(target.getFilter(),game)),outcome,target,source,game);
+    if (card != null) {
+      target.addTarget(card.getId(),source,game);
+    }
+  }
+  return true;
+}

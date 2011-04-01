@@ -1,0 +1,66 @@
+{
+  Deck deck=new Deck();
+  List<Card> sortedCards=new ArrayList<Card>(cardPool);
+  Collections.sort(sortedCards,new Comparator<Card>(){
+    @Override public int compare(    Card o1,    Card o2){
+      Integer score1=RateCard.rateCard(o1,colors);
+      Integer score2=RateCard.rateCard(o2,colors);
+      return score2.compareTo(score1);
+    }
+  }
+);
+  int cardNum=0;
+  while (deck.getCards().size() < 23 && sortedCards.size() > cardNum) {
+    Card card=sortedCards.get(cardNum);
+    if (!card.getSupertype().contains("Basic")) {
+      deck.getCards().add(card);
+      deck.getSideboard().remove(card);
+    }
+    cardNum++;
+  }
+  Mana mana=new Mana();
+  for (  Card card : deck.getCards()) {
+    mana.add(card.getManaCost().getMana());
+  }
+  double total=mana.getBlack() + mana.getBlue() + mana.getGreen()+ mana.getRed()+ mana.getWhite();
+  if (mana.getGreen() > 0) {
+    int numGreen=(int)Math.round(mana.getGreen() / total * 17);
+    for (int i=0; i < numGreen; i++) {
+      Card land=Sets.findCard("Forest",true);
+      deck.getCards().add(land);
+    }
+  }
+  if (mana.getBlack() > 0) {
+    int numBlack=(int)Math.round(mana.getBlack() / total * 17);
+    for (int i=0; i < numBlack; i++) {
+      Card land=Sets.findCard("Swamp",true);
+      deck.getCards().add(land);
+    }
+  }
+  if (mana.getBlue() > 0) {
+    int numBlue=(int)Math.round(mana.getBlue() / total * 17);
+    for (int i=0; i < numBlue; i++) {
+      Card land=Sets.findCard("Island",true);
+      deck.getCards().add(land);
+    }
+  }
+  if (mana.getWhite() > 0) {
+    int numWhite=(int)Math.round(mana.getWhite() / total * 17);
+    for (int i=0; i < numWhite; i++) {
+      Card land=Sets.findCard("Plains",true);
+      deck.getCards().add(land);
+    }
+  }
+  if (mana.getRed() > 0) {
+    int numRed=(int)Math.round(mana.getRed() / total * 17);
+    for (int i=0; i < numRed; i++) {
+      Card land=Sets.findCard("Mountain",true);
+      deck.getCards().add(land);
+    }
+  }
+  while (deck.getCards().size() < 40) {
+    Card land=Sets.findCard("Forest",true);
+    deck.getCards().add(land);
+  }
+  return deck;
+}
