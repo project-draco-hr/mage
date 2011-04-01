@@ -1,0 +1,20 @@
+{
+  if (background == null) {
+synchronized (ThemePluginImpl.class) {
+      if (background == null) {
+        String filename="/background.png";
+        try {
+          InputStream is=this.getClass().getResourceAsStream(filename);
+          if (is == null)           throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
+          background=ImageIO.read(is);
+          if (background == null)           throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
+        }
+ catch (        Exception e) {
+          log.error(e.getMessage(),e);
+          return null;
+        }
+      }
+    }
+  }
+  return new ImagePanel(background,ImagePanel.SCALED);
+}
