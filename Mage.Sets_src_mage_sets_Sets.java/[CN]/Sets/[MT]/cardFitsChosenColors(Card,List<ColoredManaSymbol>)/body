@@ -1,0 +1,34 @@
+{
+  if (card.getCardType().contains(CardType.LAND)) {
+    if (!card.getSupertype().contains("Basic")) {
+      int score=0;
+      for (      Mana mana : card.getMana()) {
+        for (        ColoredManaSymbol color : allowedColors) {
+          score+=mana.getColor(color);
+        }
+      }
+      if (score > 1) {
+        return true;
+      }
+    }
+  }
+ else {
+    for (    String symbol : card.getManaCost().getSymbols()) {
+      boolean found=false;
+      symbol=symbol.replace("{","").replace("}","");
+      if (isColoredMana(symbol)) {
+        for (        ColoredManaSymbol allowed : allowedColors) {
+          if (allowed.toString().equals(symbol)) {
+            found=true;
+            break;
+          }
+        }
+        if (!found) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
