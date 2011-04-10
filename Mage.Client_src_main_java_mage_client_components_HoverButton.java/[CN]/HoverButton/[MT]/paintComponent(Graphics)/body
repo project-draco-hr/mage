@@ -1,23 +1,13 @@
 {
+  Graphics2D g2d=(Graphics2D)g;
   if (isEnabled()) {
     if (isHovered) {
       g.drawImage(hoverImage,0,0,imageSize.width,imageSize.height,this);
       if (text != null) {
-        Graphics2D g2d=(Graphics2D)g;
         if (textColor != null)         g2d.setColor(textColor);
         if (useMiniFont)         g2d.setFont(textFontMini);
  else         g2d.setFont(textFont);
-        if (textOffsetX == -1) {
-          FontRenderContext frc=g2d.getFontRenderContext();
-          int textWidth=(int)textFont.getStringBounds(text,frc).getWidth();
-          if (textWidth > buttonSize.width) {
-            g2d.setFont(textFontMini);
-            useMiniFont=true;
-            frc=g2d.getFontRenderContext();
-            textWidth=(int)textFontMini.getStringBounds(text,frc).getWidth();
-          }
-          textOffsetX=(int)((imageSize.width - textWidth) / 2);
-        }
+        textOffsetX=calculateOffset(g2d);
         g2d.drawString(text,textOffsetX,textOffsetY);
       }
     }
@@ -38,5 +28,20 @@
   }
   if (overlayImage != null) {
     g.drawImage(overlayImage,(imageSize.width - overlayImageSize.width) / 2,10,this);
+  }
+ else   if (set != null) {
+    if (!drawSet) {
+      g2d.setFont(textSetFontBoldMini);
+      g2d.drawString(set,5,25);
+    }
+  }
+  if (drawSet && set != null) {
+    g2d.setFont(textSetFontBold);
+    int w=(int)(getWidth() / 2.0);
+    int h=(int)(getHeight() / 2.0);
+    int dy=overlayImage == null ? 15 : 25;
+    g2d.translate(w + 5,h + dy);
+    g2d.rotate(-Math.PI / 2.0);
+    g2d.drawString(set,0,0);
   }
 }
