@@ -1,0 +1,13 @@
+{
+  Permanent p=game.getBattlefield().getPermanent(source.getFirstTarget());
+  if (p == null) {
+    p=(Permanent)game.getLastKnownInformation(source.getFirstTarget(),Zone.BATTLEFIELD);
+  }
+  if (p != null) {
+    Player player=game.getPlayer(p.getControllerId());
+    if (player != null) {
+      player.getCounters().addCounter(CounterType.POISON.createInstance(amount));
+    }
+  }
+  return false;
+}
