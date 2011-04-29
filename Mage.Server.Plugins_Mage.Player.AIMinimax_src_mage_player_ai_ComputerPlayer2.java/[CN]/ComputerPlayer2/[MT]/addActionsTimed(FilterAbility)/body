@@ -24,7 +24,11 @@
  catch (    InterruptedException ex) {
       logger.fatal("can't sleep");
     }
-    logger.info("Calculated " + root.nodeCount + " nodes in 30s");
+    long endTime=System.nanoTime();
+    long duration=endTime - startTime;
+    logger.info("Timeout - Calculated " + root.nodeCount + " nodes in "+ duration / 1000000000.0 + "s");
+    nodeCount+=root.nodeCount;
+    thinkTime+=duration;
   }
 catch (  ExecutionException e) {
     logger.fatal("Simulation error",e);

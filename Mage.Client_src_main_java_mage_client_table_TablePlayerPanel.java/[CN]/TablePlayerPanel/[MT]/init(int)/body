@@ -3,14 +3,10 @@
   cbPlayerType.setModel(new DefaultComboBoxModel(session.getPlayerTypes()));
   this.lblPlayerNum.setText("Player " + playerNum);
   if (Config.defaultOtherPlayerIndex != null) {
-    try {
+    if (Integer.valueOf(Config.defaultOtherPlayerIndex) >= cbPlayerType.getItemCount())     cbPlayerType.setSelectedIndex(cbPlayerType.getItemCount() - 1);
+ else {
       Integer index=Integer.parseInt(Config.defaultOtherPlayerIndex);
       cbPlayerType.setSelectedIndex(index);
-    }
- catch (    NumberFormatException e) {
-    }
-catch (    IllegalArgumentException iae) {
-      logger.warning("Wrong parameter for default AI type in config.");
     }
   }
 }
