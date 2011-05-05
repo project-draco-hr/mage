@@ -1,12 +1,13 @@
 {
-  TableView table=session.getTable(roomId,tableId);
-  if (table != null) {
+  try {
+    TableView table=session.getTable(roomId,tableId);
+    if (table != null) {
 switch (table.getTableState()) {
 case STARTING:
-      this.btnStart.setEnabled(true);
-    this.btnMoveDown.setEnabled(true);
-  this.btnMoveUp.setEnabled(true);
-break;
+        this.btnStart.setEnabled(true);
+      this.btnMoveDown.setEnabled(true);
+    this.btnMoveUp.setEnabled(true);
+  break;
 case WAITING:
 this.btnStart.setEnabled(false);
 this.btnMoveDown.setEnabled(false);
@@ -22,6 +23,10 @@ this.tableSeats.repaint();
 this.tableSeats.getSelectionModel().setSelectionInterval(row,row);
 }
  else {
+closeDialog();
+}
+}
+ catch (Exception ex) {
 closeDialog();
 }
 }
