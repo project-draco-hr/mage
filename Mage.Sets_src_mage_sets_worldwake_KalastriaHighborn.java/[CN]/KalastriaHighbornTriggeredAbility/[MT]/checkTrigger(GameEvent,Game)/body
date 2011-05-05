@@ -1,5 +1,11 @@
 {
   if (event.getType() == EventType.ZONE_CHANGE) {
+    UUID sourceId=getSourceId();
+    if (game.getPermanent(sourceId) == null) {
+      if (game.getLastKnownInformation(sourceId,Zone.BATTLEFIELD) == null) {
+        return false;
+      }
+    }
     ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
     Permanent permanent=zEvent.getTarget();
     if (permanent != null && zEvent.getToZone() == Zone.GRAVEYARD && zEvent.getFromZone() == Zone.BATTLEFIELD && permanent.getControllerId().equals(this.getControllerId()) && permanent.getSubtype().contains("Vampire")) {
