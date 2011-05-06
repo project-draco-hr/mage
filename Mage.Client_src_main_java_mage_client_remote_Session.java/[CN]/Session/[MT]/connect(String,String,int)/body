@@ -1,33 +1,3 @@
 {
-  if (isConnected()) {
-    disconnect();
-  }
-  try {
-    System.setSecurityManager(null);
-    Registry reg=LocateRegistry.getRegistry(serverName,port);
-    this.server=(Server)reg.lookup(Config.remoteServer);
-    this.userName=userName;
-    this.client=new Client(this,frame,userName);
-    sessionId=server.registerClient(userName,client.getId(),frame.getVersion());
-    callbackDaemon=new CallbackClientDaemon(sessionId,client,server);
-    serverState=server.getServerState();
-    logger.info("Connected to RMI server at " + serverName + ":"+ port);
-    frame.setStatusText("Connected to " + serverName + ":"+ port+ " ");
-    frame.enableButtons();
-    return true;
-  }
- catch (  MageException ex) {
-    logger.log(Level.SEVERE,null,ex);
-    disconnect();
-    JOptionPane.showMessageDialog(frame,"Unable to connect to server. " + ex.getMessage());
-  }
-catch (  RemoteException ex) {
-    logger.log(Level.SEVERE,"Unable to connect to server - ",ex);
-    disconnect();
-    JOptionPane.showMessageDialog(frame,"Unable to connect to server. " + ex.getMessage());
-  }
-catch (  NotBoundException ex) {
-    logger.log(Level.SEVERE,"Unable to connect to server - ",ex);
-  }
-  return false;
+  return connect(userName,serverName,port,"",0);
 }

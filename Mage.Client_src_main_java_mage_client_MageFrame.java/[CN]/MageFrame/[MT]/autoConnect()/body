@@ -4,9 +4,12 @@
     String userName=prefs.get("userName","");
     String server=prefs.get("serverAddress","");
     int port=Integer.parseInt(prefs.get("serverPort",""));
+    String proxyServer=prefs.get("proxyAddress","");
+    int proxyPort=Integer.parseInt(prefs.get("proxyPort",""));
+    boolean useProxy=Boolean.parseBoolean(prefs.get("useProxy","false"));
     try {
       setCursor(new Cursor(Cursor.WAIT_CURSOR));
-      if (MageFrame.connect(userName,server,port)) {
+      if (MageFrame.connect(userName,server,port,useProxy ? proxyServer : "",useProxy ? proxyPort : 0)) {
         return true;
       }
  else {

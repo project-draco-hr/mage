@@ -18,12 +18,17 @@
   }
   try {
     setCursor(new Cursor(Cursor.WAIT_CURSOR));
-    if (MageFrame.connect(txtUserName.getText(),txtServer.getText(),Integer.valueOf(txtPort.getText()))) {
-      MageFrame.getPreferences().put("serverAddress",txtServer.getText());
-      MageFrame.getPreferences().put("serverPort",txtPort.getText());
-      MageFrame.getPreferences().put("userName",txtUserName.getText());
-      MageFrame.getPreferences().put("autoConnect",Boolean.toString(chkAutoConnect.isSelected()));
-      this.setVisible(false);
+    if (chkUseProxy.isSelected()) {
+      if (MageFrame.connect(txtUserName.getText(),txtServer.getText(),Integer.valueOf(txtPort.getText()),txtProxyServer.getText(),Integer.valueOf(txtProxyPort.getText()))) {
+        this.saveSettings();
+        this.setVisible(false);
+      }
+    }
+ else {
+      if (MageFrame.connect(txtUserName.getText(),txtServer.getText(),Integer.valueOf(txtPort.getText()))) {
+        this.saveSettings();
+        this.setVisible(false);
+      }
     }
   }
   finally {
