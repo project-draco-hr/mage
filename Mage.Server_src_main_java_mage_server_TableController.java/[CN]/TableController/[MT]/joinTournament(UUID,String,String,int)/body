@@ -1,0 +1,17 @@
+{
+  if (table.getState() != TableState.WAITING) {
+    return false;
+  }
+  Seat seat=table.getNextAvailableSeat(playerType);
+  if (seat == null) {
+    throw new GameException("No available seats.");
+  }
+  Player player=createPlayer(name,seat.getPlayerType(),skill);
+  tournament.addPlayer(player,seat.getPlayerType());
+  table.joinTable(player,seat);
+  logger.info("player joined " + player.getId());
+  if (seat.getPlayer().isHuman()) {
+    sessionPlayerMap.put(sessionId,player.getId());
+  }
+  return true;
+}
