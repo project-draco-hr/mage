@@ -1,0 +1,31 @@
+{
+  StringBuilder sbRule=new StringBuilder();
+  if (all || this.abilityType != AbilityType.SPELL) {
+    if (manaCosts.size() > 0) {
+      sbRule.append(manaCosts.getText());
+    }
+    if (costs.size() > 0) {
+      if (sbRule.length() > 0) {
+        sbRule.append(",");
+      }
+      sbRule.append(costs.getText());
+    }
+    if (sbRule.length() > 0) {
+      sbRule.append(": ");
+    }
+  }
+ else   if (this.alternativeCosts.size() > 0) {
+    for (    AlternativeCost cost : alternativeCosts) {
+      sbRule.append(cost.getText()).append("\n");
+    }
+  }
+ else {
+    for (    Cost cost : this.costs) {
+      if (!(cost instanceof ManaCost)) {
+        sbRule.append("As an additional cost to cast {this}, ").append(cost.getText()).append("\n");
+      }
+    }
+  }
+  sbRule.append(effects.getText(this));
+  return sbRule.toString();
+}
