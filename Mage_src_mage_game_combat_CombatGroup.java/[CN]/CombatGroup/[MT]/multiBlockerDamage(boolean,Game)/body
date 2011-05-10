@@ -3,16 +3,17 @@
   Player player=game.getPlayer(attacker.getControllerId());
   int damage=attacker.getPower().getValue();
   if (attacker != null && canDamage(attacker,first)) {
+    Map<UUID,Integer> assigned=new HashMap<UUID,Integer>();
     for (    UUID blockerId : blockerOrder) {
       Permanent blocker=game.getPermanent(blockerId);
       int lethalDamage=blocker.getToughness().getValue() - blocker.getDamage();
       if (lethalDamage >= damage) {
-        blocker.damage(damage,attacker.getId(),game,true,true);
+        assigned.put(blockerId,damage);
         damage=0;
         break;
       }
       int damageAssigned=player.getAmount(lethalDamage,damage,"Assign damage to " + blocker.getName(),game);
-      blocker.damage(damageAssigned,attacker.getId(),game,true,true);
+      assigned.put(blockerId,damageAssigned);
       damage-=damageAssigned;
     }
     if (damage > 0 && hasTrample(attacker)) {
@@ -23,6 +24,10 @@
       if (canDamage(blocker,first)) {
         attacker.damage(blocker.getPower().getValue(),blocker.getId(),game,true,true);
       }
+    }
+    for (    Map.Entry<UUID,Integer> entry : assigned.entrySet()) {
+      Permanent blocker=game.getPermanent(entry.getKey());
+      blocker.damage(entry.getValue(),attacker.getId(),game,true,true);
     }
   }
 }
