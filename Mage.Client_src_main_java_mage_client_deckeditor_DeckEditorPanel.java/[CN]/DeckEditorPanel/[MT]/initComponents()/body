@@ -30,6 +30,7 @@
         cardTableSelector.setVisible(false);
         cardSelector.setVisible(true);
         jSplitPane1.setTopComponent(cardSelector);
+        jSplitPane1.setDividerLocation(0.6);
         jSplitPane1.revalidate();
         jSplitPane1.repaint();
       }
@@ -47,6 +48,7 @@
         cardTableSelector.setVisible(true);
         cardSelector.setVisible(false);
         jSplitPane1.setTopComponent(cardTableSelector);
+        jSplitPane1.setDividerLocation(0.6);
         jSplitPane1.revalidate();
         jSplitPane1.repaint();
       }
@@ -56,7 +58,13 @@
   jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
   jSplitPane1.setResizeWeight(0.5);
   jSplitPane1.setTopComponent(cardSelector);
-  jSplitPane1.setRightComponent(deckArea);
+  jSplitPane1.setBottomComponent(deckArea);
+  SwingUtilities.invokeLater(new Runnable(){
+    @Override public void run(){
+      jSplitPane1.setDividerLocation(0.6);
+    }
+  }
+);
   bigCard.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0,0,0)));
   cardInfoPane=Plugins.getInstance().getCardInfoPane();
   if (cardInfoPane != null && System.getProperty("testCardInfo") != null) {
