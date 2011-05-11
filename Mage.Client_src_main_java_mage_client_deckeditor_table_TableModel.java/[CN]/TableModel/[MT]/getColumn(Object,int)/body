@@ -1,0 +1,31 @@
+{
+  MageCard c=(MageCard)obj;
+switch (column) {
+case 0:
+    return "";
+case 1:
+  return c.getOriginal().getName();
+case 2:
+StringBuilder s=new StringBuilder();
+for (String cost : c.getOriginal().getManaCost()) {
+s.append(cost);
+}
+String cost=s.toString();
+if (cost.isEmpty()) {
+return "0";
+}
+return cost;
+case 3:
+return CardHelper.getColor(c);
+case 4:
+return CardHelper.getType(c);
+case 5:
+return CardHelper.isCreature(c) ? c.getOriginal().getPower() + "/" + c.getOriginal().getToughness() : "-";
+case 6:
+return c.getOriginal().getRarity().toString();
+case 7:
+return c.getOriginal().getExpansionSetCode();
+default :
+return "error";
+}
+}

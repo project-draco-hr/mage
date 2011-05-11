@@ -1,0 +1,22 @@
+{
+  this.bigCard=bigCard;
+  this.gameId=gameId;
+  for (  CardView card : showCards.values()) {
+    if (!cards.containsKey(card.getId())) {
+      addCard(card,bigCard,gameId);
+    }
+  }
+  for (Iterator<Entry<UUID,MageCard>> i=cards.entrySet().iterator(); i.hasNext(); ) {
+    Entry<UUID,MageCard> entry=i.next();
+    if (!showCards.containsKey(entry.getKey())) {
+      i.remove();
+      for (      MageCard v : view) {
+        if (v.getOriginal().getId().equals(entry.getKey())) {
+          view.remove(v);
+          break;
+        }
+      }
+    }
+  }
+  drawCards(sortBy,piles);
+}

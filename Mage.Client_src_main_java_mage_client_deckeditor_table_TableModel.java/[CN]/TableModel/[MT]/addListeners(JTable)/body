@@ -1,0 +1,35 @@
+{
+  table.addMouseListener(new MouseAdapter(){
+    public void mousePressed(    MouseEvent e){
+      int row=table.getSelectedRow();
+      if (row != -1) {
+        MageCard card=view.get(row);
+        if (card.getOriginal().getId().equals(bigCard.getCardId())) {
+          Image image=card.getImage();
+          if (image != null && image instanceof BufferedImage) {
+            image=ImageHelper.getResizedImage((BufferedImage)image,bigCard.getWidth(),bigCard.getHeight());
+          }
+          bigCard.setCard(card.getOriginal().getId(),image,new ArrayList<String>(),false);
+        }
+      }
+    }
+  }
+);
+  MouseListener mouse=new MouseAdapter(){
+    public void mousePressed(    MouseEvent e){
+      TableColumnModel columnModel=table.getColumnModel();
+      int viewColumn=columnModel.getColumnIndexAtX(e.getX());
+      int column=table.convertColumnIndexToModel(viewColumn);
+      if (column != -1) {
+        boolean asc=true;
+        if (recentSortedColumn == column) {
+          asc=!recentAscending;
+        }
+        boolean change=sort(column,asc);
+        fireTableDataChanged();
+      }
+    }
+  }
+;
+  table.getTableHeader().addMouseListener(mouse);
+}
