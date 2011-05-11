@@ -6,17 +6,18 @@
       addCard(card,bigCard,gameId);
     }
   }
-  for (Iterator<Entry<UUID,MageCard>> i=cards.entrySet().iterator(); i.hasNext(); ) {
-    Entry<UUID,MageCard> entry=i.next();
+  for (Iterator<Entry<UUID,CardView>> i=cards.entrySet().iterator(); i.hasNext(); ) {
+    Entry<UUID,CardView> entry=i.next();
     if (!showCards.containsKey(entry.getKey())) {
       i.remove();
-      for (      MageCard v : view) {
-        if (v.getOriginal().getId().equals(entry.getKey())) {
-          view.remove(v);
+      for (      CardView cv : view) {
+        if (cv.getId().equals(entry.getKey())) {
+          view.remove(cv);
           break;
         }
       }
     }
   }
+  sort(1,true);
   drawCards(sortBy,piles);
 }

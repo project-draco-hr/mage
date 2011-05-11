@@ -1,16 +1,22 @@
 {
+  table.addKeyListener(new KeyListener(){
+    public void keyPressed(    KeyEvent ev){
+    }
+    public void keyTyped(    KeyEvent ev){
+    }
+    public void keyReleased(    KeyEvent ev){
+      int row=table.getSelectedRow();
+      if (row != -1) {
+        showImage(row);
+      }
+    }
+  }
+);
   table.addMouseListener(new MouseAdapter(){
     public void mousePressed(    MouseEvent e){
       int row=table.getSelectedRow();
       if (row != -1) {
-        MageCard card=view.get(row);
-        if (card.getOriginal().getId().equals(bigCard.getCardId())) {
-          Image image=card.getImage();
-          if (image != null && image instanceof BufferedImage) {
-            image=ImageHelper.getResizedImage((BufferedImage)image,bigCard.getWidth(),bigCard.getHeight());
-          }
-          bigCard.setCard(card.getOriginal().getId(),image,new ArrayList<String>(),false);
-        }
+        showImage(row);
       }
     }
   }
@@ -25,7 +31,7 @@
         if (recentSortedColumn == column) {
           asc=!recentAscending;
         }
-        boolean change=sort(column,asc);
+        sort(column,asc);
         fireTableDataChanged();
       }
     }
