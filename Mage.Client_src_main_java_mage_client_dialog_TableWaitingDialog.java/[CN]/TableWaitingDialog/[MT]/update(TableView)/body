@@ -1,0 +1,31 @@
+{
+  try {
+    if (table != null) {
+switch (table.getTableState()) {
+case STARTING:
+        this.btnStart.setEnabled(true);
+      this.btnMoveDown.setEnabled(true);
+    this.btnMoveUp.setEnabled(true);
+  break;
+case WAITING:
+this.btnStart.setEnabled(false);
+this.btnMoveDown.setEnabled(false);
+this.btnMoveUp.setEnabled(false);
+break;
+default :
+closeDialog();
+return;
+}
+int row=this.tableSeats.getSelectedRow();
+tableWaitModel.loadData(table);
+this.tableSeats.repaint();
+this.tableSeats.getSelectionModel().setSelectionInterval(row,row);
+}
+ else {
+closeDialog();
+}
+}
+ catch (Exception ex) {
+closeDialog();
+}
+}

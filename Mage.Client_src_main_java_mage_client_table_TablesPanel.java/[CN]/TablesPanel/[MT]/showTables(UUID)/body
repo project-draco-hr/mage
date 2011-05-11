@@ -1,6 +1,7 @@
 {
   this.roomId=roomId;
   session=MageFrame.getSession();
+  updateTask=new UpdateTablesTask(session,roomId,this);
   if (session != null) {
     btnQuickStart.setVisible(session.isTestMode());
   }
@@ -23,7 +24,7 @@
   UUID chatRoomId=session.getRoomChatId(roomId);
   if (chatRoomId != null) {
     this.chatPanel.connect(chatRoomId);
-    tablesWatchdog.addObserver(this);
+    updateTask.execute();
     this.setVisible(true);
     this.repaint();
   }

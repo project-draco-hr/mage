@@ -3,6 +3,7 @@
   this.tableId=tableId;
   this.isTournament=isTournament;
   session=MageFrame.getSession();
+  updateTask=new UpdateSeatsTask(session,roomId,tableId,this);
   if (session.isTableOwner(roomId,tableId)) {
     this.btnStart.setVisible(true);
     this.btnMoveDown.setVisible(true);
@@ -16,7 +17,7 @@
   UUID chatId=session.getTableChatId(tableId);
   if (chatId != null) {
     this.chatPanel.connect(chatId);
-    seatsWatchdog.addObserver(this);
+    updateTask.execute();
     this.setModal(true);
     this.setLocation(100,100);
     this.setVisible(true);
