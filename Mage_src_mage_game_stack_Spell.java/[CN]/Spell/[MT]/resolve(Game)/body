@@ -6,6 +6,11 @@
       if (!replaced)       result=ability.resolve(game);
  else       result=true;
       if (ability.getEffects().contains(ExileSpellEffect.getInstance()))       game.getExile().getPermanentExile().add(card);
+ else       if (ability.getEffects().contains(ShuffleSpellEffect.getInstance())) {
+        card.moveToZone(Zone.LIBRARY,ability.getId(),game,false);
+        Player player=game.getPlayer(controllerId);
+        if (player != null)         player.shuffleLibrary(game);
+      }
  else       card.moveToZone(Zone.GRAVEYARD,ability.getId(),game,false);
       return result;
     }
