@@ -19,6 +19,7 @@
     sessionId=server.registerClient(userName,client.getId(),frame.getVersion());
     callbackDaemon=new CallbackClientDaemon(sessionId,client,server);
     serverState=server.getServerState();
+    sessionExecutor.scheduleWithFixedDelay(new ServerPinger(),15,5,TimeUnit.SECONDS);
     logger.info("Connected to RMI server at " + serverName + ":"+ port);
     frame.setStatusText("Connected to " + serverName + ":"+ port+ " ");
     frame.enableButtons();

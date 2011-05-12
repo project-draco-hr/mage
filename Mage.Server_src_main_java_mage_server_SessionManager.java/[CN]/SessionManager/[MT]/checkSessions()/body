@@ -1,0 +1,9 @@
+{
+  for (  Session session : sessions.values()) {
+    if (!session.stillAlive()) {
+      logger.info("Client for user " + session.getUsername() + " timed out - releasing resources");
+      session.kill();
+      sessions.remove(session.getId());
+    }
+  }
+}
