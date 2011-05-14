@@ -1,0 +1,15 @@
+{
+  super(ownerId,55,"Bleak Coven Vampires",Rarity.COMMON,new CardType[]{CardType.CREATURE},"{3}{B}{B}");
+  this.expansionSetCode="SOM";
+  this.subtype.add("Vampire");
+  this.subtype.add("Warrior");
+  this.color.setBlack(true);
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(3);
+  TriggeredAbility ability=new EntersBattlefieldTriggeredAbility(new LoseLifeTargetEffect(4),false);
+  ability.addEffect(new GainLifeEffect(4));
+  Target target=new TargetPlayer();
+  target.setRequired(true);
+  ability.addTarget(target);
+  this.addAbility(new ConditionalTriggeredAbility(ability,Metalcraft.getInstance(),effectText));
+}
