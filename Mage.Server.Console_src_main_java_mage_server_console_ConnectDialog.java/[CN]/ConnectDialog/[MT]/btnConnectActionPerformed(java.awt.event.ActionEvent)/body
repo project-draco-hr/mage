@@ -1,0 +1,37 @@
+{
+  if (txtPassword.getText().isEmpty()) {
+    JOptionPane.showMessageDialog(rootPane,"Please provide a password");
+    return;
+  }
+  if (txtServer.getText().trim().isEmpty()) {
+    JOptionPane.showMessageDialog(rootPane,"Please provide a server address");
+    return;
+  }
+  if (txtPort.getText().trim().isEmpty()) {
+    JOptionPane.showMessageDialog(rootPane,"Please provide a port number");
+    return;
+  }
+  if (Integer.valueOf(txtPort.getText()) < 1 || Integer.valueOf(txtPort.getText()) > 65535) {
+    JOptionPane.showMessageDialog(rootPane,"Invalid port number");
+    txtPort.setText(ConsoleFrame.getPreferences().get("serverPort",""));
+    return;
+  }
+  try {
+    setCursor(new Cursor(Cursor.WAIT_CURSOR));
+    if (chkUseProxy.isSelected()) {
+      if (console.connect(txtPassword.getText(),txtServer.getText().trim(),Integer.valueOf(txtPort.getText()),txtProxyServer.getText().trim(),Integer.valueOf(txtProxyPort.getText()))) {
+        this.saveSettings();
+        this.setVisible(false);
+      }
+    }
+ else {
+      if (console.connect(txtPassword.getText(),txtServer.getText().trim(),Integer.valueOf(txtPort.getText()))) {
+        this.saveSettings();
+        this.setVisible(false);
+      }
+    }
+  }
+  finally {
+    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+  }
+}

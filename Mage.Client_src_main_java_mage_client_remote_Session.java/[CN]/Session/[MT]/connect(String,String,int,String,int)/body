@@ -19,23 +19,24 @@
     sessionId=server.registerClient(userName,client.getId(),frame.getVersion());
     callbackDaemon=new CallbackClientDaemon(sessionId,client,server);
     serverState=server.getServerState();
+    future=sessionExecutor.scheduleWithFixedDelay(new ServerPinger(),5,5,TimeUnit.SECONDS);
     logger.info("Connected to RMI server at " + serverName + ":"+ port);
     frame.setStatusText("Connected to " + serverName + ":"+ port+ " ");
     frame.enableButtons();
     return true;
   }
  catch (  MageException ex) {
-    logger.log(Level.SEVERE,null,ex);
+    logger.fatal("",ex);
     disconnect();
     JOptionPane.showMessageDialog(frame,"Unable to connect to server. " + ex.getMessage());
   }
 catch (  RemoteException ex) {
-    logger.log(Level.SEVERE,"Unable to connect to server - ",ex);
+    logger.fatal("Unable to connect to server - ",ex);
     disconnect();
     JOptionPane.showMessageDialog(frame,"Unable to connect to server. " + ex.getMessage());
   }
 catch (  NotBoundException ex) {
-    logger.log(Level.SEVERE,"Unable to connect to server - ",ex);
+    logger.fatal("Unable to connect to server - ",ex);
   }
   return false;
 }
