@@ -1,7 +1,12 @@
 {
   Permanent planeswalker=game.getPermanent(sourceId);
-  if (planeswalker.getLoyalty().getValue() + amount >= 0 && !planeswalker.isLoyaltyUsed()) {
-    planeswalker.getLoyalty().boostValue(amount);
+  if (planeswalker.getCounters().getCount(CounterType.LOYALTY) + amount >= 0 && !planeswalker.isLoyaltyUsed()) {
+    if (amount > 0) {
+      planeswalker.getCounters().addCounter(CounterType.LOYALTY.createInstance(amount));
+    }
+ else     if (amount < 0) {
+      planeswalker.getCounters().removeCounter(CounterType.LOYALTY,Math.abs(amount));
+    }
     planeswalker.setLoyaltyUsed(true);
     this.paid=true;
   }
