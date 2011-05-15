@@ -1,4 +1,10 @@
 {
-  logger.fatal("Communication error",ex);
-  removeServer();
+  logger.log(Level.SEVERE,"Communication error",ex);
+  if (ex instanceof java.rmi.ConnectException) {
+    server=null;
+    frame.setStatusText("Not connected");
+    frame.disableButtons();
+    JOptionPane.showMessageDialog(MageFrame.getDesktop(),"Communication error - disconnecting.","Error",JOptionPane.ERROR_MESSAGE);
+  }
+ else   JOptionPane.showMessageDialog(MageFrame.getDesktop(),"Communication error.","Error",JOptionPane.ERROR_MESSAGE);
 }
