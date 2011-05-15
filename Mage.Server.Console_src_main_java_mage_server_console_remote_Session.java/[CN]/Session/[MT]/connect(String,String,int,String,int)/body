@@ -1,0 +1,42 @@
+{
+  if (isConnected()) {
+    disconnect();
+  }
+  try {
+    System.setSecurityManager(null);
+    if (proxyServer.length() > 0) {
+      System.setProperty("socksProxyHost",proxyServer);
+      System.setProperty("socksProxyPort",Integer.toString(proxyPort));
+    }
+ else {
+      System.clearProperty("socksProxyHost");
+      System.clearProperty("socksProxyPort");
+    }
+    Registry reg=LocateRegistry.getRegistry(serverName,port);
+    this.server=(Server)reg.lookup("mage-server");
+    sessionId=server.registerAdmin(password,frame.getVersion());
+    serverState=server.getServerState();
+    future=sessionExecutor.scheduleWithFixedDelay(new ServerPinger(),5,5,TimeUnit.SECONDS);
+    logger.info("Connected to RMI server at " + serverName + ":"+ port);
+    frame.setStatusText("Connected to " + serverName + ":"+ port+ " ");
+    frame.enableButtons();
+    return true;
+  }
+ catch (  MageException ex) {
+    logger.fatal("",ex);
+    disconnect();
+    JOptionPane.showMessageDialog(frame,"Unable to connect to server. " + ex.getMessage());
+  }
+catch (  RemoteException ex) {
+    logger.fatal("Unable to connect to server - ",ex);
+    disconnect();
+    JOptionPane.showMessageDialog(frame,"Unable to connect to server. " + ex.getMessage());
+  }
+catch (  NotBoundException ex) {
+    logger.fatal("Unable to connect to server - ",ex);
+  }
+catch (  Exception ex) {
+    logger.fatal("Unable to connect to server - ",ex);
+  }
+  return false;
+}

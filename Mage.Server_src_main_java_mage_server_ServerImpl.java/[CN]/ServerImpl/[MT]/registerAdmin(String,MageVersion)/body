@@ -1,0 +1,13 @@
+{
+  UUID sessionId=null;
+  try {
+    if (version.compareTo(Main.getVersion()) != 0)     throw new MageException("Wrong client version " + version + ", expecting version "+ Main.getVersion());
+    if (!password.equals(this.password))     throw new MageException("Wrong password");
+    sessionId=SessionManager.getInstance().createSession(getClientHost());
+    logger.info("Admin connected from " + getClientHost());
+  }
+ catch (  Exception ex) {
+    handleException(ex);
+  }
+  return sessionId;
+}

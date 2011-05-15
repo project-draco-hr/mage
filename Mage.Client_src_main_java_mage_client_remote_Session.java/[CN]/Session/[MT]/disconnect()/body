@@ -1,7 +1,6 @@
 {
   if (isConnected()) {
     try {
-      frame.hideTables();
       for (      UUID chatId : chats.keySet()) {
         server.leaveChat(chatId,sessionId);
       }
@@ -10,16 +9,13 @@
     }
     try {
       server.deregisterClient(sessionId);
-      server=null;
-      logger.info("Disconnected ... ");
     }
  catch (    RemoteException ex) {
-      logger.log(Level.SEVERE,"Error disconnecting ...",ex);
+      logger.fatal("Error disconnecting ...",ex);
     }
 catch (    MageException ex) {
-      logger.log(Level.SEVERE,"Error disconnecting ...",ex);
+      logger.fatal("Error disconnecting ...",ex);
     }
-    frame.setStatusText("Not connected ");
-    frame.disableButtons();
+    removeServer();
   }
 }
