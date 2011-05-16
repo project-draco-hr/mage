@@ -1,0 +1,19 @@
+{
+  if (event.getType() == GameEvent.EventType.SPELL_CAST && event.getPlayerId().equals(this.getControllerId())) {
+    Spell spell=game.getStack().getSpell(event.getTargetId());
+    if (isControlledInstantOrSorcery(spell)) {
+      Card sourceCard=game.getCard(spell.getSourceId());
+      if (sourceCard != null) {
+        for (        UUID uuid : game.getPlayer(this.getControllerId()).getGraveyard()) {
+          if (!uuid.equals(sourceCard.getId())) {
+            Card card=game.getCard(uuid);
+            if (card != null && card.getName().equals(sourceCard.getName())) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
