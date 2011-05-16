@@ -1,0 +1,32 @@
+{
+  try {
+    BufferedInputStream in=new BufferedInputStream(url.openConnection(p).getInputStream());
+    createDirForCard(card);
+    boolean withCollectorId=false;
+    if (card.name.equals("Forest") || card.name.equals("Mountain") || card.name.equals("Swamp")|| card.name.equals("Island")|| card.name.equals("Plains")) {
+      withCollectorId=true;
+    }
+    File fileOut=new File(CardImageUtils.getImagePath(card,withCollectorId));
+    BufferedOutputStream out=new BufferedOutputStream(new FileOutputStream(fileOut));
+    byte[] buf=new byte[1024];
+    int len=0;
+    while ((len=in.read(buf)) != -1) {
+      if (cancel) {
+        in.close();
+        out.flush();
+        out.close();
+        fileOut.delete();
+      }
+      out.write(buf,0,len);
+    }
+    in.close();
+    out.flush();
+    out.close();
+synchronized (sync) {
+      update(cardIndex + 1);
+    }
+  }
+ catch (  Exception e) {
+    log.error(e,e);
+  }
+}

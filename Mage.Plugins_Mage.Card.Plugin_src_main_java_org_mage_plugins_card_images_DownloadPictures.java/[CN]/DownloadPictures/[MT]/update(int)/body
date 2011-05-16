@@ -1,25 +1,15 @@
 {
   this.cardIndex=card;
-final class Worker implements Runnable {
-    private int card;
-    Worker(    int card){
-      this.card=card;
-    }
-    public void run(){
-      fireStateChanged();
-      if (checkBox.isSelected()) {
-        int count=DownloadPictures.this.cardsInGame.size();
-        int countLeft=count - card;
-        float mb=(countLeft * 70.0f) / 1024;
-        bar.setString(String.format(this.card == count ? "%d of %d cards finished! Please close!" : "%d of %d cards finished! Please wait!  [%.1f Mb]",this.card,count,mb));
-      }
- else {
-        int count=DownloadPictures.this.cards.size();
-        int countLeft=count - card;
-        float mb=(countLeft * 70.0f) / 1024;
-        bar.setString(String.format(cardIndex == count ? "%d of %d cards finished! Please close!" : "%d of %d cards finished! Please wait! [%.1f Mb]",this.card,count,mb));
-      }
-    }
+  if (checkBox.isSelected()) {
+    int count=DownloadPictures.this.cardsInGame.size();
+    int countLeft=count - card;
+    float mb=(countLeft * 70.0f) / 1024;
+    bar.setString(String.format(card == count ? "%d of %d cards finished! Please close!" : "%d of %d cards finished! Please wait!  [%.1f Mb]",card,count,mb));
   }
-  EventQueue.invokeLater(new Worker(card));
+ else {
+    int count=DownloadPictures.this.cards.size();
+    int countLeft=count - card;
+    float mb=(countLeft * 70.0f) / 1024;
+    bar.setString(String.format(cardIndex == count ? "%d of %d cards finished! Please close!" : "%d of %d cards finished! Please wait! [%.1f Mb]",card,count,mb));
+  }
 }
