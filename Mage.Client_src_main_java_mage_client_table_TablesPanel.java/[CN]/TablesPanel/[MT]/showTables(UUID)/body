@@ -2,6 +2,7 @@
   this.roomId=roomId;
   session=MageFrame.getSession();
   updateTask=new UpdateTablesTask(session,roomId,this);
+  updatePlayersTask=new UpdatePlayersTask(session,roomId,this.chatPanel);
   if (session != null) {
     btnQuickStart.setVisible(session.isTestMode());
   }
@@ -25,6 +26,7 @@
   if (chatRoomId != null) {
     this.chatPanel.connect(chatRoomId);
     updateTask.execute();
+    updatePlayersTask.execute();
     this.setVisible(true);
     this.repaint();
   }
