@@ -18,17 +18,18 @@
   }
   try {
     setCursor(new Cursor(Cursor.WAIT_CURSOR));
-    if (chkUseProxy.isSelected()) {
-      if (MageFrame.connect(txtUserName.getText(),txtServer.getText().trim(),Integer.valueOf(txtPort.getText()),txtProxyServer.getText().trim(),Integer.valueOf(txtProxyPort.getText()))) {
-        this.saveSettings();
-        this.setVisible(false);
-      }
-    }
- else {
-      if (MageFrame.connect(txtUserName.getText(),txtServer.getText().trim(),Integer.valueOf(txtPort.getText()))) {
-        this.saveSettings();
-        this.setVisible(false);
-      }
+    Connection connection=new Connection();
+    connection.setHost(this.txtServer.getText());
+    connection.setPort(Integer.valueOf(this.txtPort.getText()));
+    connection.setUsername(this.txtUserName.getText());
+    connection.setProxyType((ProxyType)this.cbProxyType.getSelectedItem());
+    connection.setProxyHost(this.txtProxyServer.getText());
+    connection.setProxyPort(Integer.valueOf(this.txtProxyPort.getText()));
+    connection.setProxyUsername(this.txtProxyUserName.getText());
+    connection.setProxyPassword(this.txtProxyPassword.getText());
+    if (MageFrame.connect(connection)) {
+      this.saveSettings();
+      this.setVisible(false);
     }
   }
   finally {

@@ -1,0 +1,51 @@
+{
+  if (isConnected()) {
+    disconnect();
+  }
+  try {
+    System.setSecurityManager(null);
+switch (connection.getProxyType()) {
+case SOCKS:
+      System.setProperty("socksProxyHost",connection.getProxyHost());
+    System.setProperty("socksProxyPort",Integer.toString(connection.getProxyPort()));
+  break;
+case HTTP:
+System.setProperty("http.proxyHost",connection.getProxyHost());
+System.setProperty("http.proxyPort",Integer.toString(connection.getProxyPort()));
+Authenticator.setDefault(new MageAuthenticator(connection.getProxyUsername(),connection.getProxyPassword()));
+break;
+default :
+System.clearProperty("socksProxyHost");
+System.clearProperty("socksProxyPort");
+System.clearProperty("http.proxyHost");
+System.clearProperty("http.proxyPort");
+break;
+}
+Registry reg=LocateRegistry.getRegistry(connection.getHost(),connection.getPort());
+this.server=(Server)reg.lookup(Config.remoteServer);
+this.userName=connection.getUsername();
+if (client == null) client=new Client(this,frame);
+sessionId=server.registerClient(userName,client.getId(),frame.getVersion());
+callbackDaemon=new CallbackClientDaemon(sessionId,client,server);
+serverState=server.getServerState();
+future=sessionExecutor.scheduleWithFixedDelay(new ServerPinger(),5,5,TimeUnit.SECONDS);
+logger.info("Connected to RMI server at " + connection.getHost() + ":"+ connection.getPort());
+frame.setStatusText("Connected to " + connection.getHost() + ":"+ connection.getPort()+ " ");
+frame.enableButtons();
+return true;
+}
+ catch (MageException ex) {
+logger.fatal("",ex);
+disconnect();
+JOptionPane.showMessageDialog(frame,"Unable to connect to server. " + ex.getMessage());
+}
+catch (RemoteException ex) {
+logger.fatal("Unable to connect to server - ",ex);
+disconnect();
+JOptionPane.showMessageDialog(frame,"Unable to connect to server. " + ex.getMessage());
+}
+catch (NotBoundException ex) {
+logger.fatal("Unable to connect to server - ",ex);
+}
+return false;
+}
