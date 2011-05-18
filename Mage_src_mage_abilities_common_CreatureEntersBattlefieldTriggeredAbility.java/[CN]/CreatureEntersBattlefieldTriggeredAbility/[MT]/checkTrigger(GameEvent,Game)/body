@@ -1,0 +1,15 @@
+{
+  if (event.getType() == EventType.ZONE_CHANGE) {
+    Permanent permanent=game.getPermanent(event.getTargetId());
+    if (((ZoneChangeEvent)event).getToZone() == Zone.BATTLEFIELD && permanent.getCardType().contains(CardType.CREATURE) && (permanent.getControllerId().equals(this.controllerId) ^ opponentController)) {
+      if (opponentController) {
+        this.getTargets().get(0).add(permanent.getControllerId(),game);
+      }
+ else {
+        this.getTargets().remove(0);
+      }
+      return true;
+    }
+  }
+  return false;
+}
