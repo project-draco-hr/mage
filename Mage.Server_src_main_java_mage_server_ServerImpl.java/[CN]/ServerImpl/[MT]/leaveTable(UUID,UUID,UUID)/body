@@ -1,13 +1,15 @@
 {
-  try {
-    rmiExecutor.execute(new Runnable(){
-      @Override public void run(){
-        GamesRoomManager.getInstance().getRoom(roomId).leaveTable(sessionId,tableId);
+  if (SessionManager.getInstance().isValidSession(sessionId)) {
+    try {
+      rmiExecutor.execute(new Runnable(){
+        @Override public void run(){
+          GamesRoomManager.getInstance().getRoom(roomId).leaveTable(sessionId,tableId);
+        }
       }
-    }
 );
-  }
- catch (  Exception ex) {
-    handleException(ex);
+    }
+ catch (    Exception ex) {
+      handleException(ex);
+    }
   }
 }

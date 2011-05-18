@@ -1,13 +1,15 @@
 {
-  try {
-    rmiExecutor.execute(new Runnable(){
-      @Override public void run(){
-        TableManager.getInstance().startChallenge(sessionId,roomId,tableId,challengeId);
+  if (SessionManager.getInstance().isValidSession(sessionId)) {
+    try {
+      rmiExecutor.execute(new Runnable(){
+        @Override public void run(){
+          TableManager.getInstance().startChallenge(sessionId,roomId,tableId,challengeId);
+        }
       }
-    }
 );
-  }
- catch (  Exception ex) {
-    handleException(ex);
+    }
+ catch (    Exception ex) {
+      handleException(ex);
+    }
   }
 }

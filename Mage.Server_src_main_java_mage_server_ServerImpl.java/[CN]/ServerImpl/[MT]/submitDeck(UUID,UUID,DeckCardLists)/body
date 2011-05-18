@@ -1,8 +1,10 @@
 {
   try {
-    boolean ret=TableManager.getInstance().submitDeck(sessionId,tableId,deckList);
-    logger.info("Session " + sessionId + " submitted deck");
-    return ret;
+    if (SessionManager.getInstance().isValidSession(sessionId)) {
+      boolean ret=TableManager.getInstance().submitDeck(sessionId,tableId,deckList);
+      logger.info("Session " + sessionId + " submitted deck");
+      return ret;
+    }
   }
  catch (  Exception ex) {
     if (ex instanceof GameException)     throw (GameException)ex;

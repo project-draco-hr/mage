@@ -1,8 +1,10 @@
 {
   try {
-    TableView table=GamesRoomManager.getInstance().getRoom(roomId).createTable(sessionId,options);
-    logger.info("Table " + table.getTableId() + " created");
-    return table;
+    if (SessionManager.getInstance().isValidSession(sessionId)) {
+      TableView table=GamesRoomManager.getInstance().getRoom(roomId).createTable(sessionId,options);
+      logger.info("Table " + table.getTableId() + " created");
+      return table;
+    }
   }
  catch (  Exception ex) {
     handleException(ex);

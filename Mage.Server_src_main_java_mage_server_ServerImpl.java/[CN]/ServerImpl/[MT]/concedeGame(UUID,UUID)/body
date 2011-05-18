@@ -1,13 +1,15 @@
 {
-  try {
-    rmiExecutor.execute(new Runnable(){
-      @Override public void run(){
-        GameManager.getInstance().concedeGame(gameId,sessionId);
+  if (SessionManager.getInstance().isValidSession(sessionId)) {
+    try {
+      rmiExecutor.execute(new Runnable(){
+        @Override public void run(){
+          GameManager.getInstance().concedeGame(gameId,sessionId);
+        }
       }
-    }
 );
-  }
- catch (  Exception ex) {
-    handleException(ex);
+    }
+ catch (    Exception ex) {
+      handleException(ex);
+    }
   }
 }
