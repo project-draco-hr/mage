@@ -1,9 +1,14 @@
 {
-  if (session.isTableOwner(roomId,tableId)) {
-    session.removeTable(roomId,tableId);
-  }
+  try {
+    if (session.isTableOwner(roomId,tableId)) {
+      session.removeTable(roomId,tableId);
+    }
  else {
-    session.leaveTable(roomId,tableId);
+      session.leaveTable(roomId,tableId);
+    }
+  }
+ catch (  Exception e) {
+    logger.error(e);
   }
   closeDialog();
 }

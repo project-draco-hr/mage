@@ -9,7 +9,31 @@
       UUID gameId=(UUID)tableModel.getValueAt(modelRow,7);
       String state=(String)tableModel.getValueAt(modelRow,5);
       boolean isTournament=(Boolean)tableModel.getValueAt(modelRow,6);
+      String owner=(String)tableModel.getValueAt(modelRow,1);
       if (state.equals("Join")) {
+        if (owner.equals(session.getUserName())) {
+          try {
+            JDesktopPane desktopPane=(JDesktopPane)session.getUI().getComponent(MageComponents.DESKTOP_PANE);
+            JInternalFrame[] windows=desktopPane.getAllFramesInLayer(javax.swing.JLayeredPane.DEFAULT_LAYER);
+            for (            JInternalFrame frame : windows) {
+              if (frame.getTitle().equals("Waiting for players")) {
+                frame.toFront();
+                frame.setVisible(true);
+                try {
+                  frame.setSelected(true);
+                }
+ catch (                PropertyVetoException ve) {
+                  ve.printStackTrace();
+                  logger.error(ve);
+                }
+              }
+            }
+          }
+ catch (          Exception ex) {
+            logger.error(ex);
+          }
+          return;
+        }
         if (isTournament) {
           logger.info("Joining tournament " + tableId);
           if (session.joinTournamentTable(roomId,tableId,session.getUserName(),"Human",1))           tableWaitingDialog.showDialog(roomId,tableId,true);
