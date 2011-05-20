@@ -1,8 +1,13 @@
 {
   deck=new Deck();
   final Collection<MageScoredCard> remainingCards=new ArrayList<MageScoredCard>();
+  Set<String> names=new HashSet<String>();
   for (  final Card card : spellCardPool) {
+    if (names.contains(card.getName())) {
+      continue;
+    }
     remainingCards.add(new MageScoredCard(card,allowedColors,callback));
+    names.add(card.getName());
   }
   int min=0;
   for (int index=0; index < DECK_COUNT.length; index++) {

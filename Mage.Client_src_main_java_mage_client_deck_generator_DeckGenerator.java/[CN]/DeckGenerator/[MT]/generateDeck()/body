@@ -4,7 +4,8 @@
   JLabel text=new JLabel("Choose color for your deck: ");
   p0.add(text);
   p0.add(Box.createVerticalStrut(5));
-  final ColorsChooser colorsChooser=new ColorsChooser("bu");
+  String chosen=MageFrame.getPreferences().get("genDeckColor","u");
+  final ColorsChooser colorsChooser=new ColorsChooser(chosen);
   p0.add(colorsChooser);
   final JButton btnGenerate=new JButton("Ok");
   btnGenerate.addActionListener(new ActionListener(){
@@ -13,6 +14,7 @@
       colorsChooser.setEnabled(false);
       selectedColors=(String)colorsChooser.getSelectedItem();
       dlg.setVisible(false);
+      MageFrame.getPreferences().put("genDeckColor",selectedColors);
     }
   }
 );
