@@ -36,12 +36,14 @@
         }
         if (isTournament) {
           logger.info("Joining tournament " + tableId);
-          if (session.joinTournamentTable(roomId,tableId,session.getUserName(),"Human",1))           tableWaitingDialog.showDialog(roomId,tableId,true);
+          if (session.joinTournamentTable(roomId,tableId,session.getUserName(),"Human",1)) {
+            showTableWaitingDialog(roomId,tableId,true);
+          }
         }
  else {
           logger.info("Joining table " + tableId);
           joinTableDialog.showDialog(roomId,tableId);
-          if (joinTableDialog.isJoined())           tableWaitingDialog.showDialog(roomId,tableId,false);
+          if (joinTableDialog.isJoined())           showTableWaitingDialog(roomId,tableId,false);
         }
       }
  else       if (state.equals("Watch")) {
