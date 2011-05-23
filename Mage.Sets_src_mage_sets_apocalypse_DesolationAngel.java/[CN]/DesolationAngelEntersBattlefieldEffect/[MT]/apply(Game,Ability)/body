@@ -1,0 +1,18 @@
+{
+  Permanent p=game.getPermanent(source.getSourceId());
+  if (p != null) {
+    boolean kicked=false;
+    for (    KickerAbility kicker : p.getAbilities().getKickerAbilities()) {
+      kicked|=kicker.isKicked();
+    }
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents()) {
+      if (permanent.getCardType().contains(CardType.LAND)) {
+        if ((!kicked && permanent.getControllerId() == source.getControllerId()) || kicked) {
+          permanent.destroy(source.getSourceId(),game,false);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
