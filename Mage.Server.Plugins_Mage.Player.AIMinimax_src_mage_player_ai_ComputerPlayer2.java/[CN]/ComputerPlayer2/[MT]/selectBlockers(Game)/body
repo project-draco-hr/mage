@@ -6,7 +6,10 @@
       if (i < combat.getGroups().size()) {
         for (        UUID blockerId : combat.getGroups().get(i).getBlockers()) {
           this.declareBlocker(blockerId,groups.get(i).getAttackers().get(0),game);
-          if (logger.isDebugEnabled())           logger.debug("blocking with:" + game.getPermanent(blockerId).getName());
+          if (logger.isDebugEnabled()) {
+            Permanent blocker=game.getPermanent(blockerId);
+            if (blocker != null)             logger.debug("blocking with:" + blocker.getName());
+          }
         }
       }
     }
