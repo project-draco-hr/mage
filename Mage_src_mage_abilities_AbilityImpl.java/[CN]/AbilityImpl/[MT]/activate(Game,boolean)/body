@@ -7,7 +7,9 @@
     logger.debug("activate failed - target");
     return false;
   }
-  if (game.getObject(sourceId) != null)   game.getObject(sourceId).adjustCosts(this,game);
+  if (game.getObject(sourceId) != null) {
+    game.getCard(sourceId).adjustCosts(this,game);
+  }
   if (!useAlternativeCost(game)) {
     game.getContinuousEffects().costModification(this,game);
     if (!manaCostsToPay.pay(game,sourceId,controllerId,noMana)) {
