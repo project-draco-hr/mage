@@ -1,3 +1,9 @@
 {
-  fireCallback(new ClientCallback("startDraft",draftId,new TableClientMessage(draftId,playerId)));
+  try {
+    fireCallback(new ClientCallback("startDraft",draftId,new TableClientMessage(draftId,playerId)));
+  }
+ catch (  CallbackException ex) {
+    logger.fatal("draftStarted exception",ex);
+    throw new MageException("callback failed");
+  }
 }

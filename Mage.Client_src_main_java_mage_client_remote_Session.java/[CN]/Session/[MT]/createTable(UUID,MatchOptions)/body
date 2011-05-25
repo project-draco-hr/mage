@@ -1,12 +1,13 @@
 {
+  CreateTable method=new CreateTable(connection,sessionId,roomId,matchOptions);
   try {
-    return server.createTable(sessionId,roomId,matchOptions);
+    return method.makeCall();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("CreateTable error",ex);
   }
   return null;
 }

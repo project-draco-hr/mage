@@ -1,13 +1,14 @@
 {
+  SendPlayerInteger method=new SendPlayerInteger(connection,sessionId,gameId,data);
   try {
-    server.sendPlayerInteger(gameId,sessionId,data);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("SendPlayerInteger error",ex);
   }
   return false;
 }

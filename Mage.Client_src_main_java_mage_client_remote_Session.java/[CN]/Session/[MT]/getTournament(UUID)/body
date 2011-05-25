@@ -1,13 +1,13 @@
 {
+  GetTournament method=new GetTournament(connection,tournamentId);
   try {
-    return server.getTournament(tournamentId);
+    return method.makeCall();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
-    throw new MageRemoteException();
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
-    throw new MageRemoteException();
+    logger.fatal("GetTable error",ex);
   }
+  return null;
 }

@@ -1,13 +1,14 @@
 {
+  JoinDraft method=new JoinDraft(connection,sessionId,draftId);
   try {
-    server.joinDraft(draftId,sessionId);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("JoinDraft error",ex);
   }
   return false;
 }

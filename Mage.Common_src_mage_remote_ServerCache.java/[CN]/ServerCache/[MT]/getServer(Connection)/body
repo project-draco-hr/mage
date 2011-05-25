@@ -1,0 +1,13 @@
+{
+  Server returnValue=servers.get(connection);
+  if (returnValue == null) {
+    returnValue=connection.getServer();
+    if (returnValue != null) {
+      servers.put(connection,returnValue);
+    }
+ else {
+      throw new ServerUnavailable();
+    }
+  }
+  return returnValue;
+}

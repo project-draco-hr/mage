@@ -1,13 +1,14 @@
 {
+  StartChallenge method=new StartChallenge(connection,sessionId,roomId,tableId,challengeId);
   try {
-    server.startChallenge(sessionId,roomId,tableId,challengeId);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("StartChallenge error",ex);
   }
   return false;
 }

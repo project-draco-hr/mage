@@ -1,13 +1,14 @@
 {
+  StartGame method=new StartGame(connection,sessionId,roomId,tableId);
   try {
-    server.startMatch(sessionId,roomId,tableId);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("StartGame error",ex);
   }
   return false;
 }

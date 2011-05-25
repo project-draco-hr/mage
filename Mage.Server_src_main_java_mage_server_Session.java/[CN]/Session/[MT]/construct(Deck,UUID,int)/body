@@ -1,3 +1,9 @@
 {
-  fireCallback(new ClientCallback("construct",tableId,new TableClientMessage(deck,tableId,time)));
+  try {
+    fireCallback(new ClientCallback("construct",tableId,new TableClientMessage(deck,tableId,time)));
+  }
+ catch (  CallbackException ex) {
+    logger.fatal("construct exception",ex);
+    throw new MageException("callback failed");
+  }
 }

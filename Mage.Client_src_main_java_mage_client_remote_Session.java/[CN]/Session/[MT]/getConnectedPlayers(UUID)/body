@@ -1,13 +1,13 @@
 {
+  GetConnectedPlayers method=new GetConnectedPlayers(connection,roomId);
   try {
-    return server.getConnectedPlayers(roomId);
+    return method.makeCall();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
-    throw new MageRemoteException();
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
-    throw new MageRemoteException();
+    logger.fatal("GetConnectedPlayers error",ex);
   }
+  return null;
 }

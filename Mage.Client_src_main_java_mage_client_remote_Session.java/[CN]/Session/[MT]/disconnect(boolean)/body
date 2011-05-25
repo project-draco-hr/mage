@@ -3,26 +3,21 @@
   if (future != null && !future.isDone())   future.cancel(true);
   frame.setStatusText("Not connected");
   frame.disableButtons();
-  server=null;
-  if (!voluntary && !connecting) {
-    if (attemptReconnect())     return;
-  }
   try {
     for (    UUID chatId : chats.keySet()) {
-      server.leaveChat(chatId,sessionId);
+      leaveChat(chatId);
     }
   }
- catch (  Exception ex) {
+ catch (  Exception ignore) {
   }
   try {
-    if (server != null)     server.deregisterClient(sessionId);
+    if (callbackDaemon != null)     callbackDaemon.stopDaemon();
+    deregisterClient();
   }
- catch (  RemoteException ex) {
+ catch (  MageException ex) {
     logger.fatal("Error disconnecting ...",ex);
   }
-catch (  MageException ex) {
-    logger.fatal("Error disconnecting ...",ex);
-  }
+  ServerCache.removeServerFromCache(connection);
   frame.hideGames();
   frame.hideTables();
   logger.info("Disconnected ... ");

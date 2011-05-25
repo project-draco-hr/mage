@@ -1,6 +1,13 @@
 {
   if (!killed) {
     Session session=SessionManager.getInstance().getSession(sessionId);
-    if (session != null)     session.fireCallback(new ClientCallback("gameUpdate",gameId,gameView));
+    if (session != null) {
+      try {
+        session.fireCallback(new ClientCallback("gameUpdate",gameId,gameView));
+      }
+ catch (      CallbackException ex) {
+        logger.fatal("game update exception",ex);
+      }
+    }
   }
 }

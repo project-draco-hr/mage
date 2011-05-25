@@ -1,3 +1,9 @@
 {
-  fireCallback(new ClientCallback("startTournament",tournamentId,new TableClientMessage(tournamentId,playerId)));
+  try {
+    fireCallback(new ClientCallback("startTournament",tournamentId,new TableClientMessage(tournamentId,playerId)));
+  }
+ catch (  CallbackException ex) {
+    logger.fatal("tournamentStarted exception",ex);
+    throw new MageException("callback failed");
+  }
 }

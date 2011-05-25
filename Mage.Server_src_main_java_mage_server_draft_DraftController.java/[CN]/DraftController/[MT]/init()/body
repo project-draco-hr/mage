@@ -1,23 +1,33 @@
 {
   draft.addTableEventListener(new Listener<TableEvent>(){
     @Override public void event(    TableEvent event){
+      try {
 switch (event.getEventType()) {
 case UPDATE:
-        updateDraft();
-      break;
+          updateDraft();
+        break;
 case END:
-    endDraft();
-  break;
+      endDraft();
+    break;
+}
+}
+ catch (MageException ex) {
+logger.fatal("Table event listener error",ex);
 }
 }
 }
 );
 draft.addPlayerQueryEventListener(new Listener<PlayerQueryEvent>(){
 @Override public void event(PlayerQueryEvent event){
+try {
 switch (event.getQueryType()) {
 case PICK_CARD:
-pickCard(event.getPlayerId(),event.getMax());
+  pickCard(event.getPlayerId(),event.getMax());
 break;
+}
+}
+ catch (MageException ex) {
+logger.fatal("Table event listener error",ex);
 }
 }
 }

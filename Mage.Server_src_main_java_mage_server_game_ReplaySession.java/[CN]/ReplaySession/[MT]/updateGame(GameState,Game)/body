@@ -4,6 +4,13 @@
   }
  else {
     Session session=SessionManager.getInstance().getSession(sessionId);
-    if (session != null)     session.fireCallback(new ClientCallback("replayUpdate",replay.getGame().getId(),new GameView(state,game)));
+    if (session != null) {
+      try {
+        session.fireCallback(new ClientCallback("replayUpdate",replay.getGame().getId(),new GameView(state,game)));
+      }
+ catch (      CallbackException ex) {
+        logger.fatal("replay update exception",ex);
+      }
+    }
   }
 }

@@ -1,13 +1,14 @@
 {
+  ReplayGame method=new ReplayGame(connection,sessionId,gameId);
   try {
-    server.replayGame(gameId,sessionId);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("ReplayGame error",ex);
   }
   return false;
 }

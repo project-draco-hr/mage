@@ -1,18 +1,26 @@
 {
   try {
-    while (true) {
-      final ClientCallback callback=server.callback(id);
-      callbackExecutor.submit(new Runnable(){
-        @Override public void run(){
-          try {
-            client.processCallback(callback);
-          }
- catch (          Exception ex) {
-            logger.fatal("CallbackClientDaemon error ",ex);
+    while (!end) {
+      try {
+        Callback callbackMethod=new Callback(connection,id);
+        final ClientCallback callback=callbackMethod.makeCall();
+        Ack ackMethod=new Ack(connection,id,callback.getMessageId());
+        ackMethod.makeCall();
+        callbackExecutor.submit(new Runnable(){
+          @Override public void run(){
+            try {
+              client.processCallback(callback);
+            }
+ catch (            Exception ex) {
+              logger.fatal("CallbackClientDaemon error ",ex);
+            }
           }
         }
-      }
 );
+      }
+ catch (      CallbackException ex) {
+        logger.fatal("Callback failed ",ex);
+      }
     }
   }
  catch (  Exception ex) {

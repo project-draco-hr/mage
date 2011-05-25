@@ -1,12 +1,13 @@
 {
+  GetRoomChatId method=new GetRoomChatId(connection,roomId);
   try {
-    return server.getRoomChatId(roomId);
+    return method.makeCall();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("GetRoomChatId error",ex);
   }
   return null;
 }

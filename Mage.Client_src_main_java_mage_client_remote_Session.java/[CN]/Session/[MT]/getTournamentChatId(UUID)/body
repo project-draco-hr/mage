@@ -1,12 +1,13 @@
 {
+  GetTournamentChatId method=new GetTournamentChatId(connection,tournamentId);
   try {
-    return server.getTournamentChatId(tournamentId);
+    return method.makeCall();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("GetTournamentChatId error",ex);
   }
   return null;
 }

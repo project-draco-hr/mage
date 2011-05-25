@@ -1,4 +1,11 @@
 {
   Session session=SessionManager.getInstance().getSession(sessionId);
-  if (session != null)   session.fireCallback(new ClientCallback("replayDone",replay.getGame().getId(),result));
+  if (session != null) {
+    try {
+      session.fireCallback(new ClientCallback("replayDone",replay.getGame().getId(),result));
+    }
+ catch (    CallbackException ex) {
+      logger.fatal("replay done exception",ex);
+    }
+  }
 }

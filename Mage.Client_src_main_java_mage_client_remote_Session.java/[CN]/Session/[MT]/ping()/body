@@ -1,12 +1,13 @@
 {
+  Ping method=new Ping(connection,sessionId);
   try {
-    return server.ping(sessionId);
+    return method.makeCall();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    logger.fatal("server unavailable - ",ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("ping error",ex);
   }
   return false;
 }

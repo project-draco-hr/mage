@@ -4,7 +4,12 @@
   logger.debug("Broadcasting '" + msg + "' for "+ chatId);
   for (  UUID sessionId : clients.keySet()) {
     Session session=SessionManager.getInstance().getSession(sessionId);
-    if (session != null)     session.fireCallback(new ClientCallback("chatMessage",chatId,new ChatMessage(msg,color)));
+    if (session != null)     try {
+      session.fireCallback(new ClientCallback("chatMessage",chatId,new ChatMessage(msg,color)));
+    }
+ catch (    CallbackException ex) {
+      logger.fatal("broadcast error",ex);
+    }
  else     kill(sessionId);
   }
 }

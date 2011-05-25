@@ -2,6 +2,13 @@
   if (!killed) {
     setupTimeout();
     Session session=SessionManager.getInstance().getSession(sessionId);
-    if (session != null)     session.fireCallback(new ClientCallback("gameTarget",game.getId(),new GameClientMessage(gameView,question,cardView,targets,required,options)));
+    if (session != null) {
+      try {
+        session.fireCallback(new ClientCallback("gameTarget",game.getId(),new GameClientMessage(gameView,question,cardView,targets,required,options)));
+      }
+ catch (      CallbackException ex) {
+        logger.fatal("game target exception",ex);
+      }
+    }
   }
 }

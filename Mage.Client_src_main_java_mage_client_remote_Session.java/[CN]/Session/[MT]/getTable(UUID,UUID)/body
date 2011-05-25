@@ -1,12 +1,13 @@
 {
+  GetTable method=new GetTable(connection,roomId,tableId);
   try {
-    return server.getTable(roomId,tableId);
+    return method.makeCall();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("GetTable error",ex);
   }
   return null;
 }

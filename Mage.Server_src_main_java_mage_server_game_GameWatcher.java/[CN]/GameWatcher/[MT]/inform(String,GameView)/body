@@ -1,6 +1,13 @@
 {
   if (!killed) {
     Session session=SessionManager.getInstance().getSession(sessionId);
-    if (session != null)     session.fireCallback(new ClientCallback("gameInform",gameId,new GameClientMessage(gameView,message)));
+    if (session != null) {
+      try {
+        session.fireCallback(new ClientCallback("gameInform",gameId,new GameClientMessage(gameView,message)));
+      }
+ catch (      CallbackException ex) {
+        logger.fatal("game inform exception",ex);
+      }
+    }
   }
 }

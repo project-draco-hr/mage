@@ -2,6 +2,13 @@
   if (!killed) {
     setupTimeout(timeout);
     Session session=SessionManager.getInstance().getSession(sessionId);
-    if (session != null)     session.fireCallback(new ClientCallback("draftPick",draft.getId(),new DraftClientMessage(draftPickView)));
+    if (session != null) {
+      try {
+        session.fireCallback(new ClientCallback("draftPick",draft.getId(),new DraftClientMessage(draftPickView)));
+      }
+ catch (      CallbackException ex) {
+        logger.fatal("draft pick exception",ex);
+      }
+    }
   }
 }

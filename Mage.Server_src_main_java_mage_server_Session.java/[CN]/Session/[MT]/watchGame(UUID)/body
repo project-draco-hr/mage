@@ -1,3 +1,9 @@
 {
-  fireCallback(new ClientCallback("watchGame",gameId));
+  try {
+    fireCallback(new ClientCallback("watchGame",gameId));
+  }
+ catch (  CallbackException ex) {
+    logger.fatal("watchGame exception",ex);
+    throw new MageException("callback failed");
+  }
 }

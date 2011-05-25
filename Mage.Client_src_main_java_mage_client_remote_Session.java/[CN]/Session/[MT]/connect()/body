@@ -19,12 +19,11 @@ Authenticator.setDefault(new MageAuthenticator(connection.getProxyUsername(),con
 break;
 }
 Registry reg=LocateRegistry.getRegistry(connection.getHost(),connection.getPort());
-this.server=(Server)reg.lookup(Config.remoteServer);
 this.userName=connection.getUsername();
 if (client == null) client=new Client(this,frame);
-sessionId=server.registerClient(userName,client.getId(),frame.getVersion());
-callbackDaemon=new CallbackClientDaemon(sessionId,client,server);
-serverState=server.getServerState();
+sessionId=registerClient(userName,client.getId(),frame.getVersion());
+callbackDaemon=new CallbackClientDaemon(sessionId,client,connection);
+serverState=getServerState();
 future=sessionExecutor.scheduleWithFixedDelay(new ServerPinger(),5,5,TimeUnit.SECONDS);
 logger.info("Connected to RMI server at " + connection.getHost() + ":"+ connection.getPort());
 frame.setStatusText("Connected to " + connection.getHost() + ":"+ connection.getPort()+ " ");
@@ -46,9 +45,6 @@ if (!reconnecting) {
 disconnect(false);
 JOptionPane.showMessageDialog(frame,"Unable to connect to server. " + ex.getMessage());
 }
-}
-catch (NotBoundException ex) {
-logger.fatal("Unable to connect to server - ",ex);
 }
 return false;
 }

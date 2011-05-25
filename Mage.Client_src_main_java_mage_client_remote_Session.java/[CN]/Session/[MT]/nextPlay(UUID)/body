@@ -1,13 +1,14 @@
 {
+  NextPlay method=new NextPlay(connection,sessionId,gameId);
   try {
-    server.nextPlay(gameId,sessionId);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("NextPlay error",ex);
   }
   return false;
 }

@@ -1,0 +1,17 @@
+{
+  ackResponse.clear();
+  if (logger.isDebugEnabled())   logger.debug(sessionId + " - waiting for ack: " + messageId);
+synchronized (ackResponse) {
+    try {
+      if (!ackResponse.isAck())       ackResponse.wait(10000);
+      if (logger.isDebugEnabled()) {
+        if (!ackResponse.isAck())         logger.debug(sessionId + " - ack timed out waiting for " + messageId);
+ else         logger.debug(sessionId + " - ack received: " + messageId);
+      }
+      return ackResponse.getValue() == messageId;
+    }
+ catch (    InterruptedException ex) {
+    }
+  }
+  return false;
+}

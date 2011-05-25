@@ -1,15 +1,16 @@
 {
+  SubmitDeck method=new SubmitDeck(connection,sessionId,tableId,deck);
   try {
-    return server.submitDeck(sessionId,tableId,deck);
+    return method.makeCall();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
-  }
-catch (  MageException ex) {
-    handleMageException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  GameException ex) {
     handleGameException(ex);
+  }
+catch (  MageException ex) {
+    logger.fatal("SubmitDeck error",ex);
   }
   return false;
 }

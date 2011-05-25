@@ -1,12 +1,13 @@
 {
+  GetGameChatId method=new GetGameChatId(connection,gameId);
   try {
-    return server.getGameChatId(gameId);
+    return method.makeCall();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("GetGameChatId error",ex);
   }
   return null;
 }

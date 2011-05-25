@@ -1,13 +1,14 @@
 {
+  SwapSeats method=new SwapSeats(connection,sessionId,roomId,tableId,seatNum1,seatNum2);
   try {
-    server.swapSeats(sessionId,roomId,tableId,seatNum1,seatNum2);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("RemoveTable error",ex);
   }
   return false;
 }

@@ -1,13 +1,14 @@
 {
+  WatchGame method=new WatchGame(connection,sessionId,gameId);
   try {
-    server.watchGame(gameId,sessionId);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("WatchGame error",ex);
   }
   return false;
 }

@@ -1,12 +1,13 @@
 {
+  GetMainRoomId method=new GetMainRoomId(connection);
   try {
-    return server.getMainRoomId();
+    return method.makeCall();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("GetMainRoomId error",ex);
   }
   return null;
 }

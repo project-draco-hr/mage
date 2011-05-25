@@ -2,6 +2,13 @@
   if (!killed) {
     setupTimeout();
     Session session=SessionManager.getInstance().getSession(sessionId);
-    if (session != null)     session.fireCallback(new ClientCallback("gameAsk",game.getId(),new GameClientMessage(gameView,question)));
+    if (session != null) {
+      try {
+        session.fireCallback(new ClientCallback("gameAsk",game.getId(),new GameClientMessage(gameView,question)));
+      }
+ catch (      CallbackException ex) {
+        logger.fatal("game ask exception",ex);
+      }
+    }
   }
 }

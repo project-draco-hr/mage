@@ -1,13 +1,14 @@
 {
+  JoinGame method=new JoinGame(connection,sessionId,gameId);
   try {
-    server.joinGame(gameId,sessionId);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("JoinGame error",ex);
   }
   return false;
 }

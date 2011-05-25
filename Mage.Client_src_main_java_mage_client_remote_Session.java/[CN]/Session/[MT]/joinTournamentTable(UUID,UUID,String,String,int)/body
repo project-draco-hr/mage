@@ -1,15 +1,16 @@
 {
+  JoinTournamentTable method=new JoinTournamentTable(connection,sessionId,roomId,tableId,playerName,playerType,skill);
   try {
-    return server.joinTournamentTable(sessionId,roomId,tableId,playerName,playerType,skill);
+    return method.makeCall();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
-  }
-catch (  MageException ex) {
-    handleMageException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  GameException ex) {
     handleGameException(ex);
+  }
+catch (  MageException ex) {
+    logger.fatal("JoinTournamentTable error",ex);
   }
   return false;
 }

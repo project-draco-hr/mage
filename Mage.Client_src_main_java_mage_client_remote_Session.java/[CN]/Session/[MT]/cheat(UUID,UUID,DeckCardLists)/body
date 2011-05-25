@@ -1,13 +1,14 @@
 {
+  Cheat method=new Cheat(connection,sessionId,gameId,playerId,deckList);
   try {
-    server.cheat(gameId,sessionId,playerId,deckList);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("Cheat error",ex);
   }
   return false;
 }

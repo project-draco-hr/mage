@@ -1,12 +1,13 @@
 {
+  SendCardPick method=new SendCardPick(connection,sessionId,draftId,cardId);
   try {
-    return server.sendCardPick(draftId,sessionId,cardId);
+    return method.makeCall();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("SendCardPick error",ex);
   }
   return null;
 }

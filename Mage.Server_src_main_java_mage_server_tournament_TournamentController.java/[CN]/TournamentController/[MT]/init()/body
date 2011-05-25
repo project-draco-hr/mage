@@ -24,10 +24,15 @@ break;
 );
 tournament.addPlayerQueryEventListener(new Listener<PlayerQueryEvent>(){
 @Override public void event(PlayerQueryEvent event){
+try {
 switch (event.getQueryType()) {
 case CONSTRUCT:
 construct(event.getPlayerId(),event.getDeck(),event.getMax());
 break;
+}
+}
+ catch (MageException ex) {
+logger.fatal("Player event listener error",ex);
 }
 }
 }

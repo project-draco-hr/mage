@@ -2,6 +2,13 @@
   if (!killed) {
     setupTimeout();
     Session session=SessionManager.getInstance().getSession(sessionId);
-    if (session != null)     session.fireCallback(new ClientCallback("gamePlayXMana",game.getId(),new GameClientMessage(gameView,message)));
+    if (session != null) {
+      try {
+        session.fireCallback(new ClientCallback("gamePlayXMana",game.getId(),new GameClientMessage(gameView,message)));
+      }
+ catch (      CallbackException ex) {
+        logger.fatal("game play x mana exception",ex);
+      }
+    }
   }
 }

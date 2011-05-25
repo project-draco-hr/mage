@@ -1,13 +1,14 @@
 {
+  StopWatching method=new StopWatching(connection,sessionId,gameId);
   try {
-    server.stopWatching(gameId,sessionId);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("StopWatching error",ex);
   }
   return false;
 }

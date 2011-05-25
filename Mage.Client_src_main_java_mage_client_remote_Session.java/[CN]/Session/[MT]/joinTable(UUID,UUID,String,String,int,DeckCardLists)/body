@@ -1,15 +1,16 @@
 {
+  JoinTable method=new JoinTable(connection,sessionId,roomId,tableId,playerName,playerType,skill,deckList);
   try {
-    return server.joinTable(sessionId,roomId,tableId,playerName,playerType,skill,deckList);
+    return method.makeCall();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
-  }
-catch (  MageException ex) {
-    handleMageException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  GameException ex) {
     handleGameException(ex);
+  }
+catch (  MageException ex) {
+    logger.fatal("JoinTable error",ex);
   }
   return false;
 }

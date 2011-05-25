@@ -1,12 +1,13 @@
 {
+  IsTableOwner method=new IsTableOwner(connection,sessionId,roomId,tableId);
   try {
-    return server.isTableOwner(sessionId,roomId,tableId);
+    return method.makeCall();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("IsTableOwner error",ex);
   }
   return false;
 }

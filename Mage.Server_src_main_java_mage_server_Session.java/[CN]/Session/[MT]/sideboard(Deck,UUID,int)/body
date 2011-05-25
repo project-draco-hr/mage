@@ -1,3 +1,9 @@
 {
-  fireCallback(new ClientCallback("sideboard",tableId,new TableClientMessage(deck,tableId,time)));
+  try {
+    fireCallback(new ClientCallback("sideboard",tableId,new TableClientMessage(deck,tableId,time)));
+  }
+ catch (  CallbackException ex) {
+    logger.fatal("sideboard exception",ex);
+    throw new MageException("callback failed");
+  }
 }

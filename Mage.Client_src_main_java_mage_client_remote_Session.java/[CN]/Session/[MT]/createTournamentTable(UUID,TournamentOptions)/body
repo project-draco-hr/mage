@@ -1,12 +1,13 @@
 {
+  CreateTournamentTable method=new CreateTournamentTable(connection,sessionId,roomId,tournamentOptions);
   try {
-    return server.createTournamentTable(sessionId,roomId,tournamentOptions);
+    return method.makeCall();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("CreateTournamentTable error",ex);
   }
   return null;
 }

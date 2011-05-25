@@ -1,14 +1,15 @@
 {
+  LeaveChat method=new LeaveChat(connection,sessionId,chatId);
   try {
-    server.leaveChat(chatId,sessionId);
+    method.makeCall();
     chats.remove(chatId);
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("LeaveChat error",ex);
   }
   return false;
 }

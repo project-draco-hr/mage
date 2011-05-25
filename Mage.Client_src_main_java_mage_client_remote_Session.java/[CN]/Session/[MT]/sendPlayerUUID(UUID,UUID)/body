@@ -1,13 +1,14 @@
 {
+  SendPlayerUUID method=new SendPlayerUUID(connection,sessionId,gameId,data);
   try {
-    server.sendPlayerUUID(gameId,sessionId,data);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("SendPlayerUUID error",ex);
   }
   return false;
 }

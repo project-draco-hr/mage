@@ -1,6 +1,13 @@
 {
   if (!killed) {
     Session session=SessionManager.getInstance().getSession(sessionId);
-    if (session != null)     session.fireCallback(new ClientCallback("draftUpdate",draft.getId(),draftView));
+    if (session != null) {
+      try {
+        session.fireCallback(new ClientCallback("draftUpdate",draft.getId(),draftView));
+      }
+ catch (      CallbackException ex) {
+        logger.fatal("update draft exception",ex);
+      }
+    }
   }
 }

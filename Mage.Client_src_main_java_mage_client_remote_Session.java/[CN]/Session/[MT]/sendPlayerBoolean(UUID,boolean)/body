@@ -1,13 +1,14 @@
 {
+  SendPlayerBoolean method=new SendPlayerBoolean(connection,sessionId,gameId,data);
   try {
-    server.sendPlayerBoolean(gameId,sessionId,data);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("SendPlayerBoolean error",ex);
   }
   return false;
 }

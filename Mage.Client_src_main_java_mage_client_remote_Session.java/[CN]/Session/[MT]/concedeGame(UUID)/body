@@ -1,13 +1,14 @@
 {
+  ConcedeGame method=new ConcedeGame(connection,sessionId,gameId);
   try {
-    server.concedeGame(gameId,sessionId);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("ConcedeGame error",ex);
   }
   return false;
 }

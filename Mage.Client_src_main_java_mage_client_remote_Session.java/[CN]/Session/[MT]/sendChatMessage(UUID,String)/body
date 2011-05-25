@@ -1,13 +1,14 @@
 {
+  SendChatMessage method=new SendChatMessage(connection,chatId,message,userName);
   try {
-    server.sendChatMessage(chatId,userName,message);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("SendChatMessage error",ex);
   }
   return false;
 }

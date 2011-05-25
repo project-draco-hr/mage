@@ -1,23 +1,29 @@
 {
   game.addTableEventListener(new Listener<TableEvent>(){
     @Override public void event(    TableEvent event){
+      try {
 switch (event.getEventType()) {
 case UPDATE:
-        updateGame();
-      break;
+          updateGame();
+        break;
 case INFO:
-    ChatManager.getInstance().broadcast(chatId,"",event.getMessage(),MessageColor.BLACK);
-  logger.debug(game.getId() + " " + event.getMessage());
-break;
+      ChatManager.getInstance().broadcast(chatId,"",event.getMessage(),MessageColor.BLACK);
+    logger.debug(game.getId() + " " + event.getMessage());
+  break;
 case REVEAL:
 revealCards(event.getMessage(),event.getCards());
 break;
+}
+}
+ catch (MageException ex) {
+logger.fatal("Table event listener error ",ex);
 }
 }
 }
 );
 game.addPlayerQueryEventListener(new Listener<PlayerQueryEvent>(){
 @Override public void event(PlayerQueryEvent event){
+try {
 switch (event.getQueryType()) {
 case ASK:
 ask(event.getPlayerId(),event.getMessage());
@@ -49,6 +55,10 @@ break;
 case LOOK:
 lookAtCards(event.getPlayerId(),event.getMessage(),event.getCards());
 break;
+}
+}
+ catch (MageException ex) {
+logger.fatal("Player event listener error ",ex);
 }
 }
 }

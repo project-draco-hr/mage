@@ -1,13 +1,14 @@
 {
+  StartReplay method=new StartReplay(connection,sessionId,gameId);
   try {
-    server.startReplay(gameId,sessionId);
+    method.makeCall();
     return true;
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
   }
 catch (  MageException ex) {
-    handleMageException(ex);
+    logger.fatal("StartReplay error",ex);
   }
   return false;
 }
