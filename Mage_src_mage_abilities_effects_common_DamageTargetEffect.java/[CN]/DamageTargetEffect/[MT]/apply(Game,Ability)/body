@@ -1,12 +1,12 @@
 {
   Permanent permanent=game.getPermanent(source.getFirstTarget());
   if (permanent != null) {
-    permanent.damage(amount,source.getSourceId(),game,preventable,false);
+    permanent.damage(amount.calculate(game,source),source.getSourceId(),game,preventable,false);
     return true;
   }
   Player player=game.getPlayer(source.getFirstTarget());
   if (player != null) {
-    player.damage(amount,source.getSourceId(),game,false,preventable);
+    player.damage(amount.calculate(game,source),source.getSourceId(),game,false,preventable);
     return true;
   }
   return false;
