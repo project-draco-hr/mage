@@ -7,5 +7,19 @@
  else   if (response.getUUID() != null) {
     playManaAbilities(game);
   }
+ else   if (response.getString() != null && response.getString().equals("special")) {
+    if (unpaid instanceof ManaCostsImpl) {
+      ManaCostsImpl<ManaCost> costs=(ManaCostsImpl<ManaCost>)unpaid;
+      for (      ManaCost cost : costs.getUnpaid()) {
+        if (cost instanceof PhyrexianManaCost) {
+          PhyrexianManaCost ph=(PhyrexianManaCost)cost;
+          if (ph.canPay(null,playerId,game)) {
+            ((PhyrexianManaCost)cost).pay(game,null,playerId,false);
+          }
+          break;
+        }
+      }
+    }
+  }
   return true;
 }
