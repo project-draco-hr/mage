@@ -1,4 +1,5 @@
 {
+  sessionState=SessionState.CONNECTING;
   try {
     System.setSecurityManager(null);
     System.setProperty("http.nonProxyHosts","code.google.com");
@@ -28,16 +29,16 @@ future=sessionExecutor.scheduleWithFixedDelay(new ServerPinger(),5,5,TimeUnit.SE
 logger.info("Connected to RMI server at " + connection.getHost() + ":"+ connection.getPort());
 frame.setStatusText("Connected to " + connection.getHost() + ":"+ connection.getPort()+ " ");
 frame.enableButtons();
-reconnecting=false;
-connecting=false;
+sessionState=SessionState.CONNECTED;
 return true;
 }
  catch (Exception ex) {
 logger.fatal("",ex);
-if (!reconnecting) {
+if (sessionState == SessionState.CONNECTING) {
 disconnect(false);
 JOptionPane.showMessageDialog(frame,"Unable to connect to server. " + ex.getMessage());
 }
+sessionState=SessionState.SERVER_UNAVAILABLE;
 }
 return false;
 }
