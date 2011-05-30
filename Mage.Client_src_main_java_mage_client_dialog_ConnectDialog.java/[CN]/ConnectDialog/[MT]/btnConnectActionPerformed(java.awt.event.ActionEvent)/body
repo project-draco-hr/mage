@@ -18,8 +18,8 @@
   }
   char[] input=new char[0];
   try {
-    setCursor(new Cursor(Cursor.WAIT_CURSOR));
-    Connection connection=new Connection();
+    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+    connection=new Connection();
     connection.setHost(this.txtServer.getText());
     connection.setPort(Integer.valueOf(this.txtPort.getText()));
     connection.setUsername(this.txtUserName.getText());
@@ -30,13 +30,10 @@
     input=txtPasswordField.getPassword();
     connection.setProxyPassword(new String(input));
     logger.debug("connecting: " + connection.getProxyType() + " "+ connection.getProxyHost()+ " "+ connection.getProxyPort());
-    if (MageFrame.connect(connection)) {
-      this.saveSettings();
-      this.setVisible(false);
-    }
+    task=new ConnectTask();
+    task.execute();
   }
   finally {
-    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     Arrays.fill(input,'0');
   }
 }
