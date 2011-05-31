@@ -7,8 +7,8 @@
     throw new GameException("No available seats.");
   }
   Deck deck=Deck.load(deckList);
-  if (!Main.server.isTestMode() && !validDeck(deck)) {
-    throw new GameException(name + " has an invalid deck for this format");
+  if (!Main.server.isTestMode() && !table.getValidator().validate(deck)) {
+    throw new InvalidDeckException(name + " has an invalid deck for this format",table.getValidator().getInvalid());
   }
   Player player=createPlayer(name,seat.getPlayerType(),skill);
   match.addPlayer(player,deck);

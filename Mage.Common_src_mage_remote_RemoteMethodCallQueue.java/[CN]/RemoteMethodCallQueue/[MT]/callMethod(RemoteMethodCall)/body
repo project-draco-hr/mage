@@ -1,0 +1,14 @@
+{
+synchronized (call) {
+    try {
+      this.put(call);
+      call.wait();
+      if (call.isException()) {
+        if (call.getException() != null)         throw call.getException();
+ else         throw new ServerUnavailable();
+      }
+    }
+ catch (    InterruptedException ex) {
+    }
+  }
+}

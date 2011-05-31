@@ -1,10 +1,17 @@
 {
-  T returnValue=null;
+  returnVal=null;
   try {
-    returnValue=super.makeCall();
+    returnVal=super.makeCall();
   }
-  finally {
+ catch (  ServerUnavailable e) {
+    this.exception=true;
+  }
+catch (  MageException e) {
+    this.exception=true;
+    this.ex=e;
+  }
+ finally {
     ServerCache.noLongerUsingServer(connection);
   }
-  return returnValue;
+  return returnVal;
 }

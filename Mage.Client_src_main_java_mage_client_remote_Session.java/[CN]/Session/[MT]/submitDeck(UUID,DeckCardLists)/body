@@ -1,10 +1,14 @@
 {
   SubmitDeck method=new SubmitDeck(connection,sessionId,tableId,deck);
   try {
-    return method.makeCall();
+    q.callMethod(method);
+    return method.getReturnVal();
   }
  catch (  ServerUnavailable ex) {
     handleServerUnavailable(ex);
+  }
+catch (  InvalidDeckException ex) {
+    handleInvalidDeckException(ex);
   }
 catch (  GameException ex) {
     handleGameException(ex);
