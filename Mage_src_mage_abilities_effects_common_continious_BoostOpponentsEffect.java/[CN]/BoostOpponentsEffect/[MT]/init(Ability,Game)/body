@@ -1,0 +1,11 @@
+{
+  super.init(source,game);
+  if (this.affectedObjectsSet) {
+    Set<UUID> opponents=game.getOpponents(source.getControllerId());
+    for (    Permanent perm : game.getBattlefield().getAllActivePermanents(filter)) {
+      if (opponents.contains(perm.getControllerId())) {
+        objects.add(perm.getId());
+      }
+    }
+  }
+}
