@@ -1,0 +1,14 @@
+{
+  if (event.getType() == GameEvent.EventType.UPKEEP_STEP_PRE) {
+switch (targetController) {
+case YOU:
+      return event.getPlayerId().equals(this.controllerId);
+case OPPONENT:
+    if (game.getOpponents(this.controllerId).contains(event.getPlayerId())) {
+      this.getTargets().get(0).add(event.getPlayerId(),game);
+      return true;
+    }
+}
+}
+return false;
+}

@@ -1,0 +1,16 @@
+{
+  super(ownerId,73,"Sheoldred, Whispering One",Rarity.MYTHIC,new CardType[]{CardType.CREATURE},"{5}{B}{B}");
+  this.expansionSetCode="NPH";
+  this.supertype.add("Legendary");
+  this.subtype.add("Praetor");
+  this.color.setBlack(true);
+  this.power=new MageInt(6);
+  this.toughness=new MageInt(6);
+  this.addAbility(new SwampwalkAbility());
+  Ability ability=new BeginningOfUpkeepTriggeredAbility(new ReturnFromGraveyardToBattlefieldTargetEffect(false),Constants.TargetController.YOU,false);
+  ability.addTarget(new TargetCardInYourGraveyard(new FilterCreatureCard()));
+  this.addAbility(ability);
+  ability=new BeginningOfUpkeepTriggeredAbility(new SacrificeEffect(new FilterCreaturePermanent(),1,""),Constants.TargetController.OPPONENT,false);
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+}
