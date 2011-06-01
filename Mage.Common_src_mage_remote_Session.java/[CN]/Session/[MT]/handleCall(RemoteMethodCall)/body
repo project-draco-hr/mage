@@ -1,0 +1,21 @@
+{
+  try {
+    if (sessionState == method.getAllowedState()) {
+      q.callMethod(method);
+      return true;
+    }
+  }
+ catch (  ServerUnavailable ex) {
+    handleServerUnavailable(ex);
+  }
+catch (  GameException ex) {
+    handleGameException(ex);
+  }
+catch (  InvalidDeckException ex) {
+    handleInvalidDeckException(ex);
+  }
+catch (  MageException ex) {
+    logger.fatal(method.getName() + " error",ex);
+  }
+  return false;
+}

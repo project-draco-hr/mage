@@ -1,0 +1,22 @@
+{
+  sessionState=SessionState.DISCONNECTING;
+  if (connection == null)   return;
+  if (future != null && !future.isDone())   future.cancel(true);
+  try {
+    if (callbackDaemon != null)     callbackDaemon.stopDaemon();
+    deregisterClient();
+  }
+ catch (  MageException ex) {
+    logger.fatal("Error disconnecting ...",ex);
+  }
+  ServerCache.removeServerFromCache(connection);
+  client.disconnected();
+  logger.info("Disconnected ... ");
+  if (!voluntary) {
+    sessionState=SessionState.SERVER_UNAVAILABLE;
+    client.showError("Server error.  You have been disconnected");
+  }
+ else {
+    sessionState=SessionState.DISCONNECTED;
+  }
+}

@@ -1,5 +1,6 @@
 {
   setTitle("Mage, version " + version);
+  clientId=UUID.randomUUID();
   EDTExceptionHandler.registerExceptionHandler();
   addWindowListener(new WindowAdapter(){
     @Override public void windowClosing(    WindowEvent e){
@@ -20,9 +21,10 @@
   setSize(1024,768);
   this.setExtendedState(JFrame.MAXIMIZED_BOTH);
   session=new Session(this);
+  callbackClient=new CallbackClientImpl(this);
   connectDialog=new ConnectDialog();
   desktopPane.add(connectDialog,JLayeredPane.POPUP_LAYER);
-  session.getUI().addComponent(MageComponents.DESKTOP_PANE,desktopPane);
+  ui.addComponent(MageComponents.DESKTOP_PANE,desktopPane);
   try {
     tablesPane=new TablesPane();
     desktopPane.add(tablesPane,javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -92,7 +94,7 @@
     label.setForeground(Color.white);
     label.setBounds(0,0,180,30);
   }
-  session.getUI().addButton(MageComponents.TABLES_MENU_BUTTON,btnGames);
+  ui.addButton(MageComponents.TABLES_MENU_BUTTON,btnGames);
   SwingUtilities.invokeLater(new Runnable(){
     public void run(){
       disableButtons();
