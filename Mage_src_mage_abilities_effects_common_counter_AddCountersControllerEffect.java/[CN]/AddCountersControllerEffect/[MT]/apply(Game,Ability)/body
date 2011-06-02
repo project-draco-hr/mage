@@ -1,0 +1,21 @@
+{
+  UUID uuid=source.getControllerId();
+  if (this.enchantedEquipped) {
+    Permanent enchantment=game.getPermanent(source.getSourceId());
+    if (enchantment != null && enchantment.getAttachedTo() != null) {
+      UUID eUuid=enchantment.getAttachedTo();
+      Permanent permanent=game.getPermanent(eUuid);
+      if (permanent != null) {
+        uuid=permanent.getControllerId();
+      }
+ else       return false;
+    }
+ else     return false;
+  }
+  Player player=game.getPlayer(uuid);
+  if (player != null) {
+    player.getCounters().addCounter(counter);
+    return true;
+  }
+  return false;
+}
