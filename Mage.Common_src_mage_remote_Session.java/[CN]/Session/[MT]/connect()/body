@@ -32,11 +32,9 @@ return true;
 }
  catch (Exception ex) {
 logger.fatal("",ex);
-if (sessionState == SessionState.CONNECTING) {
+sessionState=SessionState.SERVER_UNAVAILABLE;
 disconnect(false);
 client.showMessage("Unable to connect to server. " + ex.getMessage());
-}
-sessionState=SessionState.SERVER_UNAVAILABLE;
 }
 return false;
 }

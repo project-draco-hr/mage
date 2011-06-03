@@ -6,7 +6,8 @@
         final ClientCallback callback=callbackMethod.makeDirectCall();
         Ack ackMethod=new Ack(connection,id,callback.getMessageId());
         ackMethod.makeCall();
-        callbackExecutor.submit(new Runnable(){
+        if (callbackExecutor.isShutdown())         logger.fatal("Attempt to submit callback to shutdown executor");
+ else         callbackExecutor.submit(new Runnable(){
           @Override public void run(){
             try {
               client.processCallback(callback);
