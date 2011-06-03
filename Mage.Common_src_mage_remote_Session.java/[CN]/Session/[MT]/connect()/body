@@ -22,12 +22,12 @@ break;
 Registry reg=LocateRegistry.getRegistry(connection.getHost(),connection.getPort());
 this.userName=connection.getUsername();
 sessionId=registerClient(userName,client.getId(),client.getVersion());
-callbackDaemon=new CallbackClientDaemon(sessionId,client,connection);
 serverState=getServerState();
+sessionState=SessionState.CONNECTED;
+callbackDaemon=new CallbackClientDaemon(sessionId,client,this);
 future=sessionExecutor.scheduleWithFixedDelay(new ServerPinger(),5,5,TimeUnit.SECONDS);
 logger.info("Connected to RMI server at " + connection.getHost() + ":"+ connection.getPort());
 client.connected("Connected to " + connection.getHost() + ":"+ connection.getPort()+ " ");
-sessionState=SessionState.CONNECTED;
 return true;
 }
  catch (Exception ex) {

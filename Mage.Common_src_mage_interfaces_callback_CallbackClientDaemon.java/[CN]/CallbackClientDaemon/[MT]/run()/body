@@ -2,10 +2,8 @@
   try {
     while (!end) {
       try {
-        Callback callbackMethod=new Callback(connection,id);
-        final ClientCallback callback=callbackMethod.makeDirectCall();
-        Ack ackMethod=new Ack(connection,id,callback.getMessageId());
-        ackMethod.makeCall();
+        final ClientCallback callback=session.callback(id);
+        session.ack(id,callback.getMessageId());
         if (callbackExecutor.isShutdown())         logger.fatal("Attempt to submit callback to shutdown executor");
  else         callbackExecutor.submit(new Runnable(){
           @Override public void run(){
@@ -24,8 +22,11 @@
       }
     }
   }
- catch (  Exception ex) {
+ catch (  ServerUnavailable ex) {
+    session.disconnect(true);
+  }
+catch (  Exception ex) {
     logger.fatal("CallbackClientDaemon error ",ex);
-    stopDaemon();
+    session.disconnect(true);
   }
 }
