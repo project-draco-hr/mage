@@ -1,0 +1,28 @@
+{
+  if (saveIncomeData) {
+    ObjectOutputStream oos=null;
+    try {
+      File dir=new File("income");
+      if (!dir.exists() || dir.exists() && dir.isFile()) {
+        boolean bCreated=dir.mkdir();
+        if (!bCreated) {
+          return;
+        }
+      }
+      String time=now("[yyyy_MM_dd][H-mm-ss]");
+      File f=new File("income" + File.separator + name+ "_"+ time+ ".save");
+      if (!f.exists()) {
+        f.createNewFile();
+      }
+      oos=new ObjectOutputStream(new FileOutputStream(f));
+      oos.writeObject(object);
+      oos.close();
+    }
+ catch (    FileNotFoundException e) {
+      return;
+    }
+catch (    IOException io) {
+      return;
+    }
+  }
+}
