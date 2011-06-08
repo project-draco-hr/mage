@@ -1,28 +1,25 @@
 {
   this.roomId=roomId;
   session=MageFrame.getSession();
-  updateTask=new UpdateTablesTask(session,roomId,this);
-  updatePlayersTask=new UpdatePlayersTask(session,roomId,this.chatPanel);
   if (session != null) {
     btnQuickStart.setVisible(session.isTestMode());
   }
   if (newTableDialog == null) {
     newTableDialog=new NewTableDialog();
-    MageFrame.getDesktop().add(newTableDialog);
+    MageFrame.getDesktop().add(newTableDialog,JLayeredPane.MODAL_LAYER);
   }
   if (newTournamentDialog == null) {
     newTournamentDialog=new NewTournamentDialog();
-    MageFrame.getDesktop().add(newTournamentDialog);
+    MageFrame.getDesktop().add(newTournamentDialog,JLayeredPane.MODAL_LAYER);
   }
   if (joinTableDialog == null) {
     joinTableDialog=new JoinTableDialog();
-    MageFrame.getDesktop().add(joinTableDialog);
+    MageFrame.getDesktop().add(joinTableDialog,JLayeredPane.MODAL_LAYER);
   }
   UUID chatRoomId=session.getRoomChatId(roomId);
   if (chatRoomId != null) {
     this.chatPanel.connect(chatRoomId);
-    updateTask.execute();
-    updatePlayersTask.execute();
+    startTasks();
     this.setVisible(true);
     this.repaint();
   }

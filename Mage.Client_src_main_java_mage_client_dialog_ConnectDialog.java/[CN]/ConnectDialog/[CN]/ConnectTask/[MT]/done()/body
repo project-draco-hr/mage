@@ -1,11 +1,22 @@
 {
-  setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-  btnConnect.setEnabled(true);
-  if (result) {
-    lblStatus.setText("");
-    connected();
-  }
+  try {
+    get();
+    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    btnConnect.setEnabled(true);
+    if (result) {
+      lblStatus.setText("");
+      connected();
+    }
  else {
-    lblStatus.setText("Could not connect");
+      lblStatus.setText("Could not connect");
+    }
+  }
+ catch (  InterruptedException ex) {
+    logger.fatal("Update Players Task error",ex);
+  }
+catch (  ExecutionException ex) {
+    logger.fatal("Update Players Task error",ex);
+  }
+catch (  CancellationException ex) {
   }
 }

@@ -3,21 +3,14 @@
   JInternalFrame[] windows=desktopPane.getAllFramesInLayer(javax.swing.JLayeredPane.DEFAULT_LAYER);
   MagePaneMenuItem menuItem;
   for (int i=0; i < windows.length; i++) {
-    JInternalFrame window=windows[i];
+    MagePane window=(MagePane)windows[i];
     if (window.isVisible()) {
       menuItem=new MagePaneMenuItem(window);
       menuItem.setState(i == 0);
       menuItem.addActionListener(new ActionListener(){
-        public void actionPerformed(        ActionEvent ae){
-          JInternalFrame frame=((MagePaneMenuItem)ae.getSource()).getFrame();
-          frame.toFront();
-          frame.setVisible(true);
-          try {
-            frame.setSelected(true);
-          }
- catch (          PropertyVetoException e) {
-            e.printStackTrace();
-          }
+        @Override public void actionPerformed(        ActionEvent ae){
+          MagePane frame=((MagePaneMenuItem)ae.getSource()).getFrame();
+          setActive(frame);
         }
       }
 );
