@@ -3,6 +3,7 @@
   SwingUtilities.invokeLater(new Runnable(){
     @Override public void run(){
       SaveObjectUtil.saveObject(callback.getData(),callback.getMethod());
+      callback.setData(CompressUtil.decompress(callback.getData()));
       try {
         logger.info(callback.getMessageId() + " -- " + callback.getMethod());
         if (callback.getMethod().equals("startGame")) {
