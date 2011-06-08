@@ -1,0 +1,17 @@
+{
+  super(ownerId,24,"Lich Lord of Unx",Rarity.RARE,new CardType[]{CardType.CREATURE},"{1}{U}{B}");
+  this.expansionSetCode="ARB";
+  this.subtype.add("Zombie");
+  this.subtype.add("Wizard");
+  this.color.setBlue(true);
+  this.color.setBlack(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new CreateTokenEffect(new ZombieWizardToken()),new ManaCostsImpl("{U}{B}"));
+  ability.addCost(new TapSourceCost());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new LoseLifeTargetEffect(new PermanentsOnBattlefieldCount(filter,1)),new ManaCostsImpl("{U}{U}{B}{B}"));
+  ability.addEffect(new PutLibraryIntoGraveTargetEffect(new PermanentsOnBattlefieldCount(filter,1)));
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+}
