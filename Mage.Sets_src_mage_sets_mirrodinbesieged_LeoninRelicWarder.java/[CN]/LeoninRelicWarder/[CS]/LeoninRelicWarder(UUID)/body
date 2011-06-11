@@ -1,0 +1,16 @@
+{
+  super(ownerId,10,"Leonin Relic-Warder",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{W}{W}");
+  this.expansionSetCode="MBS";
+  this.subtype.add("Cat");
+  this.subtype.add("Cleric");
+  this.color.setWhite(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability ability=new EntersBattlefieldTriggeredAbility(new ExileTargetEffect(this.getId(),"Leonin Relic-Warder exile"),true);
+  Target target=new TargetPermanent(filter);
+  target.setRequired(true);
+  ability.addTarget(target);
+  this.addAbility(ability);
+  Ability ability2=new LeavesBattlefieldTriggeredAbility(new ReturnFromExileEffect(this.getId(),Constants.Zone.BATTLEFIELD),false);
+  this.addAbility(ability2);
+}
