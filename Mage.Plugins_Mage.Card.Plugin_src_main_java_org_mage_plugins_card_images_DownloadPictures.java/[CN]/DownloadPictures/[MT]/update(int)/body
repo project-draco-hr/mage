@@ -1,15 +1,31 @@
 {
   this.cardIndex=card;
-  if (checkBox.isSelected()) {
-    int count=DownloadPictures.this.cardsInGame.size();
-    int countLeft=count - card;
-    float mb=(countLeft * 70.0f) / 1024;
-    bar.setString(String.format(card == count ? "%d of %d cards finished! Please close!" : "%d of %d cards finished! Please wait!  [%.1f Mb]",card,count,mb));
+  int count=DownloadPictures.this.cards.size();
+  if (cardIndex < count) {
+    float mb=((count - card) * cardImageSource.getAverageSize()) / 1024;
+    bar.setString(String.format("%d of %d cards finished! Please wait! [%.1f Mb]",card,count,mb));
   }
  else {
-    int count=DownloadPictures.this.cards.size();
-    int countLeft=count - card;
-    float mb=(countLeft * 70.0f) / 1024;
-    bar.setString(String.format(cardIndex == count ? "%d of %d cards finished! Please close!" : "%d of %d cards finished! Please wait! [%.1f Mb]",card,count,mb));
+    Iterator<CardInfo> cardsIterator=DownloadPictures.this.cards.iterator();
+    while (cardsIterator.hasNext()) {
+      CardInfo cardInfo=cardsIterator.next();
+      boolean withCollectorId=false;
+      if (cardInfo.getName().equals("Forest") || cardInfo.getName().equals("Mountain") || cardInfo.getName().equals("Swamp")|| cardInfo.getName().equals("Island")|| cardInfo.getName().equals("Plains")) {
+        withCollectorId=true;
+      }
+      File file=new File(CardImageUtils.getImagePath(cardInfo,withCollectorId));
+      if (file.exists()) {
+        cardsIterator.remove();
+      }
+    }
+    count=DownloadPictures.this.cards.size();
+    if (count == 0) {
+      bar.setString(String.format("0 cards remaining! Please close!",count));
+    }
+ else {
+      bar.setString(String.format("%d cards remaining! Please choose another source!",count));
+      executor=Executors.newFixedThreadPool(10);
+      startDownloadButton.setEnabled(true);
+    }
   }
 }

@@ -1,6 +1,4 @@
 {
-  BufferedInputStream in;
-  BufferedOutputStream out;
   File base=new File(Constants.IO.imageBaseDir);
   if (!base.exists()) {
     base.mkdir();
@@ -15,19 +13,29 @@
   if (p != null) {
     HashSet<String> ignoreUrls=SettingsManager.getIntance().getIgnoreUrls();
     update(0);
-    for (int i=0; (checkBox.isSelected() ? i < cardsInGame.size() : i < cards.size()) && !cancel; i++) {
+    for (int i=0; i < cards.size() && !cancel; i++) {
       try {
-        CardUrl card=checkBox.isSelected() ? cardsInGame.get(i) : cards.get(i);
-        log.info("Downloading card: " + card.name + " ("+ card.set+ ")");
-        URL url=new URL(cardImageSource.generateURL(card.collector,card.set));
-        if (ignoreUrls.contains(card.set) || card.token) {
-          if (card.collector != 0) {
+        CardInfo card=cards.get(i);
+        log.info("Downloading card: " + card.getName() + " ("+ card.getSet()+ ")");
+        String url;
+        if (ignoreUrls.contains(card.getSet()) || card.isToken()) {
+          if (card.getCollectorId() != 0) {
             continue;
           }
-          url=new URL(card.url);
+          url=cardImageSource.generateTokenUrl(card.getName(),card.getSet());
         }
-        Runnable task=new DownloadTask(card,url);
-        executor.execute(task);
+ else {
+          url=cardImageSource.generateURL(card.getCollectorId(),card.getSet());
+        }
+        if (url != null) {
+          Runnable task=new DownloadTask(card,new URL(url));
+          executor.execute(task);
+        }
+ else {
+synchronized (sync) {
+            update(cardIndex + 1);
+          }
+        }
       }
  catch (      Exception ex) {
         log.error(ex,ex);
@@ -42,5 +50,5 @@
       }
     }
   }
-  close.setText("Close");
+  closeButton.setText("Close");
 }

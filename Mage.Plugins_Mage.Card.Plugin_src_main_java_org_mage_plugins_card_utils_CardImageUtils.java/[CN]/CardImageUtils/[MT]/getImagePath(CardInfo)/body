@@ -1,11 +1,8 @@
 {
   String filePath;
   String suffix=".jpg";
-  String cardname=c.name;
-  String set=c.set;
-  CardUrl card=new CardUrl(cardname,set,c.collectorId,c.isToken);
   File file=null;
-  if (c.isToken) {
+  if (card.isToken()) {
     if (pathCache.containsKey(card)) {
       return pathCache.get(card);
     }
@@ -28,7 +25,7 @@
     }
   }
   if (file == null || !file.exists()) {
-    filePath=cleanString(c.name) + suffix;
+    filePath=cleanString(card.getName()) + suffix;
     file=new File(filePath);
   }
   if (file.exists()) {
