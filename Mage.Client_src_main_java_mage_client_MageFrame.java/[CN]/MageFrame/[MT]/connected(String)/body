@@ -1,4 +1,15 @@
 {
-  setStatusText(message);
-  enableButtons();
+  if (SwingUtilities.isEventDispatchThread()) {
+    setStatusText(message);
+    enableButtons();
+  }
+ else {
+    SwingUtilities.invokeLater(new Runnable(){
+      @Override public void run(){
+        setStatusText(message);
+        enableButtons();
+      }
+    }
+);
+  }
 }

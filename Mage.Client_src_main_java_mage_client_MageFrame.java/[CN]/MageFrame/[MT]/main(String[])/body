@@ -1,12 +1,4 @@
 {
-  final SplashScreen splash=SplashScreen.getSplashScreen();
-  if (splash != null) {
-    Graphics2D g=splash.createGraphics();
-    if (g != null) {
-      renderSplashFrame(g);
-    }
-    splash.update();
-  }
   Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
     public void uncaughtException(    Thread t,    Throwable e){
       logger.fatal(null,e);
@@ -15,6 +7,14 @@
 );
   SwingUtilities.invokeLater(new Runnable(){
     public void run(){
+      final SplashScreen splash=SplashScreen.getSplashScreen();
+      if (splash != null) {
+        Graphics2D g=splash.createGraphics();
+        if (g != null) {
+          renderSplashFrame(g);
+        }
+        splash.update();
+      }
       new MageFrame().setVisible(true);
     }
   }

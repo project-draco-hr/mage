@@ -1,6 +1,19 @@
 {
-  setStatusText("Not connected");
-  disableButtons();
-  hideGames();
-  hideTables();
+  if (SwingUtilities.isEventDispatchThread()) {
+    setStatusText("Not connected");
+    disableButtons();
+    hideGames();
+    hideTables();
+  }
+ else {
+    SwingUtilities.invokeLater(new Runnable(){
+      @Override public void run(){
+        setStatusText("Not connected");
+        disableButtons();
+        hideGames();
+        hideTables();
+      }
+    }
+);
+  }
 }
