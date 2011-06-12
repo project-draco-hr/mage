@@ -1,11 +1,11 @@
 {
-  ArrayList<CardUrl> cardsToDownload=new ArrayList<CardUrl>();
-  ArrayList<CardUrl> allCardsUrls=new ArrayList<CardUrl>();
+  ArrayList<CardInfo> cardsToDownload=new ArrayList<CardInfo>();
+  ArrayList<CardInfo> allCardsUrls=new ArrayList<CardInfo>();
   try {
     offlineMode=true;
     for (    Card card : allCards) {
       if (card.getCardNumber() > 0 && !card.getExpansionSetCode().isEmpty()) {
-        CardUrl url=new CardUrl(card.getName(),card.getExpansionSetCode(),card.getCardNumber(),false);
+        CardInfo url=new CardInfo(card.getName(),card.getExpansionSetCode(),card.getCardNumber(),false);
         allCardsUrls.add(url);
       }
  else {
@@ -25,9 +25,9 @@
     log.error(e);
   }
   File file;
-  for (  CardUrl card : allCardsUrls) {
+  for (  CardInfo card : allCardsUrls) {
     boolean withCollectorId=false;
-    if (card.name.equals("Forest") || card.name.equals("Mountain") || card.name.equals("Swamp")|| card.name.equals("Island")|| card.name.equals("Plains")) {
+    if (card.getName().equals("Forest") || card.getName().equals("Mountain") || card.getName().equals("Swamp")|| card.getName().equals("Island")|| card.getName().equals("Plains")) {
       withCollectorId=true;
     }
     file=new File(CardImageUtils.getImagePath(card,withCollectorId));
@@ -35,13 +35,13 @@
       cardsToDownload.add(card);
     }
   }
-  for (  CardUrl card : cardsToDownload) {
-    if (card.token) {
-      log.info("Card to download: " + card.name + " (Token) "+ card.url);
+  for (  CardInfo card : cardsToDownload) {
+    if (card.isToken()) {
+      log.info("Card to download: " + card.getName() + " (Token) ");
     }
  else {
       try {
-        log.info("Card to download: " + card.name + " ("+ card.set+ ") "+ cardImageSource.generateURL(card.collector,card.set));
+        log.info("Card to download: " + card.getName() + " ("+ card.getSet()+ ")");
       }
  catch (      Exception e) {
         log.error(e);
