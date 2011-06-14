@@ -1,0 +1,18 @@
+{
+  if (extendedViewMode.equals(VIEW_MODE.GAME)) {
+    this.txtConversation.append(TIMESTAMP_COLOR,time + " ");
+    this.txtConversation.append(MESSAGE_COLOR,(username.isEmpty() ? "" : username + ":") + message + "\n");
+  }
+ else {
+    this.txtConversation.append(TIMESTAMP_COLOR,time + " ");
+    Color userColor;
+    if (parentChatRef != null) {
+      userColor=parentChatRef.session.getUserName().equals(username) ? MY_COLOR : OPPONENT_COLOR;
+    }
+ else {
+      userColor=session.getUserName().equals(username) ? MY_COLOR : OPPONENT_COLOR;
+    }
+    this.txtConversation.append(userColor,username + ": ");
+    this.txtConversation.append(MESSAGE_COLOR,message + "\n");
+  }
+}
