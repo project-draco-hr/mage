@@ -1,9 +1,9 @@
 {
-  Permanent targetPermanent=game.getPermanent(source.getFirstTarget());
+  Permanent targetPermanent=(Permanent)game.getLastKnownInformation(targetPointer.getFirst(source),Zone.BATTLEFIELD);
   if (targetPermanent != null) {
-    Player player=game.getPlayer(targetPermanent.getControllerId());
-    if (player != null) {
-      player.loseLife(amount,game);
+    Player controller=game.getPlayer(targetPermanent.getControllerId());
+    if (controller != null) {
+      controller.loseLife(amount,game);
       return true;
     }
   }
