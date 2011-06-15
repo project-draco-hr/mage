@@ -2,20 +2,9 @@
   call.setMessageId(messageId++);
   if (logger.isDebugEnabled())   logger.debug(sessionId + " - " + call.getMessageId()+ " - "+ call.getMethod());
   try {
-    int retryCount=0;
-    while (retryCount < 3) {
-      callback.setCallback(call);
-      if (waitForAck(call.getMessageId()))       return;
-      retryCount++;
-      try {
-        Thread.sleep(2000 * retryCount);
-      }
- catch (      InterruptedException ignored) {
-      }
-    }
+    callback.setCallback(call);
   }
  catch (  InterruptedException ex) {
     logger.fatal("Session fireCallback error",ex);
   }
-  throw new CallbackException("Callback failed for " + call.getMethod());
 }

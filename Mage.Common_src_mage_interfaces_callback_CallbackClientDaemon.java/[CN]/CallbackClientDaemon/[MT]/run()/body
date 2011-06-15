@@ -1,22 +1,21 @@
 {
   try {
-    while (!end && session.isConnected()) {
-      try {
-        final ClientCallback callback=session.callback(id);
-        session.ack(id,callback.getMessageId());
-        if (callbackExecutor.isShutdown())         logger.fatal("Attempt to submit callback to shutdown executor");
- else         client.processCallback(callback);
+    while (true) {
+      final ClientCallback callback=server.callback(id);
+      callbackExecutor.submit(new Runnable(){
+        @Override public void run(){
+          try {
+            client.processCallback(callback);
+          }
+ catch (          Exception ex) {
+            logger.fatal("CallbackClientDaemon error ",ex);
+          }
+        }
       }
- catch (      ServerUnavailable ex) {
-        session.handleServerUnavailable(ex);
-      }
-catch (      Exception ex) {
-        logger.fatal("CallbackClientDaemon failed ",ex);
-      }
+);
     }
   }
  catch (  Exception ex) {
     logger.fatal("CallbackClientDaemon error ",ex);
   }
-  logger.info("CallbackClientDaemon stopped");
 }

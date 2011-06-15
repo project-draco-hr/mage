@@ -6,13 +6,8 @@
       return ret;
     }
   }
- catch (  InvalidDeckException ex) {
-    throw ex;
-  }
-catch (  GameException ex) {
-    throw ex;
-  }
-catch (  Exception ex) {
+ catch (  Exception ex) {
+    if (ex instanceof GameException)     throw (GameException)ex;
     handleException(ex);
   }
   return false;
