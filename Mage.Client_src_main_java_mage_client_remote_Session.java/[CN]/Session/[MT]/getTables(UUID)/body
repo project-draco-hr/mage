@@ -1,5 +1,7 @@
 {
+  lock.readLock().lock();
   try {
+    if (server == null)     return null;
     return server.getTables(roomId);
   }
  catch (  RemoteException ex) {
@@ -9,5 +11,8 @@
 catch (  MageException ex) {
     handleMageException(ex);
     throw new MageRemoteException();
+  }
+ finally {
+    lock.readLock().unlock();
   }
 }

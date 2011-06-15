@@ -1,6 +1,12 @@
 {
   if (future != null && !future.isDone())   future.cancel(true);
-  server=null;
+  lock.writeLock().lock();
+  try {
+    server=null;
+  }
+  finally {
+    lock.writeLock().unlock();
+  }
   frame.hideGames();
   frame.hideTables();
   frame.setStatusText("Not connected");

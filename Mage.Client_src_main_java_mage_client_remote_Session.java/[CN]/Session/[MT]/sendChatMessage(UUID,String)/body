@@ -1,5 +1,7 @@
 {
+  lock.readLock().lock();
   try {
+    if (server == null)     return false;
     server.sendChatMessage(chatId,userName,message);
     return true;
   }
@@ -8,6 +10,9 @@
   }
 catch (  MageException ex) {
     handleMageException(ex);
+  }
+ finally {
+    lock.readLock().unlock();
   }
   return false;
 }

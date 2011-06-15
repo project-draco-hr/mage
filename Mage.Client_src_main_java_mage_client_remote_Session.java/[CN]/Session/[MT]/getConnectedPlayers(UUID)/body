@@ -1,4 +1,5 @@
 {
+  lock.readLock().lock();
   try {
     return server.getConnectedPlayers(roomId);
   }
@@ -9,5 +10,8 @@
 catch (  MageException ex) {
     handleMageException(ex);
     throw new MageRemoteException();
+  }
+ finally {
+    lock.readLock().unlock();
   }
 }
