@@ -1,17 +1,26 @@
 {
   this.cardSelector.setVisible(true);
   this.jPanel1.setVisible(true);
-  this.cardSelector.getCardsList().clearCardEventListeners();
-  this.cardSelector.getCardsList().addCardEventListener(new Listener<Event>(){
-    @Override public void event(    Event event){
-      if (event.getEventName().equals("double-click")) {
-        Card card=cardSelector.getCard((UUID)event.getSource());
-        if (card != null) {
-          deck.getCards().add(Sets.createCard(card.getClass()));
-          if (mode == DeckEditorMode.Sideboard || mode == DeckEditorMode.Limited) {
-            deck.getSideboard().remove(card);
-            cardSelector.removeCard(card.getId());
+  for (  ICardGrid component : this.cardSelector.getCardGridComponents()) {
+    component.clearCardEventListeners();
+    component.addCardEventListener(new Listener<Event>(){
+      @Override public void event(      Event event){
+        if (event.getEventName().equals("double-click")) {
+          Card card=cardSelector.getCard((UUID)event.getSource());
+          if (card != null) {
+            deck.getCards().add(Sets.createCard(card.getClass()));
+            if (mode == DeckEditorMode.Sideboard || mode == DeckEditorMode.Limited) {
+              deck.getSideboard().remove(card);
+              cardSelector.removeCard(card.getId());
+            }
+            if (cardInfoPane instanceof CardInfoPane) {
+              ((CardInfoPane)cardInfoPane).setCard(new CardView(card));
+            }
           }
+        }
+ else         if (event.getEventName().equals("shift-double-click") && mode == DeckEditorMode.Constructed) {
+          Card card=cardSelector.getCard((UUID)event.getSource());
+          deck.getSideboard().add(Sets.createCard(card.getClass()));
           if (cardInfoPane instanceof CardInfoPane) {
             ((CardInfoPane)cardInfoPane).setCard(new CardView(card));
           }
@@ -19,8 +28,8 @@
         refreshDeck();
       }
     }
-  }
 );
+  }
   this.deckArea.clearDeckEventListeners();
   this.deckArea.addDeckEventListener(new Listener<Event>(){
     @Override public void event(    Event event){
