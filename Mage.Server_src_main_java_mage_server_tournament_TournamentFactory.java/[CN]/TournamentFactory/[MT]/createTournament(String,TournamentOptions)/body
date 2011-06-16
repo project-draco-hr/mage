@@ -4,6 +4,9 @@
   try {
     con=tournaments.get(tournamentType).getConstructor(new Class[]{TournamentOptions.class});
     tournament=con.newInstance(new Object[]{options});
+    for (    String setCode : options.getLimitedOptions().getSetCodes()) {
+      tournament.getSets().add(Sets.findSet(setCode));
+    }
   }
  catch (  Exception ex) {
     logger.fatal("TournamentFactory error ",ex);
