@@ -1,0 +1,20 @@
+{
+  if (sessionState == SessionState.CONNECTED)   sessionState=SessionState.DISCONNECTING;
+  if (connection == null)   return;
+  if (sessionState == SessionState.CONNECTED) {
+    try {
+      server.deregisterClient(sessionId);
+    }
+ catch (    Exception ex) {
+      logger.fatal("Error disconnecting ...",ex);
+    }
+  }
+  client.disconnected();
+  logger.info("Disconnected ... ");
+  if (sessionState == SessionState.SERVER_UNAVAILABLE && showMessage) {
+    client.showError("Server error.  You have been disconnected");
+  }
+ else {
+    sessionState=SessionState.DISCONNECTED;
+  }
+}
