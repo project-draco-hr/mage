@@ -15,15 +15,19 @@
   mainTable.getColumnModel().getColumn(5).setPreferredWidth(30);
   mainTable.getColumnModel().getColumn(6).setPreferredWidth(15);
   mainTable.getColumnModel().getColumn(7).setPreferredWidth(15);
-  jScrollPane1.setViewportView(mainTable);
   mainTable.setOpaque(false);
-  cbSortBy.setEnabled(false);
-  chkPiles.setEnabled(false);
   mainTable.addMouseListener(new MouseAdapter(){
     public void mousePressed(    MouseEvent e){
       if (e.getClickCount() == 2 && !e.isConsumed()) {
         e.consume();
-        jButtonAddToMainActionPerformed(null);
+        if (mainTable.getSelectedRowCount() > 0) {
+          int[] n=mainTable.getSelectedRows();
+          List<Integer> indexes=asList(n);
+          Collections.reverse(indexes);
+          for (          Integer index : indexes) {
+            mainModel.doubleClick(index);
+          }
+        }
       }
     }
   }
