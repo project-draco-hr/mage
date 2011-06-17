@@ -1,0 +1,12 @@
+{
+  while (!abort) {
+    game.fireSelectTargetEvent(playerId,"Pick blocker",blockers,true);
+    waitForResponse();
+    if (response.getUUID() != null) {
+      for (      Card card : blockers.getCards(game)) {
+        if (card.getId().equals(response.getUUID()))         return card.getId();
+      }
+    }
+  }
+  return null;
+}
