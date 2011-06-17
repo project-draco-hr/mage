@@ -6,7 +6,9 @@
     Map<UUID,Integer> assigned=new HashMap<UUID,Integer>();
     for (    UUID blockerId : blockerOrder) {
       Permanent blocker=game.getPermanent(blockerId);
-      int lethalDamage=blocker.getToughness().getValue() - blocker.getDamage();
+      int lethalDamage;
+      if (attacker.getAbilities().containsKey(DeathtouchAbility.getInstance().getId()))       lethalDamage=1;
+ else       lethalDamage=blocker.getToughness().getValue() - blocker.getDamage();
       if (lethalDamage >= damage) {
         assigned.put(blockerId,damage);
         damage=0;
