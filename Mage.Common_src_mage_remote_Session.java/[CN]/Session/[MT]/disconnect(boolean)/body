@@ -1,7 +1,8 @@
 {
   if (sessionState == SessionState.CONNECTED)   sessionState=SessionState.DISCONNECTING;
-  if (connection == null)   return;
-  if (sessionState == SessionState.CONNECTED) {
+  if (future != null && !future.isDone())   future.cancel(true);
+  if (connection == null || server == null)   return;
+  if (sessionState == SessionState.DISCONNECTING) {
     try {
       server.deregisterClient(sessionId);
     }
