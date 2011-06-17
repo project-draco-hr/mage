@@ -1,4 +1,5 @@
 {
+  sessionState=SessionState.CONNECTING;
   try {
     System.setSecurityManager(null);
     System.setProperty("http.nonProxyHosts","code.google.com");
@@ -23,27 +24,22 @@ this.server=(Server)reg.lookup("mage-server");
 this.userName=connection.getUsername();
 sessionId=server.registerClient(userName,client.getId(),client.getVersion());
 callbackDaemon=new CallbackClientDaemon(sessionId,client,server);
+sessionState=SessionState.CONNECTED;
 serverState=server.getServerState();
 future=sessionExecutor.scheduleWithFixedDelay(new ServerPinger(),5,5,TimeUnit.SECONDS);
 logger.info("Connected to RMI server at " + connection.getHost() + ":"+ connection.getPort());
 client.connected("Connected to " + connection.getHost() + ":"+ connection.getPort()+ " ");
-reconnecting=false;
-connecting=false;
 return true;
 }
  catch (MageException ex) {
 logger.fatal("",ex);
-if (!reconnecting) {
 disconnect(false);
 client.showMessage("Unable to connect to server. " + ex.getMessage());
-}
 }
 catch (RemoteException ex) {
 logger.fatal("Unable to connect to server - ",ex);
-if (!reconnecting) {
 disconnect(false);
 client.showMessage("Unable to connect to server. " + ex.getMessage());
-}
 }
 catch (NotBoundException ex) {
 logger.fatal("Unable to connect to server - ",ex);
