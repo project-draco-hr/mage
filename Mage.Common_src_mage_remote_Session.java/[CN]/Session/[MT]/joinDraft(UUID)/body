@@ -1,7 +1,9 @@
 {
   try {
-    server.joinDraft(draftId,sessionId);
-    return true;
+    if (sessionState == SessionState.CONNECTED) {
+      server.joinDraft(draftId,sessionId);
+      return true;
+    }
   }
  catch (  RemoteException ex) {
     handleRemoteException(ex);

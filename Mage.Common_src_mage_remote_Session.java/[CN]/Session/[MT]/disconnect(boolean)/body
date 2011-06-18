@@ -10,12 +10,11 @@
       logger.fatal("Error disconnecting ...",ex);
     }
   }
-  client.disconnected();
-  logger.info("Disconnected ... ");
-  if (sessionState == SessionState.SERVER_UNAVAILABLE && showMessage) {
-    client.showError("Server error.  You have been disconnected");
-  }
- else {
+  server=null;
+  if (sessionState == SessionState.DISCONNECTING) {
     sessionState=SessionState.DISCONNECTED;
+    logger.info("Disconnected ... ");
   }
+  client.disconnected();
+  if (showMessage)   client.showError("Server error.  You have been disconnected");
 }

@@ -1,7 +1,9 @@
 {
   try {
-    server.startChallenge(sessionId,roomId,tableId,challengeId);
-    return true;
+    if (sessionState == SessionState.CONNECTED) {
+      server.startChallenge(sessionId,roomId,tableId,challengeId);
+      return true;
+    }
   }
  catch (  RemoteException ex) {
     handleRemoteException(ex);

@@ -1,9 +1,10 @@
 {
   lock.readLock().lock();
   try {
-    if (server == null)     return false;
-    server.sendChatMessage(chatId,userName,message);
-    return true;
+    if (sessionState == SessionState.CONNECTED) {
+      server.sendChatMessage(chatId,userName,message);
+      return true;
+    }
   }
  catch (  RemoteException ex) {
     handleRemoteException(ex);

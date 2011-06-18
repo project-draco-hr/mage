@@ -1,7 +1,9 @@
 {
   try {
-    server.sendPlayerInteger(gameId,sessionId,data);
-    return true;
+    if (sessionState == SessionState.CONNECTED) {
+      server.sendPlayerInteger(gameId,sessionId,data);
+      return true;
+    }
   }
  catch (  RemoteException ex) {
     handleRemoteException(ex);

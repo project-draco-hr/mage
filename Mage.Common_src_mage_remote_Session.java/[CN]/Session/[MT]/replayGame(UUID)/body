@@ -1,7 +1,9 @@
 {
   try {
-    server.replayGame(gameId,sessionId);
-    return true;
+    if (sessionState == SessionState.CONNECTED) {
+      server.replayGame(gameId,sessionId);
+      return true;
+    }
   }
  catch (  RemoteException ex) {
     handleRemoteException(ex);

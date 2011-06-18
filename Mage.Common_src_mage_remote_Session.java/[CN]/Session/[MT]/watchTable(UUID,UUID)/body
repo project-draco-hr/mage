@@ -1,7 +1,9 @@
 {
   try {
-    server.watchTable(sessionId,roomId,tableId);
-    return true;
+    if (sessionState == SessionState.CONNECTED) {
+      server.watchTable(sessionId,roomId,tableId);
+      return true;
+    }
   }
  catch (  RemoteException ex) {
     handleRemoteException(ex);

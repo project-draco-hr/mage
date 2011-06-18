@@ -1,8 +1,7 @@
 {
   lock.readLock().lock();
   try {
-    if (server == null)     return null;
-    return server.getTables(roomId);
+    if (sessionState == SessionState.CONNECTED)     return server.getTables(roomId);
   }
  catch (  RemoteException ex) {
     handleRemoteException(ex);
@@ -15,4 +14,5 @@ catch (  MageException ex) {
  finally {
     lock.readLock().unlock();
   }
+  return null;
 }

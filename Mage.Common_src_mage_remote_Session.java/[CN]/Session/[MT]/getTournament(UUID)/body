@@ -1,6 +1,6 @@
 {
   try {
-    return server.getTournament(tournamentId);
+    if (sessionState == SessionState.CONNECTED)     return server.getTournament(tournamentId);
   }
  catch (  RemoteException ex) {
     handleRemoteException(ex);
@@ -10,4 +10,5 @@ catch (  MageException ex) {
     handleMageException(ex);
     throw new MageRemoteException();
   }
+  return null;
 }
