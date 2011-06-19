@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  TargetCardInLibrary target=new TargetCardInLibrary(new FilterLandCard());
+  if (player.searchLibrary(target,game)) {
+    if (target.getTargets().size() > 0) {
+      UUID cardId=target.getTargets().get(0);
+      Card card=player.getLibrary().remove(cardId,game);
+      if (card != null) {
+        card.moveToExile(source.getSourceId(),"Strata Scythe",source.getId(),game);
+      }
+    }
+    player.shuffleLibrary(game);
+  }
+  return true;
+}
