@@ -1,0 +1,19 @@
+{
+  ChoiceColorOrArtifact choice=(ChoiceColorOrArtifact)source.getChoices().get(0);
+  if (choice.isArtifactSelected()) {
+    protectionFilter.getCardType().add(Constants.CardType.ARTIFACT);
+    protectionFilter.setScopeCardType(ComparisonScope.Any);
+  }
+ else {
+    protectionFilter.setColor(choice.getColor());
+    protectionFilter.setUseColor(true);
+    protectionFilter.setScopeColor(ComparisonScope.Any);
+  }
+  protectionFilter.setMessage(choice.getChoice());
+  Permanent creature=game.getPermanent(source.getFirstTarget());
+  if (creature != null) {
+    creature.addAbility(ability);
+    return true;
+  }
+  return false;
+}
