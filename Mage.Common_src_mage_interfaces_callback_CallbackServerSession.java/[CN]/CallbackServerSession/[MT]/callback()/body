@@ -4,7 +4,7 @@
   try {
     waitingForCallback=true;
     waiting.signal();
-    while (callback.getMethod() == null) {
+    while (callback.getMethod() == null && threadAlive) {
       logger.trace("waiting for callback");
       callbackCalled.await();
     }
