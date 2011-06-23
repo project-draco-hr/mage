@@ -6,6 +6,8 @@
   this.power=new MageInt(3);
   this.toughness=new MageInt(2);
   this.addAbility(InfectAbility.getInstance());
-  this.addAbility(new HandOfThePraetorsAbility());
   this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Duration.WhileOnBattlefield,filter,true)));
+  SpellCastTriggeredAbility ability=new SpellCastTriggeredAbility(new AddPoisonCounterTargetEffect(1),filterSpell,true);
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
 }
