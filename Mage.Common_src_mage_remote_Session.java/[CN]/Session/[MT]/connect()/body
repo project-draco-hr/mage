@@ -11,7 +11,7 @@
     callbackClient.addListener(callbackHandler,metadata);
     this.sessionId=callbackClient.getSessionId();
     boolean registerResult=false;
-    if (connection.getPassword().isEmpty())     registerResult=server.registerClient(connection.getUsername(),sessionId,client.getVersion());
+    if (connection.getPassword() == null)     registerResult=server.registerClient(connection.getUsername(),sessionId,client.getVersion());
  else     registerResult=server.registerAdmin(connection.getPassword(),sessionId,client.getVersion());
     if (registerResult) {
       sessionState=SessionState.CONNECTED;

@@ -1,0 +1,13 @@
+{
+  for (Enumeration<NetworkInterface> interfaces=NetworkInterface.getNetworkInterfaces(); interfaces.hasMoreElements(); ) {
+    NetworkInterface iface=interfaces.nextElement();
+    if (iface.isLoopback())     continue;
+    for (    InterfaceAddress addr : iface.getInterfaceAddresses()) {
+      InetAddress iaddr=addr.getAddress();
+      if (iaddr instanceof Inet4Address) {
+        return iaddr;
+      }
+    }
+  }
+  return null;
+}

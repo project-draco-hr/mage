@@ -24,10 +24,11 @@
       adminPassword=arg.replace(adminPasswordArg,"");
     }
   }
-  String host=getServerAddress();
+  String host=config.getServerAddress();
   int port=config.getPort();
-  String locatorURI="bisocket://" + host + ":"+ port;
   try {
+    if (host.equals("localhost"))     host=Connection.getLocalAddress().getHostAddress();
+    String locatorURI="bisocket://" + host + ":"+ port;
     InvokerLocator serverLocator=new InvokerLocator(locatorURI);
     server=new MageTransporterServer(serverLocator,new MageServerImpl(adminPassword,testMode),MageServer.class.getName(),new MageServerInvocationHandler());
     server.start();
