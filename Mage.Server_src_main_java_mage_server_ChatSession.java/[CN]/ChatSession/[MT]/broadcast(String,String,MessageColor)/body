@@ -4,7 +4,7 @@
   final String time=timeFormatter.format(cal.getTime());
   final String username=userName;
   logger.debug("Broadcasting '" + msg + "' for "+ chatId);
-  for (  UUID sessionId : clients.keySet()) {
+  for (  String sessionId : clients.keySet()) {
     Session session=SessionManager.getInstance().getSession(sessionId);
     if (session != null)     session.fireCallback(new ClientCallback("chatMessage",chatId,new ChatMessage(username,msg,time,color)));
  else     kill(sessionId);

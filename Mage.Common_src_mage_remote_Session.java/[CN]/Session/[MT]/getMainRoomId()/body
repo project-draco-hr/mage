@@ -1,12 +1,12 @@
 {
   try {
-    if (sessionState == SessionState.CONNECTED)     return server.getMainRoomId();
+    if (isConnected())     return server.getMainRoomId();
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
-  }
-catch (  MageException ex) {
+ catch (  MageException ex) {
     handleMageException(ex);
+  }
+catch (  Throwable t) {
+    handleThrowable(t);
   }
   return null;
 }

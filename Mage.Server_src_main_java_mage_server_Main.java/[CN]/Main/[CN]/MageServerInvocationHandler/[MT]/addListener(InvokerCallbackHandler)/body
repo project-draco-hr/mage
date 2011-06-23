@@ -1,0 +1,11 @@
+{
+  ServerInvokerCallbackHandler handler=(ServerInvokerCallbackHandler)callbackHandler;
+  try {
+    String sessionId=handler.getClientSessionId();
+    InetAddress clientAddress=handler.getCallbackClient().getAddressSeenByServer();
+    SessionManager.getInstance().createSession(sessionId,callbackHandler,clientAddress.getHostAddress());
+  }
+ catch (  Throwable ex) {
+    logger.fatal("",ex);
+  }
+}

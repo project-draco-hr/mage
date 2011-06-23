@@ -1,0 +1,17 @@
+{
+  try {
+    if (sessionId.equals(this.sessionId) && table.getState() == TableState.STARTING) {
+      TournamentManager.getInstance().createTournamentSession(tournament,sessionPlayerMap,table.getId());
+      SessionManager sessionManager=SessionManager.getInstance();
+      for (      Entry<String,UUID> entry : sessionPlayerMap.entrySet()) {
+        Session session=sessionManager.getSession(entry.getKey());
+        session.tournamentStarted(tournament.getId(),entry.getValue());
+      }
+    }
+  }
+ catch (  Exception ex) {
+    logger.fatal("Error starting tournament",ex);
+    TableManager.getInstance().removeTable(table.getId());
+    TournamentManager.getInstance().kill(tournament.getId(),sessionId);
+  }
+}

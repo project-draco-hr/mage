@@ -1,17 +1,14 @@
 {
-  if (sessionState == SessionState.CONNECTED)   sessionState=SessionState.DISCONNECTING;
-  if (future != null && !future.isDone())   future.cancel(true);
-  if (connection == null || server == null)   return;
-  if (sessionState == SessionState.DISCONNECTING) {
-    try {
-      server.deregisterClient(sessionId);
-    }
- catch (    Exception ex) {
-      logger.fatal("Error disconnecting ...",ex);
-    }
+  if (isConnected())   sessionState=SessionState.DISCONNECTING;
+  if (connection == null)   return;
+  try {
+    callbackClient.disconnect();
+    TransporterClient.destroyTransporterClient(server);
   }
-  server=null;
-  if (sessionState == SessionState.DISCONNECTING) {
+ catch (  Throwable ex) {
+    logger.fatal("Error disconnecting ...",ex);
+  }
+  if (sessionState == SessionState.DISCONNECTING || sessionState == SessionState.CONNECTING) {
     sessionState=SessionState.DISCONNECTED;
     logger.info("Disconnected ... ");
   }
