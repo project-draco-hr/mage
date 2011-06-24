@@ -2,13 +2,22 @@
   sessionState=SessionState.CONNECTING;
   try {
     InvokerLocator clientLocator=new InvokerLocator(connection.getURI());
-    server=(MageServer)TransporterClient.createTransporterClient(clientLocator,MageServer.class);
+    Map<String,String> metadata=new HashMap<String,String>();
+    metadata.put(SocketWrapper.WRITE_TIMEOUT,"2000");
+    metadata.put("generalizeSocketException","true");
+    server=(MageServer)TransporterClient.createTransporterClient(clientLocator.getLocatorURI(),MageServer.class,metadata);
     callbackClient=new Client(clientLocator,"callback");
     callbackClient.connect();
-    Map<String,Object> metadata=new HashMap<String,Object>();
-    metadata.put(Bisocket.IS_CALLBACK_SERVER,"true");
+    Map<String,String> listenerMetadata=new HashMap<String,String>();
+    listenerMetadata.put(ConnectionValidator.VALIDATOR_PING_PERIOD,"5000");
+    listenerMetadata.put(ConnectionValidator.VALIDATOR_PING_TIMEOUT,"2000");
+    callbackClient.addConnectionListener(new ClientConnectionListener(),listenerMetadata);
+    Map<String,String> callbackMetadata=new HashMap<String,String>();
+    callbackMetadata.put(Bisocket.IS_CALLBACK_SERVER,"true");
+    callbackMetadata.put(SocketWrapper.WRITE_TIMEOUT,"2000");
+    callbackMetadata.put("generalizeSocketException","true");
     CallbackHandler callbackHandler=new CallbackHandler();
-    callbackClient.addListener(callbackHandler,metadata);
+    callbackClient.addListener(callbackHandler,callbackMetadata);
     this.sessionId=callbackClient.getSessionId();
     boolean registerResult=false;
     if (connection.getPassword() == null)     registerResult=server.registerClient(connection.getUsername(),sessionId,client.getVersion());
