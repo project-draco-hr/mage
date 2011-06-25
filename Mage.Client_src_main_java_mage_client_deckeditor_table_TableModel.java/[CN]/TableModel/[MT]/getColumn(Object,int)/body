@@ -2,9 +2,14 @@
   CardView c=(CardView)obj;
 switch (column) {
 case 0:
-    return "";
+    if (displayNoCopies) {
+      String key=c.getName() + c.getExpansionSetCode();
+      Integer count=cardsNoCopies.get(key);
+      return count != null ? count : "";
+    }
+  return "";
 case 1:
-  return c.getName();
+return c.getName();
 case 2:
 StringBuilder s=new StringBuilder();
 for (String cost : c.getManaCost()) {

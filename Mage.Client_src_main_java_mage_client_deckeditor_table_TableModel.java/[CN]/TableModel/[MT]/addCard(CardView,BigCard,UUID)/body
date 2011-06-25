@@ -3,5 +3,18 @@
     cardDimension=new Dimension(Config.dimensions.frameWidth,Config.dimensions.frameHeight);
   }
   cards.put(card.getId(),card);
-  view.add(card);
+  if (displayNoCopies) {
+    String key=card.getName() + card.getExpansionSetCode();
+    Integer count=1;
+    if (cardsNoCopies.containsKey(key)) {
+      count=cardsNoCopies.get(key) + 1;
+    }
+ else {
+      view.add(card);
+    }
+    cardsNoCopies.put(key,count);
+  }
+ else {
+    view.add(card);
+  }
 }
