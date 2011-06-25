@@ -1,12 +1,9 @@
 {
   try {
-    rmiExecutor.execute(new Runnable(){
+    callExecutor.execute(new Runnable(){
       @Override public void run(){
-        Session session=SessionManager.getInstance().getSession(sessionId);
-        if (session != null) {
-          session.kill();
-          logger.info("Client deregistered ...");
-        }
+        SessionManager.getInstance().disconnect(sessionId);
+        logger.info("Client deregistered ...");
       }
     }
 );

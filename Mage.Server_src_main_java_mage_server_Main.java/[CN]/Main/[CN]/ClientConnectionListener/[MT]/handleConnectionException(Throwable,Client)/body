@@ -1,0 +1,13 @@
+{
+  Session session=SessionManager.getInstance().getSession(client.getSessionId());
+  if (session != null) {
+    String sessionName=session.getUsername() + " at " + session.getHost();
+    if (throwable instanceof ClientDisconnectedException) {
+      logger.info("client disconnected - " + sessionName);
+    }
+ else {
+      logger.info("connection to client lost - " + sessionName);
+    }
+    SessionManager.getInstance().disconnect(client.getSessionId());
+  }
+}
