@@ -1,5 +1,8 @@
 {
   Permanent p=game.getPermanent(sourceAbility.getSourceId());
+  if (p == null) {
+    p=(Permanent)game.getLastKnownInformation(sourceAbility.getSourceId(),Constants.Zone.BATTLEFIELD);
+  }
   if (p != null) {
     return p.getCounters().getCount(counter.getName());
   }
