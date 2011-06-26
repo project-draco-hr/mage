@@ -2,6 +2,15 @@
   if (data.card.getRarity().equals(Constants.Rarity.NA)) {
     return;
   }
+  if (data.component instanceof MageCard) {
+    String zone=((MageCard)(data.component)).getZone();
+    if (zone != null && zone.equals(Constants.Zone.HAND.toString())) {
+      String showTooltips=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_HAND_SHOW_TOOLTIPS,"false");
+      if (showTooltips.equals("false")) {
+        return;
+      }
+    }
+  }
   if (cardInfoPane == null) {
     PopupFactory factory=PopupFactory.getSharedInstance();
     popup=factory.getPopup(data.component,data.popupText,(int)data.locationOnScreen.getX() + data.popupOffsetX,(int)data.locationOnScreen.getY() + data.popupOffsetY + 40);
