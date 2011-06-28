@@ -1,4 +1,17 @@
 {
   this.isAdmin=false;
-  this.username=userName;
+  User user=UserManager.getInstance().findUser(userName);
+  if (user == null) {
+    user=UserManager.getInstance().createUser(userName,host);
+  }
+ else {
+    if (user.getHost().equals(host)) {
+      logger.info("Reconnecting session for " + userName);
+    }
+ else {
+      throw new MageException("User name already in use");
+    }
+  }
+  UserManager.getInstance().connectToSession(sessionId,userName);
+  this.user=user;
 }
