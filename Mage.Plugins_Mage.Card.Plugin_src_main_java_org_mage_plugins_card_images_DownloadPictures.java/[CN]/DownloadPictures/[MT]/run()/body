@@ -1,5 +1,5 @@
 {
-  File base=new File(Constants.IO.imageBaseDir);
+  File base=new File(this.imagesPath != null ? imagesPath : Constants.IO.imageBaseDir);
   if (!base.exists()) {
     base.mkdir();
   }
@@ -28,7 +28,7 @@
           url=cardImageSource.generateURL(card.getCollectorId(),card.getSet());
         }
         if (url != null) {
-          Runnable task=new DownloadTask(card,new URL(url));
+          Runnable task=new DownloadTask(card,new URL(url),imagesPath);
           executor.execute(task);
         }
  else {
