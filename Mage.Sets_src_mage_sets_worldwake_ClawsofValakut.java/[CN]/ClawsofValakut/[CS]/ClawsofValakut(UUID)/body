@@ -6,7 +6,8 @@
   TargetPermanent auraTarget=new TargetCreaturePermanent();
   this.getSpellAbility().addTarget(auraTarget);
   this.getSpellAbility().addEffect(new AttachEffect(Constants.Outcome.BoostCreature));
-  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(new EnchantAbility(auraTarget.getTargetName()));
+  SimpleStaticAbility ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(new PermanentsOnBattlefieldCount(filter,1),new PermanentsOnBattlefieldCount(filter,0),Duration.WhileOnBattlefield));
+  ability.addEffect(new GainAbilityAttachedEffect(FirstStrikeAbility.getInstance(),Constants.AttachmentType.AURA));
   this.addAbility(ability);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ClawsofValakutEffect()));
 }
