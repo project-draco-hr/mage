@@ -1,0 +1,15 @@
+{
+  Card c=game.getCard(source.getSourceId());
+  if (c != null) {
+    Player player=game.getPlayer(c.getOwnerId());
+    if (player != null) {
+      Cards cards=new CardsImpl();
+      cards.add(c);
+      player.revealCards("Blightsteel Colossus",cards,game);
+      c.moveToZone(Constants.Zone.LIBRARY,source.getSourceId(),game,true);
+      player.shuffleLibrary(game);
+      return true;
+    }
+  }
+  return false;
+}
