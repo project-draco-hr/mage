@@ -6,7 +6,9 @@
   TargetPermanent auraTarget=new TargetCreaturePermanent();
   this.getSpellAbility().addTarget(auraTarget);
   this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
-  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(new EnchantAbility(auraTarget.getTargetName()));
+  PermanentsOnBattlefieldCount amount=new PermanentsOnBattlefieldCount(filter,1);
+  SimpleStaticAbility ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(amount,amount,Duration.WhileOnBattlefield));
+  ability.addEffect(new GainAbilityAttachedEffect(FlyingAbility.getInstance(),AttachmentType.AURA));
   this.addAbility(ability);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ArmoredAscensionEffect()));
 }
