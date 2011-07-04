@@ -1,0 +1,11 @@
+{
+  Card card=game.getCard(ability.getFirstTarget());
+  if (card != null) {
+    ability.getManaCostsToPay().add(0,new GenericManaCost(card.getManaCost().convertedManaCost()));
+  }
+  for (  ManaCost cost : ability.getManaCostsToPay()) {
+    if (cost instanceof VariableCost) {
+      cost.setPaid();
+    }
+  }
+}
