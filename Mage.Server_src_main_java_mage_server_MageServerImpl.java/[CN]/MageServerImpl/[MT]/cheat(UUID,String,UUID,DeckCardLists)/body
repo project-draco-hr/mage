@@ -3,7 +3,10 @@
     try {
       callExecutor.execute(new Runnable(){
         @Override public void run(){
-          if (testMode)           GameManager.getInstance().cheat(gameId,sessionId,playerId,deckList);
+          if (testMode) {
+            UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
+            GameManager.getInstance().cheat(gameId,userId,playerId,deckList);
+          }
         }
       }
 );

@@ -2,12 +2,11 @@
   try {
     match.startGame();
     table.initGame();
-    GameManager.getInstance().createGameSession(match.getGame(),sessionPlayerMap,table.getId(),choosingPlayerId);
-    SessionManager sessionManager=SessionManager.getInstance();
-    for (    Entry<String,UUID> entry : sessionPlayerMap.entrySet()) {
-      Session session=sessionManager.getSession(entry.getKey());
-      if (session != null) {
-        session.gameStarted(match.getGame().getId(),entry.getValue());
+    GameManager.getInstance().createGameSession(match.getGame(),userPlayerMap,table.getId(),choosingPlayerId);
+    for (    Entry<UUID,UUID> entry : userPlayerMap.entrySet()) {
+      User user=UserManager.getInstance().getUser(entry.getKey());
+      if (user != null) {
+        user.gameStarted(match.getGame().getId(),entry.getValue());
       }
  else {
         TableManager.getInstance().removeTable(table.getId());

@@ -1,0 +1,14 @@
+{
+  if (table.getState() != TableState.WAITING) {
+    return;
+  }
+  Seat seat=table.getNextAvailableSeat(playerType);
+  if (seat == null) {
+    throw new GameException("No available seats.");
+  }
+  match.addPlayer(player,deck);
+  table.joinTable(player,seat);
+  if (player.isHuman()) {
+    userPlayerMap.put(userId,player.getId());
+  }
+}

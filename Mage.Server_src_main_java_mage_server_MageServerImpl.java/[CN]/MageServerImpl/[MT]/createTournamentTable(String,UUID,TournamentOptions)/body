@@ -1,7 +1,8 @@
 {
   try {
     if (SessionManager.getInstance().isValidSession(sessionId)) {
-      TableView table=GamesRoomManager.getInstance().getRoom(roomId).createTournamentTable(sessionId,options);
+      UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
+      TableView table=GamesRoomManager.getInstance().getRoom(roomId).createTournamentTable(userId,options);
       logger.info("Tournament table " + table.getTableId() + " created");
       return table;
     }

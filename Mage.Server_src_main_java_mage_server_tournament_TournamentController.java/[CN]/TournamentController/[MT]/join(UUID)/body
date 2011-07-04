@@ -1,0 +1,10 @@
+{
+  UUID playerId=userPlayerMap.get(userId);
+  TournamentSession tournamentSession=new TournamentSession(tournament,null,tableId,playerId);
+  tournamentSessions.put(playerId,tournamentSession);
+  TournamentPlayer player=tournament.getPlayer(playerId);
+  player.setJoined();
+  logger.info("player " + playerId + " has joined tournament "+ tournament.getId());
+  ChatManager.getInstance().broadcast(chatId,"",player.getPlayer().getName() + " has joined the tournament",MessageColor.BLACK);
+  checkStart();
+}

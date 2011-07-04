@@ -1,7 +1,8 @@
 {
   try {
     if (SessionManager.getInstance().isValidSession(sessionId)) {
-      boolean ret=GamesRoomManager.getInstance().getRoom(roomId).joinTable(sessionId,tableId,name,playerType,skill,deckList);
+      UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
+      boolean ret=GamesRoomManager.getInstance().getRoom(roomId).joinTable(userId,tableId,name,playerType,skill,deckList);
       logger.info("Session " + sessionId + " joined table "+ tableId);
       return ret;
     }
