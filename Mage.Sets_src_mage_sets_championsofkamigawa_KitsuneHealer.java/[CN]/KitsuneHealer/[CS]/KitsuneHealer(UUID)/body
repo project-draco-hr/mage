@@ -1,0 +1,15 @@
+{
+  super(ownerId,27,"Kitsune Healer",Rarity.COMMON,new CardType[]{CardType.CREATURE},"{3}{W}");
+  this.expansionSetCode="CHK";
+  this.subtype.add("Fox");
+  this.subtype.add("Cleric");
+  this.color.setWhite(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability firstAbility=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new PreventDamageTargetEffect(Constants.Duration.EndOfTurn,1),new TapSourceCost());
+  firstAbility.addTarget(new TargetCreatureOrPlayer());
+  this.addAbility(firstAbility);
+  Ability secondAbility=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new KitsuneHealerEffect(Constants.Duration.EndOfTurn),new TapSourceCost());
+  secondAbility.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(secondAbility);
+}
