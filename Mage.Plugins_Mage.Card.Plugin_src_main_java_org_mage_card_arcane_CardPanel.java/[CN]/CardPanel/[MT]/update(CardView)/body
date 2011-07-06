@@ -1,7 +1,9 @@
 {
   if (isPermanent) {
-    if (isTapped() != ((PermanentView)card).isTapped()) {
-      Animation.tapCardToggle(this,this);
+    boolean needsTapping=isTapped() != ((PermanentView)card).isTapped();
+    boolean needsFlipping=isFlipped() != ((PermanentView)card).isFlipped();
+    if (needsTapping || needsFlipping) {
+      Animation.tapCardToggle(this,this,needsTapping,needsFlipping);
     }
   }
   if (CardUtil.isCreature(card) && CardUtil.isPlaneswalker(card)) {
