@@ -1,0 +1,17 @@
+{
+  super(ownerId,85,"Deathbringer Liege",Rarity.RARE,new CardType[]{CardType.CREATURE},"{2}{W/B}{W/B}{W/B}");
+  this.expansionSetCode="EVE";
+  this.subtype.add("Horror");
+  this.color.setBlack(true);
+  this.color.setWhite(true);
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(4);
+  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Constants.Duration.WhileOnBattlefield,filterWhite,true)));
+  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Constants.Duration.WhileOnBattlefield,filterBlack,true)));
+  Ability ability=new SpellCastTriggeredAbility(new TapTargetEffect(),filterWhiteSpellCard,true);
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+  ability=new SpellCastTriggeredAbility(new DeathbringerLiegeEffect(),filterBlackSpellCard,true);
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}
