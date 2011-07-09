@@ -1,0 +1,29 @@
+{
+  Player player=game.getPlayer(targetPointer.getFirst(source));
+  Player playerControls=game.getPlayer(source.getControllerId());
+  if (player != null && playerControls != null) {
+    Choice cardChoice=new ChoiceImpl();
+    cardChoice.setChoices(Sets.getCardNames());
+    cardChoice.clearChoice();
+    Choice numberChoice=new ChoiceImpl();
+    numberChoice.setMessage("Choose a number greater than 0");
+    HashSet<String> numbers=new HashSet<String>();
+    for (int i=1; i <= 4; i++) {
+      numbers.add(Integer.toString(i));
+    }
+    numberChoice.setChoices(numbers);
+    playerControls.choose(Constants.Outcome.Neutral,cardChoice,game);
+    playerControls.choose(Constants.Outcome.Neutral,numberChoice,game);
+    Cards cards=new CardsImpl();
+    cards.addAll(player.getLibrary().getCards(game));
+    playerControls.revealCards("Library",cards,game);
+    FilterCard filter=new FilterCard();
+    filter.getName().add(cardChoice.getChoice());
+    int count=Integer.parseInt(numberChoice.getChoice());
+    if (player.getLibrary().count(filter,game) == count) {
+      player.damage(8,source.getSourceId(),game.copy(),false,true);
+    }
+    player.shuffleLibrary(game);
+  }
+  return false;
+}
