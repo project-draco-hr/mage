@@ -1,0 +1,13 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    if (permanent.moveToExile(source.getSourceId(),"Hikari, Twilight Guardian Exile",source.getId(),game)) {
+      HikariTwilightGuardianDelayedTriggeredAbility delayedAbility=new HikariTwilightGuardianDelayedTriggeredAbility(source.getSourceId());
+      delayedAbility.setSourceId(source.getSourceId());
+      delayedAbility.setControllerId(source.getControllerId());
+      game.addDelayedTriggeredAbility(delayedAbility);
+      return true;
+    }
+  }
+  return false;
+}
