@@ -1,0 +1,16 @@
+{
+  if (event.getType() == GameEvent.EventType.DECLARE_ATTACKER) {
+    Player player=game.getPlayer(event.getPlayerId());
+    if (player != null && event.getTargetId().equals(source.getControllerId())) {
+      ManaCostsImpl propagandaTax=new ManaCostsImpl("{WP}");
+      if (propagandaTax.canPay(source.getSourceId(),event.getPlayerId(),game) && player.chooseUse(Constants.Outcome.Benefit,"Pay {WP} to declare attacker?",game)) {
+        propagandaTax.pay(game,this.getId(),event.getPlayerId(),false);
+        if (propagandaTax.isPaid()) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
