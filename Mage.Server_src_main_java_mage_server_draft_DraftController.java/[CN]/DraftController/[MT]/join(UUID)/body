@@ -2,6 +2,7 @@
   UUID playerId=userPlayerMap.get(userId);
   DraftSession draftSession=new DraftSession(draft,userId,playerId);
   draftSessions.put(playerId,draftSession);
+  UserManager.getInstance().getUser(userId).addDraft(playerId,draftSession);
   logger.info("User " + UserManager.getInstance().getUser(userId).getName() + " has joined draft "+ draft.getId());
   draft.getPlayer(playerId).setJoined();
   checkStart();

@@ -1,7 +1,8 @@
 {
   UUID playerId=userPlayerMap.get(userId);
-  TournamentSession tournamentSession=new TournamentSession(tournament,null,tableId,playerId);
+  TournamentSession tournamentSession=new TournamentSession(tournament,userId,tableId,playerId);
   tournamentSessions.put(playerId,tournamentSession);
+  UserManager.getInstance().getUser(userId).addTournament(playerId,tournamentSession);
   TournamentPlayer player=tournament.getPlayer(playerId);
   player.setJoined();
   logger.info("player " + playerId + " has joined tournament "+ tournament.getId());
