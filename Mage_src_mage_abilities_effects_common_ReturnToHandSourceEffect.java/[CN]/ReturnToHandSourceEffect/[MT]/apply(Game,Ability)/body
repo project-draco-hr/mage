@@ -1,18 +1,15 @@
 {
-  Permanent permanent=game.getPermanent(source.getSourceId());
-  if (permanent != null) {
-switch (game.getZone(permanent.getId())) {
-case BATTLEFIELD:
-      if (permanent != null) {
-        return permanent.moveToZone(Zone.HAND,source.getId(),game,false);
-      }
-    break;
-case GRAVEYARD:
   Card card=game.getCard(source.getSourceId());
-if (card != null) {
-  return card.moveToZone(Zone.HAND,source.getId(),game,true);
-}
-break;
+  if (card != null) {
+switch (game.getZone(card.getId())) {
+case BATTLEFIELD:
+      Permanent p=game.getPermanent(source.getSourceId());
+    if (p != null) {
+      return p.moveToZone(Zone.HAND,source.getId(),game,false);
+    }
+  break;
+case GRAVEYARD:
+return card.moveToZone(Zone.HAND,source.getId(),game,true);
 }
 }
 return false;
