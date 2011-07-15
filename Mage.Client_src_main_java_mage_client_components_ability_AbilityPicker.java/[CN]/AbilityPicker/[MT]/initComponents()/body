@@ -1,0 +1,62 @@
+{
+  JLabel jLabel1;
+  JLabel jLabel3;
+  Color textColor=Color.white;
+  mwPanelPainter=new BackgroundPainter();
+  jLabel1=new JLabel();
+  jLabel3=new JLabel();
+  title=new JTextField();
+  jScrollPane2=new JScrollPane();
+  setBackground(textColor);
+  setBackgroundPainter(mwPanelPainter);
+  jLabel1.setFont(new Font("Times New Roman",1,18));
+  jLabel1.setForeground(textColor);
+  jLabel1.setText(message);
+  jLabel3.setForeground(textColor);
+  jLabel3.setHorizontalAlignment(SwingConstants.TRAILING);
+  jLabel3.setText("Selected:");
+  title.setFont(new Font("Tahoma",1,11));
+  title.setBorder(BorderFactory.createEmptyBorder(2,2,2,2));
+  jScrollPane2.setBorder(null);
+  jScrollPane2.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+  jScrollPane2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+  rightImage=ImageHelper.loadImage(IMAGE_RIGHT_PATH);
+  rightImageHovered=ImageHelper.loadImage(IMAGE_RIGHT_HOVERED_PATH);
+  rows=new JList();
+  rows.setModel(new AbstractListModel(){
+    public int getSize(){
+      if (AbilityPicker.this.choices == null) {
+        return 0;
+      }
+      return AbilityPicker.this.choices.size();
+    }
+    public Object getElementAt(    int i){
+      return AbilityPicker.this.choices.get(i);
+    }
+  }
+);
+  rows.setBackground(textColor);
+  rows.setCellRenderer(new ImageRenderer());
+  rows.ensureIndexIsVisible(rows.getModel().getSize());
+  rows.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+  rows.setLayoutOrientation(JList.VERTICAL);
+  rows.setMaximumSize(new Dimension(32767,32767));
+  rows.setMinimumSize(new Dimension(67,16));
+  rows.setOpaque(false);
+  rows.addMouseListener(new MouseAdapter(){
+    public void mousePressed(    MouseEvent evt){
+      if (evt.getButton() == MouseEvent.BUTTON1 && evt.getClickCount() > 1) {
+        objectMouseClicked(evt);
+      }
+    }
+  }
+);
+  rows.setSelectedIndex(0);
+  rows.setFont(new Font("Times New Roman",1,17));
+  rows.addMouseWheelListener(this);
+  jScrollPane2.setViewportView(rows);
+  GroupLayout layout=new GroupLayout(this);
+  this.setLayout(layout);
+  layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.LEADING).add(GroupLayout.TRAILING,layout.createSequentialGroup().addContainerGap().add(layout.createParallelGroup(GroupLayout.TRAILING).add(GroupLayout.LEADING,jScrollPane2,GroupLayout.DEFAULT_SIZE,422,Short.MAX_VALUE).add(GroupLayout.LEADING,layout.createSequentialGroup().add(jLabel1).addPreferredGap(LayoutStyle.RELATED,175,Short.MAX_VALUE).add(1,1,1)).add(GroupLayout.LEADING,layout.createSequentialGroup().add(layout.createParallelGroup(GroupLayout.LEADING)).addPreferredGap(LayoutStyle.RELATED).add(layout.createParallelGroup(GroupLayout.TRAILING).add(GroupLayout.LEADING,layout.createParallelGroup(GroupLayout.LEADING))))).add(10,10,10)));
+  layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.LEADING).add(layout.createSequentialGroup().add(layout.createParallelGroup(GroupLayout.LEADING).add(layout.createSequentialGroup().add(jLabel1,GroupLayout.PREFERRED_SIZE,36,GroupLayout.PREFERRED_SIZE).add(5,5,5).add(layout.createParallelGroup(GroupLayout.BASELINE))).add(layout.createSequentialGroup().add(8,8,8))).addPreferredGap(LayoutStyle.RELATED).add(layout.createParallelGroup(GroupLayout.BASELINE)).addPreferredGap(LayoutStyle.RELATED).add(layout.createParallelGroup(GroupLayout.BASELINE)).addPreferredGap(LayoutStyle.RELATED).add(layout.createParallelGroup(GroupLayout.LEADING)).addPreferredGap(LayoutStyle.RELATED).add(jScrollPane2,GroupLayout.PREFERRED_SIZE,180,GroupLayout.PREFERRED_SIZE).addContainerGap(23,Short.MAX_VALUE)));
+}
