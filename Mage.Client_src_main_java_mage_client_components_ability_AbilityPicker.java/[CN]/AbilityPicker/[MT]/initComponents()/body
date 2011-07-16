@@ -22,19 +22,8 @@
   jScrollPane2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
   rightImage=ImageHelper.loadImage(IMAGE_RIGHT_PATH);
   rightImageHovered=ImageHelper.loadImage(IMAGE_RIGHT_HOVERED_PATH);
+  setOpaque(false);
   rows=new JList();
-  rows.setModel(new AbstractListModel(){
-    public int getSize(){
-      if (AbilityPicker.this.choices == null) {
-        return 0;
-      }
-      return AbilityPicker.this.choices.size();
-    }
-    public Object getElementAt(    int i){
-      return AbilityPicker.this.choices.get(i);
-    }
-  }
-);
   rows.setBackground(textColor);
   rows.setCellRenderer(new ImageRenderer());
   rows.ensureIndexIsVisible(rows.getModel().getSize());
@@ -53,8 +42,10 @@
 );
   rows.setSelectedIndex(0);
   rows.setFont(new Font("Times New Roman",1,17));
+  rows.setBorder(BorderFactory.createEmptyBorder());
   rows.addMouseWheelListener(this);
   jScrollPane2.setViewportView(rows);
+  jScrollPane2.setViewportBorder(BorderFactory.createEmptyBorder());
   GroupLayout layout=new GroupLayout(this);
   this.setLayout(layout);
   layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.LEADING).add(GroupLayout.TRAILING,layout.createSequentialGroup().addContainerGap().add(layout.createParallelGroup(GroupLayout.TRAILING).add(GroupLayout.LEADING,jScrollPane2,GroupLayout.DEFAULT_SIZE,422,Short.MAX_VALUE).add(GroupLayout.LEADING,layout.createSequentialGroup().add(jLabel1).addPreferredGap(LayoutStyle.RELATED,175,Short.MAX_VALUE).add(1,1,1)).add(GroupLayout.LEADING,layout.createSequentialGroup().add(layout.createParallelGroup(GroupLayout.LEADING)).addPreferredGap(LayoutStyle.RELATED).add(layout.createParallelGroup(GroupLayout.TRAILING).add(GroupLayout.LEADING,layout.createParallelGroup(GroupLayout.LEADING))))).add(10,10,10)));

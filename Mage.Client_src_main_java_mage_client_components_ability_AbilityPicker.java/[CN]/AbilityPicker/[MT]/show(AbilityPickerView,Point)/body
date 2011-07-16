@@ -1,11 +1,9 @@
 {
-  if (p == null)   return;
   this.choices=new ArrayList<Object>();
+  this.selected=true;
   for (  Map.Entry<UUID,String> choice : choices.getChoices().entrySet()) {
     this.choices.add(new AbilityPickerAction(choice.getKey(),choice.getValue()));
   }
   this.choices.add(new AbilityPickerAction(null,"Cancel"));
-  Point centered=SettingsManager.getInstance().getComponentPosition(320,240);
-  this.setLocation(centered.x,centered.y);
-  GuiDisplayUtil.keepComponentInsideScreen(centered.x,centered.y,this);
+  show(this.choices);
 }
