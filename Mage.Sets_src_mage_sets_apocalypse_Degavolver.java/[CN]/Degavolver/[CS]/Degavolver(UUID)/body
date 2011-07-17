@@ -1,0 +1,16 @@
+{
+  super(ownerId,6,"Degavolver",Rarity.RARE,new CardType[]{CardType.CREATURE},"{1}{W}");
+  this.expansionSetCode="APC";
+  this.subtype.add("Volver");
+  this.color.setWhite(true);
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Ability firstAbility=new KickerAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(2)),false);
+  firstAbility.addEffect(new GainAbilitySourceEffect(new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new RegenerateSourceEffect(),new PayLifeCost(3)),Constants.Duration.WhileOnBattlefield));
+  firstAbility.addCost(new ManaCostsImpl("{1}{B}"));
+  this.addAbility(firstAbility);
+  Ability secondAbility=new KickerAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance()),false);
+  secondAbility.addEffect(new GainAbilitySourceEffect(FirstStrikeAbility.getInstance(),Constants.Duration.WhileOnBattlefield));
+  secondAbility.addCost(new ColoredManaCost(Constants.ColoredManaSymbol.R));
+  this.addAbility(secondAbility);
+}
