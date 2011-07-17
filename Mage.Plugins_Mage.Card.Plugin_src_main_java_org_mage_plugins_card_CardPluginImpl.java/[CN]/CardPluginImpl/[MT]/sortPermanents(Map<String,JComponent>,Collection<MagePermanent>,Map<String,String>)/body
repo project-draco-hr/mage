@@ -35,6 +35,15 @@
   }
   Row allCreatures=new Row(permanents,RowType.creature);
   Row allOthers=new Row(permanents,RowType.other);
+  boolean othersOnTheRight=true;
+  if (options != null && options.containsKey("nonLandPermanentsInOnePile")) {
+    if (options.get("nonLandPermanentsInOnePile").equals("true")) {
+      System.out.println("in one pile");
+      othersOnTheRight=false;
+      allCreatures.addAll(allOthers);
+      allOthers.clear();
+    }
+  }
   cardWidth=cardWidthMax;
   Rectangle rect=jScrollPane.getVisibleRect();
   playAreaWidth=rect.width;
@@ -85,7 +94,7 @@
     x=GUTTER_X;
     for (int stackIndex=0, stackCount=row.size(); stackIndex < stackCount; stackIndex++) {
       Stack stack=row.get(stackIndex);
-      if (RowType.other.isType(stack.get(0))) {
+      if (othersOnTheRight && RowType.other.isType(stack.get(0))) {
         x=playAreaWidth - GUTTER_X + extraCardSpacingX;
         for (int i=stackIndex, n=row.size(); i < n; i++)         x-=row.get(i).getWidth();
       }
