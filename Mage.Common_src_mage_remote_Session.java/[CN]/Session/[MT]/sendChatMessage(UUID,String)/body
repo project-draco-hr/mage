@@ -1,19 +1,15 @@
 {
-  lock.readLock().lock();
   try {
-    if (sessionState == SessionState.CONNECTED) {
-      server.sendChatMessage(chatId,userName,message);
+    if (isConnected()) {
+      server.sendChatMessage(chatId,connection.getUsername(),message);
       return true;
     }
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
-  }
-catch (  MageException ex) {
+ catch (  MageException ex) {
     handleMageException(ex);
   }
- finally {
-    lock.readLock().unlock();
+catch (  Throwable t) {
+    handleThrowable(t);
   }
   return false;
 }

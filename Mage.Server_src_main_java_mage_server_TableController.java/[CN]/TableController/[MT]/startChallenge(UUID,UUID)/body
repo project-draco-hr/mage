@@ -1,16 +1,15 @@
 {
-  if (sessionId.equals(this.sessionId)) {
+  if (userId.equals(this.userId)) {
     try {
       match.startMatch();
       match.startGame();
       table.initGame();
       GameOptions options=new GameOptions();
       options.testMode=true;
-      GameManager.getInstance().createGameSession(match.getGame(),sessionPlayerMap,table.getId(),null);
+      GameManager.getInstance().createGameSession(match.getGame(),userPlayerMap,table.getId(),null);
       ChallengeManager.getInstance().prepareChallenge(getPlayerId(),match);
-      SessionManager sessionManager=SessionManager.getInstance();
-      for (      Entry<UUID,UUID> entry : sessionPlayerMap.entrySet()) {
-        sessionManager.getSession(entry.getKey()).gameStarted(match.getGame().getId(),entry.getValue());
+      for (      Entry<UUID,UUID> entry : userPlayerMap.entrySet()) {
+        UserManager.getInstance().getUser(entry.getKey()).gameStarted(match.getGame().getId(),entry.getValue());
       }
     }
  catch (    GameException ex) {

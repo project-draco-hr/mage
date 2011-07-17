@@ -1,0 +1,17 @@
+{
+  for (  Entry<UUID,GameSession> entry : gameSessions.entrySet()) {
+    gameStarted(entry.getValue().getGameId(),entry.getKey());
+    entry.getValue().init();
+    GameManager.getInstance().sendPlayerString(entry.getValue().getGameId(),userId,"");
+  }
+  for (  Entry<UUID,DraftSession> entry : draftSessions.entrySet()) {
+    draftStarted(entry.getValue().getDraftId(),entry.getKey());
+    entry.getValue().init();
+    entry.getValue().update();
+  }
+  for (  Entry<UUID,TournamentSession> entry : tournamentSessions.entrySet()) {
+    tournamentStarted(entry.getValue().getTournamentId(),entry.getKey());
+    entry.getValue().init();
+    entry.getValue().update();
+  }
+}

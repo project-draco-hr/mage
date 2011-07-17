@@ -1,0 +1,16 @@
+{
+  if (SessionManager.getInstance().isValidSession(sessionId)) {
+    try {
+      callExecutor.execute(new Runnable(){
+        @Override public void run(){
+          UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
+          GameManager.getInstance().watchGame(gameId,userId);
+        }
+      }
+);
+    }
+ catch (    Exception ex) {
+      handleException(ex);
+    }
+  }
+}

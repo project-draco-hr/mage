@@ -1,15 +1,15 @@
 {
   try {
-    if (sessionState == SessionState.CONNECTED) {
+    if (isConnected()) {
       server.watchGame(gameId,sessionId);
       return true;
     }
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
-  }
-catch (  MageException ex) {
+ catch (  MageException ex) {
     handleMageException(ex);
+  }
+catch (  Throwable t) {
+    handleThrowable(t);
   }
   return false;
 }

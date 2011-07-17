@@ -1,17 +1,16 @@
 {
   try {
-    if (sessionId.equals(this.sessionId) && table.getState() == TableState.STARTING) {
-      TournamentManager.getInstance().createTournamentSession(tournament,sessionPlayerMap,table.getId());
-      SessionManager sessionManager=SessionManager.getInstance();
-      for (      Entry<UUID,UUID> entry : sessionPlayerMap.entrySet()) {
-        Session session=sessionManager.getSession(entry.getKey());
-        session.tournamentStarted(tournament.getId(),entry.getValue());
+    if (userId.equals(this.userId) && table.getState() == TableState.STARTING) {
+      TournamentManager.getInstance().createTournamentSession(tournament,userPlayerMap,table.getId());
+      for (      Entry<UUID,UUID> entry : userPlayerMap.entrySet()) {
+        User user=UserManager.getInstance().getUser(entry.getKey());
+        user.tournamentStarted(tournament.getId(),entry.getValue());
       }
     }
   }
  catch (  Exception ex) {
     logger.fatal("Error starting tournament",ex);
     TableManager.getInstance().removeTable(table.getId());
-    TournamentManager.getInstance().kill(tournament.getId(),sessionId);
+    TournamentManager.getInstance().kill(tournament.getId(),userId);
   }
 }
