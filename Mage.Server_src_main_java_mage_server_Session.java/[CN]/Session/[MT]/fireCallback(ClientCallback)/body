@@ -1,10 +1,10 @@
 {
-  call.setMessageId(messageId++);
-  if (logger.isDebugEnabled())   logger.debug(sessionId + " - " + call.getMessageId()+ " - "+ call.getMethod());
   try {
-    callback.setCallback(call);
+    call.setMessageId(messageId++);
+    callbackHandler.handleCallbackOneway(new Callback(call));
   }
- catch (  InterruptedException ex) {
+ catch (  HandleCallbackException ex) {
     logger.fatal("Session fireCallback error",ex);
+    disconnect();
   }
 }

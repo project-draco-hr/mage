@@ -1,0 +1,14 @@
+{
+  try {
+    if (SessionManager.getInstance().isValidSession(sessionId)) {
+      UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
+      TableView table=GamesRoomManager.getInstance().getRoom(roomId).createTable(userId,options);
+      logger.info("Table " + table.getTableId() + " created");
+      return table;
+    }
+  }
+ catch (  Exception ex) {
+    handleException(ex);
+  }
+  return null;
+}

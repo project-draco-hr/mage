@@ -1,12 +1,12 @@
 {
   try {
-    if (sessionState == SessionState.CONNECTED)     return server.isTableOwner(sessionId,roomId,tableId);
+    if (isConnected())     return server.isTableOwner(sessionId,roomId,tableId);
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
-  }
-catch (  MageException ex) {
+ catch (  MageException ex) {
     handleMageException(ex);
+  }
+catch (  Throwable t) {
+    handleThrowable(t);
   }
   return false;
 }

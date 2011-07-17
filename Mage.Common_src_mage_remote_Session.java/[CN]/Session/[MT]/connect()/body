@@ -1,7 +1,6 @@
 {
   sessionState=SessionState.CONNECTING;
   try {
-    System.setSecurityManager(null);
     System.setProperty("http.nonProxyHosts","code.google.com");
     System.setProperty("socksNonProxyHosts","code.google.com");
     System.clearProperty("socksProxyHost");
@@ -19,30 +18,47 @@ System.setProperty("http.proxyPort",Integer.toString(connection.getProxyPort()))
 Authenticator.setDefault(new MageAuthenticator(connection.getProxyUsername(),connection.getProxyPassword()));
 break;
 }
-Registry reg=LocateRegistry.getRegistry(connection.getHost(),connection.getPort());
-this.server=(Server)reg.lookup("mage-server");
-this.userName=connection.getUsername();
-sessionId=server.registerClient(userName,client.getId(),client.getVersion());
-callbackDaemon=new CallbackClientDaemon(sessionId,client,server);
+InvokerLocator clientLocator=new InvokerLocator(connection.getURI());
+Map<String,String> metadata=new HashMap<String,String>();
+metadata.put(SocketWrapper.WRITE_TIMEOUT,"2000");
+metadata.put("generalizeSocketException","true");
+server=(MageServer)TransporterClient.createTransporterClient(clientLocator.getLocatorURI(),MageServer.class,metadata);
+Map<String,String> clientMetadata=new HashMap<String,String>();
+clientMetadata.put(SocketWrapper.WRITE_TIMEOUT,"2000");
+clientMetadata.put("generalizeSocketException","true");
+clientMetadata.put(Client.ENABLE_LEASE,"true");
+callbackClient=new Client(clientLocator,"callback",clientMetadata);
+Map<String,String> listenerMetadata=new HashMap<String,String>();
+listenerMetadata.put(ConnectionValidator.VALIDATOR_PING_PERIOD,"5000");
+listenerMetadata.put(ConnectionValidator.VALIDATOR_PING_TIMEOUT,"2000");
+callbackClient.connect(new ClientConnectionListener(),listenerMetadata);
+Map<String,String> callbackMetadata=new HashMap<String,String>();
+callbackMetadata.put(Bisocket.IS_CALLBACK_SERVER,"true");
+CallbackHandler callbackHandler=new CallbackHandler();
+callbackClient.addListener(callbackHandler,callbackMetadata);
+callbackClient.invoke("");
+this.sessionId=callbackClient.getSessionId();
+boolean registerResult=false;
+if (connection.getPassword() == null) registerResult=server.registerClient(connection.getUsername(),sessionId,client.getVersion());
+ else registerResult=server.registerAdmin(connection.getPassword(),sessionId,client.getVersion());
+if (registerResult) {
 sessionState=SessionState.CONNECTED;
 serverState=server.getServerState();
-future=sessionExecutor.scheduleWithFixedDelay(new ServerPinger(),5,5,TimeUnit.SECONDS);
-logger.info("Connected to RMI server at " + connection.getHost() + ":"+ connection.getPort());
+logger.info("Connected to MAGE server at " + connection.getHost() + ":"+ connection.getPort());
 client.connected("Connected to " + connection.getHost() + ":"+ connection.getPort()+ " ");
 return true;
 }
- catch (MageException ex) {
+disconnect(false);
+client.showMessage("Unable to connect to server.");
+}
+ catch (MalformedURLException ex) {
 logger.fatal("",ex);
-disconnect(false);
 client.showMessage("Unable to connect to server. " + ex.getMessage());
 }
-catch (RemoteException ex) {
-logger.fatal("Unable to connect to server - ",ex);
+catch (Throwable t) {
+logger.fatal("Unable to connect to server - ",t);
 disconnect(false);
-client.showMessage("Unable to connect to server. " + ex.getMessage());
-}
-catch (NotBoundException ex) {
-logger.fatal("Unable to connect to server - ",ex);
+client.showMessage("Unable to connect to server. " + t.getMessage());
 }
 return false;
 }

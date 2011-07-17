@@ -1,0 +1,14 @@
+{
+  try {
+    if (SessionManager.getInstance().isValidSession(sessionId)) {
+      UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
+      TableView table=GamesRoomManager.getInstance().getRoom(roomId).createTournamentTable(userId,options);
+      logger.info("Tournament table " + table.getTableId() + " created");
+      return table;
+    }
+  }
+ catch (  Exception ex) {
+    handleException(ex);
+  }
+  return null;
+}

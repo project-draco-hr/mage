@@ -1,12 +1,12 @@
 {
   try {
-    if (sessionState == SessionState.CONNECTED)     return server.sendCardPick(draftId,sessionId,cardId);
+    if (isConnected())     return server.sendCardPick(draftId,sessionId,cardId);
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
-  }
-catch (  MageException ex) {
+ catch (  MageException ex) {
     handleMageException(ex);
+  }
+catch (  Throwable t) {
+    handleThrowable(t);
   }
   return null;
 }

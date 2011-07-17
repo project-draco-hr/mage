@@ -1,0 +1,13 @@
+{
+  if (!killed) {
+    User user=UserManager.getInstance().getUser(userId);
+    if (user != null) {
+      if (futureTimeout != null && !futureTimeout.isDone()) {
+        int remaining=(int)futureTimeout.getDelay(TimeUnit.SECONDS);
+        user.fireCallback(new ClientCallback("draftInit",draft.getId(),new DraftClientMessage(getDraftPickView(remaining))));
+      }
+      return true;
+    }
+  }
+  return false;
+}

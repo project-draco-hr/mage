@@ -1,12 +1,12 @@
 {
   try {
-    if (sessionState == SessionState.CONNECTED)     return server.getGameChatId(gameId);
+    if (isConnected())     return server.getGameChatId(gameId);
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
-  }
-catch (  MageException ex) {
+ catch (  MageException ex) {
     handleMageException(ex);
+  }
+catch (  Throwable t) {
+    handleThrowable(t);
   }
   return null;
 }

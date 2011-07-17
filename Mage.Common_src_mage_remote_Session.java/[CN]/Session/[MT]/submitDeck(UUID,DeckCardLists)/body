@@ -1,15 +1,15 @@
 {
   try {
-    if (sessionState == SessionState.CONNECTED)     return server.submitDeck(sessionId,tableId,deck);
+    if (isConnected())     return server.submitDeck(sessionId,tableId,deck);
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
-  }
-catch (  GameException ex) {
+ catch (  GameException ex) {
     handleGameException(ex);
   }
 catch (  MageException ex) {
     handleMageException(ex);
+  }
+catch (  Throwable t) {
+    handleThrowable(t);
   }
   return false;
 }

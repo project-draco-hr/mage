@@ -1,13 +1,12 @@
 {
-  if (sessionPlayerMap.containsKey(sessionId)) {
-    GameSession session=gameSessions.get(sessionPlayerMap.get(sessionId));
-    session.destroy();
-    gameSessions.remove(sessionPlayerMap.get(sessionId));
-    leave(sessionId);
-    sessionPlayerMap.remove(sessionId);
+  if (userPlayerMap.containsKey(userId)) {
+    gameSessions.get(userPlayerMap.get(userId)).setKilled();
+    gameSessions.remove(userPlayerMap.get(userId));
+    leave(userId);
+    userPlayerMap.remove(userId);
   }
-  if (watchers.containsKey(sessionId)) {
-    watchers.get(sessionId).setKilled();
-    watchers.remove(sessionId);
+  if (watchers.containsKey(userId)) {
+    watchers.get(userId).setKilled();
+    watchers.remove(userId);
   }
 }
