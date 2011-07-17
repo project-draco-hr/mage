@@ -1,0 +1,17 @@
+{
+  super(ownerId,144,"Gruul Guildmage",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{R/G}{R/G}");
+  this.expansionSetCode="GPT";
+  this.subtype.add("Human");
+  this.subtype.add("Shaman");
+  this.color.setRed(true);
+  this.color.setGreen(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability firstAbility=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new DamageTargetEffect(2),new ManaCostsImpl("{3}{R}"));
+  firstAbility.addCost(new SacrificeTargetCost(new TargetControlledPermanent(filter)));
+  firstAbility.addTarget(new TargetPlayer(1));
+  this.addAbility(firstAbility);
+  Ability secondAbility=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new BoostTargetEffect(2,2,Constants.Duration.EndOfTurn),new ManaCostsImpl("{3}{G}"));
+  secondAbility.addTarget(new TargetCreaturePermanent());
+  this.addAbility(secondAbility);
+}

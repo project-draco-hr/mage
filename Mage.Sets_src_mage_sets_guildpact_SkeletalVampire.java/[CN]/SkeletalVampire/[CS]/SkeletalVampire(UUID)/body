@@ -1,0 +1,15 @@
+{
+  super(ownerId,62,"Skeletal Vampire",Rarity.RARE,new CardType[]{CardType.CREATURE},"{4}{B}{B}");
+  this.expansionSetCode="GPT";
+  this.subtype.add("Vampire");
+  this.subtype.add("Skeleton");
+  this.color.setBlack(true);
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  this.addAbility(FlyingAbility.getInstance());
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new CreateTokenEffect(new BatToken(),2)));
+  Ability ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new CreateTokenEffect(new BatToken(),2),new ManaCostsImpl("{3}{B}{B}"));
+  ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filter,false)));
+  this.addAbility(ability);
+  this.addAbility(new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new RegenerateSourceEffect(),new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filter,false))));
+}

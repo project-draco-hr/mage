@@ -1,0 +1,16 @@
+{
+  super(ownerId,132,"Balefire Liege",Rarity.RARE,new CardType[]{CardType.CREATURE},"{2}{R/W}{R/W}{R/W}");
+  this.expansionSetCode="EVE";
+  this.subtype.add("Spirit");
+  this.subtype.add("Horror");
+  this.color.setRed(true);
+  this.color.setWhite(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(4);
+  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Constants.Duration.WhileOnBattlefield,filterRedCreature,true)));
+  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Constants.Duration.WhileOnBattlefield,filterWhiteCreature,true)));
+  Ability ability=new SpellCastTriggeredAbility(new DamageTargetEffect(3),filterRedSpell,false);
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+  this.addAbility(new SpellCastTriggeredAbility(new GainLifeEffect(3),filterWhiteSpell,false));
+}
