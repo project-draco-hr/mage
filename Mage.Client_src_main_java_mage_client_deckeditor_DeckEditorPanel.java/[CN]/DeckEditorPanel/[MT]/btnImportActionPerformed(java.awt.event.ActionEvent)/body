@@ -4,29 +4,27 @@
   int ret=fcImportDeck.showOpenDialog(this);
   if (ret == JFileChooser.APPROVE_OPTION) {
     File file=fcImportDeck.getSelectedFile();
-    if (file != null) {
-      try {
-        setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        DeckImporter importer=getDeckImporter(file.getPath());
-        if (importer != null) {
-          deck=Deck.load(importer.importDeck(file.getPath()));
-        }
+    try {
+      setCursor(new Cursor(Cursor.WAIT_CURSOR));
+      DeckImporter importer=getDeckImporter(file.getPath());
+      if (importer != null) {
+        deck=Deck.load(importer.importDeck(file.getPath()));
+      }
  else {
-          JOptionPane.showMessageDialog(MageFrame.getDesktop(),"Unknown deck format","Error importing deck",JOptionPane.ERROR_MESSAGE);
-        }
+        JOptionPane.showMessageDialog(MageFrame.getDesktop(),"Unknown deck format","Error importing deck",JOptionPane.ERROR_MESSAGE);
       }
- catch (      Exception ex) {
-        Logger.getLogger(DeckEditorPanel.class.getName()).log(Level.SEVERE,null,ex);
-      }
+    }
+ catch (    Exception ex) {
+      Logger.getLogger(DeckEditorPanel.class.getName()).log(Level.SEVERE,null,ex);
+    }
  finally {
-        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-      }
-      refreshDeck();
-      try {
-        MageFrame.getPreferences().put("lastImportFolder",file.getCanonicalPath());
-      }
- catch (      IOException ex) {
-      }
+      setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
+    refreshDeck();
+    try {
+      if (file != null)       MageFrame.getPreferences().put("lastImportFolder",file.getCanonicalPath());
+    }
+ catch (    IOException ex) {
     }
   }
   fcImportDeck.setSelectedFile(null);

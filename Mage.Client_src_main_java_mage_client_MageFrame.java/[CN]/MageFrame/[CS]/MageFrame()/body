@@ -19,6 +19,7 @@
   Plugins.getInstance().loadPlugins();
   initComponents();
   setSize(1024,768);
+  SettingsManager.getInstance().setScreenWidthAndHeight(1024,768);
   this.setExtendedState(JFrame.MAXIMIZED_BOTH);
   session=new Session(this);
   callbackClient=new CallbackClientImpl(this);
@@ -45,7 +46,10 @@
     @Override public void componentResized(    ComponentEvent e){
       int width=((JComponent)e.getSource()).getWidth();
       int height=((JComponent)e.getSource()).getHeight();
-      if (!liteMode)       backgroundPane.setSize(width,height);
+      SettingsManager.getInstance().setScreenWidthAndHeight(width,height);
+      if (!liteMode) {
+        backgroundPane.setSize(width,height);
+      }
       JPanel arrowsPanel=ArrowBuilder.getArrowsPanelRef();
       if (arrowsPanel != null)       arrowsPanel.setSize(width,height);
       if (title != null) {
