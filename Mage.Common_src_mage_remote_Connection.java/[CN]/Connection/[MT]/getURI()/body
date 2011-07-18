@@ -1,3 +1,10 @@
 {
-  return "bisocket://" + host + ":"+ port;
+  if (host.equals("localhost")) {
+    try {
+      return transport + "://" + getLocalAddress().getHostAddress()+ ":"+ port+ "/"+ serialization;
+    }
+ catch (    SocketException ex) {
+    }
+  }
+  return transport + "://" + host+ ":"+ port+ "/"+ serialization;
 }

@@ -1,18 +1,13 @@
 {
-  lock.readLock().lock();
   try {
-    if (sessionState == SessionState.CONNECTED)     return server.getTables(roomId);
+    if (isConnected())     return server.getTables(roomId);
   }
- catch (  RemoteException ex) {
-    handleRemoteException(ex);
-    throw new MageRemoteException();
-  }
-catch (  MageException ex) {
+ catch (  MageException ex) {
     handleMageException(ex);
     throw new MageRemoteException();
   }
- finally {
-    lock.readLock().unlock();
+catch (  Throwable t) {
+    handleThrowable(t);
   }
   return null;
 }

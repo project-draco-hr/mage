@@ -1,10 +1,12 @@
 {
-  this.sessionId=sessionId;
+  this.userId=userId;
   chatId=ChatManager.getInstance().createChatSession();
   this.options=options;
   match=GameFactory.getInstance().createMatch(options.getGameType(),options);
-  Session session=SessionManager.getInstance().getSession(sessionId);
-  if (session != null)   controllerName=session.getUsername();
+  if (userId != null) {
+    User user=UserManager.getInstance().getUser(userId);
+    controllerName=user.getName();
+  }
  else   controllerName="System";
   table=new Table(roomId,options.getGameType(),options.getName(),controllerName,DeckValidatorFactory.getInstance().createDeckValidator(options.getDeckType()),options.getPlayerTypes(),match);
   init();
