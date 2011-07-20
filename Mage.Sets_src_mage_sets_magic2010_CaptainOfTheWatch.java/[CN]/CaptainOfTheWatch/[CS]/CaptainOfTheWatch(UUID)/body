@@ -1,0 +1,14 @@
+{
+  super(ownerId,6,"Captain of the Watch",Rarity.RARE,new CardType[]{CardType.CREATURE},"{4}{W}{W}");
+  this.expansionSetCode="M10";
+  this.subtype.add("Human");
+  this.subtype.add("Soldier");
+  this.color.setWhite(true);
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  this.addAbility(VigilanceAbility.getInstance());
+  Ability ability=new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Constants.Duration.WhileOnBattlefield,filter,true));
+  ability.addEffect(new GainAbilityControlledEffect(VigilanceAbility.getInstance(),Constants.Duration.WhileOnBattlefield,filter,true));
+  this.addAbility(ability);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new CreateTokenEffect(new SoldierToken(),3),false));
+}

@@ -1,0 +1,15 @@
+{
+  super(ownerId,70,"Death Baron",Rarity.RARE,new CardType[]{CardType.CREATURE},"{1}{B}{B}");
+  this.expansionSetCode="ALA";
+  this.subtype.add("Zombie");
+  this.subtype.add("Wizard");
+  this.color.setBlack(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability firstPart=new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Constants.Duration.WhileOnBattlefield,filterSkeletons,false));
+  firstPart.addEffect(new GainAbilityControlledEffect(DeathtouchAbility.getInstance(),Constants.Duration.WhileOnBattlefield,filterSkeletons,false));
+  this.addAbility(firstPart);
+  Ability secondPart=new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Constants.Duration.WhileOnBattlefield,filterZombie,true));
+  secondPart.addEffect(new GainAbilityControlledEffect(DeathtouchAbility.getInstance(),Constants.Duration.WhileOnBattlefield,filterZombie,true));
+  this.addAbility(secondPart);
+}
