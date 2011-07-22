@@ -1,20 +1,16 @@
 {
   Player player=game.getPlayer(source.getFirstTarget());
-  Set<UUID> remove=new HashSet<UUID>();
-  for (Iterator<UUID> i=player.getGraveyard().iterator(); i.hasNext(); ) {
-    Card card=game.getCard(i.next());
-    if (!filter.match(card)) {
-      i.remove();
-      game.getExile().add(card);
-      for (      UUID cardId : player.getLibrary().getCardList()) {
-        if (game.getCard(cardId).getName().equals(card.getName())) {
-          remove.add(cardId);
+  if (player != null) {
+    for (    Card card : player.getGraveyard().getCards(game)) {
+      if (!filter.match(card)) {
+        card.moveToExile(null,"",source.getId(),game);
+        for (        Card lcard : player.getLibrary().getCards(game)) {
+          if (lcard.getName().equals(card.getName())) {
+            lcard.moveToExile(null,"",source.getId(),game);
+          }
         }
       }
     }
-  }
-  for (  UUID cardId : remove) {
-    game.getExile().add(player.getLibrary().remove(cardId,game));
   }
   game.getPlayer(source.getControllerId()).lookAtCards("Haunting Echoes",new CardsImpl(Zone.PICK,player.getLibrary().getCards(game)),game);
   player.shuffleLibrary(game);

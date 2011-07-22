@@ -1,0 +1,30 @@
+{
+  Player player=game.getPlayer(targetPointer.getFirst(source));
+  Player controller=game.getPlayer(source.getControllerId());
+  if (player != null && controller != null) {
+    Choice cardChoice=new ChoiceImpl();
+    cardChoice.setChoices(Sets.getNonLandCardNames());
+    cardChoice.clearChoice();
+    controller.choose(Outcome.Exile,cardChoice,game);
+    String cardName=cardChoice.getChoice();
+    for (    Card card : player.getGraveyard().getCards(game)) {
+      if (card.getName().equals(cardName)) {
+        card.moveToExile(null,"",source.getId(),game);
+      }
+    }
+    for (    Card card : player.getHand().getCards(game)) {
+      if (card.getName().equals(cardName)) {
+        card.moveToExile(null,"",source.getId(),game);
+      }
+    }
+    for (    Card card : player.getLibrary().getCards(game)) {
+      if (card.getName().equals(cardName)) {
+        card.moveToExile(null,"",source.getId(),game);
+      }
+    }
+    controller.lookAtCards("Memoricide Hand",player.getHand(),game);
+    controller.lookAtCards("Memoricide Library",new CardsImpl(Zone.PICK,player.getLibrary().getCards(game)),game);
+    player.shuffleLibrary(game);
+  }
+  return true;
+}
