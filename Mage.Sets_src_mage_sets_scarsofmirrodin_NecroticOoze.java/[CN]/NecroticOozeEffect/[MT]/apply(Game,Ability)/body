@@ -1,0 +1,17 @@
+{
+  Permanent perm=game.getPermanent(source.getSourceId());
+  if (perm != null) {
+    for (    Player player : game.getPlayers().values()) {
+      for (      Card card : player.getGraveyard().getCards(game)) {
+        if (card.getCardType().contains(CardType.CREATURE)) {
+          for (          Ability ability : card.getAbilities()) {
+            if (ability instanceof ActivatedAbility) {
+              perm.addAbility(ability.copy());
+            }
+          }
+        }
+      }
+    }
+  }
+  return true;
+}
