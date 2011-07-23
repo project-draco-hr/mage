@@ -1,0 +1,17 @@
+{
+  for (int i=0; i < threads; i++) {
+    Thread t=new CardParser();
+    t.start();
+  }
+  while (threads != threadsDone) {
+    try {
+synchronized (this) {
+        this.wait(5000);
+      }
+    }
+ catch (    InterruptedException ex) {
+    }
+  }
+  writeCardsToFile();
+  writeCardsToUtilFile();
+}

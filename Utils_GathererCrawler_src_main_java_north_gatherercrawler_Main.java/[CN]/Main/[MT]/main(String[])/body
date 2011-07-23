@@ -1,0 +1,38 @@
+{
+  List<String> sets=new ArrayList<String>();
+  readCardsFromFile();
+  StringBuilder sb=new StringBuilder();
+  int added=0;
+  for (  String set : sets) {
+    sb.append("|[\"").append(set.replace(" ","+")).append("\"]");
+    added++;
+    if (added % 20 == 0 || added == sets.size()) {
+      int retries=30;
+      boolean done=false;
+      while (retries > 0 && !done) {
+        String url="http://gatherer.wizards.com/Pages/Search/Default.aspx?action=advanced&output=checklist&set=" + sb.toString();
+        Connection connection=Jsoup.connect(url);
+        connection.timeout(300000);
+        Document doc=connection.get();
+        System.out.println(url);
+        Elements select=doc.select(".checklist .name a");
+        if (!select.isEmpty()) {
+          for (          Element element : select) {
+            Integer multiverseId=Integer.parseInt(element.attr("href").replace("../Card/Details.aspx?multiverseid=",""));
+            if (!ParsedList.contains(multiverseId)) {
+              ParseQueue.add(multiverseId);
+            }
+          }
+        }
+        done=true;
+      }
+      if (!done) {
+        System.out.println("Error accured");
+      }
+      sb=new StringBuilder();
+      Thread.sleep(1000);
+    }
+  }
+  Thread t=new ThreadStarter();
+  t.start();
+}

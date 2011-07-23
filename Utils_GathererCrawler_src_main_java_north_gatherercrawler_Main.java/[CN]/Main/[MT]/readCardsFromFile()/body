@@ -1,0 +1,19 @@
+{
+  try {
+    FileInputStream fstream=new FileInputStream("cards-data.txt");
+    DataInputStream in=new DataInputStream(fstream);
+    BufferedReader br=new BufferedReader(new InputStreamReader(in));
+    String strLine;
+    while ((strLine=br.readLine()) != null) {
+      if (strLine.length() > 0) {
+        Card card=new Card(strLine);
+        CardsList.add(card);
+        ParsedList.add(card.getMultiverseId());
+      }
+    }
+    in.close();
+  }
+ catch (  Exception e) {
+    System.err.println("Error: " + e.getMessage());
+  }
+}
