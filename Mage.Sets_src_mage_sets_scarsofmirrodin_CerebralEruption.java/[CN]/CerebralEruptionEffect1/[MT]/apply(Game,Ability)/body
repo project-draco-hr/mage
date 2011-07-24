@@ -1,0 +1,17 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player != null && player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().getFromTop(game);
+    Cards cards=new CardsImpl();
+    cards.add(card);
+    player.revealCards("Cerebral Eruption",cards,game);
+    game.getState().setValue(source.getId().toString(),card);
+    int damage=card.getManaCost().convertedManaCost();
+    player.damage(damage,source.getId(),game,false,true);
+    for (    Permanent perm : game.getBattlefield().getAllActivePermanents(filter,player.getId())) {
+      perm.damage(damage,source.getId(),game,true,false);
+    }
+    return true;
+  }
+  return false;
+}

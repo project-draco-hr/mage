@@ -6,18 +6,13 @@
       if (!replaced)       result=ability.resolve(game);
  else       result=true;
       if (!copiedSpell) {
-        if (ability.getEffects().contains(ExileSpellEffect.getInstance()))         game.getExile().getPermanentExile().add(card);
- else         if (ability.getEffects().contains(ShuffleSpellEffect.getInstance())) {
-          card.moveToZone(Zone.LIBRARY,ability.getId(),game,false);
-          Player player=game.getPlayer(controllerId);
-          if (player != null)           player.shuffleLibrary(game);
+        for (        Effect effect : ability.getEffects()) {
+          if (effect instanceof PostResolveEffect) {
+            ((PostResolveEffect)effect).postResolve(card,ability,controllerId,game);
+            return result;
+          }
         }
- else         if (ability.getEffects().contains(ReturnToHandSpellEffect.getInstance())) {
-          card.moveToZone(Zone.HAND,ability.getId(),game,false);
-        }
- else {
-          card.moveToZone(Zone.GRAVEYARD,ability.getId(),game,false);
-        }
+        card.moveToZone(Zone.GRAVEYARD,ability.getId(),game,false);
       }
       return result;
     }
