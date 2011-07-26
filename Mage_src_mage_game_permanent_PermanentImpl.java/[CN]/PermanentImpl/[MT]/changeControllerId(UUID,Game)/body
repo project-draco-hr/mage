@@ -2,9 +2,13 @@
   if (!controllerId.equals(this.controllerId)) {
     Player newController=game.getPlayer(controllerId);
     if (newController != null && (!newController.hasLeft() || !newController.hasLost())) {
-      if (controllerId != beforeResetControllerId) {
+      if (!controllerId.equals(beforeResetControllerId)) {
         this.removeFromCombat(game);
         this.controlledFromStartOfTurn=false;
+        this.controllerChanged=true;
+      }
+ else {
+        this.controllerChanged=false;
       }
       this.controllerId=controllerId;
       this.abilities.setControllerId(controllerId);

@@ -1,0 +1,18 @@
+{
+  UUID equipmentId=source.getFirstTarget();
+  if (equipmentId != null) {
+    OgreGeargrabberDelayedTriggeredAbility delayedAbility=new OgreGeargrabberDelayedTriggeredAbility(equipmentId);
+    delayedAbility.setSourceId(source.getSourceId());
+    delayedAbility.setControllerId(source.getControllerId());
+    game.addDelayedTriggeredAbility(delayedAbility);
+    Permanent equipment=game.getPermanent(equipmentId);
+    if (equipment != null) {
+      Permanent ogre=game.getPermanent(source.getSourceId());
+      if (ogre != null) {
+        ogre.addAttachment(equipmentId,game);
+      }
+    }
+    return true;
+  }
+  return false;
+}
