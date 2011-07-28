@@ -1,0 +1,14 @@
+{
+  Permanent equipment=game.getPermanent(source.getSourceId());
+  if (equipment != null && equipment.getAttachedTo() != null) {
+    UUID uuid=getTargetPointer().getFirst(source);
+    Permanent permanent=game.getPermanent(uuid);
+    if (permanent == null) {
+      permanent=game.getPermanent(equipment.getAttachedTo());
+    }
+    if (permanent != null) {
+      return permanent.sacrifice(source.getSourceId(),game);
+    }
+  }
+  return false;
+}
