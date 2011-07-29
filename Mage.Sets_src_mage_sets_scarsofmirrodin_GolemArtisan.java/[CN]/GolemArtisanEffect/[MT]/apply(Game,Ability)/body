@@ -1,0 +1,31 @@
+{
+  Permanent permanent=game.getPermanent(targetPointer.getFirst(source));
+  Player playerControls=game.getPlayer(source.getControllerId());
+  if (permanent != null && playerControls != null) {
+    Choice abilityChoice=new ChoiceImpl();
+    abilityChoice.setMessage("Choose an ability to add");
+    HashSet<String> abilities=new HashSet<String>();
+    abilities.add(FlyingAbility.getInstance().getRule());
+    abilities.add(TrampleAbility.getInstance().getRule());
+    abilities.add(HasteAbility.getInstance().getRule());
+    abilityChoice.setChoices(abilities);
+    playerControls.choose(Constants.Outcome.AddAbility,abilityChoice,game);
+    String chosen=abilityChoice.getChoice();
+    Ability ability=null;
+    if (FlyingAbility.getInstance().getRule().equals(chosen)) {
+      ability=FlyingAbility.getInstance();
+    }
+ else     if (TrampleAbility.getInstance().getRule().equals(chosen)) {
+      ability=TrampleAbility.getInstance();
+    }
+ else     if (HasteAbility.getInstance().getRule().equals(chosen)) {
+      ability=HasteAbility.getInstance();
+    }
+    if (ability != null) {
+      ContinuousEffect effect=new GainAbilityTargetEffect(ability,Constants.Duration.EndOfTurn);
+      game.addEffect(effect,source);
+      return true;
+    }
+  }
+  return false;
+}
