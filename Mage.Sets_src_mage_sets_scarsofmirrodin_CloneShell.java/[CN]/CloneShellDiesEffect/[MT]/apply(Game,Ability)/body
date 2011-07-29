@@ -1,0 +1,13 @@
+{
+  Permanent permanent=(Permanent)game.getLastKnownInformation(source.getSourceId(),Constants.Zone.BATTLEFIELD);
+  if (permanent != null) {
+    List<UUID> imprinted=permanent.getImprinted();
+    if (imprinted.size() > 0) {
+      Card imprintedCard=game.getCard(imprinted.get(0));
+      if (imprintedCard.getCardType().contains(CardType.CREATURE)) {
+        imprintedCard.putOntoBattlefield(game,Constants.Zone.EXILED,source.getSourceId(),source.getControllerId());
+      }
+    }
+  }
+  return true;
+}
