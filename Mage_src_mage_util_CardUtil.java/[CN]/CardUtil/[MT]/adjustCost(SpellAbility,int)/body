@@ -1,0 +1,21 @@
+{
+  ManaCosts<ManaCost> previousCost=spellAbility.getManaCostsToPay();
+  ManaCosts<ManaCost> adjustedCost=new ManaCostsImpl<ManaCost>();
+  boolean reduced=false;
+  for (  ManaCost manaCost : previousCost) {
+    Mana mana=manaCost.getOptions().get(0);
+    int colorless=mana.getColorless();
+    if (!reduced && mana != null && colorless > 0) {
+      if ((colorless - reduceCount) > 0) {
+        int newColorless=colorless - reduceCount;
+        adjustedCost.add(new GenericManaCost(newColorless));
+      }
+      reduced=true;
+    }
+ else {
+      adjustedCost.add(manaCost);
+    }
+  }
+  spellAbility.getManaCostsToPay().clear();
+  spellAbility.getManaCostsToPay().addAll(adjustedCost);
+}
