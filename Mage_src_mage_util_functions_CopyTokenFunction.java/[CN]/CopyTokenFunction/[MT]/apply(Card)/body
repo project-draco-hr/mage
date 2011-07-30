@@ -1,0 +1,27 @@
+{
+  if (target == null)   throw new IllegalArgumentException("Target can't be null");
+  target.setName(source.getName());
+  target.getColor().setColor(source.getColor());
+  target.getManaCost().clear();
+  target.getManaCost().add(source.getManaCost());
+  target.getCardType().clear();
+  for (  Constants.CardType type : source.getCardType()) {
+    target.getCardType().add(type);
+  }
+  target.getSubtype().clear();
+  for (  String type : source.getSubtype()) {
+    target.getSubtype().add(type);
+  }
+  target.getSupertype().clear();
+  for (  String type : source.getSupertype()) {
+    target.getSupertype().add(type);
+  }
+  target.getAbilities().clear();
+  for (  Ability ability : source.getAbilities()) {
+    ability.setSourceId(target.getId());
+    target.addAbility(ability);
+  }
+  target.getPower().setValue(source.getPower().getValue());
+  target.getToughness().setValue(source.getToughness().getValue());
+  return target;
+}
