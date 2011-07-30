@@ -7,6 +7,10 @@
       Card card=player.getLibrary().remove(cardId,game);
       if (card != null) {
         card.moveToExile(source.getSourceId(),"Strata Scythe",source.getId(),game);
+        Permanent permanent=game.getPermanent(source.getSourceId());
+        if (permanent != null) {
+          permanent.imprint(card.getId(),game);
+        }
       }
     }
     player.shuffleLibrary(game);

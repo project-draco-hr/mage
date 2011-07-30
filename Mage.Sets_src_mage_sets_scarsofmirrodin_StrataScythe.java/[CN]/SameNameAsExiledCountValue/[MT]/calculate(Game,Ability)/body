@@ -1,16 +1,10 @@
 {
   int value=0;
-  ExileZone exile=game.getExile().getExileZone(sourceAbility.getSourceId());
-  if (exile != null) {
-    UUID lastId=null;
-    for (    UUID cardId : exile) {
-      lastId=cardId;
-    }
-    if (lastId != null) {
-      FilterPermanent filterPermanent=new FilterPermanent();
-      filterPermanent.getName().add(game.getCard(lastId).getName());
-      value=game.getBattlefield().countAll(filterPermanent);
-    }
+  Permanent permanent=game.getPermanent(sourceAbility.getSourceId());
+  if (permanent != null && permanent.getImprinted().size() > 0) {
+    FilterPermanent filterPermanent=new FilterPermanent();
+    filterPermanent.getName().add(game.getCard(permanent.getImprinted().get(0)).getName());
+    value=game.getBattlefield().countAll(filterPermanent);
   }
   return value;
 }
