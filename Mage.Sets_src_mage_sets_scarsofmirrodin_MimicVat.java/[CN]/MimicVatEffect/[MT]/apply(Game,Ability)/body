@@ -1,0 +1,16 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent == null)   return false;
+  for (  UUID imprinted : permanent.getImprinted()) {
+    Card card=game.getCard(imprinted);
+    card.moveToZone(Constants.Zone.GRAVEYARD,source.getSourceId(),game,false);
+  }
+  permanent.clearImprinted(game);
+  UUID target=targetPointer.getFirst(source);
+  if (target != null) {
+    Card card=game.getCard(target);
+    card.moveToExile(getId(),"Mimic Vat (Imprint)",source.getSourceId(),game);
+    permanent.imprint(card.getId(),game);
+  }
+  return true;
+}

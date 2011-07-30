@@ -1,0 +1,16 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent == null)   return false;
+  if (permanent.getImprinted().size() > 0) {
+    Card card=game.getCard(permanent.getImprinted().get(0));
+    if (card != null) {
+      EmptyToken token=new EmptyToken();
+      CardUtil.copyTo(token).from(card);
+      token.addAbility(HasteAbility.getInstance());
+      token.addAbility(new OnEventTriggeredAbility(GameEvent.EventType.END_TURN_STEP_PRE,"beginning of the end step",new SacrificeSourceEffect()));
+      token.putOntoBattlefield(game,source.getSourceId(),source.getControllerId());
+      return true;
+    }
+  }
+  return false;
+}
