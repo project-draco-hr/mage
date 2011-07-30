@@ -1,0 +1,19 @@
+{
+  Card thisCard=game.getLastKnownInformation(source.getSourceId(),Constants.Zone.BATTLEFIELD);
+  if (thisCard != null) {
+    EmptyToken token=new EmptyToken();
+    CardUtil.copyTo(token).from(thisCard);
+    token.putOntoBattlefield(game,source.getSourceId(),source.getControllerId());
+    return true;
+  }
+ else {
+    Permanent permanent=game.getBattlefield().getPermanent(source.getSourceId());
+    if (permanent != null) {
+      EmptyToken token=new EmptyToken();
+      CardUtil.copyTo(token).from(permanent);
+      token.putOntoBattlefield(game,source.getSourceId(),source.getControllerId());
+      return true;
+    }
+  }
+  return false;
+}
