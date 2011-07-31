@@ -1,0 +1,17 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE) {
+    UUID sourceId=getSourceId();
+    if (game.getPermanent(sourceId) == null) {
+      if (game.getLastKnownInformation(sourceId,Constants.Zone.BATTLEFIELD) == null) {
+        return false;
+      }
+    }
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    Permanent permanent=zEvent.getTarget();
+    if (permanent != null && zEvent.getToZone() == Constants.Zone.GRAVEYARD && zEvent.getFromZone() == Constants.Zone.BATTLEFIELD && !(permanent instanceof PermanentToken) && permanent.getCardType().contains(CardType.CREATURE)) {
+      getEffects().get(0).setTargetPointer(new FixedTarget(permanent.getId()));
+      return true;
+    }
+  }
+  return false;
+}
