@@ -1,0 +1,18 @@
+{
+  if (event.getType() == GameEvent.EventType.DAMAGED_PLAYER) {
+    DamagedPlayerEvent damageEvent=(DamagedPlayerEvent)event;
+    UUID sourceId=damageEvent.getSourceId();
+    Permanent permanent=game.getPermanent(sourceId);
+    if (sourceId != null && permanent != null && permanent.getName().equals("Steel Hellkite")) {
+      Set<UUID> players=damagedPlayers.get(sourceId);
+      if (players != null) {
+        players.add(damageEvent.getPlayerId());
+      }
+ else {
+        players=new HashSet<UUID>();
+        players.add(damageEvent.getPlayerId());
+        damagedPlayers.put(sourceId,players);
+      }
+    }
+  }
+}
