@@ -1,0 +1,18 @@
+{
+  Permanent target=game.getPermanent(targetPointer.getFirst(source));
+  Player player=game.getPlayer(source.getControllerId());
+  if (target != null && player != null) {
+    if (target.isTapped()) {
+      if (player.chooseUse(Constants.Outcome.Untap,"Untap that creature?",game)) {
+        target.untap(game);
+      }
+    }
+ else {
+      if (player.chooseUse(Constants.Outcome.Tap,"Tap that creature?",game)) {
+        target.tap(game);
+      }
+    }
+    return true;
+  }
+  return false;
+}
