@@ -1,18 +1,21 @@
 {
-switch (source.getTargets().get(0).getZone()) {
+  boolean result=false;
+  for (  UUID id : targetPointer.getTargets(source)) {
+switch (game.getZone(id)) {
 case BATTLEFIELD:
-    Permanent permanent=game.getPermanent(source.getFirstTarget());
-  if (permanent != null) {
-    return permanent.moveToZone(Zone.LIBRARY,source.getId(),game,onTop);
-  }
+      Permanent permanent=game.getPermanent(id);
+    if (permanent != null) {
+      result|=permanent.moveToZone(Zone.LIBRARY,source.getId(),game,onTop);
+    }
 case GRAVEYARD:
-Card card=game.getCard(source.getFirstTarget());
+  Card card=game.getCard(id);
 for (Player player : game.getPlayers().values()) {
-if (player.getGraveyard().contains(card.getId())) {
-  player.getGraveyard().remove(card);
-  return card.moveToZone(Zone.LIBRARY,source.getId(),game,onTop);
+  if (player.getGraveyard().contains(card.getId())) {
+    player.getGraveyard().remove(card);
+    result|=card.moveToZone(Zone.LIBRARY,source.getId(),game,onTop);
+  }
 }
 }
 }
-return false;
+return result;
 }
