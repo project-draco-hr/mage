@@ -126,11 +126,15 @@
         }
  else         if (callback.getMethod().equals("sideboard")) {
           TableClientMessage message=(TableClientMessage)callback.getData();
-          sideboard(message.getDeck(),message.getTableId(),message.getTime());
+          DeckView deckView=message.getDeck();
+          Deck deck=DeckUtil.construct(deckView);
+          sideboard(deck,message.getTableId(),message.getTime());
         }
  else         if (callback.getMethod().equals("construct")) {
           TableClientMessage message=(TableClientMessage)callback.getData();
-          construct(message.getDeck(),message.getTableId(),message.getTime());
+          DeckView deckView=message.getDeck();
+          Deck deck=DeckUtil.construct(deckView);
+          construct(deck,message.getTableId(),message.getTime());
         }
  else         if (callback.getMethod().equals("draftOver")) {
           DraftPanel panel=frame.getDraft(callback.getObjectId());

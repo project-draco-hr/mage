@@ -1,0 +1,28 @@
+{
+  Deck deck=new Deck();
+  for (  CardView cardView : view.getCards().values()) {
+    ExpansionSet set=Sets.findSet(cardView.getExpansionSetCode());
+    if (set != null) {
+      Card card=set.findCard(cardView.getName(),cardView.getCardNumber());
+      if (card != null) {
+        deck.getCards().add(card);
+      }
+ else {
+        log.fatal("(Deck constructing) Couldn't find card: " + cardView.getName() + ", set="+ cardView.getExpansionSetCode()+ ", cid="+ Integer.valueOf(cardView.getCardNumber()));
+      }
+    }
+  }
+  for (  CardView cardView : view.getSideboard().values()) {
+    ExpansionSet set=Sets.findSet(cardView.getExpansionSetCode());
+    if (set != null) {
+      Card card=set.findCard(cardView.getName(),cardView.getCardNumber());
+      if (card != null) {
+        deck.getSideboard().add(card);
+      }
+ else {
+        log.fatal("(Deck constructing) Couldn't find card: " + cardView.getName() + ", set="+ cardView.getExpansionSetCode()+ ", cid="+ Integer.valueOf(cardView.getCardNumber()));
+      }
+    }
+  }
+  return deck;
+}
