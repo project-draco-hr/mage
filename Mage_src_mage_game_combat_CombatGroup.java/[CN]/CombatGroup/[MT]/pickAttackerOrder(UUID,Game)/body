@@ -1,0 +1,21 @@
+{
+  if (attackers.isEmpty())   return;
+  Player player=game.getPlayer(playerId);
+  List<UUID> attackerList=new ArrayList<UUID>(attackers);
+  attackerOrder.clear();
+  while (true) {
+    if (attackerList.size() == 1) {
+      attackerOrder.add(attackerList.get(0));
+      break;
+    }
+ else {
+      List<Permanent> attackerPerms=new ArrayList<Permanent>();
+      for (      UUID attackerId : attackerList) {
+        attackerPerms.add(game.getPermanent(attackerId));
+      }
+      UUID attackerId=player.chooseAttackerOrder(attackerPerms,game);
+      attackerOrder.add(attackerId);
+      attackerList.remove(attackerId);
+    }
+  }
+}

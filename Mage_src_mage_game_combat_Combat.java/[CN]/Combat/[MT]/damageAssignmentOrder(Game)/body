@@ -2,4 +2,10 @@
   for (  CombatGroup group : groups) {
     group.pickBlockerOrder(attackerId,game);
   }
+  for (  Map.Entry<UUID,CombatGroup> blockingGroup : blockingGroups.entrySet()) {
+    Permanent blocker=game.getPermanent(blockingGroup.getKey());
+    if (blocker != null) {
+      blockingGroup.getValue().pickAttackerOrder(blocker.getControllerId(),game);
+    }
+  }
 }
