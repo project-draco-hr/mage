@@ -7,7 +7,7 @@
       if (event.getEventName().equals("pick-a-card")) {
         DraftPickView view=session.sendCardPick(draftId,(UUID)event.getSource());
         if (view != null) {
-          draftBooster.loadBooster(view.getBooster(),bigCard);
+          draftBooster.loadBooster(emptyView,bigCard);
           draftPicks.loadCards(view.getPicks(),bigCard,null);
           setMessage("Waiting for other players");
         }
@@ -15,7 +15,7 @@
     }
   }
 );
-  setMessage("");
+  setMessage("Pick a card");
   countdown.stop();
   this.timeout=draftPickView.getTimeout();
   setTimeout(Integer.toString(timeout));
