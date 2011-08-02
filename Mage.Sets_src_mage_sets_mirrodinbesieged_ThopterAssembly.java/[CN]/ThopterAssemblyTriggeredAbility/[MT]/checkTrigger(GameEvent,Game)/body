@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.UPKEEP_STEP_PRE && event.getPlayerId().equals(this.controllerId)) {
+    FilterPermanent filter=new FilterPermanent();
+    filter.getSubtype().add("Thopter");
+    filter.setScopeSubtype(Filter.ComparisonScope.Any);
+    filter.setNotId(true);
+    filter.setId(sourceId);
+    if (!game.getBattlefield().contains(filter,controllerId,1)) {
+      return true;
+    }
+  }
+  return false;
+}
