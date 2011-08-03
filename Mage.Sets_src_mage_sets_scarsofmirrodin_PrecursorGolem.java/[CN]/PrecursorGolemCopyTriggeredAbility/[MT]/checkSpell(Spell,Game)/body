@@ -1,0 +1,25 @@
+{
+  if (spell != null && (spell.getCardType().contains(CardType.INSTANT) || spell.getCardType().contains(CardType.SORCERY))) {
+    UUID targetGolem=null;
+    SpellAbility sa=spell.getSpellAbility();
+    for (    Effect effect : sa.getEffects()) {
+      for (      UUID target : effect.getTargetPointer().getTargets(sa)) {
+        Permanent permanent=game.getPermanent(target);
+        if (permanent != null) {
+          if (!permanent.getSubtype().contains("Golem")) {
+            return false;
+          }
+          if (targetGolem == null) {
+            targetGolem=target;
+          }
+ else           if (!targetGolem.equals(target)) {
+            return false;
+          }
+        }
+      }
+    }
+    getEffects().get(0).setTargetPointer(new FixedTarget(spell.getId()));
+    return true;
+  }
+  return false;
+}
