@@ -1,0 +1,21 @@
+{
+  int maxDiscarded=0;
+  Player sourcePlayer=game.getPlayer(source.getControllerId());
+  for (  UUID playerId : sourcePlayer.getInRange()) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      int discarded=0;
+      for (      Card c : player.getHand().getCards(game)) {
+        if (player.discard(c,source,game))         discarded++;
+      }
+      if (discarded > maxDiscarded)       maxDiscarded=discarded;
+    }
+  }
+  for (  UUID playerId : sourcePlayer.getInRange()) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      player.drawCards(maxDiscarded,game);
+    }
+  }
+  return true;
+}
