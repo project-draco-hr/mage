@@ -15,6 +15,7 @@
   lblPriority=new javax.swing.JLabel();
   feedbackPanel=new mage.client.game.FeedbackPanel();
   btnConcede=new javax.swing.JButton();
+  btnSwitchHands=new javax.swing.JButton();
   btnStopWatching=new javax.swing.JButton();
   bigCard=new mage.client.cards.BigCard();
   stack=new mage.client.cards.Cards();
@@ -33,6 +34,7 @@
   gameChatPanel.disableInput();
   jTabbedPane1=new JTabbedPane();
   hand.setCardDimension(getHandCardDimension());
+  handCards=new HashMap<String,CardsView>();
   jSplitPane1.setBorder(null);
   jSplitPane1.setDividerSize(7);
   jSplitPane1.setResizeWeight(1.0);
@@ -75,6 +77,14 @@
     }
   }
 );
+  btnSwitchHands.setText("Switch Hands");
+  btnSwitchHands.addMouseListener(new MouseAdapter(){
+    @Override public void mouseClicked(    MouseEvent evt){
+      btnSwitchHandActionPerformed(null);
+    }
+  }
+);
+  btnSwitchHands.setBorder(BorderFactory.createLineBorder(Color.red));
   btnStopWatching.setText("Stop Watching");
   btnStopWatching.addActionListener(new java.awt.event.ActionListener(){
     public void actionPerformed(    java.awt.event.ActionEvent evt){
@@ -110,8 +120,8 @@
   pnlReplayLayout.setVerticalGroup(pnlReplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(pnlReplayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(btnStopReplay).addComponent(btnPreviousPlay).addComponent(btnNextPlay)));
   javax.swing.GroupLayout pnlGameInfoLayout=new javax.swing.GroupLayout(pnlGameInfo);
   pnlGameInfo.setLayout(pnlGameInfoLayout);
-  pnlGameInfoLayout.setHorizontalGroup(pnlGameInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(pnlGameInfoLayout.createSequentialGroup().addGap(10,10,10).addComponent(btnConcede).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnStopWatching).addContainerGap(62,Short.MAX_VALUE)).addComponent(bigCard,javax.swing.GroupLayout.DEFAULT_SIZE,256,Short.MAX_VALUE).addComponent(feedbackPanel,javax.swing.GroupLayout.DEFAULT_SIZE,256,Short.MAX_VALUE).addComponent(stack,javax.swing.GroupLayout.DEFAULT_SIZE,256,Short.MAX_VALUE).addGroup(pnlGameInfoLayout.createSequentialGroup().addContainerGap().addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(51,Short.MAX_VALUE)));
-  pnlGameInfoLayout.setVerticalGroup(pnlGameInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(pnlGameInfoLayout.createSequentialGroup().addComponent(bigCard,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addGap(1,1,1).addComponent(feedbackPanel,javax.swing.GroupLayout.PREFERRED_SIZE,109,javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(stack,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,164,Short.MAX_VALUE).addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(pnlGameInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(btnConcede).addComponent(btnStopWatching))));
+  pnlGameInfoLayout.setHorizontalGroup(pnlGameInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(pnlGameInfoLayout.createSequentialGroup().addGap(10,10,10).addComponent(btnConcede).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnSwitchHands).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnStopWatching).addContainerGap(62,Short.MAX_VALUE)).addComponent(bigCard,javax.swing.GroupLayout.DEFAULT_SIZE,256,Short.MAX_VALUE).addComponent(feedbackPanel,javax.swing.GroupLayout.DEFAULT_SIZE,256,Short.MAX_VALUE).addComponent(stack,javax.swing.GroupLayout.DEFAULT_SIZE,256,Short.MAX_VALUE).addGroup(pnlGameInfoLayout.createSequentialGroup().addContainerGap().addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(51,Short.MAX_VALUE)));
+  pnlGameInfoLayout.setVerticalGroup(pnlGameInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(pnlGameInfoLayout.createSequentialGroup().addComponent(bigCard,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addGap(1,1,1).addComponent(feedbackPanel,javax.swing.GroupLayout.PREFERRED_SIZE,109,javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(stack,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,164,Short.MAX_VALUE).addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(pnlGameInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(btnConcede).addComponent(btnSwitchHands).addComponent(btnStopWatching))));
   pnlBattlefield.setLayout(new java.awt.GridBagLayout());
   jPhases=new JPanel();
   jPhases.setBackground(new Color(0,0,0,100));

@@ -1,6 +1,15 @@
 {
+  Player player=game.getPlayer(playerId);
   GameView gameView=new GameView(game.getState(),game);
-  gameView.setHand(new CardsView(game.getPlayer(playerId).getHand().getCards(game)));
+  gameView.setHand(new CardsView(player.getHand().getCards(game)));
+  if (player.getPlayersUnderYourControl().size() > 0) {
+    Map<String,CardsView> handCards=new HashMap<String,CardsView>();
+    for (    UUID playerId : player.getPlayersUnderYourControl()) {
+      Player opponent=game.getPlayer(playerId);
+      handCards.put(player.getName(),new CardsView(opponent.getHand().getCards(game)));
+    }
+    gameView.setOpponentHands(handCards);
+  }
   List<LookedAtView> list=new ArrayList<LookedAtView>();
   for (  Entry<String,Cards> entry : game.getState().getLookedAt(playerId).entrySet()) {
     list.add(new LookedAtView(entry.getKey(),entry.getValue(),game));

@@ -3,9 +3,29 @@
     this.hand.setVisible(false);
   }
  else {
-    this.hand.loadCards(game.getHand(),bigCard,gameId);
-    int count=game.getHand().size();
-    hand.setPreferredSize(new java.awt.Dimension((getHandCardDimension().width + 5) * count + 5,getHandCardDimension().height + 20));
+    handCards.clear();
+    handCards.put(YOUR_HAND,game.getHand());
+    if (game.getOpponentHands() != null) {
+      for (      Map.Entry<String,CardsView> hand : game.getOpponentHands().entrySet()) {
+        handCards.put(hand.getKey(),hand.getValue());
+      }
+    }
+    if (!handCards.containsKey(chosenHandKey)) {
+      chosenHandKey=YOUR_HAND;
+    }
+    this.hand.loadCards(handCards.get(chosenHandKey),bigCard,gameId);
+    hand.setPreferredSize(new java.awt.Dimension((getHandCardDimension().width + 5) * game.getHand().size() + 5,getHandCardDimension().height + 20));
+    boolean previous=btnSwitchHands.isVisible();
+    boolean visible=handCards.size() > 1;
+    if (previous != visible) {
+      btnSwitchHands.setVisible(visible);
+      if (visible) {
+        JOptionPane.showMessageDialog(null,"You control other player's turn. \nUse \"Switch Hand\" on the bottom to switch between cards in different hands.");
+      }
+ else {
+        JOptionPane.showMessageDialog(null,"You lost control on other player's turn.");
+      }
+    }
   }
   if (game.getPhase() != null)   this.txtPhase.setText(game.getPhase().toString());
  else   this.txtPhase.setText("");
