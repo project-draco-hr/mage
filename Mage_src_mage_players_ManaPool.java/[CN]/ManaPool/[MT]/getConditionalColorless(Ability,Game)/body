@@ -1,0 +1,19 @@
+{
+  if (ability == null || conditionalMana.size() == 0) {
+    return 0;
+  }
+  boolean hasColorless=false;
+  for (  ConditionalMana mana : conditionalMana) {
+    if (mana.getColorless() > 0) {
+      hasColorless=true;
+      break;
+    }
+  }
+  if (!hasColorless)   return 0;
+  for (  ConditionalMana mana : conditionalMana) {
+    if (mana.getColorless() > 0 && mana.apply(ability,game)) {
+      return mana.getColorless();
+    }
+  }
+  return 0;
+}

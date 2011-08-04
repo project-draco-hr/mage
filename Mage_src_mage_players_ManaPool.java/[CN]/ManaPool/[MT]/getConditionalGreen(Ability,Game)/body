@@ -1,0 +1,19 @@
+{
+  if (ability == null || conditionalMana.size() == 0) {
+    return 0;
+  }
+  boolean hasGreen=false;
+  for (  ConditionalMana mana : conditionalMana) {
+    if (mana.getGreen() > 0) {
+      hasGreen=true;
+      break;
+    }
+  }
+  if (!hasGreen)   return 0;
+  for (  ConditionalMana mana : conditionalMana) {
+    if (mana.getGreen() > 0 && mana.apply(ability,game)) {
+      return mana.getGreen();
+    }
+  }
+  return 0;
+}
