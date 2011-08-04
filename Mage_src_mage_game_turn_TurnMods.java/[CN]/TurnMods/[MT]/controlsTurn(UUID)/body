@@ -1,0 +1,19 @@
+{
+  ListIterator<TurnMod> it=this.listIterator(this.size());
+  UUID newControllerId=null;
+  while (it.hasPrevious()) {
+    TurnMod turnMod=it.previous();
+    if (turnMod.getNewControllerId() != null && turnMod.getPlayerId().equals(playerId)) {
+      newControllerId=turnMod.getNewControllerId();
+      it.remove();
+    }
+  }
+  it=this.listIterator(this.size());
+  while (it.hasPrevious()) {
+    TurnMod turnMod=it.previous();
+    if (turnMod.getNewControllerId() != null && turnMod.getPlayerId().equals(playerId)) {
+      it.remove();
+    }
+  }
+  return newControllerId;
+}

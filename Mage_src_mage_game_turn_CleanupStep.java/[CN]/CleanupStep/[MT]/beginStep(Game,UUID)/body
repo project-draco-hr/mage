@@ -1,7 +1,10 @@
 {
   super.beginStep(game,activePlayerId);
   Player activePlayer=game.getPlayer(activePlayerId);
-  if (!activePlayer.hasLeft() && !activePlayer.hasLost())   activePlayer.discardToMax(game);
+  if (!activePlayer.hasLeft() && !activePlayer.hasLost()) {
+    activePlayer.discardToMax(game);
+    activePlayer.setGameUnderYourControl(true);
+  }
   game.getBattlefield().endOfTurn(activePlayerId,game);
   game.getState().removeEotEffects(game);
 }
