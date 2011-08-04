@@ -1,9 +1,10 @@
 {
-  if (!playerId.equals(getId())) {
+  if (!playerId.equals(this.getId())) {
     this.playersUnderYourControl.add(playerId);
     Player player=game.getPlayer(playerId);
     if (!player.hasLeft() && !player.hasLost()) {
       player.setGameUnderYourControl(false);
+      player.setTurnControlledBy(this.getId());
     }
     DelayedTriggeredAbility ability=new AtTheEndOfTurnDelayedTriggeredAbility(new LoseControlOnOtherPlayersControllerEffect());
     ability.setSourceId(getId());
