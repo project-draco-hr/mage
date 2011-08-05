@@ -87,6 +87,33 @@
  catch (  Exception e) {
     return false;
   }
+  if (card.getCardNumber() == null) {
+    url="http://magiccards.info/query?q=" + card.getName().replace(' ','+');
+    try {
+      Connection connection=Jsoup.connect(url);
+      connection.timeout(20000);
+      doc=connection.get();
+      Elements select=doc.select("small a:contains(" + card.getExpansion() + ")");
+      if (!select.isEmpty()) {
+        Matcher matcher=patternUrl.matcher(select.get(0).attr("href"));
+        matcher.find();
+        card.setCardNumber(matcher.group());
+      }
+ else {
+        select=doc.select("small b:contains(#)");
+        if (!select.isEmpty()) {
+          Matcher matcher=patternPrint.matcher(select.get(0).html());
+          matcher.find();
+          card.setCardNumber(matcher.group());
+        }
+      }
+    }
+ catch (    IOException ex) {
+    }
+  }
+  if (card.getCardNumber() == null) {
+    System.out.println("Card number missing: " + card.getName());
+  }
   CardsList.add(card);
   return true;
 }
