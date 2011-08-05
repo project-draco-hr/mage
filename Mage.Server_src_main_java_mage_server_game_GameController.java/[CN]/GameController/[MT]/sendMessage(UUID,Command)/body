@@ -1,11 +1,10 @@
 {
   final UUID playerId=userPlayerMap.get(userId);
   if (game.getPlayer(playerId).isGameUnderControl()) {
-    if (game.getPlayer(playerId).getPlayersUnderYourControl().size() == 0) {
+    if (game.getPriorityPlayerId() == null || game.getPriorityPlayerId().equals(playerId)) {
       if (gameSessions.containsKey(playerId))       command.execute(playerId);
     }
  else {
-      if (gameSessions.containsKey(playerId))       command.execute(playerId);
       Player player=game.getPlayer(playerId);
       for (      UUID controlled : player.getPlayersUnderYourControl()) {
         if (gameSessions.containsKey(controlled) && game.getPriorityPlayerId().equals(controlled))         command.execute(controlled);
