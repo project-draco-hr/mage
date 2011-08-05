@@ -1,0 +1,13 @@
+{
+  final UUID playerId=userPlayerMap.get(userId);
+  if (game.getPlayer(playerId).isGameUnderControl()) {
+    if (gameSessions.containsKey(playerId))     command.execute(playerId);
+    Player player=game.getPlayer(playerId);
+    for (    UUID controlled : player.getPlayersUnderYourControl()) {
+      if (gameSessions.containsKey(controlled))       command.execute(controlled);
+    }
+  }
+ else {
+    return;
+  }
+}
