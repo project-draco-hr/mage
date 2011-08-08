@@ -1,0 +1,19 @@
+{
+  boolean scepter=false;
+  boolean crown=false;
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(source.getControllerId())) {
+    if (permanent.getName().equals("Scepter of Empires")) {
+      scepter=true;
+    }
+ else     if (permanent.getName().equals("Crown of Empires")) {
+      crown=true;
+    }
+    if (scepter && crown)     break;
+  }
+  Token soldier=new SoldierToken();
+  int count=scepter && crown ? 5 : 1;
+  for (int i=0; i < count; i++) {
+    soldier.putOntoBattlefield(game,source.getSourceId(),source.getControllerId());
+  }
+  return false;
+}
