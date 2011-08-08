@@ -1,0 +1,37 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null && player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().getFromTop(game);
+    Cards cards=new CardsImpl();
+    cards.add(card);
+    player.revealCards("Djinn Of Wishes",cards,game);
+    Choice abilityChoice=new ChoiceImpl();
+    abilityChoice.setMessage("Play " + card.getName() + " without paying its mana cost?");
+    Set<String> abilities=new HashSet<String>();
+    abilities.add("Yes");
+    abilities.add("No");
+    abilityChoice.setChoices(abilities);
+    player.choose(Constants.Outcome.PlayForFree,abilityChoice,game);
+    System.out.println(abilityChoice);
+    System.out.println(abilityChoice.getChoice());
+    player.getLibrary().removeFromTop(game);
+    boolean used=false;
+    if (abilityChoice.getChoice() != null && abilityChoice.getChoice().equals("Yes")) {
+      if (card.getCardType().contains(CardType.LAND)) {
+        if (game.getActivePlayerId().equals(player.getId()) && player.getLandsPlayed() < player.getLandsPerTurn()) {
+          used=true;
+          player.playLand(card,game);
+        }
+      }
+ else {
+        used=true;
+        player.cast(card.getSpellAbility(),game,true);
+      }
+    }
+    if (!used) {
+      card.moveToZone(Constants.Zone.EXILED,source.getSourceId(),game,false);
+    }
+    return true;
+  }
+  return false;
+}
