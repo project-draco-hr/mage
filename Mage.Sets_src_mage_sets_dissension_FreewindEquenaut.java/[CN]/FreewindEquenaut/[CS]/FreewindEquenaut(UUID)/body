@@ -1,0 +1,13 @@
+{
+  super(ownerId,9,"Freewind Equenaut",Rarity.COMMON,new CardType[]{CardType.CREATURE},"{2}{W}");
+  this.expansionSetCode="DIS";
+  this.subtype.add("Human");
+  this.subtype.add("Archer");
+  this.color.setWhite(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(FlyingAbility.getInstance());
+  SimpleActivatedAbility ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(2),new TapSourceCost());
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinousEffect(new GainAbilitySourceEffect(ability,Duration.WhileOnBattlefield),new Enchanted(),"As long as {this} is enchanted, it has \"{tap}: {this} deals 2 damage to target attacking or blocking creature\"")));
+}
