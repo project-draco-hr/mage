@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && !event.getTargetId().equals(this.getSourceId())) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getToZone() == Constants.Zone.BATTLEFIELD) {
+      Permanent permanent=game.getPermanent(event.getTargetId());
+      if (permanent != null && !(permanent instanceof PermanentToken) && permanent.getCardType().contains(CardType.ARTIFACT)) {
+        getEffects().get(0).setTargetPointer(new FixedTarget(permanent.getId()));
+        return true;
+      }
+    }
+  }
+  return false;
+}
