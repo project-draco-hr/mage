@@ -1,7 +1,9 @@
 {
   updateGame(gameView);
-  this.feedbackPanel.getFeedback(required ? FeedbackMode.INFORM : FeedbackMode.CANCEL,message,false,gameView.getSpecial(),options);
+  Map<String,Serializable> options0=options == null ? new HashMap<String,Serializable>() : options;
   if (cardView != null && cardView.size() > 0) {
-    showCards(message,cardView,required);
+    ShowCardsDialog dialog=showCards(message,cardView,required);
+    options0.put("dialog",dialog);
   }
+  this.feedbackPanel.getFeedback(required ? FeedbackMode.INFORM : FeedbackMode.CANCEL,message,false,gameView.getSpecial(),options0);
 }

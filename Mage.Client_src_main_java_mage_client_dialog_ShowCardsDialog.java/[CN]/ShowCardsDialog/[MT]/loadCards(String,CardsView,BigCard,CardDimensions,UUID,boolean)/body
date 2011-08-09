@@ -12,5 +12,17 @@
   this.revalidate();
   this.repaint();
   this.setModal(modal);
-  this.setVisible(true);
+  SwingUtilities.invokeLater(new Runnable(){
+    @Override public void run(){
+      int width=ShowCardsDialog.this.getWidth();
+      int height=ShowCardsDialog.this.getWidth();
+      if (width > 0 && height > 0) {
+        Point centered=SettingsManager.getInstance().getComponentPosition(width,height);
+        ShowCardsDialog.this.setLocation(centered.x,centered.y);
+        GuiDisplayUtil.keepComponentInsideScreen(centered.x,centered.y,ShowCardsDialog.this);
+      }
+      ShowCardsDialog.this.setVisible(true);
+    }
+  }
+);
 }
