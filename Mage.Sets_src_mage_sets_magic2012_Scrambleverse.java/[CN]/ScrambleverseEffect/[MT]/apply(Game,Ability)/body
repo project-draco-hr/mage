@@ -1,0 +1,14 @@
+{
+  Random random=new Random();
+  PlayerList players=game.getPlayerList();
+  int count=players.size();
+  if (count > 1) {
+    FilterNonlandPermanent nonLand=new FilterNonlandPermanent();
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(nonLand)) {
+      ContinuousEffect effect=new ScrambleverseControlEffect(players.get(random.nextInt(count)));
+      effect.setTargetPointer(new FixedTarget(permanent.getId()));
+      game.addEffect(effect,source);
+    }
+  }
+  return true;
+}
