@@ -1,6 +1,22 @@
 {
   Card card=set.getRandom(rarity);
   if (card != null) {
+    boolean duplicate=true;
+    int retryCount=5;
+    while (duplicate && retryCount > 0) {
+      if (!rarity.equals(Rarity.LAND)) {
+        if (hasCardByName(booster,card.getName())) {
+          card=set.getRandom(rarity);
+        }
+ else {
+          duplicate=false;
+        }
+      }
+ else {
+        duplicate=false;
+      }
+      retryCount--;
+    }
     Card newCard=card.copy();
     newCard.assignNewId();
     booster.add(newCard);
