@@ -3,7 +3,7 @@
   for (  Card card : game.getCards()) {
     if (game.getZone(card.getId()) == Zone.HAND || game.getZone(card.getId()) == Zone.GRAVEYARD) {
       for (      Ability ability : card.getAbilities().getStaticAbilities(game.getZone(card.getId()))) {
-        for (        Effect effect : ability.getEffects(EffectType.CONTINUOUS)) {
+        for (        Effect effect : ability.getEffects(game,EffectType.CONTINUOUS)) {
           layerEffects.add((ContinuousEffect)effect);
           abilityMap.put(effect.getId(),ability);
         }
@@ -12,7 +12,7 @@
   }
   for (  Permanent permanent : game.getBattlefield().getAllPermanents()) {
     for (    Ability ability : permanent.getAbilities().getStaticAbilities(Zone.BATTLEFIELD)) {
-      for (      Effect effect : ability.getEffects(EffectType.CONTINUOUS)) {
+      for (      Effect effect : ability.getEffects(game,EffectType.CONTINUOUS)) {
         layerEffects.add((ContinuousEffect)effect);
         abilityMap.put(effect.getId(),ability);
       }

@@ -4,14 +4,14 @@
   for (  Card card : game.getCards()) {
     if (game.getZone(card.getId()) == Zone.HAND || game.getZone(card.getId()) == Zone.GRAVEYARD) {
       for (      Ability ability : card.getAbilities().getStaticAbilities(game.getZone(card.getId()))) {
-        for (        Effect effect : ability.getEffects(EffectType.REPLACEMENT)) {
+        for (        Effect effect : ability.getEffects(game,EffectType.REPLACEMENT)) {
           ReplacementEffect rEffect=(ReplacementEffect)effect;
           if (rEffect.applies(event,ability,game)) {
             replaceEffects.add(rEffect);
             abilityMap.put(rEffect.getId(),ability);
           }
         }
-        for (        Effect effect : ability.getEffects(EffectType.PREVENTION)) {
+        for (        Effect effect : ability.getEffects(game,EffectType.PREVENTION)) {
           ReplacementEffect rEffect=(ReplacementEffect)effect;
           if (rEffect.applies(event,ability,game)) {
             replaceEffects.add(rEffect);
@@ -23,14 +23,14 @@
   }
   for (  Permanent permanent : game.getBattlefield().getAllPermanents()) {
     for (    Ability ability : permanent.getAbilities().getStaticAbilities(Zone.BATTLEFIELD)) {
-      for (      Effect effect : ability.getEffects(EffectType.REPLACEMENT)) {
+      for (      Effect effect : ability.getEffects(game,EffectType.REPLACEMENT)) {
         ReplacementEffect rEffect=(ReplacementEffect)effect;
         if (rEffect.applies(event,ability,game)) {
           replaceEffects.add(rEffect);
           abilityMap.put(rEffect.getId(),ability);
         }
       }
-      for (      Effect effect : ability.getEffects(EffectType.PREVENTION)) {
+      for (      Effect effect : ability.getEffects(game,EffectType.PREVENTION)) {
         ReplacementEffect rEffect=(ReplacementEffect)effect;
         if (rEffect.applies(event,ability,game)) {
           replaceEffects.add(rEffect);
