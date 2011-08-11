@@ -1,0 +1,14 @@
+{
+  log.info("Reading server messages...");
+  List<String> newMessages=readFromFile();
+  if (newMessages != null && !newMessages.isEmpty()) {
+    lock.writeLock().lock();
+    try {
+      messages.clear();
+      messages.addAll(newMessages);
+    }
+  finally {
+      lock.writeLock().unlock();
+    }
+  }
+}
