@@ -1,0 +1,15 @@
+{
+  Map<String,String> metadata=new HashMap<String,String>();
+  metadata.put(SocketWrapper.WRITE_TIMEOUT,"2000");
+  metadata.put("generalizeSocketException","true");
+  try {
+    MageServer testServer=(MageServer)TransporterClient.createTransporterClient(serverLocator.getLocatorURI(),MageServer.class,metadata);
+    if (testServer != null) {
+      testServer.getServerState();
+      return true;
+    }
+  }
+ catch (  Throwable t) {
+  }
+  return false;
+}

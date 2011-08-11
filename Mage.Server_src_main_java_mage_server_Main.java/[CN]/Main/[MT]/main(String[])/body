@@ -29,10 +29,15 @@
   connection.setPort(config.getPort());
   try {
     InvokerLocator serverLocator=new InvokerLocator(connection.getURI());
-    server=new MageTransporterServer(serverLocator,new MageServerImpl(adminPassword,testMode),MageServer.class.getName(),new MageServerInvocationHandler());
-    server.start();
-    logger.info("Started MAGE server - listening on " + connection.toString());
-    if (testMode)     logger.info("MAGE server running in test mode");
+    if (!isAlreadyRunning(serverLocator)) {
+      server=new MageTransporterServer(serverLocator,new MageServerImpl(adminPassword,testMode),MageServer.class.getName(),new MageServerInvocationHandler());
+      server.start();
+      logger.info("Started MAGE server - listening on " + connection.toString());
+      if (testMode)       logger.info("MAGE server running in test mode");
+    }
+ else {
+      logger.fatal("Unable to start MAGE server - another server is already started");
+    }
   }
  catch (  IOException ex) {
     logger.fatal("Failed to start server - " + connection.toString(),ex);
