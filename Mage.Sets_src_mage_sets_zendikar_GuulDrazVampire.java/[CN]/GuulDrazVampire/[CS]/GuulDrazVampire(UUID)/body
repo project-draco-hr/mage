@@ -6,9 +6,7 @@
   this.color.setBlack(true);
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
-  ContinuousEffect effect=new GainAbilitySourceEffect(IntimidateAbility.getInstance(),Duration.WhileOnBattlefield);
-  SimpleStaticAbility ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinousEffect(effect,new TenOrLessLife(TenOrLessLife.CheckType.AN_OPPONENT),"As long as an opponent has 10 or less life, Guul Draz Vampire has intimidate"));
-  ContinuousEffect effect2=new BoostSourceEffect(2,1,Duration.WhileOnBattlefield);
-  ability.addEffect(new ConditionalContinousEffect(effect2,new TenOrLessLife(TenOrLessLife.CheckType.AN_OPPONENT),"As long as an opponent has 10 or less life, Guul Draz Vampire gets +2/+1"));
+  Ability ability=new ConditionalStaticAbility(Zone.BATTLEFIELD,new BoostSourceEffect(2,1,Duration.WhileOnBattlefield),new TenOrLessLife(TenOrLessLife.CheckType.AN_OPPONENT),rule);
+  ability.addEffect(new GainAbilitySourceEffect(IntimidateAbility.getInstance()));
   this.addAbility(ability);
 }

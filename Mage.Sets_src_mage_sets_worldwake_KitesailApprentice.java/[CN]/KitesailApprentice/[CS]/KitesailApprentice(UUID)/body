@@ -6,6 +6,7 @@
   this.color.setWhite(true);
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
-  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new ConditionalContinousEffect(new BoostSourceEffect(1,1,Constants.Duration.WhileOnBattlefield),Equipped.getInstance(),"As long as Kitesail Apprentice is equipped, it gets +1/+1")));
-  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new ConditionalContinousEffect(new GainAbilitySourceEffect(FlyingAbility.getInstance(),Constants.Duration.WhileOnBattlefield),Equipped.getInstance(),"As long as Kitesail Apprentice is equipped, it has flying")));
+  Ability ability=new ConditionalStaticAbility(Zone.BATTLEFIELD,new BoostSourceEffect(1,1,Duration.WhileOnBattlefield),Equipped.getInstance(),rule);
+  ability.addEffect(new GainAbilitySourceEffect(FlyingAbility.getInstance()));
+  this.addAbility(ability);
 }
