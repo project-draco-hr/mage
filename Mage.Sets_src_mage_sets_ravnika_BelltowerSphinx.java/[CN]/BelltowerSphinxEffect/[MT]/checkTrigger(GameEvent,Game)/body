@@ -1,15 +1,11 @@
 {
   if (event.getType() == GameEvent.EventType.DAMAGED_CREATURE && event.getTargetId().equals(this.sourceId)) {
-    MageObject object=game.getObject(event.getSourceId());
-    if (object != null && object instanceof Card) {
-      Player player=game.getPlayer(((Card)object).getOwnerId());
+    UUID controller=game.getControllerId(event.getSourceId());
+    if (controller != null) {
+      Player player=game.getPlayer(controller);
       if (player != null) {
-        int cardsCount=Math.min(event.getAmount(),player.getLibrary().size());
-        for (int i=0; i < cardsCount; i++) {
-          Card card=player.getLibrary().removeFromTop(game);
-          if (card != null)           card.moveToZone(Constants.Zone.GRAVEYARD,this.id,game,false);
- else           break;
-        }
+        getEffects().get(0).setTargetPointer(new FixedTarget(player.getId()));
+        ((PutLibraryIntoGraveTargetEffect)getEffects().get(0)).setAmount(new StaticValue(event.getAmount()));
         return true;
       }
     }
