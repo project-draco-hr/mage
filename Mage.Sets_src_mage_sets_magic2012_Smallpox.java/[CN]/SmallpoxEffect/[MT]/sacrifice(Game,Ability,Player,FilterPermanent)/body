@@ -1,0 +1,14 @@
+{
+  Target target=new TargetControlledPermanent(1,1,filter,false);
+  if (target.canChoose(player.getId(),game)) {
+    while (!target.isChosen() && target.canChoose(player.getId(),game)) {
+      player.choose(Constants.Outcome.Sacrifice,target,game);
+    }
+    for (int idx=0; idx < target.getTargets().size(); idx++) {
+      Permanent permanent=game.getPermanent((UUID)target.getTargets().get(idx));
+      if (permanent != null) {
+        permanent.sacrifice(source.getSourceId(),game);
+      }
+    }
+  }
+}
