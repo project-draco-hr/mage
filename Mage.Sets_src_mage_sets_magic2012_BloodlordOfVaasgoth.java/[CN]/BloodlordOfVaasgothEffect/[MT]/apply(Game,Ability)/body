@@ -1,0 +1,17 @@
+{
+  Spell object=game.getStack().getSpell(targetPointer.getFirst(source));
+  if (object != null) {
+    Permanent permanent=game.getPermanent(object.getSourceId());
+    if (permanent != null) {
+      Ability bloodthirst=ability.copy();
+      bloodthirst.newId();
+      bloodthirst.setSourceId(source.getSourceId());
+      permanent.addAbility(bloodthirst);
+      return true;
+    }
+  }
+ else {
+    used=true;
+  }
+  return false;
+}
