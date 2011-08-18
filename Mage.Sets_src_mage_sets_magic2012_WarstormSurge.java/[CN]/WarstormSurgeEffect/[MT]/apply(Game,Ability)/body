@@ -1,16 +1,20 @@
 {
-  Permanent creature=game.getPermanent(source.getFirstTarget());
+  UUID creatureId=(UUID)game.getState().getValue(source.getSourceId().toString());
+  Permanent creature=game.getPermanent(creatureId);
+  if (creature == null) {
+    creature=(Permanent)game.getLastKnownInformation(creatureId,Zone.BATTLEFIELD);
+  }
   if (creature != null) {
     int amount=creature.getPower().getValue();
-    UUID target=source.getTargets().get(1).getFirstTarget();
-    Permanent permanent=game.getPermanent(target);
-    if (permanent != null) {
-      permanent.damage(amount,source.getSourceId(),game,true,false);
+    UUID target=source.getTargets().getFirstTarget();
+    Permanent targetCreature=game.getPermanent(target);
+    if (targetCreature != null) {
+      targetCreature.damage(amount,creature.getId(),game,true,false);
       return true;
     }
     Player player=game.getPlayer(target);
     if (player != null) {
-      player.damage(amount,source.getSourceId(),game,false,true);
+      player.damage(amount,creature.getId(),game,false,true);
       return true;
     }
   }
