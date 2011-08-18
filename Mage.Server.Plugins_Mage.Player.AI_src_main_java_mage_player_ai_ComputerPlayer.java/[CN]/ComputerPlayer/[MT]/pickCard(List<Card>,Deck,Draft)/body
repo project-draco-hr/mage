@@ -5,6 +5,15 @@
   try {
     Card bestCard=pickBestCard(cards,chosenColors);
     int maxScore=RateCard.rateCard(bestCard,chosenColors);
+    int pickedCardRate=RateCard.getCardRating(bestCard);
+    if (pickedCardRate <= 3) {
+      Card counterPick=pickBestCard(cards,null);
+      int counterPickScore=RateCard.getCardRating(counterPick);
+      if (counterPickScore >= 8) {
+        bestCard=counterPick;
+        maxScore=RateCard.rateCard(bestCard,chosenColors);
+      }
+    }
     String colors="not chosen yet";
     if (chosenColors == null) {
       rememberPick(bestCard,maxScore);
@@ -16,7 +25,7 @@
         colors+=symbol.toString();
       }
     }
-    System.out.println("[DEBUG] AI picked: " + bestCard.getName() + ", score="+ maxScore+ ", deck colors="+ colors);
+    log.debug("[DEBUG] AI picked: " + bestCard.getName() + ", score="+ maxScore+ ", deck colors="+ colors);
     draft.addPick(playerId,bestCard.getId());
   }
  catch (  Exception e) {
