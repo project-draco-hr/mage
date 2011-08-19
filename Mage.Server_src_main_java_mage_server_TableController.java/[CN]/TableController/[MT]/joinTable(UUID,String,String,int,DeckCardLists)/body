@@ -13,6 +13,9 @@
   Player player=createPlayer(name,seat.getPlayerType(),skill);
   match.addPlayer(player,deck);
   table.joinTable(player,seat);
+  User user=UserManager.getInstance().getUser(userId);
+  user.addTable(player.getId(),table);
+  user.joinedTable(table.getRoomId(),table.getId(),false);
   logger.info("player joined " + player.getId());
   if (seat.getPlayer().isHuman()) {
     userPlayerMap.put(userId,player.getId());

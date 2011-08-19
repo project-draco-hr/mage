@@ -1,5 +1,10 @@
 {
-  session.disconnect(false);
+  if (session.isConnected()) {
+    if (JOptionPane.showConfirmDialog(this,"You are currently connected.  Are you sure you want to disconnect?","Confirm disconnect",JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
+      return;
+    }
+    session.disconnect(false);
+  }
   Plugins.getInstance().shutdown();
   dispose();
   System.exit(0);

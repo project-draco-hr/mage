@@ -1,11 +1,17 @@
 {
-  for (  Entry<UUID,GameSession> entry : gameSessions.entrySet()) {
-    entry.getValue().kill();
+  for (  GameSession session : gameSessions.values()) {
+    session.kill();
   }
-  for (  Entry<UUID,DraftSession> entry : draftSessions.entrySet()) {
-    entry.getValue().setKilled();
+  for (  DraftSession session : draftSessions.values()) {
+    session.setKilled();
   }
-  for (  Entry<UUID,TournamentSession> entry : tournamentSessions.entrySet()) {
-    entry.getValue().setKilled();
+  for (  TournamentSession session : tournamentSessions.values()) {
+    session.setKilled();
+  }
+  for (  Entry<UUID,Table> entry : tables.entrySet()) {
+    entry.getValue().leaveTable(entry.getKey());
+    if (TableManager.getInstance().isTableOwner(entry.getValue().getId(),userId)) {
+      TableManager.getInstance().removeTable(userId,entry.getValue().getId());
+    }
   }
 }
