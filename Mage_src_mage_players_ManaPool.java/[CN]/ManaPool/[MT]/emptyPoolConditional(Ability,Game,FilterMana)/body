@@ -1,0 +1,23 @@
+{
+  if (filter == null) {
+    return emptyPoolConditional(ability,game);
+  }
+  int total=count(filter);
+  if (filter.isBlack())   black=0;
+  if (filter.isBlue())   blue=0;
+  if (filter.isWhite())   white=0;
+  if (filter.isRed())   red=0;
+  if (filter.isGreen())   green=0;
+  if (filter.isColorless())   colorless=0;
+  Iterator<ConditionalMana> it=conditionalMana.iterator();
+  while (it.hasNext()) {
+    ConditionalMana mana=it.next();
+    if (mana.apply(ability,game)) {
+      if (mana.count(filter) > 0) {
+        total+=mana.count();
+        it.remove();
+      }
+    }
+  }
+  return total;
+}
