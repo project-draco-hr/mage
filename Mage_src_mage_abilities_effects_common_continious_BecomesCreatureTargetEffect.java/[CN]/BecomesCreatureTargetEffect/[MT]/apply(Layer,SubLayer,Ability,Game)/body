@@ -1,36 +1,38 @@
 {
-  Permanent permanent=game.getPermanent(source.getFirstTarget());
-  if (permanent != null) {
+  boolean result=false;
+  for (  UUID permanentId : targetPointer.getTargets(source)) {
+    Permanent permanent=game.getPermanent(permanentId);
+    if (permanent != null) {
 switch (layer) {
 case TypeChangingEffects_4:
-      if (sublayer == SubLayer.NA) {
-        if (token.getCardType().size() > 0) {
-          for (          Constants.CardType t : token.getCardType()) {
-            if (!permanent.getCardType().contains(t)) {
-              permanent.getCardType().add(t);
+        if (sublayer == SubLayer.NA) {
+          if (token.getCardType().size() > 0) {
+            for (            Constants.CardType t : token.getCardType()) {
+              if (!permanent.getCardType().contains(t)) {
+                permanent.getCardType().add(t);
+              }
             }
           }
+          if (type == null) {
+            permanent.getSubtype().clear();
+          }
+          if (token.getSubtype().size() > 0) {
+            permanent.getSubtype().addAll(token.getSubtype());
+          }
         }
-        if (type == null) {
-          permanent.getSubtype().clear();
-        }
-        if (token.getSubtype().size() > 0) {
-          permanent.getSubtype().addAll(token.getSubtype());
-        }
-      }
-    break;
+      break;
 case ColorChangingEffects_5:
-  if (sublayer == SubLayer.NA) {
-    if (token.getColor().hasColor())     permanent.getColor().setColor(token.getColor());
-  }
-break;
+    if (sublayer == SubLayer.NA) {
+      if (token.getColor().hasColor())       permanent.getColor().setColor(token.getColor());
+    }
+  break;
 case AbilityAddingRemovingEffects_6:
 if (sublayer == SubLayer.NA) {
-if (token.getAbilities().size() > 0) {
-  for (  Ability ability : token.getAbilities()) {
-    permanent.addAbility(ability);
+  if (token.getAbilities().size() > 0) {
+    for (    Ability ability : token.getAbilities()) {
+      permanent.addAbility(ability);
+    }
   }
-}
 }
 break;
 case PTChangingEffects_7:
@@ -40,5 +42,7 @@ if (token.getToughness() != MageInt.EmptyMageInt) permanent.getToughness().setVa
 }
 }
 }
-return true;
+result|=true;
+}
+return result;
 }
