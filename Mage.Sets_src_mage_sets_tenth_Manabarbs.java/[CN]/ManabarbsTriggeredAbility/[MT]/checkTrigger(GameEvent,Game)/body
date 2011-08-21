@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.TAPPED_FOR_MANA) {
+    Permanent permanent=game.getPermanent(event.getSourceId());
+    if (permanent == null) {
+      permanent=(Permanent)game.getLastKnownInformation(event.getSourceId(),Zone.BATTLEFIELD);
+    }
+    if (permanent != null && permanent.getCardType().contains(CardType.LAND)) {
+      getEffects().get(0).setTargetPointer(new FixedTarget(permanent.getControllerId()));
+      return true;
+    }
+  }
+  return false;
+}

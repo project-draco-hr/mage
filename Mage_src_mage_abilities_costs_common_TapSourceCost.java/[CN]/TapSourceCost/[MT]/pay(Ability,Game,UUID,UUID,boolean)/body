@@ -2,6 +2,9 @@
   Permanent permanent=game.getPermanent(sourceId);
   if (permanent != null) {
     paid=permanent.tap(game);
+    if (paid && ability instanceof ManaAbility) {
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.TAPPED_FOR_MANA,sourceId,sourceId,controllerId));
+    }
   }
   return paid;
 }
