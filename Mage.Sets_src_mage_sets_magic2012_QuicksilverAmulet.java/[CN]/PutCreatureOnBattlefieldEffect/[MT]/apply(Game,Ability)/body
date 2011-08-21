@@ -1,10 +1,17 @@
 {
-  Card card=game.getCard(source.getFirstTarget());
-  Player player=game.getPlayer(card.getOwnerId());
-  if (card != null && player != null) {
-    player.removeFromHand(card,game);
-    card.putOntoBattlefield(game,Zone.HAND,source.getId(),source.getControllerId());
-    return true;
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null || !player.chooseUse(Outcome.PutCreatureInPlay,choiceText,game)) {
+    return false;
+  }
+  TargetCardInHand target=new TargetCardInHand(new FilterCreatureCard());
+  target.setRequired(true);
+  if (player.choose(Outcome.Benefit,target,game)) {
+    Card card=game.getCard(target.getFirstTarget());
+    if (card != null) {
+      player.removeFromHand(card,game);
+      card.putOntoBattlefield(game,Zone.HAND,source.getId(),source.getControllerId());
+      return true;
+    }
   }
   return false;
 }
