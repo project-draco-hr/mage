@@ -1,0 +1,12 @@
+{
+  if ((event.getType() == EventType.DAMAGED_PLAYER && event.getTargetId().equals(this.getControllerId()))) {
+    return true;
+  }
+  if (event.getType() == EventType.DAMAGED_PLANESWALKER) {
+    Card card=game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
+    if (card != null && card instanceof Permanent && ((Permanent)card).getControllerId().equals(this.getControllerId())) {
+      return true;
+    }
+  }
+  return false;
+}
