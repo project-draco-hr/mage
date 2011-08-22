@@ -1,0 +1,14 @@
+{
+  super(ownerId,23,"Shinewend",Rarity.COMMON,new CardType[]{CardType.CREATURE},"{1}{W}");
+  this.expansionSetCode="MOR";
+  this.subtype.add("Elemental");
+  this.color.setWhite(true);
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  this.addAbility(FlyingAbility.getInstance());
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(1)),false));
+  Ability ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new DestroyTargetEffect(),new ManaCostsImpl("{1}{W}"));
+  ability.addCost(new RemoveCountersSourceCost(CounterType.P1P1.createInstance(1)));
+  ability.addTarget(new TargetPermanent(filter));
+  this.addAbility(ability);
+}
