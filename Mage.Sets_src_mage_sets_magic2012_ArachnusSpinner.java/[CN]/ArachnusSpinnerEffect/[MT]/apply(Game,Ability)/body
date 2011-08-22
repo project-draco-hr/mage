@@ -1,0 +1,38 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  FilterCard filter=new FilterCard("card named Arachnus Web");
+  filter.getName().add("Arachnus Web");
+  Card card=null;
+  Zone zone=null;
+  if (player.chooseUse(Outcome.Neutral,"Search your graveyard for Arachnus Web?",game)) {
+    TargetCardInYourGraveyard target=new TargetCardInYourGraveyard(filter);
+    if (player.choose(Outcome.PutCardInPlay,player.getGraveyard(),target,game)) {
+      card=game.getCard(target.getFirstTarget());
+      if (card != null) {
+        player.removeFromGraveyard(card,game);
+        zone=Zone.GRAVEYARD;
+      }
+    }
+  }
+  if (card == null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(filter);
+    if (player.searchLibrary(target,game)) {
+      card=game.getCard(target.getFirstTarget());
+      if (card != null) {
+        player.removeFromLibrary(card,game);
+        zone=Zone.LIBRARY;
+      }
+    }
+  }
+  if (card != null) {
+    Permanent permanent=game.getPermanent(source.getFirstTarget());
+    if (permanent != null) {
+      card.putOntoBattlefield(game,zone,source.getSourceId(),source.getControllerId());
+      return permanent.addAttachment(card.getId(),game);
+    }
+  }
+  return false;
+}
