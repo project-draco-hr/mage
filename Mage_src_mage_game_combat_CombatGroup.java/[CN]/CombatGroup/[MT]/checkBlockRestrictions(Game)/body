@@ -1,0 +1,26 @@
+{
+  if (attackers.isEmpty()) {
+    return;
+  }
+  for (  UUID uuid : attackers) {
+    Permanent attacker=game.getPermanent(uuid);
+    if (attacker != null && this.blocked && attacker.getMinBlockedBy() > 1 && blockers.size() > 0 && blockers.size() < attacker.getMinBlockedBy()) {
+      for (      UUID blockerId : blockers) {
+        Permanent blocker=game.getPermanent(blockerId);
+        if (blocker != null) {
+          blocker.setBlocking(blocker.getBlocking() - 1);
+        }
+      }
+      blockers.clear();
+      blockerOrder.clear();
+      this.blocked=false;
+      game.informPlayers(attacker.getName() + " can't be blocked except by " + attacker.getMinBlockedBy()+ " or more creatures. Blockers discarded.");
+      return;
+    }
+  }
+  for (  UUID blockerId : blockers) {
+    for (    UUID attackerId : attackers) {
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.BLOCKER_DECLARED,attackerId,blockerId,players.get(blockerId)));
+    }
+  }
+}
