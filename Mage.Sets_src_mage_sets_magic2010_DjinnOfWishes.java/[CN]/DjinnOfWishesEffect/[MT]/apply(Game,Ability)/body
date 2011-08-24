@@ -1,0 +1,28 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null && player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().getFromTop(game);
+    Cards cards=new CardsImpl();
+    cards.add(card);
+    player.revealCards("Djinn Of Wishes",cards,game);
+    player.getLibrary().removeFromTop(game);
+    boolean used=false;
+    if (player.chooseUse(Outcome.PlayForFree,"Play " + card.getName() + " without paying its mana cost?",game)) {
+      if (card.getCardType().contains(CardType.LAND)) {
+        if (game.getActivePlayerId().equals(player.getId()) && player.getLandsPlayed() < player.getLandsPerTurn()) {
+          used=true;
+          player.playLand(card,game);
+        }
+      }
+ else {
+        used=true;
+        player.cast(card.getSpellAbility(),game,true);
+      }
+    }
+    if (!used) {
+      card.moveToZone(Zone.EXILED,source.getSourceId(),game,false);
+    }
+    return true;
+  }
+  return false;
+}

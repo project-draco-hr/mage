@@ -1,9 +1,12 @@
 {
-  Permanent target=(Permanent)game.getPermanent(source.getFirstTarget());
-  if (target != null) {
-    target.addPower(power.calculate(game,source));
-    target.addToughness(toughness.calculate(game,source));
-    return true;
+  int affectedTargets=0;
+  for (  UUID permanentId : source.getTargets().get(0).getTargets()) {
+    Permanent target=(Permanent)game.getPermanent(permanentId);
+    if (target != null) {
+      target.addPower(power.calculate(game,source));
+      target.addToughness(toughness.calculate(game,source));
+      affectedTargets++;
+    }
   }
-  return false;
+  return affectedTargets > 0;
 }

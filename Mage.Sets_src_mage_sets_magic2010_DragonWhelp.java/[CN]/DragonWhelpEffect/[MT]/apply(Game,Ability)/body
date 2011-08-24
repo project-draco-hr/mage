@@ -1,0 +1,13 @@
+{
+  Integer amount=(Integer)game.getState().getValue(source.getSourceId().toString() + "DragonWhelp");
+  if (amount == null) {
+    amount=0;
+    DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(new DragonWhelpDelayedEffect());
+    delayedAbility.setSourceId(source.getSourceId());
+    delayedAbility.setControllerId(source.getControllerId());
+    game.addDelayedTriggeredAbility(delayedAbility);
+  }
+  amount++;
+  game.getState().setValue(source.getSourceId().toString() + "DragonWhelp",amount);
+  return true;
+}

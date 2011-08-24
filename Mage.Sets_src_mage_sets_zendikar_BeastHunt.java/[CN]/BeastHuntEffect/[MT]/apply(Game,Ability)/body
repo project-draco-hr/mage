@@ -1,0 +1,23 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl();
+  for (int i=0; i < 3; i++) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      cards.add(card);
+      if (card.getCardType().contains(CardType.CREATURE)) {
+        card.moveToZone(Zone.HAND,source.getId(),game,false);
+      }
+ else {
+        card.moveToZone(Zone.GRAVEYARD,source.getId(),game,false);
+      }
+    }
+  }
+  if (!cards.isEmpty()) {
+    player.revealCards("Beast Hunt",cards,game);
+  }
+  return true;
+}
