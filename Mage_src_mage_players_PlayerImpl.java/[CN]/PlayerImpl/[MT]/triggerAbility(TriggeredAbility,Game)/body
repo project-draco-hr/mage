@@ -1,13 +1,13 @@
 {
-  game.bookmarkState();
+  int bookmark=game.bookmarkState();
   TriggeredAbility ability=(TriggeredAbility)source.copy();
   if (ability.getTargets().canChoose(ability.getSourceId(),playerId,game)) {
     game.getStack().push(new StackAbility(ability,playerId));
     if (ability.activate(game,false)) {
-      game.removeLastBookmark();
+      game.removeBookmark(bookmark);
       return true;
     }
   }
-  game.restoreState();
+  game.restoreState(bookmark);
   return false;
 }

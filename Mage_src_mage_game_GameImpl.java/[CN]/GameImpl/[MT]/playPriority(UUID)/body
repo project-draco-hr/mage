@@ -1,33 +1,49 @@
 {
+  int bookmark=0;
   try {
     while (!isGameOver()) {
       state.getPlayers().resetPassed();
       state.getPlayerList().setCurrent(activePlayerId);
       Player player;
       while (!isGameOver()) {
-        player=getPlayer(state.getPlayerList().get());
-        state.setPriorityPlayerId(player.getId());
-        while (!player.isPassed() && !player.hasLost() && !player.hasLeft()&& !isGameOver()) {
-          checkStateAndTriggered();
-          if (isGameOver())           return;
-          player.priority(this);
-          if (isGameOver())           return;
-          applyEffects();
-        }
-        if (isGameOver())         return;
-        if (allPassed()) {
-          if (!state.getStack().isEmpty()) {
-            state.getStack().resolve(this);
+        try {
+          if (bookmark == 0)           bookmark=bookmarkState();
+          player=getPlayer(state.getPlayerList().get());
+          state.setPriorityPlayerId(player.getId());
+          while (!player.isPassed() && !player.hasLost() && !player.hasLeft()&& !isGameOver()) {
+            checkStateAndTriggered();
+            if (isGameOver())             return;
+            player.priority(this);
+            if (isGameOver())             return;
             applyEffects();
-            state.getPlayers().resetPassed();
-            fireUpdatePlayersEvent();
-            state.getRevealed().reset();
-            break;
           }
- else           return;
+          if (isGameOver())           return;
+          if (allPassed()) {
+            if (!state.getStack().isEmpty()) {
+              state.getStack().resolve(this);
+              applyEffects();
+              state.getPlayers().resetPassed();
+              fireUpdatePlayersEvent();
+              state.getRevealed().reset();
+              break;
+            }
+ else {
+              removeBookmark(bookmark);
+              return;
+            }
+          }
+        }
+ catch (        Exception ex) {
+          logger.fatal("Game exception ",ex);
+          this.fireErrorEvent("Game exception occurred: " + ex.getMessage() + " - "+ ex.getStackTrace()[0]);
+          restoreState(bookmark);
+          bookmark=0;
+          continue;
         }
         state.getPlayerList().getNext();
       }
+      removeBookmark(bookmark);
+      bookmark=0;
     }
   }
  catch (  Exception ex) {

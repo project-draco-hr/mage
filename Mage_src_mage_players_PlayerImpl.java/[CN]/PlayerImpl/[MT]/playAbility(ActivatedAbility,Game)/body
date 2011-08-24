@@ -1,16 +1,16 @@
 {
   if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.ACTIVATE_ABILITY,ability.getId(),ability.getSourceId(),playerId))) {
-    game.bookmarkState();
+    int bookmark=game.bookmarkState();
     ability.newId();
     game.getStack().push(new StackAbility(ability,playerId));
     String message=ability.getActivatedMessage(game);
     if (ability.activate(game,false)) {
       game.fireEvent(GameEvent.getEvent(GameEvent.EventType.ACTIVATED_ABILITY,ability.getId(),ability.getSourceId(),playerId));
       game.fireInformEvent(name + message);
-      game.removeLastBookmark();
+      game.removeBookmark(bookmark);
       return true;
     }
-    game.restoreState();
+    game.restoreState(bookmark);
   }
   return false;
 }
