@@ -1,0 +1,18 @@
+{
+  UUID targetId=(UUID)getValue("targetPlayer");
+  Player player=game.getPlayer(targetId);
+  if (player != null) {
+    Integer amount=(Integer)getValue("amount");
+    if (amount == null) {
+      amount=0;
+    }
+    amount=Math.min(amount,player.getLibrary().size());
+    for (int i=0; i < amount; i++) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        card.moveToZone(Zone.GRAVEYARD,source.getId(),game,false);
+      }
+    }
+  }
+  return true;
+}

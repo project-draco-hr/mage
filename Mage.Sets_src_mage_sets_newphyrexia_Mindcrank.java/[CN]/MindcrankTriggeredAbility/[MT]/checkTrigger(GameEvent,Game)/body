@@ -1,0 +1,10 @@
+{
+  Set<UUID> opponents=game.getOpponents(this.getControllerId());
+  if (event.getType() == EventType.LOST_LIFE && opponents.contains(event.getPlayerId())) {
+    Effect effect=this.getEffects().get(0);
+    effect.setValue("targetPlayer",event.getPlayerId());
+    effect.setValue("amount",event.getAmount());
+    return true;
+  }
+  return false;
+}
