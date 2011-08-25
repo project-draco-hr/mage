@@ -4,29 +4,34 @@
     return false;
   }
   Cards cards=new CardsImpl(Zone.PICK);
-  boolean artifactFound=false;
+  int creatureCardsFound=0;
   for (int i=0; i < 5; i++) {
     Card card=player.getLibrary().removeFromTop(game);
     if (card != null) {
       cards.add(card);
       game.setZone(card.getId(),Zone.PICK);
-      if (card.getCardType().contains(CardType.ARTIFACT)) {
-        artifactFound=true;
+      if (card.getCardType().contains(CardType.CREATURE)) {
+        creatureCardsFound++;
       }
     }
   }
-  player.lookAtCards("Tezzeret, Agent of Bolas",cards,game);
-  if (artifactFound && player.chooseUse(Outcome.DrawCard,"Do you wish to reveal an artifact card and put it into your hand?",game)) {
-    TargetCard target=new TargetCard(Zone.PICK,new FilterArtifactCard("artifact card to reveal and put into your hand"));
+  player.lookAtCards("Lead the Stampede",cards,game);
+  if (creatureCardsFound > 0 && player.chooseUse(Outcome.DrawCard,"Do you wish to reveal creature cards and put them into your hand?",game)) {
+    Cards revealedCards=new CardsImpl();
+    TargetCard target=new TargetCard(0,creatureCardsFound,Zone.PICK,new FilterCreatureCard("creature cards to reveal and put into your hand"));
     if (player.choose(Outcome.DrawCard,cards,target,game)) {
-      Card card=cards.get(target.getFirstTarget(),game);
-      if (card != null) {
-        cards.remove(card);
-        card.moveToZone(Zone.HAND,source.getId(),game,false);
-        Cards reveal=new CardsImpl(Zone.OUTSIDE);
-        reveal.add(card);
-        player.revealCards("Tezzeret, Agent of Bolas",reveal,game);
+      List<UUID> targets=target.getTargets();
+      for (      UUID targetId : targets) {
+        Card card=cards.get(targetId,game);
+        if (card != null) {
+          cards.remove(card);
+          card.moveToZone(Zone.HAND,source.getId(),game,false);
+          revealedCards.add(card);
+        }
       }
+    }
+    if (!revealedCards.isEmpty()) {
+      player.revealCards("Lead the Stampede",revealedCards,game);
     }
   }
   TargetCard target=new TargetCard(Zone.PICK,new FilterCard("card to put on the bottom of your library"));

@@ -1,31 +1,35 @@
 {
+  List<Permanent> permanents=game.getBattlefield().getActivePermanents(source.getControllerId(),game);
+  HashSet<String> permanentNames=new HashSet<String>();
+  for (  Permanent permanent : permanents) {
+    permanentNames.add(permanent.getName());
+  }
   Player player=game.getPlayer(source.getControllerId());
   if (player == null) {
     return false;
   }
   Cards cards=new CardsImpl(Zone.PICK);
-  boolean artifactFound=false;
-  for (int i=0; i < 5; i++) {
+  Cards cardsFound=new CardsImpl(Zone.PICK);
+  for (int i=0; i < 7; i++) {
     Card card=player.getLibrary().removeFromTop(game);
     if (card != null) {
       cards.add(card);
       game.setZone(card.getId(),Zone.PICK);
-      if (card.getCardType().contains(CardType.ARTIFACT)) {
-        artifactFound=true;
+      if (permanentNames.contains(card.getName())) {
+        cardsFound.add(card);
       }
     }
   }
-  player.lookAtCards("Tezzeret, Agent of Bolas",cards,game);
-  if (artifactFound && player.chooseUse(Outcome.DrawCard,"Do you wish to reveal an artifact card and put it into your hand?",game)) {
-    TargetCard target=new TargetCard(Zone.PICK,new FilterArtifactCard("artifact card to reveal and put into your hand"));
-    if (player.choose(Outcome.DrawCard,cards,target,game)) {
+  player.lookAtCards("Mitotic Manipulation",cards,game);
+  if (!cardsFound.isEmpty() && player.chooseUse(Outcome.PutCardInPlay,"Do you wish to put a card on the battlefield?",game)) {
+    FilterCard filter=new FilterCard("card to put onto the battlefield");
+    filter.getName().add(permanentNames);
+    TargetCard target=new TargetCard(Zone.PICK,filter);
+    if (player.choose(Outcome.PutCardInPlay,cardsFound,target,game)) {
       Card card=cards.get(target.getFirstTarget(),game);
       if (card != null) {
         cards.remove(card);
-        card.moveToZone(Zone.HAND,source.getId(),game,false);
-        Cards reveal=new CardsImpl(Zone.OUTSIDE);
-        reveal.add(card);
-        player.revealCards("Tezzeret, Agent of Bolas",reveal,game);
+        card.putOntoBattlefield(game,Zone.LIBRARY,source.getId(),source.getControllerId());
       }
     }
   }
