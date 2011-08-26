@@ -1,0 +1,19 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null && super.apply(game,source)) {
+    Target target=new TargetControlledCreaturePermanent();
+    if (player.choose(Constants.Outcome.Benefit,target,game)) {
+      if (target.getTargets().size() > 0) {
+        Permanent permanent=game.getPermanent(target.getTargets().get(0));
+        Permanent sourceEquipment=null;
+        if (super.getTargets().size() > 0) {
+          sourceEquipment=game.getPermanent(super.getTargets().get(0));
+        }
+        if (permanent != null && sourceEquipment != null) {
+          return permanent.addAttachment(sourceEquipment.getId(),game);
+        }
+      }
+    }
+  }
+  return false;
+}
