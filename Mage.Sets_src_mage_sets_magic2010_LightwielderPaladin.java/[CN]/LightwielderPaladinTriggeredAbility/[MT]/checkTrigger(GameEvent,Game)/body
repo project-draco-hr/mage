@@ -1,0 +1,12 @@
+{
+  if (event.getType() == EventType.DAMAGED_PLAYER && event.getSourceId().equals(this.sourceId) && ((DamagedPlayerEvent)event).isCombatDamage()) {
+    Filter filter=this.getTargets().get(0).getFilter();
+    if (filter instanceof FilterPermanent) {
+      FilterPermanent filterPermanent=((FilterPermanent)filter);
+      filterPermanent.getControllerId().add(event.getTargetId());
+      filterPermanent.setNotController(false);
+    }
+    return true;
+  }
+  return false;
+}

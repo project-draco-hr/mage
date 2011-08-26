@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  FilterControlledPermanent filter=new FilterControlledPermanent("Vampire");
+  filter.getSubtype().add("Vampire");
+  int amount=game.getBattlefield().countAll(filter,source.getControllerId());
+  Set<UUID> opponents=game.getOpponents(source.getControllerId());
+  int total=0;
+  for (  UUID opponentUuid : opponents) {
+    Player opponent=game.getPlayer(opponentUuid);
+    if (opponent != null) {
+      total+=opponent.loseLife(amount,game);
+    }
+    if (total > 0) {
+      player.gainLife(total,game);
+    }
+  }
+  return true;
+}
