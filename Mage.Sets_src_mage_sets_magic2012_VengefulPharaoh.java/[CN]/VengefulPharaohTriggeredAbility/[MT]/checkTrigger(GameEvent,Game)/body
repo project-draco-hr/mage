@@ -1,8 +1,8 @@
 {
-  if ((event.getType() == EventType.DAMAGED_PLAYER && event.getTargetId().equals(this.getControllerId()))) {
+  if ((event.getType() == EventType.DAMAGED_PLAYER && event.getTargetId().equals(this.getControllerId())) && ((DamagedEvent)event).isCombatDamage()) {
     return true;
   }
-  if (event.getType() == EventType.DAMAGED_PLANESWALKER) {
+  if (event.getType() == EventType.DAMAGED_PLANESWALKER && ((DamagedEvent)event).isCombatDamage()) {
     Permanent permanent=game.getPermanent(event.getTargetId());
     if (permanent != null && permanent.getControllerId().equals(this.getControllerId())) {
       return true;
