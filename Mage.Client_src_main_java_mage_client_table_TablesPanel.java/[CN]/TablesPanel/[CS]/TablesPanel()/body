@@ -1,11 +1,13 @@
 {
   tableModel=new TableTableModel();
+  matchesModel=new MatchesTableModel();
+  gameChooser=new GameChooser();
   initComponents();
   tableTables.createDefaultColumnsFromModel();
   chatPanel.useExtendedView(ChatPanel.VIEW_MODE.NONE);
   chatPanel.setOpaque(false);
   chatPanel.setBorder(null);
-  Action join=new AbstractAction(){
+  Action joinTable=new AbstractAction(){
     @Override public void actionPerformed(    ActionEvent e){
       int modelRow=Integer.valueOf(e.getActionCommand());
       UUID tableId=(UUID)tableModel.getValueAt(modelRow,9);
@@ -57,7 +59,21 @@
     }
   }
 ;
-  ButtonColumn buttonColumn=new ButtonColumn(tableTables,join,6);
+  Action replayMatch=new AbstractAction(){
+    @Override public void actionPerformed(    ActionEvent e){
+      int modelRow=Integer.valueOf(e.getActionCommand());
+      List<UUID> games=(List<UUID>)matchesModel.getValueAt(modelRow,6);
+      if (games.size() == 1) {
+        session.replayGame(games.get(0));
+      }
+ else {
+        gameChooser.show(games,MageFrame.getDesktop().getMousePosition());
+      }
+    }
+  }
+;
+  ButtonColumn buttonColumn1=new ButtonColumn(tableTables,joinTable,6);
+  ButtonColumn buttonColumn2=new ButtonColumn(tableCompleted,replayMatch,5);
   jSplitPane1.setOpaque(false);
   jScrollPane1.setOpaque(false);
   jPanel1.setOpaque(false);
