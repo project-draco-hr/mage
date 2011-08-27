@@ -1,6 +1,6 @@
 {
   FutureTask<Integer> task=new FutureTask<Integer>(new Callable<Integer>(){
-    public Integer call() throws Exception {
+    @Override public Integer call() throws Exception {
       return addActions(root,filter,Integer.MIN_VALUE,Integer.MAX_VALUE);
     }
   }
@@ -11,8 +11,8 @@
     task.get(maxThink,TimeUnit.SECONDS);
     long endTime=System.nanoTime();
     long duration=endTime - startTime;
-    logger.info("Calculated " + root.nodeCount + " nodes in "+ duration / 1000000000.0 + "s");
-    nodeCount+=root.nodeCount;
+    logger.info("Calculated " + SimulationNode.nodeCount + " nodes in "+ duration / 1000000000.0 + "s");
+    nodeCount+=SimulationNode.nodeCount;
     thinkTime+=duration;
   }
  catch (  TimeoutException e) {
@@ -26,8 +26,8 @@
     }
     long endTime=System.nanoTime();
     long duration=endTime - startTime;
-    logger.info("Timeout - Calculated " + root.nodeCount + " nodes in "+ duration / 1000000000.0 + "s");
-    nodeCount+=root.nodeCount;
+    logger.info("Timeout - Calculated " + SimulationNode.nodeCount + " nodes in "+ duration / 1000000000.0 + "s");
+    nodeCount+=SimulationNode.nodeCount;
     thinkTime+=duration;
   }
 catch (  ExecutionException e) {

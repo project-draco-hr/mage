@@ -1,16 +1,15 @@
 {
   log.debug("choose");
   if (cards != null && cards.isEmpty()) {
-    return false;
+    if (!target.isRequired())     return false;
+    return true;
   }
+  ArrayList<Card> cardChoices=new ArrayList<Card>(cards.getCards(target.getFilter(),game));
   while (!target.doneChosing()) {
-    if (cards.isEmpty()) {
-      if (!target.isRequired())       return false;
-      return true;
-    }
-    Card card=pickTarget(new ArrayList<Card>(cards.getCards(target.getFilter(),game)),outcome,target,null,game);
+    Card card=pickTarget(cardChoices,outcome,target,null,game);
     if (card != null) {
       target.add(card.getId(),game);
+      cardChoices.remove(card);
     }
   }
   return true;
