@@ -15,5 +15,24 @@
  else {
     this.avatar.setBorder(emptyBorder);
   }
+synchronized (this) {
+    if (player.getTopCard() != null) {
+      if (topCard == null || !topCard.getId().equals(player.getTopCard().getId())) {
+        if (topCard == null) {
+          topCardPanel.setVisible(true);
+        }
+        topCard=player.getTopCard();
+        topCardPanel.update(topCard);
+        topCardPanel.updateImage();
+        ActionCallback callback=Plugins.getInstance().getActionCallback();
+        ((MageActionCallback)callback).refreshSession();
+        topCardPanel.updateCallback(callback,gameId);
+      }
+    }
+ else     if (topCard != null) {
+      topCard=null;
+      topCardPanel.setVisible(false);
+    }
+  }
   update(player.getManaPool());
 }
