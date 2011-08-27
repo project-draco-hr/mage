@@ -5,7 +5,11 @@
     return true;
   }
  else   if (ability instanceof PlayLandAbility) {
-    result=playLand(hand.get(ability.getSourceId(),game),game);
+    Card card=hand.get(ability.getSourceId(),game);
+    if (card == null) {
+      card=game.getCard(ability.getSourceId());
+    }
+    result=playLand(card,game);
   }
  else   if (ability instanceof SpecialAction) {
     result=specialAction((SpecialAction)ability.copy(),game);

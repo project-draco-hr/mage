@@ -4,19 +4,30 @@
     if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.CAST_SPELL,ability.getId(),ability.getSourceId(),playerId))) {
       int bookmark=game.bookmarkState();
       card.cast(game,game.getZone(card.getId()),ability,playerId);
-      removeFromHand(card,game);
-      Ability spellAbility=game.getStack().getSpell(ability.getId()).getSpellAbility();
-      if (spellAbility.activate(game,noMana)) {
-        for (        KickerAbility kicker : card.getAbilities().getKickerAbilities()) {
-          kicker.activate(game,false);
-        }
-        game.fireEvent(GameEvent.getEvent(GameEvent.EventType.SPELL_CAST,spellAbility.getId(),playerId));
-        game.fireInformEvent(name + " casts " + card.getName());
-        game.removeBookmark(bookmark);
-        return true;
-      }
-      game.restoreState(bookmark);
-    }
-  }
-  return false;
+      Zone zone=game.getZone(card.getId());
+switch (zone) {
+case HAND:
+        removeFromHand(card,game);
+      break;
+case LIBRARY:
+    removeFromLibrary(card,game);
+  break;
+case GRAVEYARD:
+removeFromGraveyard(card,game);
+break;
+}
+Ability spellAbility=game.getStack().getSpell(ability.getId()).getSpellAbility();
+if (spellAbility.activate(game,noMana)) {
+for (KickerAbility kicker : card.getAbilities().getKickerAbilities()) {
+kicker.activate(game,false);
+}
+game.fireEvent(GameEvent.getEvent(GameEvent.EventType.SPELL_CAST,spellAbility.getId(),playerId));
+game.fireInformEvent(name + " casts " + card.getName());
+game.removeBookmark(bookmark);
+return true;
+}
+game.restoreState(bookmark);
+}
+}
+return false;
 }

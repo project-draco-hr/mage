@@ -1,15 +1,26 @@
 {
   if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.PLAY_LAND,card.getId(),playerId))) {
     int bookmark=game.bookmarkState();
-    removeFromHand(card,game);
-    if (card.putOntoBattlefield(game,Zone.HAND,null,playerId)) {
-      landsPlayed++;
-      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.LAND_PLAYED,card.getId(),playerId));
-      game.fireInformEvent(name + " plays " + card.getName());
-      game.removeBookmark(bookmark);
-      return true;
-    }
-    game.restoreState(bookmark);
-  }
-  return false;
+    Zone zone=game.getZone(card.getId());
+switch (zone) {
+case HAND:
+      removeFromHand(card,game);
+    break;
+case LIBRARY:
+  removeFromLibrary(card,game);
+break;
+case GRAVEYARD:
+removeFromGraveyard(card,game);
+break;
+}
+if (card.putOntoBattlefield(game,zone,null,playerId)) {
+landsPlayed++;
+game.fireEvent(GameEvent.getEvent(GameEvent.EventType.LAND_PLAYED,card.getId(),playerId));
+game.fireInformEvent(name + " plays " + card.getName());
+game.removeBookmark(bookmark);
+return true;
+}
+game.restoreState(bookmark);
+}
+return false;
 }
