@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  if (player != null && permanent != null) {
+    int existingCount=permanent.getCounters().getCount(CounterType.CHARGE);
+    if (existingCount > 0) {
+      Choice choice=new ChoiceImpl();
+      choice.setMessage("Select number of charge counters to remove:");
+      for (Integer i=0; i <= existingCount; i++) {
+        choice.getChoices().add(i.toString());
+      }
+      int amount=0;
+      if (player.choose(Outcome.Detriment,choice,game)) {
+        amount=Integer.parseInt(choice.getChoice());
+      }
+      permanent.removeCounters(CounterType.CHARGE.getName(),amount,game);
+    }
+    return true;
+  }
+  return false;
+}
