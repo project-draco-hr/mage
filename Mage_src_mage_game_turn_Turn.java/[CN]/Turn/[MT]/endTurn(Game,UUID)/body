@@ -1,0 +1,14 @@
+{
+  game.getStack().clear();
+  Player activePlayer=game.getPlayer(activePlayerId);
+  game.getState().setPriorityPlayerId(activePlayer.getId());
+  if (!activePlayer.hasLeft() && !activePlayer.hasLost()) {
+    activePlayer.discardToMax(game);
+    activePlayer.setGameUnderYourControl(true);
+  }
+  game.getBattlefield().endOfTurn(activePlayerId,game);
+  game.getState().removeEotEffects(game);
+  Phase phase=new EndPhase();
+  phase.setStep(new CleanupStep());
+  currentPhase=phase;
+}
