@@ -18,13 +18,14 @@
     Player opponent=game.getPlayer(opponents.iterator().next());
     TargetCard target=new TargetCard(0,cards.size(),Zone.PICK,new FilterCard("cards to put in the first pile"));
     Cards pile1=new CardsImpl();
-    while (opponent.choose(Outcome.Neutral,cards,target,game))     ;
-    List<UUID> targets=target.getTargets();
-    for (    UUID targetId : targets) {
-      Card card=cards.get(targetId,game);
-      if (card != null) {
-        pile1.add(card);
-        cards.remove(card);
+    if (opponent.choose(Outcome.Neutral,cards,target,game)) {
+      List<UUID> targets=target.getTargets();
+      for (      UUID targetId : targets) {
+        Card card=cards.get(targetId,game);
+        if (card != null) {
+          pile1.add(card);
+          cards.remove(card);
+        }
       }
     }
     player.revealCards("Pile 1 (Sphinx of Uthuun)",pile1,game);
