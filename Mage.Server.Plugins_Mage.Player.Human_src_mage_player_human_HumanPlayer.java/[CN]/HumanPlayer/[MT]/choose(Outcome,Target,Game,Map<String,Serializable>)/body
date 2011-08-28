@@ -7,12 +7,16 @@
       if (target instanceof TargetPermanent) {
         if (((TargetPermanent)target).canTarget(playerId,response.getUUID(),null,game)) {
           target.add(response.getUUID(),game);
-          return true;
+          if (target.doneChosing()) {
+            return true;
+          }
         }
       }
  else       if (target.canTarget(response.getUUID(),game)) {
         target.add(response.getUUID(),game);
-        return true;
+        if (target.doneChosing()) {
+          return true;
+        }
       }
     }
  else     if (!target.isRequired()) {
