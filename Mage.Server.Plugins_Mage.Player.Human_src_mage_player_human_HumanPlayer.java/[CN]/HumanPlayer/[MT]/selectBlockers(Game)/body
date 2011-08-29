@@ -1,15 +1,20 @@
 {
   game.getState().setPriorityPlayerId(getId());
   while (!abort) {
-    targetCombat.getTargets().clear();
     game.fireSelectEvent(playerId,"Select blockers");
     waitForResponse();
     if (response.getBoolean() != null) {
       return;
     }
  else     if (response.getUUID() != null) {
-      if (targetCombat.canTarget(playerId,response.getUUID(),null,game)) {
-        selectCombatGroup(response.getUUID(),game);
+      Permanent blocker=game.getPermanent(response.getUUID());
+      if (blocker != null) {
+        if (filter.match(blocker,null,playerId,game)) {
+          selectCombatGroup(blocker.getId(),game);
+        }
+ else         if (filterBlock.match(blocker,null,playerId,game) && game.getStack().isEmpty()) {
+          if (game.getState().getTriggered().isEmpty() && game.getState().getDelayed().isEmpty())           game.getCombat().removeBlocker(blocker.getId(),game);
+        }
       }
     }
   }

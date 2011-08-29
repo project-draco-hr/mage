@@ -1,15 +1,20 @@
 {
   game.getState().setPriorityPlayerId(getId());
   while (!abort) {
-    targetCombat.getTargets().clear();
     game.fireSelectEvent(playerId,"Select attackers");
     waitForResponse();
     if (response.getBoolean() != null) {
       return;
     }
  else     if (response.getUUID() != null) {
-      if (targetCombat.canTarget(playerId,response.getUUID(),null,game)) {
-        selectDefender(game.getCombat().getDefenders(),response.getUUID(),game);
+      Permanent attacker=game.getPermanent(response.getUUID());
+      if (attacker != null) {
+        if (filter.match(attacker,null,playerId,game)) {
+          selectDefender(game.getCombat().getDefenders(),attacker.getId(),game);
+        }
+ else         if (filterAttack.match(attacker,null,playerId,game) && game.getStack().isEmpty()) {
+          if (game.getState().getTriggered().isEmpty() && game.getState().getDelayed().isEmpty())           game.getCombat().removeAttacker(attacker.getId(),game);
+        }
       }
     }
   }

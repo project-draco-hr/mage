@@ -3,6 +3,11 @@
     Player player=game.getPlayer(attackerId);
     checkAttackRequirements(player,game);
     player.selectAttackers(game);
+    for (    CombatGroup group : groups) {
+      for (      UUID attacker : group.getAttackers()) {
+        game.fireEvent(GameEvent.getEvent(GameEvent.EventType.ATTACKER_DECLARED,group.defenderId,attacker,attackerId));
+      }
+    }
     game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_ATTACKERS,attackerId,attackerId));
     game.fireInformEvent(player.getName() + " attacks with " + groups.size()+ " creatures");
   }
