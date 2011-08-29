@@ -1,0 +1,18 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  FilterCreatureCard filter=new FilterCreatureCard("Goblin creature card from your hand");
+  filter.getSubtype().add("Goblin");
+  TargetCardInHand target=new TargetCardInHand(filter);
+  if (player.choose(Outcome.PutCreatureInPlay,target,game)) {
+    Card card=game.getCard(target.getFirstTarget());
+    if (card != null) {
+      player.removeFromHand(card,game);
+      card.putOntoBattlefield(game,Zone.HAND,source.getId(),source.getControllerId());
+      return true;
+    }
+  }
+  return false;
+}

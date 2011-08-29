@@ -1,0 +1,19 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(new FilterCreatureCard("creature card in your library"));
+    target.setRequired(true);
+    if (player.searchLibrary(target,game)) {
+      Card card=game.getCard(target.getFirstTarget());
+      if (card != null) {
+        Cards cards=new CardsImpl();
+        cards.add(card);
+        player.revealCards("Brutalizer Exarch",cards,game);
+        player.shuffleLibrary(game);
+        card.moveToZone(Zone.LIBRARY,source.getId(),game,true);
+        return true;
+      }
+    }
+  }
+  return false;
+}
