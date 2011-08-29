@@ -1,0 +1,12 @@
+{
+  ArrayList<MatchView> matchList=new ArrayList<MatchView>();
+  List<Table> t=new ArrayList<Table>(tables.values());
+  Collections.sort(t,new TimestampSorter());
+  for (  Table table : t) {
+    if (table.getState() == TableState.FINISHED) {
+      matchList.add(new MatchView(table.getMatch()));
+      if (matchList.size() >= 50)       break;
+    }
+  }
+  matchView=matchList;
+}
