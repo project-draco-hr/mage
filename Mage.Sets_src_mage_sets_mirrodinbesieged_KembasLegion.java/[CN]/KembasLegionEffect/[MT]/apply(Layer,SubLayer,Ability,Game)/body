@@ -1,0 +1,20 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null && !permanent.getAttachments().isEmpty()) {
+    if (layer.equals(Layer.RulesEffects)) {
+      if (permanent.getMaxBlocks() > 0) {
+        List<UUID> attachments=permanent.getAttachments();
+        int count=0;
+        for (        UUID attachmentId : attachments) {
+          Permanent attachment=game.getPermanent(attachmentId);
+          if (attachment != null && attachment.hasSubtype("Equipment")) {
+            count++;
+          }
+        }
+        permanent.setMaxBlocks(permanent.getMaxBlocks() + count);
+      }
+    }
+    return true;
+  }
+  return false;
+}
