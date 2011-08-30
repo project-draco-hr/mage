@@ -1,0 +1,12 @@
+{
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  if (permanent != null) {
+    permanent.addCounters(CounterType.M1M1.createInstance(),game);
+    DelayedTriggeredAbility delayedAbility=new VirulentWoundDelayedTriggeredAbility(permanent.getId());
+    delayedAbility.setSourceId(source.getSourceId());
+    delayedAbility.setControllerId(source.getControllerId());
+    game.addDelayedTriggeredAbility(delayedAbility);
+    return true;
+  }
+  return false;
+}
