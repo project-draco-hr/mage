@@ -7,8 +7,13 @@
       EmptyToken token=new EmptyToken();
       CardUtil.copyTo(token).from(card);
       token.addAbility(HasteAbility.getInstance());
-      token.addAbility(new OnEventTriggeredAbility(GameEvent.EventType.END_TURN_STEP_PRE,"beginning of the end step",true,new SacrificeSourceEffect()));
       token.putOntoBattlefield(game,source.getSourceId(),source.getControllerId());
+      ExileTargetEffect exileEffect=new ExileTargetEffect();
+      exileEffect.setTargetPointer(new FixedTarget(token.getLastAddedToken()));
+      DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(exileEffect);
+      delayedAbility.setSourceId(source.getSourceId());
+      delayedAbility.setControllerId(source.getControllerId());
+      game.addDelayedTriggeredAbility(delayedAbility);
       return true;
     }
   }
