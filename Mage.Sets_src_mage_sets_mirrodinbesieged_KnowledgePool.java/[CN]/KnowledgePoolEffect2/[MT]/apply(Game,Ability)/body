@@ -1,0 +1,21 @@
+{
+  Spell spell=game.getStack().getSpell(targetPointer.getFirst(source));
+  if (spell != null) {
+    if (spell.moveToExile(source.getSourceId(),"Knowledge Pool Exile",id,game)) {
+      Player player=game.getPlayer(spell.getControllerId());
+      if (player != null && player.chooseUse(Outcome.PlayForFree,"Cast another nonland card exiled with Knowledge Pool without paying that card's mana cost?",game)) {
+        TargetCardInExile target=new TargetCardInExile(filter,source.getSourceId());
+        while (player.choose(Outcome.PlayForFree,game.getExile().getExileZone(source.getSourceId()),target,game)) {
+          Card card=game.getCard(target.getFirstTarget());
+          if (card != null && !card.getId().equals(spell.getSourceId())) {
+            game.getExile().removeCard(card,game);
+            return player.cast(card.getSpellAbility(),game,true);
+          }
+          target.clearChosen();
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}

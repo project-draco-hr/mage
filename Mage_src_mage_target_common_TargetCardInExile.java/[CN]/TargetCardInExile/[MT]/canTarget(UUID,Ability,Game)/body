@@ -1,0 +1,16 @@
+{
+  Card card=game.getCard(id);
+  if (card != null && game.getZone(card.getId()) == Zone.EXILED) {
+    ExileZone exile;
+    if (zoneId != null) {
+      exile=game.getExile().getExileZone(zoneId);
+    }
+ else {
+      exile=game.getExile().getPermanentExile();
+    }
+    if (exile != null && exile.contains(id)) {
+      return filter.match(card);
+    }
+  }
+  return false;
+}
