@@ -1,0 +1,10 @@
+{
+  HashSet<Card> cards=new HashSet<Card>(CardsStorage.getAllCards());
+  List<Card> notImplemented=CardsStorage.getNotImplementedCards();
+  cards.addAll(notImplemented);
+  if (Plugins.getInstance().newImage(cards)) {
+    if (JOptionPane.showConfirmDialog(null,"New cards are available.  Do you want to download the images?") == JOptionPane.OK_OPTION) {
+      Plugins.getInstance().downloadImage(cards);
+    }
+  }
+}
