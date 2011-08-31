@@ -1,11 +1,13 @@
 {
   if (event.getType() == EventType.DAMAGED_PLAYER && event.getSourceId().equals(this.sourceId) && ((DamagedPlayerEvent)event).isCombatDamage()) {
-    Filter filter=this.getTargets().get(0).getFilter();
-    if (filter instanceof FilterPermanent) {
-      FilterPermanent filterPermanent=((FilterPermanent)filter);
-      filterPermanent.getControllerId().add(event.getTargetId());
-      filterPermanent.setNotController(false);
-    }
+    FilterPermanent filter=new FilterPermanent("black or red permanent");
+    filter.getColor().setBlack(true);
+    filter.getColor().setRed(true);
+    filter.setUseColor(true);
+    filter.setScopeColor(ComparisonScope.Any);
+    filter.getControllerId().add(event.getTargetId());
+    filter.setNotController(false);
+    this.addTarget(new TargetPermanent(filter));
     return true;
   }
   return false;
