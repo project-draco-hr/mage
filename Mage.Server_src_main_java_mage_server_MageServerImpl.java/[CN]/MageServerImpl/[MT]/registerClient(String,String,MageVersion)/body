@@ -1,9 +1,10 @@
 {
   try {
-    if (version.compareTo(Main.getVersion()) != 0)     throw new MageException("Wrong client version " + version + ", expecting version "+ Main.getVersion());
+    if (version.compareTo(Main.getVersion()) != 0)     throw new MageVersionException(version,Main.getVersion());
     return SessionManager.getInstance().registerUser(sessionId,userName);
   }
  catch (  Exception ex) {
+    if (ex instanceof MageVersionException)     throw (MageVersionException)ex;
     handleException(ex);
   }
   return false;
