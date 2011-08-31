@@ -1,0 +1,14 @@
+{
+  if (event.getType() == GameEvent.EventType.SPELL_CAST && event.getPlayerId().equals(this.controllerId)) {
+    Card card=game.getCard(event.getSourceId());
+    if (card != null) {
+      for (      ManaCost cost : card.getManaCost()) {
+        if (cost instanceof PhyrexianManaCost) {
+          ((DamageTargetEffect)getEffects().get(0)).setAmount(new StaticValue(card.getManaCost().convertedManaCost()));
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
