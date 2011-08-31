@@ -1,0 +1,16 @@
+{
+  Card card=game.getCard(source.getFirstTarget());
+  Player player=game.getPlayer(card.getOwnerId());
+  if (card != null && player != null && player.removeFromGraveyard(card,game)) {
+    card.addAbility(HasteAbility.getInstance());
+    card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getId(),source.getControllerId());
+    ExileTargetEffect exileEffect=new ExileTargetEffect();
+    exileEffect.setTargetPointer(new FixedTarget(card.getId()));
+    DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(exileEffect);
+    delayedAbility.setSourceId(source.getSourceId());
+    delayedAbility.setControllerId(source.getControllerId());
+    game.addDelayedTriggeredAbility(delayedAbility);
+    return true;
+  }
+  return false;
+}

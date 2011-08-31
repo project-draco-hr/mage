@@ -1,0 +1,32 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl(Zone.PICK);
+  int count=Math.min(player.getLibrary().size(),2);
+  for (int i=0; i < count; i++) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      cards.add(card);
+      game.setZone(card.getId(),Zone.PICK);
+    }
+  }
+  player.lookAtCards("Sage Owl",cards,game);
+  TargetCard target=new TargetCard(Zone.PICK,new FilterCard("card to put on the top of your library"));
+  target.setRequired(true);
+  while (cards.size() > 1) {
+    player.choose(Outcome.Neutral,cards,target,game);
+    Card card=cards.get(target.getFirstTarget(),game);
+    if (card != null) {
+      cards.remove(card);
+      card.moveToZone(Zone.LIBRARY,source.getId(),game,true);
+    }
+    target.clearChosen();
+  }
+  if (cards.size() == 1) {
+    Card card=cards.get(cards.iterator().next(),game);
+    card.moveToZone(Zone.LIBRARY,source.getId(),game,true);
+  }
+  return true;
+}

@@ -1,0 +1,21 @@
+{
+  if (event.getType() == EventType.DAMAGED_PLAYER && event.getSourceId().equals(this.sourceId) && ((DamagedPlayerEvent)event).isCombatDamage()) {
+    Player player=game.getPlayer(this.getControllerId());
+    Permanent sourcePermanent=game.getPermanent(this.getSourceId());
+    if (player != null && sourcePermanent != null) {
+      StringBuilder sb=new StringBuilder();
+      sb.append("Do you wish to sacrifice ").append(sourcePermanent.getName());
+      sb.append(" to destroy target creature controlled by ");
+      sb.append(game.getPlayer(event.getTargetId()).getName()).append("?");
+      if (player.chooseUse(Outcome.DestroyPermanent,sb.toString(),game)) {
+        FilterCreaturePermanent filter=new FilterCreaturePermanent();
+        filter.getControllerId().add(event.getTargetId());
+        filter.setNotController(false);
+        filter.setMessage("creature controlled by " + game.getPlayer(event.getTargetId()).getName());
+        this.addTarget(new TargetCreaturePermanent(filter));
+        return true;
+      }
+    }
+  }
+  return false;
+}
