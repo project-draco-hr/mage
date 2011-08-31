@@ -1,10 +1,13 @@
 {
-  List<UUID> attachments=permanent.getAttachments();
-  for (  UUID uuid : attachments) {
-    Permanent attached=game.getBattlefield().getPermanent(uuid);
-    if (attached.getSubtype().contains("Equipment")) {
-      return false;
+  if (permanent.getId().equals(source.getSourceId())) {
+    List<UUID> attachments=permanent.getAttachments();
+    for (    UUID uuid : attachments) {
+      Permanent attached=game.getBattlefield().getPermanent(uuid);
+      if (attached.getSubtype().contains("Equipment")) {
+        return false;
+      }
     }
+    return true;
   }
-  return true;
+  return false;
 }
