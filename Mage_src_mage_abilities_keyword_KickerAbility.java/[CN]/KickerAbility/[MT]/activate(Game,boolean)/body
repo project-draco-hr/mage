@@ -1,8 +1,9 @@
 {
   Player player=game.getPlayer(this.getControllerId());
-  String message="Use kicker - " + getEffects().get(0).getText(null) + "?";
+  String message="Use kicker - " + getRule() + "?";
   Card card=game.getCard(sourceId);
-  message=message.replace("{this}",card == null ? "this" : card.getName());
+  String text=card == null ? "this" : card.getName();
+  message=message.replace("{this}",text).replace("{source}",text);
   if (player.chooseUse(getEffects().get(0).getOutcome(),message,game)) {
     int bookmark=game.bookmarkState();
     if (super.activate(game,noMana)) {
