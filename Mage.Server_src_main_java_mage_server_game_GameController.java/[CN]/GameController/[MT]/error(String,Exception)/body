@@ -1,0 +1,12 @@
+{
+  StringBuilder sb=new StringBuilder();
+  sb.append(message).append(ex.toString());
+  sb.append("\nServer version: ").append(Main.getVersion().toString());
+  sb.append("\n");
+  for (  StackTraceElement e : ex.getStackTrace()) {
+    sb.append(e.toString()).append("\n");
+  }
+  for (  final Entry<UUID,GameSession> entry : gameSessions.entrySet()) {
+    entry.getValue().gameError(sb.toString());
+  }
+}
