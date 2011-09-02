@@ -3,52 +3,69 @@
   if (!base.exists()) {
     base.mkdir();
   }
-  if (type == 0)   p=Proxy.NO_PROXY;
- else   try {
-    p=new Proxy(types[type],new InetSocketAddress(addr.getText(),Integer.parseInt(port.getText())));
-  }
- catch (  Exception ex) {
-    throw new RuntimeException("Gui_DownloadPictures : error 1 - " + ex);
-  }
-  if (p != null) {
-    HashSet<String> ignoreUrls=SettingsManager.getIntance().getIgnoreUrls();
-    update(0);
-    for (int i=0; i < cards.size() && !cancel; i++) {
-      try {
-        CardInfo card=cards.get(i);
-        log.info("Downloading card: " + card.getName() + " ("+ card.getSet()+ ")");
-        String url;
-        if (ignoreUrls.contains(card.getSet()) || card.isToken()) {
-          if (card.getCollectorId() != 0) {
-            continue;
-          }
-          url=cardImageSource.generateTokenUrl(card.getName(),card.getSet());
-        }
+  Connection.ProxyType configProxyType=Connection.ProxyType.valueByText(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_TYPE,"None"));
+  Proxy.Type type=Proxy.Type.DIRECT;
+switch (configProxyType) {
+case HTTP:
+    type=Proxy.Type.HTTP;
+  break;
+case SOCKS:
+type=Proxy.Type.SOCKS;
+break;
+case NONE:
+default :
+p=Proxy.NO_PROXY;
+break;
+}
+if (!p.equals(Proxy.NO_PROXY)) {
+try {
+String address=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_ADDRESS,"");
+Integer port=Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_PORT,"80"));
+p=new Proxy(type,new InetSocketAddress(address,port));
+}
+ catch (Exception ex) {
+throw new RuntimeException("Gui_DownloadPictures : error 1 - " + ex);
+}
+}
+if (p != null) {
+HashSet<String> ignoreUrls=SettingsManager.getIntance().getIgnoreUrls();
+update(0);
+for (int i=0; i < cards.size() && !cancel; i++) {
+try {
+CardInfo card=cards.get(i);
+log.info("Downloading card: " + card.getName() + " ("+ card.getSet()+ ")");
+String url;
+if (ignoreUrls.contains(card.getSet()) || card.isToken()) {
+if (card.getCollectorId() != 0) {
+continue;
+}
+url=cardImageSource.generateTokenUrl(card.getName(),card.getSet());
+}
  else {
-          url=cardImageSource.generateURL(card.getCollectorId(),card.getSet());
-        }
-        if (url != null) {
-          Runnable task=new DownloadTask(card,new URL(url),imagesPath);
-          executor.execute(task);
-        }
+url=cardImageSource.generateURL(card.getCollectorId(),card.getSet());
+}
+if (url != null) {
+Runnable task=new DownloadTask(card,new URL(url),imagesPath);
+executor.execute(task);
+}
  else {
 synchronized (sync) {
-            update(cardIndex + 1);
-          }
-        }
-      }
- catch (      Exception ex) {
-        log.error(ex,ex);
-      }
-    }
-    executor.shutdown();
-    while (!executor.isTerminated()) {
-      try {
-        Thread.sleep(1000);
-      }
- catch (      InterruptedException ie) {
-      }
-    }
-  }
-  closeButton.setText("Close");
+update(cardIndex + 1);
+}
+}
+}
+ catch (Exception ex) {
+log.error(ex,ex);
+}
+}
+executor.shutdown();
+while (!executor.isTerminated()) {
+try {
+Thread.sleep(1000);
+}
+ catch (InterruptedException ie) {
+}
+}
+}
+closeButton.setText("Close");
 }

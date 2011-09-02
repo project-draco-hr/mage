@@ -23,17 +23,10 @@
     connection.setHost(this.txtServer.getText().trim());
     connection.setPort(Integer.valueOf(this.txtPort.getText().trim()));
     connection.setUsername(this.txtUserName.getText().trim());
-    String proxyType=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_TYPE,"None");
-    ProxyType configProxyType=null;
-    for (    ProxyType pt : Connection.ProxyType.values()) {
-      if (pt.toString().equals(proxyType)) {
-        configProxyType=pt;
-        break;
-      }
-    }
+    ProxyType configProxyType=Connection.ProxyType.valueByText(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_TYPE,"None"));
     if (configProxyType != null) {
       connection.setProxyType(configProxyType);
-      if (!proxyType.equals("None")) {
+      if (!configProxyType.equals(ProxyType.NONE)) {
         String host=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_ADDRESS,"");
         String port=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_PORT,"");
         if (!host.isEmpty() && !port.isEmpty()) {

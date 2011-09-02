@@ -2,38 +2,67 @@
   BufferedReader in=null;
   try {
     URL serverListURL=new URL("http://mage.googlecode.com/files/server-list.txt");
-    in=new BufferedReader(new InputStreamReader(serverListURL.openStream()));
-    List<String> servers=new ArrayList<String>();
-    String inputLine;
-    while ((inputLine=in.readLine()) != null) {
-      System.out.println("Found server: " + inputLine);
-      servers.add(inputLine);
-    }
-    if (servers.size() == 0) {
-      JOptionPane.showMessageDialog(null,"Couldn't find any server.");
-      return;
-    }
-    String selectedServer=(String)JOptionPane.showInputDialog(null,"Choose MAGE Public Server:","Input",JOptionPane.INFORMATION_MESSAGE,null,servers.toArray(),servers.get(0));
-    if (selectedServer != null) {
-      String[] params=selectedServer.split(":");
-      if (params.length == 3) {
-        this.txtServer.setText(params[1]);
-        this.txtPort.setText(params[2]);
-      }
+    Connection.ProxyType configProxyType=Connection.ProxyType.valueByText(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_TYPE,"None"));
+    Proxy p=null;
+    Proxy.Type type=Proxy.Type.DIRECT;
+switch (configProxyType) {
+case HTTP:
+      type=Proxy.Type.HTTP;
+    break;
+case SOCKS:
+  type=Proxy.Type.SOCKS;
+break;
+case NONE:
+default :
+p=Proxy.NO_PROXY;
+break;
+}
+if (!p.equals(Proxy.NO_PROXY)) {
+try {
+String address=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_ADDRESS,"");
+Integer port=Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_PORT,"80"));
+p=new Proxy(type,new InetSocketAddress(address,port));
+}
+ catch (Exception ex) {
+throw new RuntimeException("Gui_DownloadPictures : error 1 - " + ex);
+}
+}
+if (p == null) {
+JOptionPane.showMessageDialog(null,"Couldn't configure Proxy object!","Error",JOptionPane.ERROR_MESSAGE);
+return;
+}
+in=new BufferedReader(new InputStreamReader(serverListURL.openConnection(p).getInputStream()));
+List<String> servers=new ArrayList<String>();
+String inputLine;
+while ((inputLine=in.readLine()) != null) {
+System.out.println("Found server: " + inputLine);
+servers.add(inputLine);
+}
+if (servers.size() == 0) {
+JOptionPane.showMessageDialog(null,"Couldn't find any server.");
+return;
+}
+String selectedServer=(String)JOptionPane.showInputDialog(null,"Choose MAGE Public Server:","Input",JOptionPane.INFORMATION_MESSAGE,null,servers.toArray(),servers.get(0));
+if (selectedServer != null) {
+String[] params=selectedServer.split(":");
+if (params.length == 3) {
+this.txtServer.setText(params[1]);
+this.txtPort.setText(params[2]);
+}
  else {
-        JOptionPane.showMessageDialog(null,"Wrong server data format.");
-      }
-    }
-    in.close();
-  }
- catch (  Exception ex) {
-    logger.error(ex,ex);
-  }
+JOptionPane.showMessageDialog(null,"Wrong server data format.");
+}
+}
+in.close();
+}
+ catch (Exception ex) {
+logger.error(ex,ex);
+}
  finally {
-    if (in != null)     try {
-      in.close();
-    }
- catch (    Exception e) {
-    }
-  }
+if (in != null) try {
+in.close();
+}
+ catch (Exception e) {
+}
+}
 }
