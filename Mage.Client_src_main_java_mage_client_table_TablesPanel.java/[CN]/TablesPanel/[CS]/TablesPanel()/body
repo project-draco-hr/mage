@@ -5,8 +5,13 @@
   initComponents();
   tableTables.createDefaultColumnsFromModel();
   chatPanel.useExtendedView(ChatPanel.VIEW_MODE.NONE);
-  chatPanel.setOpaque(false);
   chatPanel.setBorder(null);
+  JComponent[] components=new JComponent[]{chatPanel,jSplitPane1,jScrollPane1,jScrollPane2,jPanel1,jPanel3};
+  for (  JComponent component : components) {
+    component.setOpaque(false);
+  }
+  jScrollPane1.getViewport().setBackground(new Color(255,255,255,50));
+  jScrollPane2.getViewport().setBackground(new Color(255,255,255,50));
   Action joinTable=new AbstractAction(){
     @Override public void actionPerformed(    ActionEvent e){
       int modelRow=Integer.valueOf(e.getActionCommand());
@@ -72,10 +77,4 @@
     }
   }
 ;
-  ButtonColumn buttonColumn1=new ButtonColumn(tableTables,joinTable,6);
-  ButtonColumn buttonColumn2=new ButtonColumn(tableCompleted,replayMatch,5);
-  jSplitPane1.setOpaque(false);
-  jScrollPane1.setOpaque(false);
-  jPanel1.setOpaque(false);
-  jScrollPane1.getViewport().setBackground(new Color(20,20,20,150));
 }
