@@ -57,7 +57,7 @@
           int height=image.getHeight(null);
           if (height > 0) {
             int dx=0;
-            if (set.equals("M10") || set.equals("M11")) {
+            if (set.equals("M10") || set.equals("M11") || set.equals("M12")) {
               dx=6;
             }
             Rectangle r=new Rectangle(15 + dx,(int)(height * (15.0f + dx) / width));
@@ -72,6 +72,22 @@
           }
         }
       }
+    }
+ catch (    Exception e) {
+    }
+  }
+  File file;
+  for (  String set : CardsStorage.getSetCodes()) {
+    file=new File(Constants.RESOURCE_PATH_SET_SMALL);
+    if (!file.exists()) {
+      break;
+    }
+    file=new File(Constants.RESOURCE_PATH_SET_SMALL + set + "-C.png");
+    try {
+      Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
+      int width=image.getWidth(null);
+      int height=image.getHeight(null);
+      setImagesExist.put(set,new Dimension(width,height));
     }
  catch (    Exception e) {
     }
