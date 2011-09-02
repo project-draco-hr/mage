@@ -1,4 +1,12 @@
 {
+  int param=0;
+  if (args.length > 0) {
+    String param1=args[0];
+    if (param1.equals(OPEN_CONNECTION_TAB)) {
+      param=3;
+    }
+  }
+  final int openedTab=param;
   java.awt.EventQueue.invokeLater(new Runnable(){
     public void run(){
       if (!dialog.isVisible()) {
@@ -20,9 +28,25 @@
         load(prefs,dialog.displayBigCardsInHand,KEY_HAND_USE_BIG_CARDS,"true");
         load(prefs,dialog.showToolTipsInHand,KEY_HAND_SHOW_TOOLTIPS,"true");
         load(prefs,dialog.nonLandPermanentsInOnePile,KEY_PERMANENTS_IN_ONE_PILE,"true");
+        dialog.cbProxyType.setSelectedItem(Connection.ProxyType.valueOf(MageFrame.getPreferences().get(KEY_PROXY_TYPE,"NONE").toUpperCase()));
+        load(prefs,dialog.txtProxyServer,KEY_PROXY_ADDRESS,Config.serverName);
+        load(prefs,dialog.txtProxyPort,KEY_PROXY_PORT,Integer.toString(Config.port));
+        load(prefs,dialog.txtProxyUserName,KEY_PROXY_USERNAME,"");
+        load(prefs,dialog.rememberPswd,KEY_PROXY_REMEMBER,"true","false");
+        if (dialog.rememberPswd.isSelected()) {
+          load(prefs,dialog.txtPasswordField,KEY_PROXY_PSWD,"");
+        }
         loadImagesPath(prefs);
         dialog.setLocation(300,200);
         dialog.reset();
+        try {
+          if (openedTab > 0) {
+            dialog.jTabbedPane1.setSelectedIndex(3);
+          }
+        }
+ catch (        Exception e) {
+          e.printStackTrace();
+        }
         dialog.setVisible(true);
       }
  else {
