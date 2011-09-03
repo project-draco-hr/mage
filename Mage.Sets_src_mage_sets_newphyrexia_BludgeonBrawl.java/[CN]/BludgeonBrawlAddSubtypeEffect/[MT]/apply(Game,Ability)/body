@@ -1,0 +1,16 @@
+{
+  FilterArtifactPermanent filter=new FilterArtifactPermanent("noncreature, non-Equipment artifact");
+  filter.getNotCardType().add(CardType.CREATURE);
+  filter.getSubtype().add("Equipment");
+  filter.setNotSubtype(true);
+  List<UUID> affectedPermanents=new ArrayList<UUID>();
+  List<Permanent> permanents=game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game);
+  for (  Permanent permanent : permanents) {
+    if (permanent != null) {
+      permanent.getSubtype().add("Equipment");
+      affectedPermanents.add(permanent.getId());
+    }
+  }
+  game.getState().setValue(source.getSourceId() + "BludgeonBrawlAffectedPermanents",affectedPermanents);
+  return true;
+}

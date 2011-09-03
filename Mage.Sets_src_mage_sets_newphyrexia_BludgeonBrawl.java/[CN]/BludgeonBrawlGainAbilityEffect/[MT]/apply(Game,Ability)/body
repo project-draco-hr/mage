@@ -1,0 +1,15 @@
+{
+  List<UUID> permanents=(List<UUID>)game.getState().getValue(source.getSourceId() + "BludgeonBrawlAffectedPermanents");
+  if (permanents != null) {
+    for (    UUID permanentId : permanents) {
+      Permanent permanent=game.getPermanent(permanentId);
+      if (permanent != null) {
+        int convertedManaCost=permanent.getManaCost().convertedManaCost();
+        permanent.addAbility(new EquipAbility(Outcome.BoostCreature,new GenericManaCost(convertedManaCost)));
+        permanent.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEquippedEffect(convertedManaCost,0)));
+      }
+    }
+    return true;
+  }
+  return false;
+}
