@@ -1,0 +1,13 @@
+{
+  try {
+    if (SessionManager.getInstance().isValidSession(sessionId)) {
+      UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
+      TableManager.getInstance().updateDeck(userId,tableId,deckList);
+      logger.debug("Session " + sessionId + " updated deck");
+    }
+  }
+ catch (  Exception ex) {
+    if (ex instanceof GameException)     throw (GameException)ex;
+    handleException(ex);
+  }
+}

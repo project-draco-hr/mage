@@ -19,6 +19,10 @@ this.timeout=time;
 setTimeout(Integer.toString(timeout));
 if (timeout != 0) {
 countdown.start();
+if (updateDeckTask == null || updateDeckTask.isDone()) {
+updateDeckTask=new UpdateDeckTask(MageFrame.getSession(),tableId,deck);
+updateDeckTask.execute();
+}
 }
 break;
 case Constructed:
