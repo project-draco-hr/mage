@@ -17,4 +17,11 @@
     entry.getValue().init();
     entry.getValue().update();
   }
+  for (  Entry<UUID,TournamentSession> entry : constructing.entrySet()) {
+    entry.getValue().construct(0);
+  }
+  for (  Entry<UUID,Deck> entry : sideboarding.entrySet()) {
+    int remaining=TableManager.getInstance().getController(entry.getKey()).getRemainingTime();
+    sideboard(entry.getValue(),entry.getKey(),remaining);
+  }
 }
