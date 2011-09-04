@@ -1,0 +1,13 @@
+{
+  for (  Permanent p : game.getBattlefield().getAllActivePermanents()) {
+    if (!(p.getCardType().contains(CardType.LAND) || p.getCounters().containsKey(CounterType.FATE))) {
+      p.destroy(source.getSourceId(),game,false);
+    }
+  }
+  for (  Permanent p : game.getBattlefield().getAllActivePermanents()) {
+    if (p.getCounters().containsKey(CounterType.FATE)) {
+      p.getCounters().removeCounter(CounterType.FATE,p.getCounters().getCount(CounterType.FATE));
+    }
+  }
+  return true;
+}
