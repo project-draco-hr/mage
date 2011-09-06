@@ -3,9 +3,11 @@
     NetworkInterface iface=interfaces.nextElement();
     if (iface.isLoopback())     continue;
     for (    InterfaceAddress addr : iface.getInterfaceAddresses()) {
-      InetAddress iaddr=addr.getAddress();
-      if (iaddr instanceof Inet4Address) {
-        return iaddr;
+      if (addr != null) {
+        InetAddress iaddr=addr.getAddress();
+        if (iaddr != null && iaddr instanceof Inet4Address) {
+          return iaddr;
+        }
       }
     }
   }
