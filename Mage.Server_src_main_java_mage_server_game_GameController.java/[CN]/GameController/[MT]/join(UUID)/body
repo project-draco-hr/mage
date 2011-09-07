@@ -2,7 +2,9 @@
   UUID playerId=userPlayerMap.get(userId);
   GameSession gameSession=new GameSession(game,userId,playerId);
   gameSessions.put(playerId,gameSession);
-  UserManager.getInstance().getUser(userId).addGame(playerId,gameSession);
+  User user=UserManager.getInstance().getUser(userId);
+  gameSession.setUserData(user.getUserData());
+  user.addGame(playerId,gameSession);
   logger.info("player " + playerId + " has joined game "+ game.getId());
   ChatManager.getInstance().broadcast(chatId,"",game.getPlayer(playerId).getName() + " has joined the game",MessageColor.BLACK);
   checkStart();

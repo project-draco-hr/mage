@@ -40,8 +40,14 @@ callbackClient.addListener(callbackHandler,callbackMetadata);
 callbackClient.invoke("");
 this.sessionId=callbackClient.getSessionId();
 boolean registerResult=false;
-if (connection.getPassword() == null) registerResult=server.registerClient(connection.getUsername(),sessionId,client.getVersion());
- else registerResult=server.registerAdmin(connection.getPassword(),sessionId,client.getVersion());
+if (connection.getPassword() == null) {
+UserDataView userDataView=new UserDataView(0);
+registerResult=server.registerClient(connection.getUsername(),sessionId,client.getVersion());
+server.setUserData(connection.getUsername(),sessionId,userDataView);
+}
+ else {
+registerResult=server.registerAdmin(connection.getPassword(),sessionId,client.getVersion());
+}
 if (registerResult) {
 sessionState=SessionState.CONNECTED;
 serverState=server.getServerState();
