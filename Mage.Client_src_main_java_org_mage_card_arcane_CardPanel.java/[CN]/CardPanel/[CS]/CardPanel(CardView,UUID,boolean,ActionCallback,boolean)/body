@@ -6,6 +6,28 @@
   if (isPermanent) {
     this.hasSickness=((PermanentView)this.gameCard).hasSummoningSickness();
   }
+  buttonPanel=new JPanel();
+  buttonPanel.setLayout(null);
+  buttonPanel.setOpaque(false);
+  add(buttonPanel);
+  dayNightButton=new JButton("");
+  dayNightButton.setLocation(2,2);
+  dayNightButton.setSize(25,25);
+  BufferedImage day=ImageManagerImpl.getInstance().getDayImage();
+  dayNightButton.setIcon(new ImageIcon(day));
+  buttonPanel.add(dayNightButton);
+  dayNightButton.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      if (animationInProgress) {
+        return;
+      }
+      if (isTapped()) {
+        return;
+      }
+      Animation.transformCard(CardPanel.this,CardPanel.this,true);
+    }
+  }
+);
   setBackground(Color.black);
   setOpaque(false);
   addMouseListener(this);

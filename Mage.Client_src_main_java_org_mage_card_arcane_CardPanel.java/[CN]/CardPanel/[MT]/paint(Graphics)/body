@@ -2,6 +2,11 @@
   if (!displayEnabled)   return;
   if (!isValid())   super.validate();
   Graphics2D g2d=(Graphics2D)g;
+  if (transformAngle < 1) {
+    float edgeOffset=(cardWidth + cardXOffset) / 2f;
+    g2d.translate(edgeOffset * (1 - transformAngle),0);
+    g2d.scale(transformAngle,1);
+  }
   if (tappedAngle + flippedAngle > 0) {
     g2d=(Graphics2D)g2d.create();
     float edgeOffset=cardWidth / 2f;
