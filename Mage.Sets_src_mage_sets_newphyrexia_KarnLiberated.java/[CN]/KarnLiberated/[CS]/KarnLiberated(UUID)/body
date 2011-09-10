@@ -1,0 +1,13 @@
+{
+  super(ownerId,1,"Karn Liberated",Rarity.MYTHIC,new CardType[]{CardType.PLANESWALKER},"{7}");
+  this.expansionSetCode="NPH";
+  this.subtype.add("Karn");
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.LOYALTY.createInstance(6)),""));
+  LoyaltyAbility ability1=new LoyaltyAbility(new ExileFromZoneTargetEffect(Zone.HAND,exileId,"Karn Liberated",new FilterCard()),4);
+  ability1.addTarget(new TargetPlayer());
+  this.addAbility(ability1);
+  LoyaltyAbility ability2=new LoyaltyAbility(new ExileTargetEffect(),-3);
+  ability2.addTarget(new TargetPermanent());
+  this.addAbility(ability2);
+  this.addAbility(new LoyaltyAbility(new KarnLiberatedEffect(exileId),-14));
+}

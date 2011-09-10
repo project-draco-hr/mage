@@ -1,0 +1,25 @@
+{
+  Player player=game.getPlayer(targetPointer.getFirst(source));
+  if (player != null) {
+    Target target;
+    Card card=null;
+switch (zone) {
+case HAND:
+      target=new TargetCardInHand(filter);
+    player.choose(Outcome.Exile,target,game);
+  card=player.getHand().get(target.getFirstTarget(),game);
+break;
+case GRAVEYARD:
+target=new TargetCardInGraveyard(filter);
+player.choose(Outcome.Exile,target,game);
+card=player.getGraveyard().get(target.getFirstTarget(),game);
+break;
+default :
+}
+if (card != null) {
+card.moveToExile(exileId,exileName,source.getSourceId(),game);
+return true;
+}
+}
+return false;
+}

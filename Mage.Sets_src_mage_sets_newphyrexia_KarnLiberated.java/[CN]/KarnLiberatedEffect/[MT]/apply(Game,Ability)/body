@@ -1,0 +1,31 @@
+{
+  List<Card> cards=new ArrayList<Card>();
+  for (  ExileZone zone : game.getExile().getExileZones()) {
+    if (zone.getId().equals(exileId)) {
+      for (      Card card : zone.getCards(game)) {
+        if (!card.getSubtype().contains("Aura"))         cards.add(card);
+      }
+    }
+  }
+  game.getState().clear();
+  for (  Player player : game.getPlayers().values()) {
+    player.getGraveyard().clear();
+    player.getHand().clear();
+    player.getLibrary().clear();
+    for (    Card card : game.getCards()) {
+      if (card.getOwnerId().equals(player.getId())) {
+        player.getLibrary().putOnTop(card,game);
+      }
+    }
+    player.init(game);
+  }
+  for (  Card card : cards) {
+    game.getExile().add(exileId,"Karn Liberated",card);
+  }
+  DelayedTriggeredAbility delayedAbility=new KarnLiberatedDelayedTriggeredAbility(exileId);
+  delayedAbility.setSourceId(source.getSourceId());
+  delayedAbility.setControllerId(source.getControllerId());
+  game.addDelayedTriggeredAbility(delayedAbility);
+  game.start(null);
+  return true;
+}
