@@ -1,8 +1,11 @@
 {
   Session session=sessions.get(sessionId);
+  sessions.remove(sessionId);
   if (session != null) {
     if (voluntary)     session.kill();
  else     session.disconnect();
-    sessions.remove(sessionId);
+  }
+ else {
+    logger.info("could not find session with id " + sessionId);
   }
 }

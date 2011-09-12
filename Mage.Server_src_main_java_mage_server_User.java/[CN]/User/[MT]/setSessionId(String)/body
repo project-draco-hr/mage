@@ -1,9 +1,16 @@
 {
   this.sessionId=sessionId;
-  if (sessionId.isEmpty())   userState=UserState.Disconnected;
- else   if (userState == UserState.Created)   userState=UserState.Connected;
+  if (sessionId.isEmpty()) {
+    userState=UserState.Disconnected;
+    logger.info("User " + userName + " disconnected");
+  }
+ else   if (userState == UserState.Created) {
+    userState=UserState.Connected;
+    logger.info("User " + userName + " created");
+  }
  else {
     userState=UserState.Reconnected;
     reconnect();
+    logger.info("User " + userName + " reconnected");
   }
 }
