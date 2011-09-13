@@ -1,0 +1,32 @@
+{
+  Spell spell=game.getStack().getSpell(source.getFirstTarget());
+  if (spell != null) {
+    Targets targets=spell.getSpellAbility().getTargets();
+    if (targets.size() == 1 && targets.get(0).getTargets().size() == 1) {
+      targets.get(0).clearChosen();
+      targets.get(0).add(source.getSourceId(),game);
+    }
+ else {
+      Player player=game.getPlayer(source.getControllerId());
+      for (      Target target : targets) {
+        for (        UUID targetId : target.getTargets()) {
+          MageObject object=game.getObject(targetId);
+          String name=null;
+          if (object == null) {
+            Player targetPlayer=game.getPlayer(targetId);
+            name=targetPlayer.getName();
+          }
+ else {
+            name=object.getName();
+          }
+          if (name != null && player.chooseUse(Outcome.Neutral,"Change target from " + name + " to {this}?",game)) {
+            target.remove(targetId);
+            target.addTarget(source.getSourceId(),source,game);
+            break;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
