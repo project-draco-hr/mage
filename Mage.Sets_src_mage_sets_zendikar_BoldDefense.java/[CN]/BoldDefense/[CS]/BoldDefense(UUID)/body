@@ -2,9 +2,9 @@
   super(ownerId,3,"Bold Defense",Rarity.COMMON,new CardType[]{CardType.INSTANT},"{2}{W}");
   this.expansionSetCode="ZEN";
   this.color.setWhite(true);
-  Ability kickedAbility=new KickerAbility(new BoostControlledEffect(2,2,Constants.Duration.EndOfTurn),true);
-  kickedAbility.addCost(new ManaCostsImpl("{3}{W}"));
-  kickedAbility.addEffect(new GainAbilityControlledEffect(FirstStrikeAbility.getInstance(),Constants.Duration.EndOfTurn,FilterCreaturePermanent.getDefault(),false));
-  this.addAbility(kickedAbility);
-  this.getSpellAbility().addEffect(new BoostControlledEffect(1,1,Constants.Duration.EndOfTurn));
+  DynamicValue dn=new BoldDefensePTCount();
+  this.getSpellAbility().addEffect(new BoostControlledEffect(dn,dn,Constants.Duration.EndOfTurn));
+  this.getSpellAbility().addOptionalCost(new ManaCostsImpl("{3}{W}"));
+  ContinuousEffect effect=new GainAbilityControlledEffect(FirstStrikeAbility.getInstance(),Constants.Duration.EndOfTurn,FilterCreaturePermanent.getDefault(),false);
+  this.getSpellAbility().addEffect(new ConditionalContinousEffect(effect,KickedCondition.getInstance(),staticText));
 }
