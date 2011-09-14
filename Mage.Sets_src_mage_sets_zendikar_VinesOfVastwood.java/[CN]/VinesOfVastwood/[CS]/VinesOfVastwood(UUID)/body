@@ -4,9 +4,7 @@
   this.color.setGreen(true);
   TargetCreaturePermanent target=new TargetCreaturePermanent();
   this.getSpellAbility().addTarget(target);
-  this.getSpellAbility().addEffect(new VinesOfVastwoodEffect(filter,Duration.EndOfTurn));
-  KickerAbility ability=new KickerAbility(new BoostTargetEffect(4,4,Duration.EndOfTurn),false);
-  ability.addTarget(target);
-  ability.addCost(new ManaCostsImpl("{G}"));
-  this.addAbility(ability);
+  this.getSpellAbility().addEffect(new GainAbilityTargetEffect(new HexproofAbility(),Duration.EndOfTurn));
+  this.getSpellAbility().addOptionalCost(new ManaCostsImpl("{G}"));
+  this.getSpellAbility().addEffect(new ConditionalContinousEffect(new BoostTargetEffect(4,4,Duration.EndOfTurn),KickedCondition.getInstance(),staticText));
 }
