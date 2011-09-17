@@ -3,9 +3,23 @@
   if (transformed) {
     BufferedImage night=ImageManagerImpl.getInstance().getNightImage();
     dayNightButton.setIcon(new ImageIcon(night));
+    this.temporary=this.gameCard;
+    if (this.gameCard.getSecondCardFace() == null) {
+      return;
+    }
+    if (!isPermanent) {
+      update(this.gameCard.getSecondCardFace());
+    }
+    updateImage();
   }
  else {
     BufferedImage day=ImageManagerImpl.getInstance().getDayImage();
     dayNightButton.setIcon(new ImageIcon(day));
+    this.gameCard=this.temporary;
+    this.temporary=null;
+    if (!isPermanent) {
+      update(this.gameCard);
+    }
+    updateImage();
   }
 }

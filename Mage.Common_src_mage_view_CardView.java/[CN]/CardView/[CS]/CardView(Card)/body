@@ -22,11 +22,15 @@
   this.color=card.getColor();
   this.manaCost=card.getManaCost().getSymbols();
   this.convertedManaCost=card.getManaCost().convertedManaCost();
+  this.canTransform=card.canTransform();
   if (card instanceof PermanentToken) {
     this.rarity=Rarity.COMMON;
   }
  else {
     this.rarity=card.getRarity();
+  }
+  if (card.getSecondCardFace() != null) {
+    this.secondCardFace=new CardView(card.getSecondCardFace());
   }
   if (card instanceof Spell) {
     Spell<?> spell=(Spell<?>)card;

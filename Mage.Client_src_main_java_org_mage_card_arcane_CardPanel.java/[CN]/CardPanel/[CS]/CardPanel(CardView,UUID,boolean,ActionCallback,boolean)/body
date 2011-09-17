@@ -9,20 +9,20 @@
   buttonPanel=new JPanel();
   buttonPanel.setLayout(null);
   buttonPanel.setOpaque(false);
-  buttonPanel.setVisible(false);
   add(buttonPanel);
   dayNightButton=new JButton("");
   dayNightButton.setLocation(2,2);
   dayNightButton.setSize(25,25);
+  buttonPanel.setVisible(this.gameCard.canTransform());
   BufferedImage day=ImageManagerImpl.getInstance().getDayImage();
   dayNightButton.setIcon(new ImageIcon(day));
   buttonPanel.add(dayNightButton);
   dayNightButton.addActionListener(new ActionListener(){
     @Override public void actionPerformed(    ActionEvent e){
-      if (animationInProgress) {
-        return;
-      }
-      if (isTapped()) {
+      if (animationInProgress || isTapped() || isPermanent) {
+        if (isPermanent) {
+          JOptionPane.showMessageDialog(null,"You can't transform cards on battlefield.");
+        }
         return;
       }
       Animation.transformCard(CardPanel.this,CardPanel.this,true);
