@@ -23,7 +23,14 @@
     }
   }
   if (game.getObject(sourceId) != null) {
-    if (game.getCard(sourceId) != null)     game.getCard(sourceId).adjustCosts(this,game);
+    if (game.getCard(sourceId) != null) {
+      game.getCard(sourceId).adjustCosts(this,game);
+      for (      Ability ability : game.getCard(sourceId).getAbilities()) {
+        if (ability instanceof AdjustingSourceCosts) {
+          ((AdjustingSourceCosts)ability).adjustCosts(this,game);
+        }
+      }
+    }
   }
   if (!useAlternativeCost(game)) {
     game.getContinuousEffects().costModification(this,game);
