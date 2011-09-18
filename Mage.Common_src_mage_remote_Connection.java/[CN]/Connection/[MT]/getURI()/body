@@ -1,7 +1,10 @@
 {
   if (host.equals("localhost")) {
     try {
-      return transport + "://" + getLocalAddress().getHostAddress()+ ":"+ port+ "/"+ serialization;
+      InetAddress inet=getLocalAddress();
+      if (inet != null) {
+        return transport + "://" + inet.getHostAddress()+ ":"+ port+ "/"+ serialization;
+      }
     }
  catch (    SocketException ex) {
     }
