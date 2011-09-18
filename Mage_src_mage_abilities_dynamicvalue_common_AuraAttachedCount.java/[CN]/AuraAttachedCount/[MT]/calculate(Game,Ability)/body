@@ -1,0 +1,14 @@
+{
+  int count=0;
+  Permanent p=game.getPermanent(source.getSourceId());
+  if (p != null) {
+    List<UUID> attachments=p.getAttachments();
+    for (    UUID attachmentId : attachments) {
+      Permanent attached=game.getPermanent(attachmentId);
+      if (attached != null && attached.getSubtype().contains("Aura")) {
+        count++;
+      }
+    }
+  }
+  return amount * count;
+}
