@@ -1,5 +1,42 @@
 {
-  InputStream is=ServerMessagesUtil.class.getResourceAsStream(SERVER_MSG_TXT_FILE);
+  if (ignore) {
+    return null;
+  }
+  File externalFile=null;
+  if (pathToExternalMessages != null) {
+    externalFile=new File(pathToExternalMessages);
+    if (!externalFile.exists()) {
+      log.warn("Couldn't find server.msg.txt using external path: " + pathToExternalMessages);
+      pathToExternalMessages=null;
+    }
+ else     if (!externalFile.canRead()) {
+      log.warn("Couldn't read (no access) server.msg.txt using external path: " + pathToExternalMessages);
+      pathToExternalMessages=null;
+    }
+  }
+  InputStream is=null;
+  if (externalFile != null) {
+    try {
+      is=new FileInputStream(externalFile);
+    }
+ catch (    Exception f) {
+      log.error(f,f);
+      pathToExternalMessages=null;
+    }
+  }
+ else {
+    File file=new File(SERVER_MSG_TXT_FILE);
+    if (!file.exists() || !file.canRead()) {
+      log.warn("Couldn't find server.msg.txt using path: " + SERVER_MSG_TXT_FILE);
+    }
+    try {
+      is=new FileInputStream(file);
+    }
+ catch (    Exception f) {
+      log.error(f,f);
+      ignore=true;
+    }
+  }
   if (is == null) {
     log.warn("Couldn't find server.msg");
     return null;
