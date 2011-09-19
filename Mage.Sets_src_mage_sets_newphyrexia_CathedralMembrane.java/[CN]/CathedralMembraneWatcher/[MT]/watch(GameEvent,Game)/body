@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.BLOCKER_DECLARED && event.getSourceId().equals(sourceId)) {
+    Set<UUID> creatures=blockedCreatures.get(sourceId);
+    if (creatures != null) {
+      creatures.add(event.getTargetId());
+    }
+ else {
+      creatures=new HashSet<UUID>();
+      creatures.add(event.getTargetId());
+      blockedCreatures.put(sourceId,creatures);
+    }
+  }
+}

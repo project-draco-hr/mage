@@ -1,0 +1,18 @@
+{
+  Player player=game.getPlayer(targetPointer.getFirst(source));
+  if (player != null) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      card.moveToExile(source.getSourceId(),"Omen Machine Exile",source.getId(),game);
+      if (card.getCardType().contains(CardType.LAND)) {
+        card.putOntoBattlefield(game,Zone.EXILED,source.getId(),player.getId());
+        game.getExile().removeCard(card,game);
+      }
+ else {
+        player.cast(card.getSpellAbility(),game,true);
+      }
+    }
+    return true;
+  }
+  return false;
+}
