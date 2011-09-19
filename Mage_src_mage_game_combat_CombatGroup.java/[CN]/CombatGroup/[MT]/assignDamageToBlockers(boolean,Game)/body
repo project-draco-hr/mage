@@ -1,13 +1,23 @@
 {
   if (attackers.size() > 0 && (!first || hasFirstOrDoubleStrike(game))) {
-    if (blockers.size() == 0) {
+    if (blockers.isEmpty()) {
       unblockedDamage(first,game);
     }
- else     if (blockers.size() == 1) {
-      singleBlockerDamage(first,game);
-    }
  else {
-      multiBlockerDamage(first,game);
+      Permanent attacker=game.getPermanent(attackers.get(0));
+      if (attacker.getAbilities().containsKey(DamageAsThoughNotBlockedAbility.getInstance().getId())) {
+        Player player=game.getPlayer(attacker.getControllerId());
+        if (player.chooseUse(Outcome.Damage,"Do you wish to assign damage for " + attacker.getName() + " as though it weren't blocked?",game)) {
+          blocked=false;
+          unblockedDamage(first,game);
+        }
+      }
+      if (blockers.size() == 1) {
+        singleBlockerDamage(first,game);
+      }
+ else {
+        multiBlockerDamage(first,game);
+      }
     }
   }
 }
