@@ -1,0 +1,12 @@
+{
+  Map<UUID,ActivatedAbility> useable=new HashMap<UUID,ActivatedAbility>();
+  for (  ActivatedAbility ability : object.getAbilities().getActivatedAbilities(zone)) {
+    if (ability.canActivate(playerId,game))     useable.put(ability.getId(),ability);
+  }
+  if (zone != Zone.HAND && game.getContinuousEffects().asThough(object.getId(),AsThoughEffectType.CAST,game)) {
+    for (    ActivatedAbility ability : object.getAbilities().getActivatedAbilities(Zone.HAND)) {
+      useable.put(ability.getId(),ability);
+    }
+  }
+  return useable;
+}

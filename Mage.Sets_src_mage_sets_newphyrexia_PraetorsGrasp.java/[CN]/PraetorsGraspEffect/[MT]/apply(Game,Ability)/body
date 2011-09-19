@@ -1,0 +1,20 @@
+{
+  Player opponent=game.getPlayer(source.getFirstTarget());
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null && opponent != null) {
+    Cards opponentLibrary=new CardsImpl();
+    opponentLibrary.addAll(opponent.getLibrary().getCardList());
+    TargetCardInLibrary target=new TargetCardInLibrary();
+    if (player.choose(Outcome.Benefit,opponentLibrary,target,game)) {
+      UUID targetId=target.getFirstTarget();
+      Card card=opponent.getLibrary().remove(targetId,game);
+      if (card != null) {
+        card.setFaceDown(true);
+        card.moveToExile(getId(),"Praetor's Grasp",source.getSourceId(),game);
+        game.addEffect(new PraetorsGraspPlayEffect(card.getId()),source);
+      }
+    }
+  }
+  opponent.shuffleLibrary(game);
+  return true;
+}
