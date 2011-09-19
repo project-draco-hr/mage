@@ -2,10 +2,19 @@
   int bookmark=game.bookmarkState();
   TriggeredAbility ability=(TriggeredAbility)source.copy();
   if (ability != null && ability.canChooseTarget(game)) {
-    game.getStack().push(new StackAbility(ability,playerId));
-    if (ability.activate(game,false)) {
-      game.removeBookmark(bookmark);
-      return true;
+    if (ability.isUsesStack()) {
+      game.getStack().push(new StackAbility(ability,playerId));
+      if (ability.activate(game,false)) {
+        game.removeBookmark(bookmark);
+        return true;
+      }
+    }
+ else {
+      if (ability.activate(game,false)) {
+        ability.resolve(game);
+        game.removeBookmark(bookmark);
+        return true;
+      }
     }
   }
   game.restoreState(bookmark);
