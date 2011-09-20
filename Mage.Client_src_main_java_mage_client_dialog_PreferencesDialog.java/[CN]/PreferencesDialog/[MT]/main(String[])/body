@@ -11,42 +11,13 @@
     public void run(){
       if (!dialog.isVisible()) {
         Preferences prefs=MageFrame.getPreferences();
-        load(prefs,dialog.checkBoxUpkeepYou,UPKEEP_YOU);
-        load(prefs,dialog.checkBoxDrawYou,DRAW_YOU);
-        load(prefs,dialog.checkBoxMainYou,MAIN_YOU);
-        load(prefs,dialog.checkBoxBeforeCYou,BEFORE_COMBAT_YOU);
-        load(prefs,dialog.checkBoxEndOfCYou,END_OF_COMBAT_YOU);
-        load(prefs,dialog.checkBoxMain2You,MAIN_2_YOU);
-        load(prefs,dialog.checkBoxEndTurnYou,END_OF_TURN_YOU);
-        load(prefs,dialog.checkBoxUpkeepOthers,UPKEEP_OTHERS);
-        load(prefs,dialog.checkBoxDrawOthers,DRAW_OTHERS);
-        load(prefs,dialog.checkBoxMainOthers,MAIN_OTHERS);
-        load(prefs,dialog.checkBoxBeforeCOthers,BEFORE_COMBAT_OTHERS);
-        load(prefs,dialog.checkBoxEndOfCOthers,END_OF_COMBAT_OTHERS);
-        load(prefs,dialog.checkBoxMain2Others,MAIN_2_OTHERS);
-        load(prefs,dialog.checkBoxEndTurnOthers,END_OF_TURN_OTHERS);
-        load(prefs,dialog.displayBigCardsInHand,KEY_HAND_USE_BIG_CARDS,"true");
-        load(prefs,dialog.showToolTipsInHand,KEY_HAND_SHOW_TOOLTIPS,"true");
-        load(prefs,dialog.nonLandPermanentsInOnePile,KEY_PERMANENTS_IN_ONE_PILE,"true");
-        dialog.cbProxyType.setSelectedItem(Connection.ProxyType.valueOf(MageFrame.getPreferences().get(KEY_PROXY_TYPE,"NONE").toUpperCase()));
-        load(prefs,dialog.txtProxyServer,KEY_PROXY_ADDRESS,Config.serverName);
-        load(prefs,dialog.txtProxyPort,KEY_PROXY_PORT,Integer.toString(Config.port));
-        load(prefs,dialog.txtProxyUserName,KEY_PROXY_USERNAME,"");
-        load(prefs,dialog.rememberPswd,KEY_PROXY_REMEMBER,"true","false");
-        if (dialog.rememberPswd.isSelected()) {
-          load(prefs,dialog.txtPasswordField,KEY_PROXY_PSWD,"");
-        }
+        loadPhases(prefs);
+        loadProxySettings(prefs);
+        loadSelectedAvatar(prefs);
         loadImagesPath(prefs);
+        openTab(openedTab);
         dialog.setLocation(300,200);
         dialog.reset();
-        try {
-          if (openedTab > 0) {
-            dialog.jTabbedPane1.setSelectedIndex(3);
-          }
-        }
- catch (        Exception e) {
-          e.printStackTrace();
-        }
         dialog.setVisible(true);
       }
  else {

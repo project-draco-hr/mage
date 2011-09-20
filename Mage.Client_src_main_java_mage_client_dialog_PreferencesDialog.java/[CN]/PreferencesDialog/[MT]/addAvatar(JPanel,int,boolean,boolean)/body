@@ -1,0 +1,35 @@
+{
+  String path="/avatars/" + String.valueOf(id) + ".jpg";
+  panels.put(id,jPanel);
+  Image image=ImageHelper.getImageFromResources(path);
+  Rectangle r=new Rectangle(90,90);
+  BufferedImage bufferedImage;
+  if (!locked) {
+    bufferedImage=BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB);
+  }
+ else {
+    bufferedImage=BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB,new Color(150,150,150,170));
+  }
+  BufferedImage resized=ImageHelper.getResizedImage(bufferedImage,r);
+  final JLabel jLabel=new JLabel();
+  jLabel.setIcon(new ImageIcon(resized));
+  if (selected) {
+    jPanel.setBorder(GREEN_BORDER);
+  }
+ else {
+    jPanel.setBorder(BLACK_BORDER);
+  }
+  jPanel.setLayout(new BorderLayout());
+  jPanel.add(jLabel);
+  if (!locked) {
+    jLabel.addMouseListener(new MouseAdapter(){
+      @Override public void mousePressed(      MouseEvent e){
+        if (selectedId != id) {
+          setSelectedId(id);
+          MageFrame.getSession().updateAvatar(id);
+        }
+      }
+    }
+);
+  }
+}
