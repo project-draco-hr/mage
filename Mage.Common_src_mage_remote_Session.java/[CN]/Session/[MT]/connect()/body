@@ -69,12 +69,16 @@ logger.fatal("",ex);
 client.showMessage("Unable to connect to server. " + ex.getMessage());
 }
 catch (MageVersionException ex) {
+if (!canceled) {
 client.showMessage("Unable to connect to server. " + ex.getMessage());
+}
 }
 catch (Throwable t) {
 logger.fatal("Unable to connect to server - ",t);
+if (!canceled) {
 disconnect(false);
 client.showMessage("Unable to connect to server. " + t.getMessage());
+}
 }
 return false;
 }
