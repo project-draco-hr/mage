@@ -2,25 +2,12 @@
   game.getState().setPriorityPlayerId(getId());
   MageObject object=game.getObject(response.getUUID());
   if (object == null)   return;
-  Map<UUID,ActivatedAbility> useableAbilities;
-switch (game.getZone(object.getId())) {
-case HAND:
-    useableAbilities=getUseableAbilities(object.getAbilities().getManaAbilities(Zone.HAND),game);
-  if (useableAbilities.size() > 0) {
-    activateAbility(useableAbilities,game);
+  Map<UUID,ManaAbility> useableAbilities=null;
+  Zone zone=game.getZone(object.getId());
+  if (zone != null) {
+    useableAbilities=getUseableManaAbilities(object,zone,game);
+    if (useableAbilities != null && useableAbilities.size() > 0) {
+      activateAbility(useableAbilities,game);
+    }
   }
-break;
-case BATTLEFIELD:
-useableAbilities=getUseableAbilities(object.getAbilities().getManaAbilities(Zone.BATTLEFIELD),game);
-if (useableAbilities.size() > 0) {
-activateAbility(useableAbilities,game);
-}
-break;
-case GRAVEYARD:
-useableAbilities=getUseableAbilities(object.getAbilities().getManaAbilities(Zone.GRAVEYARD),game);
-if (useableAbilities.size() > 0) {
-activateAbility(useableAbilities,game);
-}
-break;
-}
 }
