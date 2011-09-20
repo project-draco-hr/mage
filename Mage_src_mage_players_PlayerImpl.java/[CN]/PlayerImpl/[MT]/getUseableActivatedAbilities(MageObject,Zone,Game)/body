@@ -3,9 +3,20 @@
   for (  ActivatedAbility ability : object.getAbilities().getActivatedAbilities(zone)) {
     if (ability.canActivate(playerId,game))     useable.put(ability.getId(),ability);
   }
-  if (zone != Zone.HAND && game.getContinuousEffects().asThough(object.getId(),AsThoughEffectType.CAST,game)) {
-    for (    ActivatedAbility ability : object.getAbilities().getActivatedAbilities(Zone.HAND)) {
-      useable.put(ability.getId(),ability);
+  if (zone != Zone.HAND) {
+    if (game.getContinuousEffects().asThough(object.getId(),AsThoughEffectType.CAST,game)) {
+      for (      ActivatedAbility ability : object.getAbilities().getActivatedAbilities(Zone.HAND)) {
+        useable.put(ability.getId(),ability);
+      }
+    }
+ else {
+      for (      ActivatedAbility ability : object.getAbilities().getActivatedAbilities(Zone.HAND)) {
+        for (        AlternativeCost cost : ability.getAlternativeCosts()) {
+          if (cost.isAvailable(game,ability)) {
+            useable.put(ability.getId(),ability);
+          }
+        }
+      }
     }
   }
   return useable;
