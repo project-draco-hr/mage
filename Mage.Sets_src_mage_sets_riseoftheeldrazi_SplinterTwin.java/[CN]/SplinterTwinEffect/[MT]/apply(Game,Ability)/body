@@ -1,0 +1,17 @@
+{
+  Card card=game.getCard(source.getSourceId());
+  if (card != null) {
+    EmptyToken token=new EmptyToken();
+    CardUtil.copyTo(token).from(card);
+    token.addAbility(HasteAbility.getInstance());
+    token.putOntoBattlefield(game,source.getSourceId(),source.getControllerId());
+    ExileTargetEffect exileEffect=new ExileTargetEffect();
+    exileEffect.setTargetPointer(new FixedTarget(token.getLastAddedToken()));
+    DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(exileEffect);
+    delayedAbility.setSourceId(source.getSourceId());
+    delayedAbility.setControllerId(source.getControllerId());
+    game.addDelayedTriggeredAbility(delayedAbility);
+    return true;
+  }
+  return false;
+}

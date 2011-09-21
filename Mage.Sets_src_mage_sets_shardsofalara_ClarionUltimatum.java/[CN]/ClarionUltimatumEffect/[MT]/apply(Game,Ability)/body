@@ -1,0 +1,44 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  int permanentsCount=game.getBattlefield().getAllActivePermanents(source.getControllerId()).size();
+  if (player == null || permanentsCount < 1) {
+    return false;
+  }
+  TargetControlledPermanent permanentsTarget=new TargetControlledPermanent(Math.min(permanentsCount,5));
+  permanentsTarget.setRequired(true);
+  player.choose(Outcome.Benefit,permanentsTarget,game);
+  List<Card> chosenCards=new ArrayList<Card>();
+  List<String> namesFiltered=new ArrayList<String>();
+  List<UUID> permanents=permanentsTarget.getTargets();
+  for (  UUID permanentId : permanents) {
+    Permanent permanent=game.getPermanent(permanentId);
+    final String cardName=permanent.getName();
+    if (!namesFiltered.contains(cardName)) {
+      StringBuilder sb=new StringBuilder();
+      sb.append("Search for ").append(cardName).append(" in your library?");
+      if (player.chooseUse(Outcome.PutCardInPlay,sb.toString(),game)) {
+        FilterCard filter=new FilterCard("card named" + cardName);
+        filter.getName().add(cardName);
+        TargetCardInLibrary target=new TargetCardInLibrary(filter);
+        if (player.searchLibrary(target,game)) {
+          Card card=player.getLibrary().remove(target.getFirstTarget(),game);
+          if (card != null) {
+            chosenCards.add(card);
+          }
+        }
+      }
+ else {
+        namesFiltered.add(cardName);
+      }
+    }
+  }
+  for (  Card card : chosenCards) {
+    card.putOntoBattlefield(game,Zone.LIBRARY,source.getId(),source.getControllerId());
+    Permanent permanent=game.getPermanent(card.getId());
+    if (permanent != null) {
+      permanent.setTapped(true);
+    }
+  }
+  player.shuffleLibrary(game);
+  return true;
+}

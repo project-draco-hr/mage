@@ -1,0 +1,13 @@
+{
+  super(ownerId,165,"Splinter Twin",Rarity.RARE,new CardType[]{CardType.ENCHANTMENT},"{2}{R}{R}");
+  this.expansionSetCode="ROE";
+  this.subtype.add("Aura");
+  this.color.setRed(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  SimpleActivatedAbility gainedAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new SplinterTwinEffect(),new TapSourceCost());
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(gainedAbility,AttachmentType.AURA)));
+}
