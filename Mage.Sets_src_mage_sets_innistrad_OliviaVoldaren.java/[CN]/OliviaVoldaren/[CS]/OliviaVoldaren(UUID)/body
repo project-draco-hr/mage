@@ -1,0 +1,19 @@
+{
+  super(ownerId,215,"Olivia Voldaren",Rarity.MYTHIC,new CardType[]{CardType.CREATURE},"{2}{B}{R}");
+  this.expansionSetCode="ISD";
+  this.supertype.add("Legendary");
+  this.subtype.add("Vampire");
+  this.color.setRed(true);
+  this.color.setBlack(true);
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  this.addAbility(FlyingAbility.getInstance());
+  Ability ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new DamageTargetEffect(1),new ManaCostsImpl("{1}{R}"));
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  ability.addEffect(new AddCardSubTypeTargetEffect("Vampire",Constants.Duration.WhileOnBattlefield));
+  ability.addEffect(new AddCountersSourceEffect(CounterType.P1P1.createInstance()));
+  this.addAbility(ability);
+  Ability ability2=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new GainControlTargetEffect(Constants.Duration.WhileOnBattlefield),new ManaCostsImpl("{3}{B}{B}"));
+  ability2.addTarget(new TargetCreaturePermanent(vampireFilter));
+  this.addAbility(ability2);
+}
