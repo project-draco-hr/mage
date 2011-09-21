@@ -1,0 +1,17 @@
+{
+  super(ownerId,163,"Umezawa's Jitte",Rarity.RARE,new CardType[]{CardType.ARTIFACT},"{2}");
+  this.expansionSetCode="BOK";
+  this.supertype.add("Legendary");
+  this.subtype.add("Equipment");
+  this.addAbility(new UmezawasJitteAbility());
+  Ability ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new BoostEquippedEffect(2,2,Constants.Duration.EndOfTurn),new RemoveCountersSourceCost(CounterType.CHARGE.createInstance()));
+  Mode mode=new Mode();
+  mode.getEffects().add(new BoostTargetEffect(-1,-1,Constants.Duration.EndOfTurn));
+  mode.getTargets().add(new TargetCreaturePermanent());
+  ability.addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new GainLifeEffect(2));
+  ability.addMode(mode);
+  this.addAbility(ability);
+  this.addAbility(new EquipAbility(Constants.Outcome.AddAbility,new GenericManaCost(2)));
+}
