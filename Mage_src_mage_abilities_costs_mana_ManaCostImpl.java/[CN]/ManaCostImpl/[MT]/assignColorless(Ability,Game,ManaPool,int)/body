@@ -1,40 +1,28 @@
 {
   int conditionalCount=pool.getConditionalCount(ability,game,null);
   while (mana > payment.count() && (pool.count() > 0 || conditionalCount > 0)) {
-    if (payConditionalColorless(ability,game,pool))     continue;
-    if (payConditionalBlack(ability,game,pool))     continue;
-    if (payConditionalBlue(ability,game,pool))     continue;
-    if (payConditionalWhite(ability,game,pool))     continue;
-    if (payConditionalGreen(ability,game,pool))     continue;
-    if (payConditionalRed(ability,game,pool))     continue;
-    if (pool.getColorless() > 0) {
+    if (pool.pay(ManaType.COLORLESS,ability,sourceFilter,game)) {
       this.payment.addColorless();
-      pool.removeColorless();
       continue;
     }
-    if (pool.getBlack() > 0) {
+    if (pool.pay(ManaType.BLACK,ability,sourceFilter,game)) {
       this.payment.addBlack();
-      pool.removeBlack();
       continue;
     }
-    if (pool.getBlue() > 0) {
+    if (pool.pay(ManaType.BLUE,ability,sourceFilter,game)) {
       this.payment.addBlue();
-      pool.removeBlue();
       continue;
     }
-    if (pool.getWhite() > 0) {
+    if (pool.pay(ManaType.WHITE,ability,sourceFilter,game)) {
       this.payment.addWhite();
-      pool.removeWhite();
       continue;
     }
-    if (pool.getGreen() > 0) {
+    if (pool.pay(ManaType.GREEN,ability,sourceFilter,game)) {
       this.payment.addGreen();
-      pool.removeGreen();
       continue;
     }
-    if (pool.getRed() > 0) {
+    if (pool.pay(ManaType.RED,ability,sourceFilter,game)) {
       this.payment.addRed();
-      pool.removeRed();
       continue;
     }
     break;

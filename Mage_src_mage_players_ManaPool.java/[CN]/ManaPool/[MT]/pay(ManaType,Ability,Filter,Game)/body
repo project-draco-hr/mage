@@ -1,0 +1,15 @@
+{
+  if (getConditional(manaType,ability,filter,game) > 0) {
+    removeConditional(manaType,ability,game);
+    return true;
+  }
+  for (  ManaPoolItem mana : manaItems) {
+    if (filter == null || filter.match(game.getObject(mana.getSourceId()))) {
+      if (mana.get(manaType) > 0) {
+        mana.remove(manaType);
+        return true;
+      }
+    }
+  }
+  return false;
+}

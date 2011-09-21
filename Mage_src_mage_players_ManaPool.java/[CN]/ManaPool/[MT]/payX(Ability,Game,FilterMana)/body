@@ -1,0 +1,49 @@
+{
+  if (filter == null) {
+    return payX(ability,game);
+  }
+  int total=0;
+  Iterator<ManaPoolItem> it=manaItems.iterator();
+  while (it.hasNext()) {
+    ManaPoolItem item=it.next();
+    if (item.isConditional()) {
+      ConditionalMana c=item.getConditionalMana();
+      if (c.apply(ability,game)) {
+        int count=c.count(filter);
+        if (count > 0) {
+          total+=count;
+          c.removeAll(filter);
+          if (c.count() == 0)           it.remove();
+        }
+      }
+    }
+ else {
+      if (filter.isBlack()) {
+        total+=item.getBlack();
+        item.removeBlack();
+      }
+      if (filter.isBlue()) {
+        total+=item.getBlue();
+        item.removeBlue();
+      }
+      if (filter.isWhite()) {
+        total+=item.getWhite();
+        item.removeWhite();
+      }
+      if (filter.isRed()) {
+        total+=item.getRed();
+        item.removeRed();
+      }
+      if (filter.isGreen()) {
+        total+=item.getGreen();
+        item.removeGreen();
+      }
+      if (filter.isColorless()) {
+        total+=item.getColorless();
+        item.removeColorless();
+      }
+      if (item.count() == 0)       it.remove();
+    }
+  }
+  return total;
+}
