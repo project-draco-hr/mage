@@ -6,9 +6,8 @@
   this.color.setBlack(true);
   this.power=new MageInt(2);
   this.toughness=new MageInt(2);
-  EntersBattlefieldTriggeredAbility sacAbility=new EntersBattlefieldTriggeredAbility(new SacrificeEffect(filter,1,"target player"));
-  sacAbility.addTarget(new TargetPlayer());
-  KickerAbility ability=new KickerAbility(new GainAbilitySourceEffect(sacAbility,Duration.OneUse),false);
-  ability.addCost(new ManaCostsImpl("{B}"));
-  this.addAbility(ability);
+  this.getSpellAbility().addOptionalCost(new KickerManaCost("{B}"));
+  EntersBattlefieldTriggeredAbility ability=new EntersBattlefieldTriggeredAbility(new SacrificeEffect(filter,1,"target player"));
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(new ConditionalTriggeredAbility(ability,KickedCondition.getInstance(),"When {this} enters the battlefield, if it was kicked, target player sacrifices a creature"));
 }
