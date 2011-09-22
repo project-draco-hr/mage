@@ -21,7 +21,7 @@
     entry.getValue().construct(0);
   }
   for (  Entry<UUID,Deck> entry : sideboarding.entrySet()) {
-    int remaining=TableManager.getInstance().getController(entry.getKey()).getRemainingTime();
-    sideboard(entry.getValue(),entry.getKey(),remaining);
+    TableController controller=TableManager.getInstance().getController(entry.getKey());
+    sideboard(entry.getValue(),entry.getKey(),controller.getRemainingTime(),controller.getOptions().isLimited());
   }
 }
