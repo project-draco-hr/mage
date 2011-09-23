@@ -1,4 +1,7 @@
 {
-  if (game.getTurn().getStepType() == PhaseStep.COMBAT_DAMAGE)   return super.applies(event,source,game);
+  if (super.applies(event,source,game) && event instanceof DamageEvent) {
+    DamageEvent damageEvent=(DamageEvent)event;
+    return damageEvent.isCombatDamage();
+  }
   return false;
 }
