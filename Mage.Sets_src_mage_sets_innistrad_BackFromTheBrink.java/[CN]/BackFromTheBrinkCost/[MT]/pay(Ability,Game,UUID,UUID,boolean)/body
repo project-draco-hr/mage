@@ -1,0 +1,13 @@
+{
+  if (targets.choose(Outcome.Exile,controllerId,game)) {
+    Player player=game.getPlayer(controllerId);
+    if (player != null) {
+      Card card=player.getGraveyard().get(targets.getFirstTarget(),game);
+      if (card != null && card.moveToZone(Constants.Zone.EXILED,sourceId,game,false)) {
+        ability.getEffects().get(0).setTargetPointer(new FixedTarget(card.getId()));
+        paid=card.getManaCost().pay(ability,game,sourceId,controllerId,noMana);
+      }
+    }
+  }
+  return paid;
+}
