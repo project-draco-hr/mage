@@ -1,0 +1,16 @@
+{
+  super(ownerId,15,"Fiend Hunter",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{1}{W}{W}");
+  this.expansionSetCode="ISD";
+  this.subtype.add("Human");
+  this.subtype.add("Cleric");
+  this.color.setWhite(true);
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(3);
+  Ability ability1=new EntersBattlefieldTriggeredAbility(new ExileTargetEffect(this.getId(),"Fiend Hunter Exile"),false);
+  Target target=new TargetPermanent(filter);
+  target.setRequired(true);
+  ability1.addTarget(target);
+  this.addAbility(ability1);
+  Ability ability2=new LeavesBattlefieldTriggeredAbility(new ReturnFromExileEffect(this.getId(),Constants.Zone.BATTLEFIELD),false);
+  this.addAbility(ability2);
+}

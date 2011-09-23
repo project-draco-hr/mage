@@ -1,0 +1,12 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Choice cardChoice=new ChoiceImpl();
+    cardChoice.setChoices(Sets.getNonLandCardNames());
+    cardChoice.clearChoice();
+    controller.choose(Outcome.Detriment,cardChoice,game);
+    String cardName=cardChoice.getChoice();
+    game.getState().setValue(source.getSourceId().toString(),cardName);
+  }
+  return false;
+}
