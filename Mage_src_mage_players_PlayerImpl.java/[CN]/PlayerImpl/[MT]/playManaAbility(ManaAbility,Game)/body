@@ -1,10 +1,12 @@
 {
-  int bookmark=game.bookmarkState();
-  if (ability.activate(game,false)) {
-    ability.resolve(game);
-    game.removeBookmark(bookmark);
-    return true;
+  if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.ACTIVATE_ABILITY,ability.getId(),ability.getSourceId(),playerId))) {
+    int bookmark=game.bookmarkState();
+    if (ability.activate(game,false)) {
+      ability.resolve(game);
+      game.removeBookmark(bookmark);
+      return true;
+    }
+    game.restoreState(bookmark);
   }
-  game.restoreState(bookmark);
   return false;
 }
