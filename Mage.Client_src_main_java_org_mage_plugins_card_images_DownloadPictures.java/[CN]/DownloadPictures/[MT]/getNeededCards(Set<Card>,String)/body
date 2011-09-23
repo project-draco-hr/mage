@@ -9,8 +9,13 @@
         if (cardName.equals("Forest") || cardName.equals("Swamp") || cardName.equals("Mountain")|| cardName.equals("Island")|| cardName.equals("Plains")) {
           cardName=card.getClass().getName().replace(card.getClass().getPackage().getName() + ".","");
         }
-        CardInfo url=new CardInfo(cardName,card.getExpansionSetCode(),card.getCardNumber(),false);
+        CardInfo url=new CardInfo(cardName,card.getExpansionSetCode(),card.getCardNumber(),false,card.canTransform(),card.isNightCard());
         allCardsUrls.add(url);
+        if (card.canTransform()) {
+          Card secondSide=card.getSecondCardFace();
+          url=new CardInfo(secondSide.getName(),card.getExpansionSetCode(),card.getCardNumber(),false,card.canTransform(),true);
+          allCardsUrls.add(url);
+        }
       }
  else {
         if (card.getCardNumber() < 1) {
