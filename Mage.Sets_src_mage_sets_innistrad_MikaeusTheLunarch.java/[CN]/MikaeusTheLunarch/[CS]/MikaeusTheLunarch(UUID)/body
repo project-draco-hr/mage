@@ -1,0 +1,16 @@
+{
+  super(ownerId,23,"Mikaeus, the Lunarch",Rarity.MYTHIC,new CardType[]{CardType.CREATURE},"{X}{W}");
+  this.expansionSetCode="ISD";
+  this.supertype.add("Legendary");
+  this.subtype.add("Human");
+  this.subtype.add("Cleric");
+  this.color.setWhite(true);
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  this.addAbility(new EntersBattlefieldAbility(new MikaeusTheLunarchEffect()));
+  this.addAbility(new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new AddCountersSourceEffect(CounterType.P1P1.createInstance()),new TapSourceCost()));
+  Effect effect=new AddCountersAllEffect(CounterType.P1P1.createInstance(),filter);
+  Ability ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,effect,new TapSourceCost());
+  ability.addCost(new RemoveCountersSourceCost(CounterType.P1P1.createInstance()));
+  this.addAbility(ability);
+}
