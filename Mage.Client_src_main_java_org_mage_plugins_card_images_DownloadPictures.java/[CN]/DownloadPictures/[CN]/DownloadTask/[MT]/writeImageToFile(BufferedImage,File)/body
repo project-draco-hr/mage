@@ -1,0 +1,12 @@
+{
+  Iterator iter=ImageIO.getImageWritersByFormatName("jpg");
+  ImageWriter writer=(ImageWriter)iter.next();
+  ImageWriteParam iwp=writer.getDefaultWriteParam();
+  iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+  iwp.setCompressionQuality(0.96f);
+  FileImageOutputStream output=new FileImageOutputStream(file);
+  writer.setOutput(output);
+  IIOImage image2=new IIOImage(image,null,null);
+  writer.write(null,image2,iwp);
+  writer.dispose();
+}
