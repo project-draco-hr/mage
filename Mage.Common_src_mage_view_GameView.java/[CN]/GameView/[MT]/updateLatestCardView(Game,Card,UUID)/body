@@ -1,0 +1,15 @@
+{
+  if (!card.canTransform()) {
+    return;
+  }
+  Permanent permanent=game.getPermanent(card.getId());
+  if (permanent == null) {
+    permanent=(Permanent)game.getLastKnownInformation(card.getId(),Constants.Zone.BATTLEFIELD);
+  }
+  if (permanent != null) {
+    if (permanent.isTransformed()) {
+      StackAbilityView stackAbilityView=(StackAbilityView)stack.get(stackId);
+      stackAbilityView.getSourceCard().setTransformed(true);
+    }
+  }
+}

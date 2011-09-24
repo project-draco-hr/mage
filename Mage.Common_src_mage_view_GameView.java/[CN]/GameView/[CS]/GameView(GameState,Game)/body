@@ -7,8 +7,15 @@
       MageObject object=game.getObject(stackObject.getSourceId());
       Card card=game.getCard(stackObject.getSourceId());
       if (card != null) {
-        if (object != null)         stack.put(stackObject.getId(),new StackAbilityView((StackAbility)stackObject,object.getName(),new CardView(card)));
- else         stack.put(stackObject.getId(),new StackAbilityView((StackAbility)stackObject,"",new CardView(card)));
+        if (object != null) {
+          stack.put(stackObject.getId(),new StackAbilityView((StackAbility)stackObject,object.getName(),new CardView(card)));
+        }
+ else {
+          stack.put(stackObject.getId(),new StackAbilityView((StackAbility)stackObject,"",new CardView(card)));
+        }
+        if (card.canTransform()) {
+          updateLatestCardView(game,card,stackObject.getId());
+        }
       }
  else       if (object != null) {
         stack.put(stackObject.getId(),new CardView(object));
