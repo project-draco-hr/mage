@@ -6,10 +6,10 @@
     for (    Card card : allCards) {
       if (card.getCardNumber() > 0 && !card.getExpansionSetCode().isEmpty()) {
         String cardName=card.getName();
-        if (cardName.equals("Forest") || cardName.equals("Swamp") || cardName.equals("Mountain")|| cardName.equals("Island")|| cardName.equals("Plains")) {
-          cardName=card.getClass().getName().replace(card.getClass().getPackage().getName() + ".","");
-        }
         CardInfo url=new CardInfo(cardName,card.getExpansionSetCode(),card.getCardNumber(),false,card.canTransform(),card.isNightCard());
+        if (cardName.equals("Forest") || cardName.equals("Swamp") || cardName.equals("Mountain")|| cardName.equals("Island")|| cardName.equals("Plains")) {
+          url.setDownloadName(card.getClass().getName().replace(card.getClass().getPackage().getName() + ".",""));
+        }
         allCardsUrls.add(url);
         if (card.canTransform()) {
           Card secondSide=card.getSecondCardFace();

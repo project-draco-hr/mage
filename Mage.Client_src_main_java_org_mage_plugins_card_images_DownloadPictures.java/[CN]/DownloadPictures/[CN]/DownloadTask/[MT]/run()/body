@@ -22,19 +22,21 @@
     in.close();
     out.flush();
     out.close();
-    BufferedImage image=ImageIO.read(fileOut);
-    if (image.getHeight() == 470) {
-      BufferedImage renderedImage=new BufferedImage(265,370,BufferedImage.TYPE_INT_RGB);
-      renderedImage.getGraphics();
-      Graphics2D graphics2D=renderedImage.createGraphics();
-      if (card.isTwoFacedCard() && card.isSecondSide()) {
-        graphics2D.drawImage(image,0,0,265,370,313,62,578,432,null);
-      }
+    if (card.isTwoFacedCard()) {
+      BufferedImage image=ImageIO.read(fileOut);
+      if (image.getHeight() == 470) {
+        BufferedImage renderedImage=new BufferedImage(265,370,BufferedImage.TYPE_INT_RGB);
+        renderedImage.getGraphics();
+        Graphics2D graphics2D=renderedImage.createGraphics();
+        if (card.isTwoFacedCard() && card.isSecondSide()) {
+          graphics2D.drawImage(image,0,0,265,370,313,62,578,432,null);
+        }
  else {
-        graphics2D.drawImage(image,0,0,265,370,41,62,306,432,null);
+          graphics2D.drawImage(image,0,0,265,370,41,62,306,432,null);
+        }
+        graphics2D.dispose();
+        writeImageToFile(renderedImage,fileOut);
       }
-      graphics2D.dispose();
-      writeImageToFile(renderedImage,fileOut);
     }
 synchronized (sync) {
       update(cardIndex + 1);
