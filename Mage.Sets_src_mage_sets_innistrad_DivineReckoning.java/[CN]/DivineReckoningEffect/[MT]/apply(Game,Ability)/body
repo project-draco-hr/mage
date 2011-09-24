@@ -1,0 +1,22 @@
+{
+  List<Card> chosen=new ArrayList<Card>();
+  for (  UUID playerId : game.getPlayerList()) {
+    Player player=game.getPlayer(playerId);
+    Target target=new TargetControlledPermanent(1,1,filter,false);
+    if (target.canChoose(player.getId(),game)) {
+      while (!target.isChosen() && target.canChoose(player.getId(),game)) {
+        player.choose(Constants.Outcome.Benefit,target,game);
+      }
+      Permanent permanent=game.getPermanent(target.getFirstTarget());
+      if (permanent != null) {
+        chosen.add(permanent);
+      }
+    }
+  }
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(FilterCreaturePermanent.getDefault(),source.getControllerId(),source.getSourceId(),game)) {
+    if (!chosen.contains(permanent)) {
+      permanent.destroy(source.getId(),game,false);
+    }
+  }
+  return true;
+}
