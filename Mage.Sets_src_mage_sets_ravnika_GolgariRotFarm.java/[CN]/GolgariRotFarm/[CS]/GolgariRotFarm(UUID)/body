@@ -3,7 +3,9 @@
   this.expansionSetCode="RAV";
   this.addAbility(new EntersBattlefieldTappedAbility());
   Ability ability=new EntersBattlefieldTriggeredAbility(new ReturnToHandTargetEffect());
-  ability.addTarget(new TargetControlledPermanent(filter));
+  Target target=new TargetControlledPermanent(filter);
+  target.setRequired(true);
+  ability.addTarget(target);
   this.addAbility(ability);
   this.addAbility(new SimpleManaAbility(Constants.Zone.BATTLEFIELD,new BasicManaEffect(new Mana(0,1,0,0,1,0,0)),new TapSourceCost()));
 }
