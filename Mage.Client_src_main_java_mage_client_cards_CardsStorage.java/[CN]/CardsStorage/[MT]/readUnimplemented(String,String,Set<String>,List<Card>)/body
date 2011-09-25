@@ -1,27 +1,54 @@
 {
   try {
-    Card tmp=allCards.get(0);
+    CardImpl tmp=(CardImpl)allCards.get(0);
     InputStream is=CardsStorage.class.getResourceAsStream(filename);
     if (is == null) {
       log.error("Couldn't find: " + filename);
       return;
     }
     Scanner scanner=new Scanner(is);
+    UnimplementedCardImpl cardToAdd=new UnimplementedCardImpl(tmp);
+    boolean addCard=false;
     while (scanner.hasNextLine()) {
       String line=scanner.nextLine();
       String[] s=line.split("\\|");
+      UnimplementedCardImpl card=new UnimplementedCardImpl(tmp);
       if (s.length == 2) {
         String name=s[1].trim();
         if (!names.contains(set + name)) {
-          Integer cid=Integer.parseInt(s[0]);
-          Card card=tmp.copy();
+          Integer cid;
+          boolean secondFace=false;
+          if (s[0].endsWith("a")) {
+            cid=Integer.parseInt(s[0].replace("a",""));
+          }
+ else           if (s[0].endsWith("b")) {
+            cid=Integer.parseInt(s[0].replace("b",""));
+            secondFace=true;
+            addCard=true;
+          }
+ else {
+            cid=Integer.parseInt(s[0]);
+            addCard=true;
+          }
           card.setName(name);
           card.setExpansionSetCode(set);
           card.setCardNumber(cid);
           card.setRarity(Constants.Rarity.NA);
           card.getCardType().clear();
-          cards.add(card);
+          if (secondFace) {
+            cardToAdd.setCanTransform(true);
+            cardToAdd.setSecondSideCard(card);
+            card.setCanTransform(true);
+            card.setNightCard(true);
+          }
+ else {
+            cardToAdd=card;
+          }
         }
+      }
+      if (addCard) {
+        cards.add(cardToAdd);
+        addCard=false;
       }
     }
   }
