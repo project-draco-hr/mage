@@ -2,23 +2,22 @@
   Player player=game.getPlayer(source.getControllerId());
   Permanent permanent=game.getPermanent(source.getSourceId());
   if (player.getGraveyard().size() > 0) {
-    TargetCardInGraveyard target=new TargetCardInGraveyard(0,Integer.MAX_VALUE,filter);
-    while (player.chooseTarget(Constants.Outcome.Benefit,target,source,game)) {
-    }
-    int count=0;
-    for (    UUID uuid : target.getTargets()) {
-      Card card=player.getGraveyard().get(uuid,game);
-      if (card != null) {
-        card.moveToExile(getId(),"Sutured Ghoul",source.getSourceId(),game);
-        if (permanent != null) {
-          permanent.imprint(card.getId(),game);
-          count++;
+    TargetCardInYourGraveyard target=new TargetCardInYourGraveyard(0,Integer.MAX_VALUE,new FilterCreatureCard("creature cards from your graveyard"));
+    if (player.chooseTarget(Constants.Outcome.Benefit,target,source,game)) {
+      int count=0;
+      for (      UUID uuid : target.getTargets()) {
+        Card card=player.getGraveyard().get(uuid,game);
+        if (card != null) {
+          card.moveToExile(getId(),"Sutured Ghoul",source.getSourceId(),game);
+          if (permanent != null) {
+            permanent.imprint(card.getId(),game);
+            count++;
+          }
         }
       }
+      String msg=count == 1 ? "1 card" : count + "cards";
+      game.informPlayers("Sutured Ghoul: " + player.getName() + " exiled "+ msg);
     }
-    String msg=count == 1 ? "1 card" : count + "cards";
-    game.informPlayers("Sutured Ghoul: " + player.getName() + " exiled "+ msg);
-    return true;
   }
  else {
     game.informPlayers("Sutured Ghoul: No cards in graveyard.");
