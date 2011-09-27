@@ -1,16 +1,18 @@
 {
   TargetCreatureOrPlayer target=new TargetCreatureOrPlayer();
   Player player=game.getPlayer(source.getControllerId());
-  player.choose(Outcome.Damage,target,game);
-  Permanent permanent=game.getPermanent(target.getFirstTarget());
-  if (permanent != null) {
-    permanent.damage(1,source.getSourceId(),game,true,false);
-    return true;
-  }
-  Player targetPlayer=game.getPlayer(target.getFirstTarget());
-  if (targetPlayer != null) {
-    targetPlayer.damage(1,source.getSourceId(),game,true,false);
-    return true;
+  if (target.canChoose(source.getSourceId(),source.getControllerId(),game)) {
+    player.chooseTarget(Outcome.Damage,target,source,game);
+    Permanent permanent=game.getPermanent(target.getFirstTarget());
+    if (permanent != null) {
+      permanent.damage(1,source.getSourceId(),game,true,false);
+      return true;
+    }
+    Player targetPlayer=game.getPlayer(target.getFirstTarget());
+    if (targetPlayer != null) {
+      targetPlayer.damage(1,source.getSourceId(),game,true,false);
+      return true;
+    }
   }
   return false;
 }
