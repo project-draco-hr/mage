@@ -1,0 +1,18 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Target target=new TargetPermanent(filter);
+    if (target.canChoose(source.getControllerId(),game)) {
+      player.choose(Outcome.Copy,target,game);
+      Permanent perm=game.getPermanent(target.getFirstTarget());
+      if (perm != null) {
+        perm=perm.copy();
+        perm.reset(game);
+        perm.assignNewId();
+        game.addEffect(new CopyEffect(perm),source);
+        return true;
+      }
+    }
+  }
+  return false;
+}

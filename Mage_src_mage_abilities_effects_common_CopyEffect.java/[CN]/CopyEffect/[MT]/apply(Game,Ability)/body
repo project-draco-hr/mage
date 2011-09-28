@@ -1,28 +1,26 @@
 {
-  Card card=game.getCard(source.getFirstTarget());
   Permanent permanent=game.getPermanent(source.getSourceId());
-  permanent.setName(card.getName());
-  permanent.getColor().setColor(card.getColor());
+  permanent.setName(target.getName());
+  permanent.getColor().setColor(target.getColor());
   permanent.getManaCost().clear();
-  permanent.getManaCost().add(card.getManaCost());
+  permanent.getManaCost().add(target.getManaCost());
   permanent.getCardType().clear();
-  for (  CardType type : card.getCardType()) {
+  for (  CardType type : target.getCardType()) {
     permanent.getCardType().add(type);
   }
   permanent.getSubtype().clear();
-  for (  String type : card.getSubtype()) {
+  for (  String type : target.getSubtype()) {
     permanent.getSubtype().add(type);
   }
   permanent.getSupertype().clear();
-  for (  String type : card.getSupertype()) {
+  for (  String type : target.getSupertype()) {
     permanent.getSupertype().add(type);
   }
-  permanent.setExpansionSetCode(card.getExpansionSetCode());
   permanent.getAbilities().clear();
-  for (  Ability ability : card.getAbilities()) {
+  for (  Ability ability : target.getAbilities()) {
     permanent.addAbility(ability);
   }
-  permanent.getPower().setValue(card.getPower().getValue());
-  permanent.getToughness().setValue(card.getToughness().getValue());
+  permanent.getPower().setValue(target.getPower().getValue());
+  permanent.getToughness().setValue(target.getToughness().getValue());
   return true;
 }
