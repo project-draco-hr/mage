@@ -1,0 +1,29 @@
+{
+  Permanent permanent=game.getPermanent(targetId);
+  if (permanent != null) {
+    permanent.setName(essence.getName());
+    permanent.getColor().setColor(essence.getColor());
+    permanent.getManaCost().clear();
+    permanent.getManaCost().add(essence.getManaCost());
+    permanent.getCardType().clear();
+    for (    CardType type : essence.getCardType()) {
+      permanent.getCardType().add(type);
+    }
+    permanent.getSubtype().clear();
+    for (    String type : essence.getSubtype()) {
+      permanent.getSubtype().add(type);
+    }
+    permanent.getSupertype().clear();
+    for (    String type : essence.getSupertype()) {
+      permanent.getSupertype().add(type);
+    }
+    permanent.getAbilities().clear();
+    for (    Ability ability : essence.getAbilities()) {
+      permanent.addAbility(ability);
+    }
+    permanent.getPower().setValue(essence.getPower().getValue());
+    permanent.getToughness().setValue(essence.getToughness().getValue());
+    return true;
+  }
+  return false;
+}
