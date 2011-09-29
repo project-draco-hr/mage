@@ -1,0 +1,25 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    int maxCost=0;
+    for (int i=0; i < Math.min(3,player.getLibrary().size()); i++) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,true);
+        int test=card.getManaCost().convertedManaCost();
+        if (test > maxCost)         maxCost=test;
+      }
+    }
+    Permanent permanent=game.getPermanent(targetPointer.getFirst(source));
+    if (permanent != null) {
+      permanent.damage(maxCost,source.getSourceId(),game,true,false);
+      return true;
+    }
+    Player targetPlayer=game.getPlayer(targetPointer.getFirst(source));
+    if (targetPlayer != null) {
+      targetPlayer.damage(maxCost,source.getSourceId(),game,false,true);
+      return true;
+    }
+  }
+  return false;
+}
