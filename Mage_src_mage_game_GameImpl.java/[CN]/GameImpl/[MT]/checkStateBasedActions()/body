@@ -38,14 +38,29 @@
       if (perm.moveToZone(Zone.GRAVEYARD,null,this,false))       somethingHappened=true;
     }
  else {
-      Permanent attachedTo=getPermanent(perm.getAttachedTo());
-      if (attachedTo == null) {
-        if (perm.moveToZone(Zone.GRAVEYARD,null,this,false))         somethingHappened=true;
-      }
- else {
-        Filter auraFilter=perm.getSpellAbility().getTargets().get(0).getFilter();
-        if (!auraFilter.match(attachedTo) || attachedTo.hasProtectionFrom(perm)) {
+      Target target=perm.getSpellAbility().getTargets().get(0);
+      if (target instanceof TargetPermanent) {
+        Permanent attachedTo=getPermanent(perm.getAttachedTo());
+        if (attachedTo == null) {
           if (perm.moveToZone(Zone.GRAVEYARD,null,this,false))           somethingHappened=true;
+        }
+ else {
+          Filter auraFilter=perm.getSpellAbility().getTargets().get(0).getFilter();
+          if (!auraFilter.match(attachedTo) || attachedTo.hasProtectionFrom(perm)) {
+            if (perm.moveToZone(Zone.GRAVEYARD,null,this,false))             somethingHappened=true;
+          }
+        }
+      }
+ else       if (target instanceof TargetPlayer) {
+        Player attachedTo=getPlayer(perm.getAttachedTo());
+        if (attachedTo == null) {
+          if (perm.moveToZone(Zone.GRAVEYARD,null,this,false))           somethingHappened=true;
+        }
+ else {
+          Filter auraFilter=perm.getSpellAbility().getTargets().get(0).getFilter();
+          if (!auraFilter.match(attachedTo) || attachedTo.hasProtectionFrom(perm)) {
+            if (perm.moveToZone(Zone.GRAVEYARD,null,this,false))             somethingHappened=true;
+          }
         }
       }
     }

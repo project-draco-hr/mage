@@ -1,0 +1,14 @@
+{
+  if (!this.attachments.contains(permanentId)) {
+    Permanent aura=game.getPermanent(permanentId);
+    if (aura != null) {
+      if (!game.replaceEvent(new GameEvent(GameEvent.EventType.ENCHANT_PLAYER,playerId,permanentId,aura.getControllerId()))) {
+        this.attachments.add(permanentId);
+        aura.attachTo(playerId,game);
+        game.fireEvent(new GameEvent(GameEvent.EventType.ENCHANTED_PLAYER,playerId,permanentId,aura.getControllerId()));
+        return true;
+      }
+    }
+  }
+  return false;
+}
