@@ -1,10 +1,16 @@
 {
   Permanent target=game.getPermanent(source.getSourceId());
   if (target != null) {
-    int value=amount.calculate(game,source);
-    target.getPower().setValue(value);
-    target.getToughness().setValue(value);
-    return true;
+    if (amount != null) {
+      int value=amount.calculate(game,source);
+      target.getPower().setValue(value);
+      target.getToughness().setValue(value);
+      return true;
+    }
+ else {
+      if (power != Integer.MIN_VALUE)       target.getPower().setValue(power);
+      if (toughness != Integer.MIN_VALUE)       target.getToughness().setValue(toughness);
+    }
   }
   return false;
 }
