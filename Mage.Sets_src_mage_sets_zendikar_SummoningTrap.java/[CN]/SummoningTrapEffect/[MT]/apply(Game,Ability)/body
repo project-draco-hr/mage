@@ -1,0 +1,23 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Cards cards=new CardsImpl(Zone.PICK);
+  int count=Math.min(player.getLibrary().size(),7);
+  for (int i=0; i < count; i++) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      cards.add(card);
+    }
+  }
+  player.lookAtCards("Summoning Trap",cards,game);
+  if (!cards.isEmpty() && player.chooseUse(Outcome.PutCreatureInPlay,"Do you wish to put a creature on the battlefield?",game)) {
+    TargetCard target=new TargetCard(Zone.PICK,new FilterCard("card to put on the battlefield"));
+    if (player.choose(Outcome.PutCreatureInPlay,cards,target,game)) {
+      Card card=cards.get(target.getFirstTarget(),game);
+      if (card != null) {
+        cards.remove(card);
+        card.putOntoBattlefield(game,Zone.PICK,source.getSourceId(),source.getControllerId());
+      }
+    }
+  }
+  return false;
+}

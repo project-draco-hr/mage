@@ -1,0 +1,24 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (target.choose(getOutcome(),player.getId(),game)) {
+    if (target.getTargets().size() > 0) {
+      UUID cardId=target.getFirstTarget();
+      Card card=player.getHand().get(cardId,game);
+      if (card != null) {
+        player.getHand().remove(card);
+        if (card.putOntoBattlefield(game,Zone.HAND,source.getId(),source.getControllerId())) {
+          Permanent permanent=game.getPermanent(card.getId());
+          permanent.setTapped(true);
+          TargetDefender target=new TargetDefender(game.getCombat().getDefenders(),player.getId());
+          if (target.choose(getOutcome(),player.getId(),game)) {
+            if (target.getTargets().size() > 0) {
+              game.getCombat().declareAttacker(permanent.getId(),target.getFirstTarget(),game);
+            }
+          }
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}
