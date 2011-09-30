@@ -1,3 +1,11 @@
 {
-  return true;
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null)       player.setCanGainLife(false);
+    }
+    return true;
+  }
+  return false;
 }

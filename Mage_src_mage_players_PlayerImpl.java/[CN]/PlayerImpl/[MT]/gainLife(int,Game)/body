@@ -1,8 +1,10 @@
 {
-  if (!lifeTotalCanChange)   return;
+  if (!canGainLife)   return 0;
   GameEvent event=new GameEvent(GameEvent.EventType.GAIN_LIFE,playerId,playerId,playerId,amount,false);
   if (!game.replaceEvent(event)) {
     this.life+=amount;
     game.fireEvent(GameEvent.getEvent(GameEvent.EventType.GAINED_LIFE,playerId,playerId,playerId,amount));
+    return amount;
   }
+  return 0;
 }
