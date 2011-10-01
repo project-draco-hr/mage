@@ -1,0 +1,36 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (player != null && targetPlayer != null) {
+    List<Permanent> permanents=game.getBattlefield().getAllActivePermanents(targetPlayer.getId());
+    CardsImpl cards=new CardsImpl();
+    for (    Permanent permanent : permanents) {
+      cards.add(permanent);
+    }
+    TargetCard target=new TargetCard(0,cards.size(),Zone.BATTLEFIELD,new FilterCard("permanents to put in the first pile"));
+    CardsImpl pile1=new CardsImpl();
+    if (player.choose(Outcome.Neutral,cards,target,game)) {
+      List<UUID> targets=target.getTargets();
+      for (      UUID targetId : targets) {
+        Card card=cards.get(targetId,game);
+        if (card != null) {
+          pile1.add(card);
+          cards.remove(card);
+        }
+      }
+    }
+    player.revealCards("Pile 1 (Liliana of the Veil)",pile1,game);
+    player.revealCards("Pile 2 (Liliana of the Veil)",cards,game);
+    Choice choice=createChoice(pile1,cards,game);
+    if (player.choose(Outcome.Neutral,choice,game)) {
+      if (choice.getChoice().startsWith("Pile 1")) {
+        sacrificePermanents(pile1,game,source);
+      }
+ else {
+        sacrificePermanents(cards,game,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}
