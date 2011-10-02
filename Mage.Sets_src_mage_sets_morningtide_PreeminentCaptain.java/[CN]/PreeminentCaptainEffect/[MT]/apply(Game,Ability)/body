@@ -1,5 +1,6 @@
 {
   Player player=game.getPlayer(source.getControllerId());
+  TargetCardInHand target=new TargetCardInHand(new FilterSoldierCard());
   if (target.choose(getOutcome(),player.getId(),game)) {
     if (target.getTargets().size() > 0) {
       UUID cardId=target.getFirstTarget();
@@ -9,10 +10,10 @@
         if (card.putOntoBattlefield(game,Zone.HAND,source.getId(),source.getControllerId())) {
           Permanent permanent=game.getPermanent(card.getId());
           permanent.setTapped(true);
-          TargetDefender target=new TargetDefender(game.getCombat().getDefenders(),player.getId());
-          if (target.choose(getOutcome(),player.getId(),game)) {
-            if (target.getTargets().size() > 0) {
-              game.getCombat().declareAttacker(permanent.getId(),target.getFirstTarget(),game);
+          TargetDefender def=new TargetDefender(game.getCombat().getDefenders(),player.getId());
+          if (def.choose(getOutcome(),player.getId(),game)) {
+            if (def.getTargets().size() > 0) {
+              game.getCombat().declareAttacker(permanent.getId(),def.getFirstTarget(),game);
             }
           }
         }
