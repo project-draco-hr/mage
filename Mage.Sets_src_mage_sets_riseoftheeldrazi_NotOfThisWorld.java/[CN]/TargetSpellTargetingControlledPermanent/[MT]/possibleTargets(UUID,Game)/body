@@ -1,0 +1,9 @@
+{
+  Set<UUID> possibleTargets=new HashSet<UUID>();
+  for (  StackObject stackObject : game.getStack()) {
+    if (stackObject instanceof Spell && game.getPlayer(sourceControllerId).getInRange().contains(stackObject.getControllerId()) && filter.match((Spell)stackObject)&& ((Spell)stackObject).getSpellAbility().getTargets().isChosen()&& game.getPermanent(((Spell)stackObject).getSpellAbility().getTargets().getFirstTarget()) != null && game.getPermanent(((Spell)stackObject).getSpellAbility().getTargets().getFirstTarget()).getControllerId() == sourceControllerId) {
+      possibleTargets.add(stackObject.getId());
+    }
+  }
+  return possibleTargets;
+}
