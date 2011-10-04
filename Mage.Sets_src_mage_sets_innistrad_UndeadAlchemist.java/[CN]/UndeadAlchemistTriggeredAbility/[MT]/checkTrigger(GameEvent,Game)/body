@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getFromZone() == Constants.Zone.LIBRARY && zEvent.getToZone() == Constants.Zone.GRAVEYARD && game.getOpponents(this.getControllerId()).contains(zEvent.getPlayerId())) {
+      Card card=game.getCard(event.getTargetId());
+      if (card != null && card.getCardType().contains(CardType.CREATURE)) {
+        this.getEffects().get(0).setTargetPointer(new FixedTarget(card.getId()));
+        return true;
+      }
+    }
+  }
+  return false;
+}

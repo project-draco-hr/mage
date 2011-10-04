@@ -1,0 +1,13 @@
+{
+  Player player=game.getPlayer(event.getTargetId());
+  if (player != null) {
+    int cardsCount=Math.min(event.getAmount(),player.getLibrary().size());
+    for (int i=0; i < cardsCount; i++) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null)       card.moveToZone(Zone.GRAVEYARD,source.getId(),game,false);
+ else       break;
+    }
+    return true;
+  }
+  return true;
+}
