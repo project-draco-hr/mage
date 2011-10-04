@@ -1,0 +1,12 @@
+{
+  super(ownerId,205,"Splinterfright",Rarity.RARE,new CardType[]{CardType.CREATURE},"{2}{G}");
+  this.expansionSetCode="ISD";
+  this.subtype.add("Elemental");
+  this.color.setGreen(true);
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  this.addAbility(TrampleAbility.getInstance());
+  CardsInControllerGraveyardCount count=new CardsInControllerGraveyardCount(new FilterCreatureCard("creature cards"));
+  this.addAbility(new SimpleStaticAbility(Zone.ALL,new SetPowerToughnessSourceEffect(count,Duration.EndOfGame)));
+  this.addAbility(new OnEventTriggeredAbility(EventType.UPKEEP_STEP_PRE,"beginning of your upkeep",new SplinterfrightEffect(),false));
+}
