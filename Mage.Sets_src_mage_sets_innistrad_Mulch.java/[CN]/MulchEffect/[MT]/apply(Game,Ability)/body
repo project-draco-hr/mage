@@ -1,0 +1,25 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Cards cards=new CardsImpl(Zone.PICK);
+    int count=Math.min(player.getLibrary().size(),4);
+    for (int i=0; i < count; i++) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        cards.add(card);
+        game.setZone(card.getId(),Zone.PICK);
+        if (card.getCardType().contains(CardType.LAND)) {
+          card.moveToZone(Zone.HAND,source.getId(),game,true);
+        }
+ else {
+          card.moveToZone(Zone.GRAVEYARD,source.getId(),game,false);
+        }
+      }
+    }
+    if (!cards.isEmpty()) {
+      player.revealCards("Lead the Stampede",cards,game);
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    WolfToken token=new WolfToken();
+    int count=player.getGraveyard().count(FilterCreatureCard.getDefault(),game);
+    for (int i=0; i < count; i++) {
+      token.putOntoBattlefield(1,game,source.getId(),source.getControllerId());
+      Permanent permanent=game.getPermanent(token.getLastAddedToken());
+      game.getCombat().declareAttacker(permanent.getId(),game.getCombat().getDefendingPlayer(source.getSourceId()),game);
+      permanent.setTapped(true);
+    }
+    return true;
+  }
+  return false;
+}

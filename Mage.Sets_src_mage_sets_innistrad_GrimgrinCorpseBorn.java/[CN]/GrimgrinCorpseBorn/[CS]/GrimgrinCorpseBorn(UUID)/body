@@ -1,0 +1,17 @@
+{
+  super(ownerId,214,"Grimgrin, Corpse-Born",Rarity.MYTHIC,new CardType[]{CardType.CREATURE},"{3}{U}{B}");
+  this.expansionSetCode="ISD";
+  this.supertype.add("Legendary");
+  this.subtype.add("Zombie");
+  this.subtype.add("Warrior");
+  this.color.setBlue(true);
+  this.color.setBlack(true);
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  this.getAbilities().add(new EntersBattlefieldTappedAbility());
+  this.getAbilities().add(new SimpleStaticAbility(Zone.BATTLEFIELD,new SkipUntapSourceEffect()));
+  SimpleActivatedAbility ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new UntapSourceEffect(),new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filter,false)));
+  ability.addEffect(new AddCountersSourceEffect(CounterType.P1P1.createInstance()));
+  this.addAbility(ability);
+  this.addAbility(new GrimgrinCorpseBornAbility());
+}

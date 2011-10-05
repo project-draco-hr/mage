@@ -1,0 +1,23 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(new FilterBasicLandCard());
+    if (player.searchLibrary(target,game)) {
+      Cards cards=new CardsImpl();
+      Card card=player.getLibrary().remove(target.getFirstTarget(),game);
+      if (card != null) {
+        cards.add(card);
+        if (MorbidCondition.getInstance().apply(game,source) && player.chooseUse(Outcome.PutLandInPlay,"Do you wish to put the card onto the battlefield instead?",game)) {
+          card.putOntoBattlefield(game,Zone.HAND,source.getId(),source.getControllerId());
+        }
+ else {
+          card.moveToZone(Zone.HAND,source.getId(),game,false);
+        }
+      }
+      player.revealCards("Caravan Vigil",cards,game);
+    }
+    player.shuffleLibrary(game);
+    return true;
+  }
+  return false;
+}
