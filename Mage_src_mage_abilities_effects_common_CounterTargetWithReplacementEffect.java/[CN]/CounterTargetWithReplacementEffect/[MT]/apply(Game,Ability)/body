@@ -1,0 +1,21 @@
+{
+  UUID objectId=source.getFirstTarget();
+  UUID sourceId=source.getSourceId();
+  StackObject stackObject=game.getStack().getStackObject(objectId);
+  if (stackObject != null) {
+    if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.COUNTER,objectId,sourceId,stackObject.getControllerId()))) {
+      game.getStack().remove(stackObject);
+      MageObject card=game.getObject(stackObject.getSourceId());
+      if (card instanceof Card) {
+        ((Card)card).moveToZone(targetZone,sourceId,game,false);
+      }
+ else {
+        game.informPlayers("Server: Couldn't move card to zone = " + targetZone + " as it has other than Card type.");
+      }
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.COUNTERED,objectId,sourceId,stackObject.getControllerId()));
+      return true;
+    }
+    return false;
+  }
+  return false;
+}
