@@ -5,13 +5,16 @@
       if (player != null) {
 switch (zone) {
 case HAND:
-          if (player.getHand().count(filter,game) >= this.minNumberOfTargets)           return true;
+          if (player.getHand().count(filter,player.getId(),game) >= this.minNumberOfTargets)           return true;
         break;
 case GRAVEYARD:
-      if (player.getGraveyard().count(filter,game) >= this.minNumberOfTargets)       return true;
+      if (player.getGraveyard().count(filter,player.getId(),game) >= this.minNumberOfTargets)       return true;
     break;
 case LIBRARY:
   if (player.getLibrary().count(filter,game) >= this.minNumberOfTargets)   return true;
+break;
+case EXILED:
+if (game.getExile().getPermanentExile().count(filter,player.getId(),game) >= this.minNumberOfTargets) return true;
 break;
 }
 }

@@ -13,6 +13,19 @@ if (permanent.getControllerId().equals(playerId)) return notFilter;
 break;
 }
 }
+if (owner != TargetController.ANY && playerId != null) {
+switch (owner) {
+case YOU:
+if (!permanent.getOwnerId().equals(playerId)) return notFilter;
+break;
+case OPPONENT:
+if (!game.getOpponents(playerId).contains(permanent.getOwnerId())) return notFilter;
+break;
+case NOT_YOU:
+if (permanent.getOwnerId().equals(playerId)) return notFilter;
+break;
+}
+}
 if (another) {
 if (permanent.getId().equals(sourceId)) {
 return notFilter;
