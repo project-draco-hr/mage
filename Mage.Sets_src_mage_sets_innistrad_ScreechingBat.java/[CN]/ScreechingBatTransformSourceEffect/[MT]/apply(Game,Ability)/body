@@ -1,0 +1,13 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    if (permanent.canTransform()) {
+      Cost cost=new ManaCostsImpl("{2}{B}{B}");
+      if (cost.pay(source,game,permanent.getControllerId(),permanent.getControllerId(),false)) {
+        permanent.setTransformed(!permanent.isTransformed());
+      }
+    }
+    return true;
+  }
+  return false;
+}
