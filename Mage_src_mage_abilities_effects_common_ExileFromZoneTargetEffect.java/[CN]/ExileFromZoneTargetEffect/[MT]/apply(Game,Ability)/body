@@ -1,24 +1,24 @@
 {
   Player player=game.getPlayer(targetPointer.getFirst(source));
   if (player != null) {
-    Target target;
-    Card card=null;
+    Target target=null;
 switch (zone) {
 case HAND:
-      target=new TargetCardInHand(filter);
-    player.choose(Outcome.Exile,target,game);
-  card=player.getHand().get(target.getFirstTarget(),game);
-break;
+      target=new TargetCardInHand(Math.min(player.getHand().count(filter,game),amount),filter);
+    break;
 case GRAVEYARD:
-target=new TargetCardInGraveyard(filter);
-player.choose(Outcome.Exile,target,game);
-card=player.getGraveyard().get(target.getFirstTarget(),game);
+  target=new TargetCardInGraveyard(Math.min(player.getGraveyard().count(filter,game),amount),filter);
 break;
 default :
 }
-if (card != null) {
-card.moveToExile(exileId,exileName,source.getSourceId(),game);
+if (target != null && target.canChoose(player.getId(),game)) {
+if (target.choose(Outcome.Exile,player.getId(),game)) {
+for (UUID cardId : target.getTargets()) {
+  Card card=game.getCard(cardId);
+  if (card != null)   card.moveToExile(exileId,exileName,source.getSourceId(),game);
+}
 return true;
+}
 }
 }
 return false;
