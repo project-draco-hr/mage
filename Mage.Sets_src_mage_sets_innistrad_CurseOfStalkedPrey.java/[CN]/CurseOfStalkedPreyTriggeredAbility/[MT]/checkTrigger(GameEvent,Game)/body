@@ -1,0 +1,13 @@
+{
+  if (event.getType() == EventType.DAMAGED_PLAYER && ((DamagedPlayerEvent)event).isCombatDamage()) {
+    Permanent enchantment=game.getPermanent(this.sourceId);
+    if (enchantment != null && enchantment.getAttachedTo() != null) {
+      Player player=game.getPlayer(enchantment.getAttachedTo());
+      if (player != null && event.getTargetId().equals(player.getId())) {
+        getEffects().get(0).setTargetPointer(new FixedTarget(event.getSourceId()));
+        return true;
+      }
+    }
+  }
+  return false;
+}
