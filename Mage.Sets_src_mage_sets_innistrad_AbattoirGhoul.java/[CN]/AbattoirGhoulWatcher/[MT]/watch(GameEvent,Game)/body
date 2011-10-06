@@ -1,0 +1,11 @@
+{
+  if (condition == true)   return;
+  if (event.getType() == EventType.DAMAGED_CREATURE) {
+    Card card=game.getCard(sourceId);
+    if (card != null && card.getId().equals(event.getSourceId())) {
+      condition=true;
+      AbattoirGhoulEffect effect=(AbattoirGhoulEffect)card.getAbilities().get(2).getEffects().get(0);
+      effect.setValue("player",game.getPlayer(card.getOwnerId()));
+    }
+  }
+}
