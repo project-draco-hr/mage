@@ -3,6 +3,10 @@
   if (target != null) {
     Player controller=game.getPlayer(target.getOwnerId());
     if (controller != null) {
+      target.getSpellAbility().getManaCostsToPay().clear();
+      for (      Cost cost : source.getManaCostsToPay()) {
+        target.getSpellAbility().getManaCostsToPay().add((ManaCost)cost.copy());
+      }
       return controller.cast(target.getSpellAbility(),game,true);
     }
   }
