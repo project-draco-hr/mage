@@ -1,6 +1,9 @@
 {
-  removeFromHand(card,game);
-  card.moveToZone(Zone.GRAVEYARD,source == null ? null : source.getId(),game,false);
-  game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DISCARDED_CARD,card.getId(),source == null ? null : source.getId(),playerId));
-  return true;
+  if (card != null) {
+    removeFromHand(card,game);
+    card.moveToZone(Zone.GRAVEYARD,source == null ? null : source.getId(),game,false);
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DISCARDED_CARD,card.getId(),source == null ? null : source.getId(),playerId));
+    return true;
+  }
+  return false;
 }
