@@ -1,0 +1,12 @@
+{
+  Integer amount=(Integer)game.getState().getValue(source.getSourceId().toString() + "_TrepanationBlade");
+  Permanent equipment=game.getPermanent(source.getSourceId());
+  if (amount != null && amount > 0 && equipment != null && equipment.getAttachedTo() != null) {
+    Permanent creature=game.getPermanent(equipment.getAttachedTo());
+    if (creature != null) {
+      creature.addPower(amount);
+      return true;
+    }
+  }
+  return false;
+}
