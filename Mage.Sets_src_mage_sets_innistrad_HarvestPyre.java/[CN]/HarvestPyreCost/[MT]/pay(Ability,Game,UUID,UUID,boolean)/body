@@ -1,0 +1,19 @@
+{
+  amountPaid=0;
+  Target target=new TargetCardInYourGraveyard();
+  Player player=game.getPlayer(controllerId);
+  while (true) {
+    target.clearChosen();
+    if (target.choose(Outcome.Exile,controllerId,game)) {
+      Card card=player.getGraveyard().get(target.getFirstTarget(),game);
+      if (card != null) {
+        player.getGraveyard().remove(card);
+        card.moveToExile(null,"",sourceId,game);
+        amountPaid++;
+      }
+    }
+ else     break;
+  }
+  paid=true;
+  return true;
+}
