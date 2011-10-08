@@ -1,5 +1,11 @@
 {
-  if (condition == true)   return;
-  if (event.getType() == EventType.COUNTERED && game.getStack().getStackObject(event.getTargetId()).getCardType().contains(CardType.CREATURE) && game.getOpponents(controllerId).contains(event.getPlayerId()))   Logger.getAnonymousLogger().info(game.getCard(event.getTargetId()).toString());
-  condition=true;
+  if (event.getType() == EventType.END_TURN_STEP_POST) {
+    condition=false;
+  }
+  if (condition == true) {
+    return;
+  }
+  if (event.getType() == EventType.COUNTERED && game.getStack().getStackObject(event.getTargetId()).getCardType().contains(CardType.CREATURE) && game.getOpponents(controllerId).contains(event.getPlayerId())) {
+    condition=true;
+  }
 }
