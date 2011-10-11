@@ -1,0 +1,88 @@
+{
+  Map<UUID,List<Permanent>> permanentsOwned=new HashMap<UUID,List<Permanent>>();
+  Collection<Permanent> permanents=game.getBattlefield().getAllPermanents();
+  for (  Permanent permanent : permanents) {
+    List<Permanent> list=permanentsOwned.get(permanent.getOwnerId());
+    if (list == null) {
+      list=new ArrayList<Permanent>();
+    }
+    list.add(permanent);
+    permanentsOwned.put(permanent.getOwnerId(),list);
+  }
+  Map<UUID,Integer> permanentsCount=new HashMap<UUID,Integer>();
+  PlayerList playerList=game.getPlayerList();
+  playerList.setCurrent(game.getActivePlayerId());
+  Player player=game.getPlayer(game.getActivePlayerId());
+  do {
+    List<Permanent> list=permanentsOwned.remove(player.getId());
+    Integer count=0;
+    if (list != null) {
+      count=list.size();
+      for (      Permanent permanent : list) {
+        permanent.moveToZone(Zone.LIBRARY,source.getId(),game,true);
+      }
+    }
+    if (count > 0) {
+      player.getLibrary().shuffle();
+    }
+    permanentsCount.put(player.getId(),count);
+    player=playerList.getNext(game);
+  }
+ while (!player.getId().equals(game.getActivePlayerId()));
+  Map<UUID,CardsImpl> cardsRevealed=new HashMap<UUID,CardsImpl>();
+  playerList.setCurrent(game.getActivePlayerId());
+  player=game.getPlayer(game.getActivePlayerId());
+  do {
+    Integer count=Math.min(permanentsCount.get(player.getId()),player.getLibrary().size());
+    CardsImpl cards=new CardsImpl();
+    for (int i=0; i < count; i++) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        cards.add(card);
+      }
+    }
+    player.revealCards("Warp World " + player.getName(),cards,game);
+    cardsRevealed.put(player.getId(),cards);
+    player=playerList.getNext(game);
+  }
+ while (!player.getId().equals(game.getActivePlayerId()));
+  playerList.setCurrent(game.getActivePlayerId());
+  player=game.getPlayer(game.getActivePlayerId());
+  do {
+    CardsImpl cards=cardsRevealed.get(player.getId());
+    for (    Card card : cards.getCards(game)) {
+      if (card != null && card.getCardType().contains(CardType.ARTIFACT) || card.getCardType().contains(CardType.CREATURE) || card.getCardType().contains(CardType.LAND)) {
+        card.putOntoBattlefield(game,Zone.HAND,source.getSourceId(),player.getId());
+        cards.remove(card);
+      }
+    }
+    player=playerList.getNext(game);
+  }
+ while (!player.getId().equals(game.getActivePlayerId()));
+  playerList.setCurrent(game.getActivePlayerId());
+  player=game.getPlayer(game.getActivePlayerId());
+  do {
+    CardsImpl cards=cardsRevealed.get(player.getId());
+    for (    Card card : cards.getCards(game)) {
+      if (card != null && card.getCardType().contains(CardType.ENCHANTMENT)) {
+        card.putOntoBattlefield(game,Zone.HAND,source.getSourceId(),player.getId());
+        cards.remove(card);
+      }
+    }
+    player=playerList.getNext(game);
+  }
+ while (!player.getId().equals(game.getActivePlayerId()));
+  playerList.setCurrent(game.getActivePlayerId());
+  player=game.getPlayer(game.getActivePlayerId());
+  do {
+    CardsImpl cards=cardsRevealed.get(player.getId());
+    for (    Card card : cards.getCards(game)) {
+      if (card != null) {
+        card.moveToZone(Zone.GRAVEYARD,source.getId(),game,false);
+      }
+    }
+    player=playerList.getNext(game);
+  }
+ while (!player.getId().equals(game.getActivePlayerId()));
+  return true;
+}
