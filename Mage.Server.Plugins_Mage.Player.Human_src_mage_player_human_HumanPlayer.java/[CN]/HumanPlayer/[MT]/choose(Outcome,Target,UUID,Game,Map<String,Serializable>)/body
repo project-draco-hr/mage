@@ -1,7 +1,8 @@
 {
   game.getState().setPriorityPlayerId(getId());
   while (!abort) {
-    game.fireSelectTargetEvent(playerId,target.getMessage(),target.possibleTargets(null,playerId,game),target.isRequired(),options);
+    Set<UUID> cards=target.possibleTargets(null,playerId,game);
+    game.fireSelectTargetEvent(playerId,target.getMessage(),cards,target.isRequired(),options);
     waitForResponse();
     if (response.getUUID() != null) {
       if (target instanceof TargetPermanent) {
@@ -24,6 +25,9 @@
         return true;
       }
       if (!target.isRequired()) {
+        return false;
+      }
+      if (cards == null || cards.isEmpty()) {
         return false;
       }
     }
