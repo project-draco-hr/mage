@@ -1,0 +1,17 @@
+{
+  int size=cards.size();
+  if (size > 0) {
+    Card card=cards.get(rnd.nextInt(size));
+    int retryCount=1000;
+    while (!card.canTransform()) {
+      card=cards.get(rnd.nextInt(size));
+      retryCount--;
+      if (retryCount <= 0) {
+        logger.warn("Couldn't find double-faced card.");
+        break;
+      }
+    }
+    return card;
+  }
+  return null;
+}
