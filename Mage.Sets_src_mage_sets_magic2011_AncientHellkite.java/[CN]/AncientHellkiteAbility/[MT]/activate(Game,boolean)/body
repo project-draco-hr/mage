@@ -1,8 +1,12 @@
 {
   UUID defenderId=game.getCombat().getDefendingPlayer(sourceId);
   if (defenderId != null) {
-    filter.getControllerId().clear();
+    getTargets().clear();
+    FilterCreaturePermanent filter=new FilterCreaturePermanent("creature defending player controls");
     filter.getControllerId().add(defenderId);
+    TargetCreaturePermanent target=new TargetCreaturePermanent(filter);
+    target.setRequired(true);
+    this.addTarget(target);
     return super.activate(game,noMana);
   }
   return false;
