@@ -1,7 +1,7 @@
 {
-  if (event.getType() == EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).getToZone() == Zone.GRAVEYARD && ((ZoneChangeEvent)event).getFromZone() == Zone.BATTLEFIELD) {
-    Watcher watcher=game.getState().getWatchers().get(source.getControllerId(),"RedSunsZenithDamagedCreature");
-    if (watcher != null)     return watcher.conditionMet();
+  if (event.getType() == EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).isDiesEvent()) {
+    DamagedByWatcher watcher=(DamagedByWatcher)game.getState().getWatchers().get("DamagedByWatcher",source.getSourceId());
+    if (watcher != null)     return watcher.damagedCreatures.contains(event.getTargetId());
   }
   return false;
 }

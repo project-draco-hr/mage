@@ -1,10 +1,8 @@
 {
-  if (event.getType() == EventType.ZONE_CHANGE) {
-    if (((ZoneChangeEvent)event).getFromZone() == Zone.BATTLEFIELD && ((ZoneChangeEvent)event).getToZone() == Zone.GRAVEYARD) {
-      Card card=game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
-      if (card != null && card.getCardType().contains(CardType.CREATURE)) {
-        creaturesDiedThisTurn++;
-      }
+  if (event.getType() == EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).isDiesEvent()) {
+    Card card=game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
+    if (card != null && card.getCardType().contains(CardType.CREATURE)) {
+      creaturesDiedThisTurn++;
     }
   }
 }

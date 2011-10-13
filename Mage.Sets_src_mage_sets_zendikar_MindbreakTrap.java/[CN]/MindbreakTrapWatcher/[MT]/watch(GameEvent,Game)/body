@@ -1,17 +1,13 @@
 {
-  if (event.getType() == EventType.END_TURN_STEP_POST) {
-    condition=false;
-    spellCast=0;
-    return;
-  }
   if (condition == true) {
     return;
   }
-  Logger.getAnonymousLogger().info(((Integer)spellCast).toString());
   if (event.getType() == EventType.SPELL_CAST && game.getOpponents(controllerId).contains(event.getPlayerId())) {
-    spellCast++;
-    if (spellCast >= 3) {
-      condition=true;
+    int count=1;
+    if (counts.containsKey(event.getPlayerId())) {
+      count+=counts.get(event.getPlayerId());
+      if (count >= 3)       condition=true;
     }
+    counts.put(event.getPlayerId(),count);
   }
 }
