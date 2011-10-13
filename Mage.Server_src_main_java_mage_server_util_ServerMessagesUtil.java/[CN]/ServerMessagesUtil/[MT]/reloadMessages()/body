@@ -1,14 +1,15 @@
 {
   log.debug("Reading server messages...");
-  List<String> newMessages=readFromFile();
-  if (newMessages != null && !newMessages.isEmpty()) {
-    lock.writeLock().lock();
-    try {
-      messages.clear();
-      messages.addAll(newMessages);
-    }
+  List<String> motdMessages=readFromFile();
+  List<String> newMessages=new ArrayList<String>();
+  newMessages.add(getServerStatistics());
+  newMessages.addAll(motdMessages);
+  lock.writeLock().lock();
+  try {
+    messages.clear();
+    messages.addAll(newMessages);
+  }
   finally {
-      lock.writeLock().unlock();
-    }
+    lock.writeLock().unlock();
   }
 }
