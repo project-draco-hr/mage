@@ -1,0 +1,19 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null && player.getLibrary().size() > 0) {
+    CardsImpl cards=new CardsImpl();
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      cards.add(card);
+      player.revealCards("Skyward Eye Prophets",cards,game);
+      if (card.getCardType().contains(CardType.LAND)) {
+        card.putOntoBattlefield(game,Zone.HAND,source.getId(),source.getControllerId());
+      }
+ else {
+        card.moveToZone(Zone.HAND,source.getId(),game,true);
+      }
+      return true;
+    }
+  }
+  return false;
+}

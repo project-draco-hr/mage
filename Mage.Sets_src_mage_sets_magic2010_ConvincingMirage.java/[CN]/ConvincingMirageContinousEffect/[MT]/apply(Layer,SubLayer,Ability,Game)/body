@@ -1,0 +1,39 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  String choice=(String)game.getState().getValue(source.getSourceId().toString() + "_ConvincingMirage");
+  if (enchantment != null && enchantment.getAttachedTo() != null && choice != null) {
+    Permanent land=game.getPermanent(enchantment.getAttachedTo());
+    if (land != null) {
+switch (layer) {
+case TypeChangingEffects_4:
+        if (sublayer == SubLayer.NA) {
+          land.getSubtype().clear();
+          land.getSubtype().add(choice);
+        }
+      break;
+case AbilityAddingRemovingEffects_6:
+    if (sublayer == SubLayer.NA) {
+      land.getAbilities().clear();
+      if (choice.equals("Forest")) {
+        land.addAbility(new GreenManaAbility());
+      }
+      if (choice.equals("Plains")) {
+        land.addAbility(new WhiteManaAbility());
+      }
+      if (choice.equals("Mountain")) {
+        land.addAbility(new RedManaAbility());
+      }
+      if (choice.equals("Island")) {
+        land.addAbility(new BlueManaAbility());
+      }
+      if (choice.equals("Swamp")) {
+        land.addAbility(new BlackManaAbility());
+      }
+    }
+  break;
+}
+return true;
+}
+}
+return false;
+}

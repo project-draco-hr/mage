@@ -1,0 +1,17 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player != null) {
+    Library library=player.getLibrary();
+    int amount=Math.min(player.getGraveyard().size(),library.size());
+    for (int i=0; i < amount; i++) {
+      Card card=library.removeFromTop(game);
+      if (card != null) {
+        card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,true);
+      }
+    }
+    if (amount > 0) {
+      return true;
+    }
+  }
+  return false;
+}
