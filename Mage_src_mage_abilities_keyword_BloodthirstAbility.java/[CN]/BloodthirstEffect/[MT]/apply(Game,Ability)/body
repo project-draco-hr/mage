@@ -1,9 +1,12 @@
 {
-  Watcher watcher=game.getState().getWatchers().get(source.getControllerId(),"DamagedOpponents");
-  if (watcher.conditionMet()) {
-    Permanent p=game.getPermanent(source.getSourceId());
-    if (p != null) {
-      p.addCounters(CounterType.P1P1.createInstance(amount),game);
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    BloodthirstWatcher watcher=(BloodthirstWatcher)game.getState().getWatchers().get("DamagedOpponents",source.getControllerId());
+    if (watcher.conditionMet()) {
+      Permanent p=game.getPermanent(source.getSourceId());
+      if (p != null) {
+        p.addCounters(CounterType.P1P1.createInstance(amount),game);
+      }
     }
   }
   return false;

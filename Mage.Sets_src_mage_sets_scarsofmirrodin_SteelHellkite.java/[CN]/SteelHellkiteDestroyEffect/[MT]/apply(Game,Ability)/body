@@ -1,9 +1,8 @@
 {
-  SteelHellkiteWatcher watcher=(SteelHellkiteWatcher)game.getState().getWatchers().get(source.getControllerId(),"SteelHellkiteWatcher");
-  if (watcher != null && watcher.damagedPlayers.containsKey(source.getSourceId())) {
-    Set<UUID> players=watcher.damagedPlayers.get(source.getSourceId());
+  SteelHellkiteWatcher watcher=(SteelHellkiteWatcher)game.getState().getWatchers().get("SteelHellkiteWatcher",source.getSourceId());
+  if (watcher != null) {
     int xValue=source.getManaCostsToPay().getX();
-    for (    UUID uuid : players) {
+    for (    UUID uuid : watcher.damagedPlayers) {
       for (      Permanent permanent : game.getBattlefield().getAllActivePermanents()) {
         if (permanent.getControllerId().equals(uuid) && permanent.getManaCost().convertedManaCost() == xValue) {
           permanent.destroy(source.getId(),game,false);
