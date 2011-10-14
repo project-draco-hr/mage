@@ -1,12 +1,14 @@
 {
-  if (!originalId.equals(source.getId())) {
-    log.warn("rebound was ignored. was it copied spell?");
+  Spell sourceSpell=(Spell)game.getObject(source.getId());
+  if (sourceSpell.isCopiedSpell()) {
     return false;
   }
-  Card sourceCard=(Card)game.getObject(source.getSourceId());
-  ReboundEffectCastFromExileDelayedTrigger trigger=new ReboundEffectCastFromExileDelayedTrigger(sourceCard.getId(),sourceCard.getId());
-  trigger.setControllerId(source.getControllerId());
-  game.addDelayedTriggeredAbility(trigger);
-  game.getContinuousEffects().addEffect(new ReboundCastFromHandReplacementEffect(sourceCard.getId()),source);
-  return true;
+ else {
+    Card sourceCard=(Card)game.getObject(source.getSourceId());
+    ReboundEffectCastFromExileDelayedTrigger trigger=new ReboundEffectCastFromExileDelayedTrigger(sourceCard.getId(),sourceCard.getId());
+    trigger.setControllerId(source.getControllerId());
+    game.addDelayedTriggeredAbility(trigger);
+    game.getContinuousEffects().addEffect(new ReboundCastFromHandReplacementEffect(sourceCard.getId()),source);
+    return true;
+  }
 }
