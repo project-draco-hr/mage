@@ -2,8 +2,9 @@
   Player player=game.getPlayer(targetPointer.getFirst(source));
   filter.setTargetController(TargetController.YOU);
   int amount=count.calculate(game,source);
+  amount=Math.min(amount,game.getBattlefield().countAll(filter,source.getControllerId()));
   Target target=new TargetControlledPermanent(amount,amount,filter,false);
-  if (target.canChoose(player.getId(),game)) {
+  if (amount > 0 && target.canChoose(player.getId(),game)) {
     boolean abilityApplied=false;
     while (!target.isChosen() && target.canChoose(player.getId(),game)) {
       player.choose(Outcome.Sacrifice,target,source.getSourceId(),game);
