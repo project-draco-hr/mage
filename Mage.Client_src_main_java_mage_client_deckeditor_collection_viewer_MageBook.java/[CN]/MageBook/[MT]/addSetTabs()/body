@@ -23,10 +23,14 @@
     tab.setSet(set);
     tab.setBounds(0,y,39,120);
     final String _set=set;
+    final int _index=count;
     tab.setObserver(new Command(){
       @Override public void execute(){
         if (!currentSet.equals(_set) || currentPage != 0) {
           AudioManager.playAnotherTab();
+synchronized (this) {
+            selectedTab=_index;
+          }
           currentPage=0;
           currentSet=_set;
           pageLeft.setVisible(false);
@@ -37,12 +41,14 @@
       }
     }
 );
+    tabs.add(tab);
     currentPanel.add(tab,JLayeredPane.DEFAULT_LAYER + count++,0);
     y+=dy;
     if (set.equals(currentSet)) {
       currentPanel=jPanelRight;
       image=imageRight;
       currentTab=tab;
+      selectedTab=count - 1;
     }
   }
   jPanelLeft.revalidate();
