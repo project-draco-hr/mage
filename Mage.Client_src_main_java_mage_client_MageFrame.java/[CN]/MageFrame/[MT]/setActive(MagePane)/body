@@ -3,11 +3,13 @@
   logger.debug("Setting " + frame.getTitle() + " active");
   if (activeFrame != null)   activeFrame.deactivated();
   activeFrame=frame;
+  activeFrame.setVisible(true);
   activeFrame.toFront();
   try {
     activeFrame.setSelected(true);
   }
  catch (  PropertyVetoException ex) {
+    logger.error("Error setting " + frame.getTitle() + " active");
   }
   activeFrame.activated();
 }
