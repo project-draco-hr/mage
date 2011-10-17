@@ -1,4 +1,8 @@
 {
+  Permanent sourcePermanent=(Permanent)game.getLastKnownInformation(targetPointer.getFirst(source),Constants.Zone.BATTLEFIELD);
+  if (sourcePermanent == null) {
+    return false;
+  }
   Player controller=game.getPlayer(source.getControllerId());
   if (controller == null) {
     return false;
@@ -6,7 +10,7 @@
   Cards revealed=new CardsImpl();
   Card artifactCard=null;
   Cards nonArtifactCards=new CardsImpl();
-  Player player=game.getPlayer(source.getControllerId());
+  Player player=game.getPlayer(sourcePermanent.getControllerId());
   while (artifactCard == null && player.getLibrary().size() > 0) {
     Card card=player.getLibrary().removeFromTop(game);
     revealed.add(card);
@@ -14,7 +18,7 @@
  else     nonArtifactCards.add(card);
   }
   player.revealCards("Shape Anew",revealed,game);
-  artifactCard.putOntoBattlefield(game,Constants.Zone.LIBRARY,source.getId(),controller.getId());
+  artifactCard.putOntoBattlefield(game,Constants.Zone.LIBRARY,source.getId(),player.getId());
   player.getLibrary().addAll(nonArtifactCards.getCards(game),game);
   player.shuffleLibrary(game);
   return true;
