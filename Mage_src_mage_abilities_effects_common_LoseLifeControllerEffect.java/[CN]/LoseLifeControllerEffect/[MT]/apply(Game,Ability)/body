@@ -1,7 +1,15 @@
 {
-  Permanent targetPermanent=(Permanent)game.getLastKnownInformation(targetPointer.getFirst(source),Zone.BATTLEFIELD);
-  if (targetPermanent != null) {
-    Player controller=game.getPlayer(targetPermanent.getControllerId());
+  Card targetCard=game.getLastKnownInformation(targetPointer.getFirst(source),Zone.BATTLEFIELD);
+  if (targetCard != null) {
+    Player controller=null;
+    if (targetCard instanceof Permanent) {
+      Permanent targetPermanent=(Permanent)targetCard;
+      controller=game.getPlayer(targetPermanent.getControllerId());
+    }
+ else     if (targetCard instanceof Spell) {
+      Spell targetSpell=(Spell)targetCard;
+      controller=game.getPlayer(targetSpell.getControllerId());
+    }
     if (controller != null) {
       controller.loseLife(amount,game);
       return true;

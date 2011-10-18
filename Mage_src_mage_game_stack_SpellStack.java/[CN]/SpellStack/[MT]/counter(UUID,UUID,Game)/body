@@ -2,6 +2,9 @@
   StackObject stackObject=getStackObject(objectId);
   if (stackObject != null) {
     if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.COUNTER,objectId,sourceId,stackObject.getControllerId()))) {
+      if (stackObject instanceof Spell) {
+        game.rememberLKI(objectId,Zone.STACK,(Spell)stackObject);
+      }
       this.remove(stackObject);
       stackObject.counter(sourceId,game);
       game.fireEvent(GameEvent.getEvent(GameEvent.EventType.COUNTERED,objectId,sourceId,stackObject.getControllerId()));
