@@ -1,0 +1,22 @@
+{
+  if (playables.isEmpty()) {
+    return playables;
+  }
+  if (suggested == null || suggested.isEmpty()) {
+    return playables;
+  }
+  List<Ability> filtered=new ArrayList<Ability>();
+  for (  Ability ability : playables) {
+    Card card=game.getCard(ability.getSourceId());
+    for (    String s : suggested) {
+      if (s.equals(card.getName())) {
+        System.out.println("matched: " + s);
+        filtered.add(ability);
+      }
+    }
+  }
+  if (!filtered.isEmpty()) {
+    return filtered;
+  }
+  return playables;
+}
