@@ -1,30 +1,20 @@
 {
-  Card card=game.getCard(source.getFirstTarget());
-  Permanent permanent=game.getPermanent(source.getSourceId());
-  permanent.setName(card.getName());
-  permanent.setExpansionSetCode(card.getExpansionSetCode());
-  permanent.getColor().setColor(card.getColor());
-  permanent.getManaCost().clear();
-  permanent.getManaCost().add(card.getManaCost());
-  permanent.getCardType().clear();
-  for (  CardType type : card.getCardType()) {
-    permanent.getCardType().add(type);
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Target target=new TargetPermanent(new FilterCreaturePermanent());
+    if (target.canChoose(source.getControllerId(),game)) {
+      player.choose(Outcome.Copy,target,source.getSourceId(),game);
+      Permanent permanent=game.getPermanent(target.getFirstTarget());
+      if (permanent != null) {
+        permanent=permanent.copy();
+        permanent.reset(game);
+        permanent.assignNewId();
+        permanent.getSubtype().add("Illusion");
+        permanent.addAbility(new BecomesTargetTriggeredAbility(new SacrificeSourceEffect()));
+        game.addEffect(new CopyEffect(permanent),source);
+        return true;
+      }
+    }
   }
-  permanent.getSubtype().clear();
-  for (  String type : card.getSubtype()) {
-    permanent.getSubtype().add(type);
-  }
-  permanent.getSubtype().add("Illusion");
-  permanent.getSupertype().clear();
-  for (  String type : card.getSupertype()) {
-    permanent.getSupertype().add(type);
-  }
-  permanent.getAbilities().clear();
-  for (  Ability ability : card.getAbilities()) {
-    permanent.addAbility(ability);
-  }
-  permanent.addAbility(new BecomesTargetTriggeredAbility(new SacrificeSourceEffect()));
-  permanent.getPower().setValue(card.getPower().getValue());
-  permanent.getToughness().setValue(card.getToughness().getValue());
-  return true;
+  return false;
 }
