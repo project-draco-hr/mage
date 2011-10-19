@@ -1,0 +1,13 @@
+{
+  UUID exileId=source.getSourceId();
+  ExileZone exile=game.getExile().getExileZone(exileId);
+  if (exile != null) {
+    for (    UUID cardId : exile) {
+      Card card=game.getCard(cardId);
+      card.moveToZone(zone,source.getId(),game,tapped);
+    }
+    exile.clear();
+    return true;
+  }
+  return false;
+}
