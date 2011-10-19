@@ -6,7 +6,11 @@
   }
   Permanent permanent=game.getPermanent(id);
   if (permanent != null) {
-    return permanent.canBeTargetedBy(targetSource,source.getControllerId(),game) && filter.match(permanent);
+    UUID controllerId=null;
+    if (source != null) {
+      controllerId=source.getControllerId();
+    }
+    return permanent.canBeTargetedBy(targetSource,controllerId,game) && filter.match(permanent);
   }
   return false;
 }
