@@ -18,10 +18,10 @@
       if (perm.moveToZone(Zone.GRAVEYARD,null,this,false))       return true;
     }
   }
-  if (getBattlefield().contains(filterPlaneswalker,2)) {
+  if (getBattlefield().contains(new FilterPlaneswalkerPermanent(),2)) {
     for (    Permanent planeswalker : getBattlefield().getAllActivePermanents(CardType.PLANESWALKER)) {
       for (      String planeswalkertype : planeswalker.getSubtype()) {
-        filterPlaneswalker.getSubtype().clear();
+        FilterPlaneswalkerPermanent filterPlaneswalker=new FilterPlaneswalkerPermanent();
         filterPlaneswalker.getSubtype().add(planeswalkertype);
         filterPlaneswalker.setScopeSubtype(ComparisonScope.Any);
         if (getBattlefield().contains(filterPlaneswalker,planeswalker.getControllerId(),this,2)) {
@@ -65,9 +65,10 @@
       }
     }
   }
+  FilterLegendaryPermanent filterLegendary=new FilterLegendaryPermanent();
   if (getBattlefield().contains(filterLegendary,2)) {
     for (    Permanent legend : getBattlefield().getAllActivePermanents(filterLegendary)) {
-      filterLegendName.getName().clear();
+      FilterLegendaryPermanent filterLegendName=new FilterLegendaryPermanent();
       filterLegendName.getName().add(legend.getName());
       if (getBattlefield().contains(filterLegendName,legend.getControllerId(),this,2)) {
         for (        Permanent dupLegend : getBattlefield().getActivePermanents(filterLegendName,legend.getControllerId(),this)) {
