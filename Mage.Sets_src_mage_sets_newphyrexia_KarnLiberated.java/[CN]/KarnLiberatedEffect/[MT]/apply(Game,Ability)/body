@@ -20,7 +20,9 @@
     player.init(game);
   }
   for (  Card card : cards) {
-    game.getExile().add(exileId,"Karn Liberated",card);
+    if (CardUtil.isPermanentCard(card) && !card.getSubtype().contains("Aura")) {
+      game.getExile().add(exileId,"Karn Liberated",card);
+    }
   }
   DelayedTriggeredAbility delayedAbility=new KarnLiberatedDelayedTriggeredAbility(exileId);
   delayedAbility.setSourceId(source.getSourceId());
