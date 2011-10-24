@@ -4,8 +4,10 @@
       callExecutor.execute(new Runnable(){
         @Override public void run(){
           if (testMode) {
-            UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
-            GameManager.getInstance().cheat(gameId,userId,playerId,deckList);
+            if (SessionManager.getInstance().isValidSession(sessionId)) {
+              UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
+              GameManager.getInstance().cheat(gameId,userId,playerId,deckList);
+            }
           }
         }
       }

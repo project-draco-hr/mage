@@ -3,8 +3,10 @@
     try {
       callExecutor.execute(new Runnable(){
         @Override public void run(){
-          User user=SessionManager.getInstance().getUser(sessionId);
-          user.sendPlayerString(gameId,data);
+          if (SessionManager.getInstance().isValidSession(sessionId)) {
+            User user=SessionManager.getInstance().getUser(sessionId);
+            user.sendPlayerString(gameId,data);
+          }
         }
       }
 );

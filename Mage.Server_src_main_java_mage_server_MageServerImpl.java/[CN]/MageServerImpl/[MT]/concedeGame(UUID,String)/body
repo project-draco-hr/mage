@@ -3,8 +3,10 @@
     try {
       callExecutor.execute(new Runnable(){
         @Override public void run(){
-          UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
-          GameManager.getInstance().concedeGame(gameId,userId);
+          if (SessionManager.getInstance().isValidSession(sessionId)) {
+            UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
+            GameManager.getInstance().concedeGame(gameId,userId);
+          }
         }
       }
 );

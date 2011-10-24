@@ -3,8 +3,10 @@
     try {
       callExecutor.execute(new Runnable(){
         @Override public void run(){
-          UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
-          TableManager.getInstance().startChallenge(userId,roomId,tableId,challengeId);
+          if (SessionManager.getInstance().isValidSession(sessionId)) {
+            UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
+            TableManager.getInstance().startChallenge(userId,roomId,tableId,challengeId);
+          }
         }
       }
 );

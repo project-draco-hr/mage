@@ -2,8 +2,10 @@
   try {
     callExecutor.execute(new Runnable(){
       @Override public void run(){
-        UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
-        ChatManager.getInstance().leaveChat(chatId,userId);
+        if (SessionManager.getInstance().isValidSession(sessionId)) {
+          UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
+          ChatManager.getInstance().leaveChat(chatId,userId);
+        }
       }
     }
 );
