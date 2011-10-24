@@ -1,0 +1,14 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player != null) {
+    int amount=Math.min(source.getManaCostsToPay().getX(),player.getHand().size());
+    for (int i=0; i < amount; i++) {
+      Card card=player.getHand().getRandom(game);
+      if (card != null) {
+        player.discard(card,source,game);
+      }
+    }
+    return true;
+  }
+  return false;
+}
