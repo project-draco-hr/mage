@@ -1,0 +1,16 @@
+{
+  PlayerList players=state.getPlayerList(nextPlayerId);
+  Player player=getPlayer(players.get());
+  while (!isGameOver()) {
+    state.setTurnNum(state.getTurnNum() + 1);
+    if (simulation)     logger.info("Turn " + Integer.toString(state.getTurnNum()));
+    fireInformEvent("Turn " + Integer.toString(state.getTurnNum()));
+    if (checkStopOnTurnOption())     return;
+    state.setActivePlayerId(player.getId());
+    state.getTurn().play(this,player.getId());
+    if (isGameOver())     break;
+    endOfTurn();
+    player=players.getNext(this);
+  }
+  winnerId=findWinnersAndLosers();
+}

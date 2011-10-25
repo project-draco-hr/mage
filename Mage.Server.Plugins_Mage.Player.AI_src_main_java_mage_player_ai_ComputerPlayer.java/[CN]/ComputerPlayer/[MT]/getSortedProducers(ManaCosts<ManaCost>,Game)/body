@@ -1,10 +1,11 @@
 {
   List<Permanent> unsorted=this.getAvailableManaProducers(game);
+  unsorted.addAll(this.getAvailableManaProducersWithCost(game));
   Map<Permanent,Integer> scored=new HashMap<Permanent,Integer>();
   for (  Permanent permanent : unsorted) {
     int score=0;
     for (    ManaCost cost : unpaid) {
-      for (      ManaAbility ability : permanent.getAbilities().getManaAbilities(Zone.BATTLEFIELD)) {
+      for (      ManaAbility ability : permanent.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
         if (cost.testPay(ability.getNetMana(game))) {
           score++;
           break;
@@ -12,7 +13,7 @@
       }
     }
     if (score > 0) {
-      score+=permanent.getAbilities().getManaAbilities(Zone.BATTLEFIELD).size();
+      score+=permanent.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game).size();
       score+=permanent.getAbilities().getActivatedAbilities(Zone.BATTLEFIELD).size();
       if (!permanent.getCardType().contains(CardType.LAND))       score+=2;
  else       if (permanent.getCardType().contains(CardType.CREATURE))       score+=2;

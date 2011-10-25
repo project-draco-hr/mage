@@ -1,5 +1,5 @@
 {
-  int numAvailable=getAvailableManaProducers(game).size();
+  int numAvailable=getAvailableManaProducers(game).size() - ability.getManaCosts().convertedManaCost();
   int start=0;
   if (!(ability instanceof SpellAbility)) {
     if (numAvailable == 0)     return;
@@ -7,7 +7,7 @@
   }
   for (int i=start; i < numAvailable; i++) {
     Ability newAbility=ability.copy();
-    newAbility.addManaCost(new GenericManaCost(i));
+    newAbility.addCost(new GenericManaCost(i));
     allActions.add(newAbility);
   }
 }

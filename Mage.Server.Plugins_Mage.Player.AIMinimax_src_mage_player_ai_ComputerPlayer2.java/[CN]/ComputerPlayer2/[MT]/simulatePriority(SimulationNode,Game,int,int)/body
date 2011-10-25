@@ -1,0 +1,77 @@
+{
+  if (Thread.interrupted()) {
+    Thread.currentThread().interrupt();
+    logger.debug(indent(node.depth) + "interrupted");
+    return GameStateEvaluator.evaluate(playerId,game);
+  }
+  node.setGameValue(game.getState().getValue());
+  SimulatedPlayer currentPlayer=(SimulatedPlayer)game.getPlayer(game.getPlayerList().get());
+  boolean isSimulatedPlayer=currentPlayer.getId().equals(playerId);
+  logger.debug(indent(node.depth) + "simulating priority -- player " + currentPlayer.getName());
+  SimulationNode bestNode=null;
+  List<Ability> allActions=currentPlayer.simulatePriority(game);
+  if (logger.isDebugEnabled())   logger.debug(indent(node.depth) + "simulating -- adding " + allActions.size()+ " children:"+ allActions);
+  for (  Ability action : allActions) {
+    if (Thread.interrupted()) {
+      Thread.currentThread().interrupt();
+      logger.debug(indent(node.depth) + "interrupted");
+      break;
+    }
+    Game sim=game.copy();
+    if (sim.getPlayer(currentPlayer.getId()).activateAbility((ActivatedAbility)action.copy(),sim)) {
+      sim.applyEffects();
+      if (checkForUselessAction(sim,node,action,currentPlayer.getId())) {
+        logger.debug(indent(node.depth) + "found useless action: " + action);
+        continue;
+      }
+      if (!sim.isGameOver() && action.isUsesStack()) {
+        sim.getPlayer(currentPlayer.getId()).pass();
+        sim.getPlayerList().getNext();
+      }
+      SimulationNode newNode=new SimulationNode(node,sim,action,currentPlayer.getId());
+      if (logger.isDebugEnabled())       logger.debug(indent(newNode.depth) + "simulating -- node #:" + SimulationNode.getCount()+ " actions:"+ action);
+      sim.checkStateAndTriggered();
+      int val=addActions(newNode,alpha,beta);
+      if (!isSimulatedPlayer) {
+        if (val < beta) {
+          beta=val;
+          bestNode=newNode;
+          node.setCombat(newNode.getCombat());
+        }
+        if (val == GameStateEvaluator.LOSE_SCORE) {
+          logger.debug(indent(node.depth) + "simulating -- lose, can't do worse than this");
+          break;
+        }
+      }
+ else {
+        if (val > alpha) {
+          alpha=val;
+          bestNode=newNode;
+          node.setCombat(newNode.getCombat());
+          if (node.getTargets().size() > 0)           targets=node.getTargets();
+          if (node.getChoices().size() > 0)           choices=node.getChoices();
+        }
+        if (val == GameStateEvaluator.WIN_SCORE) {
+          logger.debug(indent(node.depth) + "simulating -- win, can't do better than this");
+          break;
+        }
+      }
+      if (alpha >= beta) {
+        logger.debug(indent(node.depth) + "simulating -- pruning");
+        break;
+      }
+    }
+  }
+  if (bestNode != null) {
+    node.children.clear();
+    node.children.add(bestNode);
+  }
+  if (!isSimulatedPlayer) {
+    logger.debug(indent(node.depth) + "returning priority beta: " + beta);
+    return beta;
+  }
+ else {
+    logger.debug(indent(node.depth) + "returning priority alpha: " + alpha);
+    return alpha;
+  }
+}

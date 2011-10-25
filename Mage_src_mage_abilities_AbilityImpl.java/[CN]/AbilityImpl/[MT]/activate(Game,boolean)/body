@@ -32,6 +32,10 @@
       }
     }
   }
+  if (this instanceof ManaAbility && !costs.pay(this,game,sourceId,controllerId,noMana)) {
+    logger.debug("activate mana ability failed - non mana costs");
+    return false;
+  }
   if (!useAlternativeCost(game)) {
     game.getContinuousEffects().costModification(this,game);
     if (!manaCostsToPay.pay(this,game,sourceId,controllerId,noMana)) {

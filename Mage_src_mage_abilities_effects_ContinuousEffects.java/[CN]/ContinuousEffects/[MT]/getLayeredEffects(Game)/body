@@ -1,8 +1,9 @@
 {
   List<ContinuousEffect> layerEffects=new ArrayList<ContinuousEffect>(layeredEffects);
   for (  Card card : game.getCards()) {
-    if (game.getZone(card.getId()) == Zone.HAND || game.getZone(card.getId()) == Zone.GRAVEYARD) {
-      for (      Ability ability : card.getAbilities().getStaticAbilities(game.getZone(card.getId()))) {
+    Zone zone=game.getZone(card.getId());
+    if (zone == Zone.HAND || zone == Zone.GRAVEYARD) {
+      for (      Ability ability : card.getAbilities().getStaticAbilities(zone)) {
         for (        Effect effect : ability.getEffects(game,EffectType.CONTINUOUS)) {
           layerEffects.add((ContinuousEffect)effect);
           abilityMap.put(effect.getId(),ability);

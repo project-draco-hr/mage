@@ -1,12 +1,14 @@
 {
   this.name=card.getName();
-  this.abilities=card.getAbilities();
+  this.abilities.clear();
+  this.abilities.addAll(card.getAbilities());
   this.abilities.setControllerId(this.controllerId);
-  this.cardType=card.getCardType();
-  this.color=card.getColor();
-  this.manaCost=card.getManaCost();
-  this.power=card.getPower();
-  this.toughness=card.getToughness();
+  this.cardType.clear();
+  this.cardType.addAll(card.getCardType());
+  this.color=card.getColor().copy();
+  this.manaCost=card.getManaCost().copy();
+  this.power=card.getPower().copy();
+  this.toughness=card.getToughness().copy();
   if (card instanceof LevelerCard) {
     LevelAbility level=((LevelerCard)card).getLevel(this.getCounters().getCount(CounterType.LEVEL));
     if (level != null) {
@@ -17,8 +19,10 @@
       }
     }
   }
-  this.subtype=card.getSubtype();
-  this.supertype=card.getSupertype();
+  this.subtype.clear();
+  this.subtype.addAll(card.getSubtype());
+  this.supertype.clear();
+  this.supertype.addAll(card.getSupertype());
   this.expansionSetCode=card.getExpansionSetCode();
   this.rarity=card.getRarity();
   this.cardNumber=card.getCardNumber();

@@ -1,8 +1,12 @@
 {
-  List<Permanent> manaPerms=this.getAvailableManaProducers(game);
   ManaOptions available=new ManaOptions();
+  List<Permanent> manaPerms=this.getAvailableManaProducers(game);
   for (  Permanent perm : manaPerms) {
-    available.addMana(perm.getAbilities().getManaAbilities(Zone.BATTLEFIELD),game);
+    available.addMana(perm.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game),game);
+  }
+  List<Permanent> manaPermsWithCost=this.getAvailableManaProducersWithCost(game);
+  for (  Permanent perm : manaPermsWithCost) {
+    available.addManaWithCost(perm.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game),game);
   }
   return available;
 }
