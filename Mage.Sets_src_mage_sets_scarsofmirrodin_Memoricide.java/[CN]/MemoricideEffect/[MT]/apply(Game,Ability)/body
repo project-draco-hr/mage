@@ -5,8 +5,11 @@
     Choice cardChoice=new ChoiceImpl();
     cardChoice.setChoices(Sets.getNonLandCardNames());
     cardChoice.clearChoice();
-    controller.choose(Outcome.Exile,cardChoice,game);
+    while (!controller.choose(Outcome.Exile,cardChoice,game)) {
+      game.debugMessage("player canceled choosing name. retrying.");
+    }
     String cardName=cardChoice.getChoice();
+    game.informPlayers("Memoricide, named card: [" + cardName + "]");
     for (    Card card : player.getGraveyard().getCards(game)) {
       if (card.getName().equals(cardName)) {
         card.moveToExile(null,"",source.getId(),game);
