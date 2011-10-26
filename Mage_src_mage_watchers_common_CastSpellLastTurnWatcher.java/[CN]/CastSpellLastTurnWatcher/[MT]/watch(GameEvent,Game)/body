@@ -1,5 +1,15 @@
 {
   if (event.getType() == GameEvent.EventType.SPELL_CAST) {
-    amountOfSpellsCastOnCurrentTurn++;
+    UUID playerId=event.getPlayerId();
+    if (playerId != null) {
+      Integer amount=amountOfSpellsCastOnCurrentTurn.get(playerId);
+      if (amount == null) {
+        amount=Integer.valueOf(1);
+      }
+ else {
+        amount=Integer.valueOf(amount + 1);
+      }
+      amountOfSpellsCastOnCurrentTurn.put(playerId,amount);
+    }
   }
 }
