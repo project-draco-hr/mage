@@ -1,4 +1,9 @@
 {
-  timer.setInitialDelay(5000);
-  timer.start();
+  updateExecutor=Executors.newSingleThreadScheduledExecutor();
+  updateExecutor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      reloadMessages();
+    }
+  }
+,5,5 * 60,TimeUnit.SECONDS);
 }
