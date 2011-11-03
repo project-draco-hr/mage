@@ -1,5 +1,10 @@
 {
   List<Permanent> threats=game.getBattlefield().getAllActivePermanents(filter,playerId);
+  Iterator<Permanent> it=threats.iterator();
+  while (it.hasNext()) {
+    Permanent test=it.next();
+    if (targets.contains(test.getId()))     it.remove();
+  }
   Collections.sort(threats,new PermanentComparator(game));
   return threats;
 }

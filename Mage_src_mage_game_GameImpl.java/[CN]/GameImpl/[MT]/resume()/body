@@ -1,3 +1,17 @@
 {
-  play(state.getActivePlayerId());
+  PlayerList players=state.getPlayerList(state.getActivePlayerId());
+  Player player=getPlayer(players.get());
+  state.resume();
+  if (!isGameOver()) {
+    if (simulation)     logger.info("Turn " + Integer.toString(state.getTurnNum()));
+    fireInformEvent("Turn " + Integer.toString(state.getTurnNum()));
+    if (checkStopOnTurnOption())     return;
+    state.getTurn().resumePlay(this);
+    if (!isPaused() && !isGameOver()) {
+      endOfTurn();
+      player=players.getNext(this);
+      state.setTurnNum(state.getTurnNum() + 1);
+    }
+  }
+  play(player.getId());
 }

@@ -1,12 +1,13 @@
 {
-  if (game.isGameOver())   return false;
+  if (game.isPaused() || game.isGameOver())   return false;
   this.activePlayerId=activePlayerId;
   if (beginPhase(game,activePlayerId)) {
     for (    Step step : steps) {
-      if (game.isGameOver())       return false;
+      if (game.isPaused() || game.isGameOver())       return false;
       currentStep=step;
-      if (!game.getState().getTurnMods().skipStep(activePlayerId,currentStep.getType()))       playStep(game,activePlayerId);
+      if (!game.getState().getTurnMods().skipStep(activePlayerId,currentStep.getType()))       playStep(game);
     }
+    if (game.isPaused() || game.isGameOver())     return false;
     count++;
     endPhase(game,activePlayerId);
     return true;

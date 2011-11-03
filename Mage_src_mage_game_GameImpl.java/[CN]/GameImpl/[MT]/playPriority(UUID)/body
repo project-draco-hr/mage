@@ -1,23 +1,23 @@
 {
   int bookmark=0;
   try {
-    while (!isGameOver()) {
+    while (!isPaused() && !isGameOver()) {
       state.getPlayers().resetPassed();
       state.getPlayerList().setCurrent(activePlayerId);
       Player player;
-      while (!isGameOver()) {
+      while (!isPaused() && !isGameOver()) {
         try {
           if (bookmark == 0)           bookmark=bookmarkState();
           player=getPlayer(state.getPlayerList().get());
           state.setPriorityPlayerId(player.getId());
-          while (!player.isPassed() && !player.hasLost() && !player.hasLeft()&& !isGameOver()) {
+          while (!player.isPassed() && !player.hasLost() && !player.hasLeft()&& !isPaused()&& !isGameOver()) {
             checkStateAndTriggered();
-            if (isGameOver())             return;
+            if (isPaused() || isGameOver())             return;
             player.priority(this);
-            if (isGameOver())             return;
+            if (isPaused() || isGameOver())             return;
             applyEffects();
           }
-          if (isGameOver())           return;
+          if (isPaused() || isGameOver())           return;
           if (allPassed()) {
             if (!state.getStack().isEmpty()) {
               resolve();

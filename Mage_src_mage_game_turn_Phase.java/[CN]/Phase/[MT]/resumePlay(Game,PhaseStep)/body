@@ -1,0 +1,22 @@
+{
+  if (game.isPaused() || game.isGameOver())   return false;
+  this.activePlayerId=game.getActivePlayerId();
+  Iterator<Step> it=steps.iterator();
+  Step step;
+  do {
+    step=it.next();
+    currentStep=step;
+  }
+ while (step.getType() != stepType);
+  resumeStep(game);
+  while (it.hasNext()) {
+    step=it.next();
+    if (game.isPaused() || game.isGameOver())     return false;
+    currentStep=step;
+    if (!game.getState().getTurnMods().skipStep(activePlayerId,currentStep.getType()))     playStep(game);
+  }
+  if (game.isPaused() || game.isGameOver())   return false;
+  count++;
+  endPhase(game,activePlayerId);
+  return true;
+}

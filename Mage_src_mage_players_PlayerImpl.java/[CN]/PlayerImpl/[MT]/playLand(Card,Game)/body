@@ -1,7 +1,7 @@
 {
   if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.PLAY_LAND,card.getId(),playerId))) {
     int bookmark=game.bookmarkState();
-    Zone zone=game.getZone(card.getId());
+    Zone zone=game.getState().getZone(card.getId());
 switch (zone) {
 case HAND:
       removeFromHand(card,game);
@@ -12,6 +12,8 @@ break;
 case GRAVEYARD:
 removeFromGraveyard(card,game);
 break;
+default :
+return false;
 }
 if (card.putOntoBattlefield(game,zone,null,playerId)) {
 landsPlayed++;

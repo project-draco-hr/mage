@@ -34,7 +34,7 @@
   }
   if (target instanceof TargetControlledPermanent) {
     List<Permanent> targets;
-    targets=threats(playerId,((TargetControlledPermanent)target).getFilter(),game);
+    targets=threats(playerId,((TargetControlledPermanent)target).getFilter(),game,target.getTargets());
     if (!outcome.isGood())     Collections.reverse(targets);
     for (    Permanent permanent : targets) {
       if (((TargetControlledPermanent)target).canTarget(playerId,permanent.getId(),null,game) && !target.getTargets().contains(permanent.getId())) {
@@ -46,10 +46,10 @@
   if (target instanceof TargetPermanent) {
     List<Permanent> targets;
     if (outcome.isGood()) {
-      targets=threats(playerId,((TargetPermanent)target).getFilter(),game);
+      targets=threats(playerId,((TargetPermanent)target).getFilter(),game,target.getTargets());
     }
  else {
-      targets=threats(opponentId,((TargetPermanent)target).getFilter(),game);
+      targets=threats(opponentId,((TargetPermanent)target).getFilter(),game,target.getTargets());
     }
     for (    Permanent permanent : targets) {
       if (((TargetPermanent)target).canTarget(playerId,permanent.getId(),null,game) && !target.getTargets().contains(permanent.getId())) {

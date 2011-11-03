@@ -2,7 +2,7 @@
   List<ReplacementEffect> replaceEffects=new ArrayList<ReplacementEffect>();
   if (planeswalkerRedirectionEffect.applies(event,null,game))   replaceEffects.add(planeswalkerRedirectionEffect);
   for (  Card card : game.getCards()) {
-    Zone zone=game.getZone(card.getId());
+    Zone zone=game.getState().getZone(card.getId());
     if (zone == Zone.HAND || zone == Zone.GRAVEYARD) {
       for (      Entry<ReplacementEffect,Ability> entry : card.getAbilities().getReplacementEffects(zone).entrySet()) {
         if (entry.getKey().applies(event,entry.getValue(),game)) {

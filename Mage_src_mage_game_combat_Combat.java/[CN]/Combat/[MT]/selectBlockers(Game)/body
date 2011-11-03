@@ -4,6 +4,7 @@
     checkBlockRequirements(player,game);
     for (    UUID defenderId : getPlayerDefenders(game)) {
       game.getPlayer(defenderId).selectBlockers(game);
+      if (game.isPaused() || game.isGameOver())       return;
       game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,defenderId,defenderId));
     }
   }

@@ -47,7 +47,7 @@
   }
   if (target instanceof TargetControlledPermanent) {
     List<Permanent> targets;
-    targets=threats(playerId,((TargetControlledPermanent)target).getFilter(),game);
+    targets=threats(playerId,((TargetControlledPermanent)target).getFilter(),game,target.getTargets());
     if (!outcome.isGood())     Collections.reverse(targets);
     for (    Permanent permanent : targets) {
       if (((TargetControlledPermanent)target).canTarget(playerId,permanent.getId(),source,game)) {
@@ -60,10 +60,10 @@
   if (target instanceof TargetPermanent) {
     List<Permanent> targets;
     if (outcome.isGood()) {
-      targets=threats(playerId,((TargetPermanent)target).getFilter(),game);
+      targets=threats(playerId,((TargetPermanent)target).getFilter(),game,target.getTargets());
     }
  else {
-      targets=threats(opponentId,((TargetPermanent)target).getFilter(),game);
+      targets=threats(opponentId,((TargetPermanent)target).getFilter(),game,target.getTargets());
     }
     for (    Permanent permanent : targets) {
       if (((TargetPermanent)target).canTarget(playerId,permanent.getId(),source,game)) {
@@ -77,10 +77,10 @@
     List<Permanent> targets;
     TargetCreatureOrPlayer t=((TargetCreatureOrPlayer)target);
     if (outcome.isGood()) {
-      targets=threats(playerId,((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game);
+      targets=threats(playerId,((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
     }
  else {
-      targets=threats(opponentId,((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game);
+      targets=threats(opponentId,((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
     }
     for (    Permanent permanent : targets) {
       List<UUID> alreadyTargetted=target.getTargets();

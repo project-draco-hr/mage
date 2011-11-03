@@ -3,7 +3,7 @@
   if (card != null) {
     if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.CAST_SPELL,ability.getId(),ability.getSourceId(),playerId))) {
       int bookmark=game.bookmarkState();
-      Zone fromZone=game.getZone(card.getId());
+      Zone fromZone=game.getState().getZone(card.getId());
       card.cast(game,fromZone,ability,playerId);
       Ability spellAbility=game.getStack().getSpell(ability.getId()).getSpellAbility();
       if (spellAbility.activate(game,noMana)) {
