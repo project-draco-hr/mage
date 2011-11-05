@@ -75,20 +75,7 @@ client.showMessage("Unable to connect to server. " + ex.getMessage());
 }
 catch (CannotConnectException ex) {
 if (!canceled) {
-Throwable t=ex.getCause();
-String message="";
-while (t != null) {
-if (t instanceof ConnectException) {
-message="Server is likely offline.";
-break;
-}
-if (t instanceof SocketException) {
-message="Check your internet connection.";
-break;
-}
-t=t.getCause();
-}
-client.showMessage("Unable to connect to server. " + message);
+handleCannotConnectException(ex);
 }
 }
 catch (Throwable t) {

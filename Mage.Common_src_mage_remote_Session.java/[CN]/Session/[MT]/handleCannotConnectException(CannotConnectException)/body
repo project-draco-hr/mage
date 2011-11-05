@@ -1,0 +1,21 @@
+{
+  logger.warn("Cannot connect",ex);
+  Throwable t=ex.getCause();
+  String message="";
+  while (t != null) {
+    if (t instanceof ConnectException) {
+      message="Server is likely offline.";
+      break;
+    }
+    if (t instanceof SocketException) {
+      message="Check your internet connection.";
+      break;
+    }
+    if (t instanceof SocketTimeoutException) {
+      message="Server is not responding.";
+      break;
+    }
+    t=t.getCause();
+  }
+  client.showMessage("Unable to connect to server. " + message);
+}
