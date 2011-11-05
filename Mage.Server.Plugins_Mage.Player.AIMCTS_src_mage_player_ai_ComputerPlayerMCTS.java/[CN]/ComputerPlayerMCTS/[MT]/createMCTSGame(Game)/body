@@ -1,0 +1,12 @@
+{
+  Game mcts=game.copy();
+  for (  Player copyPlayer : mcts.getState().getPlayers().values()) {
+    Player origPlayer=game.getState().getPlayers().get(copyPlayer.getId());
+    MCTSPlayer newPlayer=new MCTSPlayer(copyPlayer.getId());
+    newPlayer.restore(origPlayer);
+    newPlayer.shuffleLibrary(mcts);
+    mcts.getState().getPlayers().put(copyPlayer.getId(),newPlayer);
+  }
+  mcts.setSimulation(true);
+  return mcts;
+}

@@ -1,0 +1,28 @@
+{
+  if (source != null && source.canChooseTarget(game)) {
+    Ability ability;
+    List<Ability> options=getPlayableOptions(source,game);
+    if (options.isEmpty()) {
+      ability=source;
+    }
+ else {
+      if (options.size() == 1)       ability=options.get(0);
+ else       ability=options.get(rnd.nextInt(options.size()));
+    }
+    if (ability.isUsesStack()) {
+      game.getStack().push(new StackAbility(ability,playerId));
+      if (ability.activate(game,false)) {
+        actionCount++;
+        return true;
+      }
+    }
+ else {
+      if (ability.activate(game,false)) {
+        ability.resolve(game);
+        actionCount++;
+        return true;
+      }
+    }
+  }
+  return false;
+}

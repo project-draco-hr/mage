@@ -1,0 +1,15 @@
+{
+  if (blockers.isEmpty())   return;
+  int numGroups=game.getCombat().getGroups().size();
+  Permanent blocker=blockers.get(0);
+  List<Permanent> remaining=remove(blockers,blocker);
+  for (int i=0; i < numGroups; i++) {
+    if (game.getCombat().getGroups().get(i).canBlock(blocker,game)) {
+      List<List<UUID>> newEngagement=copyEngagement(engagement);
+      newEngagement.get(i).add(blocker.getId());
+      engagements.add(newEngagement);
+      addBlocker(game,newEngagement,remaining,engagements);
+    }
+  }
+  addBlocker(game,engagement,remaining,engagements);
+}

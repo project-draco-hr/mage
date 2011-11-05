@@ -1,0 +1,17 @@
+{
+  double bestValue=Double.NEGATIVE_INFINITY;
+  MCTSNode bestChild=null;
+  if (children.size() == 1) {
+    return children.get(0);
+  }
+  for (  MCTSNode node : children) {
+    double uct;
+    if (node.visits > 0)     uct=(node.wins / (node.visits + 1.0)) + (selectionCoefficient * Math.sqrt(Math.log(visits + 1.0) / (node.visits + 1.0)));
+ else     uct=10000 + 1000 * Math.random();
+    if (uct > bestValue) {
+      bestChild=node;
+      bestValue=uct;
+    }
+  }
+  return bestChild;
+}

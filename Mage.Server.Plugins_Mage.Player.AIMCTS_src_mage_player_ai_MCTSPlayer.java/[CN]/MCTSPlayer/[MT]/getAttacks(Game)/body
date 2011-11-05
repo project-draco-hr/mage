@@ -1,0 +1,19 @@
+{
+  List<List<UUID>> engagements=new ArrayList<List<UUID>>();
+  List<Permanent> attackersList=super.getAvailableAttackers(game);
+  int powerElements=(int)Math.pow(2,attackersList.size());
+  StringBuilder binary=new StringBuilder();
+  for (int i=powerElements - 1; i >= 0; i--) {
+    binary.setLength(0);
+    binary.append(Integer.toBinaryString(i));
+    while (binary.length() < attackersList.size()) {
+      binary.insert(0,"0");
+    }
+    List<UUID> engagement=new ArrayList<UUID>();
+    for (int j=0; j < attackersList.size(); j++) {
+      if (binary.charAt(j) == '1')       engagement.add(attackersList.get(j).getId());
+    }
+    engagements.add(engagement);
+  }
+  return engagements;
+}

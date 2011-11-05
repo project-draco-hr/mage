@@ -1,0 +1,20 @@
+{
+  while (true) {
+    List<Ability> playables=getPlayableAbilities(game);
+    Ability ability;
+    if (playables.size() == 1)     ability=playables.get(0);
+ else     ability=playables.get(rnd.nextInt(playables.size()));
+    List<Ability> options=getPlayableOptions(ability,game);
+    if (!options.isEmpty()) {
+      if (options.size() == 1)       ability=options.get(0);
+ else       ability=options.get(rnd.nextInt(options.size()));
+    }
+    if (ability.getManaCosts().getVariableCosts().size() > 0) {
+      int amount=getAvailableManaProducers(game).size() - ability.getManaCosts().convertedManaCost();
+      if (amount > 0)       ability.addManaCost(new GenericManaCost(rnd.nextInt(amount)));
+    }
+    activateAbility((ActivatedAbility)ability,game);
+    actionCount++;
+    if (ability.isUsesStack())     break;
+  }
+}
