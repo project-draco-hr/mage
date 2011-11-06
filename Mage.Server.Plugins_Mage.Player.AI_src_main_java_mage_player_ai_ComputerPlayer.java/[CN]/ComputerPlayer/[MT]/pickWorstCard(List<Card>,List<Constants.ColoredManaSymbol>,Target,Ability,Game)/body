@@ -1,0 +1,27 @@
+{
+  if (cards.isEmpty()) {
+    return null;
+  }
+  Card worstCard=null;
+  int minScore=Integer.MAX_VALUE;
+  for (  Card card : cards) {
+    int score=RateCard.rateCard(card,chosenColors);
+    boolean worseCard=false;
+    if (worstCard == null) {
+      worseCard=true;
+    }
+ else     if (score < minScore) {
+      if (target != null && source != null && game != null) {
+        worseCard=target.canTarget(card.getId(),source,game);
+      }
+ else {
+        worseCard=true;
+      }
+    }
+    if (worseCard) {
+      minScore=score;
+      worstCard=card;
+    }
+  }
+  return worstCard;
+}

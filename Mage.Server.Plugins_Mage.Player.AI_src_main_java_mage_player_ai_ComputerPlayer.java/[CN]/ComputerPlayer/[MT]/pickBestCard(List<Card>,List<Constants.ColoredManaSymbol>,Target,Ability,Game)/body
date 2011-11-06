@@ -1,0 +1,27 @@
+{
+  if (cards.isEmpty()) {
+    return null;
+  }
+  Card bestCard=null;
+  int maxScore=0;
+  for (  Card card : cards) {
+    int score=RateCard.rateCard(card,chosenColors);
+    boolean betterCard=false;
+    if (bestCard == null) {
+      betterCard=true;
+    }
+ else     if (score > maxScore) {
+      if (target != null && source != null && game != null) {
+        betterCard=target.canTarget(card.getId(),source,game);
+      }
+ else {
+        betterCard=true;
+      }
+    }
+    if (betterCard) {
+      maxScore=score;
+      bestCard=card;
+    }
+  }
+  return bestCard;
+}

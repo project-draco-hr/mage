@@ -7,13 +7,26 @@
         target.add(playerId,game);
         return true;
       }
+      if (target.isRequired()) {
+        if (target.canTarget(opponentId,game)) {
+          target.add(opponentId,game);
+          return true;
+        }
+      }
     }
  else {
       if (target.canTarget(opponentId,game)) {
         target.add(opponentId,game);
         return true;
       }
+      if (target.isRequired()) {
+        if (target.canTarget(playerId,game)) {
+          target.add(playerId,game);
+          return true;
+        }
+      }
     }
+    return false;
   }
   if (target instanceof TargetDiscard) {
     findPlayables(game);
@@ -26,11 +39,14 @@
       }
     }
     if (hand.size() > 0) {
-      if (target.canTarget(hand.toArray(new UUID[0])[0],game)) {
-        target.add(hand.toArray(new UUID[0])[0],game);
-        return true;
+      for (int i=0; i < hand.size(); i++) {
+        if (target.canTarget(hand.toArray(new UUID[0])[i],game)) {
+          target.add(hand.toArray(new UUID[0])[i],game);
+          return true;
+        }
       }
     }
+    return false;
   }
   if (target instanceof TargetControlledPermanent) {
     List<Permanent> targets;
