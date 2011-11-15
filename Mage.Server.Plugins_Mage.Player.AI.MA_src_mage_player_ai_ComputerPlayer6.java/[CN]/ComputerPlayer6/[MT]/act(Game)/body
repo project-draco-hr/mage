@@ -7,6 +7,17 @@
       System.out.println("[" + game.getPlayer(playerId).getName() + "] Action: "+ ability.toString());
       this.activateAbility((ActivatedAbility)ability,game);
       if (ability.isUsesStack())       usedStack=true;
+      if (!suggested.isEmpty()) {
+        Iterator<String> it=suggested.iterator();
+        while (it.hasNext()) {
+          Card card=game.getCard(ability.getSourceId());
+          String action=it.next();
+          if (action.equals(card.getName())) {
+            System.out.println("removed from suggested=" + action);
+            it.remove();
+          }
+        }
+      }
     }
     if (usedStack)     pass();
   }

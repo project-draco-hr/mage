@@ -13,23 +13,23 @@
     System.gc();
   }
   Game game=new TwoPlayerDuel(Constants.MultiplayerAttackOption.LEFT,Constants.RangeOfInfluence.ALL);
-  computerA=aiTypeA.equals(CardTestBase.AIType.MinimaxHybrid) ? createPlayer("ComputerA","Computer - minimax hybrid") : createPlayer("ComputerA","Computer - mad");
-  computerA.setTestMode(true);
+  playerA=aiTypeA.equals(CardTestBase.AIType.MinimaxHybrid) ? createPlayer("ComputerA","Computer - minimax hybrid") : createPlayer("ComputerA","Computer - mad");
+  playerA.setTestMode(true);
   Deck deck=Deck.load(Sets.loadDeck("RB Aggro.dck"));
   if (deck.getCards().size() < 40) {
     throw new IllegalArgumentException("Couldn't load deck, deck size=" + deck.getCards().size());
   }
-  game.addPlayer(computerA,deck);
-  game.loadCards(deck.getCards(),computerA.getId());
-  computerB=aiTypeB.equals(CardTestBase.AIType.MinimaxHybrid) ? createPlayer("ComputerB","Computer - minimax hybrid") : createPlayer("ComputerB","Computer - mad");
-  computerB.setTestMode(true);
+  game.addPlayer(playerA,deck);
+  game.loadCards(deck.getCards(),playerA.getId());
+  playerB=aiTypeB.equals(CardTestBase.AIType.MinimaxHybrid) ? createPlayer("ComputerB","Computer - minimax hybrid") : createPlayer("ComputerB","Computer - mad");
+  playerB.setTestMode(true);
   Deck deck2=Deck.load(Sets.loadDeck("RB Aggro.dck"));
   if (deck2.getCards().size() < 40) {
     throw new IllegalArgumentException("Couldn't load deck, deck size=" + deck2.getCards().size());
   }
-  game.addPlayer(computerB,deck2);
-  game.loadCards(deck2.getCards(),computerB.getId());
+  game.addPlayer(playerB,deck2);
+  game.loadCards(deck2.getCards(),playerB.getId());
   parseScenario(cardPath);
-  activePlayer=computerA;
+  activePlayer=playerA;
   currentGame=game;
 }
