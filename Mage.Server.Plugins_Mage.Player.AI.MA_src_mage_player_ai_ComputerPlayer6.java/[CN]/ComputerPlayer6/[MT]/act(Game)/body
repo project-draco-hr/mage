@@ -5,13 +5,20 @@
     while (actions.peek() != null) {
       Ability ability=actions.poll();
       System.out.println("[" + game.getPlayer(playerId).getName() + "] Action: "+ ability.toString());
+      if (ability.getTargets().size() > 0) {
+        Player player=game.getPlayer(ability.getFirstTarget());
+        if (player != null) {
+          System.out.println("targets = " + player.getName());
+        }
+      }
       this.activateAbility((ActivatedAbility)ability,game);
       if (ability.isUsesStack())       usedStack=true;
-      if (!suggested.isEmpty()) {
+      if (!suggested.isEmpty() && !(ability instanceof PassAbility)) {
         Iterator<String> it=suggested.iterator();
         while (it.hasNext()) {
           Card card=game.getCard(ability.getSourceId());
           String action=it.next();
+          System.out.println("action=" + action + ";card="+ card);
           if (action.equals(card.getName())) {
             System.out.println("removed from suggested=" + action);
             it.remove();

@@ -1,0 +1,33 @@
+{
+  if (options.isEmpty()) {
+    return options;
+  }
+  if (suggested == null || suggested.isEmpty()) {
+    return options;
+  }
+  List<Ability> filtered=new ArrayList<Ability>();
+  for (  Ability option : options) {
+    if (option.getTargets().size() > 0 && option.getTargets().get(0).getMaxNumberOfTargets() == 1) {
+      Card card=game.getCard(ability.getSourceId());
+      for (      String s : suggested) {
+        String[] groups=s.split(";");
+        System.out.println("s=" + s + ";groups="+ groups.length);
+        if (groups.length == 2) {
+          if (groups[0].equals(card.getName()) && groups[1].startsWith("name=")) {
+            String name=groups[1].split("=")[1];
+            Player player=game.getPlayer(option.getFirstTarget());
+            if (player != null && name.equals(player.getName())) {
+              System.out.println("matched(option): " + s);
+              filtered.add(option);
+              return filtered;
+            }
+ else {
+              System.out.println("not equal UUID for target, player=" + player);
+            }
+          }
+        }
+      }
+    }
+  }
+  return options;
+}

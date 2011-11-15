@@ -27,6 +27,7 @@
       logger.debug("simulating -- node #:" + SimulationNode2.getCount() + " actions:"+ action);
       sim.checkStateAndTriggered();
       int val=addActions(newNode,depth - 1,alpha,beta);
+      logger.debug("val = " + val);
       if (!currentPlayer.getId().equals(playerId)) {
         if (val < beta) {
           beta=val;
@@ -60,6 +61,7 @@
         }
       }
       if (alpha >= beta) {
+        logger.info("simulating -- pruning");
         break;
       }
       if (SimulationNode2.nodeCount > maxNodes) {
@@ -74,9 +76,11 @@
     node.setScore(bestNode.getScore());
   }
   if (!currentPlayer.getId().equals(playerId)) {
+    logger.info("returning priority beta: " + beta);
     return beta;
   }
  else {
+    logger.info("returning priority alpha: " + alpha);
     return alpha;
   }
 }

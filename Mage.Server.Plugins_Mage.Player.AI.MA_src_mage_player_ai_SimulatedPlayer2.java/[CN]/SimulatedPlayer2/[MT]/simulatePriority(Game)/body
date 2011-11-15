@@ -1,8 +1,21 @@
 {
   allActions=new ConcurrentLinkedQueue<Ability>();
   Game sim=game.copy();
-  simulateOptions(sim,pass);
+  forced=false;
+  simulateOptions(sim);
   ArrayList<Ability> list=new ArrayList<Ability>(allActions);
   Collections.reverse(list);
+  if (!forced) {
+    list.add(pass);
+  }
+  for (  Ability a : allActions) {
+    System.out.println("ability==" + a);
+    if (a.getTargets().size() > 0) {
+      Player player=game.getPlayer(a.getFirstTarget());
+      if (player != null) {
+        System.out.println("   target=" + player.getName());
+      }
+    }
+  }
   return list;
 }
