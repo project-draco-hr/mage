@@ -5,21 +5,23 @@
   handLabel.setText(Integer.toString(player.getHandCount()));
   libraryLabel.setText(Integer.toString(player.getLibraryCount()));
   graveLabel.setText(Integer.toString(player.getGraveyard().size()));
-  int id=player.getUserData().getAvatarId();
-  if (id > 0 && id != avatarId) {
-    avatarId=id;
-    String path="/avatars/" + String.valueOf(avatarId) + ".jpg";
-    if (avatarId == 64) {
-      path="/avatars/i64.jpg";
+  if (!MageFrame.isLite()) {
+    int id=player.getUserData().getAvatarId();
+    if (id > 0 && id != avatarId) {
+      avatarId=id;
+      String path="/avatars/" + String.valueOf(avatarId) + ".jpg";
+      if (avatarId == 64) {
+        path="/avatars/i64.jpg";
+      }
+ else       if (avatarId >= 1000) {
+        avatarId=avatarId - 1000;
+        path="/avatars/special/" + String.valueOf(avatarId) + ".gif";
+      }
+      Image image=ImageHelper.getImageFromResources(path);
+      Rectangle r=new Rectangle(80,80);
+      BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
+      this.avatar.update("player",resized,resized,resized,resized,r);
     }
- else     if (avatarId >= 1000) {
-      avatarId=avatarId - 1000;
-      path="/avatars/special/" + String.valueOf(avatarId) + ".gif";
-    }
-    Image image=ImageHelper.getImageFromResources(path);
-    Rectangle r=new Rectangle(80,80);
-    BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
-    this.avatar.update("player",resized,resized,resized,resized,r);
   }
   this.avatar.setText(player.getName());
   if (player.isActive()) {

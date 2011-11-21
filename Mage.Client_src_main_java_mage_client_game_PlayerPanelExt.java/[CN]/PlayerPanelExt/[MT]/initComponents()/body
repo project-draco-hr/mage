@@ -1,0 +1,120 @@
+{
+  panelBackground=new MageRoundPane();
+  Rectangle r=new Rectangle(80,80);
+  lifeLabel=new JLabel();
+  handLabel=new JLabel();
+  poisonLabel=new JLabel();
+  libraryLabel=new JLabel();
+  setOpaque(false);
+  panelBackground.setXOffset(3);
+  panelBackground.setYOffset(3);
+  panelBackground.setVisible(true);
+  Image image=ImageHelper.getImageFromResources("/avatars/unknown.jpg");
+  BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
+  avatar=new HoverButton("player",resized,resized,resized,r);
+  avatar.setObserver(new Command(){
+    @Override public void execute(){
+      session.sendPlayerUUID(gameId,playerId);
+    }
+  }
+);
+  r=new Rectangle(18,18);
+  lifeLabel.setToolTipText("Life");
+  Image imageLife=ImageHelper.getImageFromResources("/info/life.png");
+  BufferedImage resizedLife=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(imageLife,BufferedImage.TYPE_INT_ARGB),r);
+  life=new ImagePanel(resizedLife,ImagePanel.ACTUAL);
+  life.setToolTipText("Life");
+  life.setOpaque(false);
+  r=new Rectangle(18,18);
+  handLabel.setToolTipText("Hand");
+  Image imageHand=ImageHelper.getImageFromResources("/info/hand.png");
+  BufferedImage resizedHand=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(imageHand,BufferedImage.TYPE_INT_ARGB),r);
+  hand=new ImagePanel(resizedHand,ImagePanel.ACTUAL);
+  hand.setToolTipText("Hand");
+  hand.setOpaque(false);
+  poisonLabel.setText("0");
+  r=new Rectangle(14,14);
+  poisonLabel.setToolTipText("Poison");
+  Image imagePoison=ImageHelper.getImageFromResources("/info/poison.png");
+  BufferedImage resizedPoison=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(imagePoison,BufferedImage.TYPE_INT_ARGB),r);
+  poison=new ImagePanel(resizedPoison,ImagePanel.ACTUAL);
+  poison.setToolTipText("Poison");
+  poison.setOpaque(false);
+  r=new Rectangle(19,19);
+  libraryLabel.setToolTipText("Library");
+  Image imageLibrary=ImageHelper.getImageFromResources("/info/library.png");
+  BufferedImage resizedLibrary=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(imageLibrary,BufferedImage.TYPE_INT_ARGB),r);
+  library=new ImagePanel(resizedLibrary,ImagePanel.ACTUAL);
+  library.setToolTipText("Library");
+  library.setOpaque(false);
+  graveLabel=new JLabel();
+  r=new Rectangle(21,21);
+  graveLabel.setToolTipText("Graveyard");
+  Image imageGrave=ImageHelper.getImageFromResources("/info/grave.png");
+  BufferedImage resizedGrave=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(imageGrave,BufferedImage.TYPE_INT_ARGB),r);
+  grave=new HoverButton(null,resizedGrave,resizedGrave,resizedGrave,r);
+  grave.setToolTipText("Graveyard");
+  grave.setOpaque(false);
+  grave.setObserver(new Command(){
+    @Override public void execute(){
+      btnGraveActionPerformed(null);
+    }
+  }
+);
+  r=new Rectangle(25,21);
+  image=ImageHelper.getImageFromResources("/info/cheat.png");
+  resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
+  cheat=new JButton();
+  cheat.setIcon(new ImageIcon(resized));
+  cheat.setToolTipText("Cheat button");
+  cheat.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      btnCheatActionPerformed(e);
+    }
+  }
+);
+  BufferedImage imageManaW=ManaSymbols.getManaSymbolImageSmall("W");
+  ImagePanel manaW=new ImagePanel(imageManaW,ImagePanel.ACTUAL);
+  manaW.setOpaque(false);
+  JLabel manaCountLabelW=new JLabel();
+  manaCountLabelW.setText("0");
+  manaLabels.put("W",manaCountLabelW);
+  BufferedImage imageManaU=ManaSymbols.getManaSymbolImageSmall("U");
+  ImagePanel manaU=new ImagePanel(imageManaU,ImagePanel.ACTUAL);
+  manaU.setOpaque(false);
+  JLabel manaCountLabelU=new JLabel();
+  manaCountLabelU.setText("0");
+  manaLabels.put("U",manaCountLabelU);
+  BufferedImage imageManaB=ManaSymbols.getManaSymbolImageSmall("B");
+  ImagePanel manaB=new ImagePanel(imageManaB,ImagePanel.ACTUAL);
+  manaB.setOpaque(false);
+  JLabel manaCountLabelB=new JLabel();
+  manaCountLabelB.setText("0");
+  manaLabels.put("B",manaCountLabelB);
+  BufferedImage imageManaR=ManaSymbols.getManaSymbolImageSmall("R");
+  ImagePanel manaR=new ImagePanel(imageManaR,ImagePanel.ACTUAL);
+  manaR.setOpaque(false);
+  JLabel manaCountLabelR=new JLabel();
+  manaCountLabelR.setText("0");
+  manaLabels.put("R",manaCountLabelR);
+  BufferedImage imageManaG=ManaSymbols.getManaSymbolImageSmall("G");
+  ImagePanel manaG=new ImagePanel(imageManaG,ImagePanel.ACTUAL);
+  manaG.setOpaque(false);
+  JLabel manaCountLabelG=new JLabel();
+  manaCountLabelG.setText("0");
+  manaLabels.put("G",manaCountLabelG);
+  BufferedImage imageManaX=ManaSymbols.getManaSymbolImageSmall("X");
+  ImagePanel manaX=new ImagePanel(imageManaX,ImagePanel.ACTUAL);
+  manaX.setOpaque(false);
+  JLabel manaCountLabelX=new JLabel();
+  manaCountLabelX.setText("0");
+  manaLabels.put("X",manaCountLabelX);
+  GroupLayout gl_panelBackground=new GroupLayout(panelBackground);
+  gl_panelBackground.setHorizontalGroup(gl_panelBackground.createParallelGroup(Alignment.LEADING).addGroup(gl_panelBackground.createSequentialGroup().addGap(6).addComponent(avatar,GroupLayout.PREFERRED_SIZE,80,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(9).addComponent(life,GroupLayout.PREFERRED_SIZE,18,GroupLayout.PREFERRED_SIZE).addGap(3).addGroup(gl_panelBackground.createParallelGroup(Alignment.LEADING).addGroup(gl_panelBackground.createSequentialGroup().addGap(18).addComponent(hand,GroupLayout.PREFERRED_SIZE,18,GroupLayout.PREFERRED_SIZE)).addComponent(lifeLabel,GroupLayout.PREFERRED_SIZE,20,GroupLayout.PREFERRED_SIZE)).addGap(4).addComponent(handLabel,GroupLayout.PREFERRED_SIZE,20,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(9).addGroup(gl_panelBackground.createParallelGroup(Alignment.LEADING).addGroup(gl_panelBackground.createSequentialGroup().addGap(3).addComponent(poison,GroupLayout.PREFERRED_SIZE,14,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(2).addComponent(manaW,GroupLayout.PREFERRED_SIZE,15,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(2).addComponent(manaU,GroupLayout.PREFERRED_SIZE,15,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(2).addComponent(manaB,GroupLayout.PREFERRED_SIZE,15,GroupLayout.PREFERRED_SIZE)).addComponent(grave,GroupLayout.PREFERRED_SIZE,21,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createParallelGroup(Alignment.LEADING).addGroup(gl_panelBackground.createSequentialGroup().addGroup(gl_panelBackground.createParallelGroup(Alignment.LEADING).addGroup(gl_panelBackground.createSequentialGroup().addGap(18).addComponent(library,GroupLayout.PREFERRED_SIZE,19,GroupLayout.PREFERRED_SIZE)).addComponent(poisonLabel,GroupLayout.PREFERRED_SIZE,20,GroupLayout.PREFERRED_SIZE).addGroup(gl_panelBackground.createSequentialGroup().addGap(20).addComponent(manaR,GroupLayout.PREFERRED_SIZE,15,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(1).addComponent(manaCountLabelW,GroupLayout.PREFERRED_SIZE,30,GroupLayout.PREFERRED_SIZE))).addGap(3).addComponent(manaCountLabelR,GroupLayout.PREFERRED_SIZE,30,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(1).addGroup(gl_panelBackground.createParallelGroup(Alignment.LEADING).addComponent(manaCountLabelB,GroupLayout.PREFERRED_SIZE,30,GroupLayout.PREFERRED_SIZE).addGroup(gl_panelBackground.createSequentialGroup().addGap(19).addComponent(manaX,GroupLayout.PREFERRED_SIZE,15,GroupLayout.PREFERRED_SIZE))).addGap(5).addComponent(manaCountLabelX,GroupLayout.PREFERRED_SIZE,30,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(20).addComponent(manaG,GroupLayout.PREFERRED_SIZE,15,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(40).addComponent(manaCountLabelG,GroupLayout.PREFERRED_SIZE,30,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(40).addComponent(libraryLabel,GroupLayout.PREFERRED_SIZE,20,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(18).addComponent(cheat,GroupLayout.PREFERRED_SIZE,25,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(5).addComponent(graveLabel,GroupLayout.PREFERRED_SIZE,21,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(1).addComponent(manaCountLabelU,GroupLayout.PREFERRED_SIZE,30,GroupLayout.PREFERRED_SIZE)))));
+  gl_panelBackground.setVerticalGroup(gl_panelBackground.createParallelGroup(Alignment.LEADING).addGroup(gl_panelBackground.createSequentialGroup().addGap(6).addComponent(avatar,GroupLayout.PREFERRED_SIZE,80,GroupLayout.PREFERRED_SIZE).addGap(3).addGroup(gl_panelBackground.createParallelGroup(Alignment.LEADING).addGroup(gl_panelBackground.createSequentialGroup().addGap(1).addComponent(life,GroupLayout.PREFERRED_SIZE,18,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(1).addComponent(hand,GroupLayout.PREFERRED_SIZE,18,GroupLayout.PREFERRED_SIZE)).addComponent(lifeLabel,GroupLayout.PREFERRED_SIZE,20,GroupLayout.PREFERRED_SIZE).addComponent(handLabel,GroupLayout.PREFERRED_SIZE,20,GroupLayout.PREFERRED_SIZE)).addGap(1).addGroup(gl_panelBackground.createParallelGroup(Alignment.LEADING).addGroup(gl_panelBackground.createSequentialGroup().addGap(4).addComponent(poison,GroupLayout.PREFERRED_SIZE,14,GroupLayout.PREFERRED_SIZE).addGap(4).addComponent(manaW,GroupLayout.PREFERRED_SIZE,15,GroupLayout.PREFERRED_SIZE).addGap(2).addComponent(manaU,GroupLayout.PREFERRED_SIZE,15,GroupLayout.PREFERRED_SIZE).addGap(2).addComponent(manaB,GroupLayout.PREFERRED_SIZE,15,GroupLayout.PREFERRED_SIZE).addGap(5).addComponent(grave,GroupLayout.PREFERRED_SIZE,21,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGroup(gl_panelBackground.createParallelGroup(Alignment.LEADING).addGroup(gl_panelBackground.createSequentialGroup().addGroup(gl_panelBackground.createParallelGroup(Alignment.LEADING).addGroup(gl_panelBackground.createSequentialGroup().addGap(1).addComponent(library,GroupLayout.PREFERRED_SIZE,19,GroupLayout.PREFERRED_SIZE)).addComponent(poisonLabel,GroupLayout.PREFERRED_SIZE,20,GroupLayout.PREFERRED_SIZE)).addGap(2).addComponent(manaR,GroupLayout.PREFERRED_SIZE,15,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(14).addComponent(manaCountLabelW,GroupLayout.PREFERRED_SIZE,30,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(14).addComponent(manaCountLabelR,GroupLayout.PREFERRED_SIZE,30,GroupLayout.PREFERRED_SIZE))).addGap(4).addGroup(gl_panelBackground.createParallelGroup(Alignment.LEADING).addComponent(manaCountLabelB,GroupLayout.PREFERRED_SIZE,30,GroupLayout.PREFERRED_SIZE).addGroup(gl_panelBackground.createSequentialGroup().addGap(8).addComponent(manaX,GroupLayout.PREFERRED_SIZE,15,GroupLayout.PREFERRED_SIZE)).addComponent(manaCountLabelX,GroupLayout.PREFERRED_SIZE,30,GroupLayout.PREFERRED_SIZE))).addGroup(gl_panelBackground.createSequentialGroup().addGap(39).addComponent(manaG,GroupLayout.PREFERRED_SIZE,15,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(31).addComponent(manaCountLabelG,GroupLayout.PREFERRED_SIZE,30,GroupLayout.PREFERRED_SIZE)).addComponent(libraryLabel,GroupLayout.PREFERRED_SIZE,20,GroupLayout.PREFERRED_SIZE).addGroup(gl_panelBackground.createSequentialGroup().addGap(76).addComponent(cheat,GroupLayout.PREFERRED_SIZE,21,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(76).addComponent(graveLabel,GroupLayout.PREFERRED_SIZE,21,GroupLayout.PREFERRED_SIZE)).addGroup(gl_panelBackground.createSequentialGroup().addGap(31).addComponent(manaCountLabelU,GroupLayout.PREFERRED_SIZE,30,GroupLayout.PREFERRED_SIZE)))));
+  panelBackground.setLayout(gl_panelBackground);
+  GroupLayout groupLayout=new GroupLayout(this);
+  groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(panelBackground,GroupLayout.PREFERRED_SIZE,92,GroupLayout.PREFERRED_SIZE));
+  groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(panelBackground,GroupLayout.PREFERRED_SIZE,212,GroupLayout.PREFERRED_SIZE));
+  setLayout(groupLayout);
+}
