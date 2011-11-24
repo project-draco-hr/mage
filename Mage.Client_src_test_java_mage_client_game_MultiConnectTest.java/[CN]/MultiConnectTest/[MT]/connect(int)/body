@@ -1,0 +1,17 @@
+{
+  Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
+    public void uncaughtException(    Thread t,    Throwable e){
+      logger.fatal(null,e);
+    }
+  }
+);
+  SwingUtilities.invokeLater(new Runnable(){
+    public void run(){
+      String username="player" + index;
+      ClientMock client=new ClientMock(username);
+      client.connect();
+      latch.countDown();
+    }
+  }
+);
+}
