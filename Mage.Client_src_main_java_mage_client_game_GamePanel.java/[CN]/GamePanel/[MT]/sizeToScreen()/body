@@ -1,15 +1,33 @@
 {
   Rectangle rect=this.getBounds();
-  if (rect.height < 768) {
-    Dimension bbDimension=new Dimension(128,184);
-    bigCard.setMaximumSize(bbDimension);
-    bigCard.setMinimumSize(bbDimension);
-    bigCard.setPreferredSize(bbDimension);
-    this.handContainer.sizeHand(0.6);
-    for (    PlayAreaPanel p : players.values()) {
-      p.sizePlayer();
+  if (rect.height < 650) {
+    if (smallMode == false) {
+      smallMode=true;
+      Dimension bbDimension=new Dimension(128,184);
+      bigCard.setMaximumSize(bbDimension);
+      bigCard.setMinimumSize(bbDimension);
+      bigCard.setPreferredSize(bbDimension);
+      pnlGameInfo.revalidate();
+      pnlGameInfo.repaint();
+      this.handContainer.sizeHand(0.6);
+      for (      PlayAreaPanel p : players.values()) {
+        p.sizePlayer();
+      }
     }
   }
-  this.revalidate();
-  this.repaint();
+ else {
+    if (smallMode == true) {
+      smallMode=false;
+      Dimension bbDimension=new Dimension(256,367);
+      bigCard.setMaximumSize(bbDimension);
+      bigCard.setMinimumSize(bbDimension);
+      bigCard.setPreferredSize(bbDimension);
+      pnlGameInfo.revalidate();
+      pnlGameInfo.repaint();
+      this.handContainer.sizeHand(1);
+      for (      PlayAreaPanel p : players.values()) {
+        p.sizePlayer();
+      }
+    }
+  }
 }
