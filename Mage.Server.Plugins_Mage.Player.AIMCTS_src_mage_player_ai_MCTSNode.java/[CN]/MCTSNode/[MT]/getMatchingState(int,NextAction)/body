@@ -1,0 +1,16 @@
+{
+  for (  MCTSNode node : children) {
+    if (node.stateValue == state && node.action != null) {
+      MCTSPlayer player;
+      if (game.getStep().getStepPart() == StepPart.PRIORITY)       player=(MCTSPlayer)game.getPlayer(game.getPriorityPlayerId());
+ else {
+        if (game.getStep().getType() == PhaseStep.DECLARE_BLOCKERS)         player=(MCTSPlayer)game.getPlayer(game.getCombat().getDefenders().iterator().next());
+ else         player=(MCTSPlayer)game.getPlayer(game.getActivePlayerId());
+      }
+      if (player.getNextAction() == nextAction)       return node;
+    }
+    MCTSNode match=node.getMatchingState(state,nextAction);
+    if (match != null)     return node;
+  }
+  return null;
+}

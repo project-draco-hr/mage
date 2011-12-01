@@ -1,0 +1,20 @@
+{
+  this.visits+=merge.visits;
+  this.wins+=merge.wins;
+  List<MCTSNode> mergeChildren=new ArrayList<MCTSNode>();
+  for (  MCTSNode child : merge.children) {
+    mergeChildren.add(child);
+  }
+  for (  MCTSNode child : children) {
+    for (    MCTSNode mergeChild : mergeChildren) {
+      if (mergeChild.stateValue == child.stateValue) {
+        child.merge(mergeChild);
+        mergeChildren.remove(mergeChild);
+        break;
+      }
+    }
+  }
+  if (!mergeChildren.isEmpty()) {
+    children.addAll(mergeChildren);
+  }
+}

@@ -10,20 +10,17 @@
   }
 switch (player.getNextAction()) {
 case PRIORITY:
-    logger.info("Priority for player:" + player.getName() + " turn: "+ game.getTurnNum()+ " phase: "+ game.getPhase().getType()+ " step: "+ game.getStep().getType());
-  List<Ability> abilities=player.getPlayableOptions(game);
-for (Ability ability : abilities) {
-  Game sim=game.copy();
-  int simState=sim.getState().getValue().hashCode();
-  logger.info("expand " + ability.toString());
-  MCTSPlayer simPlayer=(MCTSPlayer)sim.getPlayer(player.getId());
-  simPlayer.activateAbility((ActivatedAbility)ability,sim);
-  sim.resume();
-  children.add(new MCTSNode(this,sim,simState,ability));
-}
+    List<Ability> abilities=player.getPlayableOptions(game);
+  for (  Ability ability : abilities) {
+    Game sim=game.copy();
+    int simState=sim.getState().getValue().hashCode();
+    MCTSPlayer simPlayer=(MCTSPlayer)sim.getPlayer(player.getId());
+    simPlayer.activateAbility((ActivatedAbility)ability,sim);
+    sim.resume();
+    children.add(new MCTSNode(this,sim,simState,ability));
+  }
 break;
 case SELECT_ATTACKERS:
-logger.info("Select attackers:" + player.getName());
 List<List<UUID>> attacks=player.getAttacks(game);
 UUID defenderId=game.getOpponents(player.getId()).iterator().next();
 for (List<UUID> attack : attacks) {
@@ -38,7 +35,6 @@ children.add(new MCTSNode(this,sim,simState,sim.getCombat()));
 }
 break;
 case SELECT_BLOCKERS:
-logger.info("Select blockers:" + player.getName());
 List<List<List<UUID>>> blocks=player.getBlocks(game);
 for (List<List<UUID>> block : blocks) {
 Game sim=game.copy();
