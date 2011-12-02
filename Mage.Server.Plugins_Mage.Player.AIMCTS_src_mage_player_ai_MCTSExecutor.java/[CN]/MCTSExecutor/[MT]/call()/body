@@ -1,0 +1,29 @@
+{
+  int simCount=0;
+  long startTime=System.nanoTime();
+  long endTime=startTime + (thinkTime * 1000000000l);
+  MCTSNode current;
+  if (root.getNumChildren() == 1)   return true;
+  while (true) {
+    long currentTime=System.nanoTime();
+    if (currentTime > endTime)     break;
+    current=root;
+    while (!current.isLeaf()) {
+      current=current.select();
+    }
+    int result;
+    if (!current.isTerminal()) {
+      current.expand();
+      if (current == root && current.getNumChildren() == 1)       return true;
+      current=current.select();
+      result=current.simulate(this.playerId);
+      simCount++;
+    }
+ else {
+      result=current.isWinner(this.playerId) ? 1 : 0;
+    }
+    current.backpropagate(result);
+  }
+  logger.info("Simulated " + simCount + " nodes");
+  return true;
+}
