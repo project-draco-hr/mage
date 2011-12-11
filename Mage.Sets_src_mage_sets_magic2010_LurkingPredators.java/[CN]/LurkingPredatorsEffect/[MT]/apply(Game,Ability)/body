@@ -1,0 +1,23 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  if (player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().getFromTop(game);
+    Cards cards=new CardsImpl();
+    cards.add(card);
+    player.revealCards("Lurking Predators",cards,game);
+    if (card != null) {
+      if (card.getCardType().contains(CardType.CREATURE)) {
+        player.getLibrary().remove(card.getId(),game);
+        card.putOntoBattlefield(game,Zone.HAND,source.getId(),source.getControllerId());
+      }
+ else       if (player.chooseUse(Outcome.Neutral,"Put " + card.getName() + " on the bottom of your library?",game)) {
+        player.getLibrary().remove(card.getId(),game);
+        card.moveToZone(Zone.LIBRARY,source.getId(),game,false);
+      }
+    }
+  }
+  return false;
+}
