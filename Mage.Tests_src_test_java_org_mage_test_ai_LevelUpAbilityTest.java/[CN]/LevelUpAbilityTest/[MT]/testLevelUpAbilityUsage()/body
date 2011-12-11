@@ -1,0 +1,14 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Transcendent Master");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Swamp",15);
+  setStopOnTurn(3);
+  execute();
+  Permanent master=getPermanent("Transcendent Master",playerA.getId());
+  Assert.assertNotNull(master);
+  System.out.println("Results:");
+  for (  Map.Entry<String,Counter> counter : master.getCounters().entrySet()) {
+    System.out.println(counter.getKey() + " : " + counter.getValue().getName()+ " : "+ counter.getValue().getCount());
+  }
+  Assert.assertFalse(master.getCounters().isEmpty());
+  Assert.assertEquals(12,master.getCounters().getCount(CounterType.LEVEL));
+}
