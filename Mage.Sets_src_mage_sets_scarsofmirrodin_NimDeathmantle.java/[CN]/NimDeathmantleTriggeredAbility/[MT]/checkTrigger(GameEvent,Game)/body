@@ -8,7 +8,7 @@
     }
     ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
     Permanent permanent=zEvent.getTarget();
-    if (permanent != null && zEvent.getToZone() == Constants.Zone.GRAVEYARD && zEvent.getFromZone() == Constants.Zone.BATTLEFIELD && !(permanent instanceof PermanentToken) && permanent.getCardType().contains(CardType.CREATURE)) {
+    if (permanent != null && permanent.getControllerId().equals(this.controllerId) && zEvent.getToZone() == Constants.Zone.GRAVEYARD && zEvent.getFromZone() == Constants.Zone.BATTLEFIELD && !(permanent instanceof PermanentToken) && permanent.getCardType().contains(CardType.CREATURE)) {
       getEffects().get(0).setTargetPointer(new FixedTarget(permanent.getId()));
       return true;
     }

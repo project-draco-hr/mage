@@ -1,0 +1,24 @@
+{
+  String windowname;
+  Player player=game.getPlayer(source.getControllerId());
+  Card sourcecard=game.getCard(source.getSourceId());
+  if (sourcecard == null) {
+    windowname="Top card";
+  }
+ else {
+    windowname=sourcecard.getName();
+  }
+  if (player == null) {
+    return false;
+  }
+  Card card=player.getLibrary().getFromTop(game);
+  if (card != null) {
+    Cards cards=new CardsImpl(Zone.PICK);
+    cards.add(card);
+    player.lookAtCards(windowname,cards,game);
+  }
+ else {
+    return false;
+  }
+  return true;
+}
