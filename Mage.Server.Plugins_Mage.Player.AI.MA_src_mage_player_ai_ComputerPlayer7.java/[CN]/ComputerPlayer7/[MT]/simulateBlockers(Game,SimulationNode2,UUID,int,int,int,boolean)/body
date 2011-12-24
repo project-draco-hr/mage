@@ -9,7 +9,8 @@
   if (game.getCombat().isAttacked(defenderId,game)) {
     SimulatedPlayer2 defender=(SimulatedPlayer2)game.getPlayer(defenderId);
     if (logger.isDebugEnabled())     logger.debug(defender.getName() + "'s possible blockers: " + defender.getAvailableBlockers(game));
-    for (    Combat engagement : defender.addBlockers(game)) {
+    List<Combat> combats=defender.addBlockers(game);
+    for (    Combat engagement : combats) {
       if (alpha >= beta) {
         logger.debug("simulating -- pruning blockers");
         break;
@@ -47,14 +48,15 @@
           beta=val;
           bestNode=newNode;
           bestNode.setScore(val);
-          node.setCombat(simCombat);
+          bestNode.setCombat(simCombat);
         }
       }
  else {
         if (val > alpha) {
           alpha=val;
           bestNode=newNode;
-          node.setCombat(simCombat);
+          bestNode.setScore(val);
+          bestNode.setCombat(simCombat);
         }
       }
     }

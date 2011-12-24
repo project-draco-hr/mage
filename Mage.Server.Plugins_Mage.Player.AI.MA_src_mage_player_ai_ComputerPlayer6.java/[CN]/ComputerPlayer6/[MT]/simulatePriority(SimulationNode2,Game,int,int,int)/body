@@ -34,7 +34,9 @@
           beta=val;
           bestNode=newNode;
           bestNode.setScore(val);
-          node.setCombat(newNode.getCombat());
+          if (newNode.getChildren().size() > 0) {
+            bestNode.setCombat(newNode.getChildren().get(0).getCombat());
+          }
         }
         if (val == GameStateEvaluator2.LOSE_GAME_SCORE) {
           logger.debug("lose - break");
@@ -46,9 +48,9 @@
           alpha=val;
           bestNode=newNode;
           bestNode.setScore(val);
-          node.setCombat(newNode.getCombat());
-          if (node.getTargets().size() > 0)           targets=node.getTargets();
-          if (node.getChoices().size() > 0)           choices=node.getChoices();
+          if (newNode.getChildren().size() > 0) {
+            bestNode.setCombat(newNode.getChildren().get(0).getCombat());
+          }
           if (depth == maxDepth) {
             logger.info("saved");
             node.children.clear();

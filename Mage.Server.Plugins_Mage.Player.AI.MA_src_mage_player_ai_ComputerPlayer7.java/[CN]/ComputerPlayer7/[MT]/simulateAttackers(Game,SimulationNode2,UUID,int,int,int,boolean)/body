@@ -9,6 +9,9 @@
   SimulatedPlayer2 attacker=(SimulatedPlayer2)game.getPlayer(attackerId);
   if (logger.isDebugEnabled())   logger.debug(attacker.getName() + "'s possible attackers: " + attacker.getAvailableAttackers(game));
   for (  Combat engagement : attacker.addAttackers(game)) {
+    if (logger.isDebugEnabled()) {
+      logger.debug("Attackers: " + engagement.getAttackers() + ", blockers: "+ engagement.getBlockers());
+    }
     if (alpha >= beta) {
       logger.debug("simulating -- pruning attackers");
       break;
@@ -38,7 +41,9 @@
         beta=val;
         bestNode=newNode;
         bestNode.setScore(val);
-        node.setCombat(simCombat);
+        if (newNode.getChildren().size() > 0) {
+          bestNode.setCombat(newNode.getChildren().get(0).getCombat());
+        }
       }
     }
  else {
@@ -46,7 +51,9 @@
         alpha=val;
         bestNode=newNode;
         bestNode.setScore(val);
-        node.setCombat(simCombat);
+        if (newNode.getChildren().size() > 0) {
+          bestNode.setCombat(newNode.getChildren().get(0).getCombat());
+        }
       }
     }
   }
