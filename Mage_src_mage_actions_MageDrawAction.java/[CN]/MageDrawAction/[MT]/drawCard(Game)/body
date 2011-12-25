@@ -1,0 +1,11 @@
+{
+  if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DRAW_CARD,player.getId(),player.getId()))) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      card.moveToZone(Constants.Zone.HAND,null,game,false);
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DREW_CARD,card.getId(),player.getId()));
+      return ArtificialScoringSystem.inst.getCardScore(card);
+    }
+  }
+  return NEGATIVE_VALUE;
+}
