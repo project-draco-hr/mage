@@ -1,0 +1,13 @@
+{
+  for (  Ability ability : actions) {
+    if (ability instanceof LevelUpAbility) {
+      Permanent permanent=game.getPermanent(ability.getSourceId());
+      if (permanent != null && permanent instanceof PermanentCard) {
+        PermanentCard leveler=(PermanentCard)permanent;
+        if (permanent.getCounters().getCount(CounterType.LEVEL) >= leveler.getMaxLevelCounters()) {
+          removeAbility(ability);
+        }
+      }
+    }
+  }
+}
