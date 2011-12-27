@@ -1,0 +1,16 @@
+{
+  Permanent permanent=game.getPermanent(targetPointer.getFirst(source));
+  if (permanent == null) {
+    return false;
+  }
+  FilterPermanent filter=new FilterPermanent("black permanent");
+  filter.getColor().setBlack(true);
+  filter.setUseColor(true);
+  if (game.getBattlefield().countAll(filter,source.getControllerId()) == 0) {
+    permanent.damage(2,source.getSourceId(),game,true,false);
+  }
+ else {
+    permanent.destroy(source.getId(),game,false);
+  }
+  return true;
+}

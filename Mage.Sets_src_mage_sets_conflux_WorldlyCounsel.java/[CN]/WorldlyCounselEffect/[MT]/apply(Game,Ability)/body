@@ -1,0 +1,51 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl(Zone.PICK);
+  int count=(new DomainValue()).calculate(game,source);
+  count=Math.min(player.getLibrary().size(),count);
+  for (int i=0; i < count; i++) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      cards.add(card);
+      game.setZone(card.getId(),Zone.PICK);
+    }
+  }
+  player.lookAtCards("Worldly Counsel",cards,game);
+  if (!cards.isEmpty()) {
+    if (cards.size() == 1) {
+      Card card=cards.getRandom(game);
+      cards.remove(card);
+      card.moveToZone(Zone.HAND,source.getId(),game,false);
+      return true;
+    }
+ else {
+      TargetCard target=new TargetCard(Zone.PICK,new FilterCard("card to put into your hand"));
+      if (player.choose(Outcome.DrawCard,cards,target,game)) {
+        Card card=cards.get(target.getFirstTarget(),game);
+        if (card != null) {
+          cards.remove(card);
+          card.moveToZone(Zone.HAND,source.getId(),game,false);
+        }
+      }
+    }
+  }
+  TargetCard target=new TargetCard(Zone.PICK,new FilterCard("card to put on the bottom of your library"));
+  target.setRequired(true);
+  while (cards.size() > 1) {
+    player.choose(Outcome.Neutral,cards,target,game);
+    Card card=cards.get(target.getFirstTarget(),game);
+    if (card != null) {
+      cards.remove(card);
+      card.moveToZone(Zone.LIBRARY,source.getId(),game,false);
+    }
+    target.clearChosen();
+  }
+  if (cards.size() == 1) {
+    Card card=cards.get(cards.iterator().next(),game);
+    card.moveToZone(Zone.LIBRARY,source.getId(),game,false);
+  }
+  return true;
+}

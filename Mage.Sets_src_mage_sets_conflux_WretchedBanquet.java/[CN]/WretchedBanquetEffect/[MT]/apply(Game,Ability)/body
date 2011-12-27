@@ -1,0 +1,15 @@
+{
+  Permanent targetCreature=game.getPermanent(source.getFirstTarget());
+  List<Permanent> creatures=game.getBattlefield().getAllActivePermanents(CardType.CREATURE);
+  int minPower=targetCreature.getPower().getValue() + 1;
+  for (  Permanent creature : creatures) {
+    if (minPower > creature.getPower().getValue()) {
+      minPower=creature.getPower().getValue();
+    }
+  }
+  if (targetCreature != null && targetCreature.getPower().getValue() <= minPower) {
+    targetCreature.destroy(source.getId(),game,false);
+    return true;
+  }
+  return false;
+}
