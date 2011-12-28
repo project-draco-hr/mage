@@ -7,9 +7,14 @@
       game.rememberLKI(objectId,Zone.STACK,(Spell)stackObject);
     }
     game.getStack().remove(stackObject);
-    MageObject card=game.getObject(stackObject.getSourceId());
-    if (card instanceof Card) {
-      ((Card)card).moveToZone(targetZone,sourceId,game,flag);
+    MageObject targetObject=game.getObject(stackObject.getSourceId());
+    Zone targetZone=Zone.LIBRARY;
+    if (targetObject instanceof Card) {
+      Card card=(Card)targetObject;
+      Player player=game.getPlayer(source.getControllerId());
+      boolean top=player.chooseUse(Outcome.Neutral,"Put " + card.getName() + " on top of the library? Otherwise it will be put on the bottom.",game);
+      card.moveToZone(targetZone,sourceId,game,top);
+      game.informPlayers(player.getName() + " has put " + card.getName()+ " on "+ (top ? "top" : "the bottom")+ " of the library.");
     }
  else {
       game.informPlayers("Server: Couldn't move card to zone = " + targetZone + " as it has other than Card type.");

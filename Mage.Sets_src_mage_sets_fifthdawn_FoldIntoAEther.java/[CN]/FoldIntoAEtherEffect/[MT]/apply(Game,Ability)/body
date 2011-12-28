@@ -1,0 +1,19 @@
+{
+  StackObject stackObject=game.getStack().getStackObject(source.getFirstTarget());
+  Player player=null;
+  if (stackObject != null) {
+    player=game.getPlayer(stackObject.getControllerId());
+  }
+  if (game.getStack().counter(source.getFirstTarget(),source.getSourceId(),game)) {
+    TargetCardInHand target=new TargetCardInHand(new FilterCreatureCard());
+    if (player != null && player.chooseUse(Outcome.Neutral,"Put a creature card from your hand in play?",game) && player.choose(Outcome.PutCreatureInPlay,target,source.getSourceId(),game)) {
+      Card card=game.getCard(target.getFirstTarget());
+      if (card != null) {
+        player.removeFromHand(card,game);
+        card.putOntoBattlefield(game,Zone.HAND,source.getId(),source.getControllerId());
+      }
+    }
+    return true;
+  }
+  return false;
+}
