@@ -1,0 +1,18 @@
+{
+  int count=0;
+  MageObject targetSource=game.getObject(sourceId);
+  for (  StackObject stackObject : game.getStack()) {
+    Spell spell=game.getStack().getSpell(stackObject.getId());
+    if (spell != null && filter.match(spell,sourceId,sourceControllerId,game)) {
+      count++;
+      if (count >= this.minNumberOfTargets)       return true;
+    }
+  }
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),sourceControllerId,game)) {
+    if (permanent.canBeTargetedBy(targetSource,sourceControllerId,game) && filter.match(permanent,sourceId,sourceControllerId,game)) {
+      count++;
+      if (count >= this.minNumberOfTargets)       return true;
+    }
+  }
+  return false;
+}

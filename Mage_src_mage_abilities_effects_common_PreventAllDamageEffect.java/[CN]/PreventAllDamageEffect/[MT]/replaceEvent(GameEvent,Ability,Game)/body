@@ -1,0 +1,16 @@
+{
+  GameEvent preventEvent=new GameEvent(GameEvent.EventType.PREVENT_DAMAGE,source.getFirstTarget(),source.getId(),source.getControllerId(),event.getAmount(),false);
+  if (!game.replaceEvent(preventEvent)) {
+    int damage=event.getAmount();
+    Permanent permanent=game.getPermanent(event.getSourceId());
+    StringBuilder sourceName=new StringBuilder();
+    if (permanent != null) {
+      sourceName.append(" from ").append(permanent.getName());
+    }
+    sourceName.insert(0,"Damage").append(" has been prevented: ").append(damage);
+    event.setAmount(0);
+    game.informPlayers(sourceName.toString());
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.PREVENTED_DAMAGE,source.getFirstTarget(),source.getId(),source.getControllerId(),damage));
+  }
+  return false;
+}

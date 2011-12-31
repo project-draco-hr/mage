@@ -1,0 +1,16 @@
+{
+  Set<UUID> possibleTargets=new HashSet<UUID>();
+  MageObject targetSource=game.getObject(sourceId);
+  for (  StackObject stackObject : game.getStack()) {
+    Spell spell=game.getStack().getSpell(stackObject.getId());
+    if (spell != null && filter.match(spell,null,sourceControllerId,game) && filter.match(spell)) {
+      possibleTargets.add(spell.getId());
+    }
+  }
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),sourceControllerId,game)) {
+    if (permanent.canBeTargetedBy(targetSource,sourceControllerId,game) && filter.match(permanent,sourceId,sourceControllerId,game)) {
+      possibleTargets.add(permanent.getId());
+    }
+  }
+  return possibleTargets;
+}

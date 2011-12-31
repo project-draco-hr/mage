@@ -1,0 +1,17 @@
+{
+  int count=0;
+  for (  StackObject stackObject : game.getStack()) {
+    Spell spell=game.getStack().getSpell(stackObject.getId());
+    if (spell != null && filter.match(spell,null,sourceControllerId,game) && filter.match(spell)) {
+      count++;
+      if (count >= this.minNumberOfTargets)       return true;
+    }
+  }
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(filterPermanent,sourceControllerId,game)) {
+    if (filter.match(permanent,null,sourceControllerId,game) && filter.match(permanent)) {
+      count++;
+      if (count >= this.minNumberOfTargets)       return true;
+    }
+  }
+  return false;
+}

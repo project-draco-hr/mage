@@ -1,0 +1,13 @@
+{
+  super(ownerId,253,"Hankyu",Rarity.UNCOMMON,new CardType[]{CardType.ARTIFACT},"{1}");
+  this.expansionSetCode="CHK";
+  this.subtype.add("Equipment");
+  SimpleActivatedAbility ability1=new SimpleActivatedAbility(Zone.BATTLEFIELD,new HankyuAddCounterEffect(this.getId()),new TapSourceCost());
+  ability1.setSourceId(this.getId());
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(ability1,AttachmentType.EQUIPMENT)));
+  SimpleActivatedAbility ability2=new SimpleActivatedAbility(Zone.BATTLEFIELD,new HankyuDealsDamageEffect(),new TapSourceCost());
+  ability2.addCost(new HankyuCountersSourceCost(this.getId()));
+  ability2.addTarget(new TargetCreatureOrPlayer());
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(ability2,AttachmentType.EQUIPMENT)));
+  this.addAbility(new EquipAbility(Outcome.BoostCreature,new GenericManaCost(4)));
+}

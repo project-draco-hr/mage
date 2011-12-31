@@ -1,0 +1,15 @@
+{
+  Set<UUID> possibleTargets=new HashSet<UUID>();
+  for (  StackObject stackObject : game.getStack()) {
+    Spell spell=game.getStack().getSpell(stackObject.getId());
+    if (spell != null && filter.match(spell,null,sourceControllerId,game) && filter.match(spell)) {
+      possibleTargets.add(spell.getId());
+    }
+  }
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),sourceControllerId,game)) {
+    if (filter.match(permanent,null,sourceControllerId,game)) {
+      possibleTargets.add(permanent.getId());
+    }
+  }
+  return possibleTargets;
+}
