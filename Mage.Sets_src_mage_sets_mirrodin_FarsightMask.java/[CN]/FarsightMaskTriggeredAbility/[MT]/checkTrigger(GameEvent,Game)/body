@@ -1,0 +1,19 @@
+{
+  if (event.getType().equals(GameEvent.EventType.DAMAGED_PLAYER)) {
+    UUID sourceControllerId=null;
+    Permanent permanent=game.getPermanent(event.getSourceId());
+    if (permanent != null) {
+      sourceControllerId=permanent.getControllerId();
+    }
+ else {
+      StackObject sourceStackObject=game.getStack().getStackObject(event.getSourceId());
+      if (sourceStackObject != null) {
+        sourceControllerId=sourceStackObject.getControllerId();
+      }
+    }
+    if (event.getTargetId().equals(controllerId) && game.getOpponents(controllerId).contains(sourceControllerId)) {
+      return true;
+    }
+  }
+  return false;
+}
