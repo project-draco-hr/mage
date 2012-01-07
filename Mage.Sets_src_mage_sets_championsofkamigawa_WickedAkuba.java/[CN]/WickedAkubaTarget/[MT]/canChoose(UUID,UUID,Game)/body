@@ -1,0 +1,11 @@
+{
+  filter.getPlayerId().clear();
+  PlayerDamagedByWatcher watcher=(PlayerDamagedByWatcher)game.getState().getWatchers().get("PlayerDamagedByWatcher",sourceId);
+  if (watcher != null) {
+    for (    UUID playerId : game.getPlayer(sourceControllerId).getInRange()) {
+      if (watcher.damagedPlayers.contains(playerId))       filter.getPlayerId().add(playerId);
+    }
+    if (filter.getPlayerId().isEmpty())     return false;
+  }
+  return super.canChoose(sourceId,sourceControllerId,game);
+}

@@ -1,9 +1,13 @@
 {
+  int number=numberOfCards.calculate(null,null);
   StringBuilder sb=new StringBuilder("Look at the top ");
-switch (this.numberOfCards) {
-case 1:
-    sb.append("card ");
+switch (number) {
+case 0:
+    sb.append(" X ");
   break;
+case 1:
+sb.append("card ");
+break;
 case 2:
 sb.append("two");
 break;
@@ -17,12 +21,13 @@ case 5:
 sb.append("five");
 break;
 default :
-sb.append(this.numberOfCards);
+sb.append(number);
 break;
 }
-if (this.numberOfCards > 1) sb.append(" cards ");
+if (number != 1) sb.append(" cards ");
 sb.append("of your Library");
-if (this.numberOfCards > 1) sb.append(", then put them back in any order");
+if (number == 0) sb.append(", where {X} is the number of cards ").append(numberOfCards.getMessage());
+if (number > 1) sb.append(", then put them back in any order");
 if (this.mayShuffleAfter) sb.append(". You may shuffle your library");
 return sb.toString();
 }
