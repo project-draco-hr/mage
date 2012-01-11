@@ -1,5 +1,7 @@
 {
-  final String message="Waiting for " + game.getPlayer(playerId).getName();
+  String message="";
+  if (game.getStep() != null)   message+=game.getStep().getType().toString() + " - ";
+  message+="Waiting for " + game.getPlayer(playerId).getName();
   for (  final Entry<UUID,GameSession> entry : gameSessions.entrySet()) {
     if (!entry.getKey().equals(playerId)) {
       entry.getValue().inform(message);
