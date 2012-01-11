@@ -1,0 +1,26 @@
+{
+  StringBuilder sb=new StringBuilder(1024);
+  sb.append(turnNum).append(turn.getPhaseType()).append(turn.getStepType()).append(activePlayerId).append(priorityPlayerId);
+  for (  Player player : players.values()) {
+    sb.append("player").append(player.getLife()).append("hand");
+    if (useHidden)     sb.append(player.getHand());
+ else     sb.append(player.getHand().size());
+    sb.append("library").append(player.getLibrary().size()).append("graveyard").append(player.getGraveyard());
+  }
+  sb.append("permanents");
+  for (  Permanent permanent : battlefield.getAllPermanents()) {
+    sb.append(permanent.getValue());
+  }
+  sb.append("spells");
+  for (  StackObject spell : stack) {
+    sb.append(spell.getControllerId()).append(spell.getName());
+  }
+  for (  ExileZone zone : exile.getExileZones()) {
+    sb.append("exile").append(zone.getName()).append(zone);
+  }
+  sb.append("combat");
+  for (  CombatGroup group : combat.getGroups()) {
+    sb.append(group.getDefenderId()).append(group.getAttackers()).append(group.getBlockers());
+  }
+  return sb.toString();
+}

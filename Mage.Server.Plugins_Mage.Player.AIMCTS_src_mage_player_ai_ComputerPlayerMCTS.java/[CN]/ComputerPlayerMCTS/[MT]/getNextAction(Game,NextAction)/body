@@ -1,7 +1,10 @@
 {
   if (root != null) {
-    root=root.getMatchingState(game.getState().getValue().hashCode(),nextAction);
-    if (root != null)     root.emancipate();
+    MCTSNode newRoot=null;
+    newRoot=root.getMatchingState(game.getState().getValue(false,game));
+    if (newRoot != null)     newRoot.emancipate();
+ else     logger.info("unable to find matching state");
+    root=newRoot;
   }
   calculateActions(game,nextAction);
 }

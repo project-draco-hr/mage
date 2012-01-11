@@ -1,10 +1,5 @@
 {
-  MCTSPlayer player;
-  if (game.getStep().getStepPart() == StepPart.PRIORITY)   player=(MCTSPlayer)game.getPlayer(game.getPriorityPlayerId());
- else {
-    if (game.getStep().getType() == PhaseStep.DECLARE_BLOCKERS)     player=(MCTSPlayer)game.getPlayer(game.getCombat().getDefenders().iterator().next());
- else     player=(MCTSPlayer)game.getPlayer(game.getActivePlayerId());
-  }
+  MCTSPlayer player=(MCTSPlayer)game.getPlayer(playerId);
   if (player.getNextAction() == null) {
     logger.fatal("next action is null");
   }
@@ -13,11 +8,10 @@ case PRIORITY:
     List<Ability> abilities=player.getPlayableOptions(game);
   for (  Ability ability : abilities) {
     Game sim=game.copy();
-    int simState=sim.getState().getValue().hashCode();
     MCTSPlayer simPlayer=(MCTSPlayer)sim.getPlayer(player.getId());
     simPlayer.activateAbility((ActivatedAbility)ability,sim);
     sim.resume();
-    children.add(new MCTSNode(this,sim,simState,ability));
+    children.add(new MCTSNode(this,sim,ability));
   }
 break;
 case SELECT_ATTACKERS:
@@ -25,20 +19,18 @@ List<List<UUID>> attacks=player.getAttacks(game);
 UUID defenderId=game.getOpponents(player.getId()).iterator().next();
 for (List<UUID> attack : attacks) {
 Game sim=game.copy();
-int simState=sim.getState().getValue().hashCode();
 MCTSPlayer simPlayer=(MCTSPlayer)sim.getPlayer(player.getId());
 for (UUID attackerId : attack) {
 simPlayer.declareAttacker(attackerId,defenderId,sim);
 }
 sim.resume();
-children.add(new MCTSNode(this,sim,simState,sim.getCombat()));
+children.add(new MCTSNode(this,sim));
 }
 break;
 case SELECT_BLOCKERS:
 List<List<List<UUID>>> blocks=player.getBlocks(game);
 for (List<List<UUID>> block : blocks) {
 Game sim=game.copy();
-int simState=sim.getState().getValue().hashCode();
 MCTSPlayer simPlayer=(MCTSPlayer)sim.getPlayer(player.getId());
 List<CombatGroup> groups=sim.getCombat().getGroups();
 for (int i=0; i < groups.size(); i++) {
@@ -49,7 +41,7 @@ simPlayer.declareBlocker(blockerId,groups.get(i).getAttackers().get(0),sim);
 }
 }
 sim.resume();
-children.add(new MCTSNode(this,sim,simState,sim.getCombat()));
+children.add(new MCTSNode(this,sim));
 }
 break;
 }

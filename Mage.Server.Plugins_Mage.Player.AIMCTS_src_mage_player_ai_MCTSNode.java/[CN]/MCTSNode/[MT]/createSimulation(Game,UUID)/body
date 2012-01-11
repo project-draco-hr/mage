@@ -1,0 +1,25 @@
+{
+  Game sim=game.copy();
+  for (  Player copyPlayer : sim.getState().getPlayers().values()) {
+    Player origPlayer=game.getState().getPlayers().get(copyPlayer.getId()).copy();
+    SimulatedPlayerMCTS newPlayer=new SimulatedPlayerMCTS(copyPlayer.getId(),true);
+    newPlayer.restore(origPlayer);
+    if (!newPlayer.getId().equals(playerId)) {
+      int handSize=newPlayer.getHand().size();
+      newPlayer.getLibrary().addAll(newPlayer.getHand().getCards(sim),sim);
+      newPlayer.getHand().clear();
+      newPlayer.getLibrary().shuffle();
+      for (int i=0; i < handSize; i++) {
+        Card card=newPlayer.getLibrary().removeFromTop(sim);
+        sim.setZone(card.getId(),Zone.HAND);
+        newPlayer.getHand().add(card);
+      }
+    }
+ else {
+      newPlayer.getLibrary().shuffle();
+    }
+    sim.getState().getPlayers().put(copyPlayer.getId(),newPlayer);
+  }
+  sim.setSimulation(true);
+  return sim;
+}

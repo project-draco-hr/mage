@@ -1,10 +1,28 @@
 {
+  if (children.size() == 1)   return children.get(0);
   double bestCount=-1;
+  double bestRatio=0;
+  boolean bestIsPass=false;
   MCTSNode bestChild=null;
   for (  MCTSNode node : children) {
     if (node.visits > bestCount) {
+      if (bestIsPass) {
+        double ratio=node.wins / (node.visits * 1.0);
+        if (ratio < bestRatio + passRatioTolerance)         continue;
+      }
       bestChild=node;
       bestCount=node.visits;
+      bestRatio=node.wins / (node.visits * 1.0);
+      bestIsPass=false;
+    }
+ else     if (node.action instanceof PassAbility && node.visits > 10 && !(bestChild.action instanceof PlayLandAbility)) {
+      double ratio=node.wins / (node.visits * 1.0);
+      if (ratio > bestRatio - passRatioTolerance) {
+        bestChild=node;
+        bestCount=node.visits;
+        bestRatio=ratio;
+        bestIsPass=true;
+      }
     }
   }
   return bestChild;

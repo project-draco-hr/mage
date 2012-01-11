@@ -4,9 +4,23 @@
     Player origPlayer=game.getState().getPlayers().get(copyPlayer.getId());
     MCTSPlayer newPlayer=new MCTSPlayer(copyPlayer.getId());
     newPlayer.restore(origPlayer);
-    newPlayer.getLibrary().shuffle();
+    if (!newPlayer.getId().equals(playerId)) {
+      int handSize=newPlayer.getHand().size();
+      newPlayer.getLibrary().addAll(newPlayer.getHand().getCards(mcts),mcts);
+      newPlayer.getHand().clear();
+      newPlayer.getLibrary().shuffle();
+      for (int i=0; i < handSize; i++) {
+        Card card=newPlayer.getLibrary().removeFromTop(mcts);
+        mcts.setZone(card.getId(),Zone.HAND);
+        newPlayer.getHand().add(card);
+      }
+    }
+ else {
+      newPlayer.getLibrary().shuffle();
+    }
     mcts.getState().getPlayers().put(copyPlayer.getId(),newPlayer);
   }
   mcts.setSimulation(true);
+  mcts.resume();
   return mcts;
 }

@@ -19,12 +19,12 @@
             if (!resuming) {
               checkStateAndTriggered();
               if (isPaused() || isGameOver())               return;
-              player.priority(this);
+              if (player.priority(this))               applyEffects();
               if (isPaused())               return;
             }
             resuming=false;
-            applyEffects();
           }
+          resuming=false;
           if (isPaused() || isGameOver())           return;
           if (allPassed()) {
             if (!state.getStack().isEmpty()) {

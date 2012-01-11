@@ -1,11 +1,12 @@
 {
   PlayerList players=state.getPlayerList(state.getActivePlayerId());
   Player player=getPlayer(players.get());
+  boolean wasPaused=state.isPaused();
   state.resume();
   if (!isGameOver()) {
     fireInformEvent("Turn " + Integer.toString(state.getTurnNum()));
     if (checkStopOnTurnOption())     return;
-    state.getTurn().resumePlay(this);
+    state.getTurn().resumePlay(this,wasPaused);
     if (!isPaused() && !isGameOver()) {
       endOfTurn();
       player=players.getNext(this);

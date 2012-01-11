@@ -1,24 +1,30 @@
 {
+  int thinkTime=calculateThinkTime(game,action);
   long startTime=System.nanoTime();
   long endTime=startTime + (thinkTime * 1000000000l);
   logger.info("applyMCTS - Thinking for " + (endTime - startTime) / 1000000000.0 + "s");
-  List<MCTSExecutor> tasks=new ArrayList<MCTSExecutor>();
-  for (int i=0; i < cores; i++) {
-    Game sim=createMCTSGame(game);
-    MCTSPlayer player=(MCTSPlayer)sim.getPlayer(playerId);
-    player.setNextAction(action);
-    MCTSExecutor exec=new MCTSExecutor(sim,playerId,thinkTime);
-    tasks.add(exec);
+  if (thinkTime > 0) {
+    List<MCTSExecutor> tasks=new ArrayList<MCTSExecutor>();
+    for (int i=0; i < cores; i++) {
+      Game sim=createMCTSGame(game);
+      MCTSPlayer player=(MCTSPlayer)sim.getPlayer(playerId);
+      player.setNextAction(action);
+      MCTSExecutor exec=new MCTSExecutor(sim,playerId,thinkTime);
+      tasks.add(exec);
+    }
+    try {
+      pool.invokeAll(tasks);
+    }
+ catch (    InterruptedException ex) {
+      logger.warn("applyMCTS interrupted");
+    }
+    for (    MCTSExecutor task : tasks) {
+      root.merge(task.getRoot());
+      task.clear();
+    }
+    tasks.clear();
+    logger.info("Created " + root.getNodeCount() + " nodes - size: "+ root.size());
+    displayMemory();
   }
-  try {
-    pool.invokeAll(tasks);
-  }
- catch (  InterruptedException ex) {
-    logger.warn("applyMCTS interrupted");
-  }
-  for (  MCTSExecutor task : tasks) {
-    root.merge(task.getRoot());
-  }
-  logger.info("Created " + root.getNodeCount() + " nodes");
   return;
 }

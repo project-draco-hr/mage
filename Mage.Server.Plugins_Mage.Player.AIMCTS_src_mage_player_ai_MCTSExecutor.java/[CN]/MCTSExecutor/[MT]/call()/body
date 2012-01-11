@@ -3,24 +3,22 @@
   long startTime=System.nanoTime();
   long endTime=startTime + (thinkTime * 1000000000l);
   MCTSNode current;
-  if (root.getNumChildren() == 1)   return true;
   while (true) {
     long currentTime=System.nanoTime();
     if (currentTime > endTime)     break;
     current=root;
     while (!current.isLeaf()) {
-      current=current.select();
+      current=current.select(this.playerId);
     }
     int result;
     if (!current.isTerminal()) {
       current.expand();
-      if (current == root && current.getNumChildren() == 1)       return true;
-      current=current.select();
+      current=current.select(this.playerId);
       result=current.simulate(this.playerId);
       simCount++;
     }
  else {
-      result=current.isWinner(this.playerId) ? 1 : 0;
+      result=current.isWinner(this.playerId) ? 1 : -1;
     }
     current.backpropagate(result);
   }
