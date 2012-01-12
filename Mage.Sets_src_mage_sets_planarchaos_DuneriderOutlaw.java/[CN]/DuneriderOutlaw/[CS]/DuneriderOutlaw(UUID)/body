@@ -1,0 +1,13 @@
+{
+  super(ownerId,86,"Dunerider Outlaw",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{B}{B}");
+  this.expansionSetCode="PLC";
+  this.subtype.add("Human");
+  this.subtype.add("Rebel");
+  this.subtype.add("Rogue");
+  this.color.setBlack(true);
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.addAbility(new ProtectionAbility(filter));
+  TriggeredAbility triggered=new OnEventTriggeredAbility(GameEvent.EventType.END_TURN_STEP_PRE,"beginning of each end step",true,new AddCountersSourceEffect(CounterType.P1P1.createInstance()));
+  this.addAbility(new ConditionalTriggeredAbility(triggered,new DealtDamageToAnOpponent(),ruleText));
+}

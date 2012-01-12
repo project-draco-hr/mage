@@ -1,0 +1,16 @@
+{
+  super(ownerId,138,"Rag Dealer",Rarity.COMMON,new CardType[]{CardType.CREATURE},"{B}");
+  this.expansionSetCode="CHK";
+  this.subtype.add("Human");
+  this.subtype.add("Rogue");
+  this.color.setBlack(true);
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new RagDealerExileEffect(),new ManaCostsImpl("{2}{B}"));
+  ability.addCost(new TapSourceCost());
+  TargetPlayer target=new TargetPlayer();
+  target.setTargetName("player from which graveyard you want to exile the cards");
+  ability.addTarget(target);
+  ability.addTarget(new TargetCardInGraveyard(0,3,filter));
+  this.addAbility(ability);
+}

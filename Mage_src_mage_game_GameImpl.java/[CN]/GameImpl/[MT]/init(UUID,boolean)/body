@@ -42,6 +42,9 @@
     fireInformEvent(player.getName() + " keeps hand");
     saveState();
   }
+  for (  UUID playerId : state.getPlayerList(startingPlayerId)) {
+    state.getWatchers().add(new PlayerDamagedBySourceWatcher(playerId));
+  }
   state.getWatchers().add(new MorbidWatcher());
   state.getWatchers().add(new CastSpellLastTurnWatcher());
   for (  UUID playerId : state.getPlayerList(startingPlayerId)) {

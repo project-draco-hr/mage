@@ -1,11 +1,21 @@
 {
   filter.getPlayerId().clear();
-  PlayerDamagedByWatcher watcher=(PlayerDamagedByWatcher)game.getState().getWatchers().get("PlayerDamagedByWatcher",sourceId);
-  if (watcher != null) {
-    for (    UUID playerId : game.getPlayer(sourceControllerId).getInRange()) {
-      if (watcher.damagedPlayers.contains(playerId))       filter.getPlayerId().add(playerId);
-    }
-    if (filter.getPlayerId().isEmpty())     return false;
+  UUID source=null;
+  MageObject targetSource=game.getObject(sourceId);
+  if (targetSource instanceof StackAbility) {
+    StackAbility stackAbility=(StackAbility)targetSource;
+    source=stackAbility.getSourceId();
   }
+  if (targetSource instanceof Permanent) {
+    Permanent permanent=(Permanent)targetSource;
+    source=permanent.getId();
+  }
+  if (source != null) {
+    for (    UUID playerId : game.getPlayer(sourceControllerId).getInRange()) {
+      PlayerDamagedBySourceWatcher watcher=(PlayerDamagedBySourceWatcher)game.getState().getWatchers().get("PlayerDamagedBySource",playerId);
+      if (watcher != null && watcher.damageSources.contains(source))       filter.getPlayerId().add(playerId);
+    }
+  }
+  if (filter.getPlayerId().isEmpty())   return false;
   return super.canChoose(sourceId,sourceControllerId,game);
 }

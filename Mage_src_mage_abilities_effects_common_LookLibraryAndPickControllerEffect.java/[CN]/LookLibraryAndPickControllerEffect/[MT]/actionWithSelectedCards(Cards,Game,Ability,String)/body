@@ -1,0 +1,20 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null && foundCardsToPick > 0 && player.chooseUse(Outcome.DrawCard,"Do you wish to reveal " + filter.getMessage() + " and put it into your hand?",game)) {
+    FilterCard pickFilter=filter.copy();
+    pickFilter.setMessage(filter.getMessage() + " to reveal and put into your hand");
+    TargetCard target=new TargetCard(Zone.PICK,pickFilter);
+    if (player.choose(Outcome.DrawCard,cards,target,game)) {
+      Card card=cards.get(target.getFirstTarget(),game);
+      if (card != null) {
+        cards.remove(card);
+        card.moveToZone(targetPickedCards,source.getId(),game,false);
+        if (revealPickedCards) {
+          Cards reveal=new CardsImpl(Zone.OUTSIDE);
+          reveal.add(card);
+          player.revealCards(windowName,reveal,game);
+        }
+      }
+    }
+  }
+}
