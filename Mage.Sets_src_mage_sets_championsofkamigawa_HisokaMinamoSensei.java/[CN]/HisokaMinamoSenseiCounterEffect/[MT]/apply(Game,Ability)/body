@@ -1,0 +1,10 @@
+{
+  Spell spell=game.getStack().getSpell(targetPointer.getFirst(source));
+  if (spell != null) {
+    HisokaMinamoSenseiDiscardTargetCost cost=(HisokaMinamoSenseiDiscardTargetCost)source.getCosts().get(0);
+    if (cost != null && cost.getConvertedCosts() == spell.getManaCost().convertedManaCost()) {
+      return game.getStack().counter(targetPointer.getFirst(source),source.getSourceId(),game);
+    }
+  }
+  return false;
+}
