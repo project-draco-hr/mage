@@ -1,0 +1,18 @@
+{
+  for (  Player player : game.getState().getPlayers().values()) {
+    if (!player.getId().equals(playerId)) {
+      int handSize=player.getHand().size();
+      player.getLibrary().addAll(player.getHand().getCards(game),game);
+      player.getHand().clear();
+      player.getLibrary().shuffle();
+      for (int i=0; i < handSize; i++) {
+        Card card=player.getLibrary().removeFromTop(game);
+        game.setZone(card.getId(),Zone.HAND);
+        player.getHand().add(card);
+      }
+    }
+ else {
+      player.getLibrary().shuffle();
+    }
+  }
+}
