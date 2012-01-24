@@ -1,6 +1,9 @@
 {
   try {
-    if (version.compareTo(Main.getVersion()) != 0)     throw new MageVersionException(version,Main.getVersion());
+    if (version.compareTo(Main.getVersion()) != 0) {
+      logger.info("MageVersionException: userName=" + userName + ", version="+ version);
+      throw new MageVersionException(version,Main.getVersion());
+    }
     return SessionManager.getInstance().registerUser(sessionId,userName);
   }
  catch (  Exception ex) {

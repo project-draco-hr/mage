@@ -1,16 +1,9 @@
 {
-  if (SessionManager.getInstance().isValidSession(sessionId)) {
-    try {
-      callExecutor.execute(new Runnable(){
-        @Override public void run(){
-          User user=SessionManager.getInstance().getUser(sessionId);
-          user.sendPlayerUUID(gameId,data);
-        }
-      }
-);
-    }
- catch (    Exception ex) {
-      handleException(ex);
+  execute(sessionId,new Action(){
+    public void execute(){
+      User user=SessionManager.getInstance().getUser(sessionId);
+      user.sendPlayerUUID(gameId,data);
     }
   }
+);
 }

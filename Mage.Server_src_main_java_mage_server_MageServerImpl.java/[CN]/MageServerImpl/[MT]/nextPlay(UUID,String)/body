@@ -1,18 +1,9 @@
 {
-  if (SessionManager.getInstance().isValidSession(sessionId)) {
-    try {
-      callExecutor.execute(new Runnable(){
-        @Override public void run(){
-          if (SessionManager.getInstance().isValidSession(sessionId)) {
-            UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
-            ReplayManager.getInstance().nextPlay(gameId,userId);
-          }
-        }
-      }
-);
-    }
- catch (    Exception ex) {
-      handleException(ex);
+  execute(sessionId,new Action(){
+    public void execute(){
+      UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
+      ReplayManager.getInstance().nextPlay(gameId,userId);
     }
   }
+);
 }

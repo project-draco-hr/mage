@@ -1,0 +1,17 @@
+{
+  if (SessionManager.getInstance().isValidSession(sessionId)) {
+    try {
+      callExecutor.execute(new Runnable(){
+        @Override public void run(){
+          if (SessionManager.getInstance().isValidSession(sessionId)) {
+            action.execute();
+          }
+        }
+      }
+);
+    }
+ catch (    Exception ex) {
+      handleException(ex);
+    }
+  }
+}
