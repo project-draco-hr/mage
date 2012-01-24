@@ -1,0 +1,15 @@
+{
+  super(ownerId,233,"Orochi Eggwatcher",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{2}{G}");
+  this.expansionSetCode="CHK";
+  this.subtype.add("Snake");
+  this.subtype.add("Shaman");
+  this.color.setGreen(true);
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Ability ability;
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new SnakeToken()),new ManaCostsImpl("{2}{G}"));
+  ability.addCost(new TapSourceCost());
+  ability.addEffect(new ConditionalOneShotEffect(new FlipSourceEffect(),new ControlsPermanentCondition(new FilterControlledCreaturePermanent(),ControlsPermanentCondition.CountType.MORE_THAN,9),"If you control ten or more creatures, flip {this}"));
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinousEffect(new CopyTokenEffect(new ShidakoBroodmistress()),FlippedCondition.getInstance(),"")));
+}
