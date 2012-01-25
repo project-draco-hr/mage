@@ -1,9 +1,12 @@
 {
-  if (testMode) {
-    if (SessionManager.getInstance().isValidSession(sessionId)) {
-      UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
-      return GameManager.getInstance().cheat(gameId,userId,playerId,cardName);
+  return executeWithResult("cheatOne",sessionId,new ActionWithBooleanResult(){
+    public Boolean execute(){
+      if (testMode) {
+        UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
+        return GameManager.getInstance().cheat(gameId,userId,playerId,cardName);
+      }
+      return false;
     }
   }
-  return false;
+);
 }

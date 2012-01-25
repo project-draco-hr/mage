@@ -1,18 +1,12 @@
 {
-  try {
-    if (SessionManager.getInstance().isValidSession(sessionId)) {
+  return executeWithResult("createTable",sessionId,new ActionWithTableViewResult(){
+    public TableView execute() throws MageException {
       UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
       TableView table=GamesRoomManager.getInstance().getRoom(roomId).createTable(userId,options);
       logger.info("Table " + table.getTableId() + " created");
       LogServiceImpl.instance.log(LogKeys.KEY_TABLE_CREATED,sessionId,userId.toString(),table.getTableId().toString());
       return table;
     }
- else {
-      LogServiceImpl.instance.log(LogKeys.KEY_NOT_VALID_SESSION,"createTable",sessionId,roomId.toString());
-    }
   }
- catch (  Exception ex) {
-    handleException(ex);
-  }
-  return null;
+);
 }

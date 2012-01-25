@@ -1,9 +1,8 @@
 {
-  try {
-    return SessionManager.getInstance().setUserData(userName,sessionId,userDataView);
+  return executeWithResult("setUserData",sessionId,new ActionWithBooleanResult(){
+    public Boolean execute() throws MageException {
+      return SessionManager.getInstance().setUserData(userName,sessionId,userDataView);
+    }
   }
- catch (  Exception ex) {
-    handleException(ex);
-  }
-  return false;
+);
 }

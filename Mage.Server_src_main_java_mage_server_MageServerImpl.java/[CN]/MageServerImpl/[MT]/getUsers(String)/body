@@ -1,10 +1,12 @@
 {
-  if (SessionManager.getInstance().isValidSession(sessionId) && SessionManager.getInstance().isAdmin(sessionId)) {
-    List<UserView> users=new ArrayList<UserView>();
-    for (    User user : UserManager.getInstance().getUsers()) {
-      users.add(new UserView(user.getName(),"",user.getSessionId(),user.getConnectionTime()));
+  return executeWithResult("getUsers",sessionId,new ActionWithNullNegativeResult<List<UserView>>(){
+    public List<UserView> execute() throws MageException {
+      List<UserView> users=new ArrayList<UserView>();
+      for (      User user : UserManager.getInstance().getUsers()) {
+        users.add(new UserView(user.getName(),"",user.getSessionId(),user.getConnectionTime()));
+      }
+      return users;
     }
-    return users;
   }
-  return null;
+,true);
 }

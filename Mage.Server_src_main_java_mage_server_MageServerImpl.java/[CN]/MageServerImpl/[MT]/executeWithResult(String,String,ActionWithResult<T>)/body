@@ -1,13 +1,14 @@
 {
   if (SessionManager.getInstance().isValidSession(sessionId)) {
     try {
-      if (SessionManager.getInstance().isValidSession(sessionId)) {
-        return action.execute();
-      }
+      return action.execute();
     }
  catch (    Exception ex) {
       handleException(ex);
     }
+  }
+ else {
+    LogServiceImpl.instance.log(LogKeys.KEY_NOT_VALID_SESSION,actionName,sessionId);
   }
   return action.negativeResult();
 }

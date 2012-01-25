@@ -1,7 +1,7 @@
 {
-  execute(sessionId,new Action(){
-    public void execute(){
-      if (SessionManager.getInstance().isAdmin(sessionId) && message != null) {
+  if (message != null) {
+    execute("sendBroadcastMessage",sessionId,new Action(){
+      public void execute(){
         for (        User user : UserManager.getInstance().getUsers()) {
           if (message.toLowerCase().startsWith("warn")) {
             user.fireCallback(new ClientCallback("serverMessage",null,new ChatMessage("SERVER",message,null,MessageColor.RED)));
@@ -12,6 +12,6 @@
         }
       }
     }
+,true);
   }
-);
 }

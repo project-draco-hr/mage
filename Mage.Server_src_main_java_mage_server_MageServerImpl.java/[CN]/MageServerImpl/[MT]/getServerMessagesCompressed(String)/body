@@ -1,11 +1,8 @@
 {
-  if (SessionManager.getInstance().isValidSession(sessionId)) {
-    try {
+  return executeWithResult("getGameView",sessionId,new ActionWithNullNegativeResult<Object>(){
+    public Object execute() throws MageException {
       return CompressUtil.compress(ServerMessagesUtil.getInstance().getMessages());
     }
- catch (    Exception ex) {
-      handleException(ex);
-    }
   }
-  return null;
+);
 }

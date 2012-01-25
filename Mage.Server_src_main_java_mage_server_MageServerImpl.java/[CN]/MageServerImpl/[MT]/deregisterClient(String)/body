@@ -1,14 +1,9 @@
 {
-  try {
-    callExecutor.execute(new Runnable(){
-      @Override public void run(){
-        SessionManager.getInstance().disconnect(sessionId,true);
-        logger.info("Client deregistered ...");
-      }
+  execute("deregisterClient",sessionId,new Action(){
+    public void execute(){
+      SessionManager.getInstance().disconnect(sessionId,true);
+      logger.info("Client deregistered ...");
     }
+  }
 );
-  }
- catch (  Exception ex) {
-    handleException(ex);
-  }
 }

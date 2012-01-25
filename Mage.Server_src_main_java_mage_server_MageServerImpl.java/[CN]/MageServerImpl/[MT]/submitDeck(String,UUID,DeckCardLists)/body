@@ -1,15 +1,11 @@
 {
-  try {
-    if (SessionManager.getInstance().isValidSession(sessionId)) {
+  return executeWithResult("submitDeck",sessionId,new ActionWithBooleanResult(){
+    public Boolean execute() throws MageException {
       UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
       boolean ret=TableManager.getInstance().submitDeck(userId,tableId,deckList);
       logger.info("Session " + sessionId + " submitted deck");
       return ret;
     }
   }
- catch (  Exception ex) {
-    if (ex instanceof GameException)     throw (GameException)ex;
-    handleException(ex);
-  }
-  return false;
+);
 }

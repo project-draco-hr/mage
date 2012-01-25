@@ -4,7 +4,12 @@
       callExecutor.execute(new Runnable(){
         @Override public void run(){
           if (SessionManager.getInstance().isValidSession(sessionId)) {
-            action.execute();
+            try {
+              action.execute();
+            }
+ catch (            MageException me) {
+              throw new RuntimeException(me);
+            }
           }
         }
       }
@@ -13,5 +18,8 @@
  catch (    Exception ex) {
       handleException(ex);
     }
+  }
+ else {
+    LogServiceImpl.instance.log(LogKeys.KEY_NOT_VALID_SESSION,actionName,sessionId);
   }
 }
