@@ -3,10 +3,20 @@
     match.startGame();
     table.initGame();
     GameManager.getInstance().createGameSession(match.getGame(),userPlayerMap,table.getId(),choosingPlayerId);
+    String creator=null;
+    String opponent=null;
     for (    Entry<UUID,UUID> entry : userPlayerMap.entrySet()) {
       User user=UserManager.getInstance().getUser(entry.getKey());
       if (user != null) {
         user.gameStarted(match.getGame().getId(),entry.getValue());
+        if (creator == null) {
+          creator=user.getName();
+        }
+ else {
+          if (opponent == null) {
+            opponent=user.getName();
+          }
+        }
       }
  else {
         TableManager.getInstance().removeTable(table.getId());
@@ -16,6 +26,7 @@
       }
     }
     ServerMessagesUtil.getInstance().incGamesStarted();
+    LogServiceImpl.instance.log(LogService.KEY_GAME_STARTED,String.valueOf(userPlayerMap.size()),creator,opponent);
   }
  catch (  Exception ex) {
     logger.fatal("Error starting game",ex);
