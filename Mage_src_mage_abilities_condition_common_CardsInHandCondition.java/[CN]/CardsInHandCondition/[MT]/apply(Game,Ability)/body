@@ -1,0 +1,18 @@
+{
+  boolean conditionApplies=false;
+switch (this.type) {
+case FEWER_THAN:
+    conditionApplies=game.getPlayer(source.getControllerId()).getHand().size() < this.count;
+  break;
+case MORE_THAN:
+conditionApplies=game.getPlayer(source.getControllerId()).getHand().size() > this.count;
+break;
+case EQUAL_TO:
+conditionApplies=game.getPlayer(source.getControllerId()).getHand().size() == this.count;
+break;
+}
+if (this.condition != null) {
+conditionApplies=conditionApplies && this.condition.apply(game,source);
+}
+return conditionApplies;
+}

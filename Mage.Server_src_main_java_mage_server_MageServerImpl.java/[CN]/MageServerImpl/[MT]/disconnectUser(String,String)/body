@@ -1,15 +1,8 @@
 {
-  if (SessionManager.getInstance().isValidSession(sessionId)) {
-    try {
-      callExecutor.execute(new Runnable(){
-        @Override public void run(){
-          SessionManager.getInstance().disconnectUser(sessionId,userSessionId);
-        }
-      }
-);
-    }
- catch (    Exception ex) {
-      handleException(ex);
+  execute(sessionId,new Action(){
+    public void execute(){
+      SessionManager.getInstance().disconnectUser(sessionId,userSessionId);
     }
   }
+);
 }
