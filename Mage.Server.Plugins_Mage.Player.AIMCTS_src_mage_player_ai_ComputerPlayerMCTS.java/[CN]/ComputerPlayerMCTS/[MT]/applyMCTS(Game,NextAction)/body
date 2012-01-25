@@ -4,29 +4,51 @@
   long endTime=startTime + (thinkTime * 1000000000l);
   logger.info("applyMCTS - Thinking for " + (endTime - startTime) / 1000000000.0 + "s");
   if (thinkTime > 0) {
-    MCTSNode current;
-    int simCount=0;
-    while (true) {
-      long currentTime=System.nanoTime();
-      if (currentTime > endTime)       break;
-      current=root;
-      while (!current.isLeaf()) {
-        current=current.select(this.playerId);
+    if (USE_MULTIPLE_THREADS) {
+      List<MCTSExecutor> tasks=new ArrayList<MCTSExecutor>();
+      for (int i=0; i < cores; i++) {
+        Game sim=createMCTSGame(game);
+        MCTSPlayer player=(MCTSPlayer)sim.getPlayer(playerId);
+        player.setNextAction(action);
+        MCTSExecutor exec=new MCTSExecutor(sim,playerId,thinkTime);
+        tasks.add(exec);
       }
-      int result;
-      if (!current.isTerminal()) {
-        current.expand();
-        current=current.select(this.playerId);
-        result=current.simulate(this.playerId);
-        simCount++;
+      try {
+        pool.invokeAll(tasks);
       }
- else {
-        result=current.isWinner(this.playerId) ? 1 : -1;
+ catch (      InterruptedException ex) {
+        logger.warn("applyMCTS interrupted");
       }
-      current.backpropagate(result);
+      for (      MCTSExecutor task : tasks) {
+        root.merge(task.getRoot());
+        task.clear();
+      }
+      tasks.clear();
     }
-    logger.info("Simulated " + simCount + " games - nodes in tree: "+ root.size());
+ else {
+      MCTSNode current;
+      int simCount=0;
+      while (true) {
+        long currentTime=System.nanoTime();
+        if (currentTime > endTime)         break;
+        current=root;
+        while (!current.isLeaf()) {
+          current=current.select(this.playerId);
+        }
+        int result;
+        if (!current.isTerminal()) {
+          current.expand();
+          current=current.select(this.playerId);
+          result=current.simulate(this.playerId);
+          simCount++;
+        }
+ else {
+          result=current.isWinner(this.playerId) ? 1 : -1;
+        }
+        current.backpropagate(result);
+      }
+      logger.info("Simulated " + simCount + " games - nodes in tree: "+ root.size());
+    }
     displayMemory();
   }
-  return;
 }

@@ -13,15 +13,21 @@
     int result;
     if (!current.isTerminal()) {
       current.expand();
-      current=current.select(this.playerId);
-      result=current.simulate(this.playerId);
-      simCount++;
+      if (current.getNumChildren() > 1) {
+        current=current.select(this.playerId);
+        result=current.simulate(this.playerId);
+        simCount++;
+      }
+ else {
+        current=current.select(this.playerId);
+        result=0;
+      }
     }
  else {
       result=current.isWinner(this.playerId) ? 1 : -1;
     }
     current.backpropagate(result);
   }
-  logger.info("Simulated " + simCount + " nodes");
+  logger.info("Simulated " + simCount + " games - nodes in tree: "+ root.size());
   return true;
 }

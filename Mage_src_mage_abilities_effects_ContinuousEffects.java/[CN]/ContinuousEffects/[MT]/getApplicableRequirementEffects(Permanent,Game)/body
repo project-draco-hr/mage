@@ -1,15 +1,10 @@
 {
   List<RequirementEffect> effects=new ArrayList<RequirementEffect>();
-  for (  Permanent perm : game.getBattlefield().getActivePermanents(permanent.getControllerId(),game)) {
-    for (    Entry<Effect,Ability> entry : perm.getAbilities().getEffects(game,Zone.BATTLEFIELD,EffectType.REQUIREMENT).entrySet()) {
-      if (((RequirementEffect)entry.getKey()).applies(permanent,entry.getValue(),game)) {
-        effects.add((RequirementEffect)entry.getKey());
-        abilityMap.put(entry.getKey().getId(),entry.getValue());
-      }
-    }
-  }
   for (  RequirementEffect effect : requirementEffects) {
-    if (effect.applies(permanent,abilityMap.get(effect.getId()),game))     effects.add(effect);
+    Ability ability=abilityMap.get(effect.getId());
+    if (!(ability instanceof StaticAbility) || ability.getZone() == game.getZone(ability.getSourceId())) {
+      if (effect.applies(permanent,ability,game))       effects.add(effect);
+    }
   }
   return effects;
 }

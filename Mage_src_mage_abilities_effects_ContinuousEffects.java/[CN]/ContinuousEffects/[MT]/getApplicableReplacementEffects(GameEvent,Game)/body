@@ -1,44 +1,23 @@
 {
   List<ReplacementEffect> replaceEffects=new ArrayList<ReplacementEffect>();
   if (planeswalkerRedirectionEffect.applies(event,null,game))   replaceEffects.add(planeswalkerRedirectionEffect);
-  for (  Card card : game.getCards()) {
-    Zone zone=game.getState().getZone(card.getId());
-    if (zone == Zone.HAND || zone == Zone.GRAVEYARD) {
-      for (      Entry<ReplacementEffect,Ability> entry : card.getAbilities().getReplacementEffects(zone).entrySet()) {
-        if (entry.getKey().applies(event,entry.getValue(),game)) {
-          replaceEffects.add(entry.getKey());
-          abilityMap.put(entry.getKey().getId(),entry.getValue());
+  for (  ReplacementEffect effect : replacementEffects) {
+    Ability ability=abilityMap.get(effect.getId());
+    if (!(ability instanceof StaticAbility) || ability.getZone() == game.getZone(ability.getSourceId())) {
+      if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
+        if (effect.applies(event,ability,game)) {
+          replaceEffects.add(effect);
         }
       }
     }
   }
-  for (  Permanent permanent : game.getBattlefield().getAllPermanents()) {
-    for (    Entry<ReplacementEffect,Ability> entry : permanent.getAbilities().getReplacementEffects(Zone.BATTLEFIELD).entrySet()) {
-      if (entry.getKey().applies(event,entry.getValue(),game)) {
-        replaceEffects.add(entry.getKey());
-        abilityMap.put(entry.getKey().getId(),entry.getValue());
-      }
-    }
-  }
-  for (  Player player : game.getPlayers().values()) {
-    for (    Entry<ReplacementEffect,Ability> entry : player.getAbilities().getReplacementEffects(Zone.BATTLEFIELD).entrySet()) {
-      if (entry.getKey().applies(event,entry.getValue(),game)) {
-        replaceEffects.add(entry.getKey());
-        abilityMap.put(entry.getKey().getId(),entry.getValue());
-      }
-    }
-  }
-  for (  ReplacementEffect effect : replacementEffects) {
-    if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
-      if (effect.applies(event,abilityMap.get(effect.getId()),game)) {
-        replaceEffects.add(effect);
-      }
-    }
-  }
   for (  PreventionEffect effect : preventionEffects) {
-    if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
-      if (effect.applies(event,abilityMap.get(effect.getId()),game)) {
-        replaceEffects.add(effect);
+    Ability ability=abilityMap.get(effect.getId());
+    if (!(ability instanceof StaticAbility) || ability.getZone() == game.getZone(ability.getSourceId())) {
+      if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
+        if (effect.applies(event,ability,game)) {
+          replaceEffects.add(effect);
+        }
       }
     }
   }

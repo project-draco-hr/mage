@@ -1,15 +1,10 @@
 {
   List<RestrictionEffect> effects=new ArrayList<RestrictionEffect>();
-  for (  Permanent perm : game.getBattlefield().getActivePermanents(permanent.getControllerId(),game)) {
-    for (    Entry<Effect,Ability> entry : perm.getAbilities().getEffects(game,Zone.BATTLEFIELD,EffectType.RESTRICTION).entrySet()) {
-      if (((RestrictionEffect)entry.getKey()).applies(permanent,entry.getValue(),game)) {
-        effects.add((RestrictionEffect)entry.getKey());
-        abilityMap.put(entry.getKey().getId(),entry.getValue());
-      }
-    }
-  }
   for (  RestrictionEffect effect : restrictionEffects) {
-    if (effect.applies(permanent,abilityMap.get(effect.getId()),game))     effects.add(effect);
+    Ability ability=abilityMap.get(effect.getId());
+    if (!(ability instanceof StaticAbility) || ability.getZone() == game.getZone(ability.getSourceId())) {
+      if (effect.applies(permanent,ability,game))       effects.add(effect);
+    }
   }
   return effects;
 }

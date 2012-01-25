@@ -1,21 +1,24 @@
 {
-  Set<UUID> possibleTargets=target.possibleTargets(source == null ? null : source.getSourceId(),playerId,game);
-  if (possibleTargets.isEmpty())   return !target.isRequired();
-  if (!target.isRequired()) {
-    if (rnd.nextInt(possibleTargets.size() + 1) == 0) {
-      return false;
+  if (this.isHuman()) {
+    Set<UUID> possibleTargets=target.possibleTargets(source == null ? null : source.getSourceId(),playerId,game);
+    if (possibleTargets.isEmpty())     return !target.isRequired();
+    if (!target.isRequired()) {
+      if (rnd.nextInt(possibleTargets.size() + 1) == 0) {
+        return false;
+      }
     }
-  }
-  if (possibleTargets.size() == 1) {
-    target.addTarget(possibleTargets.iterator().next(),target.getAmountRemaining(),source,game);
+    if (possibleTargets.size() == 1) {
+      target.addTarget(possibleTargets.iterator().next(),target.getAmountRemaining(),source,game);
+      return true;
+    }
+    Iterator<UUID> it=possibleTargets.iterator();
+    int targetNum=rnd.nextInt(possibleTargets.size());
+    UUID targetId=it.next();
+    for (int i=0; i < targetNum; i++) {
+      targetId=it.next();
+    }
+    target.addTarget(targetId,rnd.nextInt(target.getAmountRemaining()) + 1,source,game);
     return true;
   }
-  Iterator<UUID> it=possibleTargets.iterator();
-  int targetNum=rnd.nextInt(possibleTargets.size());
-  UUID targetId=it.next();
-  for (int i=0; i < targetNum; i++) {
-    targetId=it.next();
-  }
-  target.addTarget(targetId,rnd.nextInt(target.getAmountRemaining()) + 1,source,game);
-  return true;
+  return super.chooseTargetAmount(outcome,target,source,game);
 }
