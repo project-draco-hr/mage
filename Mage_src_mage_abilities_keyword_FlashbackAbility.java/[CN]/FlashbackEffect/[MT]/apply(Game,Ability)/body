@@ -1,13 +1,11 @@
 {
-  Card target=(Card)game.getObject(targetPointer.getFirst(source));
-  if (target != null) {
-    Player controller=game.getPlayer(target.getOwnerId());
+  Card card=(Card)game.getObject(source.getSourceId());
+  if (card != null) {
+    Player controller=game.getPlayer(source.getControllerId());
     if (controller != null) {
-      target.getSpellAbility().getManaCostsToPay().clear();
-      for (      Cost cost : source.getManaCostsToPay()) {
-        target.getSpellAbility().getManaCostsToPay().add((ManaCost)cost.copy());
-      }
-      return controller.cast(target.getSpellAbility(),game,true);
+      int amount=source.getManaCostsToPay().getX();
+      card.getSpellAbility().getManaCostsToPay().setX(amount);
+      return controller.cast(card.getSpellAbility(),game,true);
     }
   }
   return false;
