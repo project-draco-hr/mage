@@ -1,0 +1,20 @@
+{
+  ResultSet rs=stat.executeQuery("select * from users where login = 'testtest';");
+  if (rs.next()) {
+    log.debug("[DBTest] checking test user [OK]");
+    if (rs.getString("login").equals("testtest") && rs.getString("password").equals("12345") && rs.getString("status").equals("disabled")) {
+      log.debug("[DBTest] checking test user parameters [OK]");
+    }
+ else {
+      log.debug("[DBTest] checking test user parameters [ERROR]");
+    }
+  }
+ else {
+    log.debug("[DBTest] checking test user [ERROR]");
+    log.debug("[DBTest] couldn't find test user");
+  }
+  while (rs.next()) {
+    System.out.println("user = " + rs.getString("login"));
+    System.out.println("password = " + rs.getString("password"));
+  }
+}

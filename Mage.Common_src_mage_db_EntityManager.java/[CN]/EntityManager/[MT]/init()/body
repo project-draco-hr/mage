@@ -1,0 +1,16 @@
+{
+  Class.forName("org.sqlite.JDBC");
+  checkDBFolderExistance();
+  Connection conn=DriverManager.getConnection(MAGE_JDBC_URL);
+  try {
+    Statement stat=conn.createStatement();
+    stat.executeUpdate("create table if not exists users (login, password, status);");
+  }
+  finally {
+    try {
+      conn.close();
+    }
+ catch (    Exception e) {
+    }
+  }
+}
