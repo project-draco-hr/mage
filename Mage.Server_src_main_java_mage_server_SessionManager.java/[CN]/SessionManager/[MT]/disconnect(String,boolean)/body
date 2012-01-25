@@ -2,8 +2,14 @@
   Session session=sessions.get(sessionId);
   sessions.remove(sessionId);
   if (session != null) {
-    if (voluntary)     session.kill();
- else     session.disconnect();
+    if (voluntary) {
+      session.kill();
+      LogServiceImpl.instance.log(LogKeys.KEY_SESSION_KILLED,sessionId);
+    }
+ else {
+      session.disconnect();
+      LogServiceImpl.instance.log(LogKeys.KEY_SESSION_DISCONNECTED,sessionId);
+    }
   }
  else {
     logger.info("could not find session with id " + sessionId);

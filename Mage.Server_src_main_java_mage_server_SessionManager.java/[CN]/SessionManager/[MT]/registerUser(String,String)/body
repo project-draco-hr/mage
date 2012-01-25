@@ -2,6 +2,7 @@
   Session session=sessions.get(sessionId);
   if (session != null) {
     session.registerUser(userName);
+    LogServiceImpl.instance.log(LogKeys.KEY_USER_CONNECTED,userName,session.getHost(),sessionId);
     logger.info("User " + userName + " connected from "+ session.getHost()+ " sessionId: "+ sessionId);
     return true;
   }
