@@ -13,7 +13,6 @@ case PRIORITY:
     sim.resume();
     children.add(new MCTSNode(this,sim,ability));
   }
-game=null;
 break;
 case SELECT_ATTACKERS:
 List<List<UUID>> attacks=player.getAttacks(game);
@@ -25,7 +24,7 @@ for (UUID attackerId : attack) {
 simPlayer.declareAttacker(attackerId,defenderId,sim);
 }
 sim.resume();
-children.add(new MCTSNode(this,sim));
+children.add(new MCTSNode(this,sim,sim.getCombat()));
 }
 break;
 case SELECT_BLOCKERS:
@@ -42,8 +41,9 @@ simPlayer.declareBlocker(blockerId,groups.get(i).getAttackers().get(0),sim);
 }
 }
 sim.resume();
-children.add(new MCTSNode(this,sim));
+children.add(new MCTSNode(this,sim,sim.getCombat()));
 }
 break;
 }
+game=null;
 }
