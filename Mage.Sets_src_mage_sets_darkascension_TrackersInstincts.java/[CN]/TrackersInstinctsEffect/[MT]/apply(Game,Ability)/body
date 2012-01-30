@@ -1,0 +1,36 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Cards cards=new CardsImpl(Zone.PICK);
+    boolean creaturesFound=false;
+    int count=Math.min(player.getLibrary().size(),4);
+    for (int i=0; i < count; i++) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        cards.add(card);
+        if (card.getCardType().contains(CardType.CREATURE)) {
+          creaturesFound=true;
+        }
+      }
+    }
+    if (!cards.isEmpty()) {
+      player.revealCards("Tracker's Instincts",cards,game);
+      TargetCard target=new TargetCard(Zone.PICK,new FilterCreatureCard("creature card to put in hand"));
+      if (creaturesFound && player.choose(Outcome.DrawCard,cards,target,game)) {
+        Card card=game.getCard(target.getFirstTarget());
+        if (card != null) {
+          cards.remove(card);
+          card.moveToZone(Zone.HAND,source.getId(),game,false);
+        }
+      }
+      for (      UUID cardId : cards) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          card.moveToZone(Zone.GRAVEYARD,source.getId(),game,true);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
