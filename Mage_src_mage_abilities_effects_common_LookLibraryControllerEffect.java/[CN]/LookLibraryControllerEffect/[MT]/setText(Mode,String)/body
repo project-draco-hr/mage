@@ -1,5 +1,11 @@
 {
-  int numberLook=numberOfCards.calculate(null,null);
+  int numberLook;
+  try {
+    numberLook=Integer.parseInt(numberOfCards.toString());
+  }
+ catch (  NumberFormatException e) {
+    numberLook=0;
+  }
   StringBuilder sb=new StringBuilder("Look at the top ");
 switch (numberLook) {
 case 0:
@@ -24,15 +30,21 @@ default :
 sb.append(numberLook);
 break;
 }
-if (numberLook != 1) sb.append(" cards ");
+if (numberLook != 1) {
+sb.append(" cards ");
+}
 sb.append("of your Library");
-if (numberLook == 0) sb.append(", where {X} is the number of cards ").append(numberOfCards.getMessage());
+if (numberLook == 0) {
+sb.append(", where {X} is the number of cards ").append(numberOfCards.getMessage());
+}
 if (!middleText.isEmpty()) {
 sb.append(middleText);
 }
- else {
-if (numberLook > 1) sb.append(", then put them back in any order");
+ else if (numberLook > 1) {
+sb.append(", then put them back in any order");
 }
-if (this.mayShuffleAfter) sb.append(". You may shuffle your library");
+if (this.mayShuffleAfter) {
+sb.append(". You may shuffle your library");
+}
 return sb.toString();
 }
