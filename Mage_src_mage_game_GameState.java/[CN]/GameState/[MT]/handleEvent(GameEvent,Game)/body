@@ -1,23 +1,4 @@
 {
   watchers.watch(event,game);
-  if (event.getType() == EventType.ZONE_CHANGE) {
-    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
-    if (zEvent.getFromZone() == Zone.BATTLEFIELD && zEvent.getTarget() != null) {
-      if (zEvent.getTarget() instanceof PermanentCard) {
-        ((PermanentCard)zEvent.getTarget()).checkPermanentOnlyTriggers(zEvent,game);
-      }
- else {
-        zEvent.getTarget().checkTriggers(zEvent.getFromZone(),event,game);
-        zEvent.getTarget().checkTriggers(zEvent.getToZone(),event,game);
-      }
-    }
-  }
-  for (  Player player : players.values()) {
-    player.checkTriggers(event,game);
-  }
-  battlefield.checkTriggers(event,game);
-  stack.checkTriggers(event,game);
-  command.checkTriggers(event,game);
-  delayed.checkTriggers(event,game);
-  exile.checkTriggers(event,game);
+  triggers.checkTriggers(event,game);
 }

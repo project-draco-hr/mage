@@ -3,15 +3,15 @@
   for (  UUID playerId : state.getPlayerList(state.getActivePlayerId())) {
     Player player=getPlayer(playerId);
     while (true) {
-      TriggeredAbilities abilities=state.getTriggered().getControlledBy(player.getId());
-      if (abilities.size() == 0)       break;
+      List<TriggeredAbility> abilities=state.getTriggered(player.getId());
+      if (abilities.isEmpty())       break;
       if (abilities.size() == 1) {
-        state.getTriggered().remove(abilities.get(0));
+        state.removeTriggeredAbility(abilities.get(0));
         played|=player.triggerAbility(abilities.get(0),this);
       }
  else {
         TriggeredAbility ability=player.chooseTriggeredAbility(abilities,this);
-        state.getTriggered().remove(ability);
+        state.removeTriggeredAbility(ability);
         played|=player.triggerAbility(ability,this);
       }
     }

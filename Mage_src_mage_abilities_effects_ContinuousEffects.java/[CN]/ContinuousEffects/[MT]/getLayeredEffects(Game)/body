@@ -1,18 +1,9 @@
 {
-  List<ContinuousEffect> layerEffects=new ArrayList<ContinuousEffect>(layeredEffects);
-  for (  Card card : game.getCards()) {
-    Zone zone=game.getState().getZone(card.getId());
-    if (zone == Zone.HAND || zone == Zone.GRAVEYARD) {
-      for (      Entry<Effect,Ability> entry : card.getAbilities().getEffects(game,zone,EffectType.CONTINUOUS).entrySet()) {
-        layerEffects.add((ContinuousEffect)entry.getKey());
-        abilityMap.put(entry.getKey().getId(),entry.getValue());
-      }
-    }
-  }
-  for (  Permanent permanent : game.getBattlefield().getAllPermanents()) {
-    for (    Entry<Effect,Ability> entry : permanent.getAbilities().getEffects(game,Zone.BATTLEFIELD,EffectType.CONTINUOUS).entrySet()) {
-      layerEffects.add((ContinuousEffect)entry.getKey());
-      abilityMap.put(entry.getKey().getId(),entry.getValue());
+  List<ContinuousEffect> layerEffects=new ArrayList<ContinuousEffect>();
+  for (  ContinuousEffect effect : layeredEffects) {
+    Ability ability=abilityMap.get(effect.getId());
+    if (ability.isInUseableZone(game)) {
+      layerEffects.add(effect);
     }
   }
   Collections.sort(layerEffects,new TimestampSorter());

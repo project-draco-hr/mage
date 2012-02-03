@@ -2,20 +2,6 @@
   for (  Card card : cards) {
     card.setOwnerId(ownerId);
     gameCards.put(card.getId(),card);
-    state.setZone(card.getId(),Zone.OUTSIDE);
-    for (    Watcher watcher : card.getWatchers()) {
-      watcher.setControllerId(ownerId);
-      watcher.setSourceId(card.getId());
-      state.getWatchers().add(watcher);
-    }
-    for (    StaticAbility ability : card.getAbilities().getStaticAbilities(Zone.ALL)) {
-      for (      Mode mode : ability.getModes().values()) {
-        for (        Effect effect : mode.getEffects()) {
-          if (effect instanceof ContinuousEffect) {
-            state.addEffect((ContinuousEffect)effect,ability);
-          }
-        }
-      }
-    }
+    state.addCard(card);
   }
 }

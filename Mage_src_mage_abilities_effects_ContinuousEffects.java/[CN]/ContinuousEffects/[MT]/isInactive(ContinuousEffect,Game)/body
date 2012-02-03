@@ -1,10 +1,10 @@
 {
+  Ability ability=abilityMap.get(effect.getId());
 switch (effect.getDuration()) {
 case WhileOnBattlefield:
-    Permanent permanent=game.getPermanent(abilityMap.get(effect.getId()).getSourceId());
-  return (permanent == null || !permanent.isPhasedIn());
+    if (game.getObject(ability.getSourceId()) == null)     return (true);
 case OneUse:
-return effect.isUsed();
+  return effect.isUsed();
 case Custom:
 return effect.isInactive(abilityMap.get(effect.getId()),game);
 }
