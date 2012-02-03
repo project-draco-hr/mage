@@ -1,4 +1,7 @@
 {
+  if (allowedColors == null && rated.containsKey(card.getName())) {
+    return rated.get(card.getName());
+  }
   int type=0;
   if (card.getCardType().contains(Constants.CardType.CREATURE)) {
     type=10;
@@ -16,5 +19,6 @@
     type=6;
   }
   int score=10 * getCardRating(card) + 2 * type + getManaCostScore(card,allowedColors) + 40 * isRemoval(card);
+  if (allowedColors == null)   rated.put(card.getName(),score);
   return score;
 }
