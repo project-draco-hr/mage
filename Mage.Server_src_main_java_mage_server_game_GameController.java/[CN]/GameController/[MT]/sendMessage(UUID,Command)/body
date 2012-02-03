@@ -6,8 +6,15 @@
     }
  else {
       Player player=game.getPlayer(playerId);
+      boolean found=false;
       for (      UUID controlled : player.getPlayersUnderYourControl()) {
-        if (gameSessions.containsKey(controlled) && game.getPriorityPlayerId().equals(controlled))         command.execute(controlled);
+        if (gameSessions.containsKey(controlled) && game.getPriorityPlayerId().equals(controlled)) {
+          command.execute(controlled);
+          found=true;
+        }
+      }
+      if (!found) {
+        logger.warn("WARNING! GameController.sendMessage - couldn't find session for action execution.");
       }
     }
   }
