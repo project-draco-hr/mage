@@ -1,6 +1,15 @@
 {
   int bookmark=game.bookmarkState();
-  TriggeredAbility ability=(TriggeredAbility)source.copy();
+  TriggeredAbility ability=null;
+  try {
+    ability=(TriggeredAbility)source.copy();
+  }
+ catch (  NullPointerException npe) {
+    log.fatal("NPE for source=" + source);
+    if (source != null) {
+      log.fatal("NPE for source=" + source.getRule());
+    }
+  }
   if (ability != null && ability.canChooseTarget(game)) {
     if (ability.isUsesStack()) {
       game.getStack().push(new StackAbility(ability,playerId));
