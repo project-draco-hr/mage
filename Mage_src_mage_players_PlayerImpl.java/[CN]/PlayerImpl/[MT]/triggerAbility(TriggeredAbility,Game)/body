@@ -1,14 +1,17 @@
 {
+  if (source == null) {
+    log.warn("Null source in triggerAbility method");
+    return false;
+  }
   int bookmark=game.bookmarkState();
   TriggeredAbility ability=null;
   try {
-    ability=(TriggeredAbility)source.copy();
+    ability=source.copy();
   }
  catch (  NullPointerException npe) {
     log.fatal("NPE for source=" + source);
-    if (source != null) {
-      log.fatal("NPE for source=" + source.getRule());
-    }
+    log.fatal("NPE for source=" + source.getRule());
+    throw npe;
   }
   if (ability != null && ability.canChooseTarget(game)) {
     if (ability.isUsesStack()) {
