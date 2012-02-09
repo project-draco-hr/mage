@@ -3,9 +3,9 @@
   this.activePlayerId=activePlayerId;
   if (beginPhase(game,activePlayerId)) {
     for (    Step step : steps) {
-      currentStep=step;
-      if (!game.isSimulation())       checkStopOnStepOption(game);
       if (game.isPaused() || game.isGameOver())       return false;
+      currentStep=step;
+      if (!game.isSimulation() && checkStopOnStepOption(game))       return false;
       if (!game.getState().getTurnMods().skipStep(activePlayerId,getStep().getType()))       playStep(game);
     }
     if (game.isPaused() || game.isGameOver())     return false;
