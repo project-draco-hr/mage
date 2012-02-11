@@ -1,5 +1,7 @@
 {
-  StringBuilder sb=new StringBuilder("Target player discards ");
+  StringBuilder sb=new StringBuilder("Target ");
+  sb.append(mode.getTargets().get(0).getTargetName());
+  sb.append(" discards ");
   sb.append(amount).append(" card");
   try {
     if (Integer.parseInt(amount.toString()) > 1) {
@@ -9,10 +11,13 @@
  catch (  Exception e) {
     sb.append("s");
   }
+  if (randomDiscard) {
+    sb.append(" at random");
+  }
   String message=amount.getMessage();
   if (message.length() > 0) {
     sb.append(" for each ");
   }
   sb.append(message);
-  staticText=sb.toString();
+  return sb.toString();
 }
