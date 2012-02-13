@@ -11,7 +11,10 @@
     }
     if (ability.getManaCosts().getVariableCosts().size() > 0) {
       int amount=getAvailableManaProducers(game).size() - ability.getManaCosts().convertedManaCost();
-      if (amount > 0)       ability.getManaCostsToPay().add(new GenericManaCost(rnd.nextInt(amount)));
+      if (amount > 0) {
+        ability=ability.copy();
+        ability.getManaCostsToPay().add(new GenericManaCost(rnd.nextInt(amount)));
+      }
     }
     break;
   }

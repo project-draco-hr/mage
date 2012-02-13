@@ -1,7 +1,17 @@
 {
-  for (  UUID targetId : option.getTargets().getUnchosen().get(targetNum).possibleTargets(option.getSourceId(),playerId,game)) {
+  for (  Target target : option.getTargets().getUnchosen().get(targetNum).getTargetOptions(option,game)) {
     Ability newOption=option.copy();
-    newOption.getTargets().get(targetNum).addTarget(targetId,option,game,true);
+    if (target instanceof TargetAmount) {
+      for (      UUID targetId : target.getTargets()) {
+        int amount=target.getTargetAmount(targetId);
+        newOption.getTargets().get(targetNum).addTarget(targetId,amount,newOption,game,true);
+      }
+    }
+ else {
+      for (      UUID targetId : target.getTargets()) {
+        newOption.getTargets().get(targetNum).addTarget(targetId,newOption,game,true);
+      }
+    }
     if (targetNum < option.getTargets().size() - 2) {
       addTargetOptions(options,newOption,targetNum + 1,game);
     }

@@ -1,0 +1,21 @@
+{
+  List<T> options=new ArrayList<T>();
+  Set<UUID> possibleTargets=possibleTargets(source.getSourceId(),source.getControllerId(),game);
+  possibleTargets.removeAll(getTargets());
+  Iterator<UUID> it=possibleTargets.iterator();
+  while (it.hasNext()) {
+    UUID targetId=it.next();
+    T target=this.copy();
+    target.clearChosen();
+    target.addTarget(targetId,source,game,true);
+    if (!target.isChosen()) {
+      Iterator<UUID> it2=possibleTargets.iterator();
+      while (it2.hasNext() && !target.isChosen()) {
+        UUID nextTargetId=it2.next();
+        target.addTarget(nextTargetId,source,game,true);
+      }
+    }
+    if (target.isChosen())     options.add(target);
+  }
+  return options;
+}
