@@ -6,7 +6,8 @@
   this.color.setWhite(true);
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
-  Ability ability=new ConditionalStaticAbility(Zone.BATTLEFIELD,new BoostSourceEffect(3,3,Duration.WhileOnBattlefield),new ControlsPermanentCondition(filterGriffinCard),rule);
-  ability.addEffect(new GainAbilitySourceEffect(FlyingAbility.getInstance()));
-  this.addAbility(ability);
+  ConditionalContinousEffect effect1=new ConditionalContinousEffect(new BoostSourceEffect(3,3,Duration.WhileOnBattlefield),new ControlsPermanentCondition(filterGriffinCard),rule1);
+  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,effect1));
+  ConditionalContinousEffect effect2=new ConditionalContinousEffect(new GainAbilitySourceEffect(FlyingAbility.getInstance()),new ControlsPermanentCondition(filterGriffinCard),rule2);
+  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,effect2));
 }

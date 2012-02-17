@@ -6,7 +6,8 @@
   this.color.setWhite(true);
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
-  Ability ability=new ConditionalStaticAbility(Zone.BATTLEFIELD,new BoostSourceEffect(1,1,Constants.Duration.WhileOnBattlefield),EquippedCondition.getInstance(),cardRule);
-  ability.addEffect(new GainAbilitySourceEffect(FirstStrikeAbility.getInstance()));
-  this.addAbility(ability);
+  ConditionalContinousEffect effect1=new ConditionalContinousEffect(new BoostSourceEffect(1,1,Constants.Duration.WhileOnBattlefield),EquippedCondition.getInstance(),rule1);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect1));
+  ConditionalContinousEffect effect2=new ConditionalContinousEffect(new GainAbilitySourceEffect(FirstStrikeAbility.getInstance()),EquippedCondition.getInstance(),rule2);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect2));
 }

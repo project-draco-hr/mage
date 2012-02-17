@@ -4,9 +4,12 @@
   this.subtype.add("Golem");
   this.power=new MageInt(3);
   this.toughness=new MageInt(3);
-  Ability ability=new ConditionalStaticAbility(Zone.BATTLEFIELD,new BoostSourceEffect(2,2,Duration.WhileOnBattlefield),EnchantedCondition.getInstance(),rule);
-  ability.addEffect(new GainAbilitySourceEffect(FlyingAbility.getInstance()));
-  ability.addEffect(new GainAbilitySourceEffect(FirstStrikeAbility.getInstance()));
-  ability.addEffect(new GainAbilitySourceEffect(TrampleAbility.getInstance()));
-  this.addAbility(ability);
+  ConditionalContinousEffect effect1=new ConditionalContinousEffect(new BoostSourceEffect(2,2,Duration.WhileOnBattlefield),EnchantedCondition.getInstance(),rule1);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect1));
+  ConditionalContinousEffect effect2=new ConditionalContinousEffect(new GainAbilitySourceEffect(FlyingAbility.getInstance()),EnchantedCondition.getInstance(),rule2);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect2));
+  ConditionalContinousEffect effect3=new ConditionalContinousEffect(new GainAbilitySourceEffect(FirstStrikeAbility.getInstance()),EnchantedCondition.getInstance(),rule3);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect3));
+  ConditionalContinousEffect effect4=new ConditionalContinousEffect(new GainAbilitySourceEffect(TrampleAbility.getInstance()),EnchantedCondition.getInstance(),rule4);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect4));
 }
