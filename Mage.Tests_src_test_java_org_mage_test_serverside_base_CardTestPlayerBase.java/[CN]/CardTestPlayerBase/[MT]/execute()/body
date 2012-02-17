@@ -1,0 +1,20 @@
+{
+  if (currentGame == null || activePlayer == null) {
+    throw new IllegalStateException("Game is not initialized. Use load method to load a test case and initialize a game.");
+  }
+  currentGame.cheat(playerA.getId(),commandsA);
+  currentGame.cheat(playerA.getId(),libraryCardsA,handCardsA,battlefieldCardsA,graveyardCardsA);
+  currentGame.cheat(playerB.getId(),commandsB);
+  currentGame.cheat(playerB.getId(),libraryCardsB,handCardsB,battlefieldCardsB,graveyardCardsB);
+  boolean testMode=true;
+  long t1=System.nanoTime();
+  GameOptions gameOptions=new GameOptions();
+  gameOptions.testMode=true;
+  gameOptions.stopOnTurn=stopOnTurn;
+  gameOptions.stopAtStep=stopAtStep;
+  currentGame.start(activePlayer.getId(),gameOptions);
+  long t2=System.nanoTime();
+  logger.info("Winner: " + currentGame.getWinner());
+  logger.info("Time: " + (t2 - t1) / 1000000 + " ms");
+  assertTheResults();
+}

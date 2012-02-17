@@ -1,0 +1,83 @@
+{
+  if (type.equals(CardTestPlayerBase.ExpectedType.TURN_NUMBER)) {
+    int turn=getIntParam(line,1);
+    Assert.assertEquals("Turn numbers are not equal",turn,currentGame.getTurnNum());
+    return;
+  }
+  if (type.equals(CardTestPlayerBase.ExpectedType.RESULT)) {
+    String expected=getStringParam(line,1);
+    String actual="draw";
+    if (currentGame.getWinner().equals("Player ComputerA is the winner")) {
+      actual="won";
+    }
+ else     if (currentGame.getWinner().equals("Player ComputerB is the winner")) {
+      actual="lost";
+    }
+    Assert.assertEquals("Game results are not equal",expected,actual);
+    return;
+  }
+  if (type.equals(CardTestPlayerBase.ExpectedType.LIFE)) {
+    String player=getStringParam(line,1);
+    int expected=getIntParam(line,2);
+    if (player.equals("ComputerA")) {
+      int actual=currentGame.getPlayer(playerA.getId()).getLife();
+      Assert.assertEquals("Life amounts are not equal",expected,actual);
+    }
+ else     if (player.equals("ComputerB")) {
+      int actual=currentGame.getPlayer(playerB.getId()).getLife();
+      Assert.assertEquals("Life amounts are not equal",expected,actual);
+    }
+ else {
+      throw new IllegalArgumentException("Wrong player in 'life' line, player=" + player + ", line="+ line);
+    }
+    return;
+  }
+  if (type.equals(CardTestPlayerBase.ExpectedType.BATTLEFIELD)) {
+    String playerName=getStringParam(line,1);
+    String cardName=getStringParam(line,2);
+    int expectedCount=getIntParam(line,3);
+    Player player=null;
+    if (playerName.equals("ComputerA")) {
+      player=currentGame.getPlayer(playerA.getId());
+    }
+ else     if (playerName.equals("ComputerB")) {
+      player=currentGame.getPlayer(playerB.getId());
+    }
+ else {
+      throw new IllegalArgumentException("Wrong player in 'battlefield' line, player=" + player + ", line="+ line);
+    }
+    int actualCount=0;
+    for (    Permanent permanent : currentGame.getBattlefield().getAllPermanents()) {
+      if (permanent.getControllerId().equals(player.getId())) {
+        if (permanent.getName().equals(cardName)) {
+          actualCount++;
+        }
+      }
+    }
+    Assert.assertEquals("(Battlefield) Card counts are not equal (" + cardName + ")",expectedCount,actualCount);
+    return;
+  }
+  if (type.equals(CardTestPlayerBase.ExpectedType.GRAVEYARD)) {
+    String playerName=getStringParam(line,1);
+    String cardName=getStringParam(line,2);
+    int expectedCount=getIntParam(line,3);
+    Player player=null;
+    if (playerName.equals("ComputerA")) {
+      player=currentGame.getPlayer(playerA.getId());
+    }
+ else     if (playerName.equals("ComputerB")) {
+      player=currentGame.getPlayer(playerB.getId());
+    }
+ else {
+      throw new IllegalArgumentException("Wrong player in 'graveyard' line, player=" + player + ", line="+ line);
+    }
+    int actualCount=0;
+    for (    Card card : player.getGraveyard().getCards(currentGame)) {
+      if (card.getName().equals(cardName)) {
+        actualCount++;
+      }
+    }
+    Assert.assertEquals("(Graveyard) Card counts are not equal (" + cardName + ")",expectedCount,actualCount);
+    return;
+  }
+}

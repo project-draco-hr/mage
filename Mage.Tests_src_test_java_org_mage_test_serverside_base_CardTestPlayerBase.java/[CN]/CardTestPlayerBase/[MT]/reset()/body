@@ -1,0 +1,40 @@
+{
+  if (currentGame != null) {
+    logger.info("Resetting previous game and creating new one!");
+    currentGame=null;
+    System.gc();
+  }
+  Game game=new TwoPlayerDuel(Constants.MultiplayerAttackOption.LEFT,Constants.RangeOfInfluence.ALL);
+  playerA=createNewPlayer("PlayerA");
+  playerA.setTestMode(true);
+  logger.info("Loading deck...");
+  Deck deck=Deck.load(Sets.loadDeck("RB Aggro.dck"));
+  logger.info("Done!");
+  if (deck.getCards().size() < 40) {
+    throw new IllegalArgumentException("Couldn't load deck, deck size=" + deck.getCards().size());
+  }
+  game.addPlayer(playerA,deck);
+  game.loadCards(deck.getCards(),playerA.getId());
+  playerB=createNewPlayer("PlayerB");
+  playerB.setTestMode(true);
+  Deck deck2=Deck.load(Sets.loadDeck("RB Aggro.dck"));
+  if (deck2.getCards().size() < 40) {
+    throw new IllegalArgumentException("Couldn't load deck, deck size=" + deck2.getCards().size());
+  }
+  game.addPlayer(playerB,deck2);
+  game.loadCards(deck2.getCards(),playerB.getId());
+  activePlayer=playerA;
+  currentGame=game;
+  stopOnTurn=2;
+  stopAtStep=PhaseStep.UNTAP;
+  handCardsA.clear();
+  handCardsB.clear();
+  battlefieldCardsA.clear();
+  battlefieldCardsB.clear();
+  graveyardCardsA.clear();
+  graveyardCardsB.clear();
+  libraryCardsA.clear();
+  libraryCardsB.clear();
+  commandsA.clear();
+  commandsB.clear();
+}

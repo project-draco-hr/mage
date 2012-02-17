@@ -13,7 +13,7 @@
     System.gc();
   }
   Game game=new TwoPlayerDuel(Constants.MultiplayerAttackOption.LEFT,Constants.RangeOfInfluence.ALL);
-  playerA=aiTypeA.equals(CardTestBase.AIType.MinimaxHybrid) ? createPlayer("ComputerA","Computer - minimax hybrid") : createPlayer("ComputerA","Computer - mad");
+  playerA=createNewPlayer("ComputerA",aiTypeA);
   playerA.setTestMode(true);
   Deck deck=Deck.load(Sets.loadDeck("RB Aggro.dck"));
   if (deck.getCards().size() < 40) {
@@ -21,7 +21,7 @@
   }
   game.addPlayer(playerA,deck);
   game.loadCards(deck.getCards(),playerA.getId());
-  playerB=aiTypeB.equals(CardTestBase.AIType.MinimaxHybrid) ? createPlayer("ComputerB","Computer - minimax hybrid") : createPlayer("ComputerB","Computer - mad");
+  playerB=createNewPlayer("ComputerB",aiTypeB);
   playerB.setTestMode(true);
   Deck deck2=Deck.load(Sets.loadDeck("RB Aggro.dck"));
   if (deck2.getCards().size() < 40) {

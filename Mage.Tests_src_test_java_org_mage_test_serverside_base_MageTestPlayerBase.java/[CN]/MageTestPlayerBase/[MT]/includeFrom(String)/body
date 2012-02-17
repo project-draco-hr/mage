@@ -1,0 +1,22 @@
+{
+  String[] params=line.split(" ");
+  if (params.length == 2) {
+    String paramName=params[1];
+    if (!paramName.contains("..")) {
+      String includePath=TESTS_PATH + paramName;
+      File f=new File(includePath);
+      if (f.exists()) {
+        parseScenario(includePath);
+      }
+ else {
+        logger.warn("Ignored (file doesn't exist): " + line);
+      }
+    }
+ else {
+      logger.warn("Ignored (wrong charactres): " + line);
+    }
+  }
+ else {
+    logger.warn("Ignored (wrong size): " + line);
+  }
+}

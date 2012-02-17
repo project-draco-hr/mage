@@ -1,12 +1,9 @@
 {
   useRedDefault();
-  addCard(Constants.Zone.HAND,playerA,"Trigon of Corruption");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Trigon of Corruption");
   addCard(Constants.Zone.BATTLEFIELD,playerB,"Tel-Jilad Fallen");
-  setStopOnTurn(2);
+  activateAbility(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"{2},Remove a Charge counter from {this}, {T}: put a -1/-1 counter on target creature. ","Tel-Jilad Fallen");
+  setStopAt(1,Constants.PhaseStep.BEGIN_COMBAT);
   execute();
-  assertTurn(2);
-  assertResult(playerA,GameResult.DRAW);
-  assertLife(playerA,20);
-  assertLife(playerB,20);
   assertPermanentCount(playerB,"Tel-Jilad Fallen",1);
 }

@@ -1,0 +1,24 @@
+{
+  for (int i=1; i < groups.length; i++) {
+    String group=groups[i];
+    String target;
+    if (group.startsWith("targetPlayer=")) {
+      target=group.substring(group.indexOf("targetPlayer=") + 13);
+      for (      Player player : game.getPlayers().values()) {
+        if (player.getName().equals(target)) {
+          ability.getTargets().get(0).addTarget(player.getId(),ability,game);
+          break;
+        }
+      }
+    }
+ else     if (group.startsWith("target=")) {
+      target=group.substring(group.indexOf("target=") + 7);
+      for (      Permanent permanent : game.getBattlefield().getAllActivePermanents()) {
+        if (permanent.getName().equals(target)) {
+          ability.getTargets().get(0).addTarget(permanent.getId(),ability,game);
+          break;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Manabarbs");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Mountain",7);
+  addCard(Constants.Zone.HAND,playerA,"Lightning Elemental");
+  addCard(Constants.Zone.HAND,playerA,"Ball Lightning");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Ball Lightning");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Elemental");
+  attack(1,playerA,"Ball Lightning");
+  attack(1,playerA,"Lightning Elemental");
+  setStopAt(2,Constants.PhaseStep.UNTAP);
+  execute();
+  assertLife(playerA,13);
+  assertLife(playerB,10);
+  assertPermanentCount(playerA,"Lightning Elemental",1);
+  assertPermanentCount(playerA,"Ball Lightning",0);
+}

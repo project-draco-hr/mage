@@ -1,0 +1,17 @@
+{
+  logger.info("Matching expected results:");
+  for (  String line : expectedResults) {
+    boolean ok=false;
+    try {
+      ExpectedType type=getExpectedType(line);
+      if (type.equals(CardTestPlayerBase.ExpectedType.UNKNOWN)) {
+        throw new AssertionError("Unknown expected type, check the line in $expected section=" + line);
+      }
+      parseType(type,line);
+      ok=true;
+    }
+  finally {
+      logger.info("  " + line + " - "+ (ok ? "OK" : "ERROR"));
+    }
+  }
+}

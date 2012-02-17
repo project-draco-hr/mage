@@ -1,0 +1,11 @@
+{
+  Logger.getRootLogger().setLevel(Level.DEBUG);
+  logger.info("Starting MAGE tests");
+  logger.info("Logging level: " + logger.getLevel());
+  deleteSavedGames();
+  ConfigSettings config=ConfigSettings.getInstance();
+  for (  GamePlugin plugin : config.getGameTypes()) {
+    GameFactory.getInstance().addGameType(plugin.getName(),loadGameType(plugin),loadPlugin(plugin));
+  }
+  Copier.setLoader(classLoader);
+}

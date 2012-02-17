@@ -1,0 +1,15 @@
+{
+  UUID opponentId=game.getCombat().getDefenders().iterator().next();
+  for (  PlayerAction action : actions) {
+    if (action.getTurnNum() == game.getTurnNum() && action.getAction().startsWith("attack:")) {
+      String command=action.getAction();
+      command=command.substring(command.indexOf("attack:") + 7);
+      FilterCreatureForCombat filter=new FilterCreatureForCombat();
+      filter.getName().add(command);
+      Permanent attacker=findPermanent(filter,playerId,game);
+      if (attacker != null && attacker.canAttack(game)) {
+        this.declareAttacker(attacker.getId(),opponentId,game);
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  parserState=ParserState.INIT;
+  File f=new File(filename);
+  Scanner scanner=new Scanner(f);
+  try {
+    while (scanner.hasNextLine()) {
+      String line=scanner.nextLine().trim();
+      if (line == null || line.isEmpty() || line.startsWith("#"))       continue;
+      if (line.startsWith("$include")) {
+        includeFrom(line);
+        continue;
+      }
+      if (line.startsWith("$expected")) {
+        parserState=ParserState.EXPECTED;
+        continue;
+      }
+      parseLine(line);
+    }
+  }
+  finally {
+    scanner.close();
+  }
+}

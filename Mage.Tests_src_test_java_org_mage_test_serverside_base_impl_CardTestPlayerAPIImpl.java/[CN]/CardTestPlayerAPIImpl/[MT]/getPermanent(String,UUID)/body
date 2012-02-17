@@ -1,0 +1,15 @@
+{
+  Permanent permanent0=null;
+  int count=0;
+  for (  Permanent permanent : currentGame.getBattlefield().getAllPermanents()) {
+    if (permanent.getControllerId().equals(controller)) {
+      if (permanent.getName().equals(cardName)) {
+        permanent0=permanent;
+        count++;
+      }
+    }
+  }
+  Assert.assertNotNull("Couldn't find a card with specified name: " + cardName,permanent0);
+  Assert.assertEquals("More than one permanent was found: " + cardName + "("+ count+ ")",1,count);
+  return permanent0;
+}

@@ -1,15 +1,8 @@
 {
-  useRedDefault();
   addCard(Constants.Zone.BATTLEFIELD,playerA,"Royal Assassin");
   addCard(Constants.Zone.BATTLEFIELD,playerB,"White Knight",1,true);
-  addCard(Constants.Zone.BATTLEFIELD,playerB,"Runeclaw Bear",1,true);
-  addCard(Constants.Zone.BATTLEFIELD,playerB,"White Knight",1,false);
-  setStopOnTurn(2);
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Destroy target tapped creature. ","White Knight");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
   execute();
-  assertTurn(2);
-  assertResult(playerA,CardTestAPI.GameResult.DRAW);
-  assertLife(playerA,20);
-  assertLife(playerB,20);
-  assertPermanentCount(playerB,"White Knight",2);
-  assertPermanentCount(playerB,"Runeclaw Bear",0);
+  assertPermanentCount(playerB,"White Knight",1);
 }
