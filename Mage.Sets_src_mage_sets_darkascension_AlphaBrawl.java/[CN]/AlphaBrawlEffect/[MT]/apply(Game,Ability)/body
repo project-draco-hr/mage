@@ -1,0 +1,17 @@
+{
+  Permanent creature=game.getPermanent(source.getFirstTarget());
+  if (creature != null) {
+    Player player=game.getPlayer(creature.getControllerId());
+    if (player != null) {
+      int power=creature.getPower().getValue();
+      for (      Permanent perm : game.getBattlefield().getAllActivePermanents(filter,player.getId())) {
+        perm.damage(power,creature.getId(),game,true,false);
+      }
+      for (      Permanent perm : game.getBattlefield().getAllActivePermanents(filter,player.getId())) {
+        creature.damage(perm.getPower().getValue(),perm.getId(),game,true,false);
+      }
+      return true;
+    }
+  }
+  return false;
+}
