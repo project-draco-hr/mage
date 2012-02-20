@@ -1,0 +1,15 @@
+{
+  HashMap<String,String> result=new HashMap<String,String>();
+  URL url=new URL(URL_PREFIX + "update-data.txt");
+  URLConnection urlConnection=url.openConnection();
+  urlConnection.connect();
+  Scanner scanner=new Scanner(urlConnection.getInputStream());
+  while (scanner.hasNextLine()) {
+    String[] lines=scanner.nextLine().split("  ");
+    if (lines.length == 2) {
+      result.put(lines[1],lines[0]);
+      System.out.println("jar " + lines[1] + ", checksum "+ lines[0]);
+    }
+  }
+  return result;
+}
