@@ -1,0 +1,28 @@
+{
+  int remainingDamage=damage;
+  UUID targetId;
+  int amount;
+  while (remainingDamage > 0) {
+    if (targets.size() == 1) {
+      targetId=targets.get(0);
+      amount=remainingDamage;
+    }
+ else {
+      targetId=targets.get(rnd.nextInt(targets.size()));
+      amount=rnd.nextInt(damage + 1);
+    }
+    Permanent permanent=game.getPermanent(targetId);
+    if (permanent != null) {
+      permanent.damage(amount,sourceId,game,true,false);
+      remainingDamage-=amount;
+    }
+ else {
+      Player player=game.getPlayer(targetId);
+      if (player != null) {
+        player.damage(amount,sourceId,game,false,true);
+        remainingDamage-=amount;
+      }
+    }
+    targets.remove(targetId);
+  }
+}

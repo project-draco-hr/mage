@@ -1,0 +1,11 @@
+{
+  String selectedColors=colorChoices.get(new Random().nextInt(colorChoices.size())).toUpperCase();
+  List<ColoredManaSymbol> allowedColors=new ArrayList<ColoredManaSymbol>();
+  logger.info("Building deck with colors: " + selectedColors);
+  for (int i=0; i < selectedColors.length(); i++) {
+    char c=selectedColors.charAt(i);
+    allowedColors.add(ColoredManaSymbol.lookup(c));
+  }
+  List<Card> cardPool=Sets.generateRandomCardPool(45,allowedColors);
+  return ComputerPlayer.buildDeck(cardPool,allowedColors);
+}
