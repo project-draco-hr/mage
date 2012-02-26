@@ -1,9 +1,10 @@
 {
-  int actualCount=0;
-  for (  Permanent permanent : currentGame.getBattlefield().getAllPermanents()) {
+  Permanent found=null;
+  for (  Permanent permanent : currentGame.getBattlefield().getAllActivePermanents()) {
     if (permanent.getName().equals(cardName)) {
-      actualCount+=permanent.getCounters().getCount(type);
+      found=permanent;
     }
   }
-  Assert.assertEquals("(Battlefield) Counter counts are not equal (" + cardName + ":"+ type+ ")",count,actualCount);
+  Assert.assertNotNull("There is no such permanent on the battlefield, cardName=" + cardName,found);
+  Assert.assertEquals("(Battlefield) Counter counts are not equal (" + cardName + ":"+ type+ ")",count,found.getCounters().getCount(type));
 }
