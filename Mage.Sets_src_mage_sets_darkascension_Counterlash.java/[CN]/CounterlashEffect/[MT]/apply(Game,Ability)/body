@@ -1,0 +1,23 @@
+{
+  StackObject stackObject=game.getStack().getStackObject(source.getFirstTarget());
+  Player player=game.getPlayer(source.getControllerId());
+  if (stackObject != null && player != null) {
+    game.getStack().counter(source.getFirstTarget(),source.getSourceId(),game);
+    if (player.chooseUse(Constants.Outcome.PutCardInPlay,"Cast a nonland card in your hand that shares a card type with that spell without paying its mana cost?",game)) {
+      FilterCard filter=new FilterCard();
+      for (      CardType type : stackObject.getCardType()) {
+        if (type != CardType.LAND)         filter.getCardType().add(type);
+      }
+      filter.setScopeCardType(Filter.ComparisonScope.Any);
+      TargetCardInHand target=new TargetCardInHand(filter);
+      if (player.choose(Constants.Outcome.PutCardInPlay,target,source.getSourceId(),game)) {
+        Card card=player.getHand().get(target.getFirstTarget(),game);
+        if (card != null) {
+          player.cast(card.getSpellAbility(),game,true);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

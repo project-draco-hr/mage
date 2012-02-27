@@ -1,0 +1,14 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Fiend of the Shadows");
+  removeAllCardsFromHand(playerB);
+  addCard(Constants.Zone.HAND,playerB,"Swamp");
+  attack(1,playerA,"Fiend of the Shadows");
+  playLand(1,Constants.PhaseStep.POSTCOMBAT_MAIN,playerA,"Swamp");
+  setStopAt(1,Constants.PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,17);
+  assertPermanentCount(playerA,"Fiend of the Shadows",1);
+  assertPermanentCount(playerA,"Swamp",1);
+  assertHandCount(playerB,0);
+}
