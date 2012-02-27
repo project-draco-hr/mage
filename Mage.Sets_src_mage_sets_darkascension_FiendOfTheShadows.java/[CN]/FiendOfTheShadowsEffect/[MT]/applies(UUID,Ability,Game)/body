@@ -1,7 +1,11 @@
 {
   Card card=game.getCard(sourceId);
   if (card != null) {
-    if (game.getExile().getExileZone(exileId).contains(card.getId()))     return true;
+    ExileZone zone=game.getExile().getExileZone(exileId);
+    if (zone != null && zone.contains(card.getId())) {
+      card.setControllerId(source.getControllerId());
+      return true;
+    }
   }
   return false;
 }
