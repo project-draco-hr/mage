@@ -1,0 +1,16 @@
+{
+  Player sourcePlayer=game.getPlayer(source.getControllerId());
+  for (  UUID playerId : sourcePlayer.getInRange()) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      int count=Math.min(5,player.getLibrary().size());
+      for (int i=0; i < count; i++) {
+        Card card=player.getLibrary().removeFromTop(game);
+        if (card != null) {
+          card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,true);
+        }
+      }
+    }
+  }
+  return true;
+}
