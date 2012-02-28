@@ -6,13 +6,25 @@
         command=command.substring(command.indexOf("activate:") + 9);
         String[] groups=command.split(";");
         for (        Ability ability : this.getPlayable(game,true)) {
-          if (ability.toString().equals(groups[0])) {
+          if (ability.toString().startsWith(groups[0])) {
             if (groups.length > 1) {
               addTargets(ability,groups,game);
             }
             this.activateAbility((ActivatedAbility)ability,game);
             actions.remove(action);
             return true;
+          }
+        }
+      }
+      if (action.getAction().startsWith("addCounters:")) {
+        String command=action.getAction();
+        command=command.substring(command.indexOf("addCounters:") + 12);
+        String[] groups=command.split(";");
+        for (        Permanent permanent : game.getBattlefield().getAllActivePermanents()) {
+          if (permanent.getName().equals(groups[0])) {
+            Counter counter=new Counter(groups[1],Integer.parseInt(groups[2]));
+            permanent.addCounters(counter,game);
+            break;
           }
         }
       }

@@ -1,0 +1,24 @@
+{
+  for (  UUID targetId : source.getTargets().get(0).getTargets()) {
+    Permanent perm=game.getPermanent(targetId);
+    if (perm != null) {
+      perm.destroy(source.getSourceId(),game,false);
+    }
+  }
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    for (    UUID targetId : source.getTargets().get(0).getTargets()) {
+      if (game.getState().getZone(targetId) == Zone.GRAVEYARD) {
+        Card card=game.getCard(targetId);
+        if (card != null) {
+          Player owner=game.getPlayer(card.getOwnerId());
+          if (owner != null) {
+            owner.removeFromGraveyard(card,game);
+            card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getId(),player.getId());
+          }
+        }
+      }
+    }
+  }
+  return true;
+}

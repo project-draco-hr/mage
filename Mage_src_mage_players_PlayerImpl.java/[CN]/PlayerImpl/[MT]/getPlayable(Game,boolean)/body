@@ -14,6 +14,24 @@
       if (canPlay(ability,available,game))       playable.add(ability);
     }
   }
+  for (  ExileZone exile : game.getExile().getExileZones()) {
+    for (    Card card : exile.getCards(game)) {
+      if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,game)) {
+        for (        ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
+          playable.add(ability);
+        }
+      }
+    }
+  }
+  for (  Cards cards : game.getState().getRevealed().values()) {
+    for (    Card card : cards.getCards(game)) {
+      if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,game)) {
+        for (        ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
+          playable.add(ability);
+        }
+      }
+    }
+  }
   Map<String,Ability> playableActivated=new HashMap<String,Ability>();
   for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
     for (    ActivatedAbility ability : permanent.getAbilities().getActivatedAbilities(Zone.BATTLEFIELD)) {

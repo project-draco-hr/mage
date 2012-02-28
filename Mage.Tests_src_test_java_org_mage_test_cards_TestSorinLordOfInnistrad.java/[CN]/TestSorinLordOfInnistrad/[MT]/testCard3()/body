@@ -1,0 +1,16 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Sorin, Lord of Innistrad");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Craw Wurm");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Angel of Mercy");
+  addCounters(1,Constants.PhaseStep.UPKEEP,playerA,"Sorin, Lord of Innistrad",CounterType.LOYALTY,3);
+  activateAbility(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"-6: ","Craw Wurm^Angel of Mercy");
+  setStopAt(1,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,23);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Sorin, Lord of Innistrad",0);
+  assertPermanentCount(playerA,"Craw Wurm",1);
+  assertPermanentCount(playerB,"Craw Wurm",0);
+  assertPermanentCount(playerA,"Angel of Mercy",1);
+  assertPermanentCount(playerB,"Angel of Mercy",0);
+}

@@ -1,0 +1,21 @@
+{
+  Set<UUID> possibleTargets=target.possibleTargets(playerId,game);
+  if (possibleTargets.isEmpty())   return !target.isRequired();
+  if (!target.isRequired()) {
+    if (rnd.nextInt(possibleTargets.size() + 1) == 0) {
+      return false;
+    }
+  }
+  if (possibleTargets.size() == 1) {
+    target.add(possibleTargets.iterator().next(),game);
+    return true;
+  }
+  Iterator<UUID> it=possibleTargets.iterator();
+  int targetNum=rnd.nextInt(possibleTargets.size());
+  UUID targetId=it.next();
+  for (int i=0; i < targetNum; i++) {
+    targetId=it.next();
+  }
+  target.add(targetId,game);
+  return true;
+}

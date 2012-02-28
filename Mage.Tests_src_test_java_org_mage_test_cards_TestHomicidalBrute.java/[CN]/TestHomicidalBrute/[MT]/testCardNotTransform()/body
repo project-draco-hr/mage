@@ -1,0 +1,15 @@
+{
+  removeAllCardsFromHand(playerA);
+  removeAllCardsFromLibrary(playerA);
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Civilized Scholar");
+  addCard(Constants.Zone.LIBRARY,playerA,"Sejiri Merfolk",2);
+  activateAbility(3,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Draw a card, then discard a card. ");
+  attack(3,playerA,"Homicidal Brute");
+  setStopAt(4,Constants.PhaseStep.UPKEEP);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,15);
+  assertPermanentCount(playerA,"Civilized Scholar",0);
+  assertPermanentCount(playerA,"Homicidal Brute",1);
+  assertTapped("Homicidal Brute",true);
+}

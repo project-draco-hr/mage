@@ -13,10 +13,21 @@
     }
  else     if (group.startsWith("target=")) {
       target=group.substring(group.indexOf("target=") + 7);
-      for (      Permanent permanent : game.getBattlefield().getAllActivePermanents()) {
-        if (permanent.getName().equals(target)) {
-          ability.getTargets().get(0).addTarget(permanent.getId(),ability,game);
-          break;
+      String[] targets=target.split("\\^");
+      for (      String t : targets) {
+        for (        Permanent permanent : game.getBattlefield().getAllActivePermanents()) {
+          if (permanent.getName().equals(t)) {
+            ability.getTargets().get(0).addTarget(permanent.getId(),ability,game);
+            break;
+          }
+        }
+        Iterator<StackObject> it=game.getStack().iterator();
+        while (it.hasNext()) {
+          StackObject object=it.next();
+          if (object.getName().equals(t)) {
+            ability.getTargets().get(0).addTarget(object.getId(),ability,game);
+            break;
+          }
         }
       }
     }
