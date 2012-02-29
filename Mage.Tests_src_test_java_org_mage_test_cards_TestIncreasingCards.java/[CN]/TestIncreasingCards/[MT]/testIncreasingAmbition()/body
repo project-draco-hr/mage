@@ -1,0 +1,16 @@
+{
+  removeAllCardsFromHand(playerA);
+  removeAllCardsFromLibrary(playerA);
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Swamp",8);
+  addCard(Constants.Zone.HAND,playerA,"Increasing Ambition");
+  addCard(Constants.Zone.LIBRARY,playerA,"Swamp",4);
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Increasing Ambition");
+  activateAbility(3,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Flashback {7}{B}");
+  setStopAt(3,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,0);
+  assertHandCount(playerA,4);
+  assertExileCount("Increasing Ambition",1);
+}

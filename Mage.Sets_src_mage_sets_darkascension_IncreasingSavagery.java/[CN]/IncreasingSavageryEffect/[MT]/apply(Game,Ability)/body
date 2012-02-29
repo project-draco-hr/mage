@@ -1,0 +1,15 @@
+{
+  int amount=5;
+  Spell spell=(Spell)game.getStack().getStackObject(source.getSourceId());
+  if (spell != null) {
+    if (spell.getFromZone() == Constants.Zone.GRAVEYARD) {
+      amount=10;
+    }
+    Permanent permanent=game.getPermanent(targetPointer.getFirst(source));
+    if (permanent != null) {
+      permanent.addCounters(CounterType.P1P1.createInstance(amount),game);
+    }
+    return true;
+  }
+  return false;
+}

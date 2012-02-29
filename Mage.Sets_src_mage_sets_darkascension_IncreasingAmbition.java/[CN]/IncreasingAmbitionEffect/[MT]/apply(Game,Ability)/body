@@ -1,0 +1,26 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Spell spell=(Spell)game.getStack().getStackObject(source.getSourceId());
+    if (spell != null) {
+      if (spell.getFromZone() == Zone.GRAVEYARD) {
+        target=new TargetCardInLibrary(2,new FilterCard());
+      }
+ else {
+        target=new TargetCardInLibrary();
+      }
+      player.searchLibrary(target,game);
+      if (target.getTargets().size() > 0) {
+        for (        UUID cardId : (List<UUID>)target.getTargets()) {
+          Card card=player.getLibrary().remove(cardId,game);
+          if (card != null) {
+            card.moveToZone(Constants.Zone.HAND,source.getId(),game,false);
+          }
+        }
+      }
+      player.shuffleLibrary(game);
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,14 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Forest",7);
+  addCard(Constants.Zone.HAND,playerA,"Increasing Savagery");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Ornithopter");
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Increasing Savagery");
+  activateAbility(3,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Flashback {5}{G}{G}");
+  setStopAt(3,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,0);
+  assertPowerToughness(playerA,"Ornithopter",15,17,Filter.ComparisonScope.Any);
+  assertExileCount("Increasing Savagery",1);
+}

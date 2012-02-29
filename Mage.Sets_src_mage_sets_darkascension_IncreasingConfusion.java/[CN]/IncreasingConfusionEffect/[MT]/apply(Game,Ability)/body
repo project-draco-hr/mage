@@ -1,0 +1,24 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player != null) {
+    int amount=source.getManaCostsToPay().getX();
+    Spell spell=(Spell)game.getStack().getStackObject(source.getSourceId());
+    if (spell != null) {
+      if (spell.getFromZone() == Constants.Zone.GRAVEYARD) {
+        amount*=2;
+      }
+      Card card;
+      for (int i=0; i < amount; i++) {
+        card=player.getLibrary().removeFromTop(game);
+        if (card != null) {
+          card.moveToZone(Constants.Zone.GRAVEYARD,source.getId(),game,false);
+        }
+ else {
+          break;
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,13 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Constants.Zone.HAND,playerA,"Increasing Confusion");
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Increasing Confusion");
+  activateAbility(3,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Flashback {X}{U}");
+  setStopAt(3,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,0);
+  assertExileCount("Increasing Confusion",1);
+  assertGraveyardCount(playerB,9);
+}
