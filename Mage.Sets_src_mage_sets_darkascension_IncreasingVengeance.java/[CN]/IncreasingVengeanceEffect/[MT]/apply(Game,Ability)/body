@@ -1,0 +1,22 @@
+{
+  Spell spell=game.getStack().getSpell(targetPointer.getFirst(source));
+  if (spell != null) {
+    Spell copy=spell.copySpell();
+    copy.setControllerId(source.getControllerId());
+    copy.setCopiedSpell(true);
+    game.getStack().push(copy);
+    copy.chooseNewTargets(game,source.getControllerId());
+    Spell sourceSpell=(Spell)game.getStack().getStackObject(source.getSourceId());
+    if (sourceSpell != null) {
+      if (sourceSpell.getFromZone() == Constants.Zone.GRAVEYARD) {
+        copy=spell.copySpell();
+        copy.setControllerId(source.getControllerId());
+        copy.setCopiedSpell(true);
+        game.getStack().push(copy);
+        copy.chooseNewTargets(game,source.getControllerId());
+      }
+    }
+    return true;
+  }
+  return false;
+}
