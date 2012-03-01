@@ -1,0 +1,13 @@
+{
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof SacrificeTargetCost) {
+      Permanent sacrificedCreature=((SacrificeTargetCost)cost).getPermanents().get(0);
+      Permanent sourceCreature=game.getPermanent(source.getSourceId());
+      if (sacrificedCreature.hasSubtype("Human") && sourceCreature != null) {
+        sourceCreature.addCounters(CounterType.P1P1.createInstance(),game);
+        return true;
+      }
+    }
+  }
+  return false;
+}

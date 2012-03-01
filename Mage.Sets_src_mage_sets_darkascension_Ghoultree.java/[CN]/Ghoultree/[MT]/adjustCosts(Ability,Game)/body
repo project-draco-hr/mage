@@ -1,0 +1,11 @@
+{
+  Player player=game.getPlayer(this.getOwnerId());
+  int creatureCount=player.getGraveyard().count(new FilterCreatureCard(),game);
+  int cost=7 - creatureCount;
+  String adjustedCost="{G}";
+  if (cost > 0) {
+    adjustedCost="{" + String.valueOf(cost) + "}"+ adjustedCost;
+  }
+  ability.getManaCostsToPay().clear();
+  ability.getManaCostsToPay().load(adjustedCost);
+}
