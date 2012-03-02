@@ -1,0 +1,14 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Havengul Lich");
+  addCard(Constants.Zone.GRAVEYARD,playerA,"Black Cat");
+  activateAbility(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"{1}","Black Cat");
+  castSpell(3,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Black Cat");
+  setStopAt(3,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Havengul Lich",1);
+  assertPermanentCount(playerA,"Black Cat",0);
+  assertGraveyardCount(playerA,1);
+}
