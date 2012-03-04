@@ -1,0 +1,17 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Constants.Zone.HAND,playerA,"Dungeon Geists");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Craw Wurm");
+  addCard(Constants.Zone.HAND,playerB,"Act of Treason");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Mountain",3);
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Dungeon Geists");
+  castSpell(2,Constants.PhaseStep.PRECOMBAT_MAIN,playerB,"Act of Treason","Dungeon Geists");
+  setStopAt(4,Constants.PhaseStep.DRAW);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Dungeon Geists",1);
+  assertPermanentCount(playerB,"Craw Wurm",1);
+  assertTapped("Dungeon Geists",false);
+  assertTapped("Craw Wurm",false);
+}

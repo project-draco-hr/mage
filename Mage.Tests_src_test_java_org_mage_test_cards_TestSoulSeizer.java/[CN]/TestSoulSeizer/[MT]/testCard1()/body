@@ -1,0 +1,16 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Soul Seizer");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Craw Wurm");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Plains",2);
+  addCard(Constants.Zone.HAND,playerB,"Clear");
+  attack(1,playerA,"Soul Seizer");
+  castSpell(2,Constants.PhaseStep.PRECOMBAT_MAIN,playerB,"Clear","Ghastly Haunting");
+  setStopAt(2,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,19);
+  assertPermanentCount(playerA,"Ghastly Haunting",0);
+  assertPermanentCount(playerA,"Soul Seizer",0);
+  assertGraveyardCount(playerA,1);
+  assertPermanentCount(playerB,"Craw Wurm",1);
+}

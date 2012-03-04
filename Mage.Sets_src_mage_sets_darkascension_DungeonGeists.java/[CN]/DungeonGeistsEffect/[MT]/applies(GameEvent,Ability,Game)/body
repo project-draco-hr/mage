@@ -1,0 +1,11 @@
+{
+  Watcher watcher=game.getState().getWatchers().get("ControlLost",source.getSourceId());
+  if (watcher == null || !watcher.conditionMet()) {
+    if (game.getTurn().getStepType() == Constants.PhaseStep.UNTAP && event.getType() == GameEvent.EventType.UNTAP) {
+      if (event.getTargetId().equals(targetPointer.getFirst(source))) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
