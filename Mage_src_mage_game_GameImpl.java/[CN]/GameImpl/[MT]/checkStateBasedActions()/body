@@ -90,7 +90,10 @@
       for (      UUID attachmentId : perm.getAttachments()) {
         Permanent attachment=getPermanent(attachmentId);
         if (attachment != null && !(attachment.getSubtype().contains("Aura") || attachment.getSubtype().contains("Equipment") || attachment.getSubtype().contains("Fortification"))) {
-          if (perm.removeAttachment(attachment.getId(),this))           somethingHappened=true;
+          if (perm.removeAttachment(attachment.getId(),this)) {
+            somethingHappened=true;
+            break;
+          }
         }
       }
     }
