@@ -1,0 +1,12 @@
+{
+  if (event instanceof ZoneChangeEvent) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getToZone() == Zone.BATTLEFIELD && (zEvent.getFromZone() == Zone.GRAVEYARD || zEvent.getFromZone() == Zone.LIBRARY)) {
+      Card card=game.getCard(zEvent.getTargetId());
+      if (card != null && card.getCardType().contains(CardType.CREATURE)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

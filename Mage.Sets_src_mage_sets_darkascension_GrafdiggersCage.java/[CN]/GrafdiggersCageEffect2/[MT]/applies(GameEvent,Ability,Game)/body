@@ -1,0 +1,12 @@
+{
+  if (event.getType() == GameEvent.EventType.CAST_SPELL) {
+    Card card=game.getCard(event.getSourceId());
+    if (card != null) {
+      Zone zone=game.getState().getZone(card.getId());
+      if (zone != null && (zone == Constants.Zone.GRAVEYARD || zone == Constants.Zone.LIBRARY)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
