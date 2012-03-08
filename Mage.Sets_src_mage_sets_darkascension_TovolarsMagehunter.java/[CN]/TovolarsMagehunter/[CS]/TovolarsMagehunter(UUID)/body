@@ -1,0 +1,13 @@
+{
+  super(ownerId,98,"Tovolar's Magehunter",Rarity.RARE,new CardType[]{CardType.CREATURE},"");
+  this.expansionSetCode="DKA";
+  this.subtype.add("Werewolf");
+  this.color.setRed(true);
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  this.nightCard=true;
+  this.canTransform=true;
+  this.addAbility(new TovolarsMagehunterTriggeredAbility());
+  TriggeredAbility ability=new BeginningOfUpkeepTriggeredAbility(new TransformSourceEffect(false),TargetController.ANY,false);
+  this.addAbility(new ConditionalTriggeredAbility(ability,TwoOrMoreSpellsWereCastLastTurnCondition.getInstance(),TransformAbility.TWO_OR_MORE_SPELLS_TRANSFORM_RULE));
+}

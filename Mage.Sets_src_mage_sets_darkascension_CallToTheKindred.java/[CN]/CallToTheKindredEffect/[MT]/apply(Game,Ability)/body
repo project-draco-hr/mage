@@ -1,0 +1,56 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (player == null || enchantment.getAttachedTo() == null) {
+    return false;
+  }
+  Permanent creature=game.getPermanent(enchantment.getAttachedTo());
+  if (creature == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl(Zone.PICK);
+  int count=Math.min(player.getLibrary().size(),5);
+  for (int i=0; i < count; i++) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      cards.add(card);
+      game.setZone(card.getId(),Zone.PICK);
+    }
+  }
+  player.lookAtCards("Call to the Kindred",cards,game);
+  FilterCreatureCard filter=new FilterCreatureCard();
+  StringBuilder sb=new StringBuilder("creature card with at least one subtype from: ");
+  for (  String subType : creature.getSubtype()) {
+    filter.getSubtype().add(subType);
+    sb.append(subType).append(", ");
+  }
+  filter.setScopeSubtype(ComparisonScope.Any);
+  sb.delete(sb.length() - 2,sb.length());
+  filter.setMessage(sb.toString());
+  if (cards.count(filter,game) > 0 && player.chooseUse(Outcome.DrawCard,"Do you wish to put a creature card onto the battlefield?",game)) {
+    TargetCard target=new TargetCard(Zone.PICK,filter);
+    if (player.choose(Outcome.PutCreatureInPlay,cards,target,game)) {
+      Card card=cards.get(target.getFirstTarget(),game);
+      if (card != null) {
+        cards.remove(card);
+        card.putOntoBattlefield(game,Zone.PICK,source.getId(),source.getControllerId());
+      }
+    }
+  }
+  TargetCard target=new TargetCard(Zone.PICK,new FilterCard("card to put on the bottom of your library"));
+  target.setRequired(true);
+  while (cards.size() > 1) {
+    player.choose(Outcome.Neutral,cards,target,game);
+    Card card=cards.get(target.getFirstTarget(),game);
+    if (card != null) {
+      cards.remove(card);
+      card.moveToZone(Zone.LIBRARY,source.getId(),game,false);
+    }
+    target.clearChosen();
+  }
+  if (cards.size() == 1) {
+    Card card=cards.get(cards.iterator().next(),game);
+    card.moveToZone(Zone.LIBRARY,source.getId(),game,false);
+  }
+  return true;
+}
