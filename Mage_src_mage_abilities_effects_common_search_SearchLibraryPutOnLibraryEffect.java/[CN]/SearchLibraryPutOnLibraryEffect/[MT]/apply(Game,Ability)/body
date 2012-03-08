@@ -1,8 +1,8 @@
 {
   Player player=game.getPlayer(source.getControllerId());
-  player.searchLibrary(target,game);
-  List<Card> cards=new ArrayList<Card>();
-  if (target.getTargets().size() > 0) {
+  if (player == null)   return false;
+  if (player.searchLibrary(target,game)) {
+    List<Card> cards=new ArrayList<Card>();
     for (    UUID cardId : (List<UUID>)target.getTargets()) {
       Card card=player.getLibrary().remove(cardId,game);
       if (card != null)       cards.add(card);
@@ -11,6 +11,8 @@
     for (    Card card : cards) {
       card.moveToZone(Zone.LIBRARY,source.getId(),game,true);
     }
+    return true;
   }
-  return true;
+  player.shuffleLibrary(game);
+  return false;
 }

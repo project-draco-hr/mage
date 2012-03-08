@@ -1,26 +1,30 @@
 {
   Player player=game.getPlayer(source.getControllerId());
-  player.searchLibrary(target,game);
-  if (target.getTargets().size() > 0) {
-    Cards cards=new CardsImpl();
-    for (    UUID cardId : (List<UUID>)target.getTargets()) {
-      Card card=player.getLibrary().remove(cardId,game);
-      if (card != null) {
-        card.moveToZone(Zone.HAND,source.getId(),game,false);
-        if (revealCards) {
-          cards.add(card);
+  if (player == null)   return false;
+  if (player.searchLibrary(target,game)) {
+    if (target.getTargets().size() > 0) {
+      Cards cards=new CardsImpl();
+      for (      UUID cardId : (List<UUID>)target.getTargets()) {
+        Card card=player.getLibrary().remove(cardId,game);
+        if (card != null) {
+          card.moveToZone(Zone.HAND,source.getId(),game,false);
+          if (revealCards) {
+            cards.add(card);
+          }
         }
       }
-    }
-    if (revealCards) {
-      String name="Reveal";
-      Card sourceCard=game.getCard(source.getSourceId());
-      if (sourceCard != null) {
-        name=sourceCard.getName();
+      if (revealCards) {
+        String name="Reveal";
+        Card sourceCard=game.getCard(source.getSourceId());
+        if (sourceCard != null) {
+          name=sourceCard.getName();
+        }
+        player.revealCards(name,cards,game);
       }
-      player.revealCards(name,cards,game);
     }
+    player.shuffleLibrary(game);
+    return true;
   }
-  player.shuffleLibrary(game);
-  return true;
+  if (forceShuffle)   player.shuffleLibrary(game);
+  return false;
 }
