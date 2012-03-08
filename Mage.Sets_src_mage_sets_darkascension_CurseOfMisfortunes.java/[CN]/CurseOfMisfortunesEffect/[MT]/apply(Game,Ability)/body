@@ -1,0 +1,30 @@
+{
+  FilterCard filter=new FilterCard("Curse card that doesn't have the same name as a Curse attached to enchanted player");
+  filter.getSubtype().add("Curse");
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment != null && enchantment.getAttachedTo() != null) {
+    Player targetPlayer=game.getPlayer(enchantment.getAttachedTo());
+    Player player=game.getPlayer(source.getControllerId());
+    if (player != null && targetPlayer != null) {
+      for (      UUID attachmentId : targetPlayer.getAttachments()) {
+        Permanent attachment=game.getPermanent(attachmentId);
+        if (attachment != null && attachment.getSubtype().contains("Curse")) {
+          filter.getName().add(attachment.getName());
+          filter.setNotName(true);
+        }
+      }
+      TargetCardInLibrary targetCard=new TargetCardInLibrary(filter);
+      targetCard.setRequired(true);
+      if (player.searchLibrary(targetCard,game)) {
+        Card card=game.getCard(targetCard.getFirstTarget());
+        if (card != null) {
+          player.shuffleLibrary(game);
+          card.putOntoBattlefield(game,Constants.Zone.LIBRARY,source.getSourceId(),source.getControllerId());
+          return targetPlayer.addAttachment(card.getId(),game);
+        }
+      }
+      player.shuffleLibrary(game);
+    }
+  }
+  return false;
+}
