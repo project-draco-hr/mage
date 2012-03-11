@@ -1,0 +1,14 @@
+{
+  int countersRemoved=0;
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof EssenceBottleCost) {
+      countersRemoved=((EssenceBottleCost)cost).getRemovedCounters();
+    }
+  }
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    player.gainLife(countersRemoved * 2,game);
+    return true;
+  }
+  return false;
+}
