@@ -2,7 +2,7 @@
   List<ReplacementEffect> replaceEffects=new ArrayList<ReplacementEffect>();
   if (planeswalkerRedirectionEffect.applies(event,null,game))   replaceEffects.add(planeswalkerRedirectionEffect);
   for (  ReplacementEffect effect : replacementEffects) {
-    Ability ability=abilityMap.get(effect.getId());
+    Ability ability=replacementEffects.getAbility(effect.getId());
     if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game)) {
       if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
         if (effect.applies(event,ability,game)) {
@@ -12,7 +12,7 @@
     }
   }
   for (  PreventionEffect effect : preventionEffects) {
-    Ability ability=abilityMap.get(effect.getId());
+    Ability ability=preventionEffects.getAbility(effect.getId());
     if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game)) {
       if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
         if (effect.applies(event,ability,game)) {
