@@ -5,6 +5,12 @@
       int actualDamage=event.getAmount();
       if (actualDamage > 0) {
         Permanent source=game.getPermanent(sourceId);
+        if (source == null) {
+          MageObject lastKnownInformation=game.getLastKnownInformation(sourceId,Zone.BATTLEFIELD);
+          if (lastKnownInformation instanceof Permanent) {
+            source=(Permanent)lastKnownInformation;
+          }
+        }
         if (source != null && (source.getAbilities().containsKey(InfectAbility.getInstance().getId()))) {
           addCounters(CounterType.POISON.createInstance(actualDamage),game);
         }
