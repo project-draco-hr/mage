@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.DAMAGED_CREATURE) {
+    Permanent enchantment=game.getPermanent(sourceId);
+    if (enchantment != null && enchantment.getAttachedTo() != null) {
+      if (event.getTargetId().equals(enchantment.getAttachedTo())) {
+        this.getEffects().get(0).setValue("damageAmount",event.getAmount());
+        this.getEffects().get(0).setValue("targetId",event.getTargetId());
+        return true;
+      }
+    }
+  }
+  return false;
+}
