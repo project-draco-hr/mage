@@ -1,0 +1,13 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Flayer of the Hatebound");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Swamp",2);
+  addCard(Constants.Zone.GRAVEYARD,playerB,"Reassembling Skeleton",1);
+  activateAbility(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerB,"{1}{B}:");
+  setStopAt(1,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Flayer of the Hatebound",1);
+  assertPermanentCount(playerB,"Reassembling Skeleton",1);
+  assertPowerToughness(playerA,"Flayer of the Hatebound",4,2,Filter.ComparisonScope.Any);
+}
