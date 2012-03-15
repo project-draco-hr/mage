@@ -1,0 +1,27 @@
+{
+  game.fireEvent(new GameEvent(GameEvent.EventType.DECLARE_ATTACKERS_STEP_PRE,null,null,activePlayerId));
+  if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_ATTACKERS,activePlayerId,activePlayerId))) {
+    Player attackingPlayer=game.getPlayer(activePlayerId);
+    UUID defenderId=game.getOpponents(playerId).iterator().next();
+    Player defender=game.getPlayer(defenderId);
+    List<Permanent> attackersList=super.getAvailableAttackers(game);
+    if (attackersList.isEmpty()) {
+      return;
+    }
+    List<Permanent> possibleBlockers=defender.getAvailableBlockers(game);
+    List<Permanent> killers=CombatUtil.canKillOpponent(game,attackersList,possibleBlockers,defender);
+    if (!killers.isEmpty()) {
+      for (      Permanent attacker : killers) {
+        attackingPlayer.declareAttacker(attacker.getId(),defenderId,game);
+      }
+      return;
+    }
+    CombatUtil.handleExalted();
+    int aggressionRate=5;
+    for (    Permanent attacker : attackersList) {
+      if (aggressionRate == 5) {
+        attackingPlayer.declareAttacker(attacker.getId(),defenderId,game);
+      }
+    }
+  }
+}

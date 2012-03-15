@@ -1,0 +1,19 @@
+{
+  game.fireEvent(new GameEvent(GameEvent.EventType.DECLARE_ATTACKERS_STEP_PRE,null,null,activePlayerId));
+  if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_ATTACKERS,activePlayerId,activePlayerId))) {
+    for (    Combat engagement : ((SimulatedPlayer2)game.getPlayer(activePlayerId)).addAttackers(game)) {
+      Game sim=game.copy();
+      UUID defenderId=game.getOpponents(playerId).iterator().next();
+      for (      CombatGroup group : engagement.getGroups()) {
+        for (        UUID attackerId : group.getAttackers()) {
+          sim.getPlayer(activePlayerId).declareAttacker(attackerId,defenderId,sim);
+        }
+      }
+      sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_ATTACKERS,playerId,playerId));
+      SimulationNode2 newNode=new SimulationNode2(node,sim,node.getDepth() - 1,activePlayerId);
+      logger.debug("simulating -- node #:" + SimulationNode2.getCount() + " declare attakers");
+      newNode.setCombat(sim.getCombat());
+      node.children.add(newNode);
+    }
+  }
+}

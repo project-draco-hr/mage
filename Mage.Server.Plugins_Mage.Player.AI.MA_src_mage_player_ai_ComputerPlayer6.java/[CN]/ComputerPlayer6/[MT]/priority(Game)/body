@@ -8,7 +8,6 @@ case DRAW:
     pass();
   return false;
 case PRECOMBAT_MAIN:
-case DECLARE_BLOCKERS:
 case POSTCOMBAT_MAIN:
 if (game.getActivePlayerId().equals(playerId)) {
   printOutState(game,playerId);
@@ -30,13 +29,19 @@ case END_COMBAT:
 pass();
 return false;
 case DECLARE_ATTACKERS:
-if (!game.getActivePlayerId().equals(playerId)) {
-printOutState(game,playerId);
-printOutState(game,game.getOpponents(playerId).iterator().next());
-if (actions.size() == 0) {
-calculateActions(game);
+if (game.getActivePlayerId().equals(playerId)) {
+declareAttackers(game,playerId);
+pass();
+return true;
 }
-act(game);
+ else {
+pass();
+}
+return false;
+case DECLARE_BLOCKERS:
+if (!game.getActivePlayerId().equals(playerId)) {
+declareBlockers(game,playerId);
+pass();
 return true;
 }
  else {
