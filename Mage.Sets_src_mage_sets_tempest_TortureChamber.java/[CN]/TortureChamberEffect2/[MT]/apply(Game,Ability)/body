@@ -1,0 +1,14 @@
+{
+  int countersRemoved=0;
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof TortureChamberCost) {
+      countersRemoved=((TortureChamberCost)cost).getRemovedCounters();
+    }
+  }
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  if (permanent != null) {
+    permanent.damage(countersRemoved,source.getSourceId(),game,true,false);
+    return true;
+  }
+  return false;
+}

@@ -6,19 +6,7 @@
   this.power=new MageInt(3);
   this.toughness=new MageInt(3);
   Ability ability=new EntersBattlefieldTriggeredAbility(new PhyrexianIngesterImprintEffect(),true);
-  FilterCreaturePermanent filter=new FilterCreaturePermanent("nontoken creature"){
-    @Override public boolean match(    Permanent permanent){
-      if (!super.match(permanent)) {
-        return notFilter;
-      }
-      if (permanent instanceof PermanentToken) {
-        return notFilter;
-      }
-      return !notFilter;
-    }
-  }
-;
-  ability.addTarget(new TargetCreaturePermanent(filter));
+  ability.addTarget(new TargetPermanent(filter));
   this.addAbility(ability);
   this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new PhyrexianIngesterBoostEffect()));
 }
