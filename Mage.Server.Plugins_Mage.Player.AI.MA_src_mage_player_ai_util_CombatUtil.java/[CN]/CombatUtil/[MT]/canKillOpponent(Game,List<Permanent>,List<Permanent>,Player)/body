@@ -1,0 +1,25 @@
+{
+  List<Permanent> blockableAttackers=new ArrayList<Permanent>(blockersList);
+  List<Permanent> unblockableAttackers=new ArrayList<Permanent>();
+  for (  Permanent attacker : attackersList) {
+    if (!canBeBlocked(game,attacker,blockersList)) {
+      unblockableAttackers.add(attacker);
+      blockableAttackers.remove(attacker);
+    }
+  }
+  sortByPower(blockableAttackers);
+  List<Permanent> attackersThatWontBeBlocked=new ArrayList<Permanent>(blockableAttackers);
+  for (int i=0; (i < blockersList.size() && i < blockableAttackers.size()); i++) {
+    attackersThatWontBeBlocked.remove(blockableAttackers.get(i));
+  }
+  attackersThatWontBeBlocked.addAll(unblockableAttackers);
+  if (sumDamage(attackersThatWontBeBlocked,defender) >= defender.getLife() && defender.isLifeTotalCanChange() && defender.canLose(game) && defender.getLife() > 0) {
+    blockableAttackers.addAll(unblockableAttackers);
+    return blockableAttackers;
+  }
+  if (sumPoisonDamage(attackersThatWontBeBlocked,defender) >= 10 - defender.getCounters().getCount(CounterType.POISON)) {
+    blockableAttackers.addAll(unblockableAttackers);
+    return blockableAttackers;
+  }
+  return emptyList;
+}
