@@ -1,0 +1,17 @@
+{
+  if (FatefulHourCondition.getInstance().apply(game,source)) {
+    ChoiceColor choice=(ChoiceColor)source.getChoices().get(0);
+    FilterCard filter=new FilterCard();
+    filter.setUseColor(true);
+    filter.setColor(choice.getColor());
+    filter.setMessage(choice.getChoice());
+    filter.setScopeColor(Filter.ComparisonScope.Any);
+    Ability ability=new ProtectionAbility(filter);
+    game.addEffect(new GainAbilityControlledEffect(ability,Duration.EndOfTurn),source);
+    game.addEffect(new GainAbilityControllerEffect(ability,Duration.EndOfTurn),source);
+  }
+ else {
+    game.addEffect(new GainProtectionFromColorTargetEffect(Duration.EndOfTurn),source);
+  }
+  return false;
+}
