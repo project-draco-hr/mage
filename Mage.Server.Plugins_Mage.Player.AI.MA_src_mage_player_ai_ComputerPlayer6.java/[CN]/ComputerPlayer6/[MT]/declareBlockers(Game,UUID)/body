@@ -1,5 +1,30 @@
 {
   game.fireEvent(new GameEvent(GameEvent.EventType.DECLARE_BLOCKERS_STEP_PRE,null,null,activePlayerId));
   if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_BLOCKERS,activePlayerId,activePlayerId))) {
+    List<Permanent> attackers=getAttackers(game);
+    if (attackers == null) {
+      return;
+    }
+    List<Permanent> possibleBlockers=super.getAvailableBlockers(game);
+    possibleBlockers=filterOutNonblocking(game,attackers,possibleBlockers);
+    if (possibleBlockers.isEmpty()) {
+      return;
+    }
+    attackers=filterOutUnblockable(game,attackers,possibleBlockers);
+    if (attackers.isEmpty()) {
+      return;
+    }
+    CombatUtil.sortByPower(attackers,false);
+    Player player=game.getPlayer(this.playerId);
+    Map<Permanent,List<Permanent>> map=new HashMap<Permanent,List<Permanent>>();
+    for (    Map.Entry<Permanent,List<Permanent>> entry : map.entrySet()) {
+      UUID attackerId=entry.getKey().getId();
+      List<Permanent> blockers=entry.getValue();
+      if (blockers != null) {
+        for (        Permanent blocker : blockers) {
+          player.declareAttacker(attackerId,blocker.getId(),game);
+        }
+      }
+    }
   }
 }
