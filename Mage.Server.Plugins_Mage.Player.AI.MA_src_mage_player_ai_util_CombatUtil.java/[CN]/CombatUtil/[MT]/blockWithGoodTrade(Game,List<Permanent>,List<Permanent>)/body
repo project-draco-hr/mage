@@ -1,5 +1,22 @@
 {
-  for (  Permanent attacker : attackers) {
-    List<Permanent> blockers=getPossibleBlockers(game,attacker,possibleBlockers);
+  UUID attackerId=game.getCombat().getAttackerId();
+  UUID defenderId=game.getCombat().getDefenders().iterator().next();
+  if (attackerId == null || defenderId == null) {
+    log.warn("Couldn't find attacker or defender: " + attackerId + " "+ defenderId);
+    return new CombatInfo();
   }
+  CombatInfo combatInfo=new CombatInfo();
+  for (  Permanent attacker : attackers) {
+    List<Permanent> possibleBlockers=getPossibleBlockers(game,attacker,blockers);
+    List<Permanent> survivedBlockers=getBlockersThatWillSurvive(game,attackerId,defenderId,attacker,possibleBlockers);
+    if (!survivedBlockers.isEmpty()) {
+      Permanent blocker=getWorstCreature(survivedBlockers);
+      combatInfo.addPair(attacker,blocker);
+      blockers.remove(blocker);
+    }
+    if (blockers.isEmpty()) {
+      break;
+    }
+  }
+  return combatInfo;
 }
