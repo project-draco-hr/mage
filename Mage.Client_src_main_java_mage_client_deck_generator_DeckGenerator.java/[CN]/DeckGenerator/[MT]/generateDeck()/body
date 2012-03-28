@@ -2,6 +2,7 @@
   JPanel p0=new JPanel();
   p0.setLayout(new BoxLayout(p0,BoxLayout.Y_AXIS));
   JLabel text=new JLabel("Choose color for your deck: ");
+  text.setAlignmentX(Component.CENTER_ALIGNMENT);
   p0.add(text);
   p0.add(Box.createVerticalStrut(5));
   String chosen=MageFrame.getPreferences().get("genDeckColor","u");
@@ -9,7 +10,19 @@
   p0.add(colorsChooser);
   p0.add(Box.createVerticalStrut(5));
   JLabel text2=new JLabel("(X - random color)");
+  text2.setAlignmentX(Component.CENTER_ALIGNMENT);
   p0.add(text2);
+  p0.add(Box.createVerticalStrut(5));
+  JPanel jPanel=new JPanel();
+  JLabel text3=new JLabel("Choose format:");
+  formats=new JComboBox(ConstructedFormats.getTypes());
+  formats.setSelectedIndex(3);
+  formats.setPreferredSize(new Dimension(100,25));
+  formats.setMaximumSize(new Dimension(100,25));
+  formats.setAlignmentX(Component.LEFT_ALIGNMENT);
+  jPanel.add(text3);
+  jPanel.add(formats);
+  p0.add(jPanel);
   final JButton btnGenerate=new JButton("Ok");
   btnGenerate.addActionListener(new ActionListener(){
     public void actionPerformed(    ActionEvent e){

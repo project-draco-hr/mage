@@ -1,14 +1,18 @@
 {
   List<Card> spellCardPool=new ArrayList<Card>();
   int count=0;
-  List<Card> allCards=new ArrayList<Card>();
-  allCards.addAll(CardsStorage.getAllCards());
-  int allCount=allCards.size();
+  List<Card> cardPool=new ArrayList<Card>();
+  for (  Card card : CardsStorage.getAllCards()) {
+    if (setsToUse.contains(card.getExpansionSetCode())) {
+      cardPool.add(card);
+    }
+  }
+  int cardPoolCount=cardPool.size();
   Random random=new Random();
-  if (allCount > 0) {
+  if (cardPoolCount > 0) {
     int tries=0;
     while (count < cardsCount) {
-      Card card=allCards.get(random.nextInt(allCount));
+      Card card=cardPool.get(random.nextInt(cardPoolCount));
       if (!card.getCardType().contains(CardType.LAND)) {
         if (cardFitsChosenColors(card,allowedColors)) {
           spellCardPool.add(card);
