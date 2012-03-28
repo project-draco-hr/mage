@@ -7,7 +7,7 @@ switch (layer) {
 case TypeChangingEffects_4:
         if (sublayer == SubLayer.NA) {
           if (token.getCardType().size() > 0) {
-            for (            Constants.CardType t : token.getCardType()) {
+            for (            CardType t : token.getCardType()) {
               if (!permanent.getCardType().contains(t)) {
                 permanent.getCardType().add(t);
               }
@@ -37,8 +37,12 @@ if (sublayer == SubLayer.NA) {
 break;
 case PTChangingEffects_7:
 if (sublayer == SubLayer.SetPT_7b) {
-if (token.getPower() != MageInt.EmptyMageInt) permanent.getPower().setValue(token.getPower().getValue());
-if (token.getToughness() != MageInt.EmptyMageInt) permanent.getToughness().setValue(token.getToughness().getValue());
+int power=token.getPower().getValue();
+int toughness=token.getToughness().getValue();
+if (power != 0 && toughness != 0) {
+permanent.getPower().setValue(power);
+permanent.getToughness().setValue(toughness);
+}
 }
 }
 }
