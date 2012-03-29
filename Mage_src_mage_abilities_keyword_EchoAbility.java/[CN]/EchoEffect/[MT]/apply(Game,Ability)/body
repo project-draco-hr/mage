@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (player != null && permanent != null) {
+    if (player.chooseUse(Outcome.Benefit,"Pay " + cost.getText() + "?",game)) {
+      cost.clearPaid();
+      if (cost.pay(source,game,source.getId(),source.getControllerId(),false)) {
+        return true;
+      }
+    }
+    permanent.sacrifice(source.getSourceId(),game);
+    return true;
+  }
+  return false;
+}

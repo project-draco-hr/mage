@@ -1,0 +1,21 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getToZone() != null && zEvent.getToZone() == Constants.Zone.BATTLEFIELD && zEvent.getFromZone() == null && this.echoPaid) {
+      this.echoPaid=false;
+    }
+  }
+  if (event.getType() == GameEvent.EventType.UPKEEP_STEP_PRE) {
+    if (lastController != null) {
+      if (!lastController.equals(this.controllerId)) {
+        this.echoPaid=false;
+      }
+    }
+    lastController=this.getControllerId();
+  }
+  if (event.getType() == GameEvent.EventType.UPKEEP_STEP_PRE && event.getPlayerId().equals(this.controllerId) && lastController.equals(this.controllerId) && !this.echoPaid) {
+    this.echoPaid=true;
+    return true;
+  }
+  return false;
+}
