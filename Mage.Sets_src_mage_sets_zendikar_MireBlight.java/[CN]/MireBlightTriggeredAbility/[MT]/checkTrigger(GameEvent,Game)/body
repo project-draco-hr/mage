@@ -1,0 +1,11 @@
+{
+  if (event.getType() == GameEvent.EventType.DAMAGED_CREATURE) {
+    Permanent enchantment=game.getPermanent(sourceId);
+    UUID targetId=event.getTargetId();
+    if (enchantment != null && enchantment.getAttachedTo() != null && targetId.equals(enchantment.getAttachedTo())) {
+      this.getEffects().get(0).setTargetPointer(new FixedTarget(targetId));
+      return true;
+    }
+  }
+  return false;
+}

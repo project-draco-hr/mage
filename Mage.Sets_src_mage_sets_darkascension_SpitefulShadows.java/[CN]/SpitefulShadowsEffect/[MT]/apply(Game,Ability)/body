@@ -1,9 +1,11 @@
 {
   Integer damageAmount=(Integer)this.getValue("damageAmount");
-  UUID targetId=(UUID)this.getValue("targetId");
+  UUID targetId=this.targetPointer.getFirst(source);
   if (damageAmount != null && targetId != null) {
     Permanent permanent=game.getPermanent(targetId);
-    if (permanent == null)     permanent=(Permanent)game.getLastKnownInformation(targetId,Zone.BATTLEFIELD);
+    if (permanent == null) {
+      permanent=(Permanent)game.getLastKnownInformation(targetId,Zone.BATTLEFIELD);
+    }
     if (permanent != null) {
       Player player=game.getPlayer(permanent.getControllerId());
       if (player != null) {
