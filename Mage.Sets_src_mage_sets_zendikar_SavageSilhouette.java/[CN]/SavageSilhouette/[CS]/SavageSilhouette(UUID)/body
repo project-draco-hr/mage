@@ -1,0 +1,14 @@
+{
+  super(ownerId,181,"Savage Silhouette",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{2}{G}");
+  this.expansionSetCode="ZEN";
+  this.subtype.add("Aura");
+  this.color.setGreen(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new RegenerateSourceEffect(),new ManaCostsImpl("{1}{G}"));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(2,2,Duration.WhileOnBattlefield)));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(ability,AttachmentType.AURA)));
+}
