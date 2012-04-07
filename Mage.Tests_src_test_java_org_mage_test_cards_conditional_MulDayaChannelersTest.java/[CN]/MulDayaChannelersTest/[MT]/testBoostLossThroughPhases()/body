@@ -1,0 +1,14 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Forest",3);
+  addCard(Constants.Zone.HAND,playerA,"Mul Daya Channelers");
+  addCard(Constants.Zone.LIBRARY,playerA,"Shock");
+  addCard(Constants.Zone.LIBRARY,playerA,"Memnite");
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Mul Daya Channelers");
+  setStopAt(3,Constants.PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Mul Daya Channelers",1);
+  System.out.println(currentGame.getPlayer(playerA.getId()).getLibrary().getFromTop(currentGame).getName());
+  assertPowerToughness(playerA,"Mul Daya Channelers",2,2,Filter.ComparisonScope.Any);
+}
