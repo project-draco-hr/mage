@@ -4,7 +4,7 @@
   }
   fireInformEvent("game has started");
   saveState();
-  if (!testMode) {
+  if (!gameOptions.skipInitShuffling) {
     for (    Player player : state.getPlayers().values()) {
       player.shuffleLibrary(this);
     }
@@ -29,10 +29,10 @@
   saveState();
   for (  UUID playerId : state.getPlayerList(startingPlayerId)) {
     Player player=getPlayer(playerId);
-    if (!testMode || player.getLife() == 0) {
+    if (!gameOptions.testMode || player.getLife() == 0) {
       player.setLife(this.getLife(),this);
     }
-    if (!testMode) {
+    if (!gameOptions.testMode) {
       player.drawCards(7,this);
     }
   }
