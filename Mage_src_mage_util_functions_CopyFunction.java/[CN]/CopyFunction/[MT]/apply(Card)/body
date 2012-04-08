@@ -22,7 +22,12 @@
     Ability ability=ability0.copy();
     ability.newId();
     ability.setSourceId(target.getId());
-    target.addAbility(ability);
+    if (target instanceof Permanent) {
+      ((Permanent)target).addAbility(ability,game);
+    }
+ else {
+      target.addAbility(ability);
+    }
   }
   target.getPower().setValue(source.getPower().getValue());
   target.getToughness().setValue(source.getToughness().getValue());
