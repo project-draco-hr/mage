@@ -1,0 +1,26 @@
+{
+  Game sim=game.copy();
+  Combat combat=sim.getCombat();
+  combat.setAttacker(attackingPlayerId);
+  combat.setDefenders(sim);
+  UUID defenderId=sim.getCombat().getDefenders().iterator().next();
+  boolean triggered=false;
+  sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,defendingPlayerId,defendingPlayerId));
+  sim.checkStateAndTriggered();
+  while (!sim.getStack().isEmpty()) {
+    triggered=true;
+    sim.getStack().resolve(sim);
+    sim.applyEffects();
+  }
+  sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARE_BLOCKERS_STEP_POST,sim.getActivePlayerId(),sim.getActivePlayerId()));
+  simulateStep(sim,new FirstCombatDamageStep());
+  simulateStep(sim,new CombatDamageStep());
+  simulateStep(sim,new EndOfCombatStep());
+  sim.checkStateAndTriggered();
+  while (!sim.getStack().isEmpty()) {
+    triggered=true;
+    sim.getStack().resolve(sim);
+    sim.applyEffects();
+  }
+  return new SurviveInfo(!sim.getBattlefield().containsPermanent(attacker.getId()),false,sim.getPlayer(defenderId),triggered);
+}
