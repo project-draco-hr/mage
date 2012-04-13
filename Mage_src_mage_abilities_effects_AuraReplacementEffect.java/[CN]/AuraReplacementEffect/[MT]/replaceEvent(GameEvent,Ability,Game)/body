@@ -1,0 +1,51 @@
+{
+  Zone fromZone=((ZoneChangeEvent)event).getFromZone();
+  Card card=game.getCard(event.getTargetId());
+  UUID sourceId=event.getSourceId();
+  UUID controllerId=event.getPlayerId();
+  UUID targetId=null;
+  MageObject sourceObject=game.getObject(sourceId);
+  if (sourceObject instanceof StackAbility) {
+    StackAbility stackAbility=(StackAbility)sourceObject;
+    if (!stackAbility.getEffects().isEmpty()) {
+      targetId=stackAbility.getEffects().get(0).getTargetPointer().getFirst(stackAbility);
+    }
+  }
+  if (targetId == null) {
+    Target target=card.getSpellAbility().getTargets().get(0);
+    Player player=game.getPlayer(card.getOwnerId());
+    if (player != null && player.choose(Outcome.BoostCreature,target,sourceId,game)) {
+      targetId=target.getFirstTarget();
+    }
+  }
+  Permanent targetPermanent=game.getPermanent(targetId);
+  Player targetPlayer=game.getPlayer(targetId);
+  if (targetPermanent != null || targetPlayer != null) {
+switch (fromZone) {
+case GRAVEYARD:
+      game.getPlayer(card.getOwnerId()).removeFromGraveyard(card,game);
+    break;
+case HAND:
+  game.getPlayer(card.getOwnerId()).removeFromHand(card,game);
+break;
+case LIBRARY:
+game.getPlayer(card.getOwnerId()).removeFromLibrary(card,game);
+break;
+default :
+}
+game.rememberLKI(card.getId(),fromZone,card);
+PermanentCard permanent=new PermanentCard(card,card.getOwnerId());
+game.getBattlefield().addPermanent(permanent);
+game.setZone(card.getId(),Zone.BATTLEFIELD);
+game.applyEffects();
+permanent.entersBattlefield(event.getSourceId(),game);
+game.fireEvent(new ZoneChangeEvent(permanent,controllerId,fromZone,Zone.BATTLEFIELD));
+if (targetPermanent != null) {
+targetPermanent.addAttachment(permanent.getId(),game);
+}
+if (targetPlayer != null) {
+targetPlayer.addAttachment(permanent.getId(),game);
+}
+}
+return true;
+}

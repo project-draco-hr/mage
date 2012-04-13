@@ -6,11 +6,8 @@
       if (controller.chooseTarget(Outcome.Detriment,target,source,game)) {
         Card card=game.getCard(cardId);
         if (card != null) {
-          card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getId(),source.getControllerId());
-          Permanent permanent=game.getPermanent(target.getFirstTarget());
-          if (permanent != null) {
-            return permanent.addAttachment(cardId,game);
-          }
+          this.setTargetPointer(new FixedTarget(target.getFirstTarget()));
+          return card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getId(),source.getControllerId());
         }
       }
     }
