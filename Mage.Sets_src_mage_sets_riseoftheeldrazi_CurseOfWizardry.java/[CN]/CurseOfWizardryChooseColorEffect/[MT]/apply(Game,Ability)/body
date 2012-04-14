@@ -1,0 +1,12 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent curseOfWizardry=game.getPermanent(source.getSourceId());
+  if (player != null && curseOfWizardry != null) {
+    ChoiceColor colorChoice=new ChoiceColor();
+    if (player.choose(Constants.Outcome.Detriment,colorChoice,game)) {
+      game.informPlayers(curseOfWizardry.getName() + ": " + player.getName()+ " has chosen "+ colorChoice.getChoice());
+      game.getState().setValue(curseOfWizardry.getId() + "_color",colorChoice.getColor());
+    }
+  }
+  return false;
+}
