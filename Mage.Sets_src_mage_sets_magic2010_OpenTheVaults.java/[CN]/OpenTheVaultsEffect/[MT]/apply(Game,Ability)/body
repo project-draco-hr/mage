@@ -1,0 +1,28 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    LinkedList<Card> enchantments=new LinkedList<Card>();
+    LinkedList<Card> artifacts=new LinkedList<Card>();
+    Set<UUID> playerIds=player.getInRange();
+    playerIds.add(player.getId());
+    for (    UUID playerId : playerIds) {
+      Cards graveyard=game.getPlayer(playerId).getGraveyard();
+      for (      UUID cardId : graveyard) {
+        Card card=game.getCard(cardId);
+        if (card != null && card.getCardType().contains(CardType.ENCHANTMENT)) {
+          enchantments.add(card);
+        }
+        if (card != null && card.getCardType().contains(CardType.ARTIFACT)) {
+          artifacts.add(card);
+        }
+      }
+    }
+    for (    Card card : enchantments) {
+      card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getId(),card.getOwnerId());
+    }
+    for (    Card card : artifacts) {
+      card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getId(),card.getOwnerId());
+    }
+  }
+  return false;
+}
