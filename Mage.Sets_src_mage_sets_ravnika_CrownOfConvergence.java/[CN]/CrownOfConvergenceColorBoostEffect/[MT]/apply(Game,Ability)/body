@@ -1,0 +1,16 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  Card topCard=you.getLibrary().getFromTop(game);
+  if (you != null && topCard != null) {
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
+      if (permanent.getColor().shares(topCard.getColor()) && !permanent.getColor().isColorless()) {
+        if (!this.affectedObjectsSet || objects.contains(permanent.getId())) {
+          permanent.addPower(power.calculate(game,source));
+          permanent.addToughness(toughness.calculate(game,source));
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
