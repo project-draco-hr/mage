@@ -2,8 +2,10 @@
   List<Permanent> permanents=game.getBattlefield().getAllActivePermanents(filter,source.getControllerId());
   if (!permanents.isEmpty()) {
     for (    Permanent permanent : permanents) {
-      if (permanent.getCounters().getCount(CounterType.LEVEL) > 0) {
-        permanent.addCounters(CounterType.LEVEL.createInstance(2),game);
+      for (      Ability ability : permanent.getAbilities()) {
+        if (ability instanceof LevelUpAbility) {
+          permanent.addCounters(CounterType.LEVEL.createInstance(2),game);
+        }
       }
     }
     return true;
