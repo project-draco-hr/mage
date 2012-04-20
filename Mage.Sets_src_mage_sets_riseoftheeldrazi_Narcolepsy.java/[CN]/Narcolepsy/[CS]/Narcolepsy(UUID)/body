@@ -1,0 +1,12 @@
+{
+  super(ownerId,79,"Narcolepsy",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{1}{U}");
+  this.expansionSetCode="ROE";
+  this.subtype.add("Aura");
+  this.color.setBlue(true);
+  TargetPermanent auraTarget=new TargetPermanent(filter);
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Constants.Outcome.Detriment));
+  EnchantAbility ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,new NarcolepsyEffect(),Constants.TargetController.ANY,false));
+}
