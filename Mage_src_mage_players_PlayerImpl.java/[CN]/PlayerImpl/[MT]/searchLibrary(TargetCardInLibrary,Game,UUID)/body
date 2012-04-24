@@ -1,0 +1,18 @@
+{
+  if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.SEARCH_LIBRARY,targetPlayerId,playerId))) {
+    TargetCardInLibrary newTarget=target.copy();
+    int count=library.count(target.getFilter(),game);
+    if (count < target.getNumberOfTargets()) {
+      newTarget.setMinNumberOfTargets(count);
+    }
+    if (newTarget.choose(Outcome.Neutral,playerId,targetPlayerId,game)) {
+      target.getTargets().clear();
+      for (      UUID targetId : newTarget.getTargets()) {
+        target.add(targetId,game);
+      }
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.LIBRARY_SEARCHED,targetPlayerId,playerId));
+    }
+    return true;
+  }
+  return false;
+}
