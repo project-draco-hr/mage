@@ -1,0 +1,32 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(targetPointer.getFirst(source));
+  if (player != null && targetPlayer != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary();
+    player.searchLibrary(target,game,targetPlayer.getId());
+    Card card=game.getCard(target.getFirstTarget());
+    if (card != null) {
+      TreeSet<String> choices=new TreeSet<String>();
+      Collection<Card> cards=game.getCards();
+      for (      Card gameCard : cards) {
+        if (gameCard.getOwnerId().equals(targetPlayer.getId())) {
+          choices.add(gameCard.getName());
+        }
+      }
+      Choice cardChoice=new ChoiceImpl();
+      cardChoice.setChoices(choices);
+      cardChoice.clearChoice();
+      while (!targetPlayer.choose(Outcome.Benefit,cardChoice,game)) {
+        game.debugMessage("player canceled choosing name. retrying.");
+      }
+      String cardName=cardChoice.getChoice();
+      game.informPlayers("Sphinx Ambassador, named card: [" + cardName + "]");
+      if (!card.getName().equals(cardName) && card.getCardType().contains(CardType.CREATURE)) {
+        card.putOntoBattlefield(game,Zone.LIBRARY,source.getId(),player.getId());
+      }
+    }
+    targetPlayer.shuffleLibrary(game);
+    return true;
+  }
+  return false;
+}
