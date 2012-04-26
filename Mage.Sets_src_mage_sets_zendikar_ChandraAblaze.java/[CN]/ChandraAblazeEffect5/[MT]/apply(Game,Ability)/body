@@ -1,0 +1,25 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    FilterCard filter=new FilterCard("red instant or sorcery card from your graveyard to play");
+    filter.getColor().setRed(true);
+    filter.getCardType().add(CardType.INSTANT);
+    filter.getCardType().add(CardType.SORCERY);
+    String message="Play red instant or sorcery card from your graveyard without paying its mana cost?";
+    Set<Card> cards=player.getGraveyard().getCards(filter,game);
+    TargetCardInGraveyard target=new TargetCardInGraveyard(filter);
+    while (!cards.isEmpty() && player.chooseUse(outcome,message,game)) {
+      target.clearChosen();
+      if (player.choose(outcome,target,source.getId(),game)) {
+        Card card=game.getCard(target.getFirstTarget());
+        if (card != null) {
+          player.cast(card.getSpellAbility(),game,true);
+          player.getGraveyard().remove(card);
+          cards.remove(card);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

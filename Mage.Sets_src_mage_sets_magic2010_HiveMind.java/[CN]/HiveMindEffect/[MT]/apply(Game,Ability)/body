@@ -1,0 +1,18 @@
+{
+  Spell spell=game.getStack().getSpell(targetPointer.getFirst(source));
+  Player player=game.getPlayer(source.getControllerId());
+  if (spell != null && player != null) {
+    Set<UUID> players=player.getInRange();
+    for (    UUID playerId : players) {
+      if (!playerId.equals(source.getControllerId())) {
+        Spell copy=spell.copySpell();
+        copy.setControllerId(playerId);
+        copy.setCopiedSpell(true);
+        game.getStack().push(copy);
+        copy.chooseNewTargets(game,playerId);
+      }
+    }
+    return true;
+  }
+  return false;
+}
