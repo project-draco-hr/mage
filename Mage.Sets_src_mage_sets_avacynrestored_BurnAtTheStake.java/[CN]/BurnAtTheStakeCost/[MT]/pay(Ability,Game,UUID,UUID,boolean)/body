@@ -1,0 +1,14 @@
+{
+  this.amountPaid=0;
+  Target target=new TargetControlledCreaturePermanent(1,1,filter,false);
+  while (target.canChoose(controllerId,game) && target.choose(Outcome.Tap,controllerId,sourceId,game)) {
+    Permanent permanent=game.getPermanent(target.getFirstTarget());
+    if (permanent != null) {
+      permanent.tap(game);
+      amountPaid++;
+    }
+    target.clearChosen();
+  }
+  paid=true;
+  return true;
+}
