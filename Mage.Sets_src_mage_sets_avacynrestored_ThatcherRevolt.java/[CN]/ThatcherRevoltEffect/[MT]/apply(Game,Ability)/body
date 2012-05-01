@@ -1,0 +1,13 @@
+{
+  for (int i=0; i < 3; i++) {
+    RedHumanToken token=new RedHumanToken();
+    token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
+    SacrificeTargetEffect sacrificeEffect=new SacrificeTargetEffect("sacrifice this token");
+    sacrificeEffect.setTargetPointer(new FixedTarget(token.getLastAddedToken()));
+    DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(sacrificeEffect);
+    delayedAbility.setSourceId(source.getSourceId());
+    delayedAbility.setControllerId(source.getControllerId());
+    game.addDelayedTriggeredAbility(delayedAbility);
+  }
+  return true;
+}
