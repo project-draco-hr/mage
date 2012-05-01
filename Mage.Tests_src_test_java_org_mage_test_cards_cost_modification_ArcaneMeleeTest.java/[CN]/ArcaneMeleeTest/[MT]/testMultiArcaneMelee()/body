@@ -1,0 +1,20 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Arcane Melee",3);
+  addCard(Constants.Zone.HAND,playerA,"Flow of Ideas",1);
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Flow of Ideas");
+  setStopAt(1,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertHandCount(playerA,1);
+  boolean found=false;
+  for (  UUID cardId : playerA.getGraveyard()) {
+    Card card=currentGame.getCard(cardId);
+    if (card.getName().equals("Flow of Ideas")) {
+      found=true;
+      break;
+    }
+  }
+  Assert.assertTrue("Flow of Ideas wasn't found in graveyard, means it wasn't cast",found);
+}
