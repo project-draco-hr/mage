@@ -1,0 +1,17 @@
+{
+  Card card=game.getCard(event.getTargetId());
+  if (card != null) {
+    for (    Ability ability : card.getAbilities()) {
+      if (ability instanceof MiracleAbility) {
+        Player controller=game.getPlayer(ability.getControllerId());
+        ManaCosts<ManaCost> manaCostsToPay=ability.getManaCostsToPay();
+        if (controller != null && controller.chooseUse(Constants.Outcome.Benefit,"Use Miracle " + manaCostsToPay.getText() + "?",game)) {
+          if (manaCostsToPay.pay(ability,game,ability.getSourceId(),ability.getControllerId(),false)) {
+            controller.cast(card.getSpellAbility(),game,true);
+          }
+          break;
+        }
+      }
+    }
+  }
+}
