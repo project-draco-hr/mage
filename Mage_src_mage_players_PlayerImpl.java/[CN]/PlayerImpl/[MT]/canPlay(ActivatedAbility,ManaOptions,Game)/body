@@ -1,7 +1,8 @@
 {
   if (!(ability instanceof ManaAbility) && ability.canActivate(playerId,game)) {
-    game.getContinuousEffects().costModification(ability,game);
-    ManaOptions abilityOptions=ability.getManaCostsToPay().getOptions();
+    Ability copy=ability.copy();
+    game.getContinuousEffects().costModification(copy,game);
+    ManaOptions abilityOptions=copy.getManaCostsToPay().getOptions();
     if (abilityOptions.size() == 0) {
       return true;
     }
