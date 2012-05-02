@@ -1,0 +1,21 @@
+{
+  LevelerCardBuilder builder=new LevelerCardBuilder();
+  for (  LevelAbility levelAbility : levelAbilities) {
+    builder=builder.reset().setLevel1(levelAbility.getLevel1()).setLevel2(levelAbility.getLevel2() == -1 ? Integer.MAX_VALUE : levelAbility.getLevel2()).setPower(levelAbility.getPower()).setToughness(levelAbility.getToughness()).setRule(levelAbility.getRule());
+    for (    Ability addedAbility : levelAbility.getAbilities()) {
+      builder.addAbility(addedAbility);
+    }
+    for (    Ability simpleStaticAbility : builder.build()) {
+      card.addAbility(simpleStaticAbility);
+    }
+  }
+  if (card instanceof LevelerCard) {
+    int maxValue=0;
+    for (    LevelAbility levelAbility : levelAbilities) {
+      if (levelAbility.getLevel1() > maxValue) {
+        maxValue=levelAbility.getLevel1();
+      }
+    }
+    ((LevelerCard)card).setMaxLevelCounters(maxValue);
+  }
+}
