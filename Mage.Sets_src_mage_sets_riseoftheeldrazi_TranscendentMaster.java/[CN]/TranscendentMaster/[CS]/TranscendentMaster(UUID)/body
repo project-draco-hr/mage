@@ -8,11 +8,7 @@
   this.power=new MageInt(3);
   this.toughness=new MageInt(3);
   this.addAbility(new LevelUpAbility(new ManaCostsImpl("{1}")));
-  Abilities<Ability> abilities1=new AbilitiesImpl<Ability>();
-  abilities1.add(LifelinkAbility.getInstance());
-  this.getLevels().add(new LevelAbility(6,11,abilities1,6,6));
-  Abilities<Ability> abilities2=new AbilitiesImpl<Ability>();
-  abilities2.add(LifelinkAbility.getInstance());
-  abilities2.add(IndestructibleAbility.getInstance());
-  this.getLevels().add(new LevelAbility(12,-1,abilities2,9,9));
+  Abilities<Ability> abilities1=new AbilitiesImpl<Ability>(LifelinkAbility.getInstance());
+  Abilities<Ability> abilities2=new AbilitiesImpl<Ability>(LifelinkAbility.getInstance(),IndestructibleAbility.getInstance());
+  LevelAbilityBuilder.construct(this,new LevelAbility(6,11,abilities1,6,6),new LevelAbility(12,-1,abilities2,9,9));
 }

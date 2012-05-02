@@ -10,16 +10,6 @@
   this.manaCost=card.getManaCost().copy();
   this.power=card.getPower().copy();
   this.toughness=card.getToughness().copy();
-  if (card instanceof LevelerCard) {
-    LevelAbility level=((LevelerCard)card).getLevel(this.getCounters().getCount(CounterType.LEVEL));
-    if (level != null) {
-      this.power.setValue(level.getPower());
-      this.toughness.setValue(level.getToughness());
-      for (      Ability ability : level.getAbilities()) {
-        this.addAbility(ability);
-      }
-    }
-  }
   if (card instanceof PermanentCard) {
     this.maxLevelCounters=((PermanentCard)card).maxLevelCounters;
   }

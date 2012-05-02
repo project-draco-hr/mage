@@ -1,0 +1,13 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Transcendent Master");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Plains",15);
+  activateAbility(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Level up {1}");
+  setStopAt(2,Constants.PhaseStep.END_TURN);
+  execute();
+  Permanent master=getPermanent("Transcendent Master",playerA.getId());
+  Assert.assertEquals(1,master.getCounters().getCount(CounterType.LEVEL));
+  Assert.assertEquals(3,master.getPower().getValue());
+  Assert.assertEquals(3,master.getToughness().getValue());
+  Assert.assertFalse(master.getAbilities().contains(LifelinkAbility.getInstance()));
+  Assert.assertFalse(master.getAbilities().contains(IndestructibleAbility.getInstance()));
+}

@@ -1,3 +1,12 @@
 {
-  return game.getPermanent(source.getSourceId()).getCounters().getCount(counterType) >= amount;
+  if (from != -1) {
+    int count=game.getPermanent(source.getSourceId()).getCounters().getCount(counterType);
+    if (to == Integer.MAX_VALUE) {
+      return count >= from;
+    }
+    return count >= from && count <= to;
+  }
+ else {
+    return game.getPermanent(source.getSourceId()).getCounters().getCount(counterType) >= amount;
+  }
 }
