@@ -1,8 +1,9 @@
 {
   Calendar expired=Calendar.getInstance();
-  expired.add(Calendar.MINUTE,-10);
+  expired.add(Calendar.MINUTE,-1);
   for (  User user : users.values()) {
     if (user.isExpired(expired.getTime())) {
+      logger.info("user session expired " + user.getId());
       user.kill();
       users.remove(user.getId());
     }
