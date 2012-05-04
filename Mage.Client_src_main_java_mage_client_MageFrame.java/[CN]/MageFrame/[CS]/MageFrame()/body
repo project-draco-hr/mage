@@ -35,6 +35,12 @@
   errorDialog.setLocation(100,100);
   desktopPane.add(errorDialog,JLayeredPane.POPUP_LAYER);
   ui.addComponent(MageComponents.DESKTOP_PANE,desktopPane);
+  pingTaskExecutor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      session.ping();
+    }
+  }
+,60,60,TimeUnit.SECONDS);
   try {
     tablesPane=new TablesPane();
     desktopPane.add(tablesPane,javax.swing.JLayeredPane.DEFAULT_LAYER);
