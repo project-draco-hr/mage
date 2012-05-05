@@ -1,0 +1,20 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (player != null && permanent != null) {
+    PermanentsOnBattlefieldCount amount=new PermanentsOnBattlefieldCount(filter,1);
+    int count=amount.calculate(game,source);
+    if (count == 0) {
+      return true;
+    }
+    if (player.chooseUse(Constants.Outcome.Benefit,"Pay " + count + "?",game)) {
+      GenericManaCost cost=new GenericManaCost(count);
+      if (cost.pay(source,game,source.getId(),source.getControllerId(),false)) {
+        return true;
+      }
+    }
+    permanent.sacrifice(source.getSourceId(),game);
+    return true;
+  }
+  return false;
+}
