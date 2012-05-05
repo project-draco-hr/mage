@@ -99,7 +99,6 @@
       doUnblockableAttack=true;
     }
     int aggressionRate=5;
-    aggressionRate=getAggressionRate(oppScore,ourScore,outNumber,score,doAttack,turnsUntilDeathByUnblockable,doUnblockableAttack,aggressionRate);
     System.out.println("AI aggression = " + String.valueOf(aggressionRate));
     System.out.println("AI attackers size: " + attackersList.size());
     List<Permanent> finalAttackers=new ArrayList<Permanent>();
@@ -117,7 +116,7 @@
         }
       }
       boolean shouldAttack=shouldAttack(game,attackingPlayer.getId(),defenderId,attacker,possibleBlockers,aggressionRate);
-      if (shouldAttack && (totalFirstStrikeBlockPower < attacker.getToughness().getValue() || (aggressionRate == 5))) {
+      if (aggressionRate == 5 || shouldAttack && (totalFirstStrikeBlockPower < attacker.getToughness().getValue())) {
         finalAttackers.add(attacker);
       }
     }
