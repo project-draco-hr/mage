@@ -1,0 +1,20 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (player != null && targetPlayer != null) {
+    List<Permanent> creatures=game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),player.getId());
+    int amount=0;
+    for (    Permanent creature : creatures) {
+      int power=creature.getPower().getValue();
+      if (amount < power) {
+        amount=power;
+      }
+    }
+    if (amount > 0) {
+      targetPlayer.loseLife(amount,game);
+      player.gainLife(amount,game);
+    }
+    return true;
+  }
+  return false;
+}

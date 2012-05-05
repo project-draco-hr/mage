@@ -1,0 +1,14 @@
+{
+  Player player=game.getPlayer(source.getTargets().get(1).getFirstTarget());
+  if (player == null) {
+    return false;
+  }
+  Target target=new TargetControlledPermanent(new FilterControlledCreaturePermanent());
+  if (target.canChoose(player.getId(),game) && player.choose(Outcome.Sacrifice,target,source.getSourceId(),game)) {
+    Permanent permanent=game.getPermanent(target.getFirstTarget());
+    if (permanent != null) {
+      return permanent.sacrifice(source.getSourceId(),game);
+    }
+  }
+  return false;
+}

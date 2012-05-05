@@ -1,0 +1,43 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  int amount=(new ManacostVariableValue()).calculate(game,source);
+  if (amount > 0) {
+    LinkedList<Permanent> sacrifices=new LinkedList<Permanent>();
+    HashMap<UUID,Integer> lifePaidAmounts=new HashMap<UUID,Integer>();
+    FilterCreaturePermanent filter=new FilterCreaturePermanent();
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      List<Permanent> creatures=game.getBattlefield().getAllActivePermanents(filter,playerId);
+      int lifePaid=0;
+      int playerLife=player.getLife();
+      for (      Permanent creature : creatures) {
+        String message="Pay " + amount + " life? If you don't, "+ creature.getName()+ " will be sacrificed.";
+        if (playerLife - amount - lifePaid >= 0 && player != null && player.chooseUse(Outcome.Neutral,message,game)) {
+          game.informPlayers(player.getName() + " pays " + amount+ " life. He will not sacrifice "+ creature.getName());
+          lifePaid+=amount;
+        }
+ else {
+          game.informPlayers(player.getName() + " will sacrifice " + creature.getName());
+          sacrifices.add(creature);
+        }
+      }
+      lifePaidAmounts.put(playerId,lifePaid);
+    }
+    for (    UUID playerId : controller.getInRange()) {
+      int lifePaid=lifePaidAmounts.get(playerId);
+      if (lifePaid > 0) {
+        Player player=game.getPlayer(playerId);
+        if (player != null) {
+          player.loseLife(lifePaid,game);
+        }
+      }
+    }
+    for (    Permanent creature : sacrifices) {
+      creature.sacrifice(source.getId(),game);
+    }
+  }
+  return true;
+}
