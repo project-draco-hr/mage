@@ -7,6 +7,8 @@
       System.out.println("downloading " + filename);
       try {
         InputStream in=urlConnection.getInputStream();
+        File f=new File(filename);
+        if (!f.exists())         f.getParentFile().mkdirs();
         FileOutputStream out=new FileOutputStream(filename);
         byte[] buf=new byte[4 * 1024];
         int bytesRead;
