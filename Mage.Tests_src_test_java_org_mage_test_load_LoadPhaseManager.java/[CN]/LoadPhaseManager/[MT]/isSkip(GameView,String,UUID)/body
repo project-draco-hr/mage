@@ -1,0 +1,21 @@
+{
+  UUID activePlayer=null;
+  Map<String,String> map=mapOthers;
+  for (  PlayerView playerView : gameView.getPlayers()) {
+    if (playerView.isActive()) {
+      activePlayer=playerView.getPlayerId();
+      if (activePlayer.equals(playerId)) {
+        map=mapYou;
+      }
+    }
+  }
+  if (activePlayer == null) {
+    throw new IllegalStateException("No active player found.");
+  }
+  for (  Map.Entry<String,String> entry : map.entrySet()) {
+    if (message.equals(entry.getKey())) {
+      return true;
+    }
+  }
+  return false;
+}
