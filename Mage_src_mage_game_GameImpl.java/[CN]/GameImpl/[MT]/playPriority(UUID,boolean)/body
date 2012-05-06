@@ -12,7 +12,6 @@
       Player player;
       while (!isPaused() && !isGameOver()) {
         try {
-          if (bookmark == 0)           bookmark=bookmarkState();
           player=getPlayer(state.getPlayerList().get());
           state.setPriorityPlayerId(player.getId());
           while (!player.isPassed() && !player.hasLost() && !player.hasLeft()&& !isPaused()&& !isGameOver()) {
@@ -36,7 +35,6 @@
               break;
             }
  else {
-              removeBookmark(bookmark);
               return;
             }
           }
@@ -44,13 +42,11 @@
  catch (        Exception ex) {
           logger.fatal("Game exception ",ex);
           this.fireErrorEvent("Game exception occurred: ",ex);
-          restoreState(bookmark);
           bookmark=0;
           continue;
         }
         state.getPlayerList().getNext();
       }
-      removeBookmark(bookmark);
       bookmark=0;
     }
   }

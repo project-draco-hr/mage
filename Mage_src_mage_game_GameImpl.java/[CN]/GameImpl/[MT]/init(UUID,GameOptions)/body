@@ -3,7 +3,6 @@
     player.beginTurn(this);
   }
   fireInformEvent("game has started");
-  saveState();
   if (!gameOptions.skipInitShuffling) {
     for (    Player player : state.getPlayers().values()) {
       player.shuffleLibrary(this);
@@ -26,7 +25,6 @@
  else {
     return;
   }
-  saveState();
   for (  UUID playerId : state.getPlayerList(startingPlayerId)) {
     Player player=getPlayer(playerId);
     if (!gameOptions.testMode || player.getLife() == 0) {
@@ -42,7 +40,6 @@
       mulligan(player.getId());
     }
     fireInformEvent(player.getName() + " keeps hand");
-    saveState();
   }
   for (  UUID playerId : state.getPlayerList(startingPlayerId)) {
     state.getWatchers().add(new PlayerDamagedBySourceWatcher(playerId));
