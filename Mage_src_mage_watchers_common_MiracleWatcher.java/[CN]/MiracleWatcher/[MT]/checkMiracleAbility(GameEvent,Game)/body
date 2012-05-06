@@ -8,8 +8,12 @@
         ManaCosts<ManaCost> manaCostsToPay=ability.getManaCostsToPay();
         if (controller != null) {
           game.getStack().add(new StackAbility(ability,controller.getId()));
+          Cards cards=new CardsImpl(Constants.Zone.PICK);
+          cards.add(card);
+          controller.lookAtCards("Miracle",cards,game);
           if (controller.chooseUse(Constants.Outcome.Benefit,"Use Miracle " + manaCostsToPay.getText() + "?",game)) {
             game.getStack().poll();
+            controller.revealCards("Miracle",cards,game);
             ManaCosts costRef=card.getSpellAbility().getManaCostsToPay();
             costRef.clear();
             for (            ManaCost manaCost : manaCostsToPay) {
