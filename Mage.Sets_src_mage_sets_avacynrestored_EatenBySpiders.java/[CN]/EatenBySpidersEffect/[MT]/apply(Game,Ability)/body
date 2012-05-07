@@ -1,0 +1,16 @@
+{
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  if (permanent != null) {
+    LinkedList<UUID> attachments=new LinkedList<UUID>();
+    attachments.addAll(permanent.getAttachments());
+    for (    UUID attachmentId : attachments) {
+      Permanent attachment=game.getPermanent(attachmentId);
+      if (attachment.hasSubtype("Equipment")) {
+        attachment.destroy(source.getId(),game,false);
+      }
+    }
+    permanent.destroy(source.getId(),game,false);
+    return true;
+  }
+  return false;
+}
