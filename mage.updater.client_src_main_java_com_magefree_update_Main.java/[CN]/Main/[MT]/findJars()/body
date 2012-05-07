@@ -1,26 +1,8 @@
 {
   ArrayList<File> result=new ArrayList<File>();
-  File dir=new File("lib");
-  if (dir.exists() && dir.isDirectory()) {
-    for (    File jar : dir.listFiles(new FilenameFilter(){
-      @Override public boolean accept(      File dir,      String name){
-        return name.endsWith(".jar");
-      }
-    }
-)) {
-      result.add(jar);
-    }
-  }
-  dir=new File("plugins");
-  if (dir.exists() && dir.isDirectory()) {
-    for (    File jar : dir.listFiles(new FilenameFilter(){
-      @Override public boolean accept(      File dir,      String name){
-        return name.endsWith(".jar");
-      }
-    }
-)) {
-      result.add(jar);
-    }
-  }
+  result.addAll(findJarsInDir("mage-client/lib"));
+  result.addAll(findJarsInDir("mage-client/plugins"));
+  result.addAll(findJarsInDir("mage-server/lib"));
+  result.addAll(findJarsInDir("mage-server/plugins"));
   return result;
 }
