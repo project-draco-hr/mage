@@ -5,21 +5,29 @@
   if (text.length() > 0) {
     boolean filterOut=!card.getName().toLowerCase().contains(text.toLowerCase());
     if (filterOut) {
-      for (      String rule : card.getRules()) {
-        if (rule.toLowerCase().contains(text.toLowerCase())) {
-          filterOut=false;
-          break;
-        }
-      }
-      if (filterOut) {
-        for (        String subType : card.getSubtype()) {
-          if (subType.equalsIgnoreCase(text)) {
-            filterOut=false;
-            break;
+      String[] tokens=text.toLowerCase().split(" ");
+      int count=0;
+      int found=0;
+      for (      String token : tokens) {
+        if (!token.isEmpty()) {
+          count++;
+          for (          String rule : card.getRules()) {
+            if (rule.toLowerCase().contains(token)) {
+              found++;
+              break;
+            }
+          }
+          if (filterOut) {
+            for (            String subType : card.getSubtype()) {
+              if (subType.equalsIgnoreCase(token)) {
+                found++;
+                break;
+              }
+            }
           }
         }
       }
-      if (filterOut)       return notFilter;
+      if (found < count)       return notFilter;
     }
   }
   return !notFilter;
