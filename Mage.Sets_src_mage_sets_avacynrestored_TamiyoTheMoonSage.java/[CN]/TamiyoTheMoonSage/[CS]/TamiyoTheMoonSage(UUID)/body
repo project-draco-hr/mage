@@ -1,0 +1,15 @@
+{
+  super(ownerId,79,"Tamiyo, the Moon Sage",Rarity.MYTHIC,new CardType[]{CardType.PLANESWALKER},"{3}{U}{U}");
+  this.expansionSetCode="AVR";
+  this.subtype.add("Tamiyo");
+  this.color.setBlue(true);
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.LOYALTY.createInstance(4)),""));
+  LoyaltyAbility ability=new LoyaltyAbility(new TapTargetEffect(),1);
+  ability.addEffect(new SkipNextUntapTargetEffect());
+  ability.addTarget(new TargetPermanent());
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new DrawCardControllerEffect(new TapedCreaturesControlledByTargetCount()),-2);
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+  this.addAbility(new LoyaltyAbility(new TamiyoTheMoonSageThirdEffect(),-8));
+}

@@ -1,0 +1,13 @@
+{
+  List<Permanent> permanents=game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),source.getId(),game);
+  for (  Permanent permanent : permanents) {
+    permanent.untap(game);
+    ContinuousEffect effect=new TibaltTheFiendBloodedControlEffect(source.getControllerId());
+    effect.setTargetPointer(new FixedTarget(permanent.getId()));
+    game.addEffect(effect,source);
+    effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn);
+    effect.setTargetPointer(new FixedTarget(permanent.getId()));
+    game.addEffect(effect,source);
+  }
+  return true;
+}
