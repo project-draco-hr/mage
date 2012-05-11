@@ -1,0 +1,21 @@
+{
+  System.out.println("Downloading " + filename);
+  try {
+    InputStream in=urlConnection.getInputStream();
+    File f=new File(filename);
+    if (!f.exists()) {
+      f.getParentFile().mkdirs();
+      System.out.println("Directories have been created: " + f.getParentFile().getPath());
+    }
+    FileOutputStream out=new FileOutputStream(filename);
+    byte[] buf=new byte[4 * 1024];
+    int bytesRead;
+    while ((bytesRead=in.read(buf)) != -1) {
+      out.write(buf,0,bytesRead);
+    }
+    System.out.println("File has been updated: " + filename);
+  }
+ catch (  IOException e) {
+    System.out.println("i/o exception - " + e.getMessage());
+  }
+}
