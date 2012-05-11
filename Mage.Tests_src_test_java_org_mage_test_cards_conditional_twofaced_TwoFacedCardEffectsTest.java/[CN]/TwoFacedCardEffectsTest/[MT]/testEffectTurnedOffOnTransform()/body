@@ -1,0 +1,12 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Mayor of Avabruck");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Wolfir Avenger");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Elite Inquisitor");
+  setStopAt(2,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Howlpack Alpha",1);
+  assertPowerToughness(playerA,"Wolfir Avenger",4,4,Filter.ComparisonScope.Any);
+  Permanent eliteInquisitor=getPermanent("Elite Inquisitor",playerA.getId());
+  Assert.assertEquals(2,eliteInquisitor.getPower().getValue());
+  Assert.assertEquals(2,eliteInquisitor.getToughness().getValue());
+}

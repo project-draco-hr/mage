@@ -1,0 +1,18 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Forest",5);
+  addCard(Constants.Zone.HAND,playerA,"Protean Hydra");
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Protean Hydra");
+  setStopAt(1,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  for (  Permanent permanent : currentGame.getBattlefield().getAllPermanents()) {
+    if (permanent.getName().equals("Forest")) {
+      Assert.assertTrue(permanent.isTapped());
+    }
+  }
+  assertPermanentCount(playerA,"Protean Hydra",1);
+  Permanent proteanHydra=getPermanent("Protean Hydra",playerA.getId());
+  Assert.assertEquals(4,proteanHydra.getPower().getValue());
+  Assert.assertEquals(4,proteanHydra.getToughness().getValue());
+}
