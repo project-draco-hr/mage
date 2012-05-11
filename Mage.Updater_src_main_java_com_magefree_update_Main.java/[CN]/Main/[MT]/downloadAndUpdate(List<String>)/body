@@ -1,0 +1,27 @@
+{
+  for (  String filename : downloadList) {
+    URL url=new URL(URL_PREFIX + filename);
+    HttpURLConnection urlConnection=(HttpURLConnection)url.openConnection();
+    urlConnection.connect();
+    if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+      System.out.println("downloading " + filename);
+      try {
+        InputStream in=urlConnection.getInputStream();
+        File f=new File(filename);
+        if (!f.exists())         f.getParentFile().mkdirs();
+        FileOutputStream out=new FileOutputStream(filename);
+        byte[] buf=new byte[4 * 1024];
+        int bytesRead;
+        while ((bytesRead=in.read(buf)) != -1) {
+          out.write(buf,0,bytesRead);
+        }
+      }
+ catch (      IOException e) {
+        System.out.println("i/o exception - " + e.getMessage());
+      }
+    }
+ else {
+      System.out.println(filename + " error status : " + urlConnection.getResponseMessage());
+    }
+  }
+}
