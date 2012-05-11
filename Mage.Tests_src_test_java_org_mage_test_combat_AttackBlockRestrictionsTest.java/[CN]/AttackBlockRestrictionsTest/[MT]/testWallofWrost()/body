@@ -1,0 +1,12 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Wall of Frost");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Craw Wurm");
+  attack(2,playerB,"Craw Wurm");
+  block(2,playerA,"Wall of Frost","Craw Wurm");
+  setStopAt(4,Constants.PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  Permanent crawWurm=getPermanent("Craw Wurm",playerB.getId());
+  Assert.assertTrue("Should be tapped because of being blocked by Wall of Frost",crawWurm.isTapped());
+}

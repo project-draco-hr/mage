@@ -1,0 +1,12 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Captain of the Mists");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Mist Raven");
+  attack(2,playerB,"Mist Raven");
+  block(2,playerA,"Captain of the Mists","Mist Raven");
+  setStopAt(2,Constants.PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,18);
+  assertLife(playerB,20);
+  Permanent mistRaven=getPermanent("Mist Raven",playerB.getId());
+  Assert.assertTrue("Should be tapped because of attacking",mistRaven.isTapped());
+}
