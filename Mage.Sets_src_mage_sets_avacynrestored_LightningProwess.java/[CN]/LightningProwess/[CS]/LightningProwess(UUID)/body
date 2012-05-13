@@ -1,0 +1,15 @@
+{
+  super(ownerId,145,"Lightning Prowess",Rarity.UNCOMMON,new CardType[]{CardType.ENCHANTMENT},"{2}{R}");
+  this.expansionSetCode="AVR";
+  this.subtype.add("Aura");
+  this.color.setRed(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Constants.Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new GainAbilityAttachedEffect(HasteAbility.getInstance(),Constants.AttachmentType.AURA)));
+  ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new DamageTargetEffect(1),new TapSourceCost());
+  ability.addTarget(new TargetCreatureOrPlayer());
+  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new GainAbilityAttachedEffect(ability,Constants.AttachmentType.AURA)));
+}
