@@ -2,7 +2,9 @@
   super(ownerId,137,"Argentum Armor",Rarity.RARE,new CardType[]{CardType.ARTIFACT},"{6}");
   this.expansionSetCode="SOM";
   this.subtype.add("Equipment");
-  this.addAbility(new EquipAbility(Constants.Outcome.AddAbility,new GenericManaCost(6)));
   this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEquippedEffect(6,6)));
-  this.addAbility(new ArgentumArmorAbiltity());
+  Ability ability=new AttacksEquippedTriggeredAbility(new DestroyTargetEffect());
+  ability.addTarget(new TargetPermanent());
+  this.addAbility(ability);
+  this.addAbility(new EquipAbility(Constants.Outcome.AddAbility,new GenericManaCost(6)));
 }
