@@ -1,15 +1,15 @@
 {
   if (currentGame != null) {
-    logger.info("Resetting previous game and creating new one!");
+    logger.debug("Resetting previous game and creating new one!");
     currentGame=null;
     System.gc();
   }
   Game game=new TwoPlayerDuel(Constants.MultiplayerAttackOption.LEFT,Constants.RangeOfInfluence.ALL);
   playerA=createNewPlayer("PlayerA");
   playerA.setTestMode(true);
-  logger.info("Loading deck...");
+  logger.debug("Loading deck...");
   Deck deck=Deck.load(DeckImporterUtil.importDeck("RB Aggro.dck"));
-  logger.info("Done!");
+  logger.debug("Done!");
   if (deck.getCards().size() < 40) {
     throw new IllegalArgumentException("Couldn't load deck, deck size=" + deck.getCards().size());
   }
