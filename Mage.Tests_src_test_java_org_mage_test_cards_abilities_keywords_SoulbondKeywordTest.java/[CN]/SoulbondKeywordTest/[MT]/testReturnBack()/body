@@ -1,0 +1,16 @@
+{
+  addCard(Constants.Zone.HAND,playerA,"Trusted Forcemage");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Forest",3);
+  addCard(Constants.Zone.HAND,playerB,"Act of Treason");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Mountain",3);
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Elite Vanguard");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Plains",1);
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Trusted Forcemage");
+  castSpell(2,Constants.PhaseStep.PRECOMBAT_MAIN,playerB,"Act of Treason","Trusted Forcemage");
+  castSpell(2,Constants.PhaseStep.PRECOMBAT_MAIN,playerB,"Elite Vanguard");
+  setStopAt(3,Constants.PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerA,"Trusted Forcemage",1);
+  assertPowerToughness(playerB,"Trusted Forcemage",2,2);
+  assertPowerToughness(playerB,"Elite Vanguard",2,1);
+}
