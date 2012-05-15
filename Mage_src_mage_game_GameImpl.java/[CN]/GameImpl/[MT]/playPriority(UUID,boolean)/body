@@ -16,7 +16,9 @@
           state.setPriorityPlayerId(player.getId());
           while (!player.isPassed() && !player.hasLost() && !player.hasLeft()&& !isPaused()&& !isGameOver()) {
             if (!resuming) {
-              checkStateAndTriggered();
+              if (checkStateAndTriggered()) {
+                applyEffects();
+              }
               if (isPaused() || isGameOver())               return;
               if (player.priority(this))               applyEffects();
               if (isPaused())               return;
