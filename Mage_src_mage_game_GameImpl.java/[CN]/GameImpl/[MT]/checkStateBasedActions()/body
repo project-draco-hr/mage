@@ -21,6 +21,24 @@
           continue;
         }
       }
+      if (perm.getPairedCard() != null) {
+        Permanent paired=getPermanent(perm.getPairedCard());
+        if (paired == null || !perm.getControllerId().equals(paired.getControllerId())) {
+          perm.setPairedCard(null);
+          if (paired != null) {
+            paired.setPairedCard(null);
+          }
+          somethingHappened=true;
+        }
+      }
+    }
+ else     if (perm.getPairedCard() != null) {
+      Permanent paired=getPermanent(perm.getPairedCard());
+      perm.setPairedCard(null);
+      if (paired != null) {
+        paired.setPairedCard(null);
+      }
+      somethingHappened=true;
     }
     if (perm.getCardType().contains(CardType.PLANESWALKER)) {
       if (perm.getCounters().getCount(CounterType.LOYALTY) == 0) {

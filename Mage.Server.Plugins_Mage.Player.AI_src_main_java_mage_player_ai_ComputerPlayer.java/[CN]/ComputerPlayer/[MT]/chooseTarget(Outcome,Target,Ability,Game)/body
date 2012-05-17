@@ -61,7 +61,7 @@
   }
   if (target instanceof TargetControlledPermanent) {
     List<Permanent> targets;
-    targets=threats(playerId,((TargetControlledPermanent)target).getFilter(),game,target.getTargets());
+    targets=threats(playerId,source.getSourceId(),((TargetControlledPermanent)target).getFilter(),game,target.getTargets());
     if (!outcome.isGood())     Collections.reverse(targets);
     for (    Permanent permanent : targets) {
       if (((TargetControlledPermanent)target).canTarget(playerId,permanent.getId(),source,game)) {
@@ -74,10 +74,10 @@
   if (target instanceof TargetPermanent) {
     List<Permanent> targets;
     if (outcome.isGood()) {
-      targets=threats(playerId,((TargetPermanent)target).getFilter(),game,target.getTargets());
+      targets=threats(playerId,source.getSourceId(),((TargetPermanent)target).getFilter(),game,target.getTargets());
     }
  else {
-      targets=threats(opponentId,((TargetPermanent)target).getFilter(),game,target.getTargets());
+      targets=threats(opponentId,source.getSourceId(),((TargetPermanent)target).getFilter(),game,target.getTargets());
     }
     if (targets.isEmpty() && target.isRequired()) {
       targets=game.getBattlefield().getActivePermanents(((TargetPermanent)target).getFilter(),playerId,game);
@@ -94,10 +94,10 @@
     List<Permanent> targets;
     TargetCreatureOrPlayer t=((TargetCreatureOrPlayer)target);
     if (outcome.isGood()) {
-      targets=threats(playerId,((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
+      targets=threats(playerId,source.getSourceId(),((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
     }
  else {
-      targets=threats(opponentId,((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
+      targets=threats(opponentId,source.getSourceId(),((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
     }
     if (targets.isEmpty() && target.isRequired()) {
       targets=game.getBattlefield().getActivePermanents(((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),playerId,game);
