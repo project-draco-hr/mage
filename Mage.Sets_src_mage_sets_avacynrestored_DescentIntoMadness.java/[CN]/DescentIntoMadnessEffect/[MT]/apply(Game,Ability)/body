@@ -1,0 +1,19 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    permanent.addCounters(CounterType.DESPAIR.createInstance(),game);
+    int count=permanent.getCounters().getCount(CounterType.DESPAIR);
+    if (count > 0) {
+      Player controller=game.getPlayer(permanent.getControllerId());
+      if (controller != null) {
+        for (        UUID playerId : controller.getInRange()) {
+          Player player=game.getPlayer(playerId);
+          if (player != null) {
+            exileCards(player,count,source,game);
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

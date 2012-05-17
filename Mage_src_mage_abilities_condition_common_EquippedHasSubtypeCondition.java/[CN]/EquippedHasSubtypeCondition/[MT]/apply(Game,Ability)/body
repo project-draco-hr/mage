@@ -3,8 +3,17 @@
   if (permanent != null && permanent.getAttachedTo() != null) {
     Permanent attachedTo=game.getBattlefield().getPermanent(permanent.getAttachedTo());
     if (attachedTo != null) {
-      if (attachedTo.hasSubtype(this.subType)) {
-        return true;
+      if (subType != null) {
+        if (attachedTo.hasSubtype(this.subType)) {
+          return true;
+        }
+      }
+ else {
+        for (        String s : subTypes) {
+          if (attachedTo.hasSubtype(s)) {
+            return true;
+          }
+        }
       }
     }
   }

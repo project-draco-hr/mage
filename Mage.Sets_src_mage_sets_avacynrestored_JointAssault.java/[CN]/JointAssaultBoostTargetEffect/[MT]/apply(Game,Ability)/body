@@ -1,0 +1,19 @@
+{
+  int affectedTargets=0;
+  UUID permanentId=targetPointer.getFirst(source);
+  Permanent target=game.getPermanent(permanentId);
+  if (target != null) {
+    target.addPower(power);
+    target.addToughness(toughness);
+    affectedTargets++;
+  }
+  if (this.paired != null) {
+    Permanent paired=game.getPermanent(this.paired);
+    if (paired != null) {
+      paired.addPower(power);
+      paired.addToughness(toughness);
+      affectedTargets++;
+    }
+  }
+  return affectedTargets > 0;
+}

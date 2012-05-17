@@ -1,12 +1,15 @@
 {
   Permanent permanent=game.getPermanent(targetPointer.getFirst(source));
+  if (exileId == null) {
+    exileId=getId();
+  }
   if (permanent != null) {
-    return permanent.moveToExile(exileId,exileZone,source.getId(),game);
+    return permanent.moveToExile(exileId,exileZone,source.getSourceId(),game);
   }
  else {
     Card card=game.getCard(targetPointer.getFirst(source));
     if (card != null) {
-      return card.moveToExile(exileId,exileZone,source.getId(),game);
+      return card.moveToExile(exileId,exileZone,source.getSourceId(),game);
     }
   }
   return false;

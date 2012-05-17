@@ -1,0 +1,23 @@
+{
+  GameEvent preventEvent=new GameEvent(GameEvent.EventType.PREVENT_DAMAGE,source.getFirstTarget(),source.getId(),source.getControllerId(),event.getAmount(),false);
+  if (!game.replaceEvent(preventEvent)) {
+    int preventedDamage=event.getAmount();
+    event.setAmount(0);
+    Player player=game.getPlayer(source.getControllerId());
+    if (player != null) {
+      int cardsCount=Math.min(preventedDamage,player.getLibrary().size());
+      for (int i=0; i < cardsCount; i++) {
+        Card card=player.getLibrary().removeFromTop(game);
+        if (card != null) {
+          card.moveToExile(source.getId(),"Gloom Surgeon",source.getSourceId(),game);
+        }
+ else {
+          break;
+        }
+      }
+    }
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.PREVENTED_DAMAGE,source.getFirstTarget(),source.getId(),source.getControllerId(),preventedDamage));
+    return true;
+  }
+  return false;
+}

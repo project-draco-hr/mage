@@ -2,6 +2,9 @@
   if (event.getType() == GameEvent.EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).isDiesEvent()) {
     MageObject object=game.getLastKnownInformation(event.getTargetId(),Constants.Zone.BATTLEFIELD);
     if (object instanceof Permanent && ((Permanent)object).getDealtDamageByThisTurn().contains(this.sourceId)) {
+      for (      Effect effect : getEffects()) {
+        effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+      }
       return true;
     }
   }

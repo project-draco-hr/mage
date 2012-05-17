@@ -1,0 +1,25 @@
+{
+  int amount=Math.min(count,player.getHand().size() + game.getBattlefield().getAllActivePermanents(player.getId()).size());
+  while (amount > 0) {
+    Target target=new TargetControlledPermanent(0,1,filter,true);
+    if (target.canChoose(player.getId(),game) && player.choose(Constants.Outcome.Exile,target,source.getSourceId(),game)) {
+      for (      UUID targetId : target.getTargets()) {
+        Permanent chosen=game.getPermanent(targetId);
+        if (chosen != null) {
+          chosen.moveToExile(source.getId(),"Descent into Madness",source.getSourceId(),game);
+          amount--;
+        }
+      }
+    }
+    if (amount > 0) {
+      TargetCard targetInHand=new TargetCard(Constants.Zone.HAND,filterInHand);
+      if (targetInHand.canChoose(player.getId(),game) && player.choose(Constants.Outcome.Exile,player.getHand(),targetInHand,game)) {
+        Card card=player.getHand().get(targetInHand.getFirstTarget(),game);
+        if (card != null) {
+          card.moveToExile(source.getId(),"Descent into Madness",source.getSourceId(),game);
+          amount--;
+        }
+      }
+    }
+  }
+}
