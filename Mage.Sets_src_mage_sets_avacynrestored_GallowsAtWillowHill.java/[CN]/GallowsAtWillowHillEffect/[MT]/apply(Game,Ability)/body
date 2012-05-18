@@ -1,0 +1,18 @@
+{
+  int affectedTargets=0;
+  if (targetPointer.getTargets(source).size() > 0) {
+    for (    UUID permanentId : targetPointer.getTargets(source)) {
+      Permanent permanent=game.getPermanent(permanentId);
+      if (permanent != null) {
+        Player controller=game.getPlayer(permanent.getControllerId());
+        permanent.destroy(source.getId(),game,false);
+        if (controller != null) {
+          Token spirit=new SpiritWhiteToken();
+          spirit.putOntoBattlefield(1,game,source.getSourceId(),controller.getId());
+        }
+        affectedTargets++;
+      }
+    }
+  }
+  return affectedTargets > 0;
+}
