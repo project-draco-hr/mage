@@ -3,6 +3,7 @@
     final Component comp=c;
     if (comp instanceof Permanent) {
       if (((Permanent)comp).getPermanentId().equals(permanentId)) {
+        comp.setVisible(false);
         this.remove(comp);
       }
     }
@@ -11,6 +12,7 @@
         Thread t=new Thread(new Runnable(){
           @Override public void run(){
             Plugins.getInstance().onRemoveCard((MagePermanent)comp,count);
+            comp.setVisible(false);
             BattlefieldPanel.this.remove(comp);
           }
         }
