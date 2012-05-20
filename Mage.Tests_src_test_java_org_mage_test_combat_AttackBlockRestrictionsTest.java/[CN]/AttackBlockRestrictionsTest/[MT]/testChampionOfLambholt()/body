@@ -1,0 +1,23 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Champion of Lambholt");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Elite Vanguard");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Arbor Elf");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Assault Griffin");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Plains",5);
+  addCard(Constants.Zone.HAND,playerB,"Baneslayer Angel");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Angelic Wall");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Air Elemental");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Llanowar Elves");
+  castSpell(2,Constants.PhaseStep.PRECOMBAT_MAIN,playerB,"Baneslayer Angel");
+  attack(2,playerB,"Elite Vanguard");
+  block(2,playerA,"Angelic Wall","Elite Vanguard");
+  attack(2,playerB,"Arbor Elf");
+  block(2,playerA,"Llanowar Elves","Arbor Elf");
+  attack(2,playerB,"Assault Griffin");
+  block(2,playerA,"Air Elemental","Assault Griffin");
+  setStopAt(2,Constants.PhaseStep.END_TURN);
+  execute();
+  assertPowerToughness(playerB,"Champion of Lambholt",2,2);
+  assertLife(playerA,17);
+  assertLife(playerB,20);
+}

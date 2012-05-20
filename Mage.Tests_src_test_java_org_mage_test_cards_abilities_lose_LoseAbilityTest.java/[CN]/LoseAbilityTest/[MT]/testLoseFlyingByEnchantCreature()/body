@@ -1,0 +1,18 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Forest",4);
+  addCard(Constants.Zone.HAND,playerA,"Grounded",2);
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Elite Vanguard");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Air Elemental");
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Grounded","Elite Vanguard");
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Grounded","Air Elemental");
+  setStopAt(2,Constants.PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  Permanent eliteVanguard=getPermanent("Elite Vanguard",playerA.getId());
+  Assert.assertNotNull(eliteVanguard);
+  Assert.assertFalse(eliteVanguard.getAbilities().contains(FlyingAbility.getInstance()));
+  Permanent airElemental=getPermanent("Air Elemental",playerA.getId());
+  Assert.assertNotNull(airElemental);
+  Assert.assertFalse(airElemental.getAbilities().contains(FlyingAbility.getInstance()));
+}
