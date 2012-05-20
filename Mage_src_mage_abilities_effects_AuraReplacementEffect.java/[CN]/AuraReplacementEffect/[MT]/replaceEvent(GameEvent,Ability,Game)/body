@@ -3,6 +3,10 @@
   Card card=game.getCard(event.getTargetId());
   UUID sourceId=event.getSourceId();
   UUID controllerId=event.getPlayerId();
+  Object object=game.getState().getValue("attachTo:" + card.getId());
+  if (object != null && object instanceof PermanentCard) {
+    return false;
+  }
   UUID targetId=null;
   MageObject sourceObject=game.getObject(sourceId);
   if (sourceObject instanceof StackAbility) {
@@ -39,6 +43,7 @@ game.getBattlefield().addPermanent(permanent);
 game.setZone(card.getId(),Zone.BATTLEFIELD);
 game.applyEffects();
 permanent.entersBattlefield(event.getSourceId(),game);
+game.applyEffects();
 game.fireEvent(new ZoneChangeEvent(permanent,controllerId,fromZone,Zone.BATTLEFIELD));
 if (targetPermanent != null) {
 targetPermanent.addAttachment(permanent.getId(),game);
