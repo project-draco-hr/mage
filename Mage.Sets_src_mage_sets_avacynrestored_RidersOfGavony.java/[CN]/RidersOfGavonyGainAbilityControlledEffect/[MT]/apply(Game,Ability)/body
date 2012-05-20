@@ -1,0 +1,19 @@
+{
+  if (protectionFilter == null) {
+    Permanent permanent=game.getPermanent(source.getSourceId());
+    if (permanent != null) {
+      String subtype=(String)game.getState().getValue(permanent.getId() + "_type");
+      if (subtype != null) {
+        protectionFilter=new FilterPermanent(subtype + "s");
+        protectionFilter.getSubtype().add(subtype);
+      }
+    }
+  }
+  if (protectionFilter != null) {
+    for (    Permanent perm : game.getBattlefield().getAllActivePermanents(filter,source.getControllerId())) {
+      perm.addAbility(new ProtectionAbility(protectionFilter),game);
+    }
+    return true;
+  }
+  return false;
+}
