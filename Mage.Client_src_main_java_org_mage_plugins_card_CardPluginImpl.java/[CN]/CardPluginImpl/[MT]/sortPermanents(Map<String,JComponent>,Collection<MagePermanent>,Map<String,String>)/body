@@ -1,12 +1,7 @@
 {
   if (ui == null)   throw new RuntimeException("Error: no components");
-  JComponent component=ui.get("jScrollPane");
   JComponent component2=ui.get("battlefieldPanel");
-  if (component == null)   throw new RuntimeException("Error: jScrollPane is missing");
   if (component2 == null)   throw new RuntimeException("Error: battlefieldPanel is missing");
-  if (!(component instanceof JScrollPane))   throw new RuntimeException("Error: jScrollPane has wrong type.");
-  if (!(component instanceof JScrollPane))   throw new RuntimeException("Error: battlefieldPanel is missing");
-  JScrollPane jScrollPane=(JScrollPane)component;
   JLayeredPane battlefieldPanel=(JLayeredPane)component2;
   Row allLands=new Row();
   outerLoop:   for (  MagePermanent permanent : permanents) {
@@ -44,7 +39,7 @@
     }
   }
   cardWidth=cardWidthMax;
-  Rectangle rect=jScrollPane.getVisibleRect();
+  Rectangle rect=battlefieldPanel.getVisibleRect();
   playAreaWidth=rect.width;
   playAreaHeight=rect.height;
   while (true) {
@@ -115,4 +110,5 @@
     }
     y=rowBottom;
   }
+  return y;
 }
