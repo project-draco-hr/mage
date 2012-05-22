@@ -1,0 +1,26 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (player != null && permanent != null) {
+    StringBuilder sb=new StringBuilder();
+    sb.append("Make ").append(permanent.getName()).append(" deal 4 damage to you?");
+    Set<UUID> opponents=game.getOpponents(source.getControllerId());
+    for (    UUID opponentUuid : opponents) {
+      Player opponent=game.getPlayer(opponentUuid);
+      if (opponent != null && opponent.chooseUse(Constants.Outcome.LoseLife,sb.toString(),game)) {
+        game.informPlayers(opponent.getName() + " has chosen to receive 4 damage from " + permanent.getName());
+        int dealt=opponent.damage(4,permanent.getId(),game,false,true);
+        if (dealt == 4) {
+          game.informPlayers(opponent.getName() + " was dealt 4 damage so " + permanent.getName()+ " will be sacrificed.");
+          permanent.sacrifice(source.getId(),game);
+          return true;
+        }
+ else {
+          game.informPlayers("4 damage wasn't dealt so " + permanent.getName() + " won't be sacrificed.");
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
