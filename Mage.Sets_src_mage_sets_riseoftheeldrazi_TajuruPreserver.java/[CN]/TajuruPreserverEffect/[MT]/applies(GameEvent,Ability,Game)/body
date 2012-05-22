@@ -1,0 +1,16 @@
+{
+  if (event.getType() == GameEvent.EventType.SACRIFICE_PERMANENT) {
+    MageObject object=game.getObject(event.getSourceId());
+    if (object instanceof PermanentCard) {
+      if (game.getOpponents(source.getControllerId()).contains(((PermanentCard)object).getControllerId())) {
+        return true;
+      }
+    }
+    if (object instanceof Spell) {
+      if (game.getOpponents(source.getControllerId()).contains(((Spell)object).getControllerId())) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
