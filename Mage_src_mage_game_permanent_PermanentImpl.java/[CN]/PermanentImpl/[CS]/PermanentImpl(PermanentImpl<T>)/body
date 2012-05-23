@@ -16,8 +16,9 @@
   this.deathtouched=permanent.deathtouched;
   this.counters=permanent.counters.copy();
   this.attachments.addAll(permanent.attachments);
-  this.imprinted.addAll(permanent.imprinted);
-  this.connectedCards.addAll(permanent.connectedCards);
+  for (  Map.Entry<String,List<UUID>> entry : permanent.connectedCards.entrySet()) {
+    this.connectedCards.put(entry.getKey(),entry.getValue());
+  }
   if (permanent.dealtDamageByThisTurn != null) {
     dealtDamageByThisTurn=new ArrayList<UUID>(permanent.dealtDamageByThisTurn);
     if (permanent.markedDamage != null) {
