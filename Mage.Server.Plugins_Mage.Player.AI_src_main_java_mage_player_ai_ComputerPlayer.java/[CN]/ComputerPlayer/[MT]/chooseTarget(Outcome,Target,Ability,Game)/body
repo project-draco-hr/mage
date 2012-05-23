@@ -99,16 +99,18 @@
  else {
       targets=threats(opponentId,source.getSourceId(),((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
     }
-    if (outcome.isGood()) {
-      if (target.canTarget(playerId,source,game)) {
-        target.addTarget(playerId,source,game);
-        return true;
+    if (targets.isEmpty()) {
+      if (outcome.isGood()) {
+        if (target.canTarget(playerId,source,game)) {
+          target.addTarget(playerId,source,game);
+          return true;
+        }
       }
-    }
  else {
-      if (target.canTarget(opponentId,source,game)) {
-        target.addTarget(opponentId,source,game);
-        return true;
+        if (target.canTarget(opponentId,source,game)) {
+          target.addTarget(opponentId,source,game);
+          return true;
+        }
       }
     }
     if (targets.isEmpty() && target.isRequired()) {
@@ -121,6 +123,18 @@
           target.addTarget(permanent.getId(),source,game);
           return true;
         }
+      }
+    }
+    if (outcome.isGood()) {
+      if (target.canTarget(playerId,source,game)) {
+        target.addTarget(playerId,source,game);
+        return true;
+      }
+    }
+ else {
+      if (target.canTarget(opponentId,source,game)) {
+        target.addTarget(opponentId,source,game);
+        return true;
       }
     }
     if (!target.isRequired())     return false;
