@@ -1,0 +1,12 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getToZone() == Constants.Zone.BATTLEFIELD) {
+      Permanent permanent=game.getPermanent(event.getTargetId());
+      if (permanent != null && permanent.getSubtype().contains("Human") && permanent.getControllerId().equals(this.getControllerId())) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
