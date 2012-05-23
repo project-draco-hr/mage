@@ -99,18 +99,6 @@
  else {
       targets=threats(opponentId,source.getSourceId(),((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
     }
-    if (targets.isEmpty() && target.isRequired()) {
-      targets=game.getBattlefield().getActivePermanents(((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),playerId,game);
-    }
-    for (    Permanent permanent : targets) {
-      List<UUID> alreadyTargetted=target.getTargets();
-      if (t.canTarget(playerId,permanent.getId(),source,game)) {
-        if (alreadyTargetted != null && !alreadyTargetted.contains(permanent.getId())) {
-          target.addTarget(permanent.getId(),source,game);
-          return true;
-        }
-      }
-    }
     if (outcome.isGood()) {
       if (target.canTarget(playerId,source,game)) {
         target.addTarget(playerId,source,game);
@@ -121,6 +109,18 @@
       if (target.canTarget(opponentId,source,game)) {
         target.addTarget(opponentId,source,game);
         return true;
+      }
+    }
+    if (targets.isEmpty() && target.isRequired()) {
+      targets=game.getBattlefield().getActivePermanents(((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),playerId,game);
+    }
+    for (    Permanent permanent : targets) {
+      List<UUID> alreadyTargetted=target.getTargets();
+      if (t.canTarget(playerId,permanent.getId(),source,game)) {
+        if (alreadyTargetted != null && !alreadyTargetted.contains(permanent.getId())) {
+          target.addTarget(permanent.getId(),source,game);
+          return true;
+        }
       }
     }
     if (!target.isRequired())     return false;
