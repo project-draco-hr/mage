@@ -1,0 +1,14 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Mountain",3);
+  addCard(Constants.Zone.HAND,playerA,"Island");
+  addCard(Constants.Zone.HAND,playerA,"Azure Drake");
+  addCard(Constants.Zone.HAND,playerB,"Remove Soul");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Island",2);
+  playLand(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Island");
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Azure Drake");
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerB,"Remove Soul");
+  setStopAt(1,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Azure Drake",0);
+  assertGraveyardCount(playerA,"Azure Drake",1);
+}
