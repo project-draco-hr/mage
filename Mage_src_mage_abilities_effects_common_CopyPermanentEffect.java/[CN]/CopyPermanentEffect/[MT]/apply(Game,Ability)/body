@@ -6,11 +6,15 @@
       player.choose(Outcome.Copy,target,source.getSourceId(),game);
       Permanent perm=game.getPermanent(target.getFirstTarget());
       if (perm != null) {
-        perm=perm.copy();
-        game.getState().addCard(perm);
-        perm.reset(game);
-        perm.assignNewId();
-        game.addEffect(new CopyEffect(perm),source);
+        game.copyPermanent(perm,source,new ApplyToPermanent(){
+          @Override public Boolean apply(          Game game,          Permanent permanent){
+            if (!permanent.getCardType().contains(Constants.CardType.ARTIFACT)) {
+              permanent.getCardType().add(Constants.CardType.ARTIFACT);
+            }
+            return true;
+          }
+        }
+);
         return true;
       }
     }
