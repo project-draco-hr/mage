@@ -4,7 +4,8 @@
   while (it.hasNext()) {
     ManaPoolItem item=it.next();
     if (item.isConditional()) {
-      if (item.getConditionalMana().apply(ability,game)) {
+      ConditionalMana cm=item.getConditionalMana();
+      if (cm.apply(ability,game,cm.getManaProducerId())) {
         total+=item.count();
         it.remove();
       }

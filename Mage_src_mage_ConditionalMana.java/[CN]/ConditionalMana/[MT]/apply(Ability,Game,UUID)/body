@@ -3,7 +3,8 @@
     throw new IllegalStateException("Conditional mana should contain at least one Condition");
   }
   for (  Condition condition : conditions) {
-    if (!condition.apply(game,ability)) {
+    boolean applied=(condition instanceof ManaCondition) ? ((ManaCondition)condition).apply(game,ability,manaProducerId) : condition.apply(game,ability);
+    if (!applied) {
       if (scope.equals(Filter.ComparisonScope.All)) {
         return false;
       }
