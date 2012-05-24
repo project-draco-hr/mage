@@ -1,0 +1,34 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    if (player.getLibrary().size() > 0) {
+      Card card=player.getLibrary().getFromTop(game);
+      player.revealCards("DescendantsPath",new CardsImpl(card),game);
+      if (card.getCardType().contains(CardType.CREATURE)) {
+        FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent();
+        filter.getSubtype().addAll(card.getSubtype());
+        filter.setScopeSubtype(Filter.ComparisonScope.Any);
+        int count=game.getBattlefield().getAllActivePermanents(filter,player.getId()).size();
+        if (count > 0) {
+          game.informPlayers("DescendantsPath: Found a creature that shares a creature type with the revealed card.");
+          if (player.chooseUse(Constants.Outcome.Benefit,"Cast the card?",game)) {
+            player.cast(card.getSpellAbility(),game,true);
+          }
+ else {
+            game.informPlayers("DescendantsPath: " + player.getName() + " canceled casting the card.");
+            player.getLibrary().putOnBottom(card,game);
+          }
+        }
+ else {
+          game.informPlayers("DescendantsPath: No creature that shares a creature type with the revealed card.");
+          player.getLibrary().putOnBottom(card,game);
+        }
+      }
+ else {
+        player.getLibrary().putOnBottom(card,game);
+      }
+      return true;
+    }
+  }
+  return false;
+}
