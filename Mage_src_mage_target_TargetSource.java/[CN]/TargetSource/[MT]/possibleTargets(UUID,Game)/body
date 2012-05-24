@@ -10,5 +10,17 @@
       possibleTargets.add(permanent.getId());
     }
   }
+  for (  Player player : game.getPlayers().values()) {
+    for (    Card card : player.getGraveyard().getCards(game)) {
+      if (filter.match(card,game)) {
+        possibleTargets.add(card.getId());
+      }
+    }
+  }
+  for (  Card card : game.getExile().getAllCards(game)) {
+    if (filter.match(card,game)) {
+      possibleTargets.add(card.getId());
+    }
+  }
   return possibleTargets;
 }

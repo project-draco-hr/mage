@@ -12,5 +12,19 @@
       if (count >= this.minNumberOfTargets)       return true;
     }
   }
+  for (  Player player : game.getPlayers().values()) {
+    for (    Card card : player.getGraveyard().getCards(game)) {
+      if (filter.match(card,game)) {
+        count++;
+        if (count >= this.minNumberOfTargets)         return true;
+      }
+    }
+  }
+  for (  Card card : game.getExile().getAllCards(game)) {
+    if (filter.match(card,game)) {
+      count++;
+      if (count >= this.minNumberOfTargets)       return true;
+    }
+  }
   return false;
 }
