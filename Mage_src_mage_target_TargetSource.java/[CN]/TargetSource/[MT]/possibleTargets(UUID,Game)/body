@@ -1,12 +1,12 @@
 {
   Set<UUID> possibleTargets=new HashSet<UUID>();
   for (  StackObject stackObject : game.getStack()) {
-    if (game.getPlayer(sourceControllerId).getInRange().contains(stackObject.getControllerId()) && filter.match(stackObject)) {
+    if (game.getPlayer(sourceControllerId).getInRange().contains(stackObject.getControllerId()) && filter.match(stackObject,game)) {
       possibleTargets.add(stackObject.getId());
     }
   }
   for (  Permanent permanent : game.getBattlefield().getActivePermanents(sourceControllerId,game)) {
-    if (filter.match(permanent)) {
+    if (filter.match(permanent,game)) {
       possibleTargets.add(permanent.getId());
     }
   }

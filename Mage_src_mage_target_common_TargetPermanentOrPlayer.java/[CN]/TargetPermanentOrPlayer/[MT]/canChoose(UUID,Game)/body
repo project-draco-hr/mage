@@ -2,13 +2,13 @@
   int count=0;
   for (  UUID playerId : game.getPlayer(sourceControllerId).getInRange()) {
     Player player=game.getPlayer(playerId);
-    if (player != null && filter.match(player)) {
+    if (player != null && filter.match(player,game)) {
       count++;
       if (count >= this.minNumberOfTargets)       return true;
     }
   }
   for (  Permanent permanent : game.getBattlefield().getActivePermanents(filterPermanent,sourceControllerId,game)) {
-    if (filter.match(permanent,null,sourceControllerId,game) && filter.match(permanent)) {
+    if (filter.match(permanent,null,sourceControllerId,game) && filter.match(permanent,game)) {
       count++;
       if (count >= this.minNumberOfTargets)       return true;
     }

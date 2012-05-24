@@ -1,0 +1,11 @@
+{
+  if (!super.match(spell,game))   return notFilter;
+  if (spell instanceof Spell) {
+    CastSpellLastTurnWatcher watcher=(CastSpellLastTurnWatcher)game.getState().getWatchers().get("CastSpellLastTurnWatcher");
+    int index=watcher.getSpellOrder((Spell)spell);
+    if (index == 2) {
+      return !notFilter;
+    }
+  }
+  return notFilter;
+}

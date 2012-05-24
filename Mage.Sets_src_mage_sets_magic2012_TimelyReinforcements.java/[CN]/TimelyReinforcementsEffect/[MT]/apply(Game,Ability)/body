@@ -4,14 +4,14 @@
     boolean lessCreatures=false;
     boolean lessLife=false;
     FilterPermanent filter=new FilterCreaturePermanent();
-    int count=game.getBattlefield().countAll(filter,controller.getId());
+    int count=game.getBattlefield().countAll(filter,controller.getId(),game);
     for (    UUID uuid : game.getOpponents(controller.getId())) {
       Player opponent=game.getPlayer(uuid);
       if (opponent != null) {
         if (opponent.getLife() > controller.getLife()) {
           lessLife=true;
         }
-        if (game.getBattlefield().countAll(filter,uuid) > count) {
+        if (game.getBattlefield().countAll(filter,uuid,game) > count) {
           lessCreatures=true;
         }
       }

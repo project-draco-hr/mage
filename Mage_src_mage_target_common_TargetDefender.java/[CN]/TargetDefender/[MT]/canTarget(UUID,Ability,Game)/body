@@ -2,7 +2,7 @@
   Player player=game.getPlayer(id);
   MageObject targetSource=game.getObject(attackerId);
   if (player != null) {
-    return player.canBeTargetedBy(targetSource) && filter.match(player);
+    return player.canBeTargetedBy(targetSource,game) && filter.match(player,game);
   }
   Permanent permanent=game.getPermanent(id);
   if (permanent != null) {
@@ -10,7 +10,7 @@
     if (source != null) {
       controllerId=source.getControllerId();
     }
-    return permanent.canBeTargetedBy(targetSource,controllerId,game) && filter.match(permanent);
+    return permanent.canBeTargetedBy(targetSource,controllerId,game) && filter.match(permanent,game);
   }
   return false;
 }

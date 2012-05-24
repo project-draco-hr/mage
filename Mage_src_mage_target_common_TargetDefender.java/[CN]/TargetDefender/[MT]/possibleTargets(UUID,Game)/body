@@ -2,12 +2,12 @@
   Set<UUID> possibleTargets=new HashSet<UUID>();
   for (  UUID playerId : game.getPlayer(sourceControllerId).getInRange()) {
     Player player=game.getPlayer(playerId);
-    if (player != null && filter.match(player)) {
+    if (player != null && filter.match(player,game)) {
       possibleTargets.add(playerId);
     }
   }
   for (  Permanent permanent : game.getBattlefield().getActivePermanents(new FilterPlaneswalkerPermanent(),sourceControllerId,game)) {
-    if (filter.match(permanent)) {
+    if (filter.match(permanent,game)) {
       possibleTargets.add(permanent.getId());
     }
   }

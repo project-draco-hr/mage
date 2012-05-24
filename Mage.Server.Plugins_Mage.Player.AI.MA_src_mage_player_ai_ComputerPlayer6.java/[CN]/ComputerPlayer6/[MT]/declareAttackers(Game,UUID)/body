@@ -22,7 +22,7 @@
     int defenderForces=0;
     int defenderForcesForBlock=0;
     FilterCreatureForCombat filter=new FilterCreatureForCombat();
-    for (    Permanent possibleAttacker : game.getBattlefield().getAllActivePermanents(filter,defender.getId())) {
+    for (    Permanent possibleAttacker : game.getBattlefield().getAllActivePermanents(filter,defender.getId(),game)) {
       if (!possibleAttacker.getAbilities().contains(DefenderAbility.getInstance())) {
         counterAttackList.add(possibleAttacker);
         if (possibleAttacker.getPower().getValue() > 0) {
@@ -41,7 +41,7 @@
     List<Permanent> possibleAttackersList=new ArrayList<Permanent>();
     int possibleAttackersDamage=0;
     int ourForces=0;
-    for (    Permanent possibleAttacker : game.getBattlefield().getAllActivePermanents(filter,playerId)) {
+    for (    Permanent possibleAttacker : game.getBattlefield().getAllActivePermanents(filter,playerId,game)) {
       if (!possibleAttacker.getAbilities().contains(DefenderAbility.getInstance())) {
         possibleAttackersList.add(possibleAttacker);
         if (possibleAttacker.getPower().getValue() > 0) {
@@ -106,7 +106,7 @@
       Permanent attacker=attackersList.get(i);
       int totalFirstStrikeBlockPower=0;
       if (!attacker.getAbilities().contains(FirstStrikeAbility.getInstance()) && !attacker.getAbilities().contains(DoubleStrikeAbility.getInstance())) {
-        for (        Permanent blockerWithFSorDB : game.getBattlefield().getAllActivePermanents(filter,playerId)) {
+        for (        Permanent blockerWithFSorDB : game.getBattlefield().getAllActivePermanents(filter,playerId,game)) {
           if (blockerWithFSorDB.getAbilities().contains(DoubleStrikeAbility.getInstance())) {
             totalFirstStrikeBlockPower+=2 * blockerWithFSorDB.getPower().getValue();
           }

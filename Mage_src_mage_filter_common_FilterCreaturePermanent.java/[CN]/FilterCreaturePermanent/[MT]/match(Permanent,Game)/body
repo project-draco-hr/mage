@@ -1,0 +1,21 @@
+{
+  if (!super.match(permanent,game))   return notFilter;
+  if (useAttacking) {
+    if (permanent.isAttacking() != attacking) {
+      if (useBlocking) {
+        if ((permanent.getBlocking() > 0) != blocking) {
+          return notFilter;
+        }
+      }
+ else {
+        return notFilter;
+      }
+    }
+    return !notFilter;
+  }
+  if (useBlocking && (permanent.getBlocking() > 0) != blocking)   return notFilter;
+  if (useDamageDealt) {
+    if (permanent.getDealtDamageByThisTurn().isEmpty())     return notFilter;
+  }
+  return !notFilter;
+}
