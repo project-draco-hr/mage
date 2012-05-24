@@ -1,0 +1,24 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment != null && enchantment.getAttachedTo() != null) {
+    Permanent land=game.getPermanent(enchantment.getAttachedTo());
+    if (land != null) {
+switch (layer) {
+case AbilityAddingRemovingEffects_6:
+        land.getAbilities().clear();
+      land.addAbility(new BlackManaAbility(),game);
+    break;
+case ControlChangingEffects_2:
+  land.getColor().setColor(new ObjectColor(""));
+break;
+case TypeChangingEffects_4:
+if (!land.getCardType().contains(CardType.LAND)) land.getCardType().add(CardType.LAND);
+land.getSubtype().clear();
+land.getSubtype().add("Swamp");
+break;
+}
+return true;
+}
+}
+return false;
+}
