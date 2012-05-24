@@ -1,6 +1,9 @@
 {
   GameEvent preventEvent=new GameEvent(GameEvent.EventType.PREVENT_DAMAGE,source.getFirstTarget(),source.getId(),source.getControllerId(),event.getAmount(),false);
   if (!game.replaceEvent(preventEvent)) {
+    if (amount == -1) {
+      amount=source.getManaCostsToPay().getX();
+    }
     int prevented=0;
     if (event.getAmount() >= this.amount) {
       int damage=amount;
