@@ -1,0 +1,13 @@
+{
+  if (sourceId.equals(this.cardId)) {
+    Card card=game.getCard(this.cardId);
+    if (card != null && game.getState().getZone(this.cardId) == Constants.Zone.EXILED) {
+      Player player=game.getPlayer(source.getControllerId());
+      if (player != null && player.chooseUse(Constants.Outcome.Benefit,"Cast the card without paying cost?",game)) {
+        player.cast(card.getSpellAbility(),game,true);
+      }
+      return false;
+    }
+  }
+  return false;
+}

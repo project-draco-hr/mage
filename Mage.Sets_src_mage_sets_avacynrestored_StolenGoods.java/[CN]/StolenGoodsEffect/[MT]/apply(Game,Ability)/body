@@ -1,0 +1,20 @@
+{
+  Player player=game.getPlayer(targetPointer.getFirst(source));
+  if (player != null && player.getLibrary().size() > 0) {
+    Library library=player.getLibrary();
+    Card card;
+    do {
+      card=library.removeFromTop(game);
+      if (card != null) {
+        card.moveToExile(source.getId(),"Stolen Goods",source.getSourceId(),game);
+      }
+    }
+ while (library.size() > 0 && card != null && card.getCardType().contains(CardType.LAND));
+    if (card != null) {
+      player.revealCards("Card to cast",new CardsImpl(card),game);
+      game.addEffect(new StolenGoodsCastFromExileEffect(card.getId()),source);
+    }
+    return true;
+  }
+  return false;
+}
