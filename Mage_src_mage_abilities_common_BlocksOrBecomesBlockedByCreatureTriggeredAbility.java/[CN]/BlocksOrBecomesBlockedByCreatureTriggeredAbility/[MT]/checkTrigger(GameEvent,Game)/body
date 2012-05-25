@@ -1,0 +1,17 @@
+{
+  if (event.getType() == GameEvent.EventType.BLOCKER_DECLARED) {
+    if (event.getSourceId().equals(this.getSourceId())) {
+      for (      Effect effect : this.getEffects()) {
+        effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+      }
+      return true;
+    }
+    if (event.getTargetId().equals(this.getSourceId())) {
+      for (      Effect effect : this.getEffects()) {
+        effect.setTargetPointer(new FixedTarget(event.getSourceId()));
+      }
+      return true;
+    }
+  }
+  return false;
+}
