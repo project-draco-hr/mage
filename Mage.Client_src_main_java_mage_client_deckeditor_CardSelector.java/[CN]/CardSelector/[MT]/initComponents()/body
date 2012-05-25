@@ -10,7 +10,6 @@
   btnBooster=new javax.swing.JButton();
   btnClear=new javax.swing.JButton();
   jScrollPane1=new javax.swing.JScrollPane();
-  cardGrid=new mage.client.cards.CardGrid();
   tbTypes=new javax.swing.JToolBar();
   rdoLand=new javax.swing.JRadioButton();
   rdoCreatures=new javax.swing.JRadioButton();
@@ -32,6 +31,8 @@
   jButtonClean=new javax.swing.JButton();
   cardCountLabel=new javax.swing.JLabel();
   cardCount=new javax.swing.JLabel();
+  jButtonRemoveFromMain=new javax.swing.JButton();
+  jButtonRemoveFromSideboard=new javax.swing.JButton();
   tbColor.setFloatable(false);
   tbColor.setRollover(true);
   rdoRed.setSelected(true);
@@ -136,7 +137,6 @@
   }
 );
   tbColor.add(btnClear);
-  jScrollPane1.setViewportView(cardGrid);
   tbTypes.setFloatable(false);
   tbTypes.setRollover(true);
   rdoLand.setSelected(true);
@@ -267,14 +267,16 @@
   tbTypes.add(jToggleCardView);
   jPanel1.setOpaque(false);
   jPanel1.setPreferredSize(new java.awt.Dimension(897,35));
-  jButtonAddToMain.setText("Add to Main");
+  jButtonAddToMain.setText("+");
+  jButtonAddToMain.setToolTipText("Add to Main");
   jButtonAddToMain.addActionListener(new java.awt.event.ActionListener(){
     public void actionPerformed(    java.awt.event.ActionEvent evt){
       jButtonAddToMainActionPerformed(evt);
     }
   }
 );
-  jButtonAddToSideboard.setText("Add to Sideboard");
+  jButtonAddToSideboard.setText("+S");
+  jButtonAddToSideboard.setToolTipText("Add to Sideboard");
   jButtonAddToSideboard.addActionListener(new java.awt.event.ActionListener(){
     public void actionPerformed(    java.awt.event.ActionEvent evt){
       jButtonAddToSideboardActionPerformed(evt);
@@ -298,10 +300,26 @@
 );
   cardCountLabel.setText("Card count:");
   cardCount.setText("0");
+  jButtonRemoveFromMain.setText("-");
+  jButtonRemoveFromMain.setToolTipText("Remove from Main");
+  jButtonRemoveFromMain.addActionListener(new java.awt.event.ActionListener(){
+    public void actionPerformed(    java.awt.event.ActionEvent evt){
+      jButtonRemoveFromMainActionPerformed(evt);
+    }
+  }
+);
+  jButtonRemoveFromSideboard.setText("-S");
+  jButtonRemoveFromSideboard.setToolTipText("Remove from Sideboard");
+  jButtonRemoveFromSideboard.addActionListener(new java.awt.event.ActionListener(){
+    public void actionPerformed(    java.awt.event.ActionEvent evt){
+      jButtonRemoveFromSideboardActionPerformed(evt);
+    }
+  }
+);
   javax.swing.GroupLayout jPanel1Layout=new javax.swing.GroupLayout(jPanel1);
   jPanel1.setLayout(jPanel1Layout);
-  jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addComponent(jButtonAddToMain).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jButtonAddToSideboard).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(jTextFieldSearch,javax.swing.GroupLayout.PREFERRED_SIZE,112,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jButtonSearch).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jButtonClean).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(cardCountLabel).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cardCount,javax.swing.GroupLayout.PREFERRED_SIZE,48,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(165,Short.MAX_VALUE)));
-  jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jButtonAddToMain).addComponent(jButtonAddToSideboard).addComponent(jLabel1).addComponent(jTextFieldSearch,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(jButtonSearch).addComponent(jButtonClean).addComponent(cardCountLabel).addComponent(cardCount)));
+  jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createSequentialGroup().addComponent(jButtonAddToMain).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jButtonRemoveFromMain).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(jButtonAddToSideboard).addGap(5,5,5).addComponent(jButtonRemoveFromSideboard).addGap(18,18,18).addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(jTextFieldSearch,javax.swing.GroupLayout.PREFERRED_SIZE,112,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jButtonSearch).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jButtonClean).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(cardCountLabel).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cardCount,javax.swing.GroupLayout.PREFERRED_SIZE,48,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(186,Short.MAX_VALUE)));
+  jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(jButtonAddToMain).addComponent(jLabel1).addComponent(jTextFieldSearch,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(jButtonSearch).addComponent(jButtonClean).addComponent(cardCountLabel).addComponent(cardCount).addComponent(jButtonRemoveFromMain).addComponent(jButtonAddToSideboard).addComponent(jButtonRemoveFromSideboard)));
   cardCountLabel.getAccessibleContext().setAccessibleName("cardCountLabel");
   cardCount.getAccessibleContext().setAccessibleName("cardCount");
   javax.swing.GroupLayout layout=new javax.swing.GroupLayout(this);
