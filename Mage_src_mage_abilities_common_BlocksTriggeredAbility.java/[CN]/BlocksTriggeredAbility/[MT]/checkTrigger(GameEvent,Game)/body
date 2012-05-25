@@ -1,6 +1,10 @@
 {
   if (event.getType() == EventType.BLOCKER_DECLARED && event.getSourceId().equals(this.getSourceId())) {
-    this.getTargets().get(0).add(event.getTargetId(),game);
+    if (fixedTargetPointer) {
+      for (      Effect effect : this.getEffects()) {
+        effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+      }
+    }
     return true;
   }
   return false;
