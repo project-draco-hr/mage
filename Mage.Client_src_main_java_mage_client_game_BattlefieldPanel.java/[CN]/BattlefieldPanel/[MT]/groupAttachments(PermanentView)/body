@@ -16,6 +16,7 @@
     }
   }
  else {
+    int index=permanent.getAttachments().size();
     for (    UUID attachmentId : permanent.getAttachments()) {
       MagePermanent link=permanents.get(attachmentId);
       if (link != null) {
@@ -25,7 +26,10 @@
         perm.setBounds(r);
         moveToFront(link);
         moveToFront(perm);
+        jPanel.setComponentZOrder(link,index);
+        index--;
       }
     }
+    jPanel.setComponentZOrder(perm,index);
   }
 }
