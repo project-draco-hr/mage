@@ -3,6 +3,7 @@
   JComponent component2=ui.get("battlefieldPanel");
   if (component2 == null)   throw new RuntimeException("Error: battlefieldPanel is missing");
   JLayeredPane battlefieldPanel=(JLayeredPane)component2;
+  JComponent jPanel=ui.get("jPanel");
   Row allLands=new Row();
   outerLoop:   for (  MagePermanent permanent : permanents) {
     if (!CardUtil.isLand(permanent) || CardUtil.isCreature(permanent))     continue;
@@ -66,7 +67,7 @@
     wrap(others,rows,afterCreaturesIndex);
     for (    Row row : rows)     fillRow(others,rows,row);
     if (creatures.isEmpty() && lands.isEmpty() && others.isEmpty())     break;
-    cardWidth--;
+    cardWidth-=3;
   }
   int x, y=GUTTER_Y;
   int maxRowWidth=0;
@@ -95,10 +96,11 @@
       for (int panelIndex=0, panelCount=stack.size(); panelIndex < panelCount; panelIndex++) {
         MagePermanent panel=stack.get(panelIndex);
         int stackPosition=panelCount - panelIndex - 1;
+        if (jPanel != null)         jPanel.setComponentZOrder(panel,panelIndex);
         int panelX=x + (stackPosition * stackSpacingX);
         int panelY=y + (stackPosition * stackSpacingY);
         try {
-          battlefieldPanel.moveToBack(panel);
+          battlefieldPanel.moveToFront(panel);
         }
  catch (        Exception e) {
           e.printStackTrace();
