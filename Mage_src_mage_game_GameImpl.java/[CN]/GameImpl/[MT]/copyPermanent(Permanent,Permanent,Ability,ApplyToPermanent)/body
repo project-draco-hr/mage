@@ -1,17 +1,17 @@
 {
-  Permanent permanent=targetPermanent.copy();
+  Permanent permanent=copyFromPermanent.copy();
   permanent.reset(this);
   permanent.assignNewId();
   applier.apply(this,permanent);
   Ability newAbility=source.copy();
-  CopyEffect newEffect=new CopyEffect(permanent,source.getSourceId());
+  CopyEffect newEffect=new CopyEffect(permanent,copyToPermanent.getId());
   newEffect.newId();
   newEffect.setTimestamp();
   newEffect.init(newAbility,this);
   for (  Effect effect : getState().getContinuousEffects().getLayeredEffects(this)) {
     if (effect instanceof CopyEffect) {
       CopyEffect copyEffect=(CopyEffect)effect;
-      if (copyEffect.getSourceId().equals(targetPermanent.getId())) {
+      if (copyEffect.getSourceId().equals(copyFromPermanent.getId())) {
         MageObject object=((CopyEffect)effect).getTarget();
         if (object instanceof Permanent) {
           Permanent original=(Permanent)object;
