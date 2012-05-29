@@ -1,0 +1,12 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Card c=player.getLibrary().removeFromTop(game);
+    player.getHand().add(c);
+    Cards cards=new CardsImpl();
+    cards.add(c);
+    player.revealCards("Top card from library",cards,game);
+    player.loseLife(c.getManaCost().convertedManaCost(),game);
+  }
+  return true;
+}
