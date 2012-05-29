@@ -1,15 +1,4 @@
 {
   logger.debug("selectAttackers");
-  if (combat != null) {
-    UUID opponentId=game.getCombat().getDefenders().iterator().next();
-    String attackers="";
-    for (    UUID attackerId : combat.getAttackers()) {
-      Permanent attacker=game.getPermanent(attackerId);
-      if (attacker != null) {
-        attackers="[" + attacker.getName() + "]";
-        this.declareAttacker(attackerId,opponentId,game);
-      }
-    }
-    logger.info("declare attackers: " + (attackers.isEmpty() ? "none" : attackers));
-  }
+  declareAttackers(game,playerId);
 }
