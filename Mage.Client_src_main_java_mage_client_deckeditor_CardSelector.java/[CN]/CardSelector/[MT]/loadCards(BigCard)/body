@@ -6,16 +6,20 @@
   Object[] l=Sets.getInstance().values().toArray();
   Arrays.sort(l,new Comparator<Object>(){
     @Override public int compare(    Object o1,    Object o2){
-      return ((ExpansionSet)o1).getName().compareTo(((ExpansionSet)o2).getName());
+      return ((ExpansionSet)o2).getReleaseDate().compareTo(((ExpansionSet)o1).getReleaseDate());
     }
   }
 );
   cbExpansionSet.setModel(new DefaultComboBoxModel(l));
-  cbExpansionSet.insertItemAt("All sets",0);
+  cbExpansionSet.insertItemAt("-- All sets",0);
+  cbExpansionSet.insertItemAt("-- Standard",1);
   cbExpansionSet.setSelectedIndex(0);
   initFilter();
   if (this.cbExpansionSet.getSelectedItem() instanceof ExpansionSet) {
     filter.getExpansionSetCode().add(((ExpansionSet)this.cbExpansionSet.getSelectedItem()).getCode());
+  }
+ else   if (this.cbExpansionSet.getSelectedItem().equals("-- Standard")) {
+    filter.getExpansionSetCode().addAll(ConstructedFormats.getSetsByFormat("Standard"));
   }
   filterCards();
 }
