@@ -6,8 +6,12 @@
         object=game.getObject(ability.getSourceId());
       }
       if (object != null && object.getAbilities().contains(ability)) {
+        if (object instanceof Permanent) {
+          ability.setControllerId(((Permanent)object).getControllerId());
+        }
         if (ability.checkTrigger(event,game)) {
-          ability.trigger(game,ability.getControllerId());
+          UUID controllerId=ability.getControllerId();
+          ability.trigger(game,controllerId);
         }
       }
     }
