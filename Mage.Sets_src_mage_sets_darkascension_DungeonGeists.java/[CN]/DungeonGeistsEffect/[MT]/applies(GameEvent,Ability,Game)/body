@@ -1,10 +1,20 @@
 {
-  Watcher watcher=game.getState().getWatchers().get("ControlLost",source.getSourceId());
-  if (watcher == null || !watcher.conditionMet()) {
-    if (game.getTurn().getStepType() == Constants.PhaseStep.UNTAP && event.getType() == GameEvent.EventType.UNTAP) {
-      if (event.getTargetId().equals(targetPointer.getFirst(source))) {
-        return true;
-      }
+  if (event.getType() == GameEvent.EventType.LOST_CONTROL) {
+    if (event.getPlayerId().equals(source.getControllerId()) && event.getTargetId().equals(source.getSourceId())) {
+      this.used=true;
+      return false;
+    }
+  }
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && event.getTargetId().equals(source.getSourceId())) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getFromZone() == Zone.BATTLEFIELD) {
+      this.used=true;
+      return false;
+    }
+  }
+  if (game.getTurn().getStepType() == Constants.PhaseStep.UNTAP && event.getType() == GameEvent.EventType.UNTAP) {
+    if (event.getTargetId().equals(targetPointer.getFirst(source))) {
+      return true;
     }
   }
   return false;
