@@ -1,0 +1,13 @@
+{
+  MageObject source=game.getObject(sourceId);
+  if (source != null && hasProtectionFrom(source,game)) {
+    GameEvent preventEvent=new GameEvent(GameEvent.EventType.PREVENT_DAMAGE,this.objectId,sourceId,this.controllerId,event.getAmount(),false);
+    if (!game.replaceEvent(preventEvent)) {
+      int damage=event.getAmount();
+      event.setAmount(0);
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.PREVENTED_DAMAGE,this.objectId,sourceId,this.controllerId,damage));
+      return 0;
+    }
+  }
+  return event.getAmount();
+}

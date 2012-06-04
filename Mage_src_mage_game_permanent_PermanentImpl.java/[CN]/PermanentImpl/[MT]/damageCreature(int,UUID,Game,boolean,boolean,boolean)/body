@@ -1,7 +1,7 @@
 {
   GameEvent event=new DamageCreatureEvent(objectId,sourceId,controllerId,damage,preventable,combat);
   if (!game.replaceEvent(event)) {
-    int actualDamage=event.getAmount();
+    int actualDamage=checkProtectionAbilities(event,sourceId,game);
     if (actualDamage > 0) {
       MageObject source=game.getObject(sourceId);
       if (source != null && (source.getAbilities().containsKey(InfectAbility.getInstance().getId()) || source.getAbilities().containsKey(WitherAbility.getInstance().getId()))) {
