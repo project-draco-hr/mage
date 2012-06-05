@@ -1,0 +1,25 @@
+{
+  if (Plugins.getInstance().isCardPluginLoaded()) {
+    int dx=GAP_X;
+    if (order != null) {
+      for (      UUID cardId : order) {
+        MageCard card=cards.get(cardId);
+        if (card != null) {
+          card.setLocation(dx,0);
+          card.setCardBounds(dx,0,dimension.width,dimension.height);
+          dx+=dimension.width + GAP_X;
+        }
+ else {
+          System.err.println("[ERROR] Cards.java: couldn't find a card from ordered list!");
+        }
+      }
+    }
+ else {
+      for (      MageCard card : cards.values()) {
+        card.setLocation(dx,0);
+        card.setCardBounds(dx,0,dimension.width,dimension.height);
+        dx+=dimension.width + GAP_X;
+      }
+    }
+  }
+}
