@@ -1,5 +1,11 @@
 {
   for (  UUID targetId : targets.keySet()) {
+    Card card=game.getCard(targetId);
+    if (card != null) {
+      if (zoneChangeCounters.containsKey(targetId) && zoneChangeCounters.get(targetId) != card.getZoneChangeCounter()) {
+        continue;
+      }
+    }
     if (game.replaceEvent(GameEvent.getEvent(EventType.TARGET,targetId,source.getId(),source.getControllerId())))     continue;
     if (canTarget(targetId,source,game))     return true;
   }
