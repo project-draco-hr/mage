@@ -1,20 +1,16 @@
 {
   for (  TriggeredAbility ability : this.values()) {
     if (ability.isInUseableZone(game,true)) {
-      MageObject object=game.getPermanent(ability.getSourceId());
-      if (object == null) {
-        object=game.getLastKnownInformation(ability.getSourceId(),event.getZone());
-        if (object == null) {
-          object=game.getObject(ability.getSourceId());
-        }
-      }
-      if (object != null && object.getAbilities().contains(ability)) {
-        if (object instanceof Permanent) {
-          ability.setControllerId(((Permanent)object).getControllerId());
-        }
-        if (ability.checkTrigger(event,game)) {
-          UUID controllerId=ability.getControllerId();
-          ability.trigger(game,controllerId);
+      MageObject object=getMageObject(event,game,ability);
+      if (object != null) {
+        if (checkAbilityStillExists(ability,object)) {
+          if (object instanceof Permanent) {
+            ability.setControllerId(((Permanent)object).getControllerId());
+          }
+          if (ability.checkTrigger(event,game)) {
+            UUID controllerId=ability.getControllerId();
+            ability.trigger(game,controllerId);
+          }
         }
       }
     }
