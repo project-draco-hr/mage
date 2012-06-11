@@ -1,0 +1,28 @@
+{
+  if (sourceCard == null) {
+    return;
+  }
+  permanent.setName(sourceCard.getName());
+  permanent.getColor().setColor(sourceCard.getColor());
+  permanent.getManaCost().clear();
+  permanent.getManaCost().add(sourceCard.getManaCost());
+  permanent.getCardType().clear();
+  for (  Constants.CardType type : sourceCard.getCardType()) {
+    permanent.getCardType().add(type);
+  }
+  permanent.getSubtype().clear();
+  for (  String type : sourceCard.getSubtype()) {
+    permanent.getSubtype().add(type);
+  }
+  permanent.getSupertype().clear();
+  for (  String type : sourceCard.getSupertype()) {
+    permanent.getSupertype().add(type);
+  }
+  permanent.setExpansionSetCode(sourceCard.getExpansionSetCode());
+  permanent.getAbilities().clear();
+  for (  Ability ability : sourceCard.getAbilities()) {
+    permanent.addAbility(ability,game);
+  }
+  permanent.getPower().setValue(sourceCard.getPower().getValue());
+  permanent.getToughness().setValue(sourceCard.getToughness().getValue());
+}
