@@ -4,9 +4,13 @@
   int count=0;
   MageObject targetSource=game.getObject(sourceId);
   for (  Permanent permanent : game.getBattlefield().getActivePermanents(filter,sourceControllerId,sourceId,game)) {
-    if (!targets.containsKey(permanent.getId()) && permanent.canBeTargetedBy(targetSource,sourceControllerId,game)) {
-      count++;
-      if (count >= remainingTargets)       return true;
+    if (!targets.containsKey(permanent.getId())) {
+      if (!notTarget || permanent.canBeTargetedBy(targetSource,sourceControllerId,game)) {
+        count++;
+        if (count >= remainingTargets) {
+          return true;
+        }
+      }
     }
   }
   return false;
