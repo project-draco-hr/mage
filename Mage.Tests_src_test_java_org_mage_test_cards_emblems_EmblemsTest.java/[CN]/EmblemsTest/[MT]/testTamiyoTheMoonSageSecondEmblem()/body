@@ -1,0 +1,20 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Tamiyo, the Moon Sage");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Elite Vanguard");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Mountain");
+  addCard(Constants.Zone.HAND,playerB,"Lightning Bolt");
+  addCounters(1,Constants.PhaseStep.UPKEEP,playerA,"Tamiyo, the Moon Sage",CounterType.LOYALTY,4);
+  activateAbility(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"-8: You get an emblem");
+  castSpell(2,Constants.PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Bolt","Elite Vanguard");
+  setStopAt(2,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertEmblemCount(playerA,2);
+  assertHandCount(playerA,1);
+  boolean found=false;
+  for (  Card card : playerA.getHand().getCards(currentGame)) {
+    if (card.getName().equals("Elite Vanguard")) {
+      found=true;
+    }
+  }
+  Assert.assertTrue("Couldn't find a card in hand: Elite Vanguard",found);
+}

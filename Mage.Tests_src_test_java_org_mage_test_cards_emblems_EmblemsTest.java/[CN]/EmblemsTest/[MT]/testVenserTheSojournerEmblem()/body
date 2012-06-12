@@ -1,0 +1,15 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Venser, the Sojourner");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Constants.Zone.HAND,playerA,"Lightning Bolt",1);
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Elite Vanguard");
+  addCounters(1,Constants.PhaseStep.UPKEEP,playerA,"Venser, the Sojourner",CounterType.LOYALTY,5);
+  activateAbility(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"-8: You get an emblem");
+  castSpell(1,Constants.PhaseStep.POSTCOMBAT_MAIN,playerA,"Lightning Bolt",playerB);
+  setStopAt(1,Constants.PhaseStep.END_TURN);
+  execute();
+  assertLife(playerB,17);
+  assertGraveyardCount(playerA,"Venser, the Sojourner",1);
+  assertEmblemCount(playerA,1);
+  assertPermanentCount(playerB,"Elite Vanguard",0);
+}
