@@ -16,6 +16,12 @@
     }
   }
   object=getCard(objectId);
-  if (object != null)   return object;
-  return null;
+  if (object == null) {
+    for (    CommandObject commandObject : state.getCommand()) {
+      if (commandObject.getId().equals(objectId)) {
+        return commandObject;
+      }
+    }
+  }
+  return object;
 }

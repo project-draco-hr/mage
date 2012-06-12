@@ -22,4 +22,13 @@
     this.expansionSetCode=((PermanentToken)card).getExpansionSetCode();
     this.rules=((PermanentToken)card).getRules();
   }
+  if (name.equals("") && card instanceof StackAbility) {
+    StackAbility stackAbility=(StackAbility)card;
+    if (stackAbility.getZone().equals(Constants.Zone.COMMAND)) {
+      this.name="Emblem";
+      this.rarity=Rarity.NA;
+      this.rules=new ArrayList<String>();
+      this.rules.add(stackAbility.getRule());
+    }
+  }
 }
