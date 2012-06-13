@@ -1,0 +1,12 @@
+{
+  super(ownerId,340,"Razormane Masticore",Rarity.RARE,new CardType[]{CardType.ARTIFACT,CardType.CREATURE},"{5}");
+  this.expansionSetCode="10E";
+  this.subtype.add("Masticore");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  this.addAbility(FirstStrikeAbility.getInstance());
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(Constants.Zone.BATTLEFIELD,new SacrificeSourceUnlessPaysEffect(new DiscardTargetCost(new TargetCardInHand())),Constants.TargetController.YOU,false));
+  Ability ability=new BeginningOfDrawTriggeredAbility(Constants.Zone.BATTLEFIELD,new DamageTargetEffect(3),Constants.TargetController.YOU,true);
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}
