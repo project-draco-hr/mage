@@ -1,0 +1,17 @@
+{
+  if (jButtonAccept == null) {
+    jButtonAccept=new HoverButton("",ImageManagerImpl.getInstance().getDlgAcceptButtonImage(),ImageManagerImpl.getInstance().getDlgActiveAcceptButtonImage(),ImageManagerImpl.getInstance().getDlgAcceptButtonImage(),new Rectangle(60,60));
+    int w=getDlgParams().rect.width - 90;
+    int h=getDlgParams().rect.height - 90;
+    jButtonAccept.setBounds(new Rectangle(w / 2 - 80,h - 50,60,60));
+    jButtonAccept.setObserver(new Command(){
+      @Override public void execute(){
+        DialogManager.getManager().fadeOut((DialogContainer)getParent());
+        StackDialog.this.feedbackPanel.doClick();
+      }
+      private static final long serialVersionUID=1L;
+    }
+);
+  }
+  return jButtonAccept;
+}

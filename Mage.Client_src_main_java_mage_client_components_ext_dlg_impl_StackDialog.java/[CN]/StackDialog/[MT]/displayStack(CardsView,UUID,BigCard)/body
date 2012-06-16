@@ -1,0 +1,21 @@
+{
+  if (cards == null || cards.size() == 0) {
+    return;
+  }
+  int dx=(SettingsManager.getInstance().getCardSize().width + 15) * (cards.size() - 1);
+  int dy=30;
+  for (  CardView card : cards.values()) {
+    if (card instanceof StackAbilityView) {
+      CardView tmp=((StackAbilityView)card).getSourceCard();
+      tmp.overrideRules(card.getRules());
+      tmp.setIsAbility(true);
+      tmp.overrideTargets(card.getTargets());
+      tmp.overrideId(card.getId());
+      card=tmp;
+    }
+    MageCard cardImg=Plugins.getInstance().getMageCard(card,bigCard,getCardDimension(),gameId,true);
+    cardImg.setLocation(dx,dy);
+    jLayeredPane.add(cardImg,JLayeredPane.DEFAULT_LAYER,1);
+    dx-=(SettingsManager.getInstance().getCardSize().width + 15);
+  }
+}

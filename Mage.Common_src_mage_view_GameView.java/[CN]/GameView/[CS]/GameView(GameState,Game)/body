@@ -16,6 +16,7 @@
         if (card.canTransform()) {
           updateLatestCardView(game,card,stackObject.getId());
         }
+        checkPaid(stackObject.getId(),(StackAbility)stackObject);
       }
  else       if (object != null) {
         StackAbility stackAbility=((StackAbility)object);
@@ -29,10 +30,12 @@
           }
         }
         stack.put(stackObject.getId(),new CardView(stackAbility));
+        checkPaid(stackObject.getId(),stackAbility);
       }
     }
  else {
       stack.put(stackObject.getId(),new CardView((Spell)stackObject));
+      checkPaid(stackObject.getId(),(Spell)stackObject);
     }
   }
   for (  ExileZone exileZone : state.getExile().getExileZones()) {

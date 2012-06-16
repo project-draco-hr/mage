@@ -1,0 +1,25 @@
+{
+  setOpaque(false);
+  this.dialogType=dialogType;
+  setLayout(null);
+  drawContainer=true;
+  if (dialogType == DialogManager.MTGDialogs.MessageDialog) {
+    if (params.type.equals(MessageDlg.Types.Warning)) {
+      backgroundColor=new Color(255,0,0,90);
+    }
+ else {
+      backgroundColor=new Color(0,0,0,90);
+    }
+    alpha=0;
+  }
+ else   if (dialogType == DialogManager.MTGDialogs.StackDialog) {
+    backgroundColor=new Color(0,0,0,50);
+    alpha=0;
+    StackDialog dlg=new StackDialog(params);
+    add(dlg);
+    dlg.setLocation(X_OFFSET + 10,Y_OFFSET + 10);
+    int width=params.rect.width;
+    int height=params.rect.height - 80;
+    dlg.updateSize(width,height);
+  }
+}
