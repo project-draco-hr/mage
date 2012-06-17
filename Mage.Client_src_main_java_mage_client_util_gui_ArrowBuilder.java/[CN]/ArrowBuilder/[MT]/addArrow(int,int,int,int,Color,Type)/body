@@ -1,0 +1,18 @@
+{
+  JPanel p=getArrowsPanel();
+  Arrow arrow=new Arrow();
+  arrow.setColor(color);
+  arrow.setArrowLocation(startX,startY,endX,endY);
+  arrow.setBounds(0,0,Math.max(startX,endX) + 40,Math.max(startY,endY) + 30);
+synchronized (map) {
+    p.add(arrow);
+    java.util.List<Arrow> arrows=map.get(type);
+    if (arrows == null) {
+      arrows=new ArrayList<Arrow>();
+      map.put(type,arrows);
+    }
+    arrows.add(arrow);
+  }
+  p.revalidate();
+  p.repaint();
+}
