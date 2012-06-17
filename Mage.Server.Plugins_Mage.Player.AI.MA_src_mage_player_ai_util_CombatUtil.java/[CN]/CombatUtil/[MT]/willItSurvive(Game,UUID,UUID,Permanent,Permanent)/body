@@ -3,6 +3,9 @@
   Combat combat=sim.getCombat();
   combat.setAttacker(attackingPlayerId);
   combat.setDefenders(sim);
+  if (blocker == null || attacker == null || sim.getPlayer(defendingPlayerId) == null) {
+    return null;
+  }
   sim.getPlayer(defendingPlayerId).declareBlocker(blocker.getId(),attacker.getId(),sim);
   sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,defendingPlayerId,defendingPlayerId));
   sim.checkStateAndTriggered();
