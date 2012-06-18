@@ -1,0 +1,34 @@
+{
+  if (event.getType() == GameEvent.EventType.BEGIN_COMBAT_STEP_PRE) {
+switch (targetController) {
+case YOU:
+      boolean yours=event.getPlayerId().equals(this.controllerId);
+    if (yours) {
+      if (getTargets().size() == 0) {
+        for (        Effect effect : this.getEffects()) {
+          effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
+        }
+      }
+    }
+  return yours;
+case OPPONENT:
+if (game.getOpponents(this.controllerId).contains(event.getPlayerId())) {
+  if (getTargets().size() == 0) {
+    for (    Effect effect : this.getEffects()) {
+      effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
+    }
+  }
+  return true;
+}
+break;
+case ANY:
+if (getTargets().size() == 0) {
+for (Effect effect : this.getEffects()) {
+effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
+}
+}
+return true;
+}
+}
+return false;
+}
