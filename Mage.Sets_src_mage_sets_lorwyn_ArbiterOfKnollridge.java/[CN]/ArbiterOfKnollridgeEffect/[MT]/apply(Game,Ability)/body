@@ -1,0 +1,20 @@
+{
+  int maxLife=0;
+  for (  UUID pid : game.getPlayerList()) {
+    Player p=game.getPlayer(pid);
+    if (p != null) {
+      if (maxLife < p.getLife()) {
+        maxLife=p.getLife();
+      }
+    }
+  }
+  for (  UUID pid : game.getPlayerList()) {
+    Player p=game.getPlayer(pid);
+    if (p != null) {
+      if (maxLife > p.getLife()) {
+        p.gainLife(maxLife - p.getLife(),game);
+      }
+    }
+  }
+  return true;
+}
