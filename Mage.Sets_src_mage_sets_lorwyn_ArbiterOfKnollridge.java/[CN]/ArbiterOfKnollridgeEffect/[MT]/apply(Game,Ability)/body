@@ -1,0 +1,22 @@
+{
+  int maxLife=0;
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null)   return false;
+  for (  UUID pid : controller.getInRange()) {
+    Player p=game.getPlayer(pid);
+    if (p != null) {
+      if (maxLife < p.getLife()) {
+        maxLife=p.getLife();
+      }
+    }
+  }
+  for (  UUID pid : controller.getInRange()) {
+    Player p=game.getPlayer(pid);
+    if (p != null) {
+      if (maxLife > p.getLife()) {
+        p.gainLife(maxLife - p.getLife(),game);
+      }
+    }
+  }
+  return true;
+}
