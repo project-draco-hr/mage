@@ -1,10 +1,11 @@
 {
-  Set<UUID> controllers=new HashSet<UUID>();
+  UUID controller=null;
   int maxPower=-1;
-  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents()) {
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(filter,game)) {
     if (maxPower == -1 || permanent.getPower().getValue() >= maxPower) {
-      controllers.add(permanent.getControllerId());
+      maxPower=permanent.getPower().getValue();
+      controller=(permanent.getControllerId());
     }
   }
-  return controllers.contains(source.getControllerId());
+  return controller.equals(source.getControllerId());
 }
