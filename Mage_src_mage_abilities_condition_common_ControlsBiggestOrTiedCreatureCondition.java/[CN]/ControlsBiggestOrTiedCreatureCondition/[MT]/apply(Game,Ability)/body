@@ -2,10 +2,12 @@
   UUID controller=null;
   int maxPower=-1;
   for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(filter,game)) {
-    if (maxPower == -1 || permanent.getPower().getValue() >= maxPower) {
-      maxPower=permanent.getPower().getValue();
-      controller=(permanent.getControllerId());
+    if (permanent != null) {
+      if (maxPower == -1 || permanent.getPower().getValue() >= maxPower) {
+        maxPower=permanent.getPower().getValue();
+        controller=(permanent.getControllerId());
+      }
     }
   }
-  return controller.equals(source.getControllerId());
+  return controller != null && controller.equals(source.getControllerId());
 }
