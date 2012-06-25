@@ -1,3 +1,18 @@
 {
-  initComponents();
+  boolean initialized=false;
+  if (Plugins.getInstance().isThemePluginLoaded()) {
+    Map<String,JComponent> ui=new HashMap<String,JComponent>();
+    JComponent container=Plugins.getInstance().updateTablePanel(ui);
+    if (container != null) {
+      draftPanel1=new mage.client.draft.DraftPanel();
+      initComponents(container);
+      container.add(draftPanel1);
+      container.setOpaque(false);
+      draftPanel1.setOpaque(false);
+      initialized=true;
+    }
+  }
+  if (!initialized) {
+    initComponents();
+  }
 }
