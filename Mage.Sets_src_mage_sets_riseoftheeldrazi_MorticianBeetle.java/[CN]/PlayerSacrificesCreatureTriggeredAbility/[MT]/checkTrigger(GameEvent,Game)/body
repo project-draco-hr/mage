@@ -1,6 +1,9 @@
 {
-  if (event.getType() == EventType.SACRIFICE_PERMANENT && game.getPermanent(event.getTargetId()).getCardType().contains(CardType.CREATURE)) {
-    return true;
+  if (event.getType() == EventType.SACRIFICED_PERMANENT) {
+    MageObject mageObject=game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
+    if (mageObject != null && mageObject.getCardType().contains(CardType.CREATURE)) {
+      return true;
+    }
   }
   return false;
 }
