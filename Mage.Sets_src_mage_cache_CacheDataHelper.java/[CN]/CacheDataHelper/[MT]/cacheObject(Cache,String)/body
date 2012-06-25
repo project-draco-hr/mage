@@ -1,0 +1,28 @@
+{
+  ObjectOutputStream oos=null;
+  try {
+    File dir=new File("cache");
+    if (!dir.exists() || dir.exists() && dir.isFile()) {
+      boolean bCreated=dir.mkdir();
+      if (!bCreated) {
+        log.error("Couldn't create directory for cache.");
+        return;
+      }
+    }
+    File f=new File("cache" + File.separator + name+ ".obj");
+    if (!f.exists()) {
+      f.createNewFile();
+    }
+    oos=new ObjectOutputStream(new FileOutputStream(f));
+    oos.writeObject(cache);
+    oos.close();
+  }
+ catch (  FileNotFoundException e) {
+    log.error("Error while caching data: ",e);
+    return;
+  }
+catch (  IOException io) {
+    log.error("Error while caching data: ",io);
+    return;
+  }
+}
