@@ -1,0 +1,18 @@
+{
+  Cache cache=CacheDataHelper.getCachedObject(CARDS_CACHE_OBJECT_NAME);
+  List<Card> cards=new ArrayList<Card>();
+  if (cache == null || cache.getVersion() != CACHE_VERSION) {
+    for (    ExpansionSet set : sets) {
+      cards.addAll(set.getCards());
+    }
+    cache=new Cache(CARDS_CACHE_OBJECT_NAME,CACHE_VERSION);
+    cache.getCacheObjects().put(CARDS_KEY,cards);
+    cache.getCacheObjects().put(CARD_COUNT_KEY,cards.size());
+    CacheDataHelper.cacheObject(cache,CARDS_CACHE_OBJECT_NAME);
+  }
+ else {
+    cards=(List<Card>)cache.getCacheObjects().get(CARDS_KEY);
+    log.debug("Loaded cards from cache.");
+  }
+  return cards;
+}
