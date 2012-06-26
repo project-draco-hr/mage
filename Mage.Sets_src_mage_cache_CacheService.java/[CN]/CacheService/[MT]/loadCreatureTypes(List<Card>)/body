@@ -1,8 +1,9 @@
 {
+  Set<String> creatureTypes=new TreeSet<String>();
   Cache cache=CacheDataHelper.getCachedObject(CREATURE_TYPES_CACHE_OBJECT_NAME);
-  if (cache == null || cache.getVersion() != CACHE_VERSION) {
+  if (!CacheDataHelper.validateCache(cache,CACHE_VERSION,cards.size(),CARD_COUNT_KEY)) {
     for (    Card card : cards) {
-      if (card.getCardType().contains(CardType.CREATURE)) {
+      if (card.getCardType().contains(Constants.CardType.CREATURE)) {
         for (        String type : card.getSubtype()) {
           creatureTypes.add(type);
           if (type.equals("")) {
@@ -13,10 +14,13 @@
     }
     cache=new Cache(CREATURE_TYPES_CACHE_OBJECT_NAME,CACHE_VERSION);
     cache.getCacheObjects().put(CREATURE_TYPES_KEY,creatureTypes);
+    cache.getCacheObjects().put(CARD_COUNT_KEY,cards.size());
     CacheDataHelper.cacheObject(cache,CREATURE_TYPES_CACHE_OBJECT_NAME);
   }
  else {
     Set<String> cachedCreatureTypes=(Set<String>)cache.getCacheObjects().get(CREATURE_TYPES_KEY);
     creatureTypes.addAll(cachedCreatureTypes);
+    log.debug("Loaded creature types from cache.");
   }
+  return creatureTypes;
 }

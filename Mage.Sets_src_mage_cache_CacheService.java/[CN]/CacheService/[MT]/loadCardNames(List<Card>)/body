@@ -1,15 +1,19 @@
 {
   Cache cache=CacheDataHelper.getCachedObject(NAMES_CACHE_OBJECT_NAME);
-  if (cache == null || cache.getVersion() != CACHE_VERSION) {
+  Set<String> names=new TreeSet<String>();
+  if (!CacheDataHelper.validateCache(cache,CACHE_VERSION,cards.size(),CARD_COUNT_KEY)) {
     for (    Card card : cards) {
       names.add(card.getName());
     }
     cache=new Cache(NAMES_CACHE_OBJECT_NAME,CACHE_VERSION);
     cache.getCacheObjects().put(NAMES_KEY,names);
+    cache.getCacheObjects().put(CARD_COUNT_KEY,cards.size());
     CacheDataHelper.cacheObject(cache,NAMES_CACHE_OBJECT_NAME);
   }
  else {
     Set<String> cachedNames=(Set<String>)cache.getCacheObjects().get(NAMES_KEY);
     names.addAll(cachedNames);
+    log.debug("Loaded card names from cache.");
   }
+  return names;
 }

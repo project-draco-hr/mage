@@ -1,15 +1,19 @@
 {
+  Set<String> nonLandNames=new TreeSet<String>();
   Cache cache=CacheDataHelper.getCachedObject(NONLAND_NAMES_CACHE_OBJECT_NAME);
-  if (cache == null || cache.getVersion() != CACHE_VERSION) {
+  if (!CacheDataHelper.validateCache(cache,CACHE_VERSION,cards.size(),CARD_COUNT_KEY)) {
     for (    Card card : cards) {
-      if (!card.getCardType().contains(CardType.LAND))       nonLandNames.add(card.getName());
+      if (!card.getCardType().contains(Constants.CardType.LAND))       nonLandNames.add(card.getName());
     }
     cache=new Cache(NONLAND_NAMES_CACHE_OBJECT_NAME,CACHE_VERSION);
     cache.getCacheObjects().put(NONLAND_NAMES_KEY,nonLandNames);
+    cache.getCacheObjects().put(CARD_COUNT_KEY,cards.size());
     CacheDataHelper.cacheObject(cache,NONLAND_NAMES_CACHE_OBJECT_NAME);
   }
  else {
     Set<String> cachedNonLandNames=(Set<String>)cache.getCacheObjects().get(NONLAND_NAMES_KEY);
     nonLandNames.addAll(cachedNonLandNames);
+    log.debug("Loaded non land names from cache.");
   }
+  return nonLandNames;
 }
