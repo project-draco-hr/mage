@@ -1,25 +1,3 @@
 {
-  this.reloaded=true;
-  this.title=name;
-  cardArea.loadCards(showCards,bigCard,dimension,gameId,this);
-  if (getParent() != MageFrame.getDesktop()) {
-    MageFrame.getDesktop().add(this,JLayeredPane.DEFAULT_LAYER);
-  }
-  pack();
-  this.revalidate();
-  this.repaint();
-  this.setModal(modal);
-  SwingUtilities.invokeLater(new Runnable(){
-    @Override public void run(){
-      int width=ShowCardsDialog.this.getWidth();
-      int height=ShowCardsDialog.this.getWidth();
-      if (width > 0 && height > 0) {
-        Point centered=SettingsManager.getInstance().getComponentPosition(width,height);
-        ShowCardsDialog.this.setLocation(centered.x,centered.y);
-        GuiDisplayUtil.keepComponentInsideScreen(centered.x,centered.y,ShowCardsDialog.this);
-      }
-      ShowCardsDialog.this.setVisible(true);
-    }
-  }
-);
+  loadCards(name,showCards,bigCard,dimension,gameId,modal,null);
 }
