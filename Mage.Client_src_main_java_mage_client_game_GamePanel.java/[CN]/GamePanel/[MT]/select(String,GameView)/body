@@ -1,6 +1,15 @@
 {
   updateGame(gameView);
-  this.feedbackPanel.getFeedback(FeedbackMode.SELECT,message,gameView.getSpecial(),null);
+  String messageToDisplay=message;
+  for (  PlayerView playerView : gameView.getPlayers()) {
+    if (playerView.getPlayerId().equals(playerId)) {
+      if (playerView.isActive()) {
+        messageToDisplay=message + " <div style='font-size:11pt'>Your turn</div>";
+      }
+      break;
+    }
+  }
+  this.feedbackPanel.getFeedback(FeedbackMode.SELECT,messageToDisplay,gameView.getSpecial(),null);
   if (PhaseManager.getInstance().isSkip(gameView,message)) {
     this.feedbackPanel.doClick();
   }
