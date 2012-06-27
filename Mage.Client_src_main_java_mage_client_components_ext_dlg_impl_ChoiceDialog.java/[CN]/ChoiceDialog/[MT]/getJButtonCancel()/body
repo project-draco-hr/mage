@@ -1,0 +1,22 @@
+{
+  if (jButtonCancel == null) {
+    jButtonCancel=new HoverButton("",ImageManagerImpl.getInstance().getDlgCancelButtonImage(),ImageManagerImpl.getInstance().getDlgActiveCancelButtonImage(),ImageManagerImpl.getInstance().getDlgCancelButtonImage(),new Rectangle(60,60));
+    int w=getDlgParams().rect.width - 75;
+    int h=getDlgParams().rect.height - 90;
+    jButtonCancel.setBounds(new Rectangle(w / 2 + 150,h - 50,60,60));
+    jButtonCancel.setToolTipText("Cancel");
+    jButtonCancel.setVisible(isOptional);
+    if (!isCancelStopsPlaying) {
+      jButtonCancel.setToolTipText("Done (enough)");
+      jButtonCancel.setBounds(new Rectangle(w / 2 + 150,h - 50,60,60));
+    }
+    jButtonCancel.setObserver(new Command(){
+      private static final long serialVersionUID=-567322540616089486L;
+      public void execute(){
+        DialogManager.getManager().fadeOut((DialogContainer)getParent());
+      }
+    }
+);
+  }
+  return jButtonCancel;
+}

@@ -1,0 +1,36 @@
+{
+  if (jButtonNextPage == null) {
+    jButtonNextPage=new HoverButton("",ImageManagerImpl.getInstance().getDlgNextButtonImage(),ImageManagerImpl.getInstance().getDlgActiveNextButtonImage(),ImageManagerImpl.getInstance().getDlgNextButtonImage(),new Rectangle(60,60));
+    int w=getDlgParams().rect.width - 75;
+    int h=getDlgParams().rect.height - 90;
+    jButtonNextPage.setBounds(new Rectangle(w / 2 + 45,h - 50,60,60));
+    if (maxPages > 1) {
+      jButtonNextPage.setVisible(true);
+    }
+ else {
+      jButtonNextPage.setVisible(false);
+    }
+    jButtonNextPage.setObserver(new Command(){
+      private static final long serialVersionUID=-3174360416099554104L;
+      public void execute(){
+        if (page == maxPages) {
+          return;
+        }
+        AudioManager.playNextPage();
+        page++;
+        getJButtonPrevPage().setVisible(false);
+        getJButtonOK().setVisible(false);
+        getJButtonNextPage().setVisible(false);
+        revalidate();
+        displayCards(params.getCards(),params.gameId,params.bigCard);
+        getJButtonPrevPage().setVisible(true);
+        getJButtonOK().setVisible(true);
+        if (page != maxPages) {
+          getJButtonNextPage().setVisible(true);
+        }
+      }
+    }
+);
+  }
+  return jButtonNextPage;
+}

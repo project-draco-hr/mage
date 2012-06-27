@@ -1,0 +1,36 @@
+{
+  if (cards.size() == 0) {
+    return;
+  }
+  java.util.List<Component> toRemove=new ArrayList<Component>();
+  for (int i=getComponentCount() - 1; i > 0; i--) {
+    Component o=getComponent(i);
+    if (o instanceof MageCard) {
+      toRemove.add(o);
+    }
+  }
+  for (int i=0; i < toRemove.size(); i++) {
+    remove(toRemove.get(i));
+  }
+  java.util.List<CardView> cardList=new ArrayList<CardView>();
+  cardList.addAll(cards.values());
+  int width=SettingsManager.getInstance().getCardSize().width;
+  int height=SettingsManager.getInstance().getCardSize().height;
+  int dx=0;
+  int dy=30;
+  int startIndex=(page - 1) * (in_a_row * rows);
+  int countPerPage=(in_a_row * rows);
+  int j=0;
+  for (int i=startIndex; i < cards.size() && i < startIndex + countPerPage; i++) {
+    if (i > startIndex && i % in_a_row == 0) {
+      j++;
+      dx=0;
+    }
+    CardView card=cardList.get(i);
+    MageCard cardImg=Plugins.getInstance().getMageCard(card,bigCard,getCardDimension(),gameId,true);
+    cardImg.setLocation(dx,dy + j * (height + 30));
+    add(cardImg);
+    dx+=(width + 20);
+  }
+  repaint();
+}
