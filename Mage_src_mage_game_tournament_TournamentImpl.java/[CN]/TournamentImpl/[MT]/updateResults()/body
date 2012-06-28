@@ -1,6 +1,7 @@
 {
   for (  TournamentPlayer player : players.values()) {
     player.setResults("");
+    player.setPoints(0);
   }
   for (  Round round : rounds) {
     for (    TournamentPairing pair : round.getPairs()) {
@@ -17,6 +18,20 @@
       sb2.append("-").append(match.getPlayer(player1Id).getWins()).append(") ");
       players.get(player1Id).setResults(sb1.toString());
       players.get(player2Id).setResults(sb2.toString());
+      if (match.getPlayer(player1Id).getWins() > match.getPlayer(player2Id).getWins()) {
+        int points=players.get(player1Id).getPoints();
+        players.get(player1Id).setPoints(points + 3);
+      }
+ else       if (match.getPlayer(player1Id).getWins() < match.getPlayer(player2Id).getWins()) {
+        int points=players.get(player2Id).getPoints();
+        players.get(player2Id).setPoints(points + 3);
+      }
+ else {
+        int points=players.get(player1Id).getPoints();
+        players.get(player1Id).setPoints(points + 1);
+        points=players.get(player2Id).getPoints();
+        players.get(player2Id).setPoints(points + 1);
+      }
     }
   }
 }
