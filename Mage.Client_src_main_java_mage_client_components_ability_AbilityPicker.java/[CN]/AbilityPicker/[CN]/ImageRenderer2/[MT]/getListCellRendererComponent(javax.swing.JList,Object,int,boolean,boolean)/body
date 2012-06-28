@@ -1,0 +1,21 @@
+{
+  setBorder(BorderFactory.createEmptyBorder(3,3,3,6));
+  UI.setHTMLEditorKit(this);
+  setOpaque(false);
+  setBackground(new Color(0,0,0,0));
+  String text=value.toString();
+  if (cache.containsKey(text)) {
+    text=cache.get(text);
+  }
+ else {
+    StringBuilder buffer=getHtmlForText(isSelected,text);
+    String rendered=buffer.toString();
+    cache.put(text,rendered);
+    text=rendered;
+  }
+  final String finalText=text;
+  System.out.println(finalText);
+  ImageRenderer2.super.setText(finalText);
+  setCaretPosition(0);
+  return this;
+}
