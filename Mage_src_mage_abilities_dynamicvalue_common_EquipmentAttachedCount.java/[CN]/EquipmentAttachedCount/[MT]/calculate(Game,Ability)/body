@@ -1,15 +1,12 @@
 {
   int count=0;
-  Permanent equipment=game.getPermanent(source.getSourceId());
-  if (equipment != null) {
-    Permanent permanent=game.getPermanent(equipment.getAttachedTo());
-    if (permanent != null) {
-      List<UUID> attachments=permanent.getAttachments();
-      for (      UUID attachmentId : attachments) {
-        Permanent attached=game.getPermanent(attachmentId);
-        if (attached != null && attached.getSubtype().contains("Equipment")) {
-          count++;
-        }
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    List<UUID> attachments=permanent.getAttachments();
+    for (    UUID attachmentId : attachments) {
+      Permanent attached=game.getPermanent(attachmentId);
+      if (attached != null && attached.getSubtype().contains("Equipment")) {
+        count++;
       }
     }
   }
