@@ -1,0 +1,14 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Rootwater Matriarch");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Memnite");
+  addCard(Constants.Zone.HAND,playerA,"Unsummon");
+  addCard(Constants.Zone.HAND,playerA,"Flight");
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Flight","Memnite");
+  activateAbility(1,Constants.PhaseStep.BEGIN_COMBAT,playerA,"{T}: Gain control of target creature for as long as that creature is enchanted.","Memnite");
+  castSpell(1,Constants.PhaseStep.POSTCOMBAT_MAIN,playerA,"Unsummon","Rootwater Matriarch");
+  setStopAt(1,Constants.PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Rootwater Matriarch",0);
+  assertPermanentCount(playerA,"Memnite",1);
+}
