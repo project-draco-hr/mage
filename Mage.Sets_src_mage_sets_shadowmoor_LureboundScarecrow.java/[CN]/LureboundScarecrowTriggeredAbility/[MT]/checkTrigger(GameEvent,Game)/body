@@ -1,15 +1,15 @@
 {
-  Card card=game.getCard(this.getSourceId());
-  if (card != null) {
-    ObjectColor color=(ObjectColor)game.getState().getValue(card.getId() + "_color");
-    if (color != null) {
-      for (      Permanent perm : game.getBattlefield().getAllActivePermanents(controllerId)) {
-        if (perm.getColor().contains(color))         return false;
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE || event.getType() == GameEvent.EventType.LOST_CONTROL || event.getType() == GameEvent.EventType.COLOR_CHANGED || event.getType() == GameEvent.EventType.SPELL_CAST) {
+    Card card=game.getCard(this.getSourceId());
+    if (card != null) {
+      ObjectColor color=(ObjectColor)game.getState().getValue(card.getId() + "_color");
+      if (color != null) {
+        for (        Permanent perm : game.getBattlefield().getAllActivePermanents(controllerId)) {
+          if (perm.getColor().contains(color))           return false;
+        }
+        return true;
       }
     }
-    if (color == null) {
-      return false;
-    }
   }
-  return true;
+  return false;
 }
