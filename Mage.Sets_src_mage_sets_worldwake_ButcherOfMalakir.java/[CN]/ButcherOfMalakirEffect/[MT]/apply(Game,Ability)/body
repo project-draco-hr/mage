@@ -1,0 +1,20 @@
+{
+  FilterControlledPermanent filter=new FilterControlledPermanent("creature you control");
+  filter.getCardType().add(CardType.CREATURE);
+  filter.setTargetController(Constants.TargetController.YOU);
+  Set<UUID> opponents=game.getOpponents(source.getControllerId());
+  for (  UUID opponentId : opponents) {
+    Player player=game.getPlayer(opponentId);
+    Target target=new TargetControlledPermanent(filter);
+    if (target.canChoose(player.getId(),game)) {
+      while (!target.isChosen() && target.canChoose(player.getId(),game)) {
+        player.choose(Constants.Outcome.Sacrifice,target,source.getSourceId(),game);
+      }
+      Permanent permanent=game.getPermanent(target.getFirstTarget());
+      if (permanent != null) {
+        permanent.sacrifice(source.getSourceId(),game);
+      }
+    }
+  }
+  return true;
+}

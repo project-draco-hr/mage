@@ -1,0 +1,25 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    UUID sourceId=getSourceId();
+    if (game.getPermanent(sourceId) == null) {
+      if (game.getLastKnownInformation(sourceId,Constants.Zone.BATTLEFIELD) == null) {
+        return false;
+      }
+    }
+    if (zEvent.getFromZone() == Constants.Zone.BATTLEFIELD && zEvent.getToZone() == Constants.Zone.GRAVEYARD) {
+      Permanent permanent=(Permanent)game.getLastKnownInformation(event.getTargetId(),Constants.Zone.BATTLEFIELD);
+      if (permanent != null) {
+        if (permanent.getId().equals(this.getSourceId())) {
+          return true;
+        }
+ else {
+          if (filter.match(permanent,game)) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
