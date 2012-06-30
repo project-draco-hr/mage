@@ -1,0 +1,52 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment != null) {
+    Permanent permanent=game.getPermanent(enchantment.getAttachedTo());
+    if (permanent != null) {
+switch (layer) {
+case TypeChangingEffects_4:
+        if (sublayer == SubLayer.NA) {
+          if (token.getCardType().size() > 0) {
+            for (            Constants.CardType t : token.getCardType()) {
+              if (!permanent.getCardType().contains(t)) {
+                permanent.getCardType().add(t);
+              }
+            }
+          }
+          if ("".equals(type) || type == null) {
+            permanent.getSubtype().clear();
+          }
+          if (token.getSubtype().size() > 0) {
+            permanent.getSubtype().addAll(token.getSubtype());
+          }
+        }
+      break;
+case ColorChangingEffects_5:
+    if (sublayer == SubLayer.NA) {
+      if (token.getColor().hasColor())       permanent.getColor().setColor(token.getColor());
+    }
+  break;
+case AbilityAddingRemovingEffects_6:
+if (sublayer == SubLayer.NA) {
+  if (token.getAbilities().size() > 0) {
+    for (    Ability ability : token.getAbilities()) {
+      permanent.addAbility(ability,game);
+    }
+  }
+}
+break;
+case PTChangingEffects_7:
+if (sublayer == SubLayer.SetPT_7b) {
+int power=token.getPower().getValue();
+int toughness=token.getToughness().getValue();
+if (power != 0 && toughness != 0) {
+permanent.getPower().setValue(power);
+permanent.getToughness().setValue(toughness);
+}
+}
+}
+}
+return true;
+}
+return false;
+}
