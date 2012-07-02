@@ -1,0 +1,15 @@
+{
+  if (event.getType() == GameEvent.EventType.TAPPED) {
+    Permanent enchantment=game.getPermanent(this.sourceId);
+    if (enchantment != null && enchantment.getAttachedTo().equals(event.getTargetId())) {
+      Permanent attached=game.getPermanent(enchantment.getAttachedTo());
+      if (attached != null) {
+        for (        Effect e : getEffects()) {
+          e.setTargetPointer(new FixedTarget(attached.getId()));
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}
