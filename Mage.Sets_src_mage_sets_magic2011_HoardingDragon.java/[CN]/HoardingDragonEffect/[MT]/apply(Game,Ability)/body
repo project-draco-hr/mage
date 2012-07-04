@@ -1,10 +1,13 @@
 {
   Player player=game.getPlayer(source.getControllerId());
   if (player != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(new FilterArtifactCard());
     if (player.searchLibrary(target,game)) {
       if (target.getTargets().size() > 0) {
         Card card=player.getLibrary().getCard(target.getFirstTarget(),game);
-        if (card != null)         card.moveToExile(exileId,"Hoarding Dragon exile",source.getSourceId(),game);
+        if (card != null) {
+          card.moveToExile(exileId,"Hoarding Dragon exile",source.getSourceId(),game);
+        }
       }
     }
     player.shuffleLibrary(game);
