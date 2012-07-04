@@ -1,0 +1,11 @@
+{
+  if (!super.match(permanent,game)) {
+    return notFilter;
+  }
+  for (  CombatGroup combatGroup : game.getCombat().getGroups()) {
+    if (!combatGroup.getBlockers().isEmpty() && combatGroup.getAttackers().contains(permanent.getId())) {
+      return !notFilter;
+    }
+  }
+  return notFilter;
+}
