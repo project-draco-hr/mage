@@ -1,0 +1,12 @@
+{
+  super(ownerId,99,"Mark of the Vampire",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{3}{B}");
+  this.expansionSetCode="M13";
+  this.subtype.add("Aura");
+  this.color.setBlack(true);
+  TargetPermanent target=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(target);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  this.addAbility(new EnchantAbility(target.getTargetName()));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(2,2,Duration.WhileOnBattlefield)));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(LifelinkAbility.getInstance(),AttachmentType.AURA)));
+}
