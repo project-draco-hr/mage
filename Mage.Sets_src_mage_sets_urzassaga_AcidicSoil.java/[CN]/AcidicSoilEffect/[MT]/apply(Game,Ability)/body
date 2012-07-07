@@ -1,0 +1,18 @@
+{
+  List<Permanent> permanents=game.getBattlefield().getAllActivePermanents(CardType.LAND);
+  for (  UUID playerId : game.getPlayerList()) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      int amount=0;
+      for (      Permanent permanent : permanents) {
+        if (permanent.getControllerId().equals(playerId)) {
+          amount++;
+        }
+      }
+      if (amount > 0) {
+        player.damage(amount,source.getId(),game,false,true);
+      }
+    }
+  }
+  return true;
+}
