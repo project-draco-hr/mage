@@ -1,14 +1,15 @@
 {
   Spell sourceSpell=(Spell)game.getObject(source.getId());
-  if (sourceSpell != null && sourceSpell.isCopiedSpell()) {
-    return false;
+  if (sourceSpell == null || !sourceSpell.isCopiedSpell()) {
+    MageObject mageObject=game.getObject(source.getSourceId());
+    if (mageObject instanceof StackObject) {
+      StackObject sourceCard=(StackObject)mageObject;
+      ReboundEffectCastFromExileDelayedTrigger trigger=new ReboundEffectCastFromExileDelayedTrigger(sourceCard.getSourceId(),sourceCard.getSourceId());
+      trigger.setControllerId(source.getControllerId());
+      game.addDelayedTriggeredAbility(trigger);
+      game.getContinuousEffects().addEffect(new ReboundCastFromHandReplacementEffect(source.getSourceId()),source);
+      return true;
+    }
   }
- else {
-    StackObject sourceCard=(StackObject)game.getObject(source.getSourceId());
-    ReboundEffectCastFromExileDelayedTrigger trigger=new ReboundEffectCastFromExileDelayedTrigger(sourceCard.getSourceId(),sourceCard.getSourceId());
-    trigger.setControllerId(source.getControllerId());
-    game.addDelayedTriggeredAbility(trigger);
-    game.getContinuousEffects().addEffect(new ReboundCastFromHandReplacementEffect(source.getSourceId()),source);
-    return true;
-  }
+  return false;
 }
