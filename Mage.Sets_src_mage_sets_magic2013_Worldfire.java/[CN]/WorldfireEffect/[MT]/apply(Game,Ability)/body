@@ -1,0 +1,24 @@
+{
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(filter,game)) {
+    permanent.moveToExile(id,"all permanents",id,game);
+  }
+  for (  UUID playerId : game.getPlayerList()) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      for (      UUID cid : player.getHand().copy()) {
+        Card c=game.getCard(cid);
+        if (c != null) {
+          c.moveToExile(null,null,source.getId(),game);
+        }
+      }
+      for (      UUID cid : player.getGraveyard().copy()) {
+        Card c=game.getCard(cid);
+        if (c != null) {
+          c.moveToExile(null,null,source.getId(),game);
+        }
+      }
+      player.setLife(1,game);
+    }
+  }
+  return true;
+}
