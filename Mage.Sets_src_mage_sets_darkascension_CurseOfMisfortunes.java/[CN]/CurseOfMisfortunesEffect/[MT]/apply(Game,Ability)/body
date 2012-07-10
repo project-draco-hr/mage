@@ -9,8 +9,7 @@
       for (      UUID attachmentId : targetPlayer.getAttachments()) {
         Permanent attachment=game.getPermanent(attachmentId);
         if (attachment != null && attachment.getSubtype().contains("Curse")) {
-          filter.getName().add(attachment.getName());
-          filter.setNotName(true);
+          filter.add(Predicates.not(new NamePredicate(attachment.getName())));
         }
       }
       TargetCardInLibrary targetCard=new TargetCardInLibrary(filter);
