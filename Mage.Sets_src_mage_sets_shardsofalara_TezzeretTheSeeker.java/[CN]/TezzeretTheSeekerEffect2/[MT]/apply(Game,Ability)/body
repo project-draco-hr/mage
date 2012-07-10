@@ -10,8 +10,7 @@
     }
   }
   FilterArtifactCard filter=new FilterArtifactCard("artifact card with converted mana cost " + cmc);
-  filter.setConvertedManaCost(cmc);
-  filter.setConvertedManaCostComparison(ComparisonType.Equal);
+  filter.add(new ConvertedManaCostPredicate(ComparisonType.Equal,cmc));
   TargetCardInLibrary target=new TargetCardInLibrary(filter);
   if (player.searchLibrary(target,game)) {
     Card card=player.getLibrary().getCard(target.getFirstTarget(),game);

@@ -3,8 +3,7 @@
   Card sourceCard=game.getCard(source.getSourceId());
   if (sourceCard != null && player != null) {
     FilterCard filter=new FilterCard("card with converted mana cost " + sourceCard.getManaCost().convertedManaCost());
-    filter.setConvertedManaCost(sourceCard.getManaCost().convertedManaCost());
-    filter.setConvertedManaCostComparison(Filter.ComparisonType.Equal);
+    filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,sourceCard.getManaCost().convertedManaCost()));
     TargetCardInLibrary target=new TargetCardInLibrary(1,filter);
     if (player.searchLibrary(target,game)) {
       if (target.getTargets().size() > 0) {
