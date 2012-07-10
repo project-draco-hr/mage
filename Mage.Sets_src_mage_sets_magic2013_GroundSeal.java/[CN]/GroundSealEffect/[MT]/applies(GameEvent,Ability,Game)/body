@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.TARGET) {
+    Card targetCard=game.getCard(event.getTargetId());
+    StackObject stackObject=(StackObject)game.getStack().getStackObject(event.getSourceId());
+    if (targetCard != null && stackObject != null) {
+      Constants.Zone zone=game.getState().getZone(targetCard.getId());
+      if (zone != null && (zone == Constants.Zone.GRAVEYARD)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
