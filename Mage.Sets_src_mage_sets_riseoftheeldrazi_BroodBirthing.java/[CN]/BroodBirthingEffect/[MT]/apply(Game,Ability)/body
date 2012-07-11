@@ -1,8 +1,7 @@
 {
   FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent("Eldrazi Spawn");
-  filter.getSubtype().add("Eldrazi");
-  filter.getSubtype().add("Spawn");
-  filter.setScopeSubtype(ComparisonScope.All);
+  filter.add(new SubtypePredicate("Eldrazi"));
+  filter.add(new SubtypePredicate("Spawn"));
   EldraziSpawnToken token=new EldraziSpawnToken();
   int count=game.getBattlefield().countAll(filter,source.getControllerId(),game) > 0 ? 3 : 1;
   token.putOntoBattlefield(count,game,source.getSourceId(),source.getControllerId());

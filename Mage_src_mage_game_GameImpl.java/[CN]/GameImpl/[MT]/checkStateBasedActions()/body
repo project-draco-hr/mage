@@ -127,8 +127,7 @@
     for (    Permanent planeswalker : planeswalkers) {
       for (      String planeswalkertype : planeswalker.getSubtype()) {
         FilterPlaneswalkerPermanent filterPlaneswalker=new FilterPlaneswalkerPermanent();
-        filterPlaneswalker.getSubtype().add(planeswalkertype);
-        filterPlaneswalker.setScopeSubtype(ComparisonScope.Any);
+        filterPlaneswalker.add(new SubtypePredicate(planeswalkertype));
         if (getBattlefield().contains(filterPlaneswalker,planeswalker.getControllerId(),this,2)) {
           for (          Permanent perm : getBattlefield().getActivePermanents(filterPlaneswalker,planeswalker.getControllerId(),this)) {
             perm.moveToZone(Zone.GRAVEYARD,null,this,false);
