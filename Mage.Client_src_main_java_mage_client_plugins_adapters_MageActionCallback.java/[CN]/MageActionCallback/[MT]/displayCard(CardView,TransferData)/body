@@ -1,0 +1,49 @@
+{
+  if (!enlarged) {
+    return;
+  }
+  ThreadUtils.threadPool2.submit(new Runnable(){
+    @Override public void run(){
+      if (card == null) {
+        return;
+      }
+      try {
+        if (!enlarged) {
+          return;
+        }
+        Component parentComponent=SwingUtilities.getRoot(data.component);
+        Point parentPoint=parentComponent.getLocationOnScreen();
+        final Component popupContainer=MageFrame.getUI().getComponent(MageComponents.CARD_PREVIEW_CONTAINER);
+        Component cardPreview=MageFrame.getUI().getComponent(MageComponents.CARD_PREVIEW_PANE);
+        Point location=new Point((int)data.locationOnScreen.getX() + data.popupOffsetX - 40,(int)data.locationOnScreen.getY() + data.popupOffsetY - 40);
+        location=GuiDisplayUtil.keepComponentInsideParent(location,parentPoint,cardPreview,parentComponent);
+        location.translate(-parentPoint.x,-parentPoint.y);
+        popupContainer.setLocation(location);
+        popupContainer.setVisible(true);
+        MageCard card=(MageCard)data.component;
+        Image image=card.getImage();
+        BigCard bigCard=(BigCard)cardPreview;
+        if (image != null && image instanceof BufferedImage) {
+          image=ImageHelper.getResizedImage((BufferedImage)image,bigCard.getWidth());
+          bigCard.setCard(card.getOriginal().getId(),image,card.getOriginal().getRules(),card.isFoil());
+          if (card.getOriginal().isAbility()) {
+            bigCard.showTextComponent();
+          }
+ else {
+            bigCard.hideTextComponent();
+          }
+        }
+ else {
+          JXPanel panel=GuiDisplayUtil.getDescription(card.getOriginal(),bigCard.getWidth(),bigCard.getHeight());
+          panel.setVisible(true);
+          bigCard.hideTextComponent();
+          bigCard.addJXPanel(card.getOriginal().getId(),panel);
+        }
+      }
+ catch (      Exception e) {
+        e.printStackTrace();
+      }
+    }
+  }
+);
+}
