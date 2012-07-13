@@ -5,7 +5,7 @@
       String command=action.getAction();
       command=command.substring(command.indexOf("attack:") + 7);
       FilterCreatureForCombat filter=new FilterCreatureForCombat();
-      filter.getName().add(command);
+      filter.add(new NamePredicate(command));
       Permanent attacker=findPermanent(filter,playerId,game);
       if (attacker != null && attacker.canAttack(game)) {
         this.declareAttacker(attacker.getId(),opponentId,game);

@@ -1,0 +1,54 @@
+{
+  filter=new FilterCard();
+  ArrayList<Predicate<MageObject>> predicates=new ArrayList<Predicate<MageObject>>();
+  if (this.rdoGreen.isSelected()) {
+    predicates.add(new ColorPredicate(ObjectColor.GREEN));
+  }
+  if (this.rdoRed.isSelected()) {
+    predicates.add(new ColorPredicate(ObjectColor.RED));
+  }
+  if (this.rdoBlack.isSelected()) {
+    predicates.add(new ColorPredicate(ObjectColor.BLACK));
+  }
+  if (this.rdoBlue.isSelected()) {
+    predicates.add(new ColorPredicate(ObjectColor.BLUE));
+  }
+  if (this.rdoWhite.isSelected()) {
+    predicates.add(new ColorPredicate(ObjectColor.WHITE));
+  }
+  if (this.rdoColorless.isSelected()) {
+    predicates.add(new ColorlessPredicate());
+  }
+  filter.add(Predicates.or(predicates));
+  predicates.clear();
+  if (this.rdoLand.isSelected()) {
+    predicates.add(new CardTypePredicate(CardType.LAND));
+  }
+  if (this.rdoArtifacts.isSelected()) {
+    predicates.add(new CardTypePredicate(CardType.ARTIFACT));
+  }
+  if (this.rdoCreatures.isSelected()) {
+    predicates.add(new CardTypePredicate(CardType.CREATURE));
+  }
+  if (this.rdoEnchantments.isSelected()) {
+    predicates.add(new CardTypePredicate(CardType.ENCHANTMENT));
+  }
+  if (this.rdoInstants.isSelected()) {
+    predicates.add(new CardTypePredicate(CardType.INSTANT));
+  }
+  if (this.rdoSorceries.isSelected()) {
+    predicates.add(new CardTypePredicate(CardType.SORCERY));
+  }
+  if (this.rdoPlaneswalkers.isSelected()) {
+    predicates.add(new CardTypePredicate(CardType.PLANESWALKER));
+  }
+  filter.add(Predicates.or(predicates));
+  String name=jTextFieldSearch.getText().trim();
+  filter.setText(name);
+  if (this.cbExpansionSet.getSelectedItem() instanceof ExpansionSet) {
+    filter.getExpansionSetCode().add(((ExpansionSet)this.cbExpansionSet.getSelectedItem()).getCode());
+  }
+ else   if (this.cbExpansionSet.getSelectedItem().equals("-- Standard")) {
+    filter.getExpansionSetCode().addAll(ConstructedFormats.getSetsByFormat("Standard"));
+  }
+}

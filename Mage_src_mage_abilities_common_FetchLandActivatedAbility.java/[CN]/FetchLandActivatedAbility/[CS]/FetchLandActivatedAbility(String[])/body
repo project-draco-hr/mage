@@ -3,10 +3,13 @@
   addCost(new TapSourceCost());
   addCost(new PayLifeCost(1));
   addCost(new SacrificeSourceCost());
-  FilterCard filter=new FilterCard(subTypeNames(subTypes));
-  filter.getCardType().add(CardType.LAND);
-  filter.getSubtype().addAll(Arrays.asList(subTypes));
-  filter.setScopeSubtype(ComparisonScope.Any);
+  FilterCard filter=new FilterCard(subTypeNames(subtypes));
+  filter.add(new CardTypePredicate(CardType.LAND));
+  ArrayList<Predicate<MageObject>> subtypePredicates=new ArrayList<Predicate<MageObject>>();
+  for (int i=0; i < subtypes.length; i++) {
+    subtypePredicates.add(new SubtypePredicate(subtypes[i]));
+  }
+  filter.add(Predicates.or(subtypePredicates));
   TargetCardInLibrary target=new TargetCardInLibrary(filter);
   addEffect(new SearchLibraryPutInPlayEffect(target,false,true,Outcome.PutLandInPlay));
 }

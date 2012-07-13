@@ -20,11 +20,12 @@
   player.lookAtCards("Call to the Kindred",cards,game);
   FilterCreatureCard filter=new FilterCreatureCard();
   StringBuilder sb=new StringBuilder("creature card with at least one subtype from: ");
-  for (  String subType : creature.getSubtype()) {
-    filter.getSubtype().add(subType);
-    sb.append(subType).append(", ");
+  ArrayList<Predicate<MageObject>> subtypes=new ArrayList<Predicate<MageObject>>();
+  for (  String subtype : creature.getSubtype()) {
+    subtypes.add(new SubtypePredicate(subtype));
+    sb.append(subtype).append(", ");
   }
-  filter.setScopeSubtype(ComparisonScope.Any);
+  filter.add(Predicates.or(subtypes));
   sb.delete(sb.length() - 2,sb.length());
   filter.setMessage(sb.toString());
   if (cards.count(filter,game) > 0 && player.chooseUse(Outcome.DrawCard,"Do you wish to put a creature card onto the battlefield?",game)) {

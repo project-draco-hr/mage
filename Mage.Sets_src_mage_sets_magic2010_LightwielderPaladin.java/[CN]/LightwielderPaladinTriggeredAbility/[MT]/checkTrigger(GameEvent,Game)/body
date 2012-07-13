@@ -1,10 +1,7 @@
 {
   if (event.getType() == EventType.DAMAGED_PLAYER && event.getSourceId().equals(this.sourceId) && ((DamagedPlayerEvent)event).isCombatDamage()) {
     FilterPermanent filter=new FilterPermanent("black or red permanent");
-    filter.getColor().setBlack(true);
-    filter.getColor().setRed(true);
-    filter.setUseColor(true);
-    filter.setScopeColor(ComparisonScope.Any);
+    filter.add(Predicates.or(new ColorPredicate(ObjectColor.BLACK),new ColorPredicate(ObjectColor.RED)));
     filter.getControllerId().add(event.getTargetId());
     filter.setNotController(false);
     this.getTargets().clear();

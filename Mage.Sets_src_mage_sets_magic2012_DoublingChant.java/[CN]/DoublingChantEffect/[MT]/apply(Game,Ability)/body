@@ -13,7 +13,7 @@
       sb.append("Search for ").append(creatureName).append(" in your library?");
       if (player.chooseUse(Outcome.PutCreatureInPlay,sb.toString(),game)) {
         FilterCreatureCard filter=new FilterCreatureCard("creature card named" + creatureName);
-        filter.getName().add(creatureName);
+        filter.add(new NamePredicate(creatureName));
         TargetCardInLibrary target=new TargetCardInLibrary(filter);
         if (player.searchLibrary(target,game)) {
           Card card=player.getLibrary().getCard(target.getFirstTarget(),game);

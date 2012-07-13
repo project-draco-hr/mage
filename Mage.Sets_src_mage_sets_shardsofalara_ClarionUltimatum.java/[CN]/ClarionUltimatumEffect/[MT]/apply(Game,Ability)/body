@@ -17,8 +17,8 @@
       StringBuilder sb=new StringBuilder();
       sb.append("Search for ").append(cardName).append(" in your library?");
       if (player.chooseUse(Outcome.PutCardInPlay,sb.toString(),game)) {
-        FilterCard filter=new FilterCard("card named" + cardName);
-        filter.getName().add(cardName);
+        FilterCard filter=new FilterCard("card named " + cardName);
+        filter.add(new NamePredicate(cardName));
         TargetCardInLibrary target=new TargetCardInLibrary(filter);
         if (player.searchLibrary(target,game)) {
           Card card=player.getLibrary().getCard(target.getFirstTarget(),game);
