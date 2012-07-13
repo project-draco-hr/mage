@@ -1,0 +1,10 @@
+{
+  super(ownerId,214,"Ring of Valkas",Rarity.UNCOMMON,new CardType[]{CardType.ARTIFACT},"{2}");
+  this.expansionSetCode="M13";
+  this.subtype.add("Equipment");
+  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new GainAbilityAttachedEffect(HasteAbility.getInstance(),Constants.AttachmentType.EQUIPMENT)));
+  TriggeredAbility triggeredAbility=new BeginningOfUpkeepTriggeredAbility(Constants.Zone.BATTLEFIELD,new AddPlusOneCountersAttachedEffect(1),Constants.TargetController.YOU,false);
+  ConditionalTriggeredAbility ability=new ConditionalTriggeredAbility(triggeredAbility,new EquippedMatchesFilterCondition(filter),"At the beginning of your upkeep, put a +1/+1 counter on equipped creature if it's red");
+  this.addAbility(ability);
+  this.addAbility(new EquipAbility(Constants.Outcome.BoostCreature,new GenericManaCost(1)));
+}
