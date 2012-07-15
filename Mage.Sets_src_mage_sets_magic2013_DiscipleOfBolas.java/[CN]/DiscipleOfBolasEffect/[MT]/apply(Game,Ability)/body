@@ -1,0 +1,14 @@
+{
+  Permanent sacrificed=game.getPermanent(source.getFirstTarget());
+  System.out.println("The target is " + sacrificed.getName());
+  Player player=game.getPlayer(source.getControllerId());
+  if (sacrificed != null && player != null) {
+    sacrificed.sacrifice(source.getSourceId(),game);
+    Permanent lastKnownState=(Permanent)game.getLastKnownInformation(sacrificed.getId(),Constants.Zone.BATTLEFIELD);
+    int power=lastKnownState.getPower().getValue();
+    player.gainLife(power,game);
+    player.drawCards(power,game);
+    return true;
+  }
+  return false;
+}
