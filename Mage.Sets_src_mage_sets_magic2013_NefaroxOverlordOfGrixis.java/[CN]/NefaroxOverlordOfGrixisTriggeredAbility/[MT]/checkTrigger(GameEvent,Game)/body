@@ -1,0 +1,14 @@
+{
+  if (event.getType() == GameEvent.EventType.DECLARED_ATTACKERS && game.getActivePlayerId().equals(this.controllerId)) {
+    UUID Nefarox=this.getSourceId();
+    UUID attacker=game.getCombat().getAttackers().get(0);
+    if (Nefarox != null && attacker != null) {
+      if (game.getCombat().attacksAlone() && Nefarox == attacker) {
+        UUID defender=game.getCombat().getDefendingPlayer(Nefarox);
+        this.getEffects().get(0).setTargetPointer(new FixedTarget(defender));
+        return true;
+      }
+    }
+  }
+  return false;
+}
