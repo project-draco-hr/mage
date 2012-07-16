@@ -4,8 +4,7 @@
   if (targetPlayer != null && permanent != null && (permanent.getSupertype().get(0).toString().equals("Legendary"))) {
     FilterControlledPermanent filter=new FilterControlledPermanent("land to sacrifice");
     filter.add(new CardTypePredicate(CardType.LAND));
-    filter.getControllerId().add(targetPlayer.getId());
-    filter.setNotController(false);
+    filter.add(new ControllerIdPredicate(targetPlayer.getId()));
     TargetControlledPermanent target=new TargetControlledPermanent(1,1,filter,false);
     if (target.canChoose(targetPlayer.getId(),game)) {
       targetPlayer.choose(Outcome.Sacrifice,target,source.getSourceId(),game);
