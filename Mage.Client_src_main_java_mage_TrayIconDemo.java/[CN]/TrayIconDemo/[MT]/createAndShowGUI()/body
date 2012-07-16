@@ -4,7 +4,8 @@
     return;
   }
   final PopupMenu popup=new PopupMenu();
-  final TrayIcon trayIcon=new TrayIcon(createImage("images/bulb.gif","tray icon"));
+  final TrayIcon trayIcon=new TrayIcon(createImage("images/icon-mage.png","tray icon"));
+  trayIcon.setImageAutoSize(true);
   final SystemTray tray=SystemTray.getSystemTray();
   MenuItem aboutItem=new MenuItem("About");
   CheckboxMenuItem cb1=new CheckboxMenuItem("Set auto size");
@@ -82,6 +83,20 @@
       }
  else       if ("Info".equals(item.getLabel())) {
         trayIcon.displayMessage("Sun TrayIcon Demo","This is an info message",TrayIcon.MessageType.INFO);
+        new Thread(new Runnable(){
+          @Override public void run(){
+            try {
+              for (int i=0; i < 15; i++) {
+                trayIcon.setImage(createImage(i % 2 == 0 ? "images/icon-mage.png" : "images/icon-mage-flashed.png","tray icon"));
+                Thread.sleep(600);
+              }
+            }
+ catch (            InterruptedException e1) {
+              e1.printStackTrace();
+            }
+          }
+        }
+).start();
       }
  else       if ("None".equals(item.getLabel())) {
         trayIcon.displayMessage("Sun TrayIcon Demo","This is an ordinary message",TrayIcon.MessageType.NONE);
