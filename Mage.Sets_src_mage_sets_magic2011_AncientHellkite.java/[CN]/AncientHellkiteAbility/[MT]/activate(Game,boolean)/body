@@ -1,9 +1,9 @@
 {
   UUID defenderId=game.getCombat().getDefendingPlayer(sourceId);
   if (defenderId != null) {
-    getTargets().clear();
     FilterCreaturePermanent filter=new FilterCreaturePermanent("creature defending player controls");
-    filter.getControllerId().add(defenderId);
+    filter.add(new ControllerIdPredicate(defenderId));
+    this.getTargets().clear();
     TargetCreaturePermanent target=new TargetCreaturePermanent(filter);
     target.setRequired(true);
     this.addTarget(target);

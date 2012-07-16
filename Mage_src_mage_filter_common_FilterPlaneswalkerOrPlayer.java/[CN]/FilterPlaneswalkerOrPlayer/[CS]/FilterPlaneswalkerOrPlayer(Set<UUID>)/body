@@ -1,7 +1,11 @@
 {
   super("planeswalker or player");
+  ArrayList<Predicate<Permanent>> permanentPredicates=new ArrayList<Predicate<Permanent>>();
+  for (  UUID defenderId : defenders) {
+    permanentPredicates.add(new ControllerIdPredicate(defenderId));
+  }
   planeswalkerFilter=new FilterPlaneswalkerPermanent();
-  planeswalkerFilter.getControllerId().addAll(defenders);
+  planeswalkerFilter.add(Predicates.or(permanentPredicates));
   playerFilter=new FilterPlayer();
   playerFilter.getPlayerId().addAll(defenders);
 }
