@@ -1,0 +1,27 @@
+{
+  if (state == 0) {
+synchronized (MageTray.class) {
+      if (state == 0) {
+        state=1;
+        new Thread(new Runnable(){
+          @Override public void run(){
+            try {
+              int i=0;
+              while (state != 3) {
+                trayIcon.setImage(i == 0 ? mainImage : flashedImage);
+                Thread.sleep(600);
+                i=i == 0 ? 1 : 0;
+              }
+              trayIcon.setImage(mainImage);
+              state=0;
+            }
+ catch (            InterruptedException e) {
+              e.printStackTrace();
+            }
+          }
+        }
+).start();
+      }
+    }
+  }
+}
