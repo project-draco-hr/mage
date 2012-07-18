@@ -1,0 +1,15 @@
+{
+  Permanent target=(Permanent)game.getLastKnownInformation(source.getFirstTarget(),Constants.Zone.BATTLEFIELD);
+  if (target != null) {
+    UUID opponent=target.getControllerId();
+    if (opponent != null) {
+      for (      Permanent creature : game.getBattlefield().getAllActivePermanents(filter,game)) {
+        if (creature != null && creature.getControllerId() == opponent && creature != target) {
+          creature.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new BoostSourceEffect(-2,0,Constants.Duration.EndOfTurn)),game);
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}
