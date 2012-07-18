@@ -1,6 +1,10 @@
 {
   passed=false;
   if (!abort) {
+    if (passedAllTurns) {
+      pass();
+      return false;
+    }
     if (passedTurn && game.getStack().isEmpty()) {
       pass();
       return false;
@@ -13,6 +17,9 @@
       return false;
     }
  else     if (response.getInteger() != null) {
+      if (response.getInteger() == -9999) {
+        passedAllTurns=true;
+      }
       pass();
       passedTurn=true;
       return false;
