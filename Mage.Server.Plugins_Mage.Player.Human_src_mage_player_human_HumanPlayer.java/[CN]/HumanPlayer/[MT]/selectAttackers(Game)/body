@@ -1,9 +1,19 @@
 {
   game.getState().setPriorityPlayerId(getId());
   while (!abort) {
+    if (passedAllTurns || passedTurn) {
+      return;
+    }
     game.fireSelectEvent(playerId,"Select attackers");
     waitForResponse();
     if (response.getBoolean() != null) {
+      return;
+    }
+ else     if (response.getInteger() != null) {
+      if (response.getInteger() == -9999) {
+        passedAllTurns=true;
+      }
+      passedTurn=true;
       return;
     }
  else     if (response.getUUID() != null) {
