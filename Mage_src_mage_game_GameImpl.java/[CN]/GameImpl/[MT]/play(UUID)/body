@@ -3,15 +3,15 @@
     PlayerList players=state.getPlayerList(nextPlayerId);
     Player player=getPlayer(players.get());
     while (!isPaused() && !isGameOver()) {
-      fireInformEvent("Turn " + Integer.toString(state.getTurnNum()));
-      if (checkStopOnTurnOption())       return;
-      state.setActivePlayerId(player.getId());
-      player.becomesActivePlayer();
-      state.getTurn().play(this,player.getId());
-      if (isPaused() || isGameOver())       break;
-      endOfTurn();
-      player=players.getNext(this);
+      if (!playTurn(player)) {
+        break;
+      }
       state.setTurnNum(state.getTurnNum() + 1);
+      while (getState().getTurnMods().extraTurn(player.getId())) {
+        playTurn(player);
+        state.setTurnNum(state.getTurnNum() + 1);
+      }
+      player=players.getNext(this);
     }
   }
   if (isGameOver())   winnerId=findWinnersAndLosers();

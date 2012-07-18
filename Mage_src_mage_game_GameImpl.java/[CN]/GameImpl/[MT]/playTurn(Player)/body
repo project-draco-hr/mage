@@ -1,0 +1,14 @@
+{
+  fireInformEvent("Turn " + Integer.toString(state.getTurnNum()));
+  if (checkStopOnTurnOption()) {
+    return false;
+  }
+  state.setActivePlayerId(player.getId());
+  player.becomesActivePlayer();
+  state.getTurn().play(this,player.getId());
+  if (isPaused() || isGameOver()) {
+    return false;
+  }
+  endOfTurn();
+  return true;
+}
