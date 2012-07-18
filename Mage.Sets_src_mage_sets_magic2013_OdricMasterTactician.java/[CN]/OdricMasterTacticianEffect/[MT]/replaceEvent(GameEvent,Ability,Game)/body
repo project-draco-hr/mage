@@ -1,0 +1,12 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  game.getCombat().checkBlockRequirements(player,game);
+  for (  UUID defenderId : game.getCombat().getPlayerDefenders(game)) {
+    game.getPlayer(source.getControllerId()).selectBlockers(game,defenderId);
+    if (game.isPaused() || game.isGameOver()) {
+      return true;
+    }
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,defenderId,defenderId));
+  }
+  return true;
+}

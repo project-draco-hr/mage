@@ -1,0 +1,33 @@
+{
+  updateGameStatePriority("selectAttackers",game);
+  FilterCreatureForCombat filter=filterCreatureForCombat.copy();
+  filter.add(new ControllerIdPredicate(attackingPlayerId));
+  while (!abort) {
+    if (passedAllTurns || passedTurn) {
+      return;
+    }
+    game.fireSelectEvent(playerId,"Select attackers");
+    waitForResponse();
+    if (response.getBoolean() != null) {
+      return;
+    }
+ else     if (response.getInteger() != null) {
+      if (response.getInteger() == -9999) {
+        passedAllTurns=true;
+      }
+      passedTurn=true;
+      return;
+    }
+ else     if (response.getUUID() != null) {
+      Permanent attacker=game.getPermanent(response.getUUID());
+      if (attacker != null) {
+        if (filterCreatureForCombat.match(attacker,null,playerId,game)) {
+          selectDefender(game.getCombat().getDefenders(),attacker.getId(),game);
+        }
+ else         if (filterAttack.match(attacker,null,playerId,game) && game.getStack().isEmpty()) {
+          game.getCombat().removeAttacker(attacker.getId(),game);
+        }
+      }
+    }
+  }
+}
