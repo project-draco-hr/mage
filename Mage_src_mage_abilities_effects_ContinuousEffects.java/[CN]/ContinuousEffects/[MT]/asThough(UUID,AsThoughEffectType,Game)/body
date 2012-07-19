@@ -1,11 +1,9 @@
 {
-  for (  AsThoughEffect entry : asThoughEffects) {
-    AsThoughEffect effect=entry;
+  List<AsThoughEffect> asThoughEffectsList=getApplicableAsThoughEffects(game);
+  for (  AsThoughEffect effect : asThoughEffectsList) {
     if (effect.getAsThoughEffectType() == type) {
-      if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
-        if (effect.applies(objectId,asThoughEffects.getAbility(entry.getId()),game)) {
-          return true;
-        }
+      if (effect.applies(objectId,asThoughEffects.getAbility(effect.getId()),game)) {
+        return true;
       }
     }
   }
