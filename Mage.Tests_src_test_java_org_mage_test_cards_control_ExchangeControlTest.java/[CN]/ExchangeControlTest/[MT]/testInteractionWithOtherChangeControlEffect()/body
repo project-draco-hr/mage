@@ -1,0 +1,15 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Island",5);
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Mountain",5);
+  addCard(Constants.Zone.HAND,playerA,"Switcheroo");
+  addCard(Constants.Zone.HAND,playerA,"Act of Treason");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Llanowar Elves");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Elite Vanguard");
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Act of Treason","Elite Vanguard");
+  attack(1,playerA,"Elite Vanguard");
+  castSpell(1,Constants.PhaseStep.POSTCOMBAT_MAIN,playerA,"Switcheroo","Llanowar Elves^Elite Vanguard");
+  setStopAt(2,Constants.PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Llanowar Elves",1);
+  assertPermanentCount(playerB,"Elite Vanguard",1);
+}
