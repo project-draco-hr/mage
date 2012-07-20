@@ -1,6 +1,8 @@
 {
   abilityPicker=new mage.client.components.ability.AbilityPicker();
   jSplitPane1=new javax.swing.JSplitPane();
+  jSplitPane0=new javax.swing.JSplitPane();
+  jPanel2=new javax.swing.JPanel();
   jPanel3=new javax.swing.JPanel();
   pnlGameInfo=new javax.swing.JPanel();
   lblPhase=new javax.swing.JLabel();
@@ -34,6 +36,7 @@
   userChatPanel.useExtendedView(ChatPanel.VIEW_MODE.CHAT);
   gameChatPanel.setConnectedChat(userChatPanel);
   gameChatPanel.disableInput();
+  gameChatPanel.setMinimumSize(new java.awt.Dimension(100,48));
   jSplitPane2=new javax.swing.JSplitPane();
   handContainer=new HandPanel();
   handCards=new HashMap<String,SimpleCardsView>();
@@ -42,6 +45,10 @@
   jSplitPane1.setResizeWeight(1.0);
   jSplitPane1.setOneTouchExpandable(true);
   jSplitPane1.setMinimumSize(new java.awt.Dimension(26,48));
+  jSplitPane0.setBorder(null);
+  jSplitPane0.setDividerSize(7);
+  jSplitPane0.setResizeWeight(1.0);
+  jSplitPane0.setOneTouchExpandable(true);
   pnlGameInfo.setOpaque(false);
   lblPhase.setLabelFor(txtPhase);
   lblPhase.setText("Phase:");
@@ -109,12 +116,27 @@
     }
   }
 );
-  KeyStroke ksAltShift=KeyStroke.getKeyStroke(KeyEvent.VK_E,InputEvent.ALT_MASK);
-  this.getInputMap(c).put(ksAltShift,"ENLARGE");
+  KeyStroke ksAltE=KeyStroke.getKeyStroke(KeyEvent.VK_E,InputEvent.ALT_MASK);
+  this.getInputMap(c).put(ksAltE,"ENLARGE");
   this.getActionMap().put("ENLARGE",new AbstractAction(){
     @Override public void actionPerformed(    ActionEvent actionEvent){
       ActionCallback callback=Plugins.getInstance().getActionCallback();
       ((MageActionCallback)callback).enlargeCard();
+    }
+  }
+);
+  KeyStroke ksAltD=KeyStroke.getKeyStroke(KeyEvent.VK_D,InputEvent.ALT_MASK);
+  this.getInputMap(c).put(ksAltD,"BIG_IMAGE");
+  this.getActionMap().put("BIG_IMAGE",new AbstractAction(){
+    @Override public void actionPerformed(    ActionEvent actionEvent){
+      imagePanelState=!imagePanelState;
+      if (!imagePanelState) {
+        jSplitPane0.resetToPreferredSizes();
+        jSplitPane0.setDividerLocation(jSplitPane0.getSize().width - jSplitPane0.getInsets().right - jSplitPane0.getDividerSize()- 260);
+      }
+ else {
+        jSplitPane0.setDividerLocation(1.0);
+      }
     }
   }
 );
@@ -240,10 +262,13 @@
   gl_jPanel3.setVerticalGroup(gl_jPanel3.createParallelGroup(Alignment.TRAILING).addGroup(gl_jPanel3.createSequentialGroup().addComponent(pnlBattlefield,GroupLayout.DEFAULT_SIZE,200,Short.MAX_VALUE).addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel3.createSequentialGroup().addGap(85).addComponent(stack,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)).addGroup(gl_jPanel3.createSequentialGroup().addComponent(helper,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).addComponent(handContainer,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)))));
   jPanel3.setLayout(gl_jPanel3);
   jSplitPane1.setLeftComponent(jPanel3);
-  gameChatPanel.setMinimumSize(new java.awt.Dimension(100,48));
   jSplitPane1.setRightComponent(jSplitPane2);
+  jPanel2.add(bigCard);
+  jPanel2.setOpaque(false);
+  jSplitPane0.setLeftComponent(jSplitPane1);
+  jSplitPane0.setRightComponent(jPanel2);
   javax.swing.GroupLayout layout=new javax.swing.GroupLayout(this);
   this.setLayout(layout);
-  layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jSplitPane1,javax.swing.GroupLayout.DEFAULT_SIZE,1078,Short.MAX_VALUE));
-  layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jSplitPane1,javax.swing.GroupLayout.DEFAULT_SIZE,798,Short.MAX_VALUE));
+  layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jSplitPane0,javax.swing.GroupLayout.DEFAULT_SIZE,1078,Short.MAX_VALUE));
+  layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jSplitPane0,javax.swing.GroupLayout.DEFAULT_SIZE,798,Short.MAX_VALUE));
 }
