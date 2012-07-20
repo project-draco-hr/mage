@@ -2,6 +2,22 @@
   if (attackers.isEmpty()) {
     return;
   }
+  if (blockersCount == 1) {
+    List<UUID> toBeRemoved=new ArrayList<UUID>();
+    for (    UUID blockerId : getBlockers()) {
+      Permanent blocker=game.getPermanent(blockerId);
+      if (blocker != null && blocker.getAbilities().containsKey(CantBlockAloneAbility.getInstance().getId())) {
+        game.informPlayers(blocker.getName() + " can't block alone. Removing it from combat.");
+        toBeRemoved.add(blockerId);
+      }
+    }
+    for (    UUID blockerId : toBeRemoved) {
+      remove(blockerId);
+    }
+    if (blockers.size() == 0) {
+      this.blocked=false;
+    }
+  }
   for (  UUID uuid : attackers) {
     Permanent attacker=game.getPermanent(uuid);
     if (attacker != null && this.blocked && attacker.getMinBlockedBy() > 1 && blockers.size() > 0 && blockers.size() < attacker.getMinBlockedBy()) {
@@ -16,16 +32,6 @@
       this.blocked=false;
       game.informPlayers(attacker.getName() + " can't be blocked except by " + attacker.getMinBlockedBy()+ " or more creatures. Blockers discarded.");
       return;
-    }
-  }
-  for (  UUID blockerId : blockers) {
-    for (    UUID attackerId : attackers) {
-      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.BLOCKER_DECLARED,attackerId,blockerId,players.get(blockerId)));
-    }
-  }
-  if (!blockers.isEmpty()) {
-    for (    UUID attackerId : attackers) {
-      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.CREATURE_BLOCKED,attackerId,null));
     }
   }
 }
