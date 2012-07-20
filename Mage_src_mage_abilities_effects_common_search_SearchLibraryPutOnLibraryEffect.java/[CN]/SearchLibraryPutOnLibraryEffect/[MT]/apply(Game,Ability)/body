@@ -7,12 +7,19 @@
       Card card=player.getLibrary().remove(cardId,game);
       if (card != null)       cards.add(card);
     }
-    player.shuffleLibrary(game);
+    Cards foundCards=new CardsImpl();
+    foundCards.addAll(cards);
+    if (reveal) {
+      player.revealCards("Revealed",foundCards,game);
+    }
+    if (forceShuffle) {
+      player.shuffleLibrary(game);
+    }
     for (    Card card : cards) {
       card.moveToZone(Zone.LIBRARY,source.getId(),game,true);
     }
     return true;
   }
-  player.shuffleLibrary(game);
+  if (forceShuffle)   player.shuffleLibrary(game);
   return false;
 }
