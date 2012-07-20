@@ -6,11 +6,10 @@
  catch (  Exception ex) {
     log.error(ex.getMessage(),ex);
   }
+  setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
   addWindowListener(new WindowAdapter(){
     @Override public void windowClosing(    WindowEvent e){
-      if (JOptionPane.showConfirmDialog(null,"Do you want to save recent compares?","Save before exit",JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION) {
-        RateThread.getInstance().forceSave();
-      }
+      RateThread.getInstance().forceSave();
     }
   }
 );
