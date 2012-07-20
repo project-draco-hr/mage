@@ -1,0 +1,23 @@
+{
+  Set<UUID> controllers=new HashSet<UUID>();
+  for (  UUID permanentId : targetPointer.getTargets(game,source)) {
+    Permanent permanent=game.getPermanent(permanentId);
+    if (permanent != null) {
+      controllers.add(permanent.getControllerId());
+    }
+  }
+  if (controllers.size() != 2) {
+    this.discarded=true;
+    return;
+  }
+  this.lockedControllers=new HashMap<UUID,UUID>();
+  Iterator<UUID> it=controllers.iterator();
+  UUID firstController=it.next();
+  UUID secondController=it.next();
+  for (  UUID permanentId : targetPointer.getTargets(game,source)) {
+    Permanent permanent=game.getPermanent(permanentId);
+    if (permanent != null) {
+      this.lockedControllers.put(permanent.getId(),permanent.getControllerId().equals(firstController) ? secondController : firstController);
+    }
+  }
+}
