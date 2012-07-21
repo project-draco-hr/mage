@@ -1,0 +1,18 @@
+{
+  int amount=new ManacostVariableValue().calculate(game,source);
+  TargetCardInLibrary target=new TargetCardInLibrary(0,amount,new FilterCard());
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  if (player.searchLibrary(target,game)) {
+    for (    UUID cardId : target.getTargets()) {
+      Card card=player.getLibrary().remove(cardId,game);
+      if (card != null) {
+        card.moveToZone(Constants.Zone.HAND,source.getId(),game,false);
+      }
+    }
+  }
+  player.shuffleLibrary(game);
+  return true;
+}

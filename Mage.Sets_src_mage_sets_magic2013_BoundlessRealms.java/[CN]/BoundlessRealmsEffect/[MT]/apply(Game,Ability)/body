@@ -1,0 +1,25 @@
+{
+  FilterLandPermanent filter=new FilterLandPermanent();
+  filter.add(new ControllerPredicate(TargetController.YOU));
+  int amount=new PermanentsOnBattlefieldCount(filter).calculate(game,source);
+  TargetCardInLibrary target=new TargetCardInLibrary(0,amount,new FilterBasicLandCard());
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  if (player.searchLibrary(target,game)) {
+    for (    UUID cardId : target.getTargets()) {
+      Card card=player.getLibrary().getCard(cardId,game);
+      if (card != null) {
+        if (card.putOntoBattlefield(game,Zone.LIBRARY,source.getId(),source.getControllerId())) {
+          Permanent permanent=game.getPermanent(card.getId());
+          if (permanent != null) {
+            permanent.setTapped(true);
+          }
+        }
+      }
+    }
+  }
+  player.shuffleLibrary(game);
+  return true;
+}
