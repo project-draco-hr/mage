@@ -1,0 +1,15 @@
+{
+  if (event.getType().equals(GameEvent.EventType.DAMAGE_CAUSES_LIFE_LOSS)) {
+    Permanent permanent=game.getPermanent(source.getSourceId());
+    if (permanent == null) {
+      permanent=(Permanent)game.getLastKnownInformation(source.getSourceId(),Constants.Zone.BATTLEFIELD);
+    }
+    if (permanent != null) {
+      Player controller=game.getPlayer(permanent.getControllerId());
+      if (controller != null && (controller.getLife() - event.getAmount()) < 1 && event.getPlayerId().equals(controller.getId()) && game.getBattlefield().count(new FilterControlledCreaturePermanent(),event.getPlayerId(),game) > 0) {
+        event.setAmount(controller.getLife() - 1);
+      }
+    }
+  }
+  return false;
+}
