@@ -8,15 +8,8 @@
     }
     if (zEvent.getFromZone() == Zone.BATTLEFIELD && zEvent.getToZone() == Zone.GRAVEYARD) {
       Permanent permanent=(Permanent)game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
-      if (permanent != null) {
-        if (permanent.getId().equals(this.getSourceId())) {
-          return true;
-        }
- else {
-          if (filter.match(permanent,sourceId,controllerId,game)) {
-            return true;
-          }
-        }
+      if (permanent != null && filter.match(permanent,sourceId,controllerId,game)) {
+        return true;
       }
     }
   }
