@@ -6,6 +6,10 @@
   }
   planeswalkerFilter=new FilterPlaneswalkerPermanent();
   planeswalkerFilter.add(Predicates.or(permanentPredicates));
+  ArrayList<Predicate<Player>> playerPredicates=new ArrayList<Predicate<Player>>();
+  for (  UUID defenderId : defenders) {
+    playerPredicates.add(new PlayerIdPredicate(defenderId));
+  }
   playerFilter=new FilterPlayer();
-  playerFilter.getPlayerId().addAll(defenders);
+  planeswalkerFilter.add(Predicates.or(playerPredicates));
 }
