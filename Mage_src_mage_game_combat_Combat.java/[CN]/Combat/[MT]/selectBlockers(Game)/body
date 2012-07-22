@@ -1,11 +1,18 @@
 {
   if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_BLOCKERS,attackerId,attackerId))) {
     Player player=game.getPlayer(attackerId);
-    checkBlockRequirements(player,game);
+    checkBlockRequirementsBefore(player,game);
     for (    UUID defenderId : getPlayerDefenders(game)) {
-      game.getPlayer(defenderId).selectBlockers(game,defenderId);
-      if (game.isPaused() || game.isGameOver())       return;
-      checkBlockRestrictions(game.getPlayer(defenderId),game);
+      boolean choose=true;
+      Player defender=game.getPlayer(defenderId);
+      while (choose) {
+        game.getPlayer(defenderId).selectBlockers(game,defenderId);
+        if (game.isPaused() || game.isGameOver()) {
+          return;
+        }
+        checkBlockRestrictions(game.getPlayer(defenderId),game);
+        choose=!checkBlockRequirementsAfter(defender,defender,game);
+      }
       game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,defenderId,defenderId));
     }
   }

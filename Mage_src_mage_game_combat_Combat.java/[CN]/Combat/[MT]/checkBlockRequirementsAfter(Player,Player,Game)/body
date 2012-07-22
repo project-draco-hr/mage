@@ -1,0 +1,35 @@
+{
+  for (  Permanent creature : game.getBattlefield().getActivePermanents(new FilterControlledCreaturePermanent(),player.getId(),game)) {
+    if (creature.getBlocking() == 0 && game.getOpponents(attackerId).contains(creature.getControllerId())) {
+      for (      RequirementEffect effect : game.getContinuousEffects().getApplicableRequirementEffects(creature,game)) {
+        if (effect.mustBlockAny(game)) {
+          boolean mayBlock=false;
+          for (          UUID attackingCreatureId : getAttackers()) {
+            if (creature.canBlock(attackingCreatureId,game)) {
+              mayBlock=true;
+              break;
+            }
+          }
+          if (mayBlock) {
+            if (controller.isHuman()) {
+              game.informPlayer(controller,"Creature should block this turn: " + creature.getName());
+            }
+ else {
+              Player defender=game.getPlayer(creature.getControllerId());
+              if (defender != null) {
+                for (                UUID attackingCreatureId : getAttackers()) {
+                  if (creature.canBlock(attackingCreatureId,game)) {
+                    defender.declareBlocker(creature.getId(),attackingCreatureId,game);
+                    break;
+                  }
+                }
+              }
+            }
+            return false;
+          }
+        }
+      }
+    }
+  }
+  return true;
+}
