@@ -1,17 +1,17 @@
 {
   if (!this.match(player,game))   return notFilter;
-  if (playerTarget != TargetController.ANY && playerId != null) {
+  if (playerTarget != TargetController.ANY && controllerId != null) {
 switch (playerTarget) {
 case YOU:
-      if (!player.getId().equals(playerId))       return notFilter;
+      if (!player.getId().equals(controllerId))       return notFilter;
     break;
 case OPPONENT:
-  if (!game.getOpponents(playerId).contains(player.getId()))   return notFilter;
+  if (!game.getOpponents(controllerId).contains(player.getId()))   return notFilter;
 break;
 case NOT_YOU:
-if (player.getId().equals(playerId)) return notFilter;
+if (player.getId().equals(controllerId)) return notFilter;
 break;
 }
 }
-return !notFilter;
+return Predicates.and(extraPredicates).apply(new ObjectSourcePlayer(player,sourceId,controllerId),game);
 }
