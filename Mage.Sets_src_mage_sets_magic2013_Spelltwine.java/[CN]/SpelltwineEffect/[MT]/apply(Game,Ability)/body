@@ -1,0 +1,33 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  Card cardOne=game.getCard(source.getTargets().get(0).getFirstTarget());
+  Card cardTwo=game.getCard(source.getTargets().get(1).getFirstTarget());
+  if (you != null) {
+    if (cardOne != null) {
+      if (you.chooseUse(Constants.Outcome.PlayForFree,"Cast the copy of " + cardOne.getName() + " first?",game)) {
+        cardOne.moveToExile(null,null,source.getId(),game);
+        Card copyOne=game.copyCard(cardOne,source,you.getId());
+        you.cast(copyOne.getSpellAbility(),game,true);
+        if (cardTwo != null) {
+          cardTwo.moveToExile(null,null,source.getId(),game);
+          Card copyTwo=game.copyCard(cardTwo,source,you.getId());
+          you.cast(copyTwo.getSpellAbility(),game,true);
+        }
+      }
+ else {
+        if (cardTwo != null) {
+          cardTwo.moveToExile(null,null,source.getId(),game);
+          Card copyTwo=game.copyCard(cardTwo,source,you.getId());
+          you.cast(copyTwo.getSpellAbility(),game,true);
+        }
+        if (cardOne != null) {
+          cardOne.moveToExile(null,null,source.getId(),game);
+          Card copyOne=game.copyCard(cardOne,source,you.getId());
+          you.cast(copyOne.getSpellAbility(),game,true);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
