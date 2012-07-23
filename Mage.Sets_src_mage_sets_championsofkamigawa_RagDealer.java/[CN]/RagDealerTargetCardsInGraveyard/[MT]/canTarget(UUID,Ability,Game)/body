@@ -1,9 +1,11 @@
 {
-  Player player=game.getPlayer(source.getTargets().getFirstTarget());
-  if (player != null) {
-    filter.getOwnerId().clear();
-    filter.getOwnerId().add(player.getId());
-    return super.canTarget(id,source,game);
+  UUID firstTarget=this.getFirstTarget();
+  if (firstTarget != null) {
+    Card card=game.getCard(firstTarget);
+    Card targetCard=game.getCard(id);
+    if (card == null || targetCard == null || !card.getOwnerId().equals(targetCard.getOwnerId())) {
+      return false;
+    }
   }
-  return false;
+  return super.canTarget(id,source,game);
 }
