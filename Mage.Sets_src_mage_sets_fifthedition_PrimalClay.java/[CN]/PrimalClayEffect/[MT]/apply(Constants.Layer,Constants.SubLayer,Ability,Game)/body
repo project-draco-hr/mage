@@ -1,0 +1,34 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  PrimalClayChoice choice=(PrimalClayChoice)source.getChoices().get(0);
+  if (permanent == null)   return false;
+switch (layer) {
+case TypeChangingEffects_4:
+    permanent.getCardType().add(CardType.ARTIFACT);
+  permanent.getCardType().add(CardType.CREATURE);
+break;
+case PTChangingEffects_7:
+if (choice.getChoice().equals("a 3/3 artifact creature")) {
+permanent.getPower().setValue(3);
+permanent.getToughness().setValue(3);
+}
+ else if (choice.getChoice().equals("a 2/2 artifact creature with flying")) {
+permanent.getPower().setValue(2);
+permanent.getToughness().setValue(2);
+}
+ else if (choice.getChoice().equals("a 1/6 Wall artifact creature with defender")) {
+permanent.getPower().setValue(1);
+permanent.getToughness().setValue(6);
+}
+break;
+case AbilityAddingRemovingEffects_6:
+if (choice.getChoice().equals("a 2/2 artifact creature with flying")) {
+permanent.addAbility(FlyingAbility.getInstance(),game);
+}
+ else if (choice.getChoice().equals("a 1/6 Wall artifact creature with defender")) {
+permanent.addAbility(DefenderAbility.getInstance(),game);
+}
+break;
+}
+return true;
+}
