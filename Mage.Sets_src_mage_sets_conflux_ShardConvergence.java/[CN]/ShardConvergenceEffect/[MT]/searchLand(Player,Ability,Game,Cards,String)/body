@@ -1,0 +1,12 @@
+{
+  FilterLandCard filter=new FilterLandCard(subtype);
+  filter.add(new SubtypePredicate(subtype));
+  TargetCardInLibrary target=new TargetCardInLibrary(filter);
+  if (player.searchLibrary(target,game)) {
+    Card card=player.getLibrary().remove(target.getFirstTarget(),game);
+    if (card != null) {
+      card.moveToZone(Constants.Zone.HAND,source.getId(),game,false);
+      cards.add(card);
+    }
+  }
+}
