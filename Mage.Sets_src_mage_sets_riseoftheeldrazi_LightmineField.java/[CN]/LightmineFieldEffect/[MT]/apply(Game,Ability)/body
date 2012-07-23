@@ -1,0 +1,14 @@
+{
+  List<UUID> attackers=game.getCombat().getAttackers();
+  int damage=attackers.size();
+  if (!attackers.isEmpty()) {
+    for (    UUID attacker : attackers) {
+      Permanent creature=game.getPermanent(attacker);
+      if (creature != null) {
+        creature.damage(damage,source.getSourceId(),game,false,false);
+      }
+    }
+    return true;
+  }
+  return false;
+}
