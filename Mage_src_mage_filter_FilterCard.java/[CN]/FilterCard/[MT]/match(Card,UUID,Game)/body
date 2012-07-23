@@ -1,17 +1,6 @@
 {
-  if (!this.match(card,game))   return notFilter;
-  if (owner != TargetController.ANY && playerId != null) {
-switch (owner) {
-case YOU:
-      if (!card.getOwnerId().equals(playerId))       return notFilter;
-    break;
-case OPPONENT:
-  if (!game.getOpponents(playerId).contains(card.getOwnerId()))   return notFilter;
-break;
-case NOT_YOU:
-if (card.getOwnerId().equals(playerId)) return notFilter;
-break;
-}
-}
-return !notFilter;
+  if (!this.match(card,game)) {
+    return false;
+  }
+  return Predicates.and(extraPredicates).apply(new ObjectPlayer(card,playerId),game);
 }

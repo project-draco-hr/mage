@@ -1,0 +1,30 @@
+{
+  if (text.isEmpty()) {
+    return true;
+  }
+  if (input.getName().toLowerCase().contains(text.toLowerCase())) {
+    return true;
+  }
+  String[] tokens=text.toLowerCase().split(" ");
+  for (  String token : tokens) {
+    boolean found=false;
+    if (!token.isEmpty()) {
+      for (      String rule : input.getRules()) {
+        if (rule.toLowerCase().contains(token)) {
+          found=true;
+          break;
+        }
+      }
+      for (      String subType : input.getSubtype()) {
+        if (subType.equalsIgnoreCase(token)) {
+          found=true;
+          break;
+        }
+      }
+    }
+    if (!found) {
+      return false;
+    }
+  }
+  return true;
+}
