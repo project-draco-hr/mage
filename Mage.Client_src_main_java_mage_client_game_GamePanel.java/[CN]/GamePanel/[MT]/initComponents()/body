@@ -226,15 +226,20 @@
   gl_pnlGameInfo.setVerticalGroup(gl_pnlGameInfo.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(gl_pnlGameInfo.createSequentialGroup().addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,164,Short.MAX_VALUE).addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(gl_pnlGameInfo.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(btnConcede).addComponent(btnEndTurn).addComponent(btnSwitchHands).addComponent(btnStopWatching))));
   pnlBattlefield.setLayout(new java.awt.GridBagLayout());
   jPhases=new JPanel();
-  jPhases.setBackground(new Color(0,0,0,100));
-  jPhases.setLayout(new BoxLayout(jPhases,BoxLayout.PAGE_AXIS));
-  jPanel3.setPreferredSize(new Dimension(75,100));
+  jPhases.setBackground(new Color(0,0,0,0));
+  jPhases.setLayout(null);
+  jPhases.setPreferredSize(new Dimension(X_PHASE_WIDTH,450));
   String[] phases={"Untap","Upkeep","Draw","Main1","Combat_Start","Combat_Attack","Combat_Block","Combat_Damage","Combat_End","Main2","Cleanup","Next_Turn"};
   for (  String name : phases) {
     createPhaseButton(name);
   }
-  for (  HoverButton hoverButton : hoverButtons.values()) {
+  int i=0;
+  for (  String name : hoverButtons.keySet()) {
+    HoverButton hoverButton=hoverButtons.get(name);
+    hoverButton.setAlignmentX(LEFT_ALIGNMENT);
+    hoverButton.setBounds(X_PHASE_WIDTH - 36,i * 36,36,36);
     jPhases.add(hoverButton);
+    i++;
   }
   pnlReplay.setOpaque(false);
   helper=new HelperPanel();
