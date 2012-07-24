@@ -228,53 +228,14 @@
   jPhases=new JPanel();
   jPhases.setBackground(new Color(0,0,0,100));
   jPhases.setLayout(new BoxLayout(jPhases,BoxLayout.PAGE_AXIS));
-  jPanel3.setPreferredSize(new Dimension(45,100));
-  untap=new JButton("Un");
-  untap.setToolTipText("Untap");
-  untap.setAlignmentX(RIGHT_ALIGNMENT);
-  upkeep=new JButton("Up");
-  upkeep.setToolTipText("Upkeep");
-  upkeep.setAlignmentX(RIGHT_ALIGNMENT);
-  draw=new JButton("D");
-  draw.setToolTipText("Draw");
-  draw.setAlignmentX(RIGHT_ALIGNMENT);
-  main1=new JButton("M1");
-  main1.setToolTipText("Main#1");
-  main1.setAlignmentX(RIGHT_ALIGNMENT);
-  attack=new JButton("A");
-  attack.setToolTipText("Attack");
-  attack.setAlignmentX(RIGHT_ALIGNMENT);
-  block=new JButton("B");
-  block.setToolTipText("Block");
-  block.setAlignmentX(RIGHT_ALIGNMENT);
-  combatButton=new JButton("C");
-  combatButton.setToolTipText("Combat damage");
-  combatButton.setAlignmentX(RIGHT_ALIGNMENT);
-  main2=new JButton("M2");
-  main2.setToolTipText("Main#2");
-  main2.setAlignmentX(RIGHT_ALIGNMENT);
-  endOfTurn=new JButton("End");
-  endOfTurn.setToolTipText("End The Turn");
-  endOfTurn.setAlignmentX(RIGHT_ALIGNMENT);
-  endOfTurn.addMouseListener(new MouseAdapter(){
-    @Override public void mousePressed(    MouseEvent e){
-      if (feedbackPanel != null && FeedbackMode.SELECT.equals(feedbackPanel.getMode())) {
-        logger.info("user pressed End Of Turn");
-        endButtonTip.setVisible(false);
-        session.sendPlayerInteger(gameId,0);
-      }
-    }
+  jPanel3.setPreferredSize(new Dimension(75,100));
+  String[] phases={"Untap","Upkeep","Draw","Main1","Combat_Start","Combat_Attack","Combat_Block","Combat_Damage","Combat_End","Main2","Cleanup","Next_Turn"};
+  for (  String name : phases) {
+    createPhaseButton(name);
   }
-);
-  jPhases.add(untap);
-  jPhases.add(upkeep);
-  jPhases.add(draw);
-  jPhases.add(main1);
-  jPhases.add(attack);
-  jPhases.add(block);
-  jPhases.add(combatButton);
-  jPhases.add(main2);
-  jPhases.add(endOfTurn);
+  for (  HoverButton hoverButton : hoverButtons.values()) {
+    jPhases.add(hoverButton);
+  }
   pnlReplay.setOpaque(false);
   helper=new HelperPanel();
   helper.setPreferredSize(new Dimension(100,90));
