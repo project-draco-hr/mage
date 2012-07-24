@@ -1,0 +1,31 @@
+{
+  int width=0;
+  int height=0;
+  int components=parent.getComponentCount();
+  int visibleComponents=getVisibleComponents(parent);
+  for (int i=0; i < components; i++) {
+    Component component=parent.getComponent(i);
+    if (!component.isVisible())     continue;
+    Dimension d=getDimension(component,type);
+    if (axis == X_AXIS) {
+      width+=d.width;
+      height=Math.max(height,d.height);
+    }
+ else {
+      width=Math.max(width,d.width);
+      height+=d.height;
+    }
+  }
+  Insets insets=parent.getInsets();
+  int totalGap=((visibleComponents - 1) * gap) + (2 * borderGap);
+  if (axis == X_AXIS) {
+    width+=insets.left + insets.right + totalGap;
+    height+=insets.top + insets.bottom;
+  }
+ else {
+    width+=insets.left + insets.right;
+    height+=insets.top + insets.bottom + totalGap;
+  }
+  Dimension size=new Dimension(width,height);
+  return size;
+}

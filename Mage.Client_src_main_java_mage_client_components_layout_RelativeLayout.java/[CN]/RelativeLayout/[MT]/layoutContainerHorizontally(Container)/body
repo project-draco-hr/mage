@@ -1,0 +1,46 @@
+{
+  int components=parent.getComponentCount();
+  int visibleComponents=getVisibleComponents(parent);
+  if (components == 0)   return;
+  float relativeTotal=0.0f;
+  Insets insets=parent.getInsets();
+  int spaceAvailable=parent.getSize().width - insets.left - insets.right- ((visibleComponents - 1) * gap)- (2 * borderGap);
+  for (int i=0; i < components; i++) {
+    Component component=parent.getComponent(i);
+    if (!component.isVisible())     continue;
+    Float constraint=constraints.get(component);
+    if (constraint == null) {
+      Dimension d=component.getPreferredSize();
+      spaceAvailable-=d.width;
+    }
+ else {
+      relativeTotal+=constraint.doubleValue();
+    }
+  }
+  int[] relativeSpace=allocateRelativeSpace(parent,spaceAvailable,relativeTotal);
+  int x=insets.left + borderGap;
+  int y=insets.top;
+  int insetGap=insets.top + insets.bottom;
+  int parentHeight=parent.getSize().height - insetGap;
+  for (int i=0; i < components; i++) {
+    Component component=parent.getComponent(i);
+    if (!component.isVisible())     continue;
+    if (i > 0)     x+=gap;
+    Dimension d=component.getPreferredSize();
+    if (fill)     d.height=parentHeight - fillGap;
+    Float constraint=constraints.get(component);
+    if (constraint == null) {
+      component.setSize(d);
+      int locationY=getLocationY(component,parentHeight) + y;
+      component.setLocation(x,locationY);
+      x+=d.width;
+    }
+ else {
+      int width=relativeSpace[i];
+      component.setSize(width,d.height);
+      int locationY=getLocationY(component,parentHeight) + y;
+      component.setLocation(x,locationY);
+      x+=width;
+    }
+  }
+}
