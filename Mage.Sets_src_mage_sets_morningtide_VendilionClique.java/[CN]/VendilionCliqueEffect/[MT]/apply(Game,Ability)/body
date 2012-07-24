@@ -1,0 +1,18 @@
+{
+  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  Player sourcePlayer=game.getPlayer(source.getControllerId());
+  if (player != null && sourcePlayer != null) {
+    TargetCard targetCard=new TargetCard(Constants.Zone.ALL,new FilterNonlandCard());
+    if (sourcePlayer.choose(Constants.Outcome.Discard,player.getHand(),targetCard,game)) {
+      Card c=game.getCard(targetCard.getFirstTarget());
+      if (c != null) {
+        CardsImpl cards=new CardsImpl();
+        cards.add(c);
+        player.revealCards("Vendilion Clique effect",cards,game);
+        c.moveToZone(Constants.Zone.LIBRARY,source.getSourceId(),game,false);
+        player.drawCards(1,game);
+      }
+    }
+  }
+  return false;
+}
