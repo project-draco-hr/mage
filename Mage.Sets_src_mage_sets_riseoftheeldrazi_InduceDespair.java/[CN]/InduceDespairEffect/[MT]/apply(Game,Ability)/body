@@ -1,0 +1,11 @@
+{
+  RevealTargetFromHandCost cost=(RevealTargetFromHandCost)source.getCosts().get(0);
+  Permanent creature=game.getPermanent(targetPointer.getFirst(game,source));
+  if (cost != null) {
+    int CMC=-1 * cost.convertedManaCosts;
+    if (creature != null) {
+      creature.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new BoostSourceEffect(CMC,CMC,Constants.Duration.EndOfTurn)),game);
+    }
+  }
+  return true;
+}
