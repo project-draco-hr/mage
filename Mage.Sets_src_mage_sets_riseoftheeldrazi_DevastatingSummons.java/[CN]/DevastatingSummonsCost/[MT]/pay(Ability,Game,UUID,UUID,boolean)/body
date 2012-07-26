@@ -1,0 +1,18 @@
+{
+  amountPaid=0;
+  FilterLandPermanent filter=new FilterLandPermanent("X number of lands you control.");
+  TargetLandPermanent target=new TargetLandPermanent(filter);
+  while (true) {
+    target.clearChosen();
+    if (target.canChoose(controllerId,game) && target.choose(Constants.Outcome.Sacrifice,controllerId,sourceId,game)) {
+      UUID land=target.getFirstTarget();
+      if (land != null) {
+        game.getPermanent(land).sacrifice(sourceId,game);
+        amountPaid++;
+      }
+    }
+ else     break;
+  }
+  paid=true;
+  return true;
+}
