@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent wildMongrel=game.getPermanent(source.getSourceId());
+  if (player != null && wildMongrel != null) {
+    ChoiceColor colorChoice=new ChoiceColor();
+    if (player.choose(Constants.Outcome.Neutral,colorChoice,game)) {
+      game.informPlayers(wildMongrel.getName() + ": " + player.getName()+ " has chosen "+ colorChoice.getChoice());
+      ContinuousEffect effect=new SetCardColorTargetEffect(colorChoice.getColor(),Constants.Duration.EndOfTurn,"is " + colorChoice.getChoice());
+      effect.setTargetPointer(new FixedTarget(source.getSourceId()));
+      game.addEffect(effect,source);
+      return true;
+    }
+  }
+  return false;
+}
