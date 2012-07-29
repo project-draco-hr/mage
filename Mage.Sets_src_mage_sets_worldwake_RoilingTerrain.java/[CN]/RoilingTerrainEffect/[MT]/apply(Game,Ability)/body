@@ -1,0 +1,11 @@
+{
+  Permanent targetedLand=game.getPermanent(source.getFirstTarget());
+  if (targetedLand != null) {
+    Player controller=game.getPlayer(targetedLand.getControllerId());
+    targetedLand.destroy(id,game,true);
+    int landsInGraveyard=controller.getGraveyard().count(filter,game);
+    controller.damage(landsInGraveyard,id,game,false,true);
+    return true;
+  }
+  return false;
+}

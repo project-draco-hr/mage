@@ -1,0 +1,15 @@
+{
+  Permanent targetedCreature=game.getPermanent(source.getFirstTarget());
+  if (targetedCreature == null) {
+    targetedCreature=(Permanent)game.getLastKnownInformation(source.getFirstTarget(),Constants.Zone.BATTLEFIELD);
+  }
+  if (targetedCreature != null) {
+    targetedCreature.moveToExile(id,"Nemesis Trap Exile",id,game);
+    EmptyToken token=new EmptyToken();
+    CardUtil.copyTo(token).from(targetedCreature);
+    token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
+    token.addAbility(new AtEndOfTurnDelayedTriggeredAbility(new ExileSourceEffect()));
+    return true;
+  }
+  return false;
+}
