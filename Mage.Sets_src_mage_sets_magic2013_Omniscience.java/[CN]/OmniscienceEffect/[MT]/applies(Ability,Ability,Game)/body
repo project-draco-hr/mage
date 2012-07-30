@@ -1,11 +1,17 @@
 {
   if (abilityToModify instanceof SpellAbility) {
     Card sourceCard=game.getCard(abilityToModify.getSourceId());
-    if (sourceCard != null && sourceCard.getOwnerId().equals(source.getControllerId()) && !sourceCard.getCardType().contains(CardType.LAND)) {
-      Player player=game.getPlayer(source.getControllerId());
-      String message="Cast " + sourceCard.getName() + " without paying its mana costs?";
-      if (player != null && player.chooseUse(outcome,message,game)) {
-        return true;
+    StackObject stackObject=game.getStack().getStackObject(abilityToModify.getSourceId());
+    if (stackObject != null && stackObject instanceof Spell) {
+      Zone zone=((Spell)stackObject).getFromZone();
+      if (zone != null && zone.equals(Zone.HAND)) {
+        if (sourceCard != null && sourceCard.getOwnerId().equals(source.getControllerId()) && !sourceCard.getCardType().contains(CardType.LAND)) {
+          Player player=game.getPlayer(source.getControllerId());
+          String message="Cast " + sourceCard.getName() + " without paying its mana costs?";
+          if (player != null && player.chooseUse(outcome,message,game)) {
+            return true;
+          }
+        }
       }
     }
   }
