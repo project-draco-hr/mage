@@ -1,10 +1,16 @@
 {
-  Permanent equipment=game.getPermanent(source.getSourceId());
-  if (equipment != null && equipment.getAttachedTo() != null) {
-    Permanent creature=game.getPermanent(equipment.getAttachedTo());
-    if (creature != null) {
-      creature.addAbility(ability,game);
+  Permanent creature=null;
+  if (fixedTarget) {
+    creature=game.getPermanent(targetPointer.getFirst(game,source));
+  }
+ else {
+    Permanent equipment=game.getPermanent(source.getSourceId());
+    if (equipment != null && equipment.getAttachedTo() != null) {
+      creature=game.getPermanent(equipment.getAttachedTo());
     }
+  }
+  if (creature != null) {
+    creature.addAbility(ability,game);
   }
   return true;
 }
