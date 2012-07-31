@@ -1,0 +1,19 @@
+{
+  Integer damageAmount=(Integer)this.getValue("damageAmount");
+  UUID controllerId=(UUID)this.getValue("controller");
+  UUID sourceOfDamage=(UUID)this.getValue("source");
+  if (damageAmount != null && controllerId != null) {
+    Permanent permanent=game.getPermanent(sourceOfDamage);
+    if (permanent == null) {
+      permanent=(Permanent)game.getLastKnownInformation(sourceOfDamage,Constants.Zone.BATTLEFIELD);
+    }
+    if (permanent != null) {
+      Player player=game.getPlayer(controllerId);
+      if (player != null) {
+        player.damage(damageAmount,sourceOfDamage,game,false,true);
+        return true;
+      }
+    }
+  }
+  return false;
+}
