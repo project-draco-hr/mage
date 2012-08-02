@@ -1,0 +1,17 @@
+{
+  if (event.getType() == GameEvent.EventType.DISCARDED_CARD) {
+    MageObject mageObject=game.getCard(event.getTargetId());
+    if (mageObject != null && this.getSourceId().equals(mageObject.getId()) && mageObject instanceof Card) {
+      Card card=(Card)mageObject;
+      Player controller=game.getPlayer(event.getPlayerId());
+      if (controller != null) {
+        for (        Ability madness : card.getAbilities()) {
+          if (madness instanceof MadnessAbility) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

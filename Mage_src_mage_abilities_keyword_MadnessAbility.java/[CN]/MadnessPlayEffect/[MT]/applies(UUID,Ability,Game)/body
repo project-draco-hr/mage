@@ -1,0 +1,19 @@
+{
+  if (sourceId.equals(source.getSourceId())) {
+    Card card=game.getCard(source.getSourceId());
+    if (card != null && card.getOwnerId().equals(source.getControllerId()) && game.getState().getZone(source.getSourceId()) == Constants.Zone.EXILED) {
+      Object object=game.getState().getValue("madness_" + card.getId());
+      if (object != null && object.equals(true)) {
+        Player player=game.getPlayer(card.getOwnerId());
+        String message="Cast " + card.getName() + " by its madness cost?";
+        if (player != null && player.chooseUse(Constants.Outcome.Benefit,message,game)) {
+          if (cost.pay(card.getSpellAbility(),game,sourceId,player.getId(),false)) {
+            card.getSpellAbility().getManaCostsToPay().clear();
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

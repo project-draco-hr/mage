@@ -1,0 +1,16 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Card card=game.getCard(source.getSourceId());
+  if (player != null && card != null) {
+    Object object=game.getState().getValue("madness exile");
+    if (object == null || !(object instanceof UUID)) {
+      object=UUID.randomUUID();
+      game.getState().setValue("madness exile",object);
+    }
+    card.moveToExile((UUID)object,"Madness",card.getId(),game);
+    card.addInfo("madness","<i>This card is being cast using madness cost</i>");
+    game.getState().setValue("madness_" + card.getId(),true);
+    return true;
+  }
+  return false;
+}
