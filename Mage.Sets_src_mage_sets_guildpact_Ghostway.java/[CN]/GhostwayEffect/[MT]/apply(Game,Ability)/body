@@ -1,0 +1,17 @@
+{
+  UUID exileId=source.getSourceId();
+  if (exileId != null) {
+    for (    Permanent creature : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
+      if (creature != null) {
+        if (creature.moveToExile(source.getSourceId(),"Ghostway Exile",source.getId(),game)) {
+          AtEndOfTurnDelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Constants.Zone.BATTLEFIELD,true));
+          delayedAbility.setSourceId(source.getSourceId());
+          delayedAbility.setControllerId(source.getControllerId());
+          game.addDelayedTriggeredAbility(delayedAbility);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
