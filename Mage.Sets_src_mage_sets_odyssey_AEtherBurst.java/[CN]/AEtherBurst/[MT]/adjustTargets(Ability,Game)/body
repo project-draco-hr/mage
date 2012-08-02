@@ -1,0 +1,16 @@
+{
+  Target target=ability.getTargets().get(0);
+  if (target instanceof DynamicTargetCreaturePermanent) {
+    Player controller=game.getPlayer(ability.getControllerId());
+    int amount=0;
+    if (controller != null) {
+      for (      UUID playerId : controller.getInRange()) {
+        Player player=game.getPlayer(playerId);
+        if (player != null) {
+          amount+=player.getGraveyard().getCards(filter,game).size();
+        }
+      }
+    }
+    ((DynamicTargetCreaturePermanent)target).setMaxNumberOfTargets(amount + 1);
+  }
+}
