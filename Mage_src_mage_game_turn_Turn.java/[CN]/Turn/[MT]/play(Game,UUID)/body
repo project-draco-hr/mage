@@ -8,6 +8,7 @@
   for (  Phase phase : phases) {
     if (game.isPaused() || game.isGameOver())     return;
     currentPhase=phase;
+    game.fireEvent(new GameEvent(GameEvent.EventType.PHASE_CHANGED,activePlayerId,null,activePlayerId));
     if (!game.getState().getTurnMods().skipPhase(activePlayerId,currentPhase.getType())) {
       if (phase.play(game,activePlayerId)) {
         game.emptyManaPools();
