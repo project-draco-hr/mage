@@ -1,0 +1,20 @@
+{
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null && targetPlayer != null) {
+    Cards targetLibrary=new CardsImpl();
+    targetLibrary.addAll(targetPlayer.getLibrary().getCardList());
+    TargetCardInLibrary target=new TargetCardInLibrary(0,5,filter);
+    if (player.choose(Constants.Outcome.Benefit,targetLibrary,target,game)) {
+      List<UUID> targetId=target.getTargets();
+      for (      UUID targetCard : targetId) {
+        Card card=targetPlayer.getLibrary().remove(targetCard,game);
+        if (card != null) {
+          card.moveToExile(getId(),"Supreme Inquisitor",source.getSourceId(),game);
+        }
+      }
+    }
+  }
+  targetPlayer.shuffleLibrary(game);
+  return true;
+}
