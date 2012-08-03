@@ -4,6 +4,10 @@
     logger.debug("activate failed - choice");
     return false;
   }
+  Card card=game.getCard(sourceId);
+  if (card != null) {
+    card.adjustTargets(this,game);
+  }
   if (getTargets().size() > 0 && getTargets().chooseTargets(getEffects().get(0).getOutcome(),this.controllerId,this,game) == false) {
     logger.debug("activate failed - target");
     return false;
@@ -22,7 +26,6 @@
       }
     }
   }
-  Card card=game.getCard(sourceId);
   if (card != null) {
     card.adjustCosts(this,game);
     for (    Ability ability : card.getAbilities()) {
