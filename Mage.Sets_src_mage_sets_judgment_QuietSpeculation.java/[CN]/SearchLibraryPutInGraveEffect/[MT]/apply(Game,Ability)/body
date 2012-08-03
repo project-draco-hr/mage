@@ -1,0 +1,20 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player == null) {
+    return false;
+  }
+  if (player.searchLibrary(target,game)) {
+    if (target.getTargets().size() > 0) {
+      for (      UUID cardId : (List<UUID>)target.getTargets()) {
+        Card card=player.getLibrary().remove(cardId,game);
+        if (card != null) {
+          card.moveToZone(Constants.Zone.GRAVEYARD,source.getId(),game,false);
+        }
+      }
+    }
+    player.shuffleLibrary(game);
+    return true;
+  }
+  player.shuffleLibrary(game);
+  return false;
+}
