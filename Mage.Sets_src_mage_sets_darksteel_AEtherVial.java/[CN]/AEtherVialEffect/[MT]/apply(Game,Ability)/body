@@ -1,0 +1,26 @@
+{
+  Permanent permanent=game.getBattlefield().getPermanent(source.getSourceId());
+  if (permanent == null) {
+    permanent=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+    if (permanent == null) {
+      return false;
+    }
+  }
+  int count=permanent.getCounters().getCount(CounterType.CHARGE);
+  FilterCreatureCard filter=new FilterCreatureCard("creature card with converted mana cost equal to " + count);
+  filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,count));
+  String choiceText="Put a " + filter.getMessage() + " from your hand onto the battlefield?";
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null || player.getHand().count(filter,game) == 0 || !player.chooseUse(this.outcome,choiceText,game)) {
+    return false;
+  }
+  TargetCardInHand target=new TargetCardInHand(filter);
+  if (player.choose(this.outcome,target,source.getSourceId(),game)) {
+    Card card=game.getCard(target.getFirstTarget());
+    if (card != null) {
+      card.putOntoBattlefield(game,Zone.HAND,source.getId(),source.getControllerId());
+      return true;
+    }
+  }
+  return false;
+}

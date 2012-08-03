@@ -1,0 +1,18 @@
+{
+  addCard(Constants.Zone.GRAVEYARD,playerA,"Wonder");
+  addCard(Constants.Zone.GRAVEYARD,playerA,"Runeclaw Bear");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Island");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Elite Vanguard");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Corpse Traders");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Llanowar Elves");
+  setStopAt(1,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertAbility(playerA,"Elite Vanguard",FlyingAbility.getInstance(),true);
+  assertAbility(playerA,"Corpse Traders",FlyingAbility.getInstance(),true);
+  assertAbility(playerB,"Llanowar Elves",FlyingAbility.getInstance(),false);
+  for (  Card card : playerA.getGraveyard().getCards(currentGame)) {
+    if (card.equals("Runeclaw Bear")) {
+      Assert.assertFalse(card.getAbilities().contains(FlyingAbility.getInstance()));
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  super(ownerId,54,"Wonder",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{3}{U}");
+  this.expansionSetCode="JUD";
+  this.subtype.add("Incarnation");
+  this.color.setBlue(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(FlyingAbility.getInstance());
+  ContinuousEffect effect=new GainAbilityControlledEffect(FlyingAbility.getInstance(),Constants.Duration.WhileOnBattlefield,new FilterCreaturePermanent());
+  ConditionalContinousEffect wonderEffect=new ConditionalContinousEffect(effect,new ControlsPermanentCondition(filter),ruleText);
+  this.addAbility(new SimpleStaticAbility(Constants.Zone.GRAVEYARD,wonderEffect));
+}

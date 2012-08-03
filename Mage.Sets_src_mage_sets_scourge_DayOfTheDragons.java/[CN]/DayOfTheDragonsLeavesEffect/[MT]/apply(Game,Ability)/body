@@ -1,0 +1,19 @@
+{
+  UUID exileId=source.getSourceId();
+  for (  Permanent dragon : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
+    if (dragon != null) {
+      dragon.sacrifice(source.getId(),game);
+    }
+  }
+  ExileZone exile=game.getExile().getExileZone(exileId);
+  if (exile != null) {
+    exile=exile.copy();
+    for (    UUID cardId : exile) {
+      Card card=game.getCard(cardId);
+      card.putOntoBattlefield(game,Constants.Zone.EXILED,source.getId(),source.getControllerId());
+    }
+    game.getExile().getExileZone(exileId).clear();
+    return true;
+  }
+  return false;
+}
