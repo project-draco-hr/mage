@@ -1,0 +1,17 @@
+{
+  UUID exileId=source.getSourceId();
+  int creaturesExiled=0;
+  if (exileId != null) {
+    for (    Permanent creature : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
+      if (creature != null) {
+        if (creature.moveToExile(exileId,"Day of the Dragons",source.getId(),game)) {
+          creaturesExiled++;
+        }
+      }
+    }
+    DragonToken token=new DragonToken();
+    token.putOntoBattlefield(creaturesExiled,game,source.getId(),source.getControllerId());
+    return true;
+  }
+  return false;
+}
