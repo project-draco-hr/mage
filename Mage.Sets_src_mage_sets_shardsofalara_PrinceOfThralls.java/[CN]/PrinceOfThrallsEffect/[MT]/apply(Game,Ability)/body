@@ -1,0 +1,17 @@
+{
+  Card card=game.getCard(targetPointer.getFirst(game,source));
+  Permanent permanent=(Permanent)game.getLastKnownInformation(card.getId(),Constants.Zone.BATTLEFIELD);
+  Player opponent=game.getPlayer(permanent.getControllerId());
+  if (opponent != null && card != null && permanent != null && source.getControllerId() != null) {
+    PayLifeCost cost=new PayLifeCost(3);
+    if (opponent.chooseUse(Constants.Outcome.Neutral,cost.getText() + " or " + permanent.getName()+ " comes back into the battlefield under opponents control",game)) {
+      cost.clearPaid();
+      if (cost.pay(source,game,source.getId(),opponent.getId(),true)) {
+        return true;
+      }
+    }
+    card.putOntoBattlefield(game,Zone.GRAVEYARD,id,source.getControllerId());
+    return true;
+  }
+  return false;
+}

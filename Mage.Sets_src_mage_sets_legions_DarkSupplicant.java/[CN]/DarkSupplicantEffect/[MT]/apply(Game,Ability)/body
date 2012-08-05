@@ -1,0 +1,45 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  FilterCard filter=new FilterCard("card named Scion of Darkness");
+  filter.add(new NamePredicate("Scion of Darkness"));
+  TargetCardInLibrary target=new TargetCardInLibrary(filter);
+  if (player == null) {
+    return false;
+  }
+  if (player.chooseUse(Constants.Outcome.Benefit,"Do you want to search your library for Scion of Darkness?",game)) {
+    if (player.searchLibrary(target,game)) {
+      if (target.getTargets().size() > 0) {
+        for (        UUID cardId : (List<UUID>)target.getTargets()) {
+          Card card=player.getLibrary().getCard(cardId,game);
+          if (card != null) {
+            if (card.putOntoBattlefield(game,Constants.Zone.LIBRARY,source.getId(),source.getControllerId())) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    player.shuffleLibrary(game);
+  }
+  if (player.chooseUse(Constants.Outcome.Benefit,"Do you want to search your graveyard for Scion of Darkness?",game)) {
+    Cards graveyard=player.getGraveyard().copy();
+    for (    UUID card : graveyard) {
+      Card checkCard=game.getCard(card);
+      if (checkCard.getName().equals("Scion of Darkness")) {
+        checkCard.putOntoBattlefield(game,Constants.Zone.GRAVEYARD,source.getId(),source.getControllerId());
+        return true;
+      }
+    }
+  }
+  if (player.chooseUse(Constants.Outcome.Benefit,"Do you want to search your hand for Scion of Darkness?",game)) {
+    Cards hand=player.getHand().copy();
+    for (    UUID card : hand) {
+      Card checkCard=game.getCard(card);
+      if (checkCard.getName().equals("Scion of Darkness")) {
+        checkCard.putOntoBattlefield(game,Constants.Zone.HAND,source.getId(),source.getControllerId());
+        return true;
+      }
+    }
+  }
+  return false;
+}
