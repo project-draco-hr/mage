@@ -8,10 +8,11 @@
     }
     if (zEvent.getFromZone() == Zone.BATTLEFIELD && zEvent.getToZone() == Zone.GRAVEYARD) {
       Permanent permanent=(Permanent)game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
-      System.out.println("The permanent in the trigger is " + permanent.getName());
       if (permanent != null && filter.match(permanent,sourceId,controllerId,game)) {
-        for (        Effect effect : this.getEffects()) {
-          effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+        if (setTargetPointer) {
+          for (          Effect effect : this.getEffects()) {
+            effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+          }
         }
         return true;
       }
