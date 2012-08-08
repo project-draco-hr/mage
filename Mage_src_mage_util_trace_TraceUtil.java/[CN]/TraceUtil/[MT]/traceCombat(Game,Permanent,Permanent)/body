@@ -1,0 +1,28 @@
+{
+  String uuid="[" + UUID.randomUUID() + "] ";
+  log.error(uuid + "Tracing game state...");
+  log.error(uuid + blocker.getName() + " could block "+ attacker.getName());
+  log.error(uuid);
+  log.error(uuid + "Attacker abilities: ");
+  for (  Ability ability : attacker.getAbilities()) {
+    log.error(uuid + "     " + ability.toString()+ ", id="+ ability.getId());
+  }
+  log.error(uuid + "Blocker abilities: ");
+  for (  Ability ability : blocker.getAbilities()) {
+    log.error(uuid + "     " + ability.toString()+ ", id="+ ability.getId());
+  }
+  log.error(uuid);
+  log.error(uuid + "Flying ability id: " + FlyingAbility.getInstance().getId());
+  log.error(uuid + "Reach ability id: " + ReachAbility.getInstance().getId());
+  log.error(uuid + "Unblockable ability id: " + UnblockableAbility.getInstance().getId());
+  log.error(uuid);
+  log.error(uuid + "Restriction effects:");
+  Ability ability=attacker.getAbilities().size() > 0 ? attacker.getAbilities().get(0) : null;
+  for (  RestrictionEffect effect : game.getState().getContinuousEffects().getRestrictionEffects()) {
+    log.error(uuid + "    " + effect);
+    log.error(uuid + "        id=" + effect.getId());
+    log.error(uuid + "        applies to attacker=" + effect.applies(attacker,ability,game));
+    log.error(uuid + "        applies to blocker=" + effect.applies(blocker,ability,game));
+  }
+  log.error(uuid);
+}
