@@ -1,0 +1,18 @@
+{
+  Player damagedPlayer=game.getPlayer(targetPointer.getFirst(game,source));
+  Player you=game.getPlayer(source.getControllerId());
+  FilterCard filter=new FilterCard("creature in that player's graveyard");
+  filter.add(new CardTypePredicate(CardType.CREATURE));
+  filter.add(new OwnerIdPredicate(damagedPlayer.getId()));
+  TargetCardInGraveyard target=new TargetCardInGraveyard(filter);
+  if (target.canChoose(source.getSourceId(),you.getId(),game)) {
+    if (you.chooseTarget(Outcome.PutCreatureInPlay,target,source,game)) {
+      Card card=game.getCard(target.getFirstTarget());
+      if (card != null) {
+        card.putOntoBattlefield(game,Constants.Zone.GRAVEYARD,id,you.getId());
+        return true;
+      }
+    }
+  }
+  return false;
+}

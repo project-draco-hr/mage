@@ -1,0 +1,25 @@
+{
+  for (  CombatGroup group : combat.getGroups()) {
+    for (    UUID attackerId : group.getAttackers()) {
+      Permanent attacker=game.getPermanent(attackerId);
+      if (attacker != null) {
+        if (hasFlying(attacker)) {
+          for (          UUID blockerId : group.getBlockers()) {
+            Permanent blocker=game.getPermanent(blockerId);
+            log.warn("Found non-flying non-reach creature blocking creature with flying");
+            traceCombat(game,attacker,blocker);
+          }
+        }
+        if (hasUnblockable(attacker)) {
+          if (group.getBlockers().size() > 0) {
+            Permanent blocker=game.getPermanent(group.getBlockers().get(0));
+            if (blocker != null) {
+              log.warn("Found unblockable creature blocked by some other creature");
+              traceCombat(game,attacker,blocker);
+            }
+          }
+        }
+      }
+    }
+  }
+}

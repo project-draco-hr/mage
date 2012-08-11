@@ -1,0 +1,18 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Constants.Zone.HAND,playerA,"Master of the Pearl Trident");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Merfolk of the Pearl Trident");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Swamp",3);
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Llanowar Elves");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Island");
+  addCard(Constants.Zone.HAND,playerB,"Murder");
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Master of the Pearl Trident");
+  castSpell(3,Constants.PhaseStep.DECLARE_ATTACKERS,playerB,"Murder","Master of the Pearl Trident");
+  attack(3,playerA,"Merfolk of the Pearl Trident");
+  block(3,playerB,"Llanowar Elves","Merfolk of the Pearl Trident");
+  setStopAt(3,Constants.PhaseStep.END_TURN);
+  execute();
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Merfolk of the Pearl Trident",0);
+  assertPermanentCount(playerB,"Llanowar Elves",0);
+}
