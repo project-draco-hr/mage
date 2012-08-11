@@ -1,0 +1,21 @@
+{
+  amountPaid=0;
+  Target target=new TargetCardInHand();
+  Player you=game.getPlayer(controllerId);
+  while (true) {
+    target.clearChosen();
+    if (target.canChoose(controllerId,game) && target.choose(Constants.Outcome.Discard,controllerId,sourceId,game)) {
+      Card card=you.getHand().get(target.getFirstTarget(),game);
+      if (card != null) {
+        you.getHand().remove(card);
+        card.moveToZone(Constants.Zone.GRAVEYARD,sourceId,game,false);
+        amountPaid++;
+      }
+    }
+ else {
+      break;
+    }
+  }
+  paid=true;
+  return true;
+}
