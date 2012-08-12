@@ -1,0 +1,50 @@
+{
+  FilterCard filter=new FilterCard("card in your hand");
+  FilterCard filter2=new FilterCard("card exiled by Scroll Rack to put on top of library");
+  Player you=game.getPlayer(source.getControllerId());
+  TargetCardInHand target=new TargetCardInHand(0,you.getHand().size(),filter);
+  int amountExiled=0;
+  if (you != null) {
+    if (target.canChoose(source.getControllerId(),game) && target.choose(Constants.Outcome.Neutral,source.getControllerId(),source.getId(),game)) {
+      if (!target.getTargets().isEmpty()) {
+        List<UUID> targets=target.getTargets();
+        for (        UUID targetId : targets) {
+          Card card=game.getCard(targetId);
+          if (card != null) {
+            card.setFaceDown(true);
+            if (card.moveToExile(source.getId(),"Scroll Rack Exile",source.getSourceId(),game)) {
+              amountExiled++;
+            }
+          }
+        }
+      }
+    }
+    if (amountExiled > 0) {
+      int count=Math.min(you.getLibrary().size(),amountExiled);
+      for (int i=0; i < count; i++) {
+        Card card=you.getLibrary().removeFromTop(game);
+        if (card != null) {
+          card.moveToZone(Zone.HAND,id,game,false);
+        }
+      }
+    }
+    Cards cards=game.getExile().getExileZone(source.getId());
+    TargetCardInExile targetExiled=new TargetCardInExile(filter2,source.getSourceId());
+    targetExiled.setRequired(true);
+    while (cards.size() > 1) {
+      you.choose(Constants.Outcome.Neutral,cards,targetExiled,game);
+      Card card=cards.get(targetExiled.getFirstTarget(),game);
+      if (card != null) {
+        cards.remove(card);
+        card.moveToZone(Constants.Zone.LIBRARY,source.getId(),game,true);
+      }
+      targetExiled.clearChosen();
+    }
+    if (cards.size() == 1) {
+      Card card=cards.get(cards.iterator().next(),game);
+      card.moveToZone(Constants.Zone.LIBRARY,source.getId(),game,true);
+    }
+    return true;
+  }
+  return false;
+}
