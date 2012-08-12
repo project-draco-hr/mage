@@ -1,0 +1,26 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  int amount=(new GetXValue()).calculate(game,source);
+  TargetCreatureOrPlayer target=new TargetCreatureOrPlayer(amount);
+  if (you != null) {
+    if (target.canChoose(source.getControllerId(),game) && target.choose(Constants.Outcome.Neutral,source.getControllerId(),source.getId(),game)) {
+      if (!target.getTargets().isEmpty()) {
+        List<UUID> targets=target.getTargets();
+        for (        UUID targetId : targets) {
+          Permanent creature=game.getPermanent(targetId);
+          if (creature != null) {
+            creature.damage(amount,source.getSourceId(),game,true,false);
+          }
+ else {
+            Player player=game.getPlayer(targetId);
+            if (player != null) {
+              player.damage(amount,source.getSourceId(),game,true,false);
+            }
+          }
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}
