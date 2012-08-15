@@ -1,0 +1,66 @@
+{
+  Card card=game.getCard(source.getFirstTarget());
+  Player player=game.getPlayer(source.getControllerId());
+  if (card != null && player != null) {
+    Player targetPlayer=game.getPlayer(card.getOwnerId());
+    if (targetPlayer != null) {
+      FilterCard filter=new FilterCard("card named " + card.getName());
+      filter.add(new NamePredicate(card.getName()));
+      Cards cardsInLibrary=new CardsImpl(Zone.LIBRARY);
+      cardsInLibrary.addAll(targetPlayer.getLibrary().getCards(game));
+      int cardsCount=targetPlayer.getGraveyard().count(filter,game);
+      if (cardsCount > 0) {
+        filter.setMessage("card named " + card.getName() + " in the graveyard of "+ targetPlayer.getName());
+        TargetCardInGraveyard target=new TargetCardInGraveyard(0,cardsCount,filter);
+        if (player.choose(Outcome.Exile,targetPlayer.getGraveyard(),target,game)) {
+          List<UUID> targets=target.getTargets();
+          for (          UUID targetId : targets) {
+            Card targetCard=targetPlayer.getGraveyard().get(targetId,game);
+            if (targetCard != null) {
+              targetPlayer.getGraveyard().remove(targetCard);
+              targetCard.moveToZone(Zone.EXILED,source.getId(),game,false);
+            }
+          }
+        }
+      }
+      cardsCount=targetPlayer.getHand().count(filter,game);
+      if (cardsCount > 0) {
+        filter.setMessage("card named " + card.getName() + " in the hand of "+ targetPlayer.getName());
+        TargetCardInHand target=new TargetCardInHand(0,cardsCount,filter);
+        if (player.choose(Outcome.Exile,targetPlayer.getHand(),target,game)) {
+          List<UUID> targets=target.getTargets();
+          for (          UUID targetId : targets) {
+            Card targetCard=targetPlayer.getHand().get(targetId,game);
+            if (targetCard != null) {
+              targetPlayer.getHand().remove(targetCard);
+              targetCard.moveToZone(Zone.EXILED,source.getId(),game,false);
+            }
+          }
+        }
+      }
+ else {
+        player.lookAtCards(targetPlayer.getName() + " hand",targetPlayer.getHand(),game);
+      }
+      cardsCount=cardsInLibrary.count(filter,game);
+      if (cardsCount > 0) {
+        filter.setMessage("card named " + card.getName() + " in the library of "+ targetPlayer.getName());
+        TargetCardInLibrary target=new TargetCardInLibrary(0,cardsCount,filter);
+        if (player.choose(Outcome.Exile,cardsInLibrary,target,game)) {
+          List<UUID> targets=target.getTargets();
+          for (          UUID targetId : targets) {
+            Card targetCard=targetPlayer.getLibrary().remove(targetId,game);
+            if (targetCard != null) {
+              targetCard.moveToZone(Zone.EXILED,source.getId(),game,false);
+            }
+          }
+        }
+      }
+ else {
+        player.lookAtCards(targetPlayer.getName() + " library",cardsInLibrary,game);
+      }
+    }
+    targetPlayer.shuffleLibrary(game);
+    return true;
+  }
+  return false;
+}

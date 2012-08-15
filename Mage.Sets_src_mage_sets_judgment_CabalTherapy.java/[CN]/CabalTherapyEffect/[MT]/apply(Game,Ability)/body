@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  Player controller=game.getPlayer(source.getControllerId());
+  if (player != null && controller != null) {
+    Choice cardChoice=new ChoiceImpl();
+    cardChoice.setChoices(Sets.getNonLandCardNames());
+    cardChoice.clearChoice();
+    while (!controller.choose(Outcome.Discard,cardChoice,game)) {
+      game.debugMessage("player canceled choosing name. retrying.");
+    }
+    String cardName=cardChoice.getChoice();
+    game.informPlayers("Cabal Therapy, named card: [" + cardName + "]");
+    for (    Card card : player.getHand().getCards(game)) {
+      if (card.getName().equals(cardName)) {
+        card.moveToZone(Zone.GRAVEYARD,source.getId(),game,false);
+      }
+    }
+    controller.lookAtCards("Cabal Therapy Hand",player.getHand(),game);
+  }
+  return true;
+}
