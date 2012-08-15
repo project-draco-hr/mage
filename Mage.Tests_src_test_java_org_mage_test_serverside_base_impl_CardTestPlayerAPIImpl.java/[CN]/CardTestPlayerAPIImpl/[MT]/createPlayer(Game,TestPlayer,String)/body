@@ -1,0 +1,13 @@
+{
+  player=createNewPlayer(name);
+  player.setTestMode(true);
+  logger.debug("Loading deck...");
+  Deck deck=Deck.load(DeckImporterUtil.importDeck("RB Aggro.dck"));
+  logger.debug("Done!");
+  if (deck.getCards().size() < 40) {
+    throw new IllegalArgumentException("Couldn't load deck, deck size=" + deck.getCards().size());
+  }
+  game.addPlayer(player,deck);
+  game.loadCards(deck.getCards(),player.getId());
+  return player;
+}
