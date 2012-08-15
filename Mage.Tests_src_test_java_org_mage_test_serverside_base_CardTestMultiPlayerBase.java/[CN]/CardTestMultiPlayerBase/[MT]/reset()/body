@@ -1,0 +1,25 @@
+{
+  if (currentGame != null) {
+    logger.debug("Resetting previous game and creating new one!");
+    currentGame=null;
+    System.gc();
+  }
+  Game game=new FreeForAll(Constants.MultiplayerAttackOption.LEFT,Constants.RangeOfInfluence.ONE);
+  playerA=createPlayer(game,playerA,"PlayerA");
+  playerB=createPlayer(game,playerB,"PlayerB");
+  playerC=createPlayer(game,playerC,"PlayerC");
+  playerD=createPlayer(game,playerD,"PlayerD");
+  activePlayer=playerA;
+  currentGame=game;
+  stopOnTurn=2;
+  stopAtStep=PhaseStep.UNTAP;
+  for (  Player player : currentGame.getPlayers().values()) {
+    TestPlayer testPlayer=(TestPlayer)player;
+    getCommands(testPlayer).clear();
+    getLibraryCards(testPlayer).clear();
+    getHandCards(testPlayer).clear();
+    getBattlefieldCards(testPlayer).clear();
+    getGraveCards(testPlayer).clear();
+  }
+  gameOptions=new GameOptions();
+}

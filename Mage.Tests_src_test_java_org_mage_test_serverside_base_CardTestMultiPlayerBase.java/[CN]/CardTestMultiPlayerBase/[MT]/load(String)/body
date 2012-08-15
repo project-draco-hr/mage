@@ -1,0 +1,35 @@
+{
+  String cardPath=TESTS_PATH + path;
+  File checkFile=new File(cardPath);
+  if (!checkFile.exists()) {
+    throw new FileNotFoundException("Couldn't find test file: " + cardPath);
+  }
+  if (checkFile.isDirectory()) {
+    throw new FileNotFoundException("Couldn't find test file: " + cardPath + ". It is directory.");
+  }
+  if (currentGame != null) {
+    logger.debug("Resetting previous game and creating new one!");
+    currentGame=null;
+    System.gc();
+  }
+  Game game=new TwoPlayerDuel(Constants.MultiplayerAttackOption.LEFT,Constants.RangeOfInfluence.ALL);
+  playerA=createNewPlayer("ComputerA");
+  playerA.setTestMode(true);
+  Deck deck=Deck.load(DeckImporterUtil.importDeck("RB Aggro.dck"));
+  if (deck.getCards().size() < 40) {
+    throw new IllegalArgumentException("Couldn't load deck, deck size=" + deck.getCards().size());
+  }
+  game.addPlayer(playerA,deck);
+  game.loadCards(deck.getCards(),playerA.getId());
+  playerB=createNewPlayer("ComputerB");
+  playerB.setTestMode(true);
+  Deck deck2=Deck.load(DeckImporterUtil.importDeck("RB Aggro.dck"));
+  if (deck2.getCards().size() < 40) {
+    throw new IllegalArgumentException("Couldn't load deck, deck size=" + deck2.getCards().size());
+  }
+  game.addPlayer(playerB,deck2);
+  game.loadCards(deck2.getCards(),playerB.getId());
+  parseScenario(cardPath);
+  activePlayer=playerA;
+  currentGame=game;
+}

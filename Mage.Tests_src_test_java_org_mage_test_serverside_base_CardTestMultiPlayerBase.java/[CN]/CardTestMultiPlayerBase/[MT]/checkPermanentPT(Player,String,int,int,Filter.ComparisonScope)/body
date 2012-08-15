@@ -1,0 +1,15 @@
+{
+  if (currentGame == null) {
+    throw new IllegalStateException("Current game is null");
+  }
+  if (scope.equals(Filter.ComparisonScope.All)) {
+    throw new UnsupportedOperationException("ComparisonScope.All is not implemented.");
+  }
+  for (  Permanent permanent : currentGame.getBattlefield().getAllActivePermanents(player.getId())) {
+    if (permanent.getName().equals(cardName)) {
+      Assert.assertEquals("Power is not the same",power,permanent.getPower().getValue());
+      Assert.assertEquals("Toughness is not the same",toughness,permanent.getToughness().getValue());
+      break;
+    }
+  }
+}

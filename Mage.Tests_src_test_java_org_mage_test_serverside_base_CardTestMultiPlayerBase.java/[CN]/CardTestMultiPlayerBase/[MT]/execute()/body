@@ -1,0 +1,20 @@
+{
+  if (currentGame == null || activePlayer == null) {
+    throw new IllegalStateException("Game is not initialized. Use load method to load a test case and initialize a game.");
+  }
+  for (  Player player : currentGame.getPlayers().values()) {
+    TestPlayer testPlayer=(TestPlayer)player;
+    currentGame.cheat(player.getId(),getCommands(testPlayer));
+    currentGame.cheat(player.getId(),getLibraryCards(testPlayer),getHandCards(testPlayer),getBattlefieldCards(testPlayer),getGraveCards(testPlayer));
+  }
+  boolean testMode=true;
+  long t1=System.nanoTime();
+  gameOptions.testMode=true;
+  gameOptions.stopOnTurn=stopOnTurn;
+  gameOptions.stopAtStep=stopAtStep;
+  currentGame.start(activePlayer.getId(),gameOptions);
+  long t2=System.nanoTime();
+  logger.debug("Winner: " + currentGame.getWinner());
+  logger.info("Test has been executed. Execution time: " + (t2 - t1) / 1000000 + " ms");
+  assertTheResults();
+}
