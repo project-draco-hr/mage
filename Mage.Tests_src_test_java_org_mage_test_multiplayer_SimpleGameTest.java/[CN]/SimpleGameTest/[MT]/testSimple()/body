@@ -1,0 +1,16 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Forest");
+  addCard(Constants.Zone.BATTLEFIELD,playerB,"Forest");
+  addCard(Constants.Zone.BATTLEFIELD,playerC,"Forest");
+  addCard(Constants.Zone.BATTLEFIELD,playerD,"Forest");
+  setStopAt(1,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertLife(playerC,20);
+  assertLife(playerD,20);
+  FilterPermanent filterPermanent=new FilterLandPermanent();
+  filterPermanent.add(new SubtypePredicate("Forest"));
+  List<Permanent> forestCards=currentGame.getBattlefield().getAllActivePermanents(filterPermanent,currentGame);
+  Assert.assertEquals(4,forestCards.size());
+}
