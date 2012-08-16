@@ -1,0 +1,38 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  if (you != null) {
+    Choice cardChoice=new ChoiceImpl();
+    cardChoice.setChoices(Sets.getCardNames());
+    cardChoice.clearChoice();
+    while (!you.choose(Constants.Outcome.Damage,cardChoice,game)) {
+      game.debugMessage("player canceled choosing name. retrying.");
+    }
+    String cardName=cardChoice.getChoice();
+    game.informPlayers("Cursed Scroll, named card: [" + cardName + "]");
+    if (you.getHand().size() > 0) {
+      Cards revealed=new CardsImpl();
+      Card card=you.getHand().getRandom(game);
+      revealed.add(card);
+      you.revealCards("Cursed Scroll",revealed,game);
+      if (card.getName().equals(cardName)) {
+        TargetCreatureOrPlayer target=new TargetCreatureOrPlayer();
+        if (target.canChoose(you.getId(),game)) {
+          if (you.chooseTarget(Constants.Outcome.Damage,target,source,game)) {
+            Permanent creature=game.getPermanent(target.getFirstTarget());
+            if (creature != null) {
+              creature.damage(2,source.getSourceId(),game,true,false);
+              return true;
+            }
+            Player player=game.getPlayer(target.getFirstTarget());
+            if (player != null) {
+              player.damage(2,source.getSourceId(),game,true,false);
+              return true;
+            }
+            return false;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
