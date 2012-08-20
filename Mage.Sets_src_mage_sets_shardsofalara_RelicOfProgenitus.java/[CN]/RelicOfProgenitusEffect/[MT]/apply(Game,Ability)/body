@@ -1,0 +1,16 @@
+{
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (targetPlayer != null) {
+    TargetCardInYourGraveyard target=new TargetCardInYourGraveyard();
+    target.setRequired(true);
+    if (targetPlayer.chooseTarget(Outcome.Exile,target,source,game)) {
+      Card card=game.getCard(target.getFirstTarget());
+      if (card != null) {
+        targetPlayer.getGraveyard().remove(card);
+        card.moveToExile(null,null,source.getId(),game);
+      }
+      return true;
+    }
+  }
+  return false;
+}
