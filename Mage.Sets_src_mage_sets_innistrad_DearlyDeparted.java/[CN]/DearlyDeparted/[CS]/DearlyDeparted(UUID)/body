@@ -6,8 +6,5 @@
   this.power=new MageInt(5);
   this.toughness=new MageInt(5);
   this.addAbility(FlyingAbility.getInstance());
-  Ability ability=new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(1)));
-  ContinuousEffect effect=new GainAbilityControlledEffect(ability,Constants.Duration.WhileInGraveyard,filterHuman);
-  effect.overrideRuleText(ruleText);
-  this.addAbility(new SimpleStaticAbility(Constants.Zone.GRAVEYARD,effect));
+  this.addAbility(new SimpleStaticAbility(Constants.Zone.GRAVEYARD,new EntersBattlefieldEffect(new AddCountersTargetEffect(CounterType.P1P1.createInstance(1)),ruleText)));
 }

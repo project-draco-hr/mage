@@ -1,0 +1,15 @@
+{
+  List<Effect> effects=new ArrayList<Effect>();
+  for (  Map.Entry<Effect,UUID> source : sources.entrySet()) {
+    if (sourceId.equals(source.getValue())) {
+      for (      ContinuousEffectsList effectsList : allEffectsLists) {
+        Ability ability=effectsList.getAbility(source.getKey().getId());
+        if (ability != null && !ability.getSourceId().equals(source.getValue())) {
+          effectsList.removeEffect((ContinuousEffect)source.getKey());
+          effects.add(source.getKey());
+        }
+      }
+    }
+  }
+  return effects;
+}

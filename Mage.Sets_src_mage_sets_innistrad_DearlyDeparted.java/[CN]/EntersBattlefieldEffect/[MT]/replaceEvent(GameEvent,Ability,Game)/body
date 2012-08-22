@@ -1,0 +1,19 @@
+{
+  Spell spell=game.getStack().getSpell(event.getSourceId());
+  for (  Effect effect : baseEffects) {
+    Object target=getValue("target");
+    if (target != null && target instanceof Permanent) {
+      effect.setTargetPointer(new FixedTarget(((Permanent)target).getId()));
+      if (effect instanceof ContinuousEffect) {
+        game.addEffect((ContinuousEffect)effect,source);
+      }
+ else {
+        if (spell != null) {
+          effect.setValue(SOURCE_CAST_SPELL_ABILITY,spell.getSpellAbility());
+        }
+        effect.apply(game,source);
+      }
+    }
+  }
+  return false;
+}

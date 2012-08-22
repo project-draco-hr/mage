@@ -8,6 +8,17 @@
       return true;
     }
   }
+  MageObject object=game.getObject(getSourceId());
+  if (object != null && !object.getAbilities().contains(this)) {
+    boolean found=false;
+    if (object instanceof PermanentCard && ((PermanentCard)object).canTransform()) {
+      PermanentCard permanent=(PermanentCard)object;
+      found=permanent.getSecondCardFace().getAbilities().contains(this) || permanent.getCard().getAbilities().contains(this);
+    }
+    if (!found) {
+      return false;
+    }
+  }
   Zone test=game.getState().getZone(sourceId);
   return test != null && zone.match(test);
 }
