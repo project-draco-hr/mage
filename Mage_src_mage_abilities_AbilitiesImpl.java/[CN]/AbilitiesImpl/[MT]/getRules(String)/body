@@ -2,12 +2,21 @@
   List<String> rules=new ArrayList<String>();
   for (  T ability : this) {
     if (!(ability instanceof SpellAbility || ability instanceof PlayLandAbility))     rules.add(ability.getRule());
-    if (ability instanceof SpellAbility && ability.getAlternativeCosts().size() > 0) {
-      StringBuilder sbRule=new StringBuilder();
-      for (      AlternativeCost cost : ability.getAlternativeCosts()) {
-        sbRule.append(cost.getName()).append(".\n");
+    if (ability instanceof SpellAbility) {
+      if (ability.getAlternativeCosts().size() > 0) {
+        StringBuilder sbRule=new StringBuilder();
+        for (        AlternativeCost cost : ability.getAlternativeCosts()) {
+          sbRule.append(cost.getName()).append(".\n");
+        }
+        rules.add(sbRule.toString());
       }
-      rules.add(sbRule.toString());
+      if (ability.getCosts().size() > 0) {
+        StringBuilder sbRule=new StringBuilder();
+        for (        Cost cost : ability.getCosts()) {
+          sbRule.append(cost.getText()).append(".\n");
+        }
+        rules.add(sbRule.toString());
+      }
     }
   }
   return rules;

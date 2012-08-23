@@ -1,0 +1,14 @@
+{
+  addCard(Constants.Zone.GRAVEYARD,playerA,"Silvergill Adept");
+  setStopAt(1,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  Card firewildBorderpost=playerA.getGraveyard().getCards(currentGame).iterator().next();
+  boolean found=false;
+  for (  String rule : firewildBorderpost.getRules()) {
+    if (rule.startsWith("As an additional cost to cast")) {
+      found=true;
+      break;
+    }
+  }
+  Assert.assertTrue("Couldn't find rule text for additional cost on a card: " + firewildBorderpost.getName(),found);
+}
