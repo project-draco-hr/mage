@@ -1,0 +1,23 @@
+{
+  Player player=game.getPlayer(controllerId);
+  if (player == null) {
+    return false;
+  }
+  paid=false;
+  if (player.getHand().count(filter,game) > 0 && player.chooseUse(Outcome.Benefit,"Reveal a Merfolk card? Otherwise pay {3}.",game)) {
+    TargetCardInHand target=new TargetCardInHand(filter);
+    if (player.choose(Outcome.Benefit,target,sourceId,game)) {
+      Card card=player.getHand().get(target.getFirstTarget(),game);
+      if (card != null) {
+        paid=true;
+        player.revealCards("Revealed card",new CardsImpl(card),game);
+      }
+    }
+  }
+ else {
+    if (player.playMana(mana,game)) {
+      paid=true;
+    }
+  }
+  return paid;
+}
