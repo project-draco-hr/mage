@@ -1,0 +1,46 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  RealmsUnchartedTarget target=new RealmsUnchartedTarget();
+  if (player.searchLibrary(target,game)) {
+    if (target.getTargets().size() > 0) {
+      Cards cards=new CardsImpl();
+      for (      UUID cardId : (List<UUID>)target.getTargets()) {
+        Card card=player.getLibrary().remove(cardId,game);
+        if (card != null) {
+          cards.add(card);
+        }
+      }
+      player.revealCards("Realms Uncharted",cards,game);
+      CardsImpl cardsToKeep=new CardsImpl();
+      if (cards.size() > 2) {
+        cardsToKeep.addAll(cards);
+        Player opponent=game.getPlayer(game.getOpponents(player.getId()).iterator().next());
+        TargetCard targetDiscard=new TargetCard(2,Zone.PICK,new FilterCard("cards to put in graveyard"));
+        targetDiscard.setRequired(true);
+        if (opponent != null && opponent.choose(Outcome.Discard,cards,targetDiscard,game)) {
+          cardsToKeep.removeAll(targetDiscard.getTargets());
+          cards.removeAll(cardsToKeep);
+        }
+      }
+      for (      UUID cardId : cards) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,true);
+        }
+      }
+      for (      UUID cardId : cardsToKeep) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          card.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+        }
+      }
+    }
+    player.shuffleLibrary(game);
+    return true;
+  }
+  player.shuffleLibrary(game);
+  return false;
+}
