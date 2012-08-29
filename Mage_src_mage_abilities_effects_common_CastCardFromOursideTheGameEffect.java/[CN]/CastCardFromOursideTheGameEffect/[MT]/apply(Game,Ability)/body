@@ -1,0 +1,26 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  while (player.chooseUse(Constants.Outcome.Benefit,choiceText,game)) {
+    Cards cards=player.getSideboard();
+    if (cards.isEmpty()) {
+      game.informPlayer(player,"You have no cards outside the game.");
+      return false;
+    }
+    Set<Card> filteredCards=cards.getCards(filterCard,game);
+    if (filteredCards.isEmpty()) {
+      game.informPlayer(player,"You have no " + filterCard.getMessage() + " outside the game.");
+      return false;
+    }
+    TargetCard target=new TargetCard(Constants.Zone.PICK,filterCard);
+    if (player.choose(Constants.Outcome.Benefit,cards,target,game)) {
+      Card card=player.getSideboard().get(target.getFirstTarget(),game);
+      if (card != null) {
+        player.cast(card.getSpellAbility(),game,true);
+      }
+    }
+  }
+  return true;
+}

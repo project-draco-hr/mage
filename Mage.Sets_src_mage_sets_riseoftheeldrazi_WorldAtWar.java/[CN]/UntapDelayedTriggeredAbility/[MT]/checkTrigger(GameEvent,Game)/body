@@ -1,0 +1,12 @@
+{
+  if (event.getType() == GameEvent.EventType.PHASE_CHANGED && this.connectedTurnMod.equals(event.getSourceId())) {
+    enabled=true;
+    return false;
+  }
+  if (event.getType() == GameEvent.EventType.COMBAT_PHASE_PRE && enabled) {
+    game.getState().getTurnMods().add(new TurnMod(getControllerId(),Constants.TurnPhase.POSTCOMBAT_MAIN,Constants.TurnPhase.COMBAT,false));
+    enabled=false;
+    return true;
+  }
+  return false;
+}

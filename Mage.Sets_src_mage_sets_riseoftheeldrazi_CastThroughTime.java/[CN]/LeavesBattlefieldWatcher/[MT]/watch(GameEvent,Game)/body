@@ -1,0 +1,18 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && event.getTargetId().equals(this.getSourceId())) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getFromZone() == Constants.Zone.BATTLEFIELD) {
+      Player player=game.getPlayer(this.getControllerId());
+      if (player != null) {
+        for (        Card card : player.getHand().getCards(CastThroughTime.filter,game)) {
+          Iterator<Ability> it=card.getAbilities().iterator();
+          while (it.hasNext()) {
+            if (it.next() instanceof ReboundAbility) {
+              it.remove();
+            }
+          }
+        }
+      }
+    }
+  }
+}

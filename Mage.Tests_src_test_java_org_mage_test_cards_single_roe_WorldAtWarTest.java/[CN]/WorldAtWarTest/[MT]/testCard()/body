@@ -1,0 +1,18 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Mountain",5);
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Fervor");
+  addCard(Constants.Zone.HAND,playerA,"World at War");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Elite Vanguard");
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Warclamp Mastiff");
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"World at War");
+  attack(1,playerA,"Elite Vanguard");
+  attack(1,playerA,"Elite Vanguard");
+  attack(1,playerA,"Warclamp Mastiff");
+  attack(1,playerA,"Warclamp Mastiff");
+  setStopAt(1,Constants.PhaseStep.END_TURN);
+  execute();
+  System.out.println("player: " + playerA.getId());
+  assertLife(playerB,14);
+  Permanent eliteVanguard=getPermanent("Elite Vanguard",playerA);
+  Assert.assertTrue(eliteVanguard.isTapped());
+}
