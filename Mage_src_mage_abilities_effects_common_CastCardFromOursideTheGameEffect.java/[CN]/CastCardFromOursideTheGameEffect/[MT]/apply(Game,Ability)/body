@@ -9,13 +9,17 @@
       game.informPlayer(player,"You have no cards outside the game.");
       return false;
     }
-    Set<Card> filteredCards=cards.getCards(filterCard,game);
-    if (filteredCards.isEmpty()) {
+    Set<Card> filtered=cards.getCards(filterCard,game);
+    if (filtered.isEmpty()) {
       game.informPlayer(player,"You have no " + filterCard.getMessage() + " outside the game.");
       return false;
     }
+    Cards filteredCards=new CardsImpl();
+    for (    Card card : filtered) {
+      filteredCards.add(card.getId());
+    }
     TargetCard target=new TargetCard(Constants.Zone.PICK,filterCard);
-    if (player.choose(Constants.Outcome.Benefit,cards,target,game)) {
+    if (player.choose(Constants.Outcome.Benefit,filteredCards,target,game)) {
       Card card=player.getSideboard().get(target.getFirstTarget(),game);
       if (card != null) {
         player.cast(card.getSpellAbility(),game,true);
