@@ -1,6 +1,8 @@
 {
-  TurnPhase extraPhase=game.getState().getTurnMods().extraPhase(activePlayerId,afterPhase);
-  if (extraPhase == null)   return;
+  TurnMod extraPhaseTurnMod=game.getState().getTurnMods().extraPhase(activePlayerId,afterPhase);
+  if (extraPhaseTurnMod == null)   return false;
+  TurnPhase extraPhase=extraPhaseTurnMod.getExtraPhase();
+  if (extraPhase == null)   return false;
   Phase phase;
 switch (extraPhase) {
 case BEGINNING:
@@ -19,6 +21,7 @@ default :
 phase=new EndPhase();
 }
 currentPhase=phase;
-game.fireEvent(new GameEvent(GameEvent.EventType.PHASE_CHANGED,activePlayerId,null,activePlayerId));
+game.fireEvent(new GameEvent(GameEvent.EventType.PHASE_CHANGED,activePlayerId,extraPhaseTurnMod.getId(),activePlayerId));
 phase.play(game,activePlayerId);
+return true;
 }
