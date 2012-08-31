@@ -1,10 +1,15 @@
 {
-  Card card=game.getCard(targetPointer.getFirst(game,source));
+  Permanent creature=game.getPermanent(targetPointer.getFirst(game,source));
   Permanent permanent=game.getPermanent(source.getSourceId());
-  if (card == null || permanent == null)   return false;
-  CardUtil.copyTo(permanent).from(card,game);
-  Ability upkeepAbility=new BeginningOfUpkeepTriggeredAbility(new CryptoplasmTransformEffect(),Constants.TargetController.YOU,true);
-  upkeepAbility.addTarget(new TargetCreaturePermanent());
-  permanent.addAbility(upkeepAbility,game);
+  if (creature == null || permanent == null)   return false;
+  game.copyPermanent(creature,permanent,source,new ApplyToPermanent(){
+    @Override public Boolean apply(    Game game,    Permanent permanent){
+      Ability upkeepAbility=new BeginningOfUpkeepTriggeredAbility(new CryptoplasmTransformEffect(),Constants.TargetController.YOU,true);
+      upkeepAbility.addTarget(new TargetCreaturePermanent());
+      permanent.addAbility(upkeepAbility,source.getSourceId(),game);
+      return true;
+    }
+  }
+);
   return true;
 }

@@ -1,9 +1,9 @@
 {
-  Card card=game.getCard(targetPointer.getFirst(game,source));
+  Permanent creature=game.getPermanent(targetPointer.getFirst(game,source));
   Permanent permanent=game.getPermanent(source.getSourceId());
-  if (card == null || permanent == null) {
+  if (creature == null || permanent == null) {
     return false;
   }
-  CardUtil.copyTo(permanent).from(card,game);
+  game.copyPermanent(creature,permanent,source,new EmptyApplyToPermanent());
   return true;
 }
