@@ -1,0 +1,12 @@
+{
+  super(ownerId,1,"Blessing",Rarity.RARE,new CardType[]{CardType.ENCHANTMENT},"{W}{W}");
+  this.expansionSetCode="4ED";
+  this.subtype.add("Aura");
+  this.color.setWhite(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(1,1,Duration.EndOfTurn),new ColoredManaCost(ColoredManaSymbol.W)));
+}
