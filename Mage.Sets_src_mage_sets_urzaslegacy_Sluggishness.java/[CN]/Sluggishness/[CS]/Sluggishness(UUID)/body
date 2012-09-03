@@ -1,0 +1,13 @@
+{
+  super(ownerId,92,"Sluggishness",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{1}{R}");
+  this.expansionSetCode="ULG";
+  this.subtype.add("Aura");
+  this.color.setRed(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Constants.Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new CantBlockAttachedEffect(AttachmentType.AURA)));
+  this.addAbility(new PutIntoGraveFromBattlefieldTriggeredAbility(new ReturnToHandSourceEffect()));
+}
