@@ -1,8 +1,11 @@
 {
-  Permanent sourceDamage=(Permanent)game.getPermanent(source.getFirstTarget());
-  Permanent target=(Permanent)game.getPermanent(source.getTargets().get(1).getFirstTarget());
-  if (sourceDamage != null && target != null) {
-    target.damage(sourceDamage.getPower().getValue(),sourceDamage.getId(),game,true,false);
+  Permanent sourcePermanent=game.getPermanent(source.getFirstTarget());
+  if (sourcePermanent == null) {
+    game.getLastKnownInformation(source.getFirstTarget(),Zone.BATTLEFIELD);
+  }
+  Permanent targetPermanent=(Permanent)game.getPermanent(source.getTargets().get(1).getFirstTarget());
+  if (sourcePermanent != null && targetPermanent != null) {
+    targetPermanent.damage(sourcePermanent.getPower().getValue(),sourcePermanent.getId(),game,true,false);
     return true;
   }
   return false;

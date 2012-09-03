@@ -6,11 +6,10 @@
   this.color.setWhite(true);
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
-  TargetCardInLibrary target=new TargetCardInLibrary(1,1,new FilterCard(filter));
-  Ability ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new SearchLibraryPutInPlayEffect(target),new ManaCostsImpl("{2}{W}"));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new SearchLibraryPutInPlayEffect(new TargetCardInLibrary(1,1,new FilterCard(filter))),new ManaCostsImpl("{2}{W}"));
   ability.addCost(new TapSourceCost());
-  ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filterWhite,false)));
   ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filterGreen,false)));
+  ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filterWhite,false)));
   ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filterBlue,false)));
   this.addAbility(ability);
 }
