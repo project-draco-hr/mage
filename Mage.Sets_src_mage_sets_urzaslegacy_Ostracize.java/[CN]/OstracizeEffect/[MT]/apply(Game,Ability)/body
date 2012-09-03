@@ -1,0 +1,16 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player != null) {
+    player.revealCards("Ostracize",player.getHand(),game);
+    Player you=game.getPlayer(source.getControllerId());
+    TargetCard target=new TargetCard(Zone.PICK,new FilterCreatureCard());
+    target.setRequired(true);
+    if (you != null && you.choose(Outcome.Benefit,player.getHand(),target,game)) {
+      Card card=player.getHand().get(target.getFirstTarget(),game);
+      if (card != null) {
+        return player.discard(card,source,game);
+      }
+    }
+  }
+  return false;
+}
