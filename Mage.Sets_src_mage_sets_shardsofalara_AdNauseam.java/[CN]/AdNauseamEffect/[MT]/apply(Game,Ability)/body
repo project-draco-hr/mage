@@ -1,0 +1,18 @@
+{
+  String message="Reveal the top card of your library and put that card into your hand? You lose life equal to its converted mana cost.";
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  while (player.chooseUse(outcome,message,game) && player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      card.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+      int cmc=card.getManaCost().convertedManaCost();
+      if (cmc > 0) {
+        player.loseLife(cmc,game);
+      }
+    }
+  }
+  return true;
+}
