@@ -1,0 +1,10 @@
+{
+  super(ownerId,50,"Brink of Madness",Rarity.RARE,new CardType[]{CardType.ENCHANTMENT},"{2}{B}{B}");
+  this.expansionSetCode="ULG";
+  this.color.setBlack(true);
+  TriggeredAbility ability=new BeginningOfUpkeepTriggeredAbility(Constants.Zone.BATTLEFIELD,new SacrificeSourceEffect(),Constants.TargetController.YOU,false);
+  ability.addEffect(new BrinkOfMadnessEffect());
+  ability.addTarget(new TargetOpponent());
+  CardsInHandCondition contition=new CardsInHandCondition(CardsInHandCondition.CountType.EQUAL_TO,0);
+  this.addAbility(new ConditionalTriggeredAbility(ability,contition,"At the beginning of your upkeep, if you have no cards in hand, sacrifice {this} and target opponent discards his or her hand"));
+}
