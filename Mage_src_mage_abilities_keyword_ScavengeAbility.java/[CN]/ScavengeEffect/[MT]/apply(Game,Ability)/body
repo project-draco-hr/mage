@@ -1,0 +1,12 @@
+{
+  Card card=game.getCard(source.getSourceId());
+  if (card != null) {
+    int count=card.getPower().getValue();
+    if (count > 0) {
+      Effect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance(count));
+      effect.setTargetPointer(getTargetPointer());
+      return effect.apply(game,source);
+    }
+  }
+  return false;
+}
