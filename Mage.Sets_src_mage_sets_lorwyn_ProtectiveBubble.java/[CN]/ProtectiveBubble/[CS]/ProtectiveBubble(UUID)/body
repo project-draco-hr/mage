@@ -5,9 +5,8 @@
   this.color.setBlue(true);
   TargetPermanent auraTarget=new TargetCreaturePermanent();
   this.getSpellAbility().addTarget(auraTarget);
-  this.getSpellAbility().addEffect(new AttachEffect(Constants.Outcome.BoostCreature));
-  Ability ability=new EnchantAbility(auraTarget.getTargetName());
-  this.addAbility(ability);
-  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new GainAbilityAttachedEffect(UnblockableAbility.getInstance(),Constants.AttachmentType.AURA)));
-  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new GainAbilityAttachedEffect(ShroudAbility.getInstance(),Constants.AttachmentType.AURA)));
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  this.addAbility(new EnchantAbility(auraTarget.getTargetName()));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new UnblockableAttachedEffect(AttachmentType.AURA)));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(ShroudAbility.getInstance(),AttachmentType.AURA)));
 }
