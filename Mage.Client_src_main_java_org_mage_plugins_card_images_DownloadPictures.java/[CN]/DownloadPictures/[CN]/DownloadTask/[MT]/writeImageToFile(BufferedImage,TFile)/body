@@ -4,10 +4,13 @@
   ImageWriteParam iwp=writer.getDefaultWriteParam();
   iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
   iwp.setCompressionQuality(0.96f);
-  FileImageOutputStream output=new FileImageOutputStream(file);
+  File tempFile=new File(Constants.IO.imageBaseDir + File.separator + image.hashCode()+ file.getName());
+  FileImageOutputStream output=new FileImageOutputStream(tempFile);
   writer.setOutput(output);
   IIOImage image2=new IIOImage(image,null,null);
   writer.write(null,image2,iwp);
   writer.dispose();
   output.close();
+  new TFile(tempFile).cp_rp(file);
+  tempFile.delete();
 }

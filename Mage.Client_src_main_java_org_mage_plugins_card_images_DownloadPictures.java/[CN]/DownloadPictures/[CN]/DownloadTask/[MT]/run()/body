@@ -1,29 +1,31 @@
 {
   try {
-    createDirForCard(card,imagesPath);
     boolean withCollectorId=false;
     if (basicLandPattern.matcher(card.getName()).matches()) {
       withCollectorId=true;
     }
-    File fileOut=new File(CardImageUtils.getImagePath(card,withCollectorId));
+    File temporaryFile=new File(Constants.IO.imageBaseDir + File.separator + card.hashCode()+ "."+ card.getName()+ ".jpg");
     BufferedInputStream in=new BufferedInputStream(url.openConnection(p).getInputStream());
-    BufferedOutputStream out=new BufferedOutputStream(new FileOutputStream(fileOut));
+    BufferedOutputStream out=new BufferedOutputStream(new TFileOutputStream(temporaryFile));
     byte[] buf=new byte[1024];
-    int len=0;
+    int len;
     while ((len=in.read(buf)) != -1) {
       if (cancel) {
         in.close();
         out.flush();
         out.close();
-        fileOut.delete();
+        temporaryFile.delete();
+        return;
       }
       out.write(buf,0,len);
     }
     in.close();
     out.flush();
     out.close();
+    TFile outputFile=new TFile(CardImageUtils.getImagePath(card,withCollectorId));
     if (card.isTwoFacedCard()) {
-      BufferedImage image=ImageIO.read(fileOut);
+      BufferedImage image=ImageIO.read(temporaryFile);
+      temporaryFile.delete();
       if (image.getHeight() == 470) {
         BufferedImage renderedImage=new BufferedImage(265,370,BufferedImage.TYPE_INT_RGB);
         renderedImage.getGraphics();
@@ -35,14 +37,18 @@
           graphics2D.drawImage(image,0,0,265,370,41,62,306,432,null);
         }
         graphics2D.dispose();
-        writeImageToFile(renderedImage,fileOut);
+        writeImageToFile(renderedImage,outputFile);
       }
     }
-synchronized (sync) {
-      update(cardIndex + 1);
+ else {
+      new TFile(temporaryFile).cp_rp(outputFile);
+      temporaryFile.delete();
     }
   }
  catch (  Exception e) {
     log.error(e,e);
+  }
+synchronized (sync) {
+    update(cardIndex + 1);
   }
 }

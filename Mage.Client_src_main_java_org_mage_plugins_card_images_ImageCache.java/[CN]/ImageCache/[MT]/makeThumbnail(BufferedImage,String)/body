@@ -1,8 +1,10 @@
 {
   BufferedImage image=getResizedImage(original,Constants.THUMBNAIL_SIZE_FULL);
-  File imagePath=new File(path);
+  TFile imageFile=new TFile(path);
   try {
-    ImageIO.write(image,"jpg",imagePath);
+    TFileOutputStream outputStream=new TFileOutputStream(imageFile);
+    ImageIO.write(image,"jpg",outputStream);
+    outputStream.close();
   }
  catch (  Exception e) {
     log.error(e,e);

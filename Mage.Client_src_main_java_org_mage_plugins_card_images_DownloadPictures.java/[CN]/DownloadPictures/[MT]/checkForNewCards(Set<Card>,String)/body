@@ -1,5 +1,5 @@
 {
-  File file;
+  TFile file;
   for (  Card card : allCards) {
     if (card.getCardNumber() > 0 && !card.getExpansionSetCode().isEmpty()) {
       CardInfo url=new CardInfo(card.getName(),card.getExpansionSetCode(),card.getCardNumber(),0,false,card.canTransform(),card.isNightCard());
@@ -7,8 +7,10 @@
       if (basicLandPattern.matcher(card.getName()).matches()) {
         withCollectorId=true;
       }
-      file=new File(CardImageUtils.getImagePath(url,withCollectorId,imagesPath));
-      if (!file.exists())       return true;
+      file=new TFile(CardImageUtils.getImagePath(url,withCollectorId,imagesPath));
+      if (!file.exists()) {
+        return true;
+      }
     }
   }
   return false;
