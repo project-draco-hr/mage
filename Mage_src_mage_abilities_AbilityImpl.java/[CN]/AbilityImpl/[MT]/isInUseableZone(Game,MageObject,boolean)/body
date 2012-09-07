@@ -1,0 +1,33 @@
+{
+  if (zone.equals(Zone.COMMAND)) {
+    return true;
+  }
+  if (checkLKI) {
+    MageObject lkiTest=game.getShortLivingLKI(getSourceId(),zone);
+    if (lkiTest != null) {
+      return true;
+    }
+  }
+  MageObject object;
+  UUID sourceId;
+  if (this instanceof MageSingleton && source != null) {
+    object=source;
+    sourceId=source.getId();
+  }
+ else {
+    object=game.getObject(getSourceId());
+    sourceId=getSourceId();
+  }
+  if (object != null && !object.getAbilities().contains(this)) {
+    boolean found=false;
+    if (object instanceof PermanentCard && ((PermanentCard)object).canTransform()) {
+      PermanentCard permanent=(PermanentCard)object;
+      found=permanent.getSecondCardFace().getAbilities().contains(this) || permanent.getCard().getAbilities().contains(this);
+    }
+    if (!found) {
+      return false;
+    }
+  }
+  Zone test=game.getState().getZone(sourceId);
+  return test != null && zone.match(test);
+}

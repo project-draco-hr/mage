@@ -24,28 +24,7 @@
     log.error(uuid + "        applies to attacker=" + effect.applies(attacker,ability,game));
     log.error(uuid + "        applies to blocker=" + effect.applies(blocker,ability,game));
   }
-  for (  RestrictionEffect effect : restrictionEffects) {
-    ability=restrictionEffects.getAbility(effect.getId());
-    if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,false)) {
-      log.error(uuid + "        ability=" + ability+ ", applies_to_attacker="+ effect.applies(attacker,ability,game));
-      log.error(uuid + "        ability=" + ability+ ", applies_to_blocker="+ effect.applies(blocker,ability,game));
-    }
- else {
-      boolean usable=ability.isInUseableZone(game,false);
-      log.error(uuid + "        instanceof: " + (ability instanceof StaticAbility)+ ", ability="+ ability);
-      log.error(uuid + "        usable: " + usable+ ", ability="+ ability);
-      if (!usable) {
-        Constants.Zone zone=ability.getZone();
-        log.error(uuid + "        zone: " + zone);
-        MageObject object=game.getObject(ability.getSourceId());
-        log.error(uuid + "        object: " + object);
-        if (object != null) {
-          log.error(uuid + "        contains:" + object.getAbilities().contains(ability));
-        }
-        Constants.Zone test=game.getState().getZone(ability.getSourceId());
-        log.error(uuid + "        test_zone: " + test);
-      }
-    }
-  }
+  traceForPermanent(game,attacker,uuid,restrictionEffects);
+  traceForPermanent(game,blocker,uuid,restrictionEffects);
   log.error(uuid);
 }
