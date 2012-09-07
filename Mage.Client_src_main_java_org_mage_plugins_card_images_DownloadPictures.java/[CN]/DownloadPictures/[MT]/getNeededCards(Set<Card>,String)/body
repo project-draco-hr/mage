@@ -7,7 +7,7 @@
       if (card.getCardNumber() > 0 && !card.getExpansionSetCode().isEmpty()) {
         String cardName=card.getName();
         CardInfo url=new CardInfo(cardName,card.getExpansionSetCode(),card.getCardNumber(),0,false,card.canTransform(),card.isNightCard());
-        if (cardName.equals("Forest") || cardName.equals("Swamp") || cardName.equals("Mountain")|| cardName.equals("Island")|| cardName.equals("Plains")) {
+        if (basicLandPattern.matcher(cardName).matches()) {
           url.setDownloadName(card.getClass().getName().replace(card.getClass().getPackage().getName() + ".",""));
         }
         if (card.isFlipCard()) {
@@ -39,7 +39,7 @@
   File file;
   for (  CardInfo card : allCardsUrls) {
     boolean withCollectorId=false;
-    if (card.getName().equals("Forest") || card.getName().equals("Mountain") || card.getName().equals("Swamp")|| card.getName().equals("Island")|| card.getName().equals("Plains")) {
+    if (basicLandPattern.matcher(card.getName()).matches()) {
       withCollectorId=true;
     }
     file=new File(CardImageUtils.getImagePath(card,withCollectorId,imagesPath));
