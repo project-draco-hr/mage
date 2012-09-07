@@ -137,7 +137,7 @@
         return true;
       }
     }
-    if (!target.isRequired())     return false;
+    return false;
   }
   if (target instanceof TargetCardInGraveyard) {
     List<Card> cards=new ArrayList<Card>();
@@ -149,7 +149,7 @@
       target.addTarget(card.getId(),source,game);
       return true;
     }
-    if (!target.isRequired())     return false;
+    return false;
   }
   if (target instanceof TargetCardInLibrary) {
     List<Card> cards=new ArrayList<Card>(game.getPlayer(playerId).getLibrary().getCards(game));
@@ -179,6 +179,21 @@
           return true;
         }
       }
+    }
+    return false;
+  }
+  if (target instanceof TargetCardInOpponentsGraveyard) {
+    List<Card> cards=new ArrayList<Card>();
+    for (    UUID uuid : game.getOpponents(playerId)) {
+      Player player=game.getPlayer(uuid);
+      if (player != null) {
+        cards.addAll(player.getGraveyard().getCards(game));
+      }
+    }
+    Card card=pickTarget(cards,outcome,target,source,game);
+    if (card != null) {
+      target.addTarget(card.getId(),source,game);
+      return true;
     }
     return false;
   }
