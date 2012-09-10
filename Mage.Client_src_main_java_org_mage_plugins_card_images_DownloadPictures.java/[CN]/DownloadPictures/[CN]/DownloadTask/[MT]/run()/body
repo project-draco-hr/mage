@@ -1,9 +1,5 @@
 {
   try {
-    boolean withCollectorId=false;
-    if (basicLandPattern.matcher(card.getName()).matches()) {
-      withCollectorId=true;
-    }
     File temporaryFile=new File(Constants.IO.imageBaseDir + File.separator + card.hashCode()+ "."+ card.getName()+ ".jpg");
     BufferedInputStream in=new BufferedInputStream(url.openConnection(p).getInputStream());
     BufferedOutputStream out=new BufferedOutputStream(new TFileOutputStream(temporaryFile));
@@ -22,7 +18,7 @@
     in.close();
     out.flush();
     out.close();
-    TFile outputFile=new TFile(CardImageUtils.getImagePath(card,withCollectorId));
+    TFile outputFile=new TFile(CardImageUtils.getImagePath(card,imagesPath));
     if (card.isTwoFacedCard()) {
       BufferedImage image=ImageIO.read(temporaryFile);
       temporaryFile.delete();

@@ -1,0 +1,15 @@
+{
+  String imageDir=getImageDir(card,imagesPath);
+  String type=card.getType() != 0 ? " " + Integer.toString(card.getType()) : "";
+  String name=card.getName();
+  String path, capitalizedPath;
+  if (basicLandPattern.matcher(name).matches()) {
+    path=imageDir + TFile.separator + name+ "."+ card.getCollectorId()+ ".full.jpg";
+    capitalizedPath=imageDir + TFile.separator + capitalize(name)+ "."+ card.getCollectorId()+ ".full.jpg";
+  }
+ else {
+    path=imageDir + TFile.separator + name+ type+ ".full.jpg";
+    capitalizedPath=imageDir + TFile.separator + capitalize(name)+ type+ ".full.jpg";
+  }
+  return new TFile(capitalizedPath).exists() ? capitalizedPath : path;
+}

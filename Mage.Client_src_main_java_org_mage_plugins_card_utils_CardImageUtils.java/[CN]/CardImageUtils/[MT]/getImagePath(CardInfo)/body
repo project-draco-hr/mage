@@ -1,6 +1,5 @@
 {
   String filePath;
-  String suffix=".jpg";
   TFile file;
   if (card.isToken()) {
     if (pathCache.containsKey(card)) {
@@ -17,15 +16,7 @@
     }
   }
  else {
-    filePath=getImagePath(card,false);
-    file=new TFile(filePath);
-    if (!file.exists()) {
-      filePath=getImagePath(card,true);
-      file=new TFile(filePath);
-    }
-  }
-  if (file == null || !file.exists()) {
-    filePath=cleanString(card.getName()) + suffix;
+    filePath=getImagePath(card,null);
     file=new TFile(filePath);
   }
   if (file.exists()) {
