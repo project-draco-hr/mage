@@ -1,0 +1,14 @@
+{
+  if (event.getType() == GameEvent.EventType.SPELL_CAST && event.getSourceId().equals(this.sourceId)) {
+    StackObject spell=game.getStack().getStackObject(this.sourceId);
+    if (spell instanceof Spell) {
+      for (      Effect effect : this.getEffects()) {
+        if (effect instanceof StormEffect) {
+          ((StormEffect)effect).setSpell((Spell)spell);
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,14 @@
+{
+  if (spell != null) {
+    CastSpellLastTurnWatcher watcher=(CastSpellLastTurnWatcher)game.getState().getWatchers().get("CastSpellLastTurnWatcher");
+    for (int i=0; i < watcher.getSpellOrder(spell) - 1; i++) {
+      Spell copy=spell.copySpell();
+      copy.setControllerId(source.getControllerId());
+      copy.setCopiedSpell(true);
+      game.getStack().push(copy);
+      copy.chooseNewTargets(game,source.getControllerId());
+    }
+    return true;
+  }
+  return false;
+}
