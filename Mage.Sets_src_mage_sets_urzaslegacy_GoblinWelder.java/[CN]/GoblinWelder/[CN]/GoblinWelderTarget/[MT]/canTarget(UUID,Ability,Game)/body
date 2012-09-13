@@ -1,0 +1,12 @@
+{
+  UUID firstTarget=source.getFirstTarget();
+  Permanent artifact=game.getPermanent(firstTarget);
+  Player player=game.getPlayer(artifact.getControllerId());
+  Card card=game.getCard(id);
+  if (card != null && player != null && game.getState().getZone(card.getId()) == Constants.Zone.GRAVEYARD) {
+    if (player.getGraveyard().contains(id)) {
+      return filter.match(card,game);
+    }
+  }
+  return false;
+}

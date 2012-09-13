@@ -1,0 +1,15 @@
+{
+  Permanent artifact=game.getPermanent(source.getTargets().get(0).getFirstTarget());
+  Card card=game.getCard(source.getTargets().get(1).getFirstTarget());
+  if (artifact != null && card != null) {
+    Constants.Zone currentZone=game.getState().getZone(card.getId());
+    if (artifact.getCardType().contains(CardType.ARTIFACT) && card.getCardType().contains(CardType.ARTIFACT) && currentZone == Constants.Zone.GRAVEYARD && card.getOwnerId().equals(artifact.getControllerId())) {
+      boolean sacrifice=artifact.sacrifice(source.getId(),game);
+      boolean putOnBF=card.putOntoBattlefield(game,currentZone,source.getId(),card.getOwnerId());
+      if (sacrifice || putOnBF) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
