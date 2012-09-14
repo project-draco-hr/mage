@@ -1,7 +1,12 @@
 {
   super(duration,Outcome.Benefit);
   this.filter=filter;
-  this.staticText=filter.getMessage() + " are indestructible";
+  if (filter.getMessage().startsWith("Each")) {
+    this.staticText=filter.getMessage() + " is indestructible";
+  }
+ else {
+    this.staticText=filter.getMessage() + " are indestructible";
+  }
   if (duration.equals(Duration.EndOfTurn)) {
     this.staticText+=" this turn";
   }
