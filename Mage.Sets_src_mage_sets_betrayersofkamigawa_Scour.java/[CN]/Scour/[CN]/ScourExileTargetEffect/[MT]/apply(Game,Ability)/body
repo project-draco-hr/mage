@@ -1,0 +1,41 @@
+{
+  boolean result;
+  Permanent permanent=game.getPermanent(targetPointer.getFirst(game,source));
+  if (exileId == null) {
+    exileId=getId();
+  }
+  if (permanent != null) {
+    Player targetPlayer=game.getPlayer(permanent.getOwnerId());
+    Player you=game.getPlayer(source.getControllerId());
+    Card chosenCard=permanent;
+    result=permanent.moveToExile(exileId,exileZone,source.getSourceId(),game);
+    if (targetPlayer != null && you != null) {
+      Cards cardsInLibrary=new CardsImpl(Constants.Zone.LIBRARY);
+      cardsInLibrary.addAll(targetPlayer.getLibrary().getCards(game));
+      you.lookAtCards("Scour search of Library",cardsInLibrary,game);
+      Cards cardsInGraveyard=new CardsImpl(Constants.Zone.GRAVEYARD);
+      cardsInGraveyard.addAll(targetPlayer.getGraveyard());
+      Cards cardsInHand=new CardsImpl(Constants.Zone.HAND);
+      cardsInHand.addAll(targetPlayer.getHand());
+      you.lookAtCards("Scour search of Hand",cardsInHand,game);
+      for (      Card checkCard : cardsInLibrary.getCards(game)) {
+        if (checkCard.getName().equals(chosenCard.getName())) {
+          checkCard.moveToExile(id,"Library",id,game);
+        }
+      }
+      for (      Card checkCard : cardsInGraveyard.getCards(game)) {
+        if (checkCard.getName().equals(chosenCard.getName())) {
+          checkCard.moveToExile(id,"Graveyard",id,game);
+        }
+      }
+      for (      Card checkCard : cardsInHand.getCards(game)) {
+        if (checkCard.getName().equals(chosenCard.getName())) {
+          checkCard.moveToExile(id,"Hand",id,game);
+        }
+      }
+      targetPlayer.shuffleLibrary(game);
+    }
+    return result;
+  }
+  return false;
+}

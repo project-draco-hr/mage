@@ -1,0 +1,22 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player != null) {
+    List<UUID> targets=source.getTargets().get(1).getTargets();
+    boolean shuffle=false;
+    for (    UUID targetId : targets) {
+      Card card=game.getCard(targetId);
+      if (card != null) {
+        if (player.getGraveyard().contains(card.getId())) {
+          player.getGraveyard().remove(card);
+          card.moveToZone(Zone.LIBRARY,source.getId(),game,true);
+          shuffle=true;
+        }
+      }
+    }
+    if (shuffle) {
+      player.getLibrary().shuffle();
+    }
+    return true;
+  }
+  return false;
+}
