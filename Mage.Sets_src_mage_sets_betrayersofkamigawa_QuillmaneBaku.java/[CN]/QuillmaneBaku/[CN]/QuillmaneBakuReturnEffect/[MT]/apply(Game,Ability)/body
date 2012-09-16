@@ -1,0 +1,20 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  int maxConvManaCost=0;
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof RemoveVariableCountersSourceCost) {
+      maxConvManaCost=((RemoveVariableCountersSourceCost)cost).getAmount();
+    }
+  }
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("creature with converted mana cost " + maxConvManaCost + " or less");
+  filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.LessThan,maxConvManaCost + 1));
+  TargetCreaturePermanent target=new TargetCreaturePermanent(filter);
+  Permanent permanent=game.getPermanent(target.getFirstTarget());
+  if (permanent != null) {
+    return permanent.moveToZone(Zone.HAND,source.getId(),game,false);
+  }
+  return false;
+}
