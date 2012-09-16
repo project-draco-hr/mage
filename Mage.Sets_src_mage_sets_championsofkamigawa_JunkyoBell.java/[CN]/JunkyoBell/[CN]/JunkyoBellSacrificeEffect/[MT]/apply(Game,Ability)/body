@@ -1,0 +1,13 @@
+{
+  Permanent creature=game.getPermanent(source.getFirstTarget());
+  if (creature != null) {
+    SacrificeTargetEffect sacrificeEffect=new SacrificeTargetEffect("sacrifice boosted " + creature.getName());
+    sacrificeEffect.setTargetPointer(new FixedTarget(source.getFirstTarget()));
+    DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(sacrificeEffect);
+    delayedAbility.setSourceId(source.getSourceId());
+    delayedAbility.setControllerId(source.getControllerId());
+    game.addDelayedTriggeredAbility(delayedAbility);
+    return true;
+  }
+  return false;
+}

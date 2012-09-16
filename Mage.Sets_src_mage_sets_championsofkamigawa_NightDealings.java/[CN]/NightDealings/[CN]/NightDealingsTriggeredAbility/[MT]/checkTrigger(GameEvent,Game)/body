@@ -1,0 +1,22 @@
+{
+  if (event.getType() == GameEvent.EventType.DAMAGED_PLAYER) {
+    if (this.getControllerId() != event.getTargetId()) {
+      UUID sourceControllerId=null;
+      Permanent permanent=game.getPermanent(event.getSourceId());
+      if (permanent != null) {
+        sourceControllerId=permanent.getControllerId();
+      }
+ else {
+        StackObject sourceStackObject=game.getStack().getStackObject(event.getSourceId());
+        if (sourceStackObject != null) {
+          sourceControllerId=sourceStackObject.getControllerId();
+        }
+      }
+      if (sourceControllerId != null && sourceControllerId == this.getControllerId()) {
+        this.getEffects().get(0).setValue("damageAmount",event.getAmount());
+        return true;
+      }
+    }
+  }
+  return false;
+}
