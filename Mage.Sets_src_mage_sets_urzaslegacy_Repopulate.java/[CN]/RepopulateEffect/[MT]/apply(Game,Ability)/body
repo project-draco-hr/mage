@@ -1,0 +1,12 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player != null) {
+    Set<Card> cards=player.getGraveyard().getCards(new FilterCreatureCard(),game);
+    for (    Card card : cards) {
+      card.moveToZone(Constants.Zone.LIBRARY,source.getId(),game,true);
+    }
+    player.shuffleLibrary(game);
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,30 @@
+{
+  Cards cards=new CardsImpl();
+  for (  UUID playerId : game.getPlayer(source.getControllerId()).getInRange()) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      Cards hand=player.getHand();
+      while (hand.size() > 0) {
+        Card card=hand.get(hand.iterator().next(),game);
+        if (card != null) {
+          card.setFaceDown(true);
+          card.moveToExile(getId(),"Memory Jar",source.getSourceId(),game);
+          cards.add(card);
+        }
+      }
+    }
+  }
+  for (  UUID playerId : game.getPlayer(source.getControllerId()).getInRange()) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      player.drawCards(7,game);
+    }
+  }
+  Effect effect=new MemoryJarDelayedEffect();
+  effect.setValue("MemoryJarCards",cards);
+  DelayedTriggeredAbility delayedAbility=new MemoryJarDelayedTriggeredAbility(effect);
+  delayedAbility.setSourceId(source.getSourceId());
+  delayedAbility.setControllerId(source.getControllerId());
+  game.addDelayedTriggeredAbility(delayedAbility);
+  return true;
+}

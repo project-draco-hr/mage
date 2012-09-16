@@ -1,0 +1,17 @@
+{
+  Cards cards=(Cards)this.getValue("MemoryJarCards");
+  if (cards != null) {
+    for (    UUID playerId : game.getPlayer(source.getControllerId()).getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        player.discard(player.getHand().size(),source,game);
+      }
+    }
+    for (Iterator<Card> it=cards.getCards(game).iterator(); it.hasNext(); ) {
+      Card card=it.next();
+      card.moveToZone(Constants.Zone.HAND,source.getSourceId(),game,true);
+    }
+    return true;
+  }
+  return false;
+}
