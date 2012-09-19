@@ -1,0 +1,12 @@
+{
+  Permanent permanent=game.getPermanent(targetPointer.getFirst(game,event));
+  if (permanent != null) {
+    AtTheEndOfCombatDelayedTriggeredAbility delayedAbility=new AtTheEndOfCombatDelayedTriggeredAbility(new DestroyTargetEffect());
+    delayedAbility.setSourceId(permanent.getId());
+    delayedAbility.setControllerId(event.getControllerId());
+    delayedAbility.getEffects().get(0).setTargetPointer(new FixedTarget(permanent.getId()));
+    game.addDelayedTriggeredAbility(delayedAbility);
+    return true;
+  }
+  return false;
+}
