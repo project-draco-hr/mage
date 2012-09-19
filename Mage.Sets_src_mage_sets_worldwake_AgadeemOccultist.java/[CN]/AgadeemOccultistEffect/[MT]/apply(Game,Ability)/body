@@ -1,0 +1,26 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  int allycount=0;
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(source.getControllerId())) {
+    if (permanent.getSubtype().contains("Ally")) {
+      allycount++;
+    }
+  }
+  FilterCard filter=new FilterCard("creature card in an opponent's graveyard");
+  filter.add(new CardTypePredicate(CardType.CREATURE));
+  TargetCardInOpponentsGraveyard target=new TargetCardInOpponentsGraveyard(1,1,filter);
+  if (you != null) {
+    if (target.canChoose(source.getControllerId(),game) && you.choose(Constants.Outcome.GainControl,target,source.getSourceId(),game)) {
+      if (!target.getTargets().isEmpty()) {
+        Card card=game.getCard(target.getFirstTarget());
+        if (card != null) {
+          if (card.getManaCost().convertedManaCost() <= allycount) {
+            card.putOntoBattlefield(game,Constants.Zone.GRAVEYARD,source.getId(),source.getControllerId());
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
