@@ -1,0 +1,15 @@
+{
+  super(ownerId,126,"Genju of the Cedars",Rarity.UNCOMMON,new CardType[]{CardType.ENCHANTMENT},"{G}");
+  this.expansionSetCode="BOK";
+  this.subtype.add("Aura");
+  this.color.setGreen(true);
+  TargetPermanent auraTarget=new TargetLandPermanent(filter);
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.PutCreatureInPlay));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  Ability ability2=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BecomesCreatureAttachedEffect(new SpiritToken(),"Enchanted Forest becomes a 4/4 green Spirit creature until end of turn. It's still a land",Constants.Duration.EndOfTurn),new GenericManaCost(2));
+  this.addAbility(ability2);
+  Ability ability3=new DiesAttachedTriggeredAbility(new ReturnToHandSourceEffect(),"enchanted Forest",true);
+  this.addAbility(ability3);
+}
