@@ -1,0 +1,21 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  TargetCardInYourGraveyard target1=new TargetCardInYourGraveyard(new FilterCreatureCard("creature card in your graveyard"));
+  TargetCreaturePermanent target2=new TargetCreaturePermanent();
+  if (you != null) {
+    if (target1.canChoose(source.getControllerId(),game) && you.choose(Constants.Outcome.Benefit,target1,source.getSourceId(),game) && target2.canChoose(source.getControllerId(),game)&& you.choose(Constants.Outcome.Damage,target2,source.getSourceId(),game)) {
+      Card creatureInGraveyard=game.getCard(target1.getFirstTarget());
+      if (creatureInGraveyard != null) {
+        if (creatureInGraveyard.moveToZone(Constants.Zone.LIBRARY,id,game,true)) {
+          int power=creatureInGraveyard.getPower().getValue();
+          Permanent creature=game.getPermanent(target2.getFirstTarget());
+          if (creature != null) {
+            creature.damage(power,id,game,true,true);
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
