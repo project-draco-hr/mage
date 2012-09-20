@@ -1,0 +1,15 @@
+{
+  super(ownerId,5,"Genju of the Fields",Rarity.UNCOMMON,new CardType[]{CardType.ENCHANTMENT},"{W}");
+  this.expansionSetCode="BOK";
+  this.subtype.add("Aura");
+  this.color.setWhite(true);
+  TargetPermanent auraTarget=new TargetLandPermanent(filter);
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.PutCreatureInPlay));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  Ability ability2=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BecomesCreatureAttachedEffect(new SpiritToken(),"Until end of turn, enchanted Plains becomes a 2/5 white Spirit creature with \"Whenever this creature deals damage, its controller gains that much life.\".  It's still a land",Constants.Duration.EndOfTurn),new GenericManaCost(2));
+  this.addAbility(ability2);
+  Ability ability3=new DiesAttachedTriggeredAbility(new ReturnToHandSourceEffect(),"enchanted Plains",true);
+  this.addAbility(ability3);
+}
