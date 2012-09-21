@@ -1,0 +1,37 @@
+{
+  int swamps=game.getBattlefield().count(filter,source.getControllerId(),game);
+  Player targetPlayer=game.getPlayer(targetPointer.getFirst(game,source));
+  if (swamps > 0 && targetPlayer != null) {
+    Cards revealedCards=new CardsImpl(Constants.Zone.PICK);
+    int amount=Math.min(targetPlayer.getHand().size(),swamps);
+    FilterCard filter=new FilterCard("card in target player's hand");
+    TargetCardInHand chosenCards=new TargetCardInHand(amount,amount,filter);
+    chosenCards.setRequired(true);
+    chosenCards.setNotTarget(true);
+    if (chosenCards.canChoose(targetPlayer.getId(),game) && targetPlayer.choose(Constants.Outcome.Discard,targetPlayer.getHand(),chosenCards,game)) {
+      if (!chosenCards.getTargets().isEmpty()) {
+        List<UUID> targets=chosenCards.getTargets();
+        for (        UUID targetid : targets) {
+          Card card=game.getCard(targetid);
+          if (card != null) {
+            revealedCards.add(card);
+          }
+        }
+      }
+    }
+    targetPlayer.revealCards("Mire's Toll",revealedCards,game);
+    Player you=game.getPlayer(source.getControllerId());
+    if (you != null) {
+      TargetCard yourChoice=new TargetCard(Constants.Zone.PICK,new FilterCard());
+      yourChoice.setRequired(true);
+      yourChoice.setNotTarget(true);
+      if (you.choose(Constants.Outcome.Benefit,revealedCards,yourChoice,game)) {
+        Card card=targetPlayer.getHand().get(yourChoice.getFirstTarget(),game);
+        if (card != null) {
+          return targetPlayer.discard(card,source,game);
+        }
+      }
+    }
+  }
+  return false;
+}
