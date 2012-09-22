@@ -1,0 +1,39 @@
+{
+  List<Permanent> enchantments=game.getBattlefield().getActivePermanents(new FilterEnchantment(),source.getControllerId(),source.getSourceId(),game);
+  HashMap<UUID,List<Permanent>> moveList=new HashMap<UUID,List<Permanent>>();
+  for (  Permanent permanent : enchantments) {
+    List<Permanent> list=moveList.get(permanent.getControllerId());
+    if (list == null) {
+      list=new ArrayList<Permanent>();
+      moveList.put(permanent.getControllerId(),list);
+    }
+    list.add(permanent);
+  }
+  TargetCard target=new TargetCard(Zone.PICK,new FilterCard("card to put on top of your library"));
+  target.setRequired(true);
+  for (  UUID playerId : moveList.keySet()) {
+    Player player=game.getPlayer(playerId);
+    List<Permanent> list=moveList.get(playerId);
+    if (player == null) {
+      continue;
+    }
+    CardsImpl cards=new CardsImpl(Zone.PICK);
+    for (    Permanent permanent : list) {
+      cards.add(permanent);
+    }
+    while (cards.size() > 1) {
+      player.choose(Outcome.Neutral,cards,target,game);
+      Permanent permanent=game.getPermanent(target.getFirstTarget());
+      if (permanent != null) {
+        cards.remove(permanent);
+        permanent.moveToZone(Zone.LIBRARY,source.getId(),game,true);
+      }
+      target.clearChosen();
+    }
+    if (cards.size() == 1) {
+      Permanent permanent=game.getPermanent(cards.iterator().next());
+      permanent.moveToZone(Zone.LIBRARY,source.getId(),game,true);
+    }
+  }
+  return true;
+}
