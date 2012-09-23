@@ -21,7 +21,6 @@
     TFile outputFile=new TFile(CardImageUtils.getImagePath(card,imagesPath));
     if (card.isTwoFacedCard()) {
       BufferedImage image=ImageIO.read(temporaryFile);
-      temporaryFile.delete();
       if (image.getHeight() == 470) {
         BufferedImage renderedImage=new BufferedImage(265,370,BufferedImage.TYPE_INT_RGB);
         renderedImage.getGraphics();
@@ -35,6 +34,10 @@
         graphics2D.dispose();
         writeImageToFile(renderedImage,outputFile);
       }
+ else {
+        new TFile(temporaryFile).cp_rp(outputFile);
+      }
+      temporaryFile.delete();
     }
  else {
       new TFile(temporaryFile).cp_rp(outputFile);
