@@ -1,0 +1,13 @@
+{
+  boolean result=false;
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      int cmc=card.getManaCost().convertedManaCost();
+      result=card.moveToZone(Constants.Zone.GRAVEYARD,source.getId(),game,true);
+      player.drawCards(cmc,game);
+    }
+  }
+  return result;
+}
