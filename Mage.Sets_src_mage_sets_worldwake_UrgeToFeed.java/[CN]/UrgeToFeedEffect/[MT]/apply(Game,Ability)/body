@@ -1,0 +1,17 @@
+{
+  TargetCreaturePermanent target=new TargetCreaturePermanent(filter);
+  while (true) {
+    target.clearChosen();
+    if (target.canChoose(source.getControllerId(),game) && target.choose(Constants.Outcome.Tap,source.getControllerId(),source.getId(),game)) {
+      UUID vampire=target.getFirstTarget();
+      if (vampire != null) {
+        game.getPermanent(vampire).tap(game);
+        game.getPermanent(vampire).addCounters(CounterType.P1P1.createInstance(),game);
+      }
+    }
+ else {
+      break;
+    }
+  }
+  return false;
+}
