@@ -1,0 +1,13 @@
+{
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  if (permanent != null) {
+    int power=permanent.getPower().getValue();
+    permanent.destroy(source.getId(),game,true);
+    Player player=game.getPlayer(source.getControllerId());
+    if (player != null) {
+      player.gainLife(power,game);
+    }
+    return true;
+  }
+  return false;
+}
