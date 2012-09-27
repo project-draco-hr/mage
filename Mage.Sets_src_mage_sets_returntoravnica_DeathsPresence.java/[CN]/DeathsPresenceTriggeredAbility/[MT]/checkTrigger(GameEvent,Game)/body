@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).getToZone() == Constants.Zone.GRAVEYARD && ((ZoneChangeEvent)event).getFromZone() == Constants.Zone.BATTLEFIELD) {
+    Permanent permanent=(Permanent)game.getLastKnownInformation(event.getTargetId(),Constants.Zone.BATTLEFIELD);
+    if (permanent != null && permanent.getControllerId().equals(this.getControllerId()) && permanent.getCardType().contains(CardType.CREATURE)) {
+      this.getTargets().clear();
+      this.addTarget(new TargetControlledCreaturePermanent());
+      this.getEffects().clear();
+      this.addEffect(new AddCountersTargetEffect(CounterType.P1P1.createInstance(permanent.getToughness().getValue())));
+      return true;
+    }
+  }
+  return false;
+}
