@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : controller.getInRange()) {
+      if (playerId != source.getControllerId()) {
+        Player opponent=game.getPlayer(playerId);
+        if (opponent != null) {
+          opponent.damage(2,source.getId(),game,false,true);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
