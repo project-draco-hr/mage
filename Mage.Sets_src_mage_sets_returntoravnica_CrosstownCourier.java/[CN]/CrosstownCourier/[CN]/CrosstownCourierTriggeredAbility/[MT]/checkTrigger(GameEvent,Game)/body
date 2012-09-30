@@ -1,0 +1,12 @@
+{
+  if (event.getType() == GameEvent.EventType.DAMAGED_PLAYER && event.getSourceId().equals(this.sourceId) && ((DamagedPlayerEvent)event).isCombatDamage()) {
+    for (    Effect effect : getEffects()) {
+      if (effect instanceof PutLibraryIntoGraveTargetEffect) {
+        effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+        ((PutLibraryIntoGraveTargetEffect)effect).setAmount(new StaticValue(event.getAmount()));
+        return true;
+      }
+    }
+  }
+  return false;
+}
