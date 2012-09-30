@@ -1,12 +1,19 @@
 {
   List<String> rules=new ArrayList<String>();
   for (  T ability : this) {
-    if (!(ability instanceof SpellAbility || ability instanceof PlayLandAbility))     rules.add(ability.getRule());
+    if (!(ability instanceof SpellAbility || ability instanceof PlayLandAbility)) {
+      rules.add(ability.getRule());
+    }
     if (ability instanceof SpellAbility) {
       if (ability.getAlternativeCosts().size() > 0) {
         StringBuilder sbRule=new StringBuilder();
         for (        AlternativeCost cost : ability.getAlternativeCosts()) {
-          sbRule.append(cost.getName()).append(".\n");
+          if (cost.getClass().getName().equals("mage.abilities.costs.AlternativeCostImpl")) {
+            sbRule.append(cost.getName()).append(".\n");
+          }
+ else {
+            sbRule.append(cost.getText()).append(".\n");
+          }
         }
         rules.add(sbRule.toString());
       }
@@ -22,6 +29,7 @@
         }
         rules.add(sbRule.toString());
       }
+      rules.add(ability.getRule());
     }
   }
   return rules;
