@@ -1,19 +1,22 @@
 {
-  for (  UUID permanentId : targetPointer.getTargets(game,source)) {
-    Permanent permanent=game.getPermanent(permanentId);
-    if (permanent != null) {
+  if (this.lockedControllers != null) {
+    for (    UUID permanentId : targetPointer.getTargets(game,source)) {
+      Permanent permanent=game.getPermanent(permanentId);
+      if (permanent != null) {
+        UUID controllerId=this.lockedControllers.get(permanent.getId());
+        if (controllerId != null) {
+          permanent.changeControllerId(controllerId,game);
+        }
+      }
+    }
+    if (withSource) {
+      Permanent permanent=game.getPermanent(source.getSourceId());
       UUID controllerId=this.lockedControllers.get(permanent.getId());
       if (controllerId != null) {
         permanent.changeControllerId(controllerId,game);
       }
     }
+    return true;
   }
-  if (withSource) {
-    Permanent permanent=game.getPermanent(source.getSourceId());
-    UUID controllerId=this.lockedControllers.get(permanent.getId());
-    if (controllerId != null) {
-      permanent.changeControllerId(controllerId,game);
-    }
-  }
-  return true;
+  return false;
 }
