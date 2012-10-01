@@ -1,0 +1,16 @@
+{
+  if (targets.choose(Constants.Outcome.Exile,controllerId,sourceId,game)) {
+    Player player=game.getPlayer(controllerId);
+    for (    UUID targetId : targets.get(0).getTargets()) {
+      Spell spellToExile=game.getStack().getSpell(targetId);
+      if (spellToExile == null) {
+        return false;
+      }
+      paid|=spellToExile.moveToExile(null,"",ability.getSourceId(),game);
+      if (paid) {
+        game.informPlayers(player.getName() + " exiles " + spellToExile.getName()+ " (as costs)");
+      }
+    }
+  }
+  return paid;
+}
