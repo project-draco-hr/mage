@@ -1,0 +1,13 @@
+{
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  if (permanent != null) {
+    for (    UUID uuid : permanent.getAttachments()) {
+      Permanent aura=game.getPermanent(uuid);
+      if (aura != null && aura.getSubtype().contains("Aura")) {
+        permanent.destroy(source.getSourceId(),game,false);
+      }
+    }
+    return true;
+  }
+  return false;
+}

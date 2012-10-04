@@ -1,0 +1,15 @@
+{
+  if (event.getType() == GameEvent.EventType.TAPPED) {
+    Permanent source=game.getPermanent(this.sourceId);
+    if (source != null && source.getAttachedTo().equals(event.getTargetId())) {
+      Permanent attached=game.getPermanent(source.getAttachedTo());
+      if (attached != null) {
+        for (        Effect e : getEffects()) {
+          e.setTargetPointer(new FixedTarget(attached.getControllerId()));
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}
