@@ -1,0 +1,29 @@
+{
+  if (staticText != null && !staticText.isEmpty()) {
+    return staticText;
+  }
+  StringBuilder sb=new StringBuilder();
+  Target target=mode.getTargets().get(0);
+  if (target.getMaxNumberOfTargets() == target.getNumberOfTargets()) {
+    if (target.getMaxNumberOfTargets() == 1) {
+      sb.append("detain target ").append(target.getTargetName());
+    }
+ else {
+      sb.append("detain ").append(target.getMaxNumberOfTargets()).append(" target ").append(target.getTargetName());
+    }
+  }
+ else {
+    sb.append("detain up to ").append(target.getMaxNumberOfTargets()).append(" target ").append(target.getTargetName());
+  }
+  sb.append(". (Until your next turn, ");
+  if (target instanceof TargetCreaturePermanent) {
+    sb.append(target.getMaxNumberOfTargets() == 1 ? "that creature" : "those creatures");
+  }
+ else {
+    sb.append(target.getMaxNumberOfTargets() == 1 ? "that permanent" : "those permanents");
+  }
+  sb.append(" can't attack or block and ");
+  sb.append(target.getMaxNumberOfTargets() == 1 ? "its" : "their");
+  sb.append(" activated abilities can't be activated)");
+  return sb.toString();
+}
