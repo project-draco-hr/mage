@@ -1,0 +1,12 @@
+{
+  if (event.getType() == GameEvent.EventType.DECLARE_ATTACKER) {
+    if (event.getTargetId().equals(source.getControllerId())) {
+      return true;
+    }
+    Permanent permanent=game.getPermanent(event.getTargetId());
+    if (permanent != null && permanent.getControllerId().equals(source.getControllerId()) && permanent.getCardType().contains(CardType.PLANESWALKER)) {
+      return true;
+    }
+  }
+  return false;
+}

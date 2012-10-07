@@ -1,0 +1,15 @@
+{
+  super(ownerId,13,"Knightly Valor",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{4}{W}");
+  this.expansionSetCode="RTR";
+  this.subtype.add("Aura");
+  this.color.setWhite(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Detriment));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new CreateTokenEffect(new KnightToken())));
+  SimpleStaticAbility ability2=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(2,2,Duration.WhileOnBattlefield));
+  ability2.addEffect(new GainAbilityAttachedEffect(VigilanceAbility.getInstance(),AttachmentType.AURA));
+  this.addAbility(ability2);
+}
