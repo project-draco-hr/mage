@@ -1,0 +1,16 @@
+{
+  UUID creatureId=(UUID)getValue("lifeSource");
+  Permanent creature=game.getPermanent(creatureId);
+  if (creature == null) {
+    creature=(Permanent)game.getLastKnownInformation(creatureId,Zone.BATTLEFIELD);
+  }
+  if (creature != null) {
+    int amount=creature.getToughness().getValue();
+    Player player=game.getPlayer(source.getControllerId());
+    if (player != null) {
+      player.gainLife(amount,game);
+    }
+    return true;
+  }
+  return false;
+}
