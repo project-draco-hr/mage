@@ -1,0 +1,13 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Card c=player.getGraveyard().get(source.getSourceId(),game);
+    if (c != null) {
+      player.getGraveyard().remove(c);
+      player.getLibrary().putOnTop(c,game);
+      player.getLibrary().shuffle();
+      return true;
+    }
+  }
+  return false;
+}
