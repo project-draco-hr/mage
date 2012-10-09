@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.DAMAGE_PLAYER && event.getPlayerId().equals(source.getControllerId()) && !event.getAppliedEffects().contains(getId())) {
+    return true;
+  }
+  if (event.getType() == GameEvent.EventType.DAMAGE_CREATURE || event.getType() == GameEvent.EventType.DAMAGE_PLANESWALKER) {
+    Permanent targetPermanent=game.getPermanent(event.getTargetId());
+    Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+    if (targetPermanent != null && targetPermanent.getControllerId().equals(source.getControllerId()) && !targetPermanent.getName().equals(sourcePermanent.getName()) && !event.getAppliedEffects().contains(getId())) {
+      return true;
+    }
+  }
+  return false;
+}
