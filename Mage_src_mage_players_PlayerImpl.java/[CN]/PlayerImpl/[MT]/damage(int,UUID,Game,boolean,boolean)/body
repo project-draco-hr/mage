@@ -1,33 +1,3 @@
 {
-  if (damage > 0 && canDamage(game.getObject(sourceId),game)) {
-    GameEvent event=new DamagePlayerEvent(playerId,sourceId,playerId,damage,preventable,combatDamage);
-    if (!game.replaceEvent(event)) {
-      int actualDamage=event.getAmount();
-      if (actualDamage > 0) {
-        Permanent source=game.getPermanent(sourceId);
-        if (source == null) {
-          MageObject lastKnownInformation=game.getLastKnownInformation(sourceId,Zone.BATTLEFIELD);
-          if (lastKnownInformation instanceof Permanent) {
-            source=(Permanent)lastKnownInformation;
-          }
-        }
-        if (source != null && (source.getAbilities().containsKey(InfectAbility.getInstance().getId()))) {
-          addCounters(CounterType.POISON.createInstance(actualDamage),game);
-        }
- else {
-          GameEvent damageToLifeLossEvent=new GameEvent(EventType.DAMAGE_CAUSES_LIFE_LOSS,playerId,sourceId,playerId,actualDamage,combatDamage);
-          if (!game.replaceEvent(damageToLifeLossEvent)) {
-            this.loseLife(damageToLifeLossEvent.getAmount(),game);
-          }
-        }
-        if (source != null && source.getAbilities().containsKey(LifelinkAbility.getInstance().getId())) {
-          Player player=game.getPlayer(source.getControllerId());
-          player.gainLife(actualDamage,game);
-        }
-        game.fireEvent(new DamagedPlayerEvent(playerId,sourceId,playerId,actualDamage,combatDamage));
-        return actualDamage;
-      }
-    }
-  }
-  return 0;
+  return doDamage(damage,sourceId,game,combatDamage,preventable,null);
 }
