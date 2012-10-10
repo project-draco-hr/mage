@@ -1,7 +1,7 @@
 {
   updateGameStatePriority("specialAction",game);
-  Map<UUID,SpecialAction> specialActions=game.getState().getSpecialActions().getControlledBy(playerId);
-  game.fireGetChoiceEvent(playerId,name,specialActions.values());
+  LinkedHashMap<UUID,SpecialAction> specialActions=game.getState().getSpecialActions().getControlledBy(playerId);
+  game.fireGetChoiceEvent(playerId,name,new ArrayList<SpecialAction>(specialActions.values()));
   waitForResponse();
   if (response.getUUID() != null) {
     if (specialActions.containsKey(response.getUUID()))     activateAbility(specialActions.get(response.getUUID()),game);
