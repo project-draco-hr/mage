@@ -1,0 +1,12 @@
+{
+  if (event.getType() == GameEvent.EventType.SPELL_CAST && event.getZone() == Constants.Zone.GRAVEYARD) {
+    Spell spell=game.getStack().getSpell(event.getTargetId());
+    if (spell != null) {
+      for (      Effect effect : this.getEffects()) {
+        effect.setTargetPointer(new FixedTarget(spell.getControllerId()));
+      }
+      return true;
+    }
+  }
+  return false;
+}
