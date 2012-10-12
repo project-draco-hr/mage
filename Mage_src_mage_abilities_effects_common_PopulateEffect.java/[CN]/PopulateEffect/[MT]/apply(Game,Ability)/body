@@ -7,7 +7,8 @@
       player.choose(Outcome.Copy,target,source.getSourceId(),game);
       Permanent tokenToCopy=game.getPermanent(target.getFirstTarget());
       if (tokenToCopy != null && tokenToCopy instanceof PermanentToken) {
-        Token newToken=((PermanentToken)tokenToCopy).getToken().copy();
+        Token newToken=new Token("","");
+        CardUtil.copyTo(newToken).from(tokenToCopy);
         if (newToken != null) {
           game.informPlayers("Token selected for populate: " + newToken.getName());
           return newToken.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
