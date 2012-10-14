@@ -45,14 +45,14 @@
   filter.add(Predicates.or(predicates));
   String name=jTextFieldSearch.getText().trim();
   filter.add(new CardTextPredicate(name));
-  if (this.cbExpansionSet.getSelectedItem() instanceof ExpansionSet) {
-    filter.add(new ExpansionSetPredicate(((ExpansionSet)this.cbExpansionSet.getSelectedItem()).getCode()));
-  }
- else   if (this.cbExpansionSet.getSelectedItem().equals("-- Standard")) {
-    ArrayList<Predicate<Card>> expansionPredicates=new ArrayList<Predicate<Card>>();
-    for (    String setCode : ConstructedFormats.getSetsByFormat("Standard")) {
-      expansionPredicates.add(new ExpansionSetPredicate(setCode));
+  if (this.cbExpansionSet.isVisible()) {
+    String expansionSelection=this.cbExpansionSet.getSelectedItem().toString();
+    if (!expansionSelection.equals("- All Sets")) {
+      ArrayList<Predicate<Card>> expansionPredicates=new ArrayList<Predicate<Card>>();
+      for (      String setCode : ConstructedFormats.getSetsByFormat(expansionSelection)) {
+        expansionPredicates.add(new ExpansionSetPredicate(setCode));
+      }
+      filter.add(Predicates.or(expansionPredicates));
     }
-    filter.add(Predicates.or(expansionPredicates));
   }
 }
