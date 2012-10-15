@@ -1,0 +1,14 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    permanent.addCounters(new Counter("filibuster",1),game);
+    if (permanent.getCounters().getCount("filibuster") > 4) {
+      Player player=game.getPlayer(permanent.getControllerId());
+      if (player != null) {
+        player.won(game);
+      }
+    }
+    return true;
+  }
+  return false;
+}
