@@ -1,0 +1,19 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    if (!player.flipCoin(game)) {
+      List<Permanent> permanents=game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game);
+      for (      Permanent permanent : permanents) {
+        permanent.damage(4,source.getId(),game,true,false);
+      }
+      for (      UUID playerId : player.getInRange()) {
+        Player damageToPlayer=game.getPlayer(playerId);
+        if (damageToPlayer != null) {
+          damageToPlayer.damage(4,source.getId(),game,false,true);
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}
