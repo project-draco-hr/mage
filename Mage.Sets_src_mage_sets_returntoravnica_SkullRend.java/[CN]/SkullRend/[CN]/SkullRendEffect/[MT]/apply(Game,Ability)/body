@@ -1,0 +1,23 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : controller.getInRange()) {
+      if (playerId != source.getControllerId()) {
+        Player opponent=game.getPlayer(playerId);
+        if (opponent != null) {
+          opponent.damage(2,source.getId(),game,false,true);
+          Cards cards=opponent.getHand();
+          for (int i=0; i < 2 && !cards.isEmpty(); i++) {
+            Card card=cards.getRandom(game);
+            if (card != null) {
+              card.moveToZone(Constants.Zone.HAND,source.getId(),game,true);
+              cards.remove(card);
+            }
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

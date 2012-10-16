@@ -1,0 +1,14 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    OpponentsLostLifeCount dynamicValue=new OpponentsLostLifeCount();
+    if (dynamicValue != null) {
+      int oll=dynamicValue.calculate(game,source);
+      if (oll > 0) {
+        permanent.addCounters(CounterType.P1P1.createInstance(oll),game);
+      }
+      return true;
+    }
+  }
+  return false;
+}

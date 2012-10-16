@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(controllerId);
+  if (game.getActivePlayerId().equals(controllerId)) {
+    OpponentsLostLifeCount dynamicValue=new OpponentsLostLifeCount();
+    if (dynamicValue != null && dynamicValue.calculate(game,controllerId) > 0) {
+      return true;
+    }
+ else {
+      game.informPlayer(controller,"You can't cast Rakdos, Lord of Riots because your opponents lost no life this turn yet");
+      return false;
+    }
+  }
+  return true;
+}
