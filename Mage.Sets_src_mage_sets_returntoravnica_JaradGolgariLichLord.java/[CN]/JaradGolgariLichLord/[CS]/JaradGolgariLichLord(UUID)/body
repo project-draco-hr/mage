@@ -1,0 +1,20 @@
+{
+  super(ownerId,174,"Jarad, Golgari Lich Lord",Rarity.MYTHIC,new CardType[]{CardType.CREATURE},"{B}{B}{G}{G}");
+  this.expansionSetCode="RTR";
+  this.supertype.add("Legendary");
+  this.subtype.add("Zombie");
+  this.subtype.add("Elf");
+  this.color.setBlack(true);
+  this.color.setGreen(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  DynamicValue amount=new CardsInControllerGraveyardCount(new FilterCreatureCard());
+  Ability ability=new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new BoostSourceEffect(amount,amount,Constants.Duration.WhileOnBattlefield));
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new LoseLifeOpponentsEffect(new SacrificeCostCreaturesPower()),new ManaCostsImpl("{1}{B}{G}"));
+  ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filter,false)));
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Constants.Zone.GRAVEYARD,new ReturnSourceFromGraveyardToHandEffect(),new SacrificeTargetCost(new TargetControlledPermanent(filterSwamp)));
+  ability.addCost(new SacrificeTargetCost(new TargetControlledPermanent(filterForest)));
+  this.addAbility(ability);
+}
