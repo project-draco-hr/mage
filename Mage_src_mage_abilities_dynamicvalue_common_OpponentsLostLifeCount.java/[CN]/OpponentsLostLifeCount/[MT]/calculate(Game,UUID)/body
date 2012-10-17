@@ -1,12 +1,9 @@
 {
   PlayerLostLifeWatcher watcher=(PlayerLostLifeWatcher)game.getState().getWatchers().get("PlayerLostLifeWatcher");
-  Player you=game.getPlayer(controllerId);
-  if (watcher != null && you != null) {
+  if (watcher != null) {
     int amountLifeLost=0;
-    for (    UUID opponent : you.getInRange()) {
-      if (!opponent.equals(controllerId)) {
-        amountLifeLost+=watcher.getLiveLost(opponent);
-      }
+    for (    UUID opponent : game.getOpponents(controllerId)) {
+      amountLifeLost+=watcher.getLiveLost(opponent);
     }
     return amountLifeLost;
   }
