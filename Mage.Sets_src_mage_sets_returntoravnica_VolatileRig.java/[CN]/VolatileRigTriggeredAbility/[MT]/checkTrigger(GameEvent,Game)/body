@@ -1,6 +1,16 @@
 {
+  if (triggerdThisCombatStep && event.getType() == EventType.COMBAT_DAMAGE_STEP_POST) {
+    triggerdThisCombatStep=false;
+  }
   if (event.getType() == GameEvent.EventType.DAMAGED_CREATURE && event.getTargetId().equals(this.sourceId)) {
-    this.getEffects().get(0).setValue("damageAmount",event.getAmount());
+    if (game.getPhase().getStep().getType() == Constants.PhaseStep.COMBAT_DAMAGE) {
+      if (triggerdThisCombatStep) {
+        return false;
+      }
+ else {
+        triggerdThisCombatStep=true;
+      }
+    }
     return true;
   }
   return false;
