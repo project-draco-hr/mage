@@ -1,0 +1,11 @@
+{
+  super(ownerId,130,"Mana Bloom",Rarity.RARE,new CardType[]{CardType.ENCHANTMENT},"{X}{G}");
+  this.expansionSetCode="RTR";
+  this.color.setGreen(true);
+  this.addAbility(new EntersBattlefieldAbility(new ManaBloomEffect(),rule));
+  Ability ability=new ActivateOncePerTurnActivatedAbility(Zone.BATTLEFIELD,new AddManaOfAnyColorEffect(),new RemoveCountersSourceCost(CounterType.CHARGE.createInstance()));
+  ability.addChoice(new ChoiceColor());
+  this.addAbility(ability);
+  TriggeredAbility triggeredAbility=new BeginningOfUpkeepTriggeredAbility(new ReturnToHandSourceEffect(),Constants.TargetController.YOU,false);
+  this.addAbility(new ConditionalTriggeredAbility(triggeredAbility,new HasCounterCondition(CounterType.CHARGE,0,0),"At the beginning of your upkeep, if Mana Bloom has no charge counters on it, return it to its owner's hand."));
+}
