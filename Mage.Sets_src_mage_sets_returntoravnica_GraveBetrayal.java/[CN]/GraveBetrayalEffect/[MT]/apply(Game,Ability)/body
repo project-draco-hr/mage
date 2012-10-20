@@ -1,0 +1,18 @@
+{
+  Card card=game.getCard(targetPointer.getFirst(game,source));
+  if (card != null) {
+    Integer zoneChanges=(Integer)getValue("zoneChanges");
+    if (card.getZoneChangeCounter() == zoneChanges) {
+      Zone currentZone=game.getState().getZone(card.getId());
+      if (card.putOntoBattlefield(game,currentZone,source.getId(),source.getControllerId())) {
+        Permanent creature=game.getPermanent(card.getId());
+        creature.addCounters(CounterType.P1P1.createInstance(),game);
+        ContinuousEffectImpl effect=new GraveBetrayalContiniousEffect();
+        effect.setTargetPointer(new FixedTarget(creature.getId()));
+        game.addEffect(effect,source);
+        return true;
+      }
+    }
+  }
+  return false;
+}

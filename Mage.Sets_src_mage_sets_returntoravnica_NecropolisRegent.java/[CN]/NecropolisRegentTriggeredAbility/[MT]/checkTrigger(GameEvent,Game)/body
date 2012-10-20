@@ -1,0 +1,15 @@
+{
+  if (event.getType() == GameEvent.EventType.DAMAGED_PLAYER) {
+    if (((DamagedPlayerEvent)event).isCombatDamage()) {
+      Permanent creature=game.getPermanent(event.getSourceId());
+      if (creature != null && creature.getControllerId().equals(controllerId)) {
+        this.getEffects().clear();
+        Effect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance(event.getAmount()));
+        effect.setTargetPointer(new FixedTarget(creature.getId()));
+        this.addEffect(effect);
+        return true;
+      }
+    }
+  }
+  return false;
+}
