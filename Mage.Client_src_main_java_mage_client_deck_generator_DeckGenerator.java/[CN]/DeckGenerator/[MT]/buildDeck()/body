@@ -1,10 +1,10 @@
 {
   List<ColoredManaSymbol> allowedColors=new ArrayList<ColoredManaSymbol>();
-  selectedColors=selectedColors.toUpperCase();
+  selectedColors=selectedColors != null ? selectedColors.toUpperCase() : getRandomColors("X");
   String format=(String)formats.getSelectedItem();
   List<String> setsToUse=ConstructedFormats.getSetsByFormat(format);
   if (setsToUse.isEmpty()) {
-    setsToUse=CardsStorage.getSetCodes();
+    setsToUse=CardRepository.instance.getSetCodes();
   }
   if (selectedColors.contains("X")) {
     selectedColors=getRandomColors(selectedColors);

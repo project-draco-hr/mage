@@ -1,23 +1,19 @@
 {
   List<Card> spellCardPool=new ArrayList<Card>();
-  int count=0;
-  List<Card> cardPool=new ArrayList<Card>();
-  for (  Card card : CardsStorage.getAllCards()) {
-    if (setsToUse.contains(card.getExpansionSetCode())) {
-      cardPool.add(card);
-    }
-  }
+  CardCriteria spellCriteria=new CardCriteria();
+  spellCriteria.setCodes(setsToUse.toArray(new String[0]));
+  spellCriteria.notTypes(CardType.LAND);
+  List<CardInfo> cardPool=CardRepository.instance.findCards(spellCriteria);
   int cardPoolCount=cardPool.size();
   Random random=new Random();
   if (cardPoolCount > 0) {
     int tries=0;
+    int count=0;
     while (count < cardsCount) {
-      Card card=cardPool.get(random.nextInt(cardPoolCount));
-      if (!card.getCardType().contains(CardType.LAND)) {
-        if (cardFitsChosenColors(card,allowedColors)) {
-          spellCardPool.add(card);
-          count++;
-        }
+      Card card=cardPool.get(random.nextInt(cardPoolCount)).getCard();
+      if (cardFitsChosenColors(card,allowedColors)) {
+        spellCardPool.add(card);
+        count++;
       }
       tries++;
       if (tries > MAX_TRIES) {
