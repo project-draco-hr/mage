@@ -1,0 +1,31 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent descrationDemon=game.getPermanent(source.getSourceId());
+  if (controller != null && descrationDemon != null) {
+    for (    UUID opponentId : game.getOpponents(controller.getId())) {
+      Player opponent=game.getPlayer(opponentId);
+      if (opponent != null) {
+        FilterControlledPermanent filter=new FilterControlledPermanent("creature to sacrifice");
+        filter.add(new CardTypePredicate(CardType.CREATURE));
+        filter.add(new ControllerPredicate(Constants.TargetController.YOU));
+        TargetControlledPermanent target=new TargetControlledPermanent(1,1,filter,false);
+        if (target.canChoose(opponent.getId(),game)) {
+          if (opponent.chooseUse(Outcome.Detriment,"Sacrifice a creature to tap Desecration Demon and put a +1/+1 counter on it?",game)) {
+            opponent.choose(Outcome.Sacrifice,target,source.getSourceId(),game);
+            Permanent permanent=game.getPermanent(target.getFirstTarget());
+            if (permanent != null) {
+              permanent.sacrifice(source.getId(),game);
+              game.informPlayers(opponent.getName() + " sacrifices " + permanent.getName()+ " to tap Desecration Demon and put a +1/+1 counter on it");
+              if (descrationDemon != null) {
+                descrationDemon.tap(game);
+                descrationDemon.addCounters(CounterType.P1P1.createInstance(),game);
+              }
+            }
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,23 @@
+{
+  String cardName=(String)this.getValue("cardName");
+  ExileZone searchTheCityExileZone=game.getExile().getExileZone(source.getSourceId());
+  if (cardName != null && searchTheCityExileZone != null) {
+    for (    Card card : searchTheCityExileZone.getCards(game)) {
+      if (card.getName().equals(cardName)) {
+        if (card.moveToZone(Zone.HAND,source.getSourceId(),game,true)) {
+          game.informPlayers("Search the City: put " + card.getName() + " into owner's hand");
+        }
+        searchTheCityExileZone.remove(card);
+        if (searchTheCityExileZone.isEmpty()) {
+          Permanent permanent=game.getPermanent(source.getSourceId());
+          if (permanent != null) {
+            permanent.sacrifice(source.getSourceId(),game);
+            game.getState().getTurnMods().add(new TurnMod(source.getControllerId(),false));
+          }
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}

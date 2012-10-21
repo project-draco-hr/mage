@@ -1,0 +1,24 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    int cardsInGraveyard=player.getGraveyard().size();
+    player.getLibrary().addAll(player.getGraveyard().getCards(game),game);
+    player.getGraveyard().clear();
+    player.shuffleLibrary(game);
+    if (cardsInGraveyard > 0) {
+      Player targetPlayer=game.getPlayer(source.getFirstTarget());
+      if (targetPlayer != null) {
+        for (int i=0; i < cardsInGraveyard; i++) {
+          if (!targetPlayer.getLibrary().getCardList().isEmpty()) {
+            Card card=targetPlayer.getLibrary().removeFromTop(game);
+            if (card != null) {
+              card.moveToZone(Constants.Zone.GRAVEYARD,source.getId(),game,false);
+            }
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
