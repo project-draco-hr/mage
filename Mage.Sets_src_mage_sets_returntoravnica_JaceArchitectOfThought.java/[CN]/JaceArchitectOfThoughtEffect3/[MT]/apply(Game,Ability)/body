@@ -1,0 +1,33 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  for (  UUID playerId : controller.getInRange()) {
+    Cards playerLibrary=new CardsImpl();
+    Player player=game.getPlayer(playerId);
+    playerLibrary.addAll(player.getLibrary().getCardList());
+    TargetCardInLibrary target=new TargetCardInLibrary(new FilterNonlandCard());
+    if (controller.choose(Constants.Outcome.Benefit,playerLibrary,target,game)) {
+      UUID targetId=target.getFirstTarget();
+      Card card=player.getLibrary().remove(targetId,game);
+      if (card != null) {
+        card.moveToExile(source.getSourceId(),"Jace, Architect of Thought",source.getSourceId(),game);
+      }
+    }
+    player.shuffleLibrary(game);
+  }
+  ExileZone JaceExileZone=game.getExile().getExileZone(source.getSourceId());
+  FilterCard filter=new FilterCard("card to cast without mana costs");
+  TargetCardInExile target=new TargetCardInExile(filter,source.getSourceId());
+  while (JaceExileZone.count(filter,game) > 0 && controller.choose(Outcome.PlayForFree,JaceExileZone,target,game)) {
+    Card card=game.getCard(target.getFirstTarget());
+    if (card != null) {
+      if (controller.cast(card.getSpellAbility(),game,true)) {
+        game.getExile().removeCard(card,game);
+      }
+    }
+    target.clearChosen();
+  }
+  return true;
+}

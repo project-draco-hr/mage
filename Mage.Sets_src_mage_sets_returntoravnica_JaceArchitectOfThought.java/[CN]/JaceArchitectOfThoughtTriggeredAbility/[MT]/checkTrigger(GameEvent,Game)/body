@@ -1,0 +1,12 @@
+{
+  if (event.getType() == GameEvent.EventType.ATTACKER_DECLARED) {
+    Permanent attacker=game.getPermanent(event.getSourceId());
+    Player defender=game.getPlayer(event.getTargetId());
+    Player you=game.getPlayer(controllerId);
+    if (attacker.getControllerId() != you.getId() && defender == you) {
+      getTargets().get(0).addTarget(attacker.getId(),this,game,true);
+      return true;
+    }
+  }
+  return false;
+}

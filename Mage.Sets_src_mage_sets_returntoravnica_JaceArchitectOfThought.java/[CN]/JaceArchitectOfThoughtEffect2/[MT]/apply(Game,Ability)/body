@@ -1,0 +1,82 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl(Zone.PICK);
+  int count=Math.min(player.getLibrary().size(),3);
+  for (int i=0; i < count; i++) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      cards.add(card);
+      game.setZone(card.getId(),Zone.PICK);
+    }
+  }
+  player.revealCards("Jace, Architect of Thought",cards,game);
+  Set<UUID> opponents=game.getOpponents(source.getControllerId());
+  if (!opponents.isEmpty()) {
+    Player opponent=null;
+    if (opponents.size() > 1) {
+      TargetOpponent targetOpponent=new TargetOpponent();
+      if (player.chooseTarget(Outcome.Neutral,targetOpponent,source,game)) {
+        opponent=game.getPlayer(targetOpponent.getFirstTarget());
+      }
+    }
+    if (opponent == null) {
+      opponent=game.getPlayer(opponents.iterator().next());
+    }
+    TargetCard target=new TargetCard(0,cards.size(),Zone.PICK,new FilterCard("cards to put in the first pile"));
+    Cards pile1=new CardsImpl();
+    if (opponent.choose(Constants.Outcome.Neutral,cards,target,game)) {
+      List<UUID> targets=target.getTargets();
+      for (      UUID targetId : targets) {
+        Card card=cards.get(targetId,game);
+        if (card != null) {
+          pile1.add(card);
+          cards.remove(card);
+        }
+      }
+    }
+    player.revealCards("Pile 1 (Jace, Architect of Thought)",pile1,game);
+    player.revealCards("Pile 2 (Jace, Architect of Thought)",cards,game);
+    Cards cardsToHand=cards;
+    Cards cardsToLibrary=pile1;
+    List<Card> cardPile1=new ArrayList<Card>();
+    List<Card> cardPile2=new ArrayList<Card>();
+    for (    UUID cardId : pile1) {
+      cardPile1.add(game.getCard(cardId));
+    }
+    for (    UUID cardId : cards) {
+      cardPile2.add(game.getCard(cardId));
+    }
+    boolean pileChoice=player.choosePile(Outcome.Neutral,"Choose a pile to to put into your hand.",cardPile1,cardPile2,game);
+    if (pileChoice) {
+      cardsToHand=pile1;
+      cardsToLibrary=cards;
+    }
+    game.informPlayers(player.getName() + " chose pile" + (pileChoice ? "1" : "2"));
+    for (    UUID cardUuid : cardsToHand) {
+      Card card=cardsToHand.get(cardUuid,game);
+      if (card != null) {
+        card.moveToZone(Zone.HAND,source.getId(),game,false);
+      }
+    }
+    TargetCard targetCard=new TargetCard(Zone.PICK,new FilterCard("card to put on the bottom of your library"));
+    targetCard.setRequired(true);
+    while (cardsToLibrary.size() > 1) {
+      player.choose(Constants.Outcome.Neutral,cardsToLibrary,targetCard,game);
+      Card card=cardsToLibrary.get(targetCard.getFirstTarget(),game);
+      if (card != null) {
+        cardsToLibrary.remove(card);
+        card.moveToZone(Zone.LIBRARY,source.getId(),game,false);
+      }
+      target.clearChosen();
+    }
+    if (cardsToLibrary.size() == 1) {
+      Card card=cardsToLibrary.get(cardsToLibrary.iterator().next(),game);
+      card.moveToZone(Zone.LIBRARY,source.getId(),game,false);
+    }
+    return true;
+  }
+  return false;
+}
