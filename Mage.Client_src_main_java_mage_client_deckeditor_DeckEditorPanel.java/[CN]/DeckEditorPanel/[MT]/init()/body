@@ -6,9 +6,11 @@
     component.addCardEventListener(new Listener<Event>(){
       @Override public void event(      Event event){
         if (event.getEventName().equals("double-click")) {
-          Card card=cardSelector.getCard((UUID)event.getSource());
+          SimpleCardView cardView=(SimpleCardView)event.getSource();
+          CardInfo cardInfo=CardRepository.instance.getCard(cardView.getExpansionSetCode(),cardView.getCardNumber());
+          Card card=cardInfo != null ? cardInfo.getCard() : null;
           if (card != null) {
-            deck.getCards().add(Sets.createCard(card.getClass()));
+            deck.getCards().add(card);
             if (mode == DeckEditorMode.Sideboard || mode == DeckEditorMode.Limited) {
               deck.getSideboard().remove(card);
               cardSelector.removeCard(card.getId());
@@ -21,8 +23,12 @@
           }
         }
  else         if (event.getEventName().equals("shift-double-click") && mode == DeckEditorMode.Constructed) {
-          Card card=cardSelector.getCard((UUID)event.getSource());
-          deck.getSideboard().add(Sets.createCard(card.getClass()));
+          SimpleCardView cardView=(SimpleCardView)event.getSource();
+          CardInfo cardInfo=CardRepository.instance.getCard(cardView.getExpansionSetCode(),cardView.getCardNumber());
+          Card card=cardInfo != null ? cardInfo.getCard() : null;
+          if (card != null) {
+            deck.getSideboard().add(Sets.createCard(card.getClass()));
+          }
           if (cardInfoPane instanceof CardInfoPane) {
             ((CardInfoPane)cardInfoPane).setCard(new CardView(card));
           }
@@ -43,8 +49,9 @@
   this.deckArea.addDeckEventListener(new Listener<Event>(){
     @Override public void event(    Event event){
       if (event.getEventName().equals("double-click")) {
+        SimpleCardView cardView=(SimpleCardView)event.getSource();
         for (        Card card : deck.getCards()) {
-          if (card.getId().equals(event.getSource())) {
+          if (card.getId().equals(cardView.getId())) {
             deck.getCards().remove(card);
             if (mode == DeckEditorMode.Limited || mode == DeckEditorMode.Sideboard) {
               deck.getSideboard().add(card);
@@ -57,8 +64,9 @@
         refreshDeck();
       }
  else       if (event.getEventName().equals("shift-double-click") && mode == DeckEditorMode.Constructed) {
+        SimpleCardView cardView=(SimpleCardView)event.getSource();
         for (        Card card : deck.getCards()) {
-          if (card.getId().equals(event.getSource())) {
+          if (card.getId().equals(cardView.getId())) {
             deck.getCards().remove(card);
             deck.getSideboard().add(card);
             break;
@@ -73,8 +81,9 @@
   this.deckArea.addSideboardEventListener(new Listener<Event>(){
     @Override public void event(    Event event){
       if (event.getEventName().equals("double-click")) {
+        SimpleCardView cardView=(SimpleCardView)event.getSource();
         for (        Card card : deck.getSideboard()) {
-          if (card.getId().equals(event.getSource())) {
+          if (card.getId().equals(cardView.getId())) {
             deck.getSideboard().remove(card);
             deck.getCards().add(card);
             break;
