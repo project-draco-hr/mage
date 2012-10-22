@@ -45,7 +45,8 @@
       }
  else {
         for (int i=0; i < amount; i++) {
-          Card card=Sets.findCard(cardName,true);
+          CardInfo cardInfo=CardRepository.instance.findCard(cardName);
+          Card card=cardInfo != null ? cardInfo.getCard() : null;
           if (card != null) {
             if (gameZone.equals(Constants.Zone.BATTLEFIELD)) {
               PermanentCard p=new PermanentCard(card,null);
