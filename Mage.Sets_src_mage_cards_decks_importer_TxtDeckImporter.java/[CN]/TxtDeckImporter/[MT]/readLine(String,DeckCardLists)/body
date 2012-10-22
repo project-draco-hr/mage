@@ -1,5 +1,7 @@
 {
-  if (line.length() == 0 || line.startsWith("//"))   return;
+  if (line.length() == 0 || line.startsWith("//")) {
+    return;
+  }
   if (line.startsWith("Sideboard")) {
     sideboard=true;
     return;
@@ -9,13 +11,20 @@
   String lineName=line.substring(delim).trim();
   try {
     int num=Integer.parseInt(lineNum);
-    Card card=Sets.findCard(lineName);
-    if (card == null)     sbMessage.append("Could not find card: '").append(lineName).append("' at line ").append(lineCount).append("\n");
+    List<CardInfo> cards=CardRepository.instance.findCards(lineName);
+    if (cards.isEmpty()) {
+      sbMessage.append("Could not find card: '").append(lineName).append("' at line ").append(lineCount).append("\n");
+    }
  else {
-      String cardName=card.getClass().getCanonicalName();
+      Random random=new Random();
       for (int i=0; i < num; i++) {
-        if (!sideboard)         deckList.getCards().add(cardName);
- else         deckList.getSideboard().add(cardName);
+        String className=cards.get(random.nextInt(cards.size())).getClassName();
+        if (!sideboard) {
+          deckList.getCards().add(className);
+        }
+ else {
+          deckList.getSideboard().add(className);
+        }
       }
     }
   }
