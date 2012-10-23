@@ -1,0 +1,10 @@
+{
+  if (event.getType() == GameEvent.EventType.DECLARE_ATTACKER && source.getSourceId().equals(event.getSourceId())) {
+    FilterPermanent filter=new FilterPermanent();
+    filter.add(new SubtypePredicate("Island"));
+    if (game.getBattlefield().countAll(filter,event.getTargetId(),game) == 0) {
+      return true;
+    }
+  }
+  return false;
+}
