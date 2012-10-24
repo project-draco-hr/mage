@@ -4,7 +4,9 @@
     Player defender=game.getPlayer(event.getTargetId());
     Player you=game.getPlayer(controllerId);
     if (attacker.getControllerId() != you.getId() && defender == you) {
-      getTargets().get(0).addTarget(attacker.getId(),this,game,true);
+      for (      Effect effect : getEffects()) {
+        effect.setTargetPointer(new FixedTarget(attacker.getId()));
+      }
       return true;
     }
   }
