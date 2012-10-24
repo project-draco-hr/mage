@@ -1,0 +1,17 @@
+{
+  if (ability.getTargets().size() > 0) {
+    setTargets(ability.getTargets());
+  }
+ else {
+    List<UUID> targetList=new ArrayList<UUID>();
+    for (    Effect effect : ability.getEffects()) {
+      TargetPointer targetPointer=effect.getTargetPointer();
+      if (targetPointer instanceof FixedTarget) {
+        targetList.add(((FixedTarget)targetPointer).getTarget());
+      }
+    }
+    if (targetList.size() > 0) {
+      overrideTargets(targetList);
+    }
+  }
+}
