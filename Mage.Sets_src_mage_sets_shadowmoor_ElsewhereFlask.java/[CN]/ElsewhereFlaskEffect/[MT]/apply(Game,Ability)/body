@@ -1,0 +1,18 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    ChoiceImpl choices=new ChoiceImpl(true);
+    Set choicesSet=choices.getChoices();
+    choicesSet.add("Forest");
+    choicesSet.add("Plains");
+    choicesSet.add("Mountain");
+    choicesSet.add("Island");
+    choicesSet.add("Swamp");
+    if (player.choose(Constants.Outcome.Neutral,choices,game)) {
+      game.getState().setValue(source.getSourceId().toString() + "_ElsewhereFlask",choices.getChoice());
+    }
+    game.addEffect(new ElsewhereFlaskContinuousEffect(),source);
+    return true;
+  }
+  return false;
+}
