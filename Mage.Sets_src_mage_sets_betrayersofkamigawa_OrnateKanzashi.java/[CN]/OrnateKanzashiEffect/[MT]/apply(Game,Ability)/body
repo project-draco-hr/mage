@@ -1,0 +1,14 @@
+{
+  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  if (player != null && player.getLibrary().size() > 0) {
+    Library library=player.getLibrary();
+    Card card=library.removeFromTop(game);
+    card.moveToExile(source.getSourceId(),"Ornate Kanzashi",source.getSourceId(),game);
+    if (card != null) {
+      player.revealCards("Card to play",new CardsImpl(card),game);
+      game.addEffect(new OrnateKanzashiCastFromExileEffect(card.getId()),source);
+    }
+    return true;
+  }
+  return false;
+}
