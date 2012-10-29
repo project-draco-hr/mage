@@ -1,0 +1,44 @@
+{
+  ObjectColor color=new ObjectColor();
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(controllerId)) {
+    ObjectColor permanentColor=permanent.getColor();
+    if (permanentColor.isColorless()) {
+      continue;
+    }
+    if (permanentColor.isBlack()) {
+      color.setBlack(true);
+    }
+    if (permanentColor.isBlue()) {
+      color.setBlue(true);
+    }
+    if (permanentColor.isGreen()) {
+      color.setGreen(true);
+    }
+    if (permanentColor.isRed()) {
+      color.setRed(true);
+    }
+    if (permanentColor.isWhite()) {
+      color.setWhite(true);
+    }
+  }
+  ArrayList<Predicate<MageObject>> colorPredicates=new ArrayList<Predicate<MageObject>>();
+  if (color.isBlack()) {
+    colorPredicates.add(new ColorPredicate(ObjectColor.BLACK));
+  }
+  if (color.isBlue()) {
+    colorPredicates.add(new ColorPredicate(ObjectColor.BLUE));
+  }
+  if (color.isGreen()) {
+    colorPredicates.add(new ColorPredicate(ObjectColor.GREEN));
+  }
+  if (color.isRed()) {
+    colorPredicates.add(new ColorPredicate(ObjectColor.RED));
+  }
+  if (color.isWhite()) {
+    colorPredicates.add(new ColorPredicate(ObjectColor.WHITE));
+  }
+  Filter protectionFilter=new FilterObject("the colors of permanents you control");
+  protectionFilter.add(Predicates.or(colorPredicates));
+  this.filter=protectionFilter;
+  return super.canTarget(source,game);
+}
