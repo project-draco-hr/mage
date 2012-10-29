@@ -1,0 +1,25 @@
+{
+  Permanent target=game.getPermanent(source.getSourceId());
+  if (target != null) {
+    int number=0;
+    Cards cards=new CardsImpl();
+    for (    Player player : game.getPlayers().values()) {
+      if (player != null) {
+        cards.addAll(player.getGraveyard());
+      }
+    }
+    for (    CardType cardtype : CardType.values()) {
+      for (      UUID uuid : cards) {
+        Card card=game.getCard(uuid);
+        if (card.getCardType().contains(cardtype)) {
+          number++;
+          break;
+        }
+      }
+    }
+    target.getPower().setValue(number);
+    target.getToughness().setValue(number + 1);
+    return true;
+  }
+  return false;
+}
