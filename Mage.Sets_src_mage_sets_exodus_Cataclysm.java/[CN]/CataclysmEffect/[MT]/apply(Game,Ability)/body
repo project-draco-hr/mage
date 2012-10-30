@@ -1,0 +1,64 @@
+{
+  List<Card> chosen=new ArrayList<Card>();
+  for (  UUID playerId : game.getPlayerList()) {
+    Player player=game.getPlayer(playerId);
+    Target target1=new TargetControlledPermanent(1,1,filter1,false);
+    Target target2=new TargetControlledPermanent(1,1,filter2,false);
+    Target target3=new TargetControlledPermanent(1,1,filter3,false);
+    Target target4=new TargetControlledPermanent(1,1,filter4,false);
+    target1.setRequired(true);
+    target2.setRequired(true);
+    target3.setRequired(true);
+    target4.setRequired(true);
+    target1.setNotTarget(true);
+    target2.setNotTarget(true);
+    target3.setNotTarget(true);
+    target4.setNotTarget(true);
+    if (target1.canChoose(player.getId(),game)) {
+      while (!target1.isChosen() && target1.canChoose(player.getId(),game)) {
+        player.choose(Constants.Outcome.Benefit,target1,source.getSourceId(),game);
+      }
+      Permanent artifact=game.getPermanent(target1.getFirstTarget());
+      if (artifact != null) {
+        chosen.add(artifact);
+      }
+      target1.clearChosen();
+    }
+    if (target2.canChoose(player.getId(),game)) {
+      while (!target2.isChosen() && target2.canChoose(player.getId(),game)) {
+        player.choose(Constants.Outcome.Benefit,target2,source.getSourceId(),game);
+      }
+      Permanent creature=game.getPermanent(target2.getFirstTarget());
+      if (creature != null) {
+        chosen.add(creature);
+      }
+      target2.clearChosen();
+    }
+    if (target3.canChoose(player.getId(),game)) {
+      while (!target3.isChosen() && target3.canChoose(player.getId(),game)) {
+        player.choose(Constants.Outcome.Benefit,target3,source.getSourceId(),game);
+      }
+      Permanent enchantment=game.getPermanent(target3.getFirstTarget());
+      if (enchantment != null) {
+        chosen.add(enchantment);
+      }
+      target3.clearChosen();
+    }
+    if (target4.canChoose(player.getId(),game)) {
+      while (!target4.isChosen() && target4.canChoose(player.getId(),game)) {
+        player.choose(Constants.Outcome.Benefit,target4,source.getSourceId(),game);
+      }
+      Permanent land=game.getPermanent(target4.getFirstTarget());
+      if (land != null) {
+        chosen.add(land);
+      }
+      target4.clearChosen();
+    }
+  }
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents()) {
+    if (!chosen.contains(permanent)) {
+      permanent.sacrifice(source.getId(),game);
+    }
+  }
+  return true;
+}
