@@ -1,0 +1,13 @@
+{
+  if (abilityToModify.getId().equals(spellAbilityId) && abilityToModify instanceof SpellAbility) {
+    Card card=game.getCard(source.getSourceId());
+    if (card != null) {
+      Object object=game.getState().getValue("offering_Id_" + card.getId());
+      if (object != null && ((UUID)object).equals(this.activationId)) {
+        return true;
+      }
+    }
+    this.used=true;
+  }
+  return false;
+}

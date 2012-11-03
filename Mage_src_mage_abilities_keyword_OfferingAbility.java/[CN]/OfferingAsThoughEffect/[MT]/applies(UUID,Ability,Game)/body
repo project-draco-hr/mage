@@ -1,0 +1,50 @@
+{
+  if (sourceId.equals(source.getSourceId())) {
+    Card card=game.getCard(sourceId);
+    if (!card.getOwnerId().equals(source.getControllerId())) {
+      return false;
+    }
+    Object object=game.getState().getValue("offering_" + card.getId());
+    if (object != null && object.equals(true)) {
+      Object alreadyConfirmed=game.getState().getValue("offering_ok_" + card.getId());
+      game.getState().setValue("offering_" + card.getId(),null);
+      game.getState().setValue("offering_ok_" + card.getId(),null);
+      if (alreadyConfirmed != null) {
+        return true;
+      }
+      return false;
+    }
+ else {
+      game.getState().setValue("offering_Id_" + card.getId(),null);
+    }
+    if (game.getBattlefield().count(((OfferingAbility)source).getFilter(),source.getControllerId(),game) > 0) {
+      FilterControlledCreaturePermanent filter=((OfferingAbility)source).getFilter();
+      Card spellToCast=game.getCard(source.getSourceId());
+      Player player=game.getPlayer(source.getControllerId());
+      if (player != null && player.chooseUse(Outcome.Benefit,"Offer a " + filter.getMessage() + " to cast "+ spellToCast.getName()+ "?",game)) {
+        Target target=new TargetControlledCreaturePermanent(1,1,filter,true);
+        player.chooseTarget(Outcome.Sacrifice,target,source,game);
+        if (!target.isChosen()) {
+          return false;
+        }
+        game.getState().setValue("offering_" + card.getId(),true);
+        Permanent offer=game.getPermanent(target.getFirstTarget());
+        if (offer != null) {
+          UUID activationId=UUID.randomUUID();
+          OfferingCostReductionEffect effect=new OfferingCostReductionEffect(spellToCast.getSpellAbility().getId(),offer.getSpellAbility().getManaCosts(),activationId);
+          game.addEffect(effect,source);
+          offer.sacrifice(source.getSourceId(),game);
+          game.getState().setValue("offering_ok_" + card.getId(),true);
+          game.getState().setValue("offering_Id_" + card.getId(),activationId);
+          return true;
+        }
+      }
+ else {
+        if (game.canPlaySorcery(source.getControllerId())) {
+          game.getState().setValue("offering_" + card.getId(),true);
+        }
+      }
+    }
+  }
+  return false;
+}
