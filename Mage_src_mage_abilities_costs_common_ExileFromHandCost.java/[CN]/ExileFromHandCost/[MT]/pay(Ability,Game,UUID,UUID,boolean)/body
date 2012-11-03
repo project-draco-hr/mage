@@ -1,0 +1,14 @@
+{
+  if (targets.choose(Constants.Outcome.Exile,controllerId,sourceId,game)) {
+    Player player=game.getPlayer(controllerId);
+    for (    UUID targetId : targets.get(0).getTargets()) {
+      Card card=player.getHand().get(targetId,game);
+      if (card == null) {
+        return false;
+      }
+      this.cards.add(card.copy());
+      paid|=card.moveToExile(ability.getSourceId(),"from Hand",ability.getSourceId(),game);
+    }
+  }
+  return paid;
+}
