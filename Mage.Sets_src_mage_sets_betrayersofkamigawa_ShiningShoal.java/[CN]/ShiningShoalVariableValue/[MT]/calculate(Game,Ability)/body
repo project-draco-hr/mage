@@ -1,0 +1,19 @@
+{
+  List<AlternativeCost> aCosts=sourceAbility.getAlternativeCosts();
+  for (  AlternativeCost aCost : aCosts) {
+    if (aCost.isPaid()) {
+      Costs aCostsList=(Costs)aCost;
+      for (int x=0; x < aCostsList.size(); x++) {
+        Cost cost=(Cost)aCostsList.get(x);
+        if (cost instanceof ExileFromHandCost) {
+          int xMana=0;
+          for (          Card card : ((ExileFromHandCost)cost).getCards()) {
+            xMana+=card.getManaCost().convertedManaCost();
+          }
+          return xMana;
+        }
+      }
+    }
+  }
+  return sourceAbility.getManaCostsToPay().getX();
+}

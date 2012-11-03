@@ -1,0 +1,15 @@
+{
+  if (!this.used) {
+    if (event.getType().equals(GameEvent.EventType.DAMAGE_CREATURE) || event.getType().equals(GameEvent.EventType.DAMAGE_PLANESWALKER) || event.getType().equals(GameEvent.EventType.DAMAGE_PLAYER)) {
+      if (event.getSourceId().equals(targetPointer.getFirst(game,source))) {
+        MageObject object=game.getObject(event.getSourceId());
+        if (object == null) {
+          game.informPlayers("Couldn't find source of damage");
+          return false;
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}
