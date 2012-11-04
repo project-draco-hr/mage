@@ -9,6 +9,17 @@
     where.like("rules",new SelectArg('%' + rules + '%'));
     clausesCount++;
   }
+  if (doubleFaced != null) {
+    where.eq("doubleFaced",doubleFaced);
+    clausesCount++;
+  }
+  for (  Rarity rarity : rarities) {
+    where.eq("rarity",rarity);
+  }
+  if (!rarities.isEmpty()) {
+    where.or(rarities.size());
+    clausesCount++;
+  }
   for (  String setCode : setCodes) {
     where.eq("setCode",setCode);
   }
