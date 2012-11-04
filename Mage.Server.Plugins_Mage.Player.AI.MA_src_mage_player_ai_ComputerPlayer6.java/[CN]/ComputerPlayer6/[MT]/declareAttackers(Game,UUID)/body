@@ -8,7 +8,18 @@
     if (attackersList.isEmpty()) {
       return;
     }
+    for (    Permanent attacker : attackersList) {
+      System.out.println("Number of potential attackers " + attackersList.size());
+      System.out.println("Potential attacker is " + attacker.getName());
+    }
+    if (attackersList.isEmpty()) {
+      return;
+    }
     List<Permanent> possibleBlockers=defender.getAvailableBlockers(game);
+    for (    Permanent blocker : possibleBlockers) {
+      System.out.println("Number of blockers " + possibleBlockers.size());
+      System.out.println("Blocker is " + blocker.getName());
+    }
     List<Permanent> killers=CombatUtil.canKillOpponent(game,attackersList,possibleBlockers,defender);
     if (!killers.isEmpty()) {
       for (      Permanent attacker : killers) {
@@ -16,113 +27,28 @@
       }
       return;
     }
-    CombatUtil.handleExalted();
-    List<Permanent> counterAttackList=new ArrayList<Permanent>();
-    int counterAttackDamage=0;
-    int defenderForces=0;
-    int defenderForcesForBlock=0;
-    FilterCreatureForCombat filter=new FilterCreatureForCombat();
-    for (    Permanent possibleAttacker : game.getBattlefield().getAllActivePermanents(filter,defender.getId(),game)) {
-      if (!possibleAttacker.getAbilities().contains(DefenderAbility.getInstance())) {
-        counterAttackList.add(possibleAttacker);
-        if (possibleAttacker.getPower().getValue() > 0) {
-          counterAttackDamage+=possibleAttacker.getPower().getValue();
-          defenderForces++;
-        }
-        if (CombatUtil.canBlock(game,possibleAttacker)) {
-          defenderForcesForBlock++;
-        }
-      }
-    }
-    double oppScore=1000000;
-    if (counterAttackDamage > 0) {
-      oppScore=(double)attackingPlayer.getLife() / counterAttackDamage;
-    }
-    List<Permanent> possibleAttackersList=new ArrayList<Permanent>();
-    int possibleAttackersDamage=0;
-    int ourForces=0;
-    for (    Permanent possibleAttacker : game.getBattlefield().getAllActivePermanents(filter,playerId,game)) {
-      if (!possibleAttacker.getAbilities().contains(DefenderAbility.getInstance())) {
-        possibleAttackersList.add(possibleAttacker);
-        if (possibleAttacker.getPower().getValue() > 0) {
-          possibleAttackersDamage+=possibleAttacker.getPower().getValue();
-          ourForces++;
-        }
-      }
-    }
-    double ourScore=1000000;
-    if (possibleAttackersDamage > 0) {
-      ourScore=(double)defender.getLife() / possibleAttackersDamage;
-    }
-    int outNumber=ourForces - defenderForces;
-    double score=ourScore - oppScore;
-    boolean doAttack=false;
-    CombatUtil.sortByPower(attackersList,false);
-    int opponentLife=defender.getLife();
-    List<Permanent> notBlockedAttackers=new ArrayList<Permanent>();
-    for (int i=0; i < (attackersList.size() - defenderForces); i++) {
-      notBlockedAttackers.add(attackersList.get(i));
-    }
-    int attackRound=1;
-    while (notBlockedAttackers.size() > 0 && opponentLife > 0 && attackRound < 99) {
-      int damageThisRound=0;
-      for (      Permanent attacker : notBlockedAttackers) {
-        damageThisRound+=attacker.getPower().getValue();
-      }
-      opponentLife-=damageThisRound;
-      for (int i=0; i < defenderForcesForBlock && !notBlockedAttackers.isEmpty(); i++) {
-        notBlockedAttackers.remove(notBlockedAttackers.size() - 1);
-      }
-      attackRound++;
-      if (opponentLife <= 0) {
-        doAttack=true;
-      }
-    }
-    double unblockableDamage=0;
-    double turnsUntilDeathByUnblockable=0;
-    boolean doUnblockableAttack=false;
+    boolean safeToAttack;
+    CombatEvaluator eval=new CombatEvaluator();
     for (    Permanent attacker : attackersList) {
-      boolean isUnblockableCreature=true;
+      safeToAttack=true;
+      int attackerValue=eval.evaluate(attacker,game);
       for (      Permanent blocker : possibleBlockers) {
-        if (blocker.canBlock(attacker.getId(),game)) {
-          isUnblockableCreature=false;
+        int blockerValue=eval.evaluate(blocker,game);
+        if (attacker.getPower().getValue() <= blocker.getToughness().getValue() && attacker.getToughness().getValue() <= blocker.getPower().getValue()) {
+          safeToAttack=false;
         }
-      }
-      if (isUnblockableCreature) {
-        unblockableDamage+=attacker.getPower().getValue();
-      }
-    }
-    if (unblockableDamage > 0) {
-      turnsUntilDeathByUnblockable=defender.getLife() / unblockableDamage;
-    }
-    if (unblockableDamage > defender.getLife()) {
-      doUnblockableAttack=true;
-    }
-    int aggressionRate=5;
-    System.out.println("AI aggression = " + String.valueOf(aggressionRate));
-    System.out.println("AI attackers size: " + attackersList.size());
-    List<Permanent> finalAttackers=new ArrayList<Permanent>();
-    for (int i=0; i < attackersList.size(); i++) {
-      Permanent attacker=attackersList.get(i);
-      int totalFirstStrikeBlockPower=0;
-      if (!attacker.getAbilities().contains(FirstStrikeAbility.getInstance()) && !attacker.getAbilities().contains(DoubleStrikeAbility.getInstance())) {
-        for (        Permanent blockerWithFSorDB : game.getBattlefield().getAllActivePermanents(filter,playerId,game)) {
-          if (blockerWithFSorDB.getAbilities().contains(DoubleStrikeAbility.getInstance())) {
-            totalFirstStrikeBlockPower+=2 * blockerWithFSorDB.getPower().getValue();
-          }
- else           if (blockerWithFSorDB.getAbilities().contains(FirstStrikeAbility.getInstance())) {
-            totalFirstStrikeBlockPower+=blockerWithFSorDB.getPower().getValue();
+        if (attacker.getToughness().getValue() == blocker.getPower().getValue() && attacker.getPower().getValue() == blocker.getToughness().getValue()) {
+          if (attackerValue < blockerValue || blocker.getAbilities().containsKey(FirstStrikeAbility.getInstance().getId()) || blocker.getAbilities().containsKey(DoubleStrikeAbility.getInstance().getId())) {
+            safeToAttack=false;
           }
         }
       }
-      boolean shouldAttack=shouldAttack(game,attackingPlayer.getId(),defenderId,attacker,possibleBlockers,aggressionRate);
-      if (aggressionRate == 5 || shouldAttack && (totalFirstStrikeBlockPower < attacker.getToughness().getValue())) {
-        finalAttackers.add(attacker);
+      if (attacker.getAbilities().containsKey(DeathtouchAbility.getInstance().getId())) {
+        safeToAttack=true;
       }
-    }
-    System.out.println("AI final attackers size: " + attackersList.size());
-    for (    Permanent attacker : finalAttackers) {
-      attackingPlayer.declareAttacker(attacker.getId(),defenderId,game);
+      if (safeToAttack) {
+        attackingPlayer.declareAttacker(attacker.getId(),defenderId,game);
+      }
     }
   }
 }
