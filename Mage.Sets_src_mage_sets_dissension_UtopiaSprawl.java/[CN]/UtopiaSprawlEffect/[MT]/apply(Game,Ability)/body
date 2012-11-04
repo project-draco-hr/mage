@@ -1,0 +1,19 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment != null) {
+    Permanent land=game.getPermanent(enchantment.getAttachedTo());
+    if (land != null) {
+      Player player=game.getPlayer(land.getControllerId());
+      if (player != null) {
+        ObjectColor color=(ObjectColor)game.getState().getValue(source.getSourceId() + "_color");
+        if (color.isBlack())         player.getManaPool().addMana(Mana.BlackMana,game,source);
+ else         if (color.isBlue())         player.getManaPool().addMana(Mana.BlueMana,game,source);
+ else         if (color.isRed())         player.getManaPool().addMana(Mana.RedMana,game,source);
+ else         if (color.isGreen())         player.getManaPool().addMana(Mana.GreenMana,game,source);
+ else         if (color.isWhite())         player.getManaPool().addMana(Mana.WhiteMana,game,source);
+        return true;
+      }
+    }
+  }
+  return false;
+}
