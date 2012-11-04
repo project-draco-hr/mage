@@ -13,12 +13,13 @@
       }
       if (jarEntry.getName().endsWith(".class")) {
         String className=jarEntry.getName().replace('/','.').replace(".class","");
-        String packageName=className.substring(0,className.lastIndexOf('.'));
+        int packageNameEnd=className.lastIndexOf('.');
+        String packageName=packageNameEnd != -1 ? className.substring(0,packageNameEnd) : "";
         if (packages.contains(packageName)) {
           Class<?> clazz;
           try {
             clazz=Class.forName(className);
-            if (CardImpl.class.isAssignableFrom(clazz)) {
+            if (type.isAssignableFrom(clazz)) {
               cards.add(clazz);
             }
           }
