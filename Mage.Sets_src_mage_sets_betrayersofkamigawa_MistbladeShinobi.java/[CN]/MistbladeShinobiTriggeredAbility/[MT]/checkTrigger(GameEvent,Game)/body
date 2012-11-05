@@ -1,0 +1,13 @@
+{
+  if (event instanceof DamagedPlayerEvent && ((DamagedPlayerEvent)event).isCombatDamage() && event.getSourceId().equals(sourceId)) {
+    Player opponent=game.getPlayer(event.getPlayerId());
+    if (opponent != null) {
+      FilterCreaturePermanent filter=new FilterCreaturePermanent("creature " + opponent.getName() + " controls");
+      filter.add(new ControllerIdPredicate(opponent.getId()));
+      this.getTargets().clear();
+      this.addTarget(new TargetCreaturePermanent(filter));
+      return true;
+    }
+  }
+  return false;
+}
