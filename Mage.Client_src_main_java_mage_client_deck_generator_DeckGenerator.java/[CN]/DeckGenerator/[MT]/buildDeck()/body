@@ -23,7 +23,7 @@
   final List<String> setsToUseFinal=setsToUse;
   deck=DeckBuilder.buildDeck(spellCardPool,allowedColors,landCardPool,new RateCallback(){
     @Override public int rateCard(    Card card){
-      return CardsStorage.rateCard(card);
+      return 6;
     }
     @Override public Card getBestBasicLand(    ColoredManaSymbol color){
       int tries=100;
@@ -31,9 +31,8 @@
       do {
         land=DeckGenerator.getBestBasicLand(color);
         tries--;
-        if (tries < 0)         break;
       }
- while (!setsToUseFinal.contains(land.getExpansionSetCode()));
+ while (!setsToUseFinal.contains(land.getExpansionSetCode()) && tries >= 0);
       return land;
     }
   }
