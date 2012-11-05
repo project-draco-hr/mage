@@ -1,0 +1,39 @@
+{
+  if (line.length() == 0 || line.startsWith("#")) {
+    return;
+  }
+  Matcher m=pattern.matcher(line);
+  if (m.matches()) {
+    boolean sideboard=false;
+    if ("SB:".equals(m.group(1))) {
+      sideboard=true;
+    }
+    int count=Integer.parseInt(m.group(2));
+    String setCode=m.group(3);
+    int cardNum=Integer.parseInt(m.group(4));
+    String className=null;
+    CardInfo cardInfo=CardRepository.instance.findCard(setCode,cardNum);
+    if (cardInfo != null) {
+      className=cardInfo.getClassName();
+    }
+    if (className != null) {
+      for (int i=0; i < count; i++) {
+        if (!sideboard) {
+          deckList.getCards().add(className);
+        }
+ else {
+          deckList.getSideboard().add(className);
+        }
+      }
+    }
+ else {
+      sbMessage.append("Could not find card '").append("' at line ").append(lineCount).append(": ").append(line).append("\n");
+    }
+  }
+ else   if (line.startsWith("NAME:")) {
+    deckList.setName(line.substring(5,line.length()));
+  }
+ else   if (line.startsWith("AUTHOR:")) {
+    deckList.setAuthor(line.substring(7,line.length()));
+  }
+}

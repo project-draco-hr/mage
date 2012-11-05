@@ -1,7 +1,7 @@
 {
-  int start=page * conf.CARDS_PER_PAGE;
-  int end=(page + 1) * conf.CARDS_PER_PAGE;
-  java.util.List<Card> cards=CardsStorage.getAllCards(start,end,currentSet,false);
+  CardCriteria criteria=new CardCriteria();
+  criteria.setCodes(set).start((long)page * conf.CARDS_PER_PAGE).count((long)conf.CARDS_PER_PAGE + 1);
+  List<CardInfo> cards=CardRepository.instance.findCards(criteria);
   if (cards.size() > conf.CARDS_PER_PAGE) {
     pageRight.setVisible(true);
   }

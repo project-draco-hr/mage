@@ -1,0 +1,91 @@
+{
+  Where where=qb.where();
+  int clausesCount=0;
+  if (name != null) {
+    where.like("name",new SelectArg('%' + name + '%'));
+    clausesCount++;
+  }
+  if (rules != null) {
+    where.like("rules",new SelectArg('%' + rules + '%'));
+    clausesCount++;
+  }
+  if (doubleFaced != null) {
+    where.eq("doubleFaced",doubleFaced);
+    clausesCount++;
+  }
+  for (  Rarity rarity : rarities) {
+    where.eq("rarity",rarity);
+  }
+  if (!rarities.isEmpty()) {
+    where.or(rarities.size());
+    clausesCount++;
+  }
+  for (  String setCode : setCodes) {
+    where.eq("setCode",setCode);
+  }
+  if (!setCodes.isEmpty()) {
+    where.or(setCodes.size());
+    clausesCount++;
+  }
+  for (  CardType type : types) {
+    where.like("types",new SelectArg('%' + type.name() + '%'));
+  }
+  if (!types.isEmpty()) {
+    where.or(types.size());
+    clausesCount++;
+  }
+  for (  CardType type : notTypes) {
+    where.not().like("types",new SelectArg('%' + type.name() + '%'));
+    clausesCount++;
+  }
+  for (  String superType : supertypes) {
+    where.like("supertypes",new SelectArg('%' + superType + '%'));
+    clausesCount++;
+  }
+  for (  String subType : notSupertypes) {
+    where.not().like("supertypes",new SelectArg('%' + subType + '%'));
+    clausesCount++;
+  }
+  for (  String subType : subtypes) {
+    where.like("subtypes",new SelectArg('%' + subType + '%'));
+    clausesCount++;
+  }
+  if (!black || !blue || !green|| !red|| !white|| !colorless) {
+    int colorClauses=0;
+    if (black) {
+      where.eq("black",true);
+      colorClauses++;
+    }
+    if (blue) {
+      where.eq("blue",true);
+      colorClauses++;
+    }
+    if (green) {
+      where.eq("green",true);
+      colorClauses++;
+    }
+    if (red) {
+      where.eq("red",true);
+      colorClauses++;
+    }
+    if (white) {
+      where.eq("white",true);
+      colorClauses++;
+    }
+    if (colorless) {
+      where.eq("black",false).eq("blue",false).eq("green",false).eq("red",false).eq("white",false);
+      where.and(5);
+      colorClauses++;
+    }
+    where.or(colorClauses);
+    clausesCount++;
+  }
+  where.and(clausesCount);
+  if (start != null) {
+    qb.offset(start);
+  }
+  if (count != null) {
+    qb.limit(count);
+  }
+  qb.orderBy("cardNumber",true);
+}

@@ -1,0 +1,40 @@
+{
+  CardCriteria criteria=new CardCriteria();
+  criteria.notTypes(CardType.LAND);
+  for (  ColoredManaSymbol color : allowedColors) {
+switch (color) {
+case W:
+      criteria.white(true);
+    break;
+case U:
+  criteria.blue(true);
+break;
+case B:
+criteria.black(true);
+break;
+case R:
+criteria.red(true);
+break;
+case G:
+criteria.green(true);
+break;
+}
+}
+List<CardInfo> cards=CardRepository.instance.findCards(criteria);
+int count=0;
+int tries=0;
+List<Card> cardPool=new ArrayList<Card>();
+while (count < cardsCount) {
+CardInfo cardInfo=cards.get(rnd.nextInt(cards.size()));
+Card card=cardInfo != null ? cardInfo.getCard() : null;
+if (card != null) {
+cardPool.add(card);
+count++;
+}
+tries++;
+if (tries > 4096) {
+throw new IllegalStateException("Not enough cards for chosen colors to generate deck: " + allowedColors);
+}
+}
+return cardPool;
+}

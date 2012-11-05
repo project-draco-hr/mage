@@ -1,0 +1,19 @@
+{
+  List<Class> cards=new ArrayList<Class>();
+  if (!directory.exists()) {
+    return cards;
+  }
+  for (  File file : directory.listFiles()) {
+    if (file.getName().endsWith(".class")) {
+      try {
+        Class<?> clazz=Class.forName(packageName + '.' + file.getName().substring(0,file.getName().length() - 6));
+        if (type.isAssignableFrom(clazz)) {
+          cards.add(clazz);
+        }
+      }
+ catch (      ClassNotFoundException ex) {
+      }
+    }
+  }
+  return cards;
+}

@@ -1,23 +1,20 @@
 {
   List<Card> nonBasicLandCardPool=new ArrayList<Card>();
-  int count=0;
-  List<Card> landCards=new ArrayList<Card>();
-  for (  Card land : CardsStorage.getNonBasicLandCards()) {
-    if (setsToUse.contains(land.getExpansionSetCode())) {
-      landCards.add(land);
-    }
-  }
+  CardCriteria landCriteria=new CardCriteria();
+  landCriteria.setCodes(setsToUse.toArray(new String[0]));
+  landCriteria.types(CardType.LAND);
+  landCriteria.notSupertypes("Basic");
+  List<CardInfo> landCards=CardRepository.instance.findCards(landCriteria);
   int allCount=landCards.size();
   Random random=new Random();
   if (allCount > 0) {
     int tries=0;
+    int count=0;
     while (count < landsCount) {
-      Card card=landCards.get(random.nextInt(allCount));
-      if (!CardUtil.isBasicLand(card)) {
-        if (cardCardProduceChosenColors(card,allowedColors)) {
-          nonBasicLandCardPool.add(card);
-          count++;
-        }
+      Card card=landCards.get(random.nextInt(allCount)).getCard();
+      if (cardCardProduceChosenColors(card,allowedColors)) {
+        nonBasicLandCardPool.add(card);
+        count++;
       }
       tries++;
       if (tries > MAX_TRIES) {

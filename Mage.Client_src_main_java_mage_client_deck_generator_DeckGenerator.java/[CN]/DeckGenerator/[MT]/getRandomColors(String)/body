@@ -1,16 +1,26 @@
 {
+  Random random=new Random();
+  List<Character> availableColors=new ArrayList();
+  availableColors.add('R');
+  availableColors.add('G');
+  availableColors.add('B');
+  availableColors.add('U');
+  availableColors.add('W');
   StringBuilder generatedColors=new StringBuilder();
-  Set<String> colors=new HashSet<String>();
+  int randomColors=0;
   for (int i=0; i < _selectedColors.length(); i++) {
-    String color=getRandomColor() + "";
-    int retry=100;
-    while (colors.contains(color)) {
-      color=getRandomColor() + "";
-      retry--;
-      if (retry <= 0)       break;
+    char currentColor=_selectedColors.charAt(i);
+    if (currentColor != 'X') {
+      generatedColors.append(currentColor);
+      availableColors.remove(new Character(currentColor));
     }
-    generatedColors.append(color);
-    colors.add(color);
+ else {
+      randomColors++;
+    }
+  }
+  for (int i=0; i < randomColors && !availableColors.isEmpty(); i++) {
+    int index=random.nextInt(availableColors.size());
+    generatedColors.append(availableColors.remove(index));
   }
   return generatedColors.toString();
 }

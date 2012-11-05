@@ -1,13 +1,9 @@
 {
   try {
-    Class<?> theClass=Class.forName(name);
-    Constructor<?> con=theClass.getConstructor(new Class[]{UUID.class});
-    Card card=(Card)con.newInstance(new Object[]{null});
-    card.build();
-    return card;
+    return createCard(Class.forName(name));
   }
- catch (  Exception e) {
-    logger.fatal("Error loading card: " + name,e);
+ catch (  ClassNotFoundException ex) {
+    logger.fatal("Error loading card: " + name,ex);
     return null;
   }
 }

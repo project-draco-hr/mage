@@ -1,5 +1,5 @@
 {
-  buildFilter();
+  FilterCard filter=buildFilter();
   try {
     List<Card> filteredCards=new ArrayList<Card>();
     setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -11,7 +11,9 @@
       }
     }
  else {
-      for (      Card card : CardsStorage.getAllCards()) {
+      List<CardInfo> foundCards=CardRepository.instance.findCards(buildCriteria());
+      for (      CardInfo cardInfo : foundCards) {
+        Card card=cardInfo.getCard();
         if (filter.match(card,null)) {
           filteredCards.add(card);
         }

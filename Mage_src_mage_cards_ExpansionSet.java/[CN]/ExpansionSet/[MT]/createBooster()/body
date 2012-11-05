@@ -1,32 +1,45 @@
 {
   List<Card> booster=new ArrayList<Card>();
-  if (!hasBoosters)   return booster;
-  if (parentSet != null) {
-    for (int i=0; i < numBoosterLands; i++) {
-      addToBooster(booster,parentSet,Rarity.LAND);
-    }
+  if (!hasBoosters) {
+    return booster;
   }
- else {
-    for (int i=0; i < numBoosterLands; i++) {
-      addToBooster(booster,this,Rarity.LAND);
-    }
+  CardCriteria criteria=new CardCriteria();
+  criteria.setCodes(parentSet != null ? parentSet.code : this.code).rarities(Rarity.LAND).doubleFaced(false);
+  List<CardInfo> basicLand=CardRepository.instance.findCards(criteria);
+  criteria=new CardCriteria();
+  criteria.setCodes(this.code).rarities(Rarity.COMMON).doubleFaced(false);
+  List<CardInfo> common=CardRepository.instance.findCards(criteria);
+  criteria=new CardCriteria();
+  criteria.setCodes(this.code).rarities(Rarity.UNCOMMON).doubleFaced(false);
+  List<CardInfo> uncommon=CardRepository.instance.findCards(criteria);
+  criteria=new CardCriteria();
+  criteria.setCodes(this.code).rarities(Rarity.RARE).doubleFaced(false);
+  List<CardInfo> rare=CardRepository.instance.findCards(criteria);
+  criteria=new CardCriteria();
+  criteria.setCodes(this.code).rarities(Rarity.MYTHIC).doubleFaced(false);
+  List<CardInfo> mythic=CardRepository.instance.findCards(criteria);
+  criteria=new CardCriteria();
+  criteria.setCodes(this.code).doubleFaced(true);
+  List<CardInfo> doubleFaced=CardRepository.instance.findCards(criteria);
+  for (int i=0; i < numBoosterLands; i++) {
+    addToBooster(booster,basicLand);
   }
   for (int i=0; i < numBoosterCommon; i++) {
-    addToBooster(booster,this,Rarity.COMMON);
+    addToBooster(booster,common);
   }
   for (int i=0; i < numBoosterUncommon; i++) {
-    addToBooster(booster,this,Rarity.UNCOMMON);
+    addToBooster(booster,uncommon);
   }
   for (int i=0; i < numBoosterRare; i++) {
     if (ratioBoosterMythic > 0 && rnd.nextInt(ratioBoosterMythic) == 1) {
-      addToBooster(booster,this,Rarity.MYTHIC);
+      addToBooster(booster,mythic);
     }
  else {
-      addToBooster(booster,this,Rarity.RARE);
+      addToBooster(booster,rare);
     }
   }
   for (int i=0; i < numBoosterDoubleFaced; i++) {
-    addToBoosterDoubleFaced(booster,this);
+    addToBooster(booster,doubleFaced);
   }
   return booster;
 }

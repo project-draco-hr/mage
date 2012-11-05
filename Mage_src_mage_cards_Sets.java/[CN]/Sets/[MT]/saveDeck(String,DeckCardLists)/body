@@ -1,0 +1,44 @@
+{
+  PrintWriter out=new PrintWriter(file);
+  Map<String,Integer> deckCards=new HashMap<String,Integer>();
+  Map<String,Integer> sideboard=new HashMap<String,Integer>();
+  try {
+    if (deck.getName() != null && deck.getName().length() > 0) {
+      out.println("NAME:" + deck.getName());
+    }
+    if (deck.getAuthor() != null && deck.getAuthor().length() > 0) {
+      out.println("AUTHOR:" + deck.getAuthor());
+    }
+    for (    String cardClass : deck.getCards()) {
+      if (deckCards.containsKey(cardClass)) {
+        deckCards.put(cardClass,deckCards.get(cardClass) + 1);
+      }
+ else {
+        deckCards.put(cardClass,1);
+      }
+    }
+    for (    String cardClass : deck.getSideboard()) {
+      if (sideboard.containsKey(cardClass)) {
+        sideboard.put(cardClass,sideboard.get(cardClass) + 1);
+      }
+ else {
+        sideboard.put(cardClass,1);
+      }
+    }
+    for (    Map.Entry<String,Integer> entry : deckCards.entrySet()) {
+      Card card=CardImpl.createCard(entry.getKey());
+      if (card != null) {
+        out.printf("%d [%s:%d] %s%n",entry.getValue(),card.getExpansionSetCode(),card.getCardNumber(),card.getName());
+      }
+    }
+    for (    Map.Entry<String,Integer> entry : sideboard.entrySet()) {
+      Card card=CardImpl.createCard(entry.getKey());
+      if (card != null) {
+        out.printf("SB: %d [%s:%d] %s%n",entry.getValue(),card.getExpansionSetCode(),card.getCardNumber(),card.getName());
+      }
+    }
+  }
+  finally {
+    out.close();
+  }
+}

@@ -1,0 +1,50 @@
+{
+  if (line.length() == 0 || line.startsWith("//")) {
+    return;
+  }
+  boolean sideboard=false;
+  if (line.startsWith("SB:")) {
+    line=line.substring(3).trim();
+    sideboard=true;
+  }
+  int delim=line.indexOf(' ');
+  String lineNum=line.substring(0,delim).trim();
+  String setCode="";
+  if (line.indexOf('[') != -1) {
+    int setStart=line.indexOf('[') + 1;
+    int setEnd=line.indexOf(']');
+    setCode=line.substring(setStart,setEnd).trim();
+    delim=setEnd;
+  }
+  String lineName=line.substring(delim + 1).trim();
+  try {
+    int num=Integer.parseInt(lineNum);
+    CardCriteria criteria=new CardCriteria();
+    criteria.name(lineName);
+    criteria.setCodes(setCode);
+    List<CardInfo> cards=CardRepository.instance.findCards(criteria);
+    if (cards.isEmpty()) {
+      criteria=new CardCriteria();
+      criteria.name(lineName);
+      cards=CardRepository.instance.findCards(criteria);
+    }
+    if (cards.isEmpty()) {
+      sbMessage.append("Could not find card: '").append(lineName).append("' at line ").append(lineCount).append("\n");
+    }
+ else {
+      Random random=new Random();
+      for (int i=0; i < num; i++) {
+        String className=cards.get(random.nextInt(cards.size())).getClassName();
+        if (!sideboard) {
+          deckList.getCards().add(className);
+        }
+ else {
+          deckList.getSideboard().add(className);
+        }
+      }
+    }
+  }
+ catch (  NumberFormatException nfe) {
+    sbMessage.append("Invalid number: ").append(lineNum).append(" at line ").append(lineCount).append("\n");
+  }
+}

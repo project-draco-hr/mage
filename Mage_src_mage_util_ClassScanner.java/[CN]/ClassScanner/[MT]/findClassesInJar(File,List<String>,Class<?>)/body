@@ -1,0 +1,42 @@
+{
+  List<Class> cards=new ArrayList<Class>();
+  if (!file.exists()) {
+    return cards;
+  }
+  JarInputStream jarFile=null;
+  try {
+    jarFile=new JarInputStream(new FileInputStream(file));
+    while (true) {
+      JarEntry jarEntry=jarFile.getNextJarEntry();
+      if (jarEntry == null) {
+        break;
+      }
+      if (jarEntry.getName().endsWith(".class")) {
+        String className=jarEntry.getName().replace('/','.').replace(".class","");
+        int packageNameEnd=className.lastIndexOf('.');
+        String packageName=packageNameEnd != -1 ? className.substring(0,packageNameEnd) : "";
+        if (packages.contains(packageName)) {
+          Class<?> clazz;
+          try {
+            clazz=Class.forName(className);
+            if (type.isAssignableFrom(clazz)) {
+              cards.add(clazz);
+            }
+          }
+ catch (          ClassNotFoundException ex) {
+          }
+        }
+      }
+    }
+  }
+ catch (  IOException ex) {
+  }
+ finally {
+    try {
+      jarFile.close();
+    }
+ catch (    IOException ex) {
+    }
+  }
+  return cards;
+}
