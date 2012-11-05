@@ -1,0 +1,11 @@
+{
+  if (input.isAttacking()) {
+    if ((game.getPhase().getStep().getType() == PhaseStep.DECLARE_BLOCKERS || game.getPhase().getStep().getType() == PhaseStep.COMBAT_DAMAGE) && game.getStep().getStepPart() == Step.StepPart.PRIORITY) {
+      CombatGroup combatGroup=game.getCombat().findGroup(input.getId());
+      if (combatGroup != null) {
+        return combatGroup.getBlockers().isEmpty();
+      }
+    }
+  }
+  return false;
+}
