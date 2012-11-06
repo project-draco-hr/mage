@@ -3,8 +3,11 @@
   this.expansionSetCode="BOK";
   this.subtype.add("Arcane");
   this.color.setBlack(true);
+  FilterOwnedCard filter=new FilterOwnedCard("black card from your hand");
+  filter.add(new ColorPredicate(ObjectColor.BLACK));
+  filter.add(Predicates.not(new CardIdPredicate(this.getId())));
   this.getSpellAbility().addAlternativeCost(new AlternativeCostImpl(ALTERNATIVE_COST_DESCRIPTION,new ExileFromHandCost(new TargetCardInHand(filter))));
-  DynamicValue x=new SignInversionDynamicValue(new SickeningShoalVariableValue());
-  this.getSpellAbility().addEffect(new BoostTargetEffect(x,x,Constants.Duration.EndOfTurn,true));
+  DynamicValue x=new SignInversionDynamicValue(new ExileFromHandCostCardConvertedMana());
+  this.getSpellAbility().addEffect(new BoostTargetEffect(x,x,Duration.EndOfTurn,true));
   this.getSpellAbility().addTarget(new TargetCreaturePermanent());
 }

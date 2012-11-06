@@ -3,6 +3,9 @@
   this.expansionSetCode="BOK";
   this.subtype.add("Arcane");
   this.color.setBlue(true);
+  FilterOwnedCard filter=new FilterOwnedCard("blue card from your hand");
+  filter.add(new ColorPredicate(ObjectColor.BLUE));
+  filter.add(Predicates.not(new CardIdPredicate(this.getId())));
   this.getSpellAbility().addAlternativeCost(new AlternativeCostImpl(ALTERNATIVE_COST_DESCRIPTION,new ExileFromHandCost(new TargetCardInHand(filter))));
   this.getSpellAbility().addEffect(new DisruptingShoalCounterTargetEffect());
   this.getSpellAbility().addTarget(new TargetSpell());
