@@ -1,11 +1,13 @@
 {
   List<Permanent> permanents=game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game);
   for (  Permanent permanent : permanents) {
-    permanent.damage(amount,source.getId(),game,true,false);
+    permanent.damage(amount.calculate(game,source),source.getId(),game,true,false);
   }
   for (  UUID playerId : game.getPlayer(source.getControllerId()).getInRange()) {
     Player player=game.getPlayer(playerId);
-    if (player != null)     player.damage(amount,source.getId(),game,false,true);
+    if (player != null) {
+      player.damage(amount.calculate(game,source),source.getId(),game,false,true);
+    }
   }
   return true;
 }
