@@ -5,7 +5,8 @@
   this.draftBooster.addCardEventListener(new Listener<Event>(){
     @Override public void event(    Event event){
       if (event.getEventName().equals("pick-a-card")) {
-        DraftPickView view=session.sendCardPick(draftId,(UUID)event.getSource());
+        SimpleCardView source=(SimpleCardView)event.getSource();
+        DraftPickView view=session.sendCardPick(draftId,source.getId());
         if (view != null) {
           draftBooster.loadBooster(emptyView,bigCard);
           draftPicks.loadCards(CardsViewUtil.convertSimple(view.getPicks()),bigCard,null);
