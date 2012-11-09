@@ -6,12 +6,11 @@
         Player opponent=game.getPlayer(playerId);
         if (opponent != null) {
           opponent.damage(2,source.getId(),game,false,true);
-          Cards cards=opponent.getHand();
-          for (int i=0; i < 2 && !cards.isEmpty(); i++) {
-            Card card=cards.getRandom(game);
+          int amount=Math.min(2,opponent.getHand().size());
+          for (int i=0; i < amount; i++) {
+            Card card=opponent.getHand().getRandom(game);
             if (card != null) {
-              card.moveToZone(Constants.Zone.HAND,source.getId(),game,true);
-              cards.remove(card);
+              opponent.discard(card,source,game);
             }
           }
         }
