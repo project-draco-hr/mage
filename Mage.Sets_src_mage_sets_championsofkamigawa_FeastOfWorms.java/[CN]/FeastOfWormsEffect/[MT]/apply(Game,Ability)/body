@@ -2,8 +2,7 @@
   Permanent permanent=(Permanent)game.getLastKnownInformation(source.getFirstTarget(),Zone.BATTLEFIELD);
   Player targetPlayer=game.getPlayer(permanent.getControllerId());
   if (targetPlayer != null && permanent != null && (permanent.getSupertype().get(0).toString().equals("Legendary"))) {
-    FilterControlledPermanent filter=new FilterControlledPermanent("land to sacrifice");
-    filter.add(new CardTypePredicate(CardType.LAND));
+    FilterPermanent filter=new FilterLandPermanent("land to sacrifice");
     filter.add(new ControllerIdPredicate(targetPlayer.getId()));
     TargetControlledPermanent target=new TargetControlledPermanent(1,1,filter,false);
     if (target.canChoose(targetPlayer.getId(),game)) {
