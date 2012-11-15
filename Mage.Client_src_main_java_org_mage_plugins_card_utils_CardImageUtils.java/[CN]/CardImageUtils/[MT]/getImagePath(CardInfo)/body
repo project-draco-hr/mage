@@ -16,7 +16,9 @@
     }
   }
  else {
-    filePath=getImagePath(card,null);
+    String useDefault=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_IMAGES_USE_DEFAULT,"true");
+    String path=useDefault.equals("true") ? null : PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_IMAGES_PATH,null);
+    filePath=getImagePath(card,path);
     file=new TFile(filePath);
   }
   if (file.exists()) {
