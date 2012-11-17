@@ -1,0 +1,12 @@
+{
+  Permanent targetCreature=game.getPermanent(this.getTargetPointer().getFirst(game,source));
+  if (targetCreature != null) {
+    AtTheEndOfCombatDelayedTriggeredAbility delayedAbility=new AtTheEndOfCombatDelayedTriggeredAbility(new ReturnToHandTargetEffect());
+    delayedAbility.setSourceId(source.getSourceId());
+    delayedAbility.setControllerId(source.getControllerId());
+    delayedAbility.getEffects().get(0).setTargetPointer(new FixedTarget(targetCreature.getId()));
+    game.addDelayedTriggeredAbility(delayedAbility);
+    return true;
+  }
+  return false;
+}

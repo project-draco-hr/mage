@@ -1,0 +1,14 @@
+{
+  int manaX=this.getManaCostsToPay().getX();
+  FilterPermanent filter=new FilterCreaturePermanent("creature with power " + manaX + " or less");
+  filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.LessThan,manaX + 1));
+  Target target=new TargetPermanent(filter);
+  Player player=game.getPlayer(controllerId);
+  if (player != null) {
+    if (player.chooseTarget(Constants.Outcome.Benefit,target,this,game)) {
+      this.getEffects().get(0).setTargetPointer(new FixedTarget(target.getFirstTarget()));
+      return super.resolve(game);
+    }
+  }
+  return false;
+}

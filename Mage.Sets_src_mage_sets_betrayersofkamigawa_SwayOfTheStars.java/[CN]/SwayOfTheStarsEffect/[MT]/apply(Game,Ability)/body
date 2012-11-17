@@ -1,0 +1,19 @@
+{
+  Player sourcePlayer=game.getPlayer(source.getControllerId());
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(source.getControllerId(),game)) {
+    permanent.moveToZone(Zone.LIBRARY,source.getId(),game,true);
+  }
+  for (  UUID playerId : sourcePlayer.getInRange()) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      player.getLibrary().addAll(player.getHand().getCards(game),game);
+      player.getLibrary().addAll(player.getGraveyard().getCards(game),game);
+      player.shuffleLibrary(game);
+      player.getHand().clear();
+      player.getGraveyard().clear();
+      player.drawCards(7,game);
+      player.setLife(7,game);
+    }
+  }
+  return true;
+}
