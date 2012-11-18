@@ -3,6 +3,12 @@
   if (permanent != null) {
     if (counter != null) {
       permanent.addCounters(counter.copy(),game);
+      if (informPlayers) {
+        Player player=game.getPlayer(source.getControllerId());
+        if (player != null) {
+          game.informPlayers(player.getName() + " puts " + counter.getCount()+ " "+ counter.getName()+ " counter on "+ permanent.getName());
+        }
+      }
     }
   }
   return true;
