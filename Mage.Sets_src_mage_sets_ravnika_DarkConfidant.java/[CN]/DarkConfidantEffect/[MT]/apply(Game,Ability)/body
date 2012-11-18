@@ -1,12 +1,15 @@
 {
   Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
-    Card c=player.getLibrary().removeFromTop(game);
-    player.getHand().add(c);
-    Cards cards=new CardsImpl();
-    cards.add(c);
-    player.revealCards("Top card from library",cards,game);
-    player.loseLife(c.getManaCost().convertedManaCost(),game);
+  if (player != null && player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      card.moveToZone(Zone.HAND,source.getId(),game,false);
+      player.loseLife(card.getManaCost().convertedManaCost(),game);
+      Cards cards=new CardsImpl();
+      cards.add(card);
+      player.revealCards("top card from library by Dark Confidant",cards,game);
+      return true;
+    }
   }
-  return true;
+  return false;
 }
