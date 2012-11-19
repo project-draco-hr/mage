@@ -14,7 +14,7 @@
   for (  Effect effect : getState().getContinuousEffects().getLayeredEffects(this)) {
     if (effect instanceof CopyEffect) {
       CopyEffect copyEffect=(CopyEffect)effect;
-      if (!copyEffect.isInactive(null,this) && copyEffect.getSourceId().equals(copyFromPermanent.getId())) {
+      if (copyEffect.getSourceId().equals(copyFromPermanent.getId())) {
         MageObject object=((CopyEffect)effect).getTarget();
         if (object instanceof Permanent) {
           Permanent original=(Permanent)object;
@@ -25,5 +25,5 @@
       }
     }
   }
-  state.addEffect(newEffect,copyToPermanent.getId(),newAbility);
+  state.addEffect(newEffect,newAbility);
 }
