@@ -5,9 +5,7 @@
     if (numberOfCounters > 0) {
       Player player=game.getPlayer(source.getControllerId());
       if (player != null) {
-        Target target=new TargetArtifactPermanent(filter);
-        player.chooseTarget(outcome,target,source,game);
-        Permanent targetArtifact=game.getPermanent(target.getFirstTarget());
+        Permanent targetArtifact=game.getPermanent(targetPointer.getFirst(game,source));
         if (targetArtifact != null) {
           targetArtifact.addCounters(CounterType.P1P1.createInstance(numberOfCounters),game);
           return true;
