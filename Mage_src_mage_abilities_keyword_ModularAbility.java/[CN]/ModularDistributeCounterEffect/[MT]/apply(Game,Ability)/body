@@ -1,0 +1,19 @@
+{
+  Permanent sourcePermanent=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+  if (sourcePermanent != null) {
+    int numberOfCounters=sourcePermanent.getCounters().getCount(CounterType.P1P1);
+    if (numberOfCounters > 0) {
+      Player player=game.getPlayer(source.getControllerId());
+      if (player != null) {
+        Target target=new TargetArtifactPermanent(filter);
+        player.chooseTarget(outcome,target,source,game);
+        Permanent targetArtifact=game.getPermanent(target.getFirstTarget());
+        if (targetArtifact != null) {
+          targetArtifact.addCounters(CounterType.P1P1.createInstance(numberOfCounters),game);
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
