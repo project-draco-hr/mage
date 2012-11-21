@@ -5,12 +5,14 @@
   this.color.setBlue(true);
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
-  Ability firstAbility=new KickerAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(2)),false);
-  firstAbility.addEffect(new GainAbilitySourceEffect(FirstStrikeAbility.getInstance(),Constants.Duration.WhileOnBattlefield));
-  firstAbility.addCost(new ManaCostsImpl("{1}{R}"));
-  this.addAbility(firstAbility);
-  Ability secondAbility=new KickerAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance()),false);
-  secondAbility.addEffect(new GainAbilitySourceEffect(TrampleAbility.getInstance(),Constants.Duration.WhileOnBattlefield));
-  secondAbility.addCost(new ColoredManaCost(Constants.ColoredManaSymbol.G));
-  this.addAbility(secondAbility);
+  KickerManaCost kicker1=new KickerManaCost("{1}{R}");
+  this.getSpellAbility().addOptionalCost(kicker1);
+  KickerManaCost kicker2=new KickerManaCost("{G}");
+  this.getSpellAbility().addOptionalCost(kicker2);
+  EntersBattlefieldAbility ability1=new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(2),false),new KickedCostCondition(kicker1),true,"If Cetavolver was kicked with its {1}{R} kicker, it enters the battlefield with two +1/+1 counters on it and with first strike.","{this} enters the battlefield with two +1/+1 counters on it and with first strike");
+  ((EntersBattlefieldEffect)ability1.getEffects().get(0)).addEffect(new GainAbilitySourceEffect(FirstStrikeAbility.getInstance(),Duration.WhileOnBattlefield));
+  this.addAbility(ability1);
+  EntersBattlefieldAbility ability2=new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(1),false),new KickedCostCondition(kicker2),true,"If Cetavolver was kicked with its {G} kicker, it enters the battlefield with a +1/+1 counter on it and with trample.","{this} enters the battlefield with a +1/+1 counter on it and with trample");
+  ((EntersBattlefieldEffect)ability2.getEffects().get(0)).addEffect(new GainAbilitySourceEffect(TrampleAbility.getInstance(),Duration.WhileOnBattlefield));
+  this.addAbility(ability2);
 }
