@@ -2,11 +2,13 @@
   Permanent permanent=game.getPermanent(source.getSourceId());
   if (permanent != null) {
     if (counter != null) {
+      Counter newCounter=counter.copy();
+      newCounter.add(amount.calculate(game,source));
       permanent.addCounters(counter.copy(),game);
       if (informPlayers) {
         Player player=game.getPlayer(source.getControllerId());
         if (player != null) {
-          game.informPlayers(player.getName() + " puts " + counter.getCount()+ " "+ counter.getName()+ " counter on "+ permanent.getName());
+          game.informPlayers(player.getName() + " puts " + newCounter.getCount()+ " "+ newCounter.getName()+ " counter on "+ permanent.getName());
         }
       }
     }
