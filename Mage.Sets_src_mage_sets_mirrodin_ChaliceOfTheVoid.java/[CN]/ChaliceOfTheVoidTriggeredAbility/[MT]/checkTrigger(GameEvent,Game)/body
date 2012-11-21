@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.SPELL_CAST) {
+    Permanent chalice=game.getPermanent(this.sourceId);
+    Spell spell=game.getStack().getSpell(event.getTargetId());
+    if (spell != null && chalice != null && spell.getManaCost().convertedManaCost() == chalice.getCounters().getCount(CounterType.CHARGE)) {
+      for (      Effect effect : this.getEffects()) {
+        effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+      }
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,18 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl();
+  if (player.getHand().count(filter,game) > 0) {
+    TargetCardInHand target=new TargetCardInHand(0,Integer.MAX_VALUE,filter);
+    if (player.choose(Outcome.Benefit,target,source.getSourceId(),game)) {
+      for (      UUID uuid : target.getTargets()) {
+        cards.add(player.getHand().get(uuid,game));
+      }
+      player.revealCards("Revealed card",cards,game);
+      player.getManaPool().addMana(Mana.ColorlessMana(target.getTargets().size() * 2),game,source);
+    }
+  }
+  return true;
+}
