@@ -1,0 +1,18 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  TargetCardInHand target=new TargetCardInHand(new FilterLandCard());
+  if (player != null) {
+    if (player.chooseTarget(Outcome.Discard,target,source,game)) {
+      player.discard(game.getCard(target.getFirstTarget()),source,game);
+      return false;
+    }
+ else {
+      Card card=game.getCard(event.getTargetId());
+      if (card != null) {
+        return card.moveToZone(Zone.GRAVEYARD,source.getId(),game,false);
+      }
+      return true;
+    }
+  }
+  return false;
+}
