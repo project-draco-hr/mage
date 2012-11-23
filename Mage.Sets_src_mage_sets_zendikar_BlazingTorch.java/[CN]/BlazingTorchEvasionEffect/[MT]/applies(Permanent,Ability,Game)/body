@@ -1,6 +1,10 @@
 {
-  if (permanent.getId().equals(source.getSourceId())) {
-    return true;
+  Permanent equipment=game.getPermanent(source.getSourceId());
+  if (equipment != null && equipment.getAttachedTo() != null) {
+    Permanent equipped=game.getPermanent(equipment.getAttachedTo());
+    if (permanent.getId().equals(equipped.getId())) {
+      return true;
+    }
   }
   return false;
 }
