@@ -1,0 +1,20 @@
+{
+  TargetArtifactPermanent target=new TargetArtifactPermanent();
+  Player you=game.getPlayer(source.getControllerId());
+  if (you != null) {
+    if (target.canChoose(source.getControllerId(),game) && target.choose(Constants.Outcome.DestroyPermanent,source.getControllerId(),source.getId(),game)) {
+      Permanent targetedArtifact=game.getPermanent(target.getFirstTarget());
+      if (targetedArtifact != null) {
+        Card artifact=game.getCard(targetedArtifact.getId());
+        Player controller=game.getPlayer(targetedArtifact.getControllerId());
+        targetedArtifact.destroy(id,game,true);
+        if (controller.getGraveyard().contains(artifact.getId())) {
+          int alliesControlled=game.getBattlefield().count(filter,source.getControllerId(),game);
+          controller.damage(alliesControlled,id,game,false,true);
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
