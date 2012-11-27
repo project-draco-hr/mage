@@ -43,8 +43,12 @@ case EXILED:
 game.getExile().getPermanentExile().add(this);
 break;
 case LIBRARY:
-if (flag) game.getPlayer(ownerId).getLibrary().putOnTop(this,game);
- else game.getPlayer(ownerId).getLibrary().putOnBottom(this,game);
+if (flag) {
+game.getPlayer(ownerId).getLibrary().putOnTop(this,game);
+}
+ else {
+game.getPlayer(ownerId).getLibrary().putOnBottom(this,game);
+}
 break;
 case BATTLEFIELD:
 PermanentCard permanent=new PermanentCard(this,ownerId);
@@ -54,7 +58,9 @@ game.setZone(objectId,Zone.BATTLEFIELD);
 game.applyEffects();
 permanent.entersBattlefield(sourceId,game);
 game.applyEffects();
-if (flag) permanent.setTapped(true);
+if (flag) {
+permanent.setTapped(true);
+}
 event.setTarget(permanent);
 break;
 default :
