@@ -1,0 +1,18 @@
+{
+  if (event.getType() == EventType.DECLARE_ATTACKER) {
+    Permanent permanent=game.getPermanent(event.getSourceId());
+    if (permanent != null) {
+      Player player=game.getPlayer(source.getControllerId());
+      if (player.getInRange().contains(permanent.getControllerId())) {
+        Player controller=game.getPlayer(source.getControllerId());
+        if (player != null) {
+          int cardInHand=controller.getHand().size();
+          if (permanent.getPower().getValue() > cardInHand) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

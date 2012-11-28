@@ -1,0 +1,14 @@
+{
+  super(ownerId,42,"Force of Will",Rarity.UNCOMMON,new CardType[]{CardType.INSTANT},"{3}{U}{U}");
+  this.expansionSetCode="ALL";
+  this.color.setBlue(true);
+  FilterOwnedCard filter=new FilterOwnedCard("blue card from your hand");
+  filter.add(new ColorPredicate(ObjectColor.BLUE));
+  filter.add(Predicates.not(new CardIdPredicate(this.getId())));
+  CostsImpl<Cost> costs=new CostsImpl<Cost>();
+  costs.add(new PayLifeCost(1));
+  costs.add(new ExileFromHandCost(new TargetCardInHand(filter)));
+  this.getSpellAbility().addAlternativeCost(new AlternativeCostImpl("Pay 1 life and exile a blue card from your hand rather than pay Force of Will's mana cost",costs));
+  this.getSpellAbility().addEffect(new CounterTargetEffect());
+  this.getSpellAbility().addTarget(new TargetSpell());
+}

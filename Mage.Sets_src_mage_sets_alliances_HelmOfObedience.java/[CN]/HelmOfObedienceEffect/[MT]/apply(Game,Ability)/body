@@ -1,0 +1,29 @@
+{
+  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  if (player != null) {
+    int max=amount.calculate(game,source);
+    if (max != 0) {
+      int numberOfCard=0;
+      while (player.getLibrary().size() > 0) {
+        Card card=player.getLibrary().removeFromTop(game);
+        if (card != null) {
+          if (card.moveToZone(Constants.Zone.GRAVEYARD,source.getId(),game,false)) {
+            if (card.getCardType().contains(CardType.CREATURE)) {
+              break;
+            }
+ else {
+              numberOfCard++;
+              if (numberOfCard >= max) {
+                break;
+              }
+            }
+          }
+        }
+ else {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+}
