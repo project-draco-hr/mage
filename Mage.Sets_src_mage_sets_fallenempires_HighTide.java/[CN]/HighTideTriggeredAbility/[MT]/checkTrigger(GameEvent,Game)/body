@@ -1,0 +1,10 @@
+{
+  Permanent land=game.getPermanent(event.getTargetId());
+  if (event.getType() == GameEvent.EventType.TAPPED_FOR_MANA && land != null && filter.match(land,game)) {
+    for (    Effect effect : this.getEffects()) {
+      effect.setTargetPointer(new FixedTarget(land.getControllerId()));
+    }
+    return true;
+  }
+  return false;
+}
