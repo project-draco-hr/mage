@@ -1,6 +1,25 @@
 {
   if (event.getType() == EventType.END_TURN_STEP_PRE) {
-    return true;
-  }
-  return false;
+switch (targetController) {
+case ANY:
+      return true;
+case YOU:
+    boolean yours=event.getPlayerId().equals(this.controllerId);
+  return yours;
+case OPPONENT:
+if (game.getOpponents(this.controllerId).contains(event.getPlayerId())) {
+  return true;
+}
+break;
+case CONTROLLER_ATTACHED_TO:
+Permanent attachment=game.getPermanent(sourceId);
+if (attachment != null && attachment.getAttachedTo() != null) {
+Permanent attachedTo=game.getPermanent(attachment.getAttachedTo());
+if (attachedTo != null && attachedTo.getControllerId().equals(event.getPlayerId())) {
+return true;
+}
+}
+}
+}
+return false;
 }
