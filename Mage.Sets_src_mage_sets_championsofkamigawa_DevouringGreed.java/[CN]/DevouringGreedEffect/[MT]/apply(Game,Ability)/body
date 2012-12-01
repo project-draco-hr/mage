@@ -1,0 +1,17 @@
+{
+  int numberSpirits=0;
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof SacrificeTargetCost) {
+      numberSpirits+=((SacrificeTargetCost)cost).getPermanents().size();
+    }
+  }
+  int amount=2 + (numberSpirits * 2);
+  Player targetPlayer=game.getPlayer(getTargetPointer().getFirst(game,source));
+  Player sourcePlayer=game.getPlayer(source.getControllerId());
+  if (targetPlayer != null && sourcePlayer != null) {
+    targetPlayer.loseLife(amount,game);
+    sourcePlayer.gainLife(amount,game);
+    return true;
+  }
+  return false;
+}
