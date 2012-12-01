@@ -1,10 +1,10 @@
 {
   StoneTrapIdolToken token=new StoneTrapIdolToken();
   token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
-  ExileTargetEffect exileEffect=new ExileTargetEffect("Exile this token at the end of turn step");
+  ExileTargetEffect exileEffect=new ExileTargetEffect("exile the token");
   exileEffect.setTargetPointer(new FixedTarget(token.getLastAddedToken()));
-  DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(exileEffect);
-  delayedAbility.setSourceId(token.getId());
+  DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(exileEffect,Constants.TargetController.YOU);
+  delayedAbility.setSourceId(source.getSourceId());
   delayedAbility.setControllerId(source.getControllerId());
   game.addDelayedTriggeredAbility(delayedAbility);
   return true;
