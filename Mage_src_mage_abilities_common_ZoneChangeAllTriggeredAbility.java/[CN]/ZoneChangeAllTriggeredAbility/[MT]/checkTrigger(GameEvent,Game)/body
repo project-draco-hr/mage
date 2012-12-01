@@ -1,0 +1,12 @@
+{
+  if (event.getType() == EventType.ZONE_CHANGE) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if ((fromZone == null || zEvent.getFromZone() == fromZone) && (toZone == null || zEvent.getToZone() == toZone)) {
+      Permanent perm=game.getPermanent(event.getTargetId());
+      if (perm != null && filter.match(perm,sourceId,controllerId,game)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
