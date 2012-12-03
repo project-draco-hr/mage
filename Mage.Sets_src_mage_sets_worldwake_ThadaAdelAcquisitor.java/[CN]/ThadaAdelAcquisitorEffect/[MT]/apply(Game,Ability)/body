@@ -1,0 +1,21 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  Player damagedPlayer=game.getPlayer(targetPointer.getFirst(game,source));
+  if (you == null || damagedPlayer == null) {
+    return false;
+  }
+  TargetCardInLibrary target=new TargetCardInLibrary(new FilterArtifactCard());
+  you.searchLibrary(target,game,damagedPlayer.getId());
+  if (you.searchLibrary(target,game)) {
+    if (target.getTargets().size() > 0) {
+      UUID cardId=target.getTargets().get(0);
+      Card card=damagedPlayer.getLibrary().remove(cardId,game);
+      if (card != null) {
+        card.moveToExile(source.getSourceId(),"Thada Adel",source.getId(),game);
+        game.addEffect(new ThadaAdelPlayFromExileEffect(card.getId()),source);
+      }
+    }
+  }
+  damagedPlayer.shuffleLibrary(game);
+  return true;
+}
