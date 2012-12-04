@@ -1,0 +1,20 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null && player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().getFromTop(game);
+    Cards cards=new CardsImpl();
+    cards.add(card);
+    player.lookAtCards("This card",cards,game);
+    if (card.getCardType().contains(CardType.CREATURE)) {
+      if (player.chooseUse(Constants.Outcome.DrawCard,"Do you wish to reveal the creature card at the top of the library?",game)) {
+        player.revealCards("Quest for Ula's Temple",cards,game);
+        Permanent questForUlasTemple=game.getPermanent(source.getSourceId());
+        if (questForUlasTemple != null) {
+          questForUlasTemple.addCounters(CounterType.QUEST.createInstance(),game);
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
