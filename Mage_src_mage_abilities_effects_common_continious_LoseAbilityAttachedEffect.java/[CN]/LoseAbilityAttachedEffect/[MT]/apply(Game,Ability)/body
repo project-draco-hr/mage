@@ -4,7 +4,9 @@
     Permanent creature=game.getPermanent(equipment.getAttachedTo());
     if (creature != null) {
       while (creature.getAbilities().contains(ability)) {
-        creature.getAbilities().remove(ability);
+        if (!creature.getAbilities().remove(ability)) {
+          logger.warn("ability" + ability.getRule() + "couldn't be removed.");
+        }
       }
     }
   }
