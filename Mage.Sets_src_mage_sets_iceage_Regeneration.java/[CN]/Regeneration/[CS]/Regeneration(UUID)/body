@@ -1,0 +1,12 @@
+{
+  super(ownerId,147,"Regeneration",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{1}{G}");
+  this.expansionSetCode="ICE";
+  this.subtype.add("Aura");
+  this.color.setGreen(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Constants.Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new RegenerateAttachedEffect(Constants.AttachmentType.AURA),new ManaCostsImpl("{G}")));
+}
