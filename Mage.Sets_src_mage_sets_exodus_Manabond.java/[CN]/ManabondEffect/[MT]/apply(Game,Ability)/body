@@ -1,0 +1,19 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    player.revealCards("Manabond",player.getHand(),game);
+    Cards hand=player.getHand().copy();
+    for (    UUID uuid : hand) {
+      Card card=game.getCard(uuid);
+      if (card != null) {
+        if (card.getCardType().contains(CardType.LAND)) {
+          card.moveToZone(Zone.BATTLEFIELD,source.getId(),game,false);
+        }
+ else {
+          player.discard(card,source,game);
+        }
+      }
+    }
+  }
+  return false;
+}
