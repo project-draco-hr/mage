@@ -1,0 +1,34 @@
+{
+  if (ability instanceof SpellAbility) {
+    Player player=game.getPlayer(controllerId);
+    if (player != null) {
+      this.resetBuyback();
+      for (      OptionalAdditionalCost buybackCost : buybackCosts) {
+        boolean again=true;
+        while (again) {
+          String times="";
+          if (buybackCost.isRepeatable()) {
+            int activated=buybackCost.getActivateCount();
+            times=Integer.toString(activated + 1) + (activated == 0 ? " time " : " times ");
+          }
+          if (player.chooseUse(Constants.Outcome.Benefit,"Pay " + times + buybackCost.getText(false)+ " ?",game)) {
+            buybackCost.activate();
+            for (Iterator it=((Costs)buybackCost).iterator(); it.hasNext(); ) {
+              Cost cost=(Cost)it.next();
+              if (cost instanceof ManaCostsImpl) {
+                ability.getManaCostsToPay().add((ManaCostsImpl)cost.copy());
+              }
+ else {
+                ability.getCosts().add(cost.copy());
+              }
+            }
+            again=buybackCost.isRepeatable();
+          }
+ else {
+            again=false;
+          }
+        }
+      }
+    }
+  }
+}

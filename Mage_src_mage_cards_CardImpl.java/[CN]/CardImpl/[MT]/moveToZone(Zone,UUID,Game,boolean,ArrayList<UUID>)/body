@@ -1,0 +1,76 @@
+{
+  Zone fromZone=game.getState().getZone(objectId);
+  ZoneChangeEvent event=new ZoneChangeEvent(this.objectId,sourceId,ownerId,fromZone,toZone,appliedEffects);
+  if (!game.replaceEvent(event)) {
+    if (event.getFromZone() != null) {
+switch (event.getFromZone()) {
+case GRAVEYARD:
+        game.getPlayer(ownerId).removeFromGraveyard(this,game);
+      break;
+case HAND:
+    game.getPlayer(ownerId).removeFromHand(this,game);
+  break;
+case LIBRARY:
+game.getPlayer(ownerId).removeFromLibrary(this,game);
+break;
+case EXILED:
+game.getExile().removeCard(this,game);
+break;
+case OUTSIDE:
+game.getPlayer(ownerId).getSideboard().remove(this);
+break;
+case STACK:
+case PICK:
+break;
+default :
+logger.fatal("invalid zone for card - " + fromZone);
+break;
+}
+game.rememberLKI(objectId,event.getFromZone(),this);
+}
+updateZoneChangeCounter();
+switch (event.getToZone()) {
+case GRAVEYARD:
+game.getPlayer(ownerId).putInGraveyard(this,game,!flag);
+break;
+case HAND:
+game.getPlayer(ownerId).getHand().add(this);
+break;
+case STACK:
+game.getStack().push(new Spell(this,this.getSpellAbility().copy(),ownerId,event.getFromZone()));
+break;
+case EXILED:
+game.getExile().getPermanentExile().add(this);
+break;
+case LIBRARY:
+if (flag) {
+game.getPlayer(ownerId).getLibrary().putOnTop(this,game);
+}
+ else {
+game.getPlayer(ownerId).getLibrary().putOnBottom(this,game);
+}
+break;
+case BATTLEFIELD:
+PermanentCard permanent=new PermanentCard(this,ownerId);
+game.resetForSourceId(permanent.getId());
+game.addPermanent(permanent);
+game.setZone(objectId,Zone.BATTLEFIELD);
+game.applyEffects();
+permanent.entersBattlefield(sourceId,game);
+game.applyEffects();
+if (flag) {
+permanent.setTapped(true);
+}
+event.setTarget(permanent);
+break;
+default :
+logger.fatal("invalid zone for card - " + toZone);
+return false;
+}
+setControllerId(ownerId);
+game.setZone(objectId,event.getToZone());
+game.fireEvent(event);
+return game.getState().getZone(objectId) == toZone;
+}
+return false;
+}

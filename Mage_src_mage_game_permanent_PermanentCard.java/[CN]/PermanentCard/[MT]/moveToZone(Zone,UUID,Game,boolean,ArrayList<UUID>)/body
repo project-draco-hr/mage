@@ -1,0 +1,37 @@
+{
+  Zone fromZone=game.getState().getZone(objectId);
+  Player controller=game.getPlayer(controllerId);
+  if (controller != null && controller.removeFromBattlefield(this,game)) {
+    ZoneChangeEvent event=new ZoneChangeEvent(this,sourceId,controllerId,fromZone,toZone,appliedEffects);
+    if (!game.replaceEvent(event)) {
+      Player owner=game.getPlayer(ownerId);
+      game.rememberLKI(objectId,Zone.BATTLEFIELD,this);
+      if (owner != null) {
+switch (event.getToZone()) {
+case GRAVEYARD:
+          owner.putInGraveyard(card,game,!flag);
+        break;
+case HAND:
+      owner.getHand().add(card);
+    break;
+case EXILED:
+  game.getExile().getPermanentExile().add(card);
+break;
+case LIBRARY:
+if (flag) owner.getLibrary().putOnTop(card,game);
+ else owner.getLibrary().putOnBottom(card,game);
+break;
+case BATTLEFIELD:
+break;
+}
+game.setZone(objectId,event.getToZone());
+game.fireEvent(event);
+if (event.getFromZone().equals(Zone.BATTLEFIELD)) {
+game.resetForSourceId(getId());
+}
+return game.getState().getZone(objectId) == toZone;
+}
+}
+}
+return false;
+}

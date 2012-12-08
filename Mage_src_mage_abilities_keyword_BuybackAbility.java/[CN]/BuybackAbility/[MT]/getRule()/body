@@ -1,0 +1,19 @@
+{
+  StringBuilder sb=new StringBuilder();
+  int numberBuyback=0;
+  String remarkText="";
+  for (  OptionalAdditionalCost buybackCost : buybackCosts) {
+    if (numberBuyback == 0) {
+      sb.append(buybackCost.getText(false));
+      remarkText=buybackCost.getReminderText();
+    }
+ else {
+      sb.append(" and/or ").append(buybackCost.getText(true));
+    }
+    ++numberBuyback;
+  }
+  if (numberBuyback == 1) {
+    sb.append(" ").append(remarkText);
+  }
+  return sb.toString();
+}
