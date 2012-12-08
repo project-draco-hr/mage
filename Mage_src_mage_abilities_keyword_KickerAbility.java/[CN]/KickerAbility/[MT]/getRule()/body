@@ -1,3 +1,19 @@
 {
-  return getKickerText(true);
+  StringBuilder sb=new StringBuilder();
+  int numberKicker=0;
+  String remarkText="";
+  for (  OptionalAdditionalCost kickerCost : kickerCosts) {
+    if (numberKicker == 0) {
+      sb.append(kickerCost.getText(false));
+      remarkText=kickerCost.getReminderText();
+    }
+ else {
+      sb.append(" and/or ").append(kickerCost.getText(true));
+    }
+    ++numberKicker;
+  }
+  if (numberKicker == 1) {
+    sb.append(" ").append(remarkText);
+  }
+  return sb.toString();
 }

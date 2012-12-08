@@ -1,11 +1,20 @@
 {
-  Permanent permanent=game.getPermanent(source.getSourceId());
-  if (permanent != null) {
-    for (    Ability ability : permanent.getAbilities()) {
-      if (ability instanceof MultikickerAbility) {
-        return ((MultikickerAbility)ability).getActivateCount();
+  int count=0;
+  Card card=game.getCard(source.getSourceId());
+  if (card != null) {
+    KickerAbility kickerAbility=null;
+    for (    Ability ability : card.getAbilities()) {
+      if (ability instanceof KickerAbility) {
+        kickerAbility=(KickerAbility)ability;
       }
     }
+    if (kickerAbility != null) {
+      for (      OptionalAdditionalCost cost : kickerAbility.getKickerCosts()) {
+        count=cost.getActivateCount();
+        break;
+      }
+    }
+    return count;
   }
   return 0;
 }

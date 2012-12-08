@@ -3,9 +3,7 @@
   if (card.getCardType().contains(CardType.INSTANT) || card.getCardType().contains(CardType.SORCERY)) {
     if (ability.getTargets().stillLegal(ability,game)) {
       updateOptionalCosts();
-      boolean replaced=resolveKicker(game);
-      if (!replaced)       result=ability.resolve(game);
- else       result=true;
+      result=ability.resolve(game);
       if (!copiedSpell) {
         for (        Effect effect : ability.getEffects()) {
           if (effect instanceof PostResolveEffect) {
@@ -37,7 +35,6 @@
   }
  else {
     updateOptionalCosts();
-    resolveKicker(game);
     result=card.putOntoBattlefield(game,Zone.HAND,ability.getId(),controllerId);
     return result;
   }

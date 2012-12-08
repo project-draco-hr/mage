@@ -1,5 +1,7 @@
 {
-  if (!modes.choose(game,this))   return false;
+  if (!modes.choose(game,this)) {
+    return false;
+  }
   Card card=game.getCard(sourceId);
   if (card != null) {
     card.adjustChoices(this,game);
@@ -9,6 +11,13 @@
     return false;
   }
   if (card != null) {
+    for (    Ability ability : card.getAbilities()) {
+      if (ability instanceof OptionalAdditionalSourceCosts) {
+        ((OptionalAdditionalSourceCosts)ability).addOptionalAdditionalCosts(this,game);
+      }
+    }
+  }
+  if (card != null) {
     card.adjustTargets(this,game);
   }
   if (getTargets().size() > 0 && getTargets().chooseTargets(getEffects().get(0).getOutcome(),this.controllerId,this,game) == false) {
@@ -16,13 +25,7 @@
     return false;
   }
   for (  Cost cost : optionalCosts) {
-    if (cost instanceof KickerManaCost) {
-      cost.clearPaid();
-      if (game.getPlayer(this.controllerId).chooseUse(Outcome.Benefit,"Pay " + cost.getText() + "?",game)) {
-        manaCostsToPay.add((ManaCost)cost);
-      }
-    }
- else     if (cost instanceof ManaCost) {
+    if (cost instanceof ManaCost) {
       cost.clearPaid();
       if (game.getPlayer(this.controllerId).chooseUse(Outcome.Benefit,"Pay optional cost " + cost.getText() + "?",game)) {
         manaCostsToPay.add((ManaCost)cost);
