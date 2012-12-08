@@ -6,9 +6,10 @@
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
   KickerManaCost kicker1=new KickerManaCost("{1}{R}");
-  this.getSpellAbility().addOptionalCost(kicker1);
   KickerManaCost kicker2=new KickerManaCost("{G}");
-  this.getSpellAbility().addOptionalCost(kicker2);
+  KickerAbility kickerAbility=new KickerAbility(kicker1);
+  kickerAbility.addKickerManaCost(kicker2);
+  this.addAbility(kickerAbility);
   EntersBattlefieldAbility ability1=new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(2),false),new KickedCostCondition(kicker1),true,"If Cetavolver was kicked with its {1}{R} kicker, it enters the battlefield with two +1/+1 counters on it and with first strike.","{this} enters the battlefield with two +1/+1 counters on it and with first strike");
   ((EntersBattlefieldEffect)ability1.getEffects().get(0)).addEffect(new GainAbilitySourceEffect(FirstStrikeAbility.getInstance(),Duration.WhileOnBattlefield));
   this.addAbility(ability1);

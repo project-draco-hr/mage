@@ -6,9 +6,10 @@
   this.power=new MageInt(3);
   this.toughness=new MageInt(3);
   KickerManaCost kicker1=new KickerManaCost("{1}{U}");
-  this.getSpellAbility().addOptionalCost(kicker1);
   KickerManaCost kicker2=new KickerManaCost("{B}");
-  this.getSpellAbility().addOptionalCost(kicker2);
+  KickerAbility kickerAbility=new KickerAbility(kicker1);
+  kickerAbility.addKickerManaCost(kicker2);
+  this.addAbility(kickerAbility);
   EntersBattlefieldAbility ability1=new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(2),false),new KickedCostCondition(kicker1),true,"If {this} was kicked with its {1}{U} kicker, it enters the battlefield with two +1/+1 counters on it and with flying.","{this} enters the battlefield with two +1/+1 counters on it and with flying");
   ((EntersBattlefieldEffect)ability1.getEffects().get(0)).addEffect(new GainAbilitySourceEffect(FlyingAbility.getInstance(),Duration.WhileOnBattlefield));
   this.addAbility(ability1);
