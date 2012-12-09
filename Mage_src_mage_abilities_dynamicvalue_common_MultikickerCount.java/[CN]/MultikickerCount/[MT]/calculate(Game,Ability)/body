@@ -2,19 +2,11 @@
   int count=0;
   Card card=game.getCard(source.getSourceId());
   if (card != null) {
-    KickerAbility kickerAbility=null;
     for (    Ability ability : card.getAbilities()) {
       if (ability instanceof KickerAbility) {
-        kickerAbility=(KickerAbility)ability;
+        count+=((KickerAbility)ability).getKickedCounter();
       }
     }
-    if (kickerAbility != null) {
-      for (      OptionalAdditionalCost cost : kickerAbility.getKickerCosts()) {
-        count=cost.getActivateCount();
-        break;
-      }
-    }
-    return count;
   }
-  return 0;
+  return count;
 }
