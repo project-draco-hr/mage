@@ -1,19 +1,17 @@
 {
   StringBuilder sb=new StringBuilder();
+  String reminderText="";
   int numberBuyback=0;
-  String remarkText="";
   for (  OptionalAdditionalCost buybackCost : buybackCosts) {
     if (numberBuyback == 0) {
       sb.append(buybackCost.getText(false));
-      remarkText=buybackCost.getReminderText();
+      reminderText=buybackCost.getReminderText();
     }
  else {
-      sb.append(" and/or ").append(buybackCost.getText(true));
+      sb.append(", ").append(buybackCost.getText(true));
     }
     ++numberBuyback;
   }
-  if (numberBuyback == 1) {
-    sb.append(" ").append(remarkText);
-  }
+  sb.append(" ").append(reminderText);
   return sb.toString();
 }
