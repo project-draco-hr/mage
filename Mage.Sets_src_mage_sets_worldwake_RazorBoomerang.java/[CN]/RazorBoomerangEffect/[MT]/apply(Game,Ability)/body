@@ -1,0 +1,17 @@
+{
+  for (  UUID target : targetPointer.getTargets(game,source)) {
+    Permanent creature=game.getPermanent(target);
+    if (creature != null) {
+      creature.damage(1,attachmentid,game,true,false);
+    }
+    Player player=game.getPlayer(target);
+    if (player != null) {
+      player.damage(1,attachmentid,game,false,true);
+    }
+  }
+  Permanent razor=game.getPermanent(attachmentid);
+  if (razor != null) {
+    razor.moveToZone(Constants.Zone.HAND,id,game,true);
+  }
+  return true;
+}
