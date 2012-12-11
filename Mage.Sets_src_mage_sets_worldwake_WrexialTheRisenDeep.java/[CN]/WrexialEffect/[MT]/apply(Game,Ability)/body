@@ -1,0 +1,17 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  Player damagedPlayer=game.getPlayer(targetPointer.getFirst(game,source));
+  filter.add(new OwnerIdPredicate(damagedPlayer.getId()));
+  filter.add(Predicates.or(new CardTypePredicate(CardType.INSTANT),new CardTypePredicate(CardType.SORCERY)));
+  Target target=new TargetCardInGraveyard(filter);
+  if (you != null && target != null) {
+    if (you.chooseTarget(Constants.Outcome.PlayForFree,target,source,game)) {
+      Card card=game.getCard(target.getFirstTarget());
+      if (card != null) {
+        you.cast(card.getSpellAbility(),game,true);
+        game.addEffect(new WrexialReplacementEffect(card.getId()),source);
+      }
+    }
+  }
+  return false;
+}
