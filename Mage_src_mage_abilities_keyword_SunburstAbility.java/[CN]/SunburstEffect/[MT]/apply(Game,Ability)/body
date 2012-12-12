@@ -1,0 +1,20 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    Counter counter;
+    if (permanent.getCardType().contains(Constants.CardType.CREATURE)) {
+      counter=CounterType.P1P1.createInstance(amount.calculate(game,source));
+    }
+ else {
+      counter=CounterType.CHARGE.createInstance(amount.calculate(game,source));
+    }
+    if (counter != null) {
+      permanent.addCounters(counter,game);
+      Player player=game.getPlayer(source.getControllerId());
+      if (player != null) {
+        game.informPlayers(player.getName() + " puts " + counter.getCount()+ " "+ counter.getName()+ " counter on "+ permanent.getName());
+      }
+    }
+  }
+  return true;
+}
