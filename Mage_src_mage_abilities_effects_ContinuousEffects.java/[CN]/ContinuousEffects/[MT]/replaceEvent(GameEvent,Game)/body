@@ -5,9 +5,13 @@
     List<ReplacementEffect> rEffects=getApplicableReplacementEffects(event,game);
     for (Iterator<ReplacementEffect> i=rEffects.iterator(); i.hasNext(); ) {
       ReplacementEffect entry=i.next();
-      if (consumed.contains(entry.getId()))       i.remove();
+      if (consumed.contains(entry.getId())) {
+        i.remove();
+      }
     }
-    if (rEffects.isEmpty())     break;
+    if (rEffects.isEmpty()) {
+      break;
+    }
     int index;
     if (rEffects.size() == 1) {
       index=0;
@@ -18,7 +22,9 @@
     }
     ReplacementEffect rEffect=rEffects.get(index);
     caught=rEffect.replaceEvent(event,this.getAbility(rEffect.getId()),game);
-    if (caught)     break;
+    if (caught) {
+      break;
+    }
     consumed.add(rEffect.getId());
     game.applyEffects();
   }

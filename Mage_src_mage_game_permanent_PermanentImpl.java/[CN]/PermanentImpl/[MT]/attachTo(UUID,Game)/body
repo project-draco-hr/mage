@@ -6,4 +6,16 @@
     }
   }
   this.attachedTo=permanentId;
+  for (Iterator<Ability> it=this.getAbilities().iterator(); it.hasNext(); ) {
+    Ability ability=it.next();
+    for (Iterator<Effect> ite=ability.getEffects(game,Constants.EffectType.CONTINUOUS).iterator(); ite.hasNext(); ) {
+      ContinuousEffect effect=(ContinuousEffect)ite.next();
+      game.getContinuousEffects().setUniqueTimesstamp(effect);
+      for (      ContinuousEffect conEffect : game.getContinuousEffects().getLayeredEffects(game)) {
+        if (conEffect.getId().equals(effect.getId())) {
+          game.getContinuousEffects().setUniqueTimesstamp(conEffect);
+        }
+      }
+    }
+  }
 }
