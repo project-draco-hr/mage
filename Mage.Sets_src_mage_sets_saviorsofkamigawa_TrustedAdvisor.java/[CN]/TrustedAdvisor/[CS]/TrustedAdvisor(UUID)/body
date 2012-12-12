@@ -1,0 +1,15 @@
+{
+  super(ownerId,59,"Trusted Advisor",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{U}");
+  this.expansionSetCode="SOK";
+  this.subtype.add("Human");
+  this.subtype.add("Advisor");
+  this.color.setBlue(true);
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(2);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new MaximumHandSizeControllerEffect(2,Duration.WhileOnBattlefield,HandSizeModification.INCREASE)));
+  Ability ability=new BeginningOfUpkeepTriggeredAbility(new ReturnToHandTargetEffect(),TargetController.YOU,false);
+  TargetControlledPermanent t=new TargetControlledPermanent(filter);
+  t.setRequired(true);
+  ability.addTarget(t);
+  this.addAbility(ability);
+}
