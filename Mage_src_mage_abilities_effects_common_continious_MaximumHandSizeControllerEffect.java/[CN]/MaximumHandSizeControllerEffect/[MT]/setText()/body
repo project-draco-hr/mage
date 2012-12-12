@@ -1,19 +1,46 @@
 {
-  if (allPlayers && handSize == Integer.MAX_VALUE) {
-    staticText="All players have no maximum hand size";
-  }
-  if (!allPlayers && handSize == Integer.MAX_VALUE) {
-    staticText="You have no maximum hand size";
-  }
-  if (!allPlayers && staticText == null) {
-    StringBuilder sb=new StringBuilder("Your maximum hand size is ");
-    if (reduce) {
-      sb.append("reduced by ");
-      sb.append(Integer.toString(handSize));
+  StringBuilder sb=new StringBuilder();
+switch (targetController) {
+case ANY:
+    if (handSize == Integer.MAX_VALUE) {
+      sb.append("All players have no ");
     }
  else {
-      sb.append(Integer.toString(handSize));
+      sb.append("All players ");
     }
-    staticText=sb.toString();
-  }
+  break;
+case OPPONENT:
+if (handSize == Integer.MAX_VALUE) {
+  sb.append("Each opponent has no ");
+}
+ else {
+  sb.append("Each opponent's ");
+}
+break;
+case YOU:
+if (handSize == Integer.MAX_VALUE) {
+sb.append("You have no ");
+}
+ else {
+sb.append("Your ");
+}
+break;
+}
+sb.append("maximum hand size");
+if (handSizeModification.equals(HandSizeModification.INCREASE)) {
+sb.append(" is increased by ");
+}
+ else if (handSizeModification.equals(HandSizeModification.REDUCE)) {
+sb.append(" is reduced by ");
+}
+ else if (handSize != Integer.MAX_VALUE) {
+sb.append(" is ");
+}
+if (handSize != Integer.MAX_VALUE) {
+sb.append(handSize);
+}
+if (duration == Duration.EndOfGame) {
+sb.append(" for the rest of the game");
+}
+staticText=sb.toString();
 }
