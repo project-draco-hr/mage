@@ -1,0 +1,18 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    for (    UUID cardId : player.getGraveyard()) {
+      Card card=game.getCard(cardId);
+      if (card != null && card.getCardType().contains(CardType.LAND)) {
+        PlayLandFromGraveyardAbility ability=new PlayLandFromGraveyardAbility(card.getName());
+        if (ability != null) {
+          ability.setSourceId(cardId);
+          ability.setControllerId(card.getOwnerId());
+          game.getState().addOtherAbility(cardId,ability);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
