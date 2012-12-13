@@ -1,0 +1,24 @@
+{
+  List<UUID> creaturesBlocked=new ArrayList<UUID>();
+  List<UUID> players=new ArrayList<UUID>();
+  Permanent gomazoa=game.getPermanent(source.getSourceId());
+  if (gomazoa != null) {
+    gomazoa.moveToZone(Zone.LIBRARY,id,game,true);
+  }
+  BlockedByWatcher watcher=(BlockedByWatcher)game.getState().getWatchers().get("BlockedByWatcher",source.getSourceId());
+  creaturesBlocked=watcher.blockedByWatcher;
+  for (  UUID blockedById : creaturesBlocked) {
+    Permanent blockedByGomazoa=game.getPermanent(blockedById);
+    if (blockedByGomazoa != null && blockedByGomazoa.isAttacking()) {
+      players.add(blockedByGomazoa.getOwnerId());
+      blockedByGomazoa.moveToZone(Zone.LIBRARY,id,game,true);
+    }
+  }
+  for (  UUID player : players) {
+    Player owner=game.getPlayer(player);
+    if (owner != null) {
+      owner.shuffleLibrary(game);
+    }
+  }
+  return true;
+}
