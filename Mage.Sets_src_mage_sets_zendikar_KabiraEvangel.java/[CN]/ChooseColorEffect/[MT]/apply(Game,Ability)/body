@@ -1,0 +1,13 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent perm=game.getPermanent(source.getSourceId());
+  if (player != null && perm != null) {
+    ChoiceColor colorChoice=new ChoiceColor();
+    if (player.choose(Constants.Outcome.Benefit,colorChoice,game)) {
+      game.informPlayers(perm.getName() + ": " + player.getName()+ " has chosen "+ colorChoice.getChoice());
+      game.getState().setValue(perm.getId() + "_color",colorChoice.getColor());
+      game.addEffect(new GainProtectionFromChosenColorEffect(),source);
+    }
+  }
+  return false;
+}
