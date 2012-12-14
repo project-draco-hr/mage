@@ -7,13 +7,18 @@
   this.color.setBlack(true);
   this.power=new MageInt(3);
   this.toughness=new MageInt(3);
+  String rule="Gain control of target Vampire for as long as you control Olivia Voldaren";
+  FilterPermanent filter2=new FilterPermanent();
+  filter2.add(new ControllerPredicate(Constants.TargetController.YOU));
+  filter2.add(new CardIdPredicate(this.getId()));
   this.addAbility(FlyingAbility.getInstance());
   Ability ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new DamageTargetEffect(1),new ManaCostsImpl("{1}{R}"));
   ability.addTarget(new TargetCreaturePermanent(filter));
   ability.addEffect(new AddCardSubTypeTargetEffect("Vampire",Constants.Duration.WhileOnBattlefield));
   ability.addEffect(new AddCountersSourceEffect(CounterType.P1P1.createInstance()));
   this.addAbility(ability);
-  Ability ability2=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new GainControlTargetEffect(Constants.Duration.WhileOnBattlefield),new ManaCostsImpl("{3}{B}{B}"));
+  ConditionalContinousEffect effect=new ConditionalContinousEffect(new GainControlTargetEffect(Constants.Duration.Custom),new ControlsPermanentCondition(filter2),rule);
+  Ability ability2=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,effect,new ManaCostsImpl("{3}{B}{B}"));
   ability2.addTarget(new TargetCreaturePermanent(vampireFilter));
   this.addAbility(ability2);
 }
