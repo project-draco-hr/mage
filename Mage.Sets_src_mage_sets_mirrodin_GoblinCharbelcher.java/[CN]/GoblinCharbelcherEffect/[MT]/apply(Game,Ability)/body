@@ -1,0 +1,51 @@
+{
+  boolean isMountain=false;
+  Card sourceCard=game.getCard(source.getSourceId());
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null || sourceCard == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl(Constants.Zone.PICK);
+  while (player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      cards.add(card);
+      if (card.getCardType().contains(CardType.LAND)) {
+        if (card.getSubtype().contains("Mountain")) {
+          isMountain=true;
+        }
+        break;
+      }
+    }
+ else {
+      break;
+    }
+  }
+  player.revealCards(sourceCard.getName(),cards,game);
+  int damage=cards.size();
+  if (isMountain == true) {
+    damage*=2;
+  }
+  Permanent permanent=game.getPermanent(targetPointer.getFirst(game,source));
+  if (permanent != null) {
+    permanent.damage(damage,source.getSourceId(),game,true,false);
+  }
+ else {
+    Player targetPlayer=game.getPlayer(targetPointer.getFirst(game,source));
+    if (targetPlayer != null) {
+      targetPlayer.damage(damage,source.getSourceId(),game,false,true);
+    }
+  }
+  TargetCard target=new TargetCard(Constants.Zone.PICK,new FilterCard("card to put on the bottom of your library"));
+  target.setRequired(true);
+  while (cards.size() > 1) {
+    player.choose(Outcome.Neutral,cards,target,game);
+    Card card=cards.get(target.getFirstTarget(),game);
+    if (card != null) {
+      cards.remove(card);
+      card.moveToZone(Constants.Zone.PICK,source.getId(),game,false);
+    }
+    target.clearChosen();
+  }
+  return true;
+}
