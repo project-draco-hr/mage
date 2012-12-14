@@ -1,0 +1,14 @@
+{
+  Player player=game.getPlayer(event.getPlayerId());
+  if (player != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary();
+    if (player.searchLibrary(target,game)) {
+      Card card=game.getCard(target.getFirstTarget());
+      if (card != null) {
+        card.moveToZone(Constants.Zone.HAND,id,game,false);
+        player.shuffleLibrary(game);
+      }
+    }
+  }
+  return true;
+}
