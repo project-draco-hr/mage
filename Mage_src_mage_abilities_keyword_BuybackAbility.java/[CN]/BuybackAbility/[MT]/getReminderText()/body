@@ -1,18 +1,8 @@
 {
-  String costsReminderText=reminderTextCost;
-  StringBuilder costsText=new StringBuilder();
-  int costCounter=0;
-  for (  OptionalAdditionalCost cost : buybackCosts) {
-    if (costCounter > 0) {
-      costsText.append(" and ");
-    }
- else {
-      if (((Costs)cost).get(0) instanceof ManaCostsImpl) {
-        costsReminderText=reminderTextMana;
-      }
-    }
-    costsText.append(cost.getText(true));
-    ++costCounter;
+  if (buybackCost != null) {
+    return buybackCost.getReminderText();
   }
-  return costsReminderText.replace("{cost}",costsText);
+ else {
+    return "";
+  }
 }
