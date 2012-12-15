@@ -1,0 +1,14 @@
+{
+  FilterControlledLandPermanent filterSwamp=new FilterControlledLandPermanent("Swamp");
+  filterSwamp.add(new SubtypePredicate("Swamp"));
+  FilterControlledLandPermanent filterPlains=new FilterControlledLandPermanent("Plains");
+  filterPlains.add(new SubtypePredicate("Plains"));
+  if (game.getBattlefield().contains(filterSwamp,controllerId,1,game)) {
+    for (    UUID uuid : game.getOpponents(controllerId)) {
+      if (game.getBattlefield().contains(filterPlains,uuid,1,game)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
