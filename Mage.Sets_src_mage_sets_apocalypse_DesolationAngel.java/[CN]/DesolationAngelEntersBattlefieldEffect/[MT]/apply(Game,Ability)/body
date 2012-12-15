@@ -1,20 +1,9 @@
 {
   Card p=game.getCard(source.getSourceId());
-  boolean kicked=false;
-  if (p != null) {
-    for (    Object cost : p.getSpellAbility().getOptionalCosts()) {
-      if (cost instanceof KickerManaCost) {
-        if (((KickerManaCost)cost).isPaid()) {
-          kicked=true;
-        }
-      }
-    }
-  }
-  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents()) {
-    if (permanent.getCardType().contains(CardType.LAND)) {
-      if ((!kicked && permanent.getControllerId() == source.getControllerId()) || kicked) {
-        permanent.destroy(source.getSourceId(),game,false);
-      }
+  boolean kicked=KickedCondition.getInstance().apply(game,source);
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(new FilterLandPermanent(),game)) {
+    if ((!kicked && permanent.getControllerId() == source.getControllerId()) || kicked) {
+      permanent.destroy(source.getSourceId(),game,false);
     }
   }
   return true;
