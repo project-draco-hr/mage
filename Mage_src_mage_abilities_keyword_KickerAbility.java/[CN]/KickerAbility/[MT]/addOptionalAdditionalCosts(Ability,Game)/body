@@ -11,7 +11,7 @@
             int activated=kickerCost.getActivateCount();
             times=Integer.toString(activated + 1) + (activated == 0 ? " time " : " times ");
           }
-          if (player.chooseUse(Constants.Outcome.Benefit,"Pay " + times + kickerCost.getText(false)+ " ?",game)) {
+          if (kickerCost.canPay(sourceId,controllerId,game) && player.chooseUse(Constants.Outcome.Benefit,new StringBuilder("Pay ").append(times).append(kickerCost.getText(false)).append(" ?").toString(),game)) {
             kickerCost.activate();
             for (Iterator it=((Costs)kickerCost).iterator(); it.hasNext(); ) {
               Cost cost=(Cost)it.next();
