@@ -1,0 +1,40 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (player != null && permanent != null) {
+    int ageCounter=permanent.getCounters().getCount(CounterType.AGE);
+    if (cumulativeCost instanceof ManaCost) {
+      ManaCostsImpl totalCost=new ManaCostsImpl();
+      for (int i=0; i < ageCounter; i++) {
+        totalCost.add(cumulativeCost.copy());
+      }
+      if (player.chooseUse(Constants.Outcome.Benefit,"Pay " + totalCost.getText() + "?",game)) {
+        totalCost.clearPaid();
+        if (totalCost.payOrRollback(source,game,source.getId(),source.getControllerId())) {
+          return true;
+        }
+      }
+      permanent.sacrifice(source.getSourceId(),game);
+      return true;
+    }
+ else {
+      CostsImpl totalCost=new CostsImpl();
+      for (int i=0; i < ageCounter; i++) {
+        totalCost.add(cumulativeCost.copy());
+      }
+      if (player.chooseUse(Constants.Outcome.Benefit,totalCost.getText() + "?",game)) {
+        totalCost.clearPaid();
+        int bookmark=game.bookmarkState();
+        if (totalCost.pay(source,game,source.getId(),source.getControllerId(),false)) {
+          return true;
+        }
+ else {
+          game.restoreState(bookmark);
+        }
+      }
+      permanent.sacrifice(source.getSourceId(),game);
+      return true;
+    }
+  }
+  return false;
+}
