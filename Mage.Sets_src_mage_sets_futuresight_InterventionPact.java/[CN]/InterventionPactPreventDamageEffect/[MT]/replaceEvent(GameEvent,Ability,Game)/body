@@ -1,0 +1,16 @@
+{
+  GameEvent preventEvent=new GameEvent(GameEvent.EventType.PREVENT_DAMAGE,source.getFirstTarget(),source.getId(),source.getControllerId(),event.getAmount(),false);
+  if (!game.replaceEvent(preventEvent)) {
+    int prevented=event.getAmount();
+    event.setAmount(0);
+    this.used=true;
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.PREVENTED_DAMAGE,source.getFirstTarget(),source.getId(),source.getControllerId(),prevented));
+    if (prevented > 0) {
+      Player player=game.getPlayer(source.getControllerId());
+      if (player != null) {
+        player.gainLife(prevented,game);
+      }
+    }
+  }
+  return false;
+}

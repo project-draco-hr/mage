@@ -1,0 +1,14 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    if (player.chooseUse(Outcome.Benefit,"Pay " + cost.getText() + "?",game)) {
+      cost.clearPaid();
+      if (cost.pay(source,game,source.getId(),source.getControllerId(),false)) {
+        return true;
+      }
+    }
+    player.lost(game);
+    return true;
+  }
+  return false;
+}
