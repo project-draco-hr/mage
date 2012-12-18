@@ -1,0 +1,37 @@
+{
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (targetPlayer == null) {
+    return false;
+  }
+  Player you=game.getPlayer(source.getControllerId());
+  FilterControlledPermanent filter=new FilterControlledPermanent();
+  filter.add(new SubtypePredicate("Ally"));
+  int numberOfAllies=game.getBattlefield().countAll(filter,you.getId(),game);
+  Cards cardsInHand=new CardsImpl(Constants.Zone.PICK);
+  cardsInHand.addAll(targetPlayer.getHand());
+  int count=Math.min(cardsInHand.size(),numberOfAllies);
+  TargetCard target=new TargetCard(count,Constants.Zone.PICK,new FilterCard());
+  target.setRequired(true);
+  Cards revealedCards=new CardsImpl();
+  if (targetPlayer.choose(Constants.Outcome.DrawCard,cardsInHand,target,game)) {
+    List<UUID> targets=target.getTargets();
+    for (    UUID targetId : targets) {
+      Card card=game.getCard(targetId);
+      if (card != null) {
+        revealedCards.add(card);
+      }
+    }
+  }
+  TargetCard targetInHand=new TargetCard(Constants.Zone.PICK,new FilterCard("card to discard"));
+  targetInHand.setRequired(true);
+  if (!revealedCards.isEmpty()) {
+    targetPlayer.revealCards("Bala Ged Thief",revealedCards,game);
+    you.choose(Constants.Outcome.Neutral,revealedCards,targetInHand,game);
+    Card card=revealedCards.get(target.getFirstTarget(),game);
+    if (card != null) {
+      targetPlayer.discard(card,source,game);
+      game.informPlayers(targetPlayer + "discarded " + card.getName());
+    }
+  }
+  return true;
+}
