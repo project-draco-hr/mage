@@ -9,7 +9,9 @@
   int playerSeat=0;
   if (playerId != null) {
     for (    PlayerView player : game.getPlayers()) {
-      if (playerId.equals(player.getPlayerId()))       break;
+      if (playerId.equals(player.getPlayerId())) {
+        break;
+      }
       playerSeat++;
     }
   }
@@ -20,17 +22,27 @@
   c.fill=GridBagConstraints.BOTH;
   c.weightx=0.5;
   c.weighty=0.5;
-  if (oddNumber)   c.gridwidth=2;
+  if (oddNumber) {
+    c.gridwidth=2;
+  }
   c.gridx=col;
   c.gridy=row;
   this.pnlBattlefield.add(sessionPlayer,c);
   sessionPlayer.setVisible(true);
-  if (oddNumber)   col++;
+  if (oddNumber) {
+    col++;
+  }
   int playerNum=playerSeat + 1;
-  if (playerNum >= numSeats)   playerNum=0;
+  if (playerNum >= numSeats) {
+    playerNum=0;
+  }
   while (true) {
-    if (row == 1)     col++;
- else     col--;
+    if (row == 1) {
+      col++;
+    }
+ else {
+      col--;
+    }
     if (col >= numColumns) {
       row=0;
       col=numColumns - 1;
@@ -47,8 +59,12 @@
     this.pnlBattlefield.add(playerPanel,c);
     playerPanel.setVisible(true);
     playerNum++;
-    if (playerNum >= numSeats)     playerNum=0;
-    if (playerNum == playerSeat)     break;
+    if (playerNum >= numSeats) {
+      playerNum=0;
+    }
+    if (playerNum == playerSeat) {
+      break;
+    }
   }
   for (  PlayAreaPanel p : players.values()) {
     p.sizePlayer(smallMode);
