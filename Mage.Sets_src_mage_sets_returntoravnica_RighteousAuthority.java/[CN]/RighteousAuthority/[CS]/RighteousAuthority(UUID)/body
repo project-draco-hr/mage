@@ -9,9 +9,7 @@
   this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
   Ability ability=new EnchantAbility(auraTarget.getTargetName());
   this.addAbility(ability);
-  CardsInControllerHandCount boost=new CardsInControllerHandCount();
-  Ability gainedAbility=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostSourceEffect(boost,boost,Duration.WhileOnBattlefield));
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(gainedAbility,AttachmentType.AURA,Duration.WhileOnBattlefield,rule)));
-  Ability gainedAbility2=new BeginningOfDrawTriggeredAbility(new DrawCardControllerEffect(1),TargetController.YOU,false);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(gainedAbility2,AttachmentType.AURA,Duration.WhileOnBattlefield,rule2)));
+  CardsInEnchantedControllerHandCount boost=new CardsInEnchantedControllerHandCount();
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(boost,boost,Duration.WhileOnBattlefield)));
+  this.addAbility(new BeginningOfDrawTriggeredAbility(new DrawCardTargetEffect(1),TargetController.CONTROLLER_ATTACHED_TO,false));
 }
