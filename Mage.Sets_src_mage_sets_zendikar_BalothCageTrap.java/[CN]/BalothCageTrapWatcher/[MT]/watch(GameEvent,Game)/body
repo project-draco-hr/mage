@@ -1,0 +1,11 @@
+{
+  if (condition == true) {
+    return;
+  }
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).getToZone() == Constants.Zone.BATTLEFIELD) {
+    Permanent perm=game.getPermanent(event.getTargetId());
+    if (perm.getCardType().contains(CardType.ARTIFACT) && !perm.getControllerId().equals(controllerId)) {
+      condition=true;
+    }
+  }
+}
