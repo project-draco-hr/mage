@@ -1,7 +1,9 @@
 {
   Permanent creature=game.getPermanent(targetPointer.getFirst(game,source));
   Permanent permanent=game.getPermanent(source.getSourceId());
-  if (creature == null || permanent == null)   return false;
+  if (creature == null || permanent == null) {
+    return false;
+  }
   game.copyPermanent(creature,permanent,source,new ApplyToPermanent(){
     @Override public Boolean apply(    Game game,    Permanent permanent){
       Ability upkeepAbility=new BeginningOfUpkeepTriggeredAbility(new CryptoplasmTransformEffect(),Constants.TargetController.YOU,true);
