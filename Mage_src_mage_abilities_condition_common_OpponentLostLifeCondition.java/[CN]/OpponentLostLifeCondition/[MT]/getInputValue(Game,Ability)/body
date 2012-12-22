@@ -1,0 +1,13 @@
+{
+  int maxLostLive=0;
+  PlayerLostLifeWatcher watcher=(PlayerLostLifeWatcher)game.getState().getWatchers().get("PlayerLostLifeWatcher");
+  if (watcher != null) {
+    for (    UUID opponentId : game.getOpponents(source.getControllerId())) {
+      int lostLive=watcher.getLiveLost(opponentId);
+      if (lostLive > maxLostLive) {
+        maxLostLive=lostLive;
+      }
+    }
+  }
+  return maxLostLive;
+}

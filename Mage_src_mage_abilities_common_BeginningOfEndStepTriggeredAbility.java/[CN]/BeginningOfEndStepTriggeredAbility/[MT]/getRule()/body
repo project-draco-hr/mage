@@ -1,0 +1,22 @@
+{
+  StringBuilder sb=new StringBuilder(getEffects().getText(modes.getMode()));
+  if (this.optional) {
+    if (sb.substring(0,6).toLowerCase().equals("target")) {
+      sb.insert(0,"you may have ");
+    }
+ else     if (!sb.substring(0,4).toLowerCase().equals("you ")) {
+      sb.insert(0,"you may ");
+    }
+  }
+switch (targetController) {
+case YOU:
+    return sb.insert(0,generateConditionString()).insert(0,"At the beginning of your end step, ").toString();
+case OPPONENT:
+  return sb.insert(0,generateConditionString()).insert(0,"At the beginning of each opponent's end step, ").toString();
+case ANY:
+return sb.insert(0,generateConditionString()).insert(0,"At the beginning of each end step, ").toString();
+case CONTROLLER_ATTACHED_TO:
+return sb.insert(0,generateConditionString()).insert(0,"At the beginning of the end step of enchanted creature's controller, ").toString();
+}
+return "";
+}
