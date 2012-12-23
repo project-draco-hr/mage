@@ -1,0 +1,18 @@
+{
+  if (event.getType() == GameEvent.EventType.UNTAP_STEP_PRE) {
+    reset();
+  }
+  if (event.getType() == GameEvent.EventType.GAINED_LIFE) {
+    UUID playerId=event.getPlayerId();
+    if (playerId != null) {
+      Integer amount=amountOfLifeGainedThisTurn.get(playerId);
+      if (amount == null) {
+        amount=Integer.valueOf(event.getAmount());
+      }
+ else {
+        amount=Integer.valueOf(amount + event.getAmount());
+      }
+      amountOfLifeGainedThisTurn.put(playerId,amount);
+    }
+  }
+}
