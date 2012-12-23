@@ -1,0 +1,14 @@
+{
+  if (condition == true) {
+    return;
+  }
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).getToZone() == Constants.Zone.BATTLEFIELD) {
+    Permanent perm=game.getPermanent(event.getTargetId());
+    if (perm.getCardType().contains(CardType.LAND) && !perm.getControllerId().equals(controllerId)) {
+      landPlayed+=1;
+      if (landPlayed >= 2) {
+        condition=true;
+      }
+    }
+  }
+}
