@@ -1,13 +1,14 @@
 {
-  CardPanel enlargedCardPanel, enlargedAnimationPanel;
+  final CardPanel overPanel, animationPanel;
 synchronized (enlargeLock) {
-    enlargedCardPanel=Animation.enlargedCardPanel;
-    enlargedAnimationPanel=Animation.enlargedAnimationPanel;
-    if (enlargedAnimationPanel == null)     return;
+    overPanel=Animation.enlargedCardPanel;
+    animationPanel=Animation.enlargedAnimationPanel;
+    if (animationPanel == null) {
+      return;
+    }
     Animation.enlargedCardPanel=null;
     Animation.enlargedAnimationPanel=null;
   }
-  final CardPanel overPanel=enlargedCardPanel, animationPanel=enlargedAnimationPanel;
   animationPanel.setAnimationPanel(true);
   final JLayeredPane layeredPane=SwingUtilities.getRootPane(overPanel).getLayeredPane();
   layeredPane.setLayer(animationPanel,JLayeredPane.MODAL_LAYER);
@@ -16,7 +17,7 @@ synchronized (enlargeLock) {
   final int endWidth=overPanel.getCardWidth();
   final int endHeight=Math.round(endWidth * CardPanel.ASPECT_RATIO);
   new Animation(200){
-    protected void update(    float percentage){
+    @Override protected void update(    float percentage){
       int currentWidth=startWidth + Math.round((endWidth - startWidth) * percentage);
       int currentHeight=startHeight + Math.round((endHeight - startHeight) * percentage);
       Point startPos=SwingUtilities.convertPoint(overPanel.getParent(),overPanel.getCardLocation(),layeredPane);
@@ -29,11 +30,11 @@ synchronized (enlargeLock) {
       animationPanel.tappedAngle=overPanel.tappedAngle * percentage;
       animationPanel.setCardBounds(currentX,currentY,currentWidth,currentHeight);
     }
-    protected void end(){
+    @Override protected void end(){
       animationPanel.setVisible(false);
       animationPanel.repaint();
       EventQueue.invokeLater(new Runnable(){
-        public void run(){
+        @Override public void run(){
           layeredPane.remove(animationPanel);
         }
       }

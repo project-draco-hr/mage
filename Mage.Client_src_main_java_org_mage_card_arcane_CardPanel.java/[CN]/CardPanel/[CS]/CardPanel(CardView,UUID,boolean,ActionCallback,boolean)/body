@@ -61,7 +61,6 @@
   add(imagePanel);
   imagePanel.setScaleLarger(true);
   imagePanel.setScalingType(ScalingType.nearestNeighbor);
-  imagePanel.setScalingBlur(true);
   imagePanel.setScalingMultiPassType(MultipassType.none);
   String cardType=getType(newGameCard);
   popupText.setText(getText(cardType,newGameCard));
@@ -70,7 +69,9 @@
       try {
         tappedAngle=isTapped() ? CardPanel.TAPPED_ANGLE : 0;
         flippedAngle=isFlipped() ? CardPanel.FLIPPED_ANGLE : 0;
-        if (!loadImage || gameCard.isFaceDown())         return;
+        if (!loadImage || gameCard.isFaceDown()) {
+          return;
+        }
         BufferedImage srcImage=ImageCache.getThumbnail(gameCard);
         if (srcImage != null) {
           hasImage=true;

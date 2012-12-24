@@ -1,12 +1,18 @@
 {
-  if (ui == null)   throw new RuntimeException("Error: no components");
-  JComponent component2=ui.get("battlefieldPanel");
-  if (component2 == null)   throw new RuntimeException("Error: battlefieldPanel is missing");
-  JLayeredPane battlefieldPanel=(JLayeredPane)component2;
+  if (ui == null) {
+    throw new RuntimeException("Error: no components");
+  }
+  JComponent component=ui.get("battlefieldPanel");
+  if (component == null) {
+    throw new RuntimeException("Error: battlefieldPanel is missing");
+  }
+  JLayeredPane battlefieldPanel=(JLayeredPane)component;
   JComponent jPanel=ui.get("jPanel");
   Row allLands=new Row();
   outerLoop:   for (  MagePermanent permanent : permanents) {
-    if (!CardUtil.isLand(permanent) || CardUtil.isCreature(permanent))     continue;
+    if (!CardUtil.isLand(permanent) || CardUtil.isCreature(permanent)) {
+      continue;
+    }
     int insertIndex=-1;
     for (int i=0, n=allLands.size(); i < n; i++) {
       Stack stack=allLands.get(i);
@@ -23,7 +29,9 @@
         stack.add(0,permanent);
         continue outerLoop;
       }
-      if (insertIndex != -1)       break;
+      if (insertIndex != -1) {
+        break;
+      }
     }
     Stack stack=new Stack();
     stack.add(permanent);
@@ -46,11 +54,11 @@
   while (true) {
     rows.clear();
     cardHeight=Math.round(cardWidth * CardPanel.ASPECT_RATIO);
-    extraCardSpacingX=(int)Math.round(cardWidth * EXTRA_CARD_SPACING_X);
+    extraCardSpacingX=Math.round(cardWidth * EXTRA_CARD_SPACING_X);
     cardSpacingX=cardHeight - cardWidth + extraCardSpacingX;
-    cardSpacingY=(int)Math.round(cardHeight * CARD_SPACING_Y);
-    stackSpacingX=stackVertical ? 0 : (int)Math.round(cardWidth * STACK_SPACING_X);
-    stackSpacingY=(int)Math.round(cardHeight * STACK_SPACING_Y);
+    cardSpacingY=Math.round(cardHeight * CARD_SPACING_Y);
+    stackSpacingX=stackVertical ? 0 : Math.round(cardWidth * STACK_SPACING_X);
+    stackSpacingY=Math.round(cardHeight * STACK_SPACING_Y);
     Row creatures=(Row)allCreatures.clone();
     Row lands=(Row)allLands.clone();
     Row others=(Row)allOthers.clone();
@@ -58,15 +66,25 @@
     int afterCreaturesIndex=rows.size();
     wrap(lands,rows,afterCreaturesIndex);
     List<Row> storedRows=new ArrayList<Row>(rows.size());
-    for (    Row row : rows)     storedRows.add((Row)row.clone());
+    for (    Row row : rows) {
+      storedRows.add((Row)row.clone());
+    }
     Row storedOthers=(Row)others.clone();
-    for (    Row row : rows)     fillRow(others,rows,row);
-    if (creatures.isEmpty() && lands.isEmpty() && others.isEmpty())     break;
+    for (    Row row : rows) {
+      fillRow(others,rows,row);
+    }
+    if (creatures.isEmpty() && lands.isEmpty() && others.isEmpty()) {
+      break;
+    }
     rows=storedRows;
     others=storedOthers;
     wrap(others,rows,afterCreaturesIndex);
-    for (    Row row : rows)     fillRow(others,rows,row);
-    if (creatures.isEmpty() && lands.isEmpty() && others.isEmpty())     break;
+    for (    Row row : rows) {
+      fillRow(others,rows,row);
+    }
+    if (creatures.isEmpty() && lands.isEmpty() && others.isEmpty()) {
+      break;
+    }
     cardWidth-=3;
   }
   int x, y=GUTTER_Y;
@@ -82,7 +100,6 @@
     y=rowBottom;
     maxRowWidth=Math.max(maxRowWidth,x);
   }
-  x=0;
   y=GUTTER_Y;
   for (  Row row : rows) {
     int rowBottom=0;
@@ -91,12 +108,16 @@
       Stack stack=row.get(stackIndex);
       if (othersOnTheRight && RowType.other.isType(stack.get(0))) {
         x=playAreaWidth - GUTTER_X + extraCardSpacingX;
-        for (int i=stackIndex, n=row.size(); i < n; i++)         x-=row.get(i).getWidth();
+        for (int i=stackIndex, n=row.size(); i < n; i++) {
+          x-=row.get(i).getWidth();
+        }
       }
       for (int panelIndex=0, panelCount=stack.size(); panelIndex < panelCount; panelIndex++) {
         MagePermanent panel=stack.get(panelIndex);
         int stackPosition=panelCount - panelIndex - 1;
-        if (jPanel != null)         jPanel.setComponentZOrder(panel,panelIndex);
+        if (jPanel != null) {
+          jPanel.setComponentZOrder(panel,panelIndex);
+        }
         int panelX=x + (stackPosition * stackSpacingX);
         int panelY=y + (stackPosition * stackSpacingY);
         try {

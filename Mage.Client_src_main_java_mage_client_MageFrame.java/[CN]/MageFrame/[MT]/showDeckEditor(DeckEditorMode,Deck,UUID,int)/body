@@ -1,16 +1,20 @@
 {
   String name;
-  if (mode == DeckEditorMode.Sideboard || mode == DeckEditorMode.Limited)   name="Deck Editor - " + tableId.toString();
+  if (mode == DeckEditorMode.Sideboard || mode == DeckEditorMode.Limited) {
+    name="Deck Editor - " + tableId.toString();
+  }
  else {
-    if (deck != null)     name="Deck Editor - " + deck.getName();
- else     name="Deck Editor";
+    if (deck != null) {
+      name="Deck Editor - " + deck.getName();
+    }
+ else {
+      name="Deck Editor";
+    }
     JInternalFrame[] windows=desktopPane.getAllFramesInLayer(JLayeredPane.DEFAULT_LAYER);
     for (    JInternalFrame window : windows) {
-      if (window instanceof DeckEditorPane) {
-        if (window.getTitle().equals(name)) {
-          setActive((MagePane)window);
-          return;
-        }
+      if (window instanceof DeckEditorPane && window.getTitle().equals(name)) {
+        setActive((MagePane)window);
+        return;
       }
     }
   }

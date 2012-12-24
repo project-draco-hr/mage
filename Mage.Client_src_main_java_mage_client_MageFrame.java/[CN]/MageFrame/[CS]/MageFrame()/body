@@ -71,7 +71,9 @@
         backgroundPane.setSize(width,height);
       }
       JPanel arrowsPanel=ArrowBuilder.getArrowsPanelRef();
-      if (arrowsPanel != null)       arrowsPanel.setSize(width,height);
+      if (arrowsPanel != null) {
+        arrowsPanel.setSize(width,height);
+      }
       if (title != null) {
         title.setBounds((int)(width - titleRectangle.getWidth()) / 2,(int)(height - titleRectangle.getHeight()) / 2,titleRectangle.width,titleRectangle.height);
       }
@@ -89,7 +91,7 @@
     btnDownloadSymbols.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
     btnDownloadSymbols.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
     btnDownloadSymbols.addActionListener(new java.awt.event.ActionListener(){
-      public void actionPerformed(      java.awt.event.ActionEvent evt){
+      @Override public void actionPerformed(      java.awt.event.ActionEvent evt){
         btnSymbolsActionPerformed(evt);
       }
     }
@@ -103,7 +105,7 @@
     btnDownload.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
     btnDownload.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
     btnDownload.addActionListener(new java.awt.event.ActionListener(){
-      public void actionPerformed(      java.awt.event.ActionEvent evt){
+      @Override public void actionPerformed(      java.awt.event.ActionEvent evt){
         btnImagesActionPerformed(evt);
       }
     }
@@ -120,11 +122,15 @@
   }
   ui.addButton(MageComponents.TABLES_MENU_BUTTON,btnGames);
   SwingUtilities.invokeLater(new Runnable(){
-    public void run(){
+    @Override public void run(){
       disableButtons();
-      if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_IMAGES_CHECK,"true").equals("true"))       checkForNewImages();
+      if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_IMAGES_CHECK,"true").equals("true")) {
+        checkForNewImages();
+      }
       logger.info("Client start up time: " + ((System.currentTimeMillis() - startTime) / 1000 + " seconds"));
-      if (autoConnect())       enableButtons();
+      if (autoConnect()) {
+        enableButtons();
+      }
  else {
         connectDialog.showDialog();
       }

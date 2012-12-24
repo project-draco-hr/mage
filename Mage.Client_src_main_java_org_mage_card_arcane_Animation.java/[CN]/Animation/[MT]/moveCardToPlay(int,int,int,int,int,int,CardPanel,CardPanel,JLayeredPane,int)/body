@@ -1,6 +1,6 @@
 {
   UI.invokeLater(new Runnable(){
-    public void run(){
+    @Override public void run(){
       final int startHeight=Math.round(startWidth * CardPanel.ASPECT_RATIO);
       final int endHeight=Math.round(endWidth * CardPanel.ASPECT_RATIO);
       final float a=2f;
@@ -8,42 +8,43 @@
       animationPanel.setCardBounds(startX,startY,startWidth,startHeight);
       animationPanel.setAnimationPanel(true);
       Container parent=animationPanel.getParent();
-      if (parent != layeredPane) {
+      if (parent != null && !parent.equals(layeredPane)) {
         layeredPane.add(animationPanel);
         layeredPane.setLayer(animationPanel,JLayeredPane.MODAL_LAYER);
       }
       new Animation(700){
-        protected void update(        float percentage){
+        @Override protected void update(        float percentage){
+          float percent=percentage;
           if (placeholder != null && !placeholder.isShowing()) {
             cancel();
             return;
           }
-          int currentX=startX + Math.round((endX - startX + endWidth / 2f) * percentage);
-          int currentY=startY + Math.round((endY - startY + endHeight / 2f) * percentage);
+          int currentX=startX + Math.round((endX - startX + endWidth / 2f) * percent);
+          int currentY=startY + Math.round((endY - startY + endHeight / 2f) * percent);
           int currentWidth, currentHeight;
           int midWidth=Math.max(200,endWidth * 2);
           int midHeight=Math.round(midWidth * CardPanel.ASPECT_RATIO);
-          if (percentage <= 0.5f) {
-            percentage=percentage * 2;
-            float pp=sqrta * (1 - percentage);
-            percentage=1 - a * pp * pp;
-            currentWidth=startWidth + Math.round((midWidth - startWidth) * percentage);
-            currentHeight=startHeight + Math.round((midHeight - startHeight) * percentage);
+          if (percent <= 0.5f) {
+            percent=percent * 2;
+            float pp=sqrta * (1 - percent);
+            percent=1 - a * pp * pp;
+            currentWidth=startWidth + Math.round((midWidth - startWidth) * percent);
+            currentHeight=startHeight + Math.round((midHeight - startHeight) * percent);
           }
  else {
-            percentage=(percentage - 0.5f) * 2;
-            float pp=sqrta * percentage;
-            percentage=a * pp * pp;
-            currentWidth=midWidth + Math.round((endWidth - midWidth) * percentage);
-            currentHeight=midHeight + Math.round((endHeight - midHeight) * percentage);
+            percent=(percent - 0.5f) * 2;
+            float pp=sqrta * percent;
+            percent=a * pp * pp;
+            currentWidth=midWidth + Math.round((endWidth - midWidth) * percent);
+            currentHeight=midHeight + Math.round((endHeight - midHeight) * percent);
           }
-          currentX-=Math.round(currentWidth / 2);
-          currentY-=Math.round(currentHeight / 2);
+          currentX-=currentWidth / 2;
+          currentY-=currentHeight / 2;
           animationPanel.setCardBounds(currentX,currentY,currentWidth,currentHeight);
         }
-        protected void end(){
+        @Override protected void end(){
           EventQueue.invokeLater(new Runnable(){
-            public void run(){
+            @Override public void run(){
               if (placeholder != null) {
                 placeholder.setDisplayEnabled(true);
                 placeholder.setImage(animationPanel);

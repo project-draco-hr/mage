@@ -5,8 +5,12 @@
     Stack stack=sourceRow.get(i);
     int rowWidth=currentRow.getWidth();
     if (!currentRow.isEmpty() && rowWidth + stack.getWidth() > playAreaWidth) {
-      if (!allowHeightOverflow && rowWidth > playAreaWidth)       break;
-      if (!allowHeightOverflow && getRowsHeight(rows) + sourceRow.getHeight() > playAreaHeight)       break;
+      if (!allowHeightOverflow && rowWidth > playAreaWidth) {
+        break;
+      }
+      if (!allowHeightOverflow && getRowsHeight(rows) + sourceRow.getHeight() > playAreaHeight) {
+        break;
+      }
       rows.add(insertIndex == -1 ? rows.size() : insertIndex,currentRow);
       currentRow=new Row();
     }
@@ -20,6 +24,10 @@
       }
     }
   }
-  for (  Row row : rows)   for (  Stack stack : row)   sourceRow.remove(stack);
+  for (  Row row : rows) {
+    for (    Stack stack : row) {
+      sourceRow.remove(stack);
+    }
+  }
   return insertIndex;
 }

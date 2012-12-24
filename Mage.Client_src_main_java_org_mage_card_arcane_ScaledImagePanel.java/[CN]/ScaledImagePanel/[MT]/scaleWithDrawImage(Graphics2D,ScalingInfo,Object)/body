@@ -1,8 +1,12 @@
 {
   g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,hint);
   int tempDestWidth=info.srcWidth / 2, tempDestHeight=info.srcHeight / 2;
-  if (tempDestWidth < info.targetWidth)   tempDestWidth=info.targetWidth;
-  if (tempDestHeight < info.targetHeight)   tempDestHeight=info.targetHeight;
+  if (tempDestWidth < info.targetWidth) {
+    tempDestWidth=info.targetWidth;
+  }
+  if (tempDestHeight < info.targetHeight) {
+    tempDestHeight=info.targetHeight;
+  }
   Image srcImage=getSourceImage(info);
   if (multiPassType == MultipassType.none || (tempDestWidth == info.targetWidth && tempDestHeight == info.targetHeight)) {
     g2.drawImage(srcImage,info.x,info.y,info.targetWidth,info.targetHeight,null);
@@ -27,13 +31,19 @@ int tempSrcHeight=tempDestHeight;
 while (true) {
 if (tempDestWidth > info.targetWidth) {
 tempDestWidth=tempDestWidth / 2;
-if (tempDestWidth < info.targetWidth) tempDestWidth=info.targetWidth;
+if (tempDestWidth < info.targetWidth) {
+tempDestWidth=info.targetWidth;
+}
 }
 if (tempDestHeight > info.targetHeight) {
 tempDestHeight=tempDestHeight / 2;
-if (tempDestHeight < info.targetHeight) tempDestHeight=info.targetHeight;
+if (tempDestHeight < info.targetHeight) {
+tempDestHeight=info.targetHeight;
 }
-if (tempDestWidth == info.targetWidth && tempDestHeight == info.targetHeight) break;
+}
+if (tempDestWidth == info.targetWidth && tempDestHeight == info.targetHeight) {
+break;
+}
 g2temp.drawImage(tempImage,0,0,tempDestWidth,tempDestHeight,0,0,tempSrcWidth,tempSrcHeight,null);
 tempSrcWidth=tempDestWidth;
 tempSrcHeight=tempDestHeight;
