@@ -1,10 +1,13 @@
 {
   List<Card> chosen=new ArrayList<Card>();
   Player you=game.getPlayer(source.getControllerId());
-  if (you != null) {
+  Permanent sourceCreature=game.getPermanent(source.getSourceId());
+  if (you != null && sourceCreature != null) {
     Choice choiceImpl=new ChoiceImpl();
     choiceImpl.setChoices(choice);
-    while (!you.choose(outcome.Neutral,choiceImpl,game))     ;
+    while (!you.choose(Outcome.Neutral,choiceImpl,game)) {
+    }
+    ;
     CardType type=null;
     String choosenType=choiceImpl.getChoice();
     if (choosenType.equals(CardType.ARTIFACT.toString())) {
@@ -31,9 +34,8 @@
  else     if (choosenType.equals(CardType.TRIBAL.toString())) {
       type=CardType.TRIBAL;
     }
-    FilterPermanent filter=new FilterPermanent();
+    FilterPermanent filter=new FilterControlledPermanent(new StringBuilder("permanent you control of type ").append(type.toString()).toString());
     filter.add(new CardTypePredicate(type));
-    System.out.println("The type chosen is " + type.toString());
     TargetPermanent target=new TargetControlledPermanent(1,1,filter,false);
     target.setRequired(true);
     target.setNotTarget(true);
