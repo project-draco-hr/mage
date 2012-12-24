@@ -15,21 +15,16 @@
       return;
     }
     CombatUtil.sortByPower(attackers,false);
-    CombatInfo combatInfo=CombatUtil.blockWithGoodTrade(game,attackers,possibleBlockers);
     Player player=game.getPlayer(this.playerId);
-    boolean blocked=false;
-    for (    Map.Entry<Permanent,List<Permanent>> entry : combatInfo.getCombat().entrySet()) {
-      UUID attackerId=entry.getKey().getId();
-      List<Permanent> blockers=entry.getValue();
-      if (blockers != null) {
-        for (        Permanent blocker : blockers) {
-          player.declareBlocker(blocker.getId(),attackerId,game);
-          blocked=true;
+    Player attackingPlayer=game.getPlayer(attackers.get(0).getControllerId());
+    for (    Permanent attacker : attackers) {
+      for (      Permanent blocker : possibleBlockers) {
+        if (attacker.getPower().getValue() < blocker.getToughness().getValue() || attacker.getToughness().getValue() < blocker.getPower().getValue() || attacker.getPower().getValue() >= attackingPlayer.getLife()) {
+          if (blocker.getBlocking() == 0) {
+            player.declareBlocker(blocker.getId(),attacker.getId(),game);
+          }
         }
       }
-    }
-    if (blocked) {
-      game.getPlayers().resetPassed();
     }
   }
 }
