@@ -1,0 +1,16 @@
+{
+  Permanent sourcePermanent=game.getPermanent(sourceAbility.getSourceId());
+  if (sourcePermanent != null) {
+    for (    Ability ability : sourcePermanent.getAbilities()) {
+      if (ability instanceof DevourAbility) {
+        for (        Effect effect : ability.getEffects()) {
+          if (effect instanceof DevourEffect) {
+            DevourEffect devourEffect=(DevourEffect)effect;
+            return devourEffect.getDevouredCreaturesAmount(game,sourcePermanent.getId()) * multiplier;
+          }
+        }
+      }
+    }
+  }
+  return 0;
+}
