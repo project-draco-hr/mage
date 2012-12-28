@@ -1,0 +1,27 @@
+{
+  Card card=game.getCard(source.getSourceId());
+  if (card != null && game.getState().getZone(source.getSourceId()) == Zone.GRAVEYARD) {
+    Player owner=game.getPlayer(card.getOwnerId());
+    if (card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true)) {
+      Library lib=game.getPlayer(source.getControllerId()).getLibrary();
+      if (lib != null) {
+        Card card1=lib.removeFromTop(game);
+        if (card1.getId().equals(source.getSourceId())) {
+          Card card2=lib.removeFromTop(game);
+          Card card3=lib.removeFromTop(game);
+          if (card1 != null) {
+            lib.putOnTop(card1,game);
+          }
+          if (card3 != null) {
+            lib.putOnTop(card3,game);
+          }
+          if (card2 != null) {
+            lib.putOnTop(card2,game);
+          }
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
