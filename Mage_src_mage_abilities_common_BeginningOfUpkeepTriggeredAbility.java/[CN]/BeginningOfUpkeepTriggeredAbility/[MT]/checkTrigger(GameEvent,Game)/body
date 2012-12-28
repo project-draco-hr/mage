@@ -3,7 +3,7 @@
 switch (targetController) {
 case YOU:
       boolean yours=event.getPlayerId().equals(this.controllerId);
-    if (yours) {
+    if (yours && setTargetPointer) {
       if (getTargets().size() == 0) {
         for (        Effect effect : this.getEffects()) {
           effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
@@ -13,7 +13,7 @@ case YOU:
   return yours;
 case OPPONENT:
 if (game.getOpponents(this.controllerId).contains(event.getPlayerId())) {
-  if (getTargets().size() == 0) {
+  if (setTargetPointer && getTargets().size() == 0) {
     for (    Effect effect : this.getEffects()) {
       effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
     }
@@ -22,7 +22,7 @@ if (game.getOpponents(this.controllerId).contains(event.getPlayerId())) {
 }
 break;
 case ANY:
-if (getTargets().size() == 0) {
+if (setTargetPointer && getTargets().size() == 0) {
 for (Effect effect : this.getEffects()) {
 effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
 }
@@ -33,7 +33,7 @@ Permanent attachment=game.getPermanent(sourceId);
 if (attachment != null && attachment.getAttachedTo() != null) {
 Permanent attachedTo=game.getPermanent(attachment.getAttachedTo());
 if (attachedTo != null && attachedTo.getControllerId().equals(event.getPlayerId())) {
-if (getTargets().size() == 0) {
+if (setTargetPointer && getTargets().size() == 0) {
 for (Effect effect : this.getEffects()) {
 effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
 }
