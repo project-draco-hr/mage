@@ -2,13 +2,17 @@
   inRange.clear();
   if (range == RangeOfInfluence.ALL) {
     for (    Player player : game.getPlayers().values()) {
-      if (!player.hasLeft())       inRange.add(player.getId());
+      if (!player.hasLeft()) {
+        inRange.add(player.getId());
+      }
     }
   }
  else {
     if ((range.getRange() * 2) + 1 >= game.getPlayers().size()) {
       for (      Player player : game.getPlayers().values()) {
-        if (!player.hasLeft())         inRange.add(player.getId());
+        if (!player.hasLeft()) {
+          inRange.add(player.getId());
+        }
       }
     }
  else {
@@ -16,13 +20,17 @@
       PlayerList players=game.getState().getPlayerList(playerId);
       for (int i=0; i < range.getRange(); i++) {
         Player player=players.getNext(game);
-        while (player.hasLeft())         player=players.getNext(game);
+        while (player.hasLeft()) {
+          player=players.getNext(game);
+        }
         inRange.add(player.getId());
       }
       players=game.getState().getPlayerList(playerId);
       for (int i=0; i < range.getRange(); i++) {
         Player player=players.getPrevious(game);
-        while (player.hasLeft())         player=players.getPrevious(game);
+        while (player.hasLeft()) {
+          player=players.getPrevious(game);
+        }
         inRange.add(player.getId());
       }
     }

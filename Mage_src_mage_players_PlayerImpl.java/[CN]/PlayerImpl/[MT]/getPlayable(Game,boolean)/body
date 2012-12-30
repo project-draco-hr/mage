@@ -5,17 +5,23 @@
   if (hidden) {
     for (    Card card : hand.getUniqueCards(game)) {
       for (      ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
-        if (canPlay(ability,available,game))         playable.add(ability);
+        if (canPlay(ability,available,game)) {
+          playable.add(ability);
+        }
       }
     }
   }
   for (  Card card : graveyard.getUniqueCards(game)) {
     for (    ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.GRAVEYARD)) {
-      if (canPlay(ability,available,game))       playable.add(ability);
+      if (canPlay(ability,available,game)) {
+        playable.add(ability);
+      }
     }
     if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,game)) {
       for (      ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
-        if (ability instanceof SpellAbility || ability instanceof PlayLandAbility)         playable.add(ability);
+        if (ability instanceof SpellAbility || ability instanceof PlayLandAbility) {
+          playable.add(ability);
+        }
       }
     }
   }
@@ -23,7 +29,9 @@
     for (    Card card : exile.getCards(game)) {
       if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,game)) {
         for (        ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
-          if (ability instanceof SpellAbility || ability instanceof PlayLandAbility)           playable.add(ability);
+          if (ability instanceof SpellAbility || ability instanceof PlayLandAbility) {
+            playable.add(ability);
+          }
         }
       }
     }
@@ -32,7 +40,9 @@
     for (    Card card : cards.getCards(game)) {
       if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,game)) {
         for (        ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
-          if (ability instanceof SpellAbility || ability instanceof PlayLandAbility)           playable.add(ability);
+          if (ability instanceof SpellAbility || ability instanceof PlayLandAbility) {
+            playable.add(ability);
+          }
         }
       }
     }
@@ -40,7 +50,11 @@
   Map<String,Ability> playableActivated=new HashMap<String,Ability>();
   for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
     for (    ActivatedAbility ability : permanent.getAbilities().getActivatedAbilities(Zone.BATTLEFIELD)) {
-      if (!playableActivated.containsKey(ability.toString()))       if (canPlay(ability,available,game))       playableActivated.put(ability.toString(),ability);
+      if (!playableActivated.containsKey(ability.toString())) {
+        if (canPlay(ability,available,game)) {
+          playableActivated.put(ability.toString(),ability);
+        }
+      }
     }
   }
   playable.addAll(playableActivated.values());
