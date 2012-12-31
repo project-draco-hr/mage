@@ -1,0 +1,16 @@
+{
+  Game sim=game.copy();
+  Combat combat=sim.getCombat();
+  combat.setAttacker(attackingPlayerId);
+  combat.setDefenders(sim);
+  if (blocker == null || attacker == null || sim.getPlayer(defendingPlayerId) == null) {
+    return null;
+  }
+  if (attacker.getPower().getValue() >= blocker.getToughness().getValue()) {
+    sim.getBattlefield().removePermanent(blocker.getId());
+  }
+  if (attacker.getToughness().getValue() <= blocker.getPower().getValue()) {
+    sim.getBattlefield().removePermanent(attacker.getId());
+  }
+  return new SurviveInfo(!sim.getBattlefield().containsPermanent(attacker.getId()),!sim.getBattlefield().containsPermanent(blocker.getId()));
+}
