@@ -1,0 +1,23 @@
+{
+  boolean result=false;
+  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  if (player == null) {
+    return false;
+  }
+  FilterCreaturePermanent filter=new FilterCreaturePermanent();
+  filter.add(new ControllerPredicate(Constants.TargetController.YOU));
+  Target target=new TargetControlledPermanent(1,1,filter,true);
+  target.setRequired(true);
+  if (target.canChoose(player.getId(),game)) {
+    while (!target.isChosen() && target.canChoose(player.getId(),game)) {
+      player.chooseTarget(Outcome.ReturnToHand,target,source,game);
+    }
+    for (    UUID targetId : target.getTargets()) {
+      Permanent permanent=game.getPermanent(targetId);
+      if (permanent != null) {
+        result|=permanent.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+      }
+    }
+  }
+  return result;
+}
