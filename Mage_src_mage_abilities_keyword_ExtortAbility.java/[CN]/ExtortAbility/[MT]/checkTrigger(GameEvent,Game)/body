@@ -1,0 +1,10 @@
+{
+  if (event.getType() == GameEvent.EventType.SPELL_CAST && event.getPlayerId().equals(this.getControllerId())) {
+    Player player=game.getPlayer(this.getControllerId());
+    Permanent sourcePerm=game.getPermanent(sourceId);
+    if (player != null && sourcePerm != null && player.chooseUse(Constants.Outcome.Damage,new StringBuilder("Extort opponents? (").append(sourcePerm.getName()).append(")").toString(),game)) {
+      return true;
+    }
+  }
+  return false;
+}

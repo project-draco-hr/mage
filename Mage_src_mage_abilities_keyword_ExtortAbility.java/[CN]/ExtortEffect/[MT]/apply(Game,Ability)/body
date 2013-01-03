@@ -1,0 +1,14 @@
+{
+  int loseLife=0;
+  for (  UUID opponentId : game.getOpponents(source.getControllerId())) {
+    loseLife+=game.getPlayer(opponentId).loseLife(1,game);
+  }
+  if (loseLife > 0) {
+    game.getPlayer(source.getControllerId()).gainLife(loseLife,game);
+  }
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    game.informPlayers(new StringBuilder(permanent.getName()).append(" extorted opponents ").append(loseLife).append(" life").toString());
+  }
+  return true;
+}
