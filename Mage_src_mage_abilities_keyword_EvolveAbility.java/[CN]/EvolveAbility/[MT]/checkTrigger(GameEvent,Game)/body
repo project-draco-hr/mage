@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE) {
+    Permanent triggeringCreature=game.getPermanent(event.getTargetId());
+    if (((ZoneChangeEvent)event).getToZone() == Zone.BATTLEFIELD && triggeringCreature != null && triggeringCreature.getCardType().contains(CardType.CREATURE) && triggeringCreature.getControllerId().equals(this.controllerId)) {
+      Permanent sourceCreature=game.getPermanent(sourceId);
+      if (sourceCreature != null && isPowerOrThoughnessGreater(sourceCreature,triggeringCreature)) {
+        this.getEffects().get(0).setValue("triggeringCreature",event.getTargetId());
+        return true;
+      }
+    }
+  }
+  return false;
+}
