@@ -1,10 +1,13 @@
 {
   String superRule=super.getRule(true);
   StringBuilder sb=new StringBuilder();
-  if (optional && !superRule.toLowerCase().startsWith("you may")) {
-    sb.append("you may ");
-    if (!this.getTargets().isEmpty()) {
-      sb.append("have ");
+  String ruleLow=superRule.toLowerCase();
+  if (optional && !ruleLow.startsWith("you ")) {
+    if (this.getTargets().isEmpty() || ruleLow.startsWith("exile") || ruleLow.startsWith("destroy")|| ruleLow.startsWith("return")|| ruleLow.startsWith("tap")|| ruleLow.startsWith("untap")) {
+      sb.append("you may ");
+    }
+ else {
+      sb.append("you may have ");
     }
   }
   sb.append(superRule.substring(0,1).toLowerCase());
