@@ -1,0 +1,21 @@
+{
+  if (container == null) {
+    return;
+  }
+  int i=buffer.indexOf("</p>");
+  int count=0;
+  while (i != -1) {
+    count++;
+    i=buffer.indexOf("</p>",i + 1);
+  }
+  if (count > 5 && this.type == 0) {
+    type=1;
+    container.setSize(org.mage.plugins.card.constants.Constants.TOOLTIP_WIDTH_MIN + org.mage.plugins.card.constants.Constants.TOOLTIP_BORDER_WIDTH,org.mage.plugins.card.constants.Constants.TOOLTIP_HEIGHT_MAX + org.mage.plugins.card.constants.Constants.TOOLTIP_BORDER_WIDTH);
+    this.setSize(org.mage.plugins.card.constants.Constants.TOOLTIP_WIDTH_MIN,org.mage.plugins.card.constants.Constants.TOOLTIP_HEIGHT_MAX);
+  }
+ else   if (type == 1) {
+    type=0;
+    container.setSize(org.mage.plugins.card.constants.Constants.TOOLTIP_WIDTH_MIN + org.mage.plugins.card.constants.Constants.TOOLTIP_BORDER_WIDTH,org.mage.plugins.card.constants.Constants.TOOLTIP_HEIGHT_MIN + org.mage.plugins.card.constants.Constants.TOOLTIP_BORDER_WIDTH);
+    this.setSize(org.mage.plugins.card.constants.Constants.TOOLTIP_WIDTH_MIN,org.mage.plugins.card.constants.Constants.TOOLTIP_HEIGHT_MIN);
+  }
+}
