@@ -1,0 +1,32 @@
+{
+  Collection<Integer> values=nicknames.values();
+  List<Integer> games=new ArrayList<Integer>();
+  games.addAll(values);
+  Collections.sort(games,new Comparator<Integer>(){
+    @Override public int compare(    Integer i1,    Integer i2){
+      return i2.compareTo(i1);
+    }
+  }
+);
+  List<Integer> numbersToFind=new ArrayList<Integer>();
+  for (  Integer numberOfGames : games) {
+    numbersToFind.add(numberOfGames);
+    if (numbersToFind.size() == 3) {
+      break;
+    }
+  }
+  Map<Integer,String> players=new LinkedHashMap<Integer,String>();
+  for (  Map.Entry<String,Integer> entry : nicknames.entrySet()) {
+    if (check(numbersToFind,entry.getValue())) {
+      players.put(entry.getValue(),entry.getKey());
+    }
+    if (players.size() == 3) {
+      break;
+    }
+  }
+  System.out.println("Top-3");
+  for (  Map.Entry<Integer,String> entry : players.entrySet()) {
+    System.out.println("   " + entry.getValue() + ": "+ entry.getKey());
+  }
+  return games;
+}

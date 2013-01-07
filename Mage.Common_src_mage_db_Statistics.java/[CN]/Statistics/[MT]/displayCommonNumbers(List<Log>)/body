@@ -1,0 +1,22 @@
+{
+  int count=0;
+  Map<String,Integer> nicknames=new HashMap<String,Integer>();
+  for (  Log log : logs) {
+    if (log.getKey().equals("gameStarted")) {
+      if (log.getArguments() != null) {
+        int index=0;
+        for (        String argument : log.getArguments()) {
+          if (index > 0) {
+            inc(nicknames,argument);
+          }
+          index++;
+        }
+      }
+      count++;
+    }
+  }
+  System.out.println("********************************");
+  System.out.println("Games played: " + count);
+  System.out.println("Number of players: " + nicknames.size());
+  return nicknames;
+}
