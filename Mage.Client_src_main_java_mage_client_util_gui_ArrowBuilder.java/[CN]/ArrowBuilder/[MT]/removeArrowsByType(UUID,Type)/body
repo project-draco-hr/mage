@@ -1,0 +1,17 @@
+{
+  if (map.containsKey(gameId)) {
+    Map<Type,List<Arrow>> innerMap=map.get(gameId);
+    java.util.List<Arrow> arrows=innerMap.get(type);
+    if (arrows != null && arrows.size() > 0) {
+      JPanel p=getArrowsPanel(gameId);
+synchronized (map) {
+        for (        Arrow arrow : arrows) {
+          p.remove(arrow);
+        }
+        innerMap.put(type,new ArrayList<Arrow>());
+      }
+      p.revalidate();
+      p.repaint();
+    }
+  }
+}

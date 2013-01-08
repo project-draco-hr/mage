@@ -1,15 +1,20 @@
 {
-  JPanel p=getArrowsPanel();
+  JPanel p=getArrowsPanel(gameId);
   Arrow arrow=new Arrow();
   arrow.setColor(color);
   arrow.setArrowLocation(startX,startY,endX,endY);
   arrow.setBounds(0,0,Math.max(startX,endX) + 40,Math.max(startY,endY) + 30);
 synchronized (map) {
     p.add(arrow);
-    java.util.List<Arrow> arrows=map.get(type);
+    Map<Type,java.util.List<Arrow>> innerMap=map.get(gameId);
+    if (innerMap == null) {
+      innerMap=new HashMap<Type,List<Arrow>>();
+      map.put(gameId,innerMap);
+    }
+    java.util.List<Arrow> arrows=innerMap.get(type);
     if (arrows == null) {
       arrows=new ArrayList<Arrow>();
-      map.put(type,arrows);
+      innerMap.put(type,arrows);
     }
     arrows.add(arrow);
   }

@@ -1,0 +1,15 @@
+{
+  if (map.containsKey(gameId)) {
+    Map<Type,List<Arrow>> innerMap=map.get(gameId);
+    JPanel p=getArrowsPanel(gameId);
+synchronized (map) {
+      if (p != null && p.getComponentCount() > 0) {
+        p.removeAll();
+        p.revalidate();
+        p.repaint();
+      }
+      innerMap.clear();
+      map.remove(gameId);
+    }
+  }
+}

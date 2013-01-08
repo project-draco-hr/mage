@@ -61,7 +61,7 @@
   addMageLabel();
   setAppIcon();
   MageTray.getInstance().install();
-  desktopPane.add(ArrowBuilder.getArrowsPanel(),JLayeredPane.DRAG_LAYER);
+  desktopPane.add(ArrowBuilder.getBuilder().getArrowsManagerPanel(),JLayeredPane.DRAG_LAYER);
   desktopPane.addComponentListener(new ComponentAdapter(){
     @Override public void componentResized(    ComponentEvent e){
       int width=((JComponent)e.getSource()).getWidth();
@@ -70,10 +70,7 @@
       if (!liteMode && !grayMode) {
         backgroundPane.setSize(width,height);
       }
-      JPanel arrowsPanel=ArrowBuilder.getArrowsPanelRef();
-      if (arrowsPanel != null) {
-        arrowsPanel.setSize(width,height);
-      }
+      ArrowBuilder.getBuilder().setSize(width,height);
       if (title != null) {
         title.setBounds((int)(width - titleRectangle.getWidth()) / 2,(int)(height - titleRectangle.getHeight()) / 2,titleRectangle.width,titleRectangle.height);
       }
