@@ -1,0 +1,13 @@
+{
+  super(ownerId,87,"Misdirection",Rarity.RARE,new CardType[]{CardType.INSTANT},"{3}{U}{U}");
+  this.expansionSetCode="MMQ";
+  this.color.setBlue(true);
+  FilterOwnedCard filterCardInHand=new FilterOwnedCard("blue card from your hand");
+  filterCardInHand.add(new ColorPredicate(ObjectColor.BLUE));
+  filterCardInHand.add(Predicates.not(new CardIdPredicate(this.getId())));
+  CostsImpl<Cost> costs=new CostsImpl<Cost>();
+  costs.add(new ExileFromHandCost(new TargetCardInHand(filterCardInHand)));
+  this.getSpellAbility().addAlternativeCost(new AlternativeCostImpl("You may exile a blue card from your hand rather than pay Misdirection's mana cost",costs));
+  this.getSpellAbility().addEffect(new MisdirectionEffect());
+  this.getSpellAbility().addTarget(new TargetSpell(filter2));
+}
