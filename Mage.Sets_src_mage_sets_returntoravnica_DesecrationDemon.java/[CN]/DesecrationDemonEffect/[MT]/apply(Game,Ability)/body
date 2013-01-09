@@ -10,12 +10,12 @@
         filter.add(new ControllerPredicate(Constants.TargetController.YOU));
         TargetControlledPermanent target=new TargetControlledPermanent(1,1,filter,false);
         if (target.canChoose(opponent.getId(),game)) {
-          if (opponent.chooseUse(Outcome.Detriment,"Sacrifice a creature to tap Desecration Demon and put a +1/+1 counter on it?",game)) {
+          if (opponent.chooseUse(Outcome.Detriment,new StringBuilder("Sacrifice a creature to tap ").append(descrationDemon.getName()).append("and put a +1/+1 counter on it?").toString(),game)) {
             opponent.choose(Outcome.Sacrifice,target,source.getSourceId(),game);
             Permanent permanent=game.getPermanent(target.getFirstTarget());
             if (permanent != null) {
               permanent.sacrifice(source.getId(),game);
-              game.informPlayers(opponent.getName() + " sacrifices " + permanent.getName()+ " to tap Desecration Demon and put a +1/+1 counter on it");
+              game.informPlayers(new StringBuilder(opponent.getName()).append(" sacrifices ").append(permanent.getName()).append(" to tap ").append(descrationDemon.getName()).append(". A +1/+1 counter was put on it").toString());
               if (descrationDemon != null) {
                 descrationDemon.tap(game);
                 descrationDemon.addCounters(CounterType.P1P1.createInstance(),game);
