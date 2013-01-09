@@ -1,0 +1,24 @@
+{
+  Choice abilityChoice=source.getChoices().get(0);
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (controller != null && sourcePermanent != null && abilityChoice != null && abilityChoice.isChosen()) {
+    Ability ability=null;
+    if (abilityChoice.getChoice().equals("First strike")) {
+      ability=FirstStrikeAbility.getInstance();
+    }
+ else     if (abilityChoice.getChoice().equals("Vigilance")) {
+      ability=VigilanceAbility.getInstance();
+    }
+ else     if (abilityChoice.getChoice().equals("Lifelink")) {
+      ability=LifelinkAbility.getInstance();
+    }
+    if (ability != null) {
+      GainAbilityControlledEffect effect=new GainAbilityControlledEffect(ability,Constants.Duration.EndOfTurn,new FilterControlledCreaturePermanent());
+      game.addEffect(effect,source);
+      game.informPlayers(new StringBuilder(sourcePermanent.getName()).append(": ").append(controller.getName()).append(" has chosen ").append(abilityChoice.getChoice().toLowerCase()).toString());
+      return true;
+    }
+  }
+  return false;
+}
