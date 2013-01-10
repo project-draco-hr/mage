@@ -1,0 +1,16 @@
+{
+  Permanent attachmentPermanent=game.getPermanent(sourceAbility.getSourceId());
+  if (attachmentPermanent == null) {
+    attachmentPermanent=(Permanent)game.getLastKnownInformation(sourceAbility.getSourceId(),Zone.BATTLEFIELD);
+  }
+  if (attachmentPermanent != null && attachmentPermanent.getAttachedTo() != null) {
+    Permanent attached=game.getPermanent(attachmentPermanent.getAttachedTo());
+    if (attached == null) {
+      attached=(Permanent)game.getLastKnownInformation(attachmentPermanent.getAttachedTo(),Zone.BATTLEFIELD);
+    }
+    if (attached != null) {
+      return attached.getPower().getValue();
+    }
+  }
+  return 0;
+}
