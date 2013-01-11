@@ -1,0 +1,25 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  TargetControlledCreaturePermanent target=new TargetControlledCreaturePermanent(true);
+  if (controller != null && target != null) {
+    if (target.canChoose(source.getControllerId(),game) && controller.chooseUse(outcome,"Cipher this spell to a creature?",game)) {
+      controller.chooseTarget(outcome,target,source,game);
+      Card sourceCard=game.getCard(source.getSourceId());
+      Permanent targetCreature=game.getPermanent(target.getFirstTarget());
+      if (targetCreature != null && sourceCard != null) {
+        String ruleText=new StringBuilder("you may cast a copy of ").append(sourceCard.getName()).append(" without paying its mana cost").toString();
+        Ability ability=new DealsCombatDamageToAPlayerTriggeredAbility(new CipherStoreEffect(source.getSourceId(),ruleText),true);
+        ContinuousEffect effect=new GainAbilityTargetEffect(ability,Duration.Custom);
+        effect.setTargetPointer(new FixedTarget(target.getFirstTarget()));
+        game.addEffect(effect,source);
+        game.informPlayers(new StringBuilder(sourceCard.getName()).append(": Spell ciphered to ").append(targetCreature.getName()).toString());
+        return sourceCard.moveToExile(null,"",source.getId(),game);
+      }
+ else {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Card cipherCard=game.getCard(cipherCardId);
+  if (cipherCard != null) {
+    Card copyCard=game.copyCard(cipherCard,source,controller.getId());
+    SpellAbility ability=copyCard.getSpellAbility();
+    Effect cipherEffect=null;
+    for (    Effect effect : ability.getEffects()) {
+      if (effect instanceof CipherEffect) {
+        cipherEffect=effect;
+      }
+    }
+    ability.getEffects().remove(cipherEffect);
+    if (ability != null && ability instanceof SpellAbility) {
+      controller.cast(ability,game,true);
+    }
+  }
+  return false;
+}
