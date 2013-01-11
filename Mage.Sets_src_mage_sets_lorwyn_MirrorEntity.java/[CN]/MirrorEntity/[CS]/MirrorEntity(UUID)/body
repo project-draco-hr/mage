@@ -6,7 +6,8 @@
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
   this.addAbility(ChangelingAbility.getInstance());
-  Ability ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new GainAbilityAllEffect(ChangelingAbility.getInstance(),Constants.Duration.EndOfTurn,new FilterControlledCreaturePermanent("Creatures you control")),new VariableManaCost());
-  ability.addEffect(new SetPowerToughneAllEffect());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainAbilityAllEffect(ChangelingAbility.getInstance(),Duration.EndOfTurn,new FilterControlledCreaturePermanent("Creatures you control")),new VariableManaCost());
+  DynamicValue variableMana=new ManacostVariableValue();
+  ability.addEffect(new SetPowerToughnessAllEffect(variableMana,variableMana,Duration.EndOfTurn,new FilterControlledCreaturePermanent("Creatures you control"),true));
   this.addAbility(ability);
 }
