@@ -1,0 +1,14 @@
+{
+  super(ownerId,108,"Tin Street Market",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{4}{R}");
+  this.expansionSetCode="GTC";
+  this.subtype.add("Aura");
+  this.color.setRed(true);
+  TargetPermanent auraTarget=new TargetLandPermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Benefit));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  Ability gainAbility=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new DrawCardControllerEffect(1),new TapSourceCost());
+  gainAbility.addCost(new DiscardCardCost());
+  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new GainAbilityAttachedEffect(gainAbility,Constants.AttachmentType.AURA)));
+}
