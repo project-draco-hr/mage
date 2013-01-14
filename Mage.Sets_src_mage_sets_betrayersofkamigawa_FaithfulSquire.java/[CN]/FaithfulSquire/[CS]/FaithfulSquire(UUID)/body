@@ -7,7 +7,9 @@
   this.power=new MageInt(2);
   this.toughness=new MageInt(2);
   this.flipCard=true;
+  this.flipCardName="Kaiso, Memory of Loyalty";
   this.addAbility(new SpellCastTriggeredAbility(new AddCountersSourceEffect(CounterType.KI.createInstance()),filter,true));
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.KI.createInstance(2)),false));
   this.addAbility(new ConditionalTriggeredAbility(new OnEventTriggeredAbility(GameEvent.EventType.END_TURN_STEP_PRE,"beginning of the end step",true,new FlipSourceEffect()),new HasCounterCondition(CounterType.KI,2,Integer.MAX_VALUE),"At the beginning of the end step, if there are two or more ki counters on Faithful Squire, you may flip it.",true));
   this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new ConditionalContinousEffect(new CopyTokenEffect(new KaisoMemoryOfLoyalty()),FlippedCondition.getInstance(),"")));
 }
