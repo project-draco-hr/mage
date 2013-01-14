@@ -24,4 +24,15 @@
  else {
     this.userDataView=new UserDataView(0);
   }
+  for (  CommandObject commandObject : game.getState().getCommand()) {
+    if (commandObject instanceof Emblem) {
+      Emblem emblem=(Emblem)commandObject;
+      if (emblem.getControllerId().equals(this.playerId)) {
+        Card sourceCard=game.getCard(((CommandObject)emblem).getSourceId());
+        if (sourceCard != null) {
+          emblemList.add(new EmblemView(emblem,sourceCard));
+        }
+      }
+    }
+  }
 }
