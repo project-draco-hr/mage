@@ -1,0 +1,13 @@
+{
+  super("Cleric","1/1 white and black Cleric creature token onto the battlefield. It has \"{3}{W}{B}{B}, {T}, Sacrifice this creature: Return a card named Deathpact Angel from your graveyard to the battlefield.\"");
+  cardType.add(CardType.CREATURE);
+  color=ObjectColor.BLACK;
+  subtype.add("Cleric");
+  power=new MageInt(1);
+  toughness=new MageInt(1);
+  Ability ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new ReturnFromGraveyardToBattlefieldTargetEffect(),new ManaCostsImpl("{3}{W}{B}{B}"));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new SacrificeSourceCost());
+  ability.addTarget(new TargetCardInYourGraveyard(filter));
+  this.addAbility(ability);
+}
