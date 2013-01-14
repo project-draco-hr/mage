@@ -1,0 +1,38 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (controller != null && targetPlayer != null) {
+    int payLife=controller.getAmount(0,controller.getLife(),"Pay how many life?",game);
+    if (payLife > 0) {
+      controller.loseLife(payLife,game);
+      Cards cardsInHand=new CardsImpl(Constants.Zone.PICK);
+      cardsInHand.addAll(targetPlayer.getHand());
+      int count=Math.min(cardsInHand.size(),payLife);
+      TargetCard target=new TargetCard(count,Constants.Zone.PICK,new FilterCard());
+      target.setRequired(true);
+      Cards revealedCards=new CardsImpl();
+      if (targetPlayer.choose(Outcome.Discard,cardsInHand,target,game)) {
+        List<UUID> targets=target.getTargets();
+        for (        UUID targetId : targets) {
+          Card card=game.getCard(targetId);
+          if (card != null) {
+            revealedCards.add(card);
+          }
+        }
+      }
+      TargetCard targetInHand=new TargetCard(Constants.Zone.PICK,new FilterCard("card to exile"));
+      targetInHand.setRequired(true);
+      if (!revealedCards.isEmpty()) {
+        targetPlayer.revealCards("Vizkopa Confessor",revealedCards,game);
+        controller.choose(Constants.Outcome.Exile,revealedCards,targetInHand,game);
+        Card card=revealedCards.get(targetInHand.getFirstTarget(),game);
+        if (card != null) {
+          card.moveToExile(null,null,source.getSourceId(),game);
+          game.informPlayers(new StringBuilder("Vizkopa Confessor: Exiled card ").append(card.getName()).toString());
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}
