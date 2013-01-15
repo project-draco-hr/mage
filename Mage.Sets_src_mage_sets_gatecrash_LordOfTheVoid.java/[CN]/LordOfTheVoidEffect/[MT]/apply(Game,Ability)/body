@@ -1,0 +1,27 @@
+{
+  Player player=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+  Player controller=game.getPlayer(source.getControllerId());
+  if (player == null || controller == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl();
+  int max=Math.min(player.getLibrary().size(),7);
+  for (int i=0; i < max; i++) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      card.moveToExile(null,"",source.getId(),game);
+      cards.add(card);
+    }
+  }
+  if (cards.getCards(new FilterCreatureCard(),game).size() > 0) {
+    TargetCard target=new TargetCard(Zone.EXILED,new FilterCreatureCard());
+    target.setRequired(true);
+    if (controller.chooseTarget(Outcome.PutCreatureInPlay,cards,target,source,game)) {
+      Card card=cards.get(target.getFirstTarget(),game);
+      if (card != null) {
+        card.putOntoBattlefield(game,Zone.EXILED,source.getId(),source.getControllerId());
+      }
+    }
+  }
+  return true;
+}
