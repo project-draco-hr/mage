@@ -17,6 +17,23 @@
       }
     }
   }
+  if (game.getPlayer(this.controllerId).isHuman()) {
+    VariableManaCost manaX=null;
+    for (    ManaCost cost : manaCostsToPay) {
+      if (cost instanceof VariableManaCost && !cost.isPaid()) {
+        manaX=(VariableManaCost)cost;
+        break;
+      }
+    }
+    if (manaX != null) {
+      int amount=game.getPlayer(this.controllerId).getAmount(0,Integer.MAX_VALUE,"Announce the value for " + manaX.getText(),game);
+      game.informPlayers(new StringBuilder(game.getPlayer(this.controllerId).getName()).append(" announced a value of ").append(amount).append(" for ").append(manaX.getText()).toString());
+      amount*=manaX.getMultiplier();
+      manaCostsToPay.add(new ManaCostsImpl(new StringBuilder("{").append(amount).append("}").toString()));
+      manaCostsToPay.setX(amount);
+      manaX.setPaid();
+    }
+  }
   if (card != null) {
     card.adjustTargets(this,game);
   }
