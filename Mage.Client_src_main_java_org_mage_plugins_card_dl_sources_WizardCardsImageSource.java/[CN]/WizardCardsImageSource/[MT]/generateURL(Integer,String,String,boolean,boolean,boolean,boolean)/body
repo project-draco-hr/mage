@@ -1,0 +1,32 @@
+{
+  if (collectorId == null || cardSet == null) {
+    throw new Exception("Wrong parameters for image: collector id: " + collectorId + ",card set: "+ cardSet);
+  }
+  if (flippedView) {
+    return null;
+  }
+  if (setsAliases.get(cardSet) != null) {
+    Map<String,String> setLinks=(Map<String,String>)sets.get(cardSet);
+    if (setLinks == null) {
+      setLinks=getSetLinks(cardSet);
+      sets.put(cardSet,setLinks);
+    }
+    String link=setLinks.get(cardName);
+    if (link == null) {
+      if (setLinks.size() >= collectorId) {
+        link=setLinks.get(Integer.toString(collectorId - 1));
+      }
+ else {
+        link=setLinks.get(Integer.toString(collectorId - 21));
+        if (link != null) {
+          link=link.replace(Integer.toString(collectorId - 20),(Integer.toString(collectorId - 20) + "a"));
+        }
+      }
+    }
+    if (link != null && !link.startsWith("http://")) {
+      link="http://www.wizards.com" + link;
+    }
+    return link;
+  }
+  return null;
+}

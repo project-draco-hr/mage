@@ -1,10 +1,11 @@
 {
   ArrayList<CardInfo> cardsToDownload=new ArrayList<CardInfo>();
   ArrayList<CardInfo> allCardsUrls=new ArrayList<CardInfo>();
+  HashSet<String> ignoreUrls=SettingsManager.getIntance().getIgnoreUrls();
   try {
     offlineMode=true;
     for (    Card card : allCards) {
-      if (card.getCardNumber() > 0 && !card.getExpansionSetCode().isEmpty()) {
+      if (card.getCardNumber() > 0 && !card.getExpansionSetCode().isEmpty() && !ignoreUrls.contains(card.getExpansionSetCode())) {
         String cardName=card.getName();
         CardInfo url=new CardInfo(cardName,card.getExpansionSetCode(),card.getCardNumber(),card.getUsesVariousArt(),0,false,card.canTransform(),card.isNightCard());
         if (url.getUsesVariousArt()) {
@@ -17,6 +18,15 @@
         if (card.canTransform()) {
           Card secondSide=card.getSecondCardFace();
           url=new CardInfo(secondSide.getName(),card.getExpansionSetCode(),card.getCardNumber(),card.getUsesVariousArt(),0,false,card.canTransform(),true);
+          allCardsUrls.add(url);
+        }
+        if (card.isFlipCard()) {
+          if (card.getFlipCardName() == null || card.getFlipCardName().trim().isEmpty()) {
+            throw new IllegalStateException("Flipped card can't have empty name.");
+          }
+          url=new CardInfo(card.getFlipCardName(),card.getExpansionSetCode(),card.getCardNumber(),card.getUsesVariousArt(),0,false,card.canTransform(),card.isNightCard());
+          url.setFlipCard(true);
+          url.setFlippedSide(true);
           allCardsUrls.add(url);
         }
       }
