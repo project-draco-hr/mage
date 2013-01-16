@@ -1,0 +1,51 @@
+{
+  if (outcome.equals(Outcome.Detriment)) {
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(this.getId(),game)) {
+      if (game.getOpponents(this.getId()).contains(permanent.getControllerId()) && permanent.getCardType().contains(CardType.CREATURE) && permanent.getSubtype().size() > 0) {
+        if (choice.getChoices().contains(permanent.getSubtype().get(0))) {
+          choice.setChoice(permanent.getSubtype().get(0));
+          break;
+        }
+      }
+    }
+    if (!choice.isChosen()) {
+      for (      UUID opponentId : game.getOpponents(this.getId())) {
+        Player opponent=game.getPlayer(opponentId);
+        for (        Card card : opponent.getGraveyard().getCards(game)) {
+          if (card != null && card.getCardType().contains(CardType.CREATURE) && card.getSubtype().size() > 0) {
+            if (choice.getChoices().contains(card.getSubtype().get(0))) {
+              choice.setChoice(card.getSubtype().get(0));
+              break;
+            }
+          }
+        }
+        if (choice.isChosen()) {
+          break;
+        }
+      }
+    }
+  }
+ else {
+    for (    UUID cardId : this.getHand()) {
+      Card card=game.getCard(cardId);
+      if (card != null && card.getCardType().contains(CardType.CREATURE) && card.getSubtype().size() > 0) {
+        if (choice.getChoices().contains(card.getSubtype().get(0))) {
+          choice.setChoice(card.getSubtype().get(0));
+          break;
+        }
+      }
+    }
+    if (!choice.isChosen()) {
+      for (      UUID cardId : this.getLibrary().getCardList()) {
+        Card card=game.getCard(cardId);
+        if (card != null && card.getCardType().contains(CardType.CREATURE) && card.getSubtype().size() > 0) {
+          if (choice.getChoices().contains(card.getSubtype().get(0))) {
+            choice.setChoice(card.getSubtype().get(0));
+            break;
+          }
+        }
+      }
+    }
+  }
+  return choice.isChosen();
+}

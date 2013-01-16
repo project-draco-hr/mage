@@ -1,5 +1,17 @@
 {
   log.debug("choose 3");
-  choice.setChoice(choice.getChoices().iterator().next());
+  if (choice.getMessage().equals("Choose creature type")) {
+    chooseCreatureType(outcome,choice,game);
+  }
+  if (!choice.isChosen()) {
+    Iterator iterator=choice.getChoices().iterator();
+    while (iterator.hasNext()) {
+      String next=(String)iterator.next();
+      if (!next.isEmpty()) {
+        choice.setChoice(next);
+        break;
+      }
+    }
+  }
   return true;
 }
