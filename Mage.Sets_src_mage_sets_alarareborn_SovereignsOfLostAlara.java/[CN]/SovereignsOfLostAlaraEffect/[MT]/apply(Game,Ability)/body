@@ -1,0 +1,21 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  Permanent attackingCreature=game.getPermanent(source.getFirstTarget());
+  if (you != null && attackingCreature != null) {
+    FilterCard filter=new FilterCard("aura that could enchant that creature");
+    filter.add(new SubtypePredicate("Aura"));
+    filter.add(new CardCanTargetPermanentId(attackingCreature.getId()));
+    if (you.chooseUse(Constants.Outcome.Benefit,"Attach an Aura from your library?",game)) {
+      TargetCardInLibrary target=new TargetCardInLibrary(filter);
+      target.setNotTarget(true);
+      if (you.searchLibrary(target,game)) {
+        Card aura=game.getCard(target.getFirstTarget());
+        game.getState().setValue("attachTo:" + aura.getId(),attackingCreature);
+        aura.putOntoBattlefield(game,Constants.Zone.LIBRARY,source.getId(),you.getId());
+        return attackingCreature.addAttachment(aura.getId(),game);
+      }
+    }
+    you.shuffleLibrary(game);
+  }
+  return false;
+}
