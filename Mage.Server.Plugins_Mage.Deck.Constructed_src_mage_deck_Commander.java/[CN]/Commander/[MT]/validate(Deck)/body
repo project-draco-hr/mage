@@ -1,0 +1,45 @@
+{
+  boolean valid=true;
+  if (deck.getCards().size() != 99) {
+    invalid.put("Deck","Must contain 99 cards: has " + deck.getCards().size() + " cards");
+    valid=false;
+  }
+  List<String> basicLandNames=new ArrayList<String>(Arrays.asList("Forest","Island","Mountain","Swamp","Plains"));
+  Map<String,Integer> counts=new HashMap<String,Integer>();
+  countCards(counts,deck.getCards());
+  countCards(counts,deck.getSideboard());
+  for (  Map.Entry<String,Integer> entry : counts.entrySet()) {
+    if (entry.getValue() > 1) {
+      if (!basicLandNames.contains(entry.getKey()) && !entry.getKey().equals("Relentless Rats")) {
+        invalid.put(entry.getKey(),"Too many: " + entry.getValue());
+        valid=false;
+      }
+    }
+  }
+  for (  String bannedCard : banned) {
+    if (counts.containsKey(bannedCard)) {
+      invalid.put(bannedCard,"Banned");
+      valid=false;
+    }
+  }
+  if (deck.getSideboard().size() == 1) {
+    Card commander=(Card)deck.getSideboard().toArray()[0];
+    if (commander != null && commander.getCardType().contains(Constants.CardType.CREATURE) && commander.getSupertype().contains("Legendary")) {
+      FilterMana color=getColorIdentity(commander);
+      for (      Card card : deck.getCards()) {
+        if (!cardHasValideColor(color,card)) {
+          invalid.put(card.getName(),"Invalide color");
+          valid=false;
+        }
+      }
+    }
+ else {
+      invalid.put("Commander","Commander invalide");
+      valid=false;
+    }
+  }
+ else {
+    invalid.put("Commander","Sideboard must contain only the commander");
+  }
+  return valid;
+}
