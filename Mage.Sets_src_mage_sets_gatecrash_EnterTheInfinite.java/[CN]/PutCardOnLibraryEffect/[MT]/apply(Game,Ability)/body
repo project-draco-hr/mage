@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    TargetCardInHand target=new TargetCardInHand();
+    target.setRequired(true);
+    player.chooseTarget(Constants.Outcome.ReturnToHand,target,source,game);
+    Card card=player.getHand().get(target.getFirstTarget(),game);
+    if (card != null) {
+      player.getHand().remove(card);
+      card.moveToZone(Constants.Zone.LIBRARY,source.getId(),game,true);
+    }
+    return true;
+  }
+  return false;
+}

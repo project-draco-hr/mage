@@ -1,0 +1,30 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (player != null && controller != null) {
+    Cards cards=new CardsImpl();
+    for (int i=0; i < 3; i++) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        cards.add(card);
+      }
+    }
+    if (cards.size() > 0) {
+      TargetCard target=new TargetCard(Constants.Zone.PICK,new FilterCard("Card to put on top"));
+      target.setRequired(true);
+      if (controller.choose(Outcome.Neutral,cards,target,game)) {
+        Card card=cards.get(target.getFirstTarget(),game);
+        if (card != null) {
+          card.moveToZone(Constants.Zone.LIBRARY,source.getId(),game,true);
+          cards.remove(card);
+        }
+        for (        Card card2 : cards.getCards(game)) {
+          if (card2 != null) {
+            card2.moveToZone(Constants.Zone.GRAVEYARD,source.getId(),game,true);
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

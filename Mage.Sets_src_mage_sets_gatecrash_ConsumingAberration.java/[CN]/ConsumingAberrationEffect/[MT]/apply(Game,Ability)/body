@@ -1,0 +1,25 @@
+{
+  for (  UUID opponentId : game.getOpponents(source.getControllerId())) {
+    Player player=game.getPlayer(opponentId);
+    if (player == null) {
+      continue;
+    }
+    Cards cards=new CardsImpl();
+    while (player.getLibrary().size() > 0) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        cards.add(card);
+        if (card.getCardType().contains(CardType.LAND)) {
+          break;
+        }
+      }
+    }
+    player.revealCards("Undercity Informer",cards,game);
+    for (    Card card : cards.getCards(game)) {
+      if (card != null) {
+        card.moveToZone(Zone.GRAVEYARD,id,game,true);
+      }
+    }
+  }
+  return true;
+}
