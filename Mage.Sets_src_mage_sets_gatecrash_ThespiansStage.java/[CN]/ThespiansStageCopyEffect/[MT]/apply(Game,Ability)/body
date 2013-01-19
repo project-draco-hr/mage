@@ -1,0 +1,13 @@
+{
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  Permanent copyFromPermanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+  if (sourcePermanent != null && copyFromPermanent != null) {
+    Permanent newPermanent=game.copyPermanent(copyFromPermanent,sourcePermanent,source,new EmptyApplyToPermanent());
+    Ability ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new ThespiansStageCopyEffect(),new GenericManaCost(2));
+    ability.addCost(new TapSourceCost());
+    ability.addTarget(new TargetLandPermanent());
+    newPermanent.addAbility(ability,source.getSourceId(),game);
+    return true;
+  }
+  return false;
+}
