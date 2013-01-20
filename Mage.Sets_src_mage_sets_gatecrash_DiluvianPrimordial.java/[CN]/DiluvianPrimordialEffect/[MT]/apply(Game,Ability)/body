@@ -1,0 +1,13 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  for (  Target target : source.getTargets()) {
+    if (target instanceof TargetCardInOpponentsGraveyard) {
+      Card targetCard=game.getCard(target.getFirstTarget());
+      if (player != null && targetCard != null) {
+        player.cast(targetCard.getSpellAbility(),game,true);
+        game.addEffect(new DiluvianPrimordialReplacementEffect(targetCard.getId()),source);
+      }
+    }
+  }
+  return true;
+}
