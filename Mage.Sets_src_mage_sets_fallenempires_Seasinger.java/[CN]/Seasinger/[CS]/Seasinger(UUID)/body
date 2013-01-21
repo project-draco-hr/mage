@@ -1,0 +1,18 @@
+{
+  super(ownerId,52,"Seasinger",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{1}{U}{U}");
+  this.expansionSetCode="FEM";
+  this.subtype.add("Merfolk");
+  this.color.setBlue(true);
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(1);
+  FilterPermanent seasinger=new FilterPermanent();
+  seasinger.add(new ControllerPredicate(Constants.TargetController.YOU));
+  seasinger.add(new CardIdPredicate(this.getId()));
+  this.addAbility(new SeasingerTriggeredAbility());
+  this.addAbility(new SkipUntapOptionalAbility());
+  ConditionalContinousEffect effect=new ConditionalContinousEffect(new GainControlTargetEffect(Constants.Duration.Custom),new ControlsPermanentCondition(seasinger,ControlsPermanentCondition.CountType.EQUAL_TO,1,TappedCondition.getInstance()),rule);
+  Ability ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,effect,new TapSourceCost());
+  creatureWhoseControllerControlsIsland.add(new ControllerControlsIslandPredicate());
+  ability.addTarget(new TargetCreaturePermanent(creatureWhoseControllerControlsIsland));
+  this.addAbility(ability);
+}
