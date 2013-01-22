@@ -1,0 +1,16 @@
+{
+  super(ownerId,64,"Dying Wish",Rarity.UNCOMMON,new CardType[]{CardType.ENCHANTMENT},"{1}{B}");
+  this.expansionSetCode="GTC";
+  this.subtype.add("Aura");
+  this.color.setBlack(true);
+  TargetPermanent auraTarget=new TargetControlledCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Benefit));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  DynamicValue attachedPower=new AttachedPermanentPowerCount();
+  ability=new DiesAttachedTriggeredAbility(new LoseLifeTargetEffect(attachedPower),"enchanted creature");
+  ability.addEffect(new GainLifeEffect(attachedPower));
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+}

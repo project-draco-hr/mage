@@ -1,0 +1,11 @@
+{
+  if (ability instanceof SpellAbility) {
+    Player controller=game.getPlayer(ability.getControllerId());
+    if (controller.isHuman()) {
+      ability.getTargets().clear();
+      FilterCreaturePermanent filter=new FilterCreaturePermanent();
+      filter.add(new PowerPredicate(Filter.ComparisonType.LessThan,ability.getManaCostsToPay().getX() + 1));
+      ability.addTarget(new TargetCreaturePermanent(filter));
+    }
+  }
+}

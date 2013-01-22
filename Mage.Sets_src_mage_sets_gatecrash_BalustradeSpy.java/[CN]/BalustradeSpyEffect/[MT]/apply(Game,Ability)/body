@@ -1,0 +1,23 @@
+{
+  Player player=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (player == null) {
+    return false;
+  }
+  CardsImpl cards=new CardsImpl();
+  boolean landFound=false;
+  while (player.getLibrary().size() > 0 && !landFound) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      cards.add(card);
+      card.moveToZone(Zone.GRAVEYARD,source.getId(),game,false);
+      if (card.getCardType().contains(CardType.LAND)) {
+        landFound=true;
+      }
+    }
+  }
+  if (!cards.isEmpty()) {
+    player.revealCards("Balustrade Spy",cards,game);
+    return true;
+  }
+  return true;
+}

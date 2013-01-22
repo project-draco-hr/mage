@@ -1,0 +1,23 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller.isHuman()) {
+    Permanent creature=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (creature == null) {
+      return false;
+    }
+    return creature.destroy(source.getSourceId(),game,false);
+  }
+ else {
+    FilterCreaturePermanent filter=new FilterCreaturePermanent();
+    filter.add(new PowerPredicate(Filter.ComparisonType.LessThan,source.getManaCostsToPay().getX() + 1));
+    Target target=new TargetCreaturePermanent(filter);
+    if (controller.chooseTarget(outcome,target,source,game)) {
+      Permanent creature=game.getPermanent(target.getFirstTarget());
+      if (creature == null) {
+        return false;
+      }
+      return creature.destroy(source.getSourceId(),game,false);
+    }
+  }
+  return false;
+}
