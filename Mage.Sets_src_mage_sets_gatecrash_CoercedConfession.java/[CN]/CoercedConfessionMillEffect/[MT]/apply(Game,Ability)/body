@@ -1,0 +1,24 @@
+{
+  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  if (player != null) {
+    int foundCreatures=0;
+    int cardsCount=Math.min(4,player.getLibrary().size());
+    for (int i=0; i < cardsCount; i++) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        if (card.getCardType().contains(CardType.CREATURE)) {
+          ++foundCreatures;
+        }
+        card.moveToZone(Constants.Zone.GRAVEYARD,source.getId(),game,false);
+      }
+    }
+    if (foundCreatures > 0) {
+      Player controller=game.getPlayer(source.getControllerId());
+      if (controller != null) {
+        controller.drawCards(foundCreatures,game);
+      }
+    }
+    return true;
+  }
+  return false;
+}

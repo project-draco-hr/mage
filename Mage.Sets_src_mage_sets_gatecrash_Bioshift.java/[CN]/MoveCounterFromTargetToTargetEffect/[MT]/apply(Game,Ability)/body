@@ -1,0 +1,19 @@
+{
+  Permanent fromPermanent=game.getPermanent(targetPointer.getFirst(game,source));
+  Permanent toPermanent=null;
+  if (targetPointer.getTargets(game,source).size() > 1) {
+    toPermanent=game.getPermanent(targetPointer.getTargets(game,source).get(1));
+  }
+  if (fromPermanent == null || toPermanent == null || !fromPermanent.getControllerId().equals(toPermanent.getControllerId())) {
+    return false;
+  }
+  int amountCounters=fromPermanent.getCounters().getCount(CounterType.P1P1);
+  if (amountCounters > 0) {
+    Player controller=game.getPlayer(source.getControllerId());
+    if (controller.getAmount(0,amountCounters,"How many counters do you want to move?",game) > 0) {
+      fromPermanent.getCounters().removeCounter(CounterType.P1P1,amountCounters);
+      toPermanent.addCounters(CounterType.P1P1.createInstance(amountCounters),game);
+    }
+  }
+  return true;
+}
