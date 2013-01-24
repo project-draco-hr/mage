@@ -1,0 +1,15 @@
+{
+  super(ownerId,2,"Aven Mimeomancer",Rarity.RARE,new CardType[]{CardType.CREATURE},"{1}{W}{U}");
+  this.expansionSetCode="ARB";
+  this.subtype.add("Bird");
+  this.subtype.add("Wizard");
+  this.color.setBlue(true);
+  this.color.setWhite(true);
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(1);
+  this.addAbility(FlyingAbility.getInstance());
+  Ability ability=new BeginningOfUpkeepTriggeredAbility(Constants.Zone.BATTLEFIELD,new AddCountersTargetEffect(CounterType.FEATHER.createInstance()),Constants.TargetController.YOU,true);
+  ability.addTarget(new TargetCreaturePermanent());
+  ability.addEffect(new AvenEffect());
+  this.addAbility(ability);
+}
