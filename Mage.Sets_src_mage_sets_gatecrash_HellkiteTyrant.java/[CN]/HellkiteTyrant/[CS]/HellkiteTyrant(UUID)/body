@@ -1,0 +1,13 @@
+{
+  super(ownerId,94,"Hellkite Tyrant",Rarity.MYTHIC,new CardType[]{CardType.CREATURE},"{4}{R}{R}");
+  this.expansionSetCode="GTC";
+  this.subtype.add("Dragon");
+  this.color.setRed(true);
+  this.power=new MageInt(6);
+  this.toughness=new MageInt(5);
+  this.addAbility(FlyingAbility.getInstance());
+  this.addAbility(TrampleAbility.getInstance());
+  this.addAbility(new DealsCombatDamageToAPlayerTriggeredAbility(new HellkiteTyrantEffect(),false,true));
+  TriggeredAbility ability=new BeginningOfUpkeepTriggeredAbility(new WinGameEffect(),Constants.TargetController.YOU,false);
+  this.addAbility(new ConditionalTriggeredAbility(ability,new ControlsPermanentCondition(new FilterArtifactPermanent(),ControlsPermanentCondition.CountType.MORE_THAN,19),"At the beginning of your upkeep, if you control twenty or more artifacts, you win the game."));
+}
