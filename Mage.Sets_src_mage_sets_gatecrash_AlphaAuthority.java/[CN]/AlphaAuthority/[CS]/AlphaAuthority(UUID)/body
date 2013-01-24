@@ -1,0 +1,14 @@
+{
+  super(ownerId,114,"Alpha Authority",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{1}{G}");
+  this.expansionSetCode="GTC";
+  this.subtype.add("Aura");
+  this.color.setGreen(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(HexproofAbility.getInstance(),Constants.AttachmentType.AURA,Duration.WhileOnBattlefield));
+  ability.addEffect(new CantBeBlockedByMoreThanOneAttachedEffect(AttachmentType.AURA,1));
+  this.addAbility(ability);
+}
