@@ -1,0 +1,16 @@
+{
+  StackObject stackObject=game.getStack().getStackObject(targetPointer.getFirst(game,source));
+  if (stackObject != null && game.getStack().counter(source.getFirstTarget(),source.getSourceId(),game)) {
+    if (stackObject != null) {
+      int cmc=stackObject.getManaCost().convertedManaCost();
+      if (cmc > 0) {
+        MysticGenesisOozeToken oozeToken=new MysticGenesisOozeToken();
+        oozeToken.getPower().setValue(cmc);
+        oozeToken.getToughness().setValue(cmc);
+        oozeToken.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
+      }
+      return true;
+    }
+  }
+  return false;
+}

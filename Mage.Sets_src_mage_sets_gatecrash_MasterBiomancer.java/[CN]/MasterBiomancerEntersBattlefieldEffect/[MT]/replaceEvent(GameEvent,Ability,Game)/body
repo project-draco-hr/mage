@@ -1,0 +1,14 @@
+{
+  Permanent sourceCreature=game.getPermanent(source.getSourceId());
+  Permanent creature=game.getPermanent(event.getTargetId());
+  if (sourceCreature != null && creature != null) {
+    int power=sourceCreature.getPower().getValue();
+    if (power > 0) {
+      creature.addCounters(CounterType.P1P1.createInstance(power),game);
+    }
+    ContinuousEffect effect=new AddCardSubTypeTargetEffect("Mutant",Duration.WhileOnBattlefield);
+    effect.setTargetPointer(new FixedTarget(creature.getId()));
+    game.addEffect(effect,source);
+  }
+  return false;
+}
