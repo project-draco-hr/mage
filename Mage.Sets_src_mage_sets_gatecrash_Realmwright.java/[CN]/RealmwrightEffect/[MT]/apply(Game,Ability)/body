@@ -1,0 +1,18 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  if (you != null) {
+    ChoiceImpl choices=new ChoiceImpl(true);
+    choices.isRequired();
+    Set choicesSet=choices.getChoices();
+    choicesSet.add("Forest");
+    choicesSet.add("Plains");
+    choicesSet.add("Mountain");
+    choicesSet.add("Island");
+    choicesSet.add("Swamp");
+    if (you.choose(Constants.Outcome.Neutral,choices,game)) {
+      game.getState().setValue(source.getSourceId().toString() + "_Realmwright",choices.getChoice());
+      return true;
+    }
+  }
+  return false;
+}
