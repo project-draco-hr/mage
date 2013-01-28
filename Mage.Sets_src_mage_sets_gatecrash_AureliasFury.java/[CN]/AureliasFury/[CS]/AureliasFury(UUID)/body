@@ -1,0 +1,11 @@
+{
+  super(ownerId,144,"Aurelia's Fury",Rarity.MYTHIC,new CardType[]{CardType.INSTANT},"{X}{R}{W}");
+  this.expansionSetCode="GTC";
+  this.color.setRed(true);
+  this.color.setWhite(true);
+  DynamicValue xValue=new ManacostVariableValue();
+  this.getSpellAbility().addEffect(new DamageMultiEffect(xValue));
+  this.getSpellAbility().addEffect(new AureliasFuryEffect());
+  this.getSpellAbility().addTarget(new TargetCreatureOrPlayerAmount(xValue));
+  this.addWatcher(new AureliasFuryDamagedByWatcher());
+}
