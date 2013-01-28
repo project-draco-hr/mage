@@ -1,4 +1,7 @@
 {
+  if (!amountWasSet) {
+    setAmount(source,game);
+  }
   for (  UUID targetId : targets) {
     for (int n=1; n <= target.remainingAmount; n++) {
       T t=target.copy();
@@ -7,7 +10,9 @@
         if (targets.size() > 1) {
           Set<UUID> newTargets=new HashSet<UUID>();
           for (          UUID newTarget : targets) {
-            if (!newTarget.equals(targetId))             newTargets.add(newTarget);
+            if (!newTarget.equals(targetId)) {
+              newTargets.add(newTarget);
+            }
           }
           addTargets(t,newTargets,options,source,game);
         }
