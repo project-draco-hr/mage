@@ -1,0 +1,13 @@
+{
+  super(ownerId,56,"Way of the Thief",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{3}{U}");
+  this.expansionSetCode="GTC";
+  this.subtype.add("Aura");
+  this.color.setBlue(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Constants.Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(2,2,Duration.WhileOnBattlefield)));
+  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new ConditionalContinousEffect(new UnblockableAttachedEffect(AttachmentType.AURA),new ControlsPermanentCondition(filter),rule)));
+}
