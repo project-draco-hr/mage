@@ -1,0 +1,10 @@
+{
+  Permanent triggeredCreature=game.getPermanent(targetPointer.getFirst(game,source));
+  Permanent target=game.getPermanent(source.getFirstTarget());
+  if (triggeredCreature != null && target != null && triggeredCreature.getCardType().contains(CardType.CREATURE) && target.getCardType().contains(CardType.CREATURE)) {
+    triggeredCreature.damage(target.getPower().getValue(),target.getId(),game,true,false);
+    target.damage(triggeredCreature.getPower().getValue(),triggeredCreature.getId(),game,true,false);
+    return true;
+  }
+  return false;
+}
