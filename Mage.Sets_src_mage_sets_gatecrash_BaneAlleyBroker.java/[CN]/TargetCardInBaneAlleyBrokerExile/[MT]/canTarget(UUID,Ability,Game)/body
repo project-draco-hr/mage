@@ -1,0 +1,15 @@
+{
+  Card card=game.getCard(id);
+  if (card != null && game.getState().getZone(card.getId()) == Zone.EXILED) {
+    ExileZone exile=null;
+    Card sourceCard=game.getCard(source.getSourceId());
+    if (sourceCard != null) {
+      UUID exileId=UUID.fromString(new StringBuilder(sourceCard.getId().toString()).append(sourceCard.getZoneChangeCounter()).toString());
+      exile=game.getExile().getExileZone(exileId);
+    }
+    if (exile != null && exile.contains(id)) {
+      return filter.match(card,source.getControllerId(),game);
+    }
+  }
+  return false;
+}
