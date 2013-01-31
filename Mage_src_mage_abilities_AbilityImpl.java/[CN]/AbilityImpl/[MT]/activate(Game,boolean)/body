@@ -68,7 +68,11 @@
       return false;
     }
   }
-  if (!costs.pay(this,game,sourceId,controllerId,noMana)) {
+  UUID activatorId=controllerId;
+  if (this instanceof ActivatedAbilityImpl) {
+    activatorId=((ActivatedAbilityImpl)this).getActivatorId();
+  }
+  if (!costs.pay(this,game,sourceId,activatorId,noMana)) {
     logger.debug("activate failed - non mana costs");
     return false;
   }
