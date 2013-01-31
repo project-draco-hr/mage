@@ -1,0 +1,16 @@
+{
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  if (permanent != null) {
+    int maxPower=0;
+    for (    Cost cost : source.getCosts()) {
+      if (cost instanceof RemoveVariableCountersSourceCost) {
+        maxPower=((RemoveVariableCountersSourceCost)cost).getAmount();
+        break;
+      }
+    }
+    if (permanent.getPower().getValue() <= maxPower) {
+      return permanent.changeControllerId(source.getControllerId(),game);
+    }
+  }
+  return false;
+}
