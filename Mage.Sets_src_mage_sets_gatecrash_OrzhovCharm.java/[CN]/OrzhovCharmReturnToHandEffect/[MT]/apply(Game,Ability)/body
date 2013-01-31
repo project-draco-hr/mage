@@ -1,0 +1,18 @@
+{
+  Permanent target=game.getPermanent(getTargetPointer().getFirst(game,source));
+  if (target != null) {
+    LinkedList<UUID> attachments=new LinkedList<UUID>();
+    attachments.addAll(target.getAttachments());
+    for (    UUID attachmentId : attachments) {
+      Permanent attachment=game.getPermanent(attachmentId);
+      if (attachment != null && attachment.getControllerId().equals(source.getControllerId())) {
+        attachment.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+      }
+    }
+    if (target.getControllerId().equals(source.getControllerId())) {
+      target.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+    }
+    return true;
+  }
+  return false;
+}

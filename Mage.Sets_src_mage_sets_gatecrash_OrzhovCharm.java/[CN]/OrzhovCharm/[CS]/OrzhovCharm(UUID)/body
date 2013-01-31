@@ -1,0 +1,16 @@
+{
+  super(ownerId,185,"Orzhov Charm",Rarity.UNCOMMON,new CardType[]{CardType.INSTANT},"{W}{B}");
+  this.expansionSetCode="GTC";
+  this.color.setBlack(true);
+  this.color.setWhite(true);
+  this.getSpellAbility().addEffect(new OrzhovCharmReturnToHandEffect());
+  this.getSpellAbility().addTarget(new TargetControlledCreaturePermanent());
+  Mode mode=new Mode();
+  mode.getEffects().add(new OrzhovCharmDestroyAndLoseLifeEffect());
+  mode.getTargets().add(new TargetCreaturePermanent());
+  this.getSpellAbility().addMode(mode);
+  Mode mode2=new Mode();
+  mode2.getEffects().add(new ReturnFromGraveyardToBattlefieldTargetEffect());
+  mode2.getTargets().add(new TargetCardInYourGraveyard(filter));
+  this.getSpellAbility().addMode(mode2);
+}
