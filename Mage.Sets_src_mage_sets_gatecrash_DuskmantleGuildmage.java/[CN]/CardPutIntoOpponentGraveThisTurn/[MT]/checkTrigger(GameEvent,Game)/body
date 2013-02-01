@@ -1,0 +1,14 @@
+{
+  if (event.getType() == EventType.ZONE_CHANGE) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    UUID cardId=event.getTargetId();
+    Card card=game.getCard(cardId);
+    if (zEvent.getToZone() == Zone.GRAVEYARD && game.getOpponents(controllerId).contains(card.getOwnerId())) {
+      for (      Effect effect : this.getEffects()) {
+        effect.setTargetPointer(new FixedTarget(card.getOwnerId()));
+      }
+      return true;
+    }
+  }
+  return false;
+}

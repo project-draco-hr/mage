@@ -1,4 +1,19 @@
 {
+  if (source.getTargets().size() > 1) {
+    for (    Target target : source.getTargets()) {
+      for (      UUID targetId : target.getTargets()) {
+        Permanent permanent=game.getPermanent(targetId);
+        if (permanent != null) {
+          permanent.damage(amount.calculate(game,source),source.getSourceId(),game,preventable,false);
+        }
+        Player player=game.getPlayer(targetId);
+        if (player != null) {
+          player.damage(amount.calculate(game,source),source.getSourceId(),game,false,preventable);
+        }
+      }
+    }
+    return true;
+  }
   Permanent permanent=game.getPermanent(targetPointer.getFirst(game,source));
   if (permanent != null) {
     permanent.damage(amount.calculate(game,source),source.getSourceId(),game,preventable,false);
