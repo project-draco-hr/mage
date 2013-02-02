@@ -6,15 +6,15 @@
   if (count == 1) {
     for (    CombatGroup group : groups) {
       List<UUID> tobeRemoved=new ArrayList<UUID>();
-      for (      UUID attackerId : group.getAttackers()) {
-        Permanent attacker=game.getPermanent(attackerId);
+      for (      UUID attackingCreatureId : group.getAttackers()) {
+        Permanent attacker=game.getPermanent(attackingCreatureId);
         if (attacker != null && attacker.getAbilities().containsKey(CantAttackAloneAbility.getInstance().getId())) {
           game.informPlayers(attacker.getName() + " can't attack alone. Removing it from combat.");
-          tobeRemoved.add(attackerId);
+          tobeRemoved.add(attackingCreatureId);
         }
       }
-      for (      UUID attackerId : tobeRemoved) {
-        group.remove(attackerId);
+      for (      UUID attackingCreatureId : tobeRemoved) {
+        group.remove(attackingCreatureId);
       }
     }
   }
