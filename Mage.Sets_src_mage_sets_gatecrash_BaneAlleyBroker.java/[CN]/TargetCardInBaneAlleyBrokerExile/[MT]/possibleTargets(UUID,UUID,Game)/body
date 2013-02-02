@@ -2,7 +2,7 @@
   Set<UUID> possibleTargets=new HashSet<UUID>();
   Card sourceCard=game.getCard(sourceId);
   if (sourceCard != null) {
-    UUID exileId=UUID.fromString(new StringBuilder(sourceCard.getId().toString()).append(sourceCard.getZoneChangeCounter()).toString());
+    UUID exileId=(UUID)game.getState().getValue(new StringBuilder("exileZone").append(sourceId).append(sourceCard.getZoneChangeCounter()).toString());
     ExileZone exile=game.getExile().getExileZone(exileId);
     if (exile != null && exile.size() > 0) {
       possibleTargets.addAll(exile);

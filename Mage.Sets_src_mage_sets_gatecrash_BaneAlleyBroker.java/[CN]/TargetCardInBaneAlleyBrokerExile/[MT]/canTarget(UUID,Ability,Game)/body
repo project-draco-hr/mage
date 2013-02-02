@@ -4,7 +4,7 @@
     ExileZone exile=null;
     Card sourceCard=game.getCard(source.getSourceId());
     if (sourceCard != null) {
-      UUID exileId=UUID.fromString(new StringBuilder(sourceCard.getId().toString()).append(sourceCard.getZoneChangeCounter()).toString());
+      UUID exileId=(UUID)game.getState().getValue(new StringBuilder("exileZone").append(source.getSourceId()).append(sourceCard.getZoneChangeCounter()).toString());
       exile=game.getExile().getExileZone(exileId);
     }
     if (exile != null && exile.contains(id)) {

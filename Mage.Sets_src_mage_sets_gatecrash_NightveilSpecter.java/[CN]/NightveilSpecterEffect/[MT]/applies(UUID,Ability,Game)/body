@@ -2,7 +2,7 @@
   Card card=game.getCard(sourceId);
   if (card != null && game.getState().getZone(card.getId()) == Zone.EXILED) {
     Card sourceCard=game.getCard(source.getSourceId());
-    UUID exileId=UUID.fromString(new StringBuilder(sourceCard.getId().toString()).append(sourceCard.getZoneChangeCounter()).toString());
+    UUID exileId=(UUID)game.getState().getValue(new StringBuilder("exileZone").append(source.getSourceId()).append(sourceCard.getZoneChangeCounter()).toString());
     ExileZone zone=game.getExile().getExileZone(exileId);
     if (zone != null && zone.contains(card.getId())) {
       if (card.getCardType().contains(CardType.INSTANT) || game.canPlaySorcery(source.getControllerId())) {
