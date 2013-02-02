@@ -10,8 +10,12 @@
     for (    UUID attackerId : attackerOrder) {
       Permanent attacker=game.getPermanent(attackerId);
       int lethalDamage;
-      if (blocker.getAbilities().containsKey(DeathtouchAbility.getInstance().getId()))       lethalDamage=1;
- else       lethalDamage=attacker.getToughness().getValue() - attacker.getDamage();
+      if (blocker.getAbilities().containsKey(DeathtouchAbility.getInstance().getId())) {
+        lethalDamage=1;
+      }
+ else {
+        lethalDamage=attacker.getToughness().getValue() - attacker.getDamage();
+      }
       if (lethalDamage >= damage) {
         assigned.put(attackerId,damage);
         break;

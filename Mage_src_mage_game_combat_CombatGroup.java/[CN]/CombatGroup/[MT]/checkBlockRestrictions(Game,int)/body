@@ -13,8 +13,12 @@
     }
     for (    UUID blockerId : toBeRemoved) {
       remove(blockerId);
+      Permanent creature=game.getPermanent(blockerId);
+      if (creature != null) {
+        creature.setBlocking(creature.getBlocking() - 1);
+      }
     }
-    if (blockers.size() == 0) {
+    if (blockers.isEmpty()) {
       this.blocked=false;
     }
   }
