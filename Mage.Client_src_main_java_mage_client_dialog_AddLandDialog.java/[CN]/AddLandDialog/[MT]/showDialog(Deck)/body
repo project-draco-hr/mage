@@ -1,5 +1,29 @@
 {
   this.deck=deck;
+  List<String> setCodes=new LinkedList<String>();
+  for (  Card card : this.deck.getCards()) {
+    if (!setCodes.contains(card.getExpansionSetCode())) {
+      setCodes.add(card.getExpansionSetCode());
+    }
+  }
+  for (  Card card : this.deck.getSideboard()) {
+    if (!setCodes.contains(card.getExpansionSetCode())) {
+      setCodes.add(card.getExpansionSetCode());
+    }
+  }
+  List<String> landSets=new LinkedList<String>();
+  if (!setCodes.isEmpty()) {
+    for (    String setCode : setCodes) {
+      ExpansionSet expansionSet=Sets.findSet(setCode);
+      if (expansionSet.hasBasicLands()) {
+        landSets.add(setCode);
+      }
+ else       if (expansionSet.getParentSet() != null && !landSets.contains(expansionSet.getParentSet().getCode())) {
+        landSets.add(expansionSet.getParentSet().getCode());
+      }
+    }
+  }
+  this.setCodesland=landSets;
   MageFrame.getDesktop().add(this,JLayeredPane.PALETTE_LAYER);
   this.setVisible(true);
 }

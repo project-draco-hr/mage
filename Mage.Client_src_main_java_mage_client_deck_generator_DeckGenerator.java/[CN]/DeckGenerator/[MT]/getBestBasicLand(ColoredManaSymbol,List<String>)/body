@@ -1,0 +1,43 @@
+{
+  String cardName="";
+switch (color) {
+case G:
+    cardName="Forest";
+  break;
+case W:
+cardName="Plains";
+break;
+case R:
+cardName="Mountain";
+break;
+case B:
+cardName="Swamp";
+break;
+case U:
+cardName="Island";
+break;
+}
+List<String> landSets=new LinkedList<String>();
+if (!setsToUse.isEmpty()) {
+for (String setCode : setsToUse) {
+ExpansionSet expansionSet=Sets.findSet(setCode);
+if (expansionSet.hasBasicLands()) {
+landSets.add(setCode);
+}
+ else if (expansionSet.getParentSet() != null && !landSets.contains(expansionSet.getParentSet().getCode())) {
+landSets.add(expansionSet.getParentSet().getCode());
+}
+}
+}
+CardCriteria criteria=new CardCriteria();
+if (!landSets.isEmpty()) {
+criteria.setCodes(landSets.toArray(new String[landSets.size()]));
+}
+criteria.rarities(Constants.Rarity.LAND).name(cardName);
+List<CardInfo> cards=CardRepository.instance.findCards(criteria);
+if (cards.isEmpty() && !setsToUse.isEmpty()) {
+cards=CardRepository.instance.findCards(cardName);
+}
+int randomInt=new Random().nextInt(cards.size());
+return cards.get(randomInt).getCard();
+}

@@ -21,19 +21,12 @@
   List<Card> landCardPool=generateNonBasicLandCardPool(MAX_NON_BASIC_SOURCE,allowedColors,setsToUse);
   System.out.println("deck generator card pool: spells=" + spellCardPool.size() + ", lands="+ landCardPool.size());
   final List<String> setsToUseFinal=setsToUse;
-  deck=DeckBuilder.buildDeck(spellCardPool,allowedColors,landCardPool,new RateCallback(){
+  deck=DeckBuilder.buildDeck(spellCardPool,allowedColors,setsToUseFinal,landCardPool,new RateCallback(){
     @Override public int rateCard(    Card card){
       return 6;
     }
-    @Override public Card getBestBasicLand(    ColoredManaSymbol color){
-      int tries=100;
-      Card land;
-      do {
-        land=DeckGenerator.getBestBasicLand(color);
-        tries--;
-      }
- while (!setsToUseFinal.contains(land.getExpansionSetCode()) && tries >= 0);
-      return land;
+    @Override public Card getBestBasicLand(    ColoredManaSymbol color,    List<String> setsToUse){
+      return DeckGenerator.getBestBasicLand(color,setsToUseFinal);
     }
   }
 );

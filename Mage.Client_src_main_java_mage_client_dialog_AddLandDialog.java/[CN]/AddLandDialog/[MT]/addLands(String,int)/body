@@ -1,6 +1,11 @@
 {
   Random random=new Random();
-  List<CardInfo> cards=CardRepository.instance.findCards(landName);
+  CardCriteria criteria=new CardCriteria();
+  if (!setCodesland.isEmpty()) {
+    criteria.setCodes(setCodesland.toArray(new String[setCodesland.size()]));
+  }
+  criteria.rarities(Constants.Rarity.LAND).name(landName);
+  List<CardInfo> cards=CardRepository.instance.findCards(criteria);
   if (cards.isEmpty()) {
     return;
   }
