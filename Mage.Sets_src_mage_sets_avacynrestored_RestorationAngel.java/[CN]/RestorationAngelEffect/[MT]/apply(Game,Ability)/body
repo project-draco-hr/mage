@@ -1,0 +1,23 @@
+{
+  boolean exiled=false;
+  Permanent permanent=game.getPermanent(targetPointer.getFirst(game,source));
+  if (permanent != null) {
+    permanent.moveToExile(source.getSourceId(),"Restoration Angel",source.getSourceId(),game);
+    exiled=true;
+  }
+ else {
+    Card card=game.getCard(targetPointer.getFirst(game,source));
+    if (card != null) {
+      card.moveToExile(source.getSourceId(),"Restoration Angel",source.getSourceId(),game);
+      exiled=true;
+    }
+  }
+  if (exiled) {
+    Card card=game.getCard(targetPointer.getFirst(game,source));
+    if (card != null) {
+      Constants.Zone currentZone=game.getState().getZone(card.getId());
+      return card.putOntoBattlefield(game,currentZone,source.getId(),source.getControllerId());
+    }
+  }
+  return exiled;
+}
