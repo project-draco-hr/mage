@@ -2,14 +2,15 @@
   Player you=game.getPlayer(source.getControllerId());
   if (you != null) {
     ChoiceImpl choices=new ChoiceImpl(true);
+    choices.setMessage("Choose basic land type");
     choices.isRequired();
-    Set choicesSet=choices.getChoices();
-    choicesSet.add("Forest");
-    choicesSet.add("Plains");
-    choicesSet.add("Mountain");
-    choicesSet.add("Island");
-    choicesSet.add("Swamp");
-    if (you.choose(Constants.Outcome.Neutral,choices,game)) {
+    choices.getChoices().add("Forest");
+    choices.getChoices().add("Plains");
+    choices.getChoices().add("Mountain");
+    choices.getChoices().add("Island");
+    choices.getChoices().add("Swamp");
+    if (you.choose(Outcome.Neutral,choices,game)) {
+      game.informPlayers(new StringBuilder("Realmwright: ").append(" Chosen basic land type is ").append(choices.getChoice()).toString());
       game.getState().setValue(source.getSourceId().toString() + "_Realmwright",choices.getChoice());
       return true;
     }
