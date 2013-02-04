@@ -1,8 +1,14 @@
 {
   Runnable task=new Runnable(){
-    public void run(){
+    @Override public void run(){
       logger.info("Ending game...");
-      FeedbackPanel.this.btnRight.doClick();
+      Component c=MageFrame.getGame(gameId);
+      while (c != null && !(c instanceof GamePane)) {
+        c=c.getParent();
+      }
+      if (c != null && ((GamePane)c).isVisible()) {
+        FeedbackPanel.this.btnRight.doClick();
+      }
     }
   }
 ;
