@@ -1,6 +1,12 @@
 {
   Random random=new Random();
-  List<CardInfo> cards=CardRepository.instance.findCards(landName);
+  Set<String> landSets=Sets.getSetsWithBasicLandsAsCodes(deck.getExpansionSetCodes());
+  CardCriteria criteria=new CardCriteria();
+  if (!landSets.isEmpty()) {
+    criteria.setCodes(landSets.toArray(new String[landSets.size()]));
+  }
+  criteria.rarities(Constants.Rarity.LAND).name(landName);
+  List<CardInfo> cards=CardRepository.instance.findCards(criteria);
   if (cards.isEmpty()) {
     return;
   }

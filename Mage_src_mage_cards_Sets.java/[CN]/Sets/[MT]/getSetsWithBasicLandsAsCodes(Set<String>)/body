@@ -1,0 +1,15 @@
+{
+  Set<String> landSets=new LinkedHashSet<String>();
+  if (setCodes != null && !setCodes.isEmpty()) {
+    for (    String setCode : setCodes) {
+      ExpansionSet expansionSet=Sets.findSet(setCode);
+      if (expansionSet.hasBasicLands()) {
+        landSets.add(setCode);
+      }
+ else       if (expansionSet.getParentSet() != null && !landSets.contains(expansionSet.getParentSet().getCode())) {
+        landSets.add(expansionSet.getParentSet().getCode());
+      }
+    }
+  }
+  return landSets;
+}
