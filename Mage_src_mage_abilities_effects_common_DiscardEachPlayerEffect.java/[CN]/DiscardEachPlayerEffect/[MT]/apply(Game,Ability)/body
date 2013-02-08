@@ -2,7 +2,18 @@
   for (  UUID playerId : game.getPlayerList()) {
     Player player=game.getPlayer(playerId);
     if (player != null) {
-      player.discard(1,source,game);
+      if (randomDiscard) {
+        int maxAmount=Math.min(amount.calculate(game,source),player.getHand().size());
+        for (int i=0; i < maxAmount; i++) {
+          Card card=player.getHand().getRandom(game);
+          if (card != null) {
+            player.discard(card,source,game);
+          }
+        }
+      }
+ else {
+        player.discard(amount.calculate(game,source),source,game);
+      }
     }
   }
   return true;
