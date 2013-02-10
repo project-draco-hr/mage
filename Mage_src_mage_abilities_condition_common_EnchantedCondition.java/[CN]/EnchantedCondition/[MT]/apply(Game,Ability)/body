@@ -1,12 +1,15 @@
 {
   Permanent permanent=game.getBattlefield().getPermanent(source.getSourceId());
+  int numberOfFoundEnchantments=0;
   if (permanent != null) {
     for (    UUID uuid : permanent.getAttachments()) {
       Permanent attached=game.getBattlefield().getPermanent(uuid);
       if (attached != null && attached.getCardType().contains(CardType.ENCHANTMENT)) {
-        return true;
+        if (++numberOfFoundEnchantments >= numberOfEnchantments) {
+          return true;
+        }
       }
     }
   }
-  return false;
+  return (numberOfFoundEnchantments >= numberOfEnchantments);
 }
