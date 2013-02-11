@@ -1,29 +1,38 @@
 {
-  if (target == null)   throw new IllegalArgumentException("Target can't be null");
-  target.setName(source.getName());
-  target.getColor().setColor(source.getColor());
+  if (target == null) {
+    throw new IllegalArgumentException("Target can't be null");
+  }
+  MageObject sourceObj=source;
+  if (source instanceof PermanentToken) {
+    sourceObj=((PermanentToken)source).getToken();
+  }
+ else   if (source instanceof PermanentCard) {
+    sourceObj=((PermanentCard)source).getCard();
+  }
+  target.setName(sourceObj.getName());
+  target.getColor().setColor(sourceObj.getColor());
   target.getManaCost().clear();
-  target.getManaCost().add(source.getManaCost());
+  target.getManaCost().add(sourceObj.getManaCost());
   target.getCardType().clear();
-  for (  Constants.CardType type : source.getCardType()) {
+  for (  Constants.CardType type : sourceObj.getCardType()) {
     target.getCardType().add(type);
   }
   target.getSubtype().clear();
-  for (  String type : source.getSubtype()) {
+  for (  String type : sourceObj.getSubtype()) {
     target.getSubtype().add(type);
   }
   target.getSupertype().clear();
-  for (  String type : source.getSupertype()) {
+  for (  String type : sourceObj.getSupertype()) {
     target.getSupertype().add(type);
   }
   target.getAbilities().clear();
-  for (  Ability ability0 : source.getAbilities()) {
+  for (  Ability ability0 : sourceObj.getAbilities()) {
     Ability ability=ability0.copy();
     ability.newId();
     ability.setSourceId(target.getId());
     target.addAbility(ability);
   }
-  target.getPower().initValue(Integer.parseInt(source.getPower().toString()));
-  target.getToughness().initValue(Integer.parseInt(source.getToughness().toString()));
+  target.getPower().initValue(Integer.parseInt(sourceObj.getPower().toString()));
+  target.getToughness().initValue(Integer.parseInt(sourceObj.getToughness().toString()));
   return target;
 }
