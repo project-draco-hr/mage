@@ -2,13 +2,17 @@
   List<Permanent> active=new ArrayList<Permanent>();
   if (game.getRangeOfInfluence() == RangeOfInfluence.ALL) {
     for (    Permanent perm : field.values()) {
-      if (perm.isPhasedIn() && filter.match(perm,sourceId,sourcePlayerId,game))       active.add(perm);
+      if (perm.isPhasedIn() && filter.match(perm,sourceId,sourcePlayerId,game)) {
+        active.add(perm);
+      }
     }
   }
  else {
     Set<UUID> range=game.getPlayer(sourcePlayerId).getInRange();
     for (    Permanent perm : field.values()) {
-      if (perm.isPhasedIn() && range.contains(perm.getControllerId()) && filter.match(perm,sourceId,sourcePlayerId,game))       active.add(perm);
+      if (perm.isPhasedIn() && range.contains(perm.getControllerId()) && filter.match(perm,sourceId,sourcePlayerId,game)) {
+        active.add(perm);
+      }
     }
   }
   return active;
