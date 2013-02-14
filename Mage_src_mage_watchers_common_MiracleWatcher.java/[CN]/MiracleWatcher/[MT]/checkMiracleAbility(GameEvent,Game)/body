@@ -4,15 +4,13 @@
     for (    Ability ability : card.getAbilities()) {
       if (ability instanceof MiracleAbility) {
         Player controller=game.getPlayer(ability.getControllerId());
-        game.getContinuousEffects().costModification(ability,game);
-        ManaCosts<ManaCost> manaCostsToPay=ability.getManaCostsToPay();
         if (controller != null) {
-          game.getStack().add(new StackAbility(ability,controller.getId()));
-          Cards cards=new CardsImpl(Constants.Zone.PICK);
+          game.getContinuousEffects().costModification(ability,game);
+          ManaCosts<ManaCost> manaCostsToPay=ability.getManaCostsToPay();
+          Cards cards=new CardsImpl(Zone.PICK);
           cards.add(card);
           controller.lookAtCards("Miracle",cards,game);
-          if (controller.chooseUse(Constants.Outcome.Benefit,"Use Miracle " + manaCostsToPay.getText() + "?",game)) {
-            game.getStack().poll();
+          if (controller.chooseUse(Outcome.Benefit,"Use Miracle " + manaCostsToPay.getText() + "?",game)) {
             controller.revealCards("Miracle",cards,game);
             ManaCosts costRef=card.getSpellAbility().getManaCostsToPay();
             costRef.clear();
@@ -21,9 +19,6 @@
             }
             controller.cast(card.getSpellAbility(),game,false);
             break;
-          }
- else {
-            game.getStack().poll();
           }
         }
       }
