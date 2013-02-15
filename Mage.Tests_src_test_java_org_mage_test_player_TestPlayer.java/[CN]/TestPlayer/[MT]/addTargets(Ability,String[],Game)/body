@@ -39,7 +39,15 @@
               if (ability.getTargets().get(index).getNumberOfTargets() == 1) {
                 ability.getTargets().get(index).clearChosen();
               }
-              ability.getTargets().get(index).addTarget(id,ability,game);
+              if (ability.getTargets().get(index) instanceof TargetCreaturePermanentAmount) {
+                TargetCreaturePermanentAmount targetAmount=(TargetCreaturePermanentAmount)ability.getTargets().get(index);
+                targetAmount.setAmount(ability,game);
+                int amount=targetAmount.getAmountRemaining();
+                targetAmount.addTarget(id,amount,ability,game);
+              }
+ else {
+                ability.getTargets().get(index).addTarget(id,ability,game);
+              }
               index++;
               break;
             }
