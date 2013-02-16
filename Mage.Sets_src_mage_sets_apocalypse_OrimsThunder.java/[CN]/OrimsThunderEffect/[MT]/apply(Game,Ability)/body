@@ -1,0 +1,16 @@
+{
+  int damage=0;
+  boolean successful=false;
+  Permanent first=game.getPermanent(source.getFirstTarget());
+  Permanent second=game.getPermanent(source.getTargets().get(1).getFirstTarget());
+  if (first != null) {
+    damage=first.getManaCost().convertedManaCost();
+    first.destroy(source.getSourceId(),game,false);
+    successful=true;
+  }
+  boolean kicked=KickedCondition.getInstance().apply(game,source);
+  if (kicked && second != null && successful) {
+    second.damage(damage,id,game,true,false);
+  }
+  return successful;
+}
