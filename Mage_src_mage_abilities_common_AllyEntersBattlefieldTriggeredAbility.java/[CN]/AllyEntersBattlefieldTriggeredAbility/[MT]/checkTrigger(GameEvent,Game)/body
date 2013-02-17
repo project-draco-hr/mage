@@ -1,9 +1,8 @@
 {
-  if (event.getType() == EventType.ZONE_CHANGE) {
+  if (event.getType() == EventType.ENTERS_THE_BATTLEFIELD) {
     UUID targetId=event.getTargetId();
     Permanent permanent=game.getPermanent(targetId);
-    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
-    if (zEvent.getToZone() == Zone.BATTLEFIELD && permanent.getControllerId().equals(this.controllerId) && (targetId.equals(this.getSourceId()) || (permanent.hasSubtype("Ally") && !targetId.equals(this.getSourceId())))) {
+    if (permanent.getControllerId().equals(this.controllerId) && (targetId.equals(this.getSourceId()) || (permanent.hasSubtype("Ally") && !targetId.equals(this.getSourceId())))) {
       return true;
     }
   }
