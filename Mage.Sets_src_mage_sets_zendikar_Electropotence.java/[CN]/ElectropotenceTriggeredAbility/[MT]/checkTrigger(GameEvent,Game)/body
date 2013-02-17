@@ -1,7 +1,7 @@
 {
-  if (event.getType() == GameEvent.EventType.ZONE_CHANGE) {
+  if (event.getType() == GameEvent.EventType.ENTERS_THE_BATTLEFIELD) {
     Permanent permanent=game.getPermanent(event.getTargetId());
-    if (((ZoneChangeEvent)event).getToZone() == Zone.BATTLEFIELD && permanent.getCardType().contains(CardType.CREATURE) && permanent.getControllerId().equals(this.controllerId)) {
+    if (permanent.getCardType().contains(CardType.CREATURE) && permanent.getControllerId().equals(this.controllerId)) {
       Player player=game.getPlayer(this.getControllerId());
       Card card=game.getCard(event.getTargetId());
       if (player != null && card != null && player.chooseUse(Outcome.Damage,"Pay {2}{R}? If you do, " + card.getName() + " deals damage equal to its power to target creature or player.",game)) {

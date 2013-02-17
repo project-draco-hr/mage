@@ -1,11 +1,8 @@
 {
-  if (event.getType() == GameEvent.EventType.ZONE_CHANGE) {
-    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
-    if (zEvent.getToZone() == Constants.Zone.BATTLEFIELD) {
-      Permanent p=game.getPermanent(event.getTargetId());
-      if (p != null && p.getCardType().contains(CardType.CREATURE)) {
-        return true;
-      }
+  if (event.getType() == GameEvent.EventType.ENTERS_THE_BATTLEFIELD) {
+    Permanent p=game.getPermanent(event.getTargetId());
+    if (p != null && p.getCardType().contains(CardType.CREATURE)) {
+      return true;
     }
   }
   return false;

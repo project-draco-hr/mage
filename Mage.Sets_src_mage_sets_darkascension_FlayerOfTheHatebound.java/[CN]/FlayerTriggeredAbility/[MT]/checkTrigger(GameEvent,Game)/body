@@ -1,7 +1,7 @@
 {
-  if (event.getType() == GameEvent.EventType.ZONE_CHANGE) {
+  if (event.getType() == GameEvent.EventType.ENTERS_THE_BATTLEFIELD) {
     Permanent permanent=game.getPermanent(event.getTargetId());
-    if (((ZoneChangeEvent)event).getToZone() == Constants.Zone.BATTLEFIELD && ((ZoneChangeEvent)event).getFromZone() == Constants.Zone.GRAVEYARD && permanent.getOwnerId().equals(controllerId) && permanent.getCardType().contains(CardType.CREATURE)) {
+    if (((EntersTheBattlefieldEvent)event).getFromZone() == Constants.Zone.GRAVEYARD && permanent.getOwnerId().equals(controllerId) && permanent.getCardType().contains(CardType.CREATURE)) {
       Effect effect=this.getEffects().get(0);
       effect.setValue("damageSource",event.getTargetId());
       return true;
