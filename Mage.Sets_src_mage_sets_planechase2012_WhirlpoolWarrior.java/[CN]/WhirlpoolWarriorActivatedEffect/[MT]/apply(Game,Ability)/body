@@ -1,0 +1,24 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        int cardsHand=player.getHand().size();
+        if (cardsHand > 0) {
+          for (          UUID cardId : player.getHand()) {
+            Card card=game.getCard(cardId);
+            if (card != null) {
+              player.removeFromHand(card,game);
+              card.moveToZone(Zone.LIBRARY,source.getId(),game,true);
+            }
+          }
+          player.shuffleLibrary(game);
+          player.drawCards(cardsHand,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

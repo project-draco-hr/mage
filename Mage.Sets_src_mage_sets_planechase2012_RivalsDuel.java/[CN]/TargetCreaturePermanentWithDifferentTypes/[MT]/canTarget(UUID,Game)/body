@@ -1,0 +1,16 @@
+{
+  if (super.canTarget(id,game)) {
+    Permanent creature=game.getPermanent(id);
+    if (creature != null) {
+      for (      Object object : getTargets()) {
+        UUID targetId=(UUID)object;
+        Permanent selectedCreature=game.getPermanent(targetId);
+        if (CardUtil.shareSubtypes(creature,selectedCreature)) {
+          return false;
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}
