@@ -1,17 +1,17 @@
 {
   if (lastTurnOutput < game.getTurnNum()) {
     lastTurnOutput=game.getTurnNum();
-    logger.info(new StringBuilder("Turn: ").append(game.getTurnNum()).append("  --------------------------------------------------------------").toString());
+    logger.info(new StringBuilder("------------------------ ").append("Turn: ").append(game.getTurnNum()).append("  --------------------------------------------------------------").toString());
   }
   Player player=game.getPlayer(playerId);
   logger.info(new StringBuilder("[").append(game.getPlayer(playerId).getName()).append("] ").append(game.getTurn().getStepType().name()).append(", life=").append(player.getLife()).toString());
-  StringBuilder sb=new StringBuilder("Hand: [");
+  StringBuilder sb=new StringBuilder("-> Hand: [");
   for (  Card card : player.getHand().getCards(game)) {
     sb.append(card.getName()).append(";");
   }
   logger.info(sb.append("]").toString());
   sb.setLength(0);
-  sb.append("Permanents: [");
+  sb.append("-> Permanents: [");
   for (  Permanent permanent : game.getBattlefield().getAllPermanents()) {
     if (permanent.getOwnerId().equals(player.getId())) {
       sb.append(permanent.getName());

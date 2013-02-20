@@ -8,17 +8,17 @@
     if (attackersList.isEmpty()) {
       return;
     }
+    logger.debug("Declare Attackers: Number of potential attackers " + attackersList.size());
     for (    Permanent attacker : attackersList) {
-      System.out.println("Number of potential attackers " + attackersList.size());
-      System.out.println("Potential attacker is " + attacker.getName());
+      logger.debug("                   Potential attacker: " + attacker.getName());
     }
     if (attackersList.isEmpty()) {
       return;
     }
     List<Permanent> possibleBlockers=defender.getAvailableBlockers(game);
+    logger.debug("Possible Blockers: Number of blockers " + possibleBlockers.size());
     for (    Permanent blocker : possibleBlockers) {
-      System.out.println("Number of blockers " + possibleBlockers.size());
-      System.out.println("Blocker is " + blocker.getName());
+      logger.debug("                   Blocker:            " + blocker.getName());
     }
     List<Permanent> killers=CombatUtil.canKillOpponent(game,attackersList,possibleBlockers,defender);
     if (!killers.isEmpty()) {
