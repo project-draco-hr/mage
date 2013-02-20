@@ -8,11 +8,14 @@
   if (!forced) {
     list.add(pass);
   }
-  for (  Ability a : allActions) {
-    if (a.getTargets().size() > 0) {
-      Player player=game.getPlayer(a.getFirstTarget());
-      if (player != null) {
-        System.out.println("   target=" + player.getName());
+  if (logger.isTraceEnabled()) {
+    for (    Ability a : allActions) {
+      logger.trace("ability==" + a);
+      if (a.getTargets().size() > 0) {
+        Player player=game.getPlayer(a.getFirstTarget());
+        if (player != null) {
+          logger.trace("   target=" + player.getName());
+        }
       }
     }
   }

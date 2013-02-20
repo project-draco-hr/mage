@@ -6,7 +6,7 @@
     boolean usedStack=false;
     while (actions.peek() != null) {
       Ability ability=actions.poll();
-      System.out.println("[" + game.getPlayer(playerId).getName() + "] Action: "+ ability.toString());
+      logger.info(new StringBuilder("[").append(game.getPlayer(playerId).getName()).append("] Action: ").append(ability.toString()).toString());
       if (ability.getTargets().size() > 0) {
         for (        Target target : ability.getTargets()) {
           for (          UUID id : target.getTargets()) {
@@ -15,7 +15,7 @@
         }
         Player player=game.getPlayer(ability.getFirstTarget());
         if (player != null) {
-          System.out.println("targets = " + player.getName());
+          logger.info("targets = " + player.getName());
         }
       }
       this.activateAbility((ActivatedAbility)ability,game);
@@ -27,9 +27,9 @@
         while (it.hasNext()) {
           Card card=game.getCard(ability.getSourceId());
           String action=it.next();
-          System.out.println("action=" + action + ";card="+ card);
+          logger.info("action=" + action + ";card="+ card);
           if (action.equals(card.getName())) {
-            System.out.println("removed from suggested=" + action);
+            logger.info("removed from suggested=" + action);
             it.remove();
           }
         }

@@ -1,5 +1,7 @@
 {
-  if (log.isDebugEnabled())   log.debug("chooseTarget: " + outcome.toString() + ":"+ target.toString());
+  if (log.isDebugEnabled()) {
+    log.debug("chooseTarget: " + outcome.toString() + ":"+ target.toString());
+  }
   UUID opponentId=game.getOpponents(playerId).iterator().next();
   if (target instanceof TargetPlayer) {
     if (outcome.isGood()) {
@@ -57,12 +59,10 @@
     for (    Permanent permanent : targets) {
       if (((TargetControlledPermanent)target).canTarget(playerId,permanent.getId(),null,game) && !target.getTargets().contains(permanent.getId())) {
         target.add(permanent.getId(),game);
-        if (target.isChosen()) {
-          return true;
-        }
+        return true;
       }
     }
-    return target.isChosen();
+    return false;
   }
   if (target instanceof TargetPermanent) {
     List<Permanent> targets;
@@ -125,7 +125,9 @@
         return true;
       }
     }
-    if (!target.isRequired())     return false;
+    if (!target.isRequired()) {
+      return false;
+    }
   }
   if (target instanceof TargetPermanentOrPlayer) {
     List<Permanent> targets;
@@ -157,7 +159,10 @@
         return true;
       }
     }
-    if (!target.isRequired())     return false;
+    if (!target.isRequired()) {
+      return false;
+    }
+    throw new IllegalStateException("TargetPermanentOrPlayer wasn't handled. class:" + target.getClass().toString());
   }
   if (target instanceof TargetCardInGraveyard) {
     List<Card> cards=new ArrayList<Card>();
@@ -177,14 +182,16 @@
     return target.isChosen();
   }
   if (target instanceof TargetCardInYourGraveyard) {
+    List<UUID> alreadyTargetted=target.getTargets();
     List<Card> cards=new ArrayList<Card>(game.getPlayer(playerId).getGraveyard().getCards(game));
-    while (!target.isChosen() && !cards.isEmpty()) {
+    while (!cards.isEmpty()) {
       Card card=pickTarget(cards,outcome,target,null,game);
-      if (card != null) {
+      if (card != null && alreadyTargetted != null && !alreadyTargetted.contains(card.getId())) {
         target.add(card.getId(),game);
+        return true;
       }
     }
-    return target.isChosen();
+    return false;
   }
   throw new IllegalStateException("Target wasn't handled. class:" + target.getClass().toString());
 }

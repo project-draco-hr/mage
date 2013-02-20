@@ -1,5 +1,7 @@
 {
-  if (log.isDebugEnabled())   log.debug("chooseTarget: " + outcome.toString() + ":"+ target.toString());
+  if (log.isDebugEnabled()) {
+    log.debug("chooseTarget: " + outcome.toString() + ":"+ target.toString());
+  }
   UUID opponentId=game.getOpponents(playerId).iterator().next();
   if (target instanceof TargetPlayer) {
     if (outcome.isGood()) {
@@ -62,7 +64,9 @@
   if (target instanceof TargetControlledPermanent) {
     List<Permanent> targets;
     targets=threats(playerId,source.getSourceId(),((TargetControlledPermanent)target).getFilter(),game,target.getTargets());
-    if (!outcome.isGood())     Collections.reverse(targets);
+    if (!outcome.isGood()) {
+      Collections.reverse(targets);
+    }
     for (    Permanent permanent : targets) {
       if (((TargetControlledPermanent)target).canTarget(playerId,permanent.getId(),source,game)) {
         target.addTarget(permanent.getId(),source,game);

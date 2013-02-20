@@ -18,10 +18,16 @@ if (playableAbilities.size() > 0) {
 for (ActivatedAbility ability : playableAbilities) {
 if (ability.canActivate(playerId,game)) {
   if (ability.getEffects().hasOutcome(Outcome.PutLandInPlay)) {
-    if (this.activateAbility(ability,game))     return true;
+    if (this.activateAbility(ability,game)) {
+      return true;
+    }
   }
   if (ability.getEffects().hasOutcome(Outcome.PutCreatureInPlay)) {
-    if (getOpponentBlockers(opponentId,game).size() <= 1)     if (this.activateAbility(ability,game))     return true;
+    if (getOpponentBlockers(opponentId,game).size() <= 1) {
+      if (this.activateAbility(ability,game)) {
+        return true;
+      }
+    }
   }
 }
 }
@@ -42,7 +48,9 @@ if (game.getStack().isEmpty()) {
 if (playableNonInstant.size() > 0) {
 for (Card card : playableNonInstant) {
 if (card.getSpellAbility().canActivate(playerId,game)) {
-if (this.activateAbility(card.getSpellAbility(),game)) return true;
+if (this.activateAbility(card.getSpellAbility(),game)) {
+return true;
+}
 }
 }
 }
@@ -50,7 +58,9 @@ if (playableAbilities.size() > 0) {
 for (ActivatedAbility ability : playableAbilities) {
 if (ability.canActivate(playerId,game)) {
 if (!(ability.getEffects().get(0) instanceof BecomesCreatureSourceEffect)) {
-if (this.activateAbility(ability,game)) return true;
+if (this.activateAbility(ability,game)) {
+return true;
+}
 }
 }
 }

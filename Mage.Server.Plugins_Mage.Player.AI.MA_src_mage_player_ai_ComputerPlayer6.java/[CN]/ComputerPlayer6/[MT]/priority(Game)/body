@@ -10,8 +10,14 @@ case DRAW:
 case PRECOMBAT_MAIN:
 case POSTCOMBAT_MAIN:
 if (game.getActivePlayerId().equals(playerId)) {
-  printOutState(game,playerId);
-  printOutState(game,game.getOpponents(playerId).iterator().next());
+  if (logger.isInfoEnabled()) {
+    printOutState(game,playerId);
+    Iterator it=game.getOpponents(playerId).iterator();
+    while (it.hasNext()) {
+      UUID opponentId=(UUID)it.next();
+      printOutState(game,opponentId);
+    }
+  }
   if (actions.size() == 0) {
     calculateActions(game);
   }

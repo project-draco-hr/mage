@@ -18,12 +18,18 @@
         if (mana.enough(avail)) {
           SpellAbility ability=card.getSpellAbility();
           if (ability != null && ability.canActivate(playerId,game)) {
-            if (card.getCardType().contains(CardType.INSTANT))             playableInstant.add(card);
- else             playableNonInstant.add(card);
+            if (card.getCardType().contains(CardType.INSTANT)) {
+              playableInstant.add(card);
+            }
+ else {
+              playableNonInstant.add(card);
+            }
           }
         }
  else {
-          if (!playableInstant.contains(card) && !playableNonInstant.contains(card))           unplayable.put(mana.needed(avail),card);
+          if (!playableInstant.contains(card) && !playableNonInstant.contains(card)) {
+            unplayable.put(mana.needed(avail),card);
+          }
         }
       }
     }
@@ -31,7 +37,9 @@
   for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
     for (    ActivatedAbility ability : permanent.getAbilities().getActivatedAbilities(Zone.BATTLEFIELD)) {
       if (!(ability instanceof ManaAbility) && ability.canActivate(playerId,game)) {
-        if (ability instanceof EquipAbility && permanent.getAttachedTo() != null)         continue;
+        if (ability instanceof EquipAbility && permanent.getAttachedTo() != null) {
+          continue;
+        }
         ManaOptions abilityOptions=ability.getManaCosts().getOptions();
         if (ability.getManaCosts().getVariableCosts().size() > 0) {
           for (          Mana option : abilityOptions) {
@@ -72,5 +80,7 @@
       }
     }
   }
-  if (log.isDebugEnabled())   log.debug("findPlayables: " + playableInstant.toString() + "---"+ playableNonInstant.toString()+ "---"+ playableAbilities.toString());
+  if (log.isDebugEnabled()) {
+    log.debug("findPlayables: " + playableInstant.toString() + "---"+ playableNonInstant.toString()+ "---"+ playableAbilities.toString());
+  }
 }
