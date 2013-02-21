@@ -9,11 +9,12 @@
   SimulationNode2 bestNode=null;
   List<Ability> allActions=currentPlayer.simulatePriority(game);
   optimize(game,allActions);
-  logger.debug("simulating -- adding " + allActions.size() + " children:"+ allActions);
+  logger.debug("Simulating -- adding " + allActions.size() + " children:"+ allActions);
   for (  Ability action : allActions) {
+    logger.debug(new StringBuilder("Simulating -- actions: " + allActions.size() + " -> "+ action));
     if (Thread.interrupted()) {
       Thread.currentThread().interrupt();
-      logger.debug("interrupted");
+      logger.debug("Simulating -- interrupted");
       break;
     }
     Game sim=game.copy();
@@ -28,7 +29,7 @@
       }
       SimulationNode2 newNode=new SimulationNode2(node,sim,action,depth,currentPlayer.getId());
       int testVal=GameStateEvaluator2.evaluate(currentPlayer.getId(),sim);
-      logger.debug("simulating -- node #:" + SimulationNode2.getCount() + " actions:"+ action);
+      logger.debug("Simulating -- node #:" + SimulationNode2.getCount() + " actions:"+ action);
       sim.checkStateAndTriggered();
       int val=addActions(newNode,depth - 1,alpha,beta);
       if (!currentPlayer.getId().equals(playerId)) {
@@ -41,7 +42,7 @@
           }
         }
         if (val == GameStateEvaluator2.LOSE_GAME_SCORE) {
-          logger.debug("lose - break");
+          logger.debug("Simulating -- lose - break");
           break;
         }
       }
@@ -54,14 +55,14 @@
             bestNode.setCombat(newNode.getChildren().get(0).getCombat());
           }
           if (depth == maxDepth) {
-            logger.info(new StringBuilder("Saved (depth=").append(depth).append(")  Score: ").append(bestNode.getScore()).toString());
+            logger.info(new StringBuilder("Simulating -- Saved (depth=").append(depth).append(")  Score: ").append(bestNode.getScore()).toString());
             node.children.clear();
             node.children.add(bestNode);
             node.setScore(bestNode.getScore());
           }
         }
         if (val == GameStateEvaluator2.WIN_GAME_SCORE) {
-          logger.debug("win - break");
+          logger.debug("Simulating -- win - break");
           break;
         }
       }
@@ -69,7 +70,7 @@
         break;
       }
       if (SimulationNode2.nodeCount > maxNodes) {
-        logger.debug("simulating -- reached end-state");
+        logger.debug("Simulating -- reached end-state");
         break;
       }
     }
