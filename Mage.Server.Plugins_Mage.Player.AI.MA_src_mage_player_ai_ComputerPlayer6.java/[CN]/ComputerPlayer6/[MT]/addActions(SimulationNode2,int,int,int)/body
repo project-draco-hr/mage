@@ -9,18 +9,18 @@
     return val;
   }
   if (depth <= 0 || SimulationNode2.nodeCount > maxNodes || game.isGameOver()) {
-    logger.debug("simulating -- reached end state, node count=" + SimulationNode2.nodeCount + ", depth="+ depth);
+    logger.debug("Simulating -- reached end state, node count=" + SimulationNode2.nodeCount + ", depth="+ depth);
     val=GameStateEvaluator2.evaluate(playerId,game);
     UUID currentPlayerId=node.getGame().getPlayerList().get();
     return val;
   }
  else   if (node.getChildren().size() > 0) {
-    logger.debug("simulating -- something added children:" + node.getChildren().size());
+    logger.debug("Simulating -- something added children:" + node.getChildren().size());
     val=minimaxAB(node,depth - 1,alpha,beta);
     return val;
   }
  else {
-    logger.debug("simulating -- alpha: " + alpha + " beta: "+ beta+ " depth:"+ depth+ " step:"+ game.getTurn().getStepType()+ " for player:"+ (node.getPlayerId().equals(playerId) ? "yes" : "no"));
+    logger.debug("Simulating -- alpha: " + alpha + " beta: "+ beta+ " depth:"+ depth+ " step:"+ game.getTurn().getStepType()+ " for player:"+ (node.getPlayerId().equals(playerId) ? "yes" : "no"));
     if (allPassed(game)) {
       if (!game.getStack().isEmpty()) {
         resolve(node,depth,game);
