@@ -84,7 +84,8 @@
       targets=threats(opponentId,source.getSourceId(),((TargetPermanent)target).getFilter(),game,target.getTargets());
     }
     if (targets.isEmpty() && target.isRequired()) {
-      targets=game.getBattlefield().getActivePermanents(((TargetPermanent)target).getFilter(),playerId,game);
+      targets=threats(null,source.getSourceId(),((TargetPermanent)target).getFilter(),game,target.getTargets());
+      Collections.reverse(targets);
     }
     for (    Permanent permanent : targets) {
       if (((TargetPermanent)target).canTarget(playerId,permanent.getId(),source,game)) {
