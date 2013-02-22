@@ -77,6 +77,7 @@
   }
   if (target instanceof TargetPermanent) {
     List<Permanent> targets;
+    boolean outcomeTargets=true;
     if (outcome.isGood()) {
       targets=threats(playerId,source.getSourceId(),((TargetPermanent)target).getFilter(),game,target.getTargets());
     }
@@ -86,14 +87,17 @@
     if (targets.isEmpty() && target.isRequired()) {
       targets=threats(null,source.getSourceId(),((TargetPermanent)target).getFilter(),game,target.getTargets());
       Collections.reverse(targets);
+      outcomeTargets=false;
     }
     for (    Permanent permanent : targets) {
       if (((TargetPermanent)target).canTarget(playerId,permanent.getId(),source,game)) {
         target.addTarget(permanent.getId(),source,game);
-        return true;
+        if (!outcomeTargets || target.getMaxNumberOfTargets() <= target.getTargets().size()) {
+          return true;
+        }
       }
     }
-    return false;
+    return target.isChosen();
   }
   if (target instanceof TargetCreatureOrPlayer) {
     List<Permanent> targets;
