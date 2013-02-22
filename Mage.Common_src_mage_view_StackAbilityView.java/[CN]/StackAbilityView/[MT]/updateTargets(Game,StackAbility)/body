@@ -12,6 +12,16 @@
     }
     if (targetList.size() > 0) {
       overrideTargets(targetList);
+      List<String> names=new ArrayList<String>();
+      for (      UUID uuid : targetList) {
+        MageObject mageObject=game.getObject(uuid);
+        if (mageObject != null) {
+          names.add(mageObject.getName());
+        }
+      }
+      if (!names.isEmpty()) {
+        getRules().add("<i>Targets: " + names.toString() + "</i>");
+      }
     }
   }
 }
