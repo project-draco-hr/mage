@@ -1,11 +1,8 @@
 {
   if (event.getType() == GameEvent.EventType.ATTACKER_DECLARED) {
-    Permanent attacker=game.getPermanent(event.getSourceId());
-    Player defender=game.getPlayer(event.getTargetId());
-    Player you=game.getPlayer(controllerId);
-    if (attacker.getControllerId() != you.getId() && defender == you) {
+    if (game.getOpponents(getControllerId()).contains(event.getPlayerId())) {
       for (      Effect effect : getEffects()) {
-        effect.setTargetPointer(new FixedTarget(attacker.getId()));
+        effect.setTargetPointer(new FixedTarget(event.getSourceId()));
       }
       return true;
     }
