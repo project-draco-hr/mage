@@ -3,17 +3,22 @@
   for (  ExileZone zone : game.getExile().getExileZones()) {
     if (zone.getId().equals(exileId)) {
       for (      Card card : zone.getCards(game)) {
-        if (!card.getSubtype().contains("Aura"))         cards.add(card);
+        if (!card.getSubtype().contains("Aura")) {
+          cards.add(card);
+        }
       }
     }
   }
   game.getState().clear();
+  for (  Card card : game.getCards()) {
+    game.getState().addCard(card);
+  }
   for (  Player player : game.getPlayers().values()) {
     player.getGraveyard().clear();
     player.getHand().clear();
     player.getLibrary().clear();
     for (    Card card : game.getCards()) {
-      if (card.getOwnerId().equals(player.getId()) && !card.isCopy()) {
+      if (card.getOwnerId().equals(player.getId()) && !card.isCopy() && !player.getSideboard().contains(card.getId())&& !cards.contains(card)) {
         player.getLibrary().putOnTop(card,game);
       }
     }

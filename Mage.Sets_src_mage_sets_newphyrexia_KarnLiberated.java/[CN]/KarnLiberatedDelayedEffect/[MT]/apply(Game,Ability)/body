@@ -1,10 +1,11 @@
 {
   ExileZone exile=game.getExile().getExileZone(exileId);
   if (exile != null) {
-    for (    Card card : exile.getCards(game)) {
+    Cards cards=new CardsImpl();
+    cards.addAll(exile);
+    for (    Card card : cards.getCards(game)) {
       card.putOntoBattlefield(game,Zone.EXILED,source.getSourceId(),source.getControllerId());
     }
-    exile.clear();
     return true;
   }
   return false;
