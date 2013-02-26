@@ -4,18 +4,19 @@
   String replaced=value;
   if (!manaImages.isEmpty()) {
     if (type.equals(Type.TOOLTIP)) {
-      replaced=replaceSymbolsPattern.matcher(value).replaceAll("<img src='file:plugins/images/symbols/small/$1$2.jpg' alt='$1$2' width=11 height=11>");
+      replaced=replaceSymbolsPattern.matcher(value).replaceAll("<img src='file:" + getSymbolsPath(true) + "/symbols/small/$1$2.jpg' alt='$1$2' width=11 height=11>");
     }
  else     if (type.equals(Type.CARD)) {
-      value=value.replace("{slash}","<img src='file:plugins/images/symbols/medium/slash.jpg' alt='slash' width=10 height=13>");
-      replaced=replaceSymbolsPattern.matcher(value).replaceAll("<img src='file:plugins/images/symbols/medium/$1$2.jpg' alt='$1$2' width=12 height=12>");
+      value=value.replace("{slash}","<img src='file:" + getSymbolsPath() + "/symbols/medium/slash.jpg' alt='slash' width=10 height=13>");
+      replaced=replaceSymbolsPattern.matcher(value).replaceAll("<img src='file:" + getSymbolsPath(true) + "/symbols/medium/$1$2.jpg' alt='$1$2' width=12 height=12>");
     }
  else     if (type.equals(Type.PAY)) {
-      value=value.replace("{slash}","<img src='file:plugins/images/symbols/medium/slash.jpg' alt='slash' width=10 height=13>");
-      replaced=replaceSymbolsPattern.matcher(value).replaceAll("<img src='file:plugins/images/symbols/medium/$1$2.jpg' alt='$1$2' width=15 height=15>");
+      value=value.replace("{slash}","<img src='file:" + getSymbolsPath() + "/symbols/medium/slash.jpg' alt='slash' width=10 height=13>");
+      replaced=replaceSymbolsPattern.matcher(value).replaceAll("<img src='file:" + getSymbolsPath(true) + "/symbols/medium/$1$2.jpg' alt='$1$2' width=15 height=15>");
     }
   }
   replaced=replaced.replace("|source|","{source}");
   replaced=replaced.replace("|this|","{this}");
+  System.out.println(replaced);
   return replaced;
 }
