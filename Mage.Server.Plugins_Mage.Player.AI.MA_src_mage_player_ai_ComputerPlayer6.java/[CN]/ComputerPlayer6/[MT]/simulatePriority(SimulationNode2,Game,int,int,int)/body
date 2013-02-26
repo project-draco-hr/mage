@@ -9,9 +9,10 @@
   SimulationNode2 bestNode=null;
   List<Ability> allActions=currentPlayer.simulatePriority(game);
   optimize(game,allActions);
-  logger.debug("Simulating -- adding " + allActions.size() + " children:"+ allActions);
+  logger.debug("Simulating -- (depth=" + depth + ") adding "+ allActions.size()+ " children:"+ allActions);
+  int counter=0;
   for (  Ability action : allActions) {
-    logger.debug(new StringBuilder("Simulating -- actions: " + allActions.size() + " -> "+ action));
+    logger.debug(new StringBuilder("Simulating -- actions: [" + ++counter + "] "+ " -> "+ action));
     if (Thread.interrupted()) {
       Thread.currentThread().interrupt();
       logger.debug("Simulating -- interrupted");
@@ -28,10 +29,9 @@
         sim.getPlayerList().getNext();
       }
       SimulationNode2 newNode=new SimulationNode2(node,sim,action,depth,currentPlayer.getId());
-      int testVal=GameStateEvaluator2.evaluate(currentPlayer.getId(),sim);
-      logger.debug("Simulating -- node #:" + SimulationNode2.getCount() + " actions:"+ action);
       sim.checkStateAndTriggered();
       int val=addActions(newNode,depth - 1,alpha,beta);
+      logger.debug("Simulating -- val = " + val + " depth= "+ depth+ " ("+ action+ ")");
       if (!currentPlayer.getId().equals(playerId)) {
         if (val < beta) {
           beta=val;
