@@ -4,9 +4,17 @@
   if (targetPlayer == null) {
     targetPlayer=player;
   }
+  List<Card> cards;
+  if (cardLimit == null) {
+    cards=targetPlayer.getLibrary().getCards(game);
+  }
+ else {
+    int maxCards=Math.min(cardLimit.intValue(),targetPlayer.getLibrary().size());
+    cards=targetPlayer.getLibrary().getTopCards(game,maxCards);
+  }
   while (!isChosen() && !doneChosing()) {
     chosen=targets.size() >= minNumberOfTargets;
-    if (!player.choose(outcome,new CardsImpl(Zone.LIBRARY,targetPlayer.getLibrary().getCards(game)),this,game)) {
+    if (!player.choose(outcome,new CardsImpl(Zone.LIBRARY,cards),this,game)) {
       return chosen;
     }
     chosen=targets.size() >= minNumberOfTargets;
