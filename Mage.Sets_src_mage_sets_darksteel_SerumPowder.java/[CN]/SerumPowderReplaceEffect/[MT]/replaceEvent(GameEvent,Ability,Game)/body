@@ -1,0 +1,20 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Card sourceCard=game.getCard(source.getSourceId());
+  if (controller != null && sourceCard != null) {
+    int cardsHand=controller.getHand().size();
+    if (cardsHand > 0) {
+      Cards cards=new CardsImpl();
+      for (      UUID cardId : controller.getHand()) {
+        cards.add(game.getCard(cardId));
+      }
+      for (      Card card : cards.getCards(game)) {
+        card.moveToExile(null,null,source.getId(),game);
+      }
+      controller.drawCards(cardsHand,game);
+    }
+    game.informPlayers(new StringBuilder(sourceCard.getName()).append(": ").append(controller.getName()).append(" exiles hand and draws ").append(cardsHand).append(" card(s)").toString());
+    return true;
+  }
+  return false;
+}

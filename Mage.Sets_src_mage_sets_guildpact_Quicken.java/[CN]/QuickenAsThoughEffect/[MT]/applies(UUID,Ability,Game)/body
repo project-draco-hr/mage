@@ -1,0 +1,15 @@
+{
+  Card card=game.getCard(sourceId);
+  if (card != null && (cardId == null || (cardId.equals(sourceId) && zoneChangeCounter == card.getZoneChangeCounter()))) {
+    if (card.getCardType().contains(CardType.SORCERY) && card.getOwnerId().equals(source.getControllerId())) {
+      if (card.getSpellAbility().isInUseableZone(game,card,false)) {
+        if (cardId == null) {
+          cardId=card.getId();
+          zoneChangeCounter=card.getZoneChangeCounter();
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}
