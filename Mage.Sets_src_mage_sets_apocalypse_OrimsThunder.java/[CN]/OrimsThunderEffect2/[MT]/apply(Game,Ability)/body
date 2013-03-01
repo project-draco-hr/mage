@@ -1,0 +1,14 @@
+{
+  int damage=0;
+  MageObject firstTarget=game.getLastKnownInformation(source.getFirstTarget(),Constants.Zone.BATTLEFIELD);
+  Permanent secondTarget=game.getPermanent(source.getTargets().get(1).getFirstTarget());
+  if (firstTarget != null) {
+    damage=firstTarget.getManaCost().convertedManaCost();
+  }
+  boolean kicked=KickedCondition.getInstance().apply(game,source);
+  if (kicked && secondTarget != null) {
+    secondTarget.damage(damage,source.getId(),game,true,false);
+    return true;
+  }
+  return false;
+}
