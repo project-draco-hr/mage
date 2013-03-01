@@ -1,0 +1,18 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  FilterCard filter=new FilterCard("artifact to discard");
+  filter.add(new CardTypePredicate(CardType.ARTIFACT));
+  if (you != null && you.getHand().count(filter,game) > 0 && you.chooseUse(Constants.Outcome.Discard,"Do you want to discard an artifact?  If you do not, you must discard 2 cards",game)) {
+    Cost cost=new DiscardTargetCost(new TargetCardInHand(filter));
+    if (cost.canPay(you.getId(),you.getId(),game)) {
+      if (!cost.pay(source,game,you.getId(),you.getId(),false)) {
+        you.discard(2,source,game);
+      }
+      return true;
+    }
+  }
+  if (you != null && you.getHand().count(filter,game) == 0) {
+    you.discard(2,source,game);
+  }
+  return false;
+}

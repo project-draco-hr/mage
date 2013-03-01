@@ -1,0 +1,31 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  boolean result=false;
+  for (int i=0; i < amount; i++) {
+    ChoiceColor choice=(ChoiceColor)source.getChoices().get(0);
+    Mana mana=null;
+    if (choice.getColor().isBlack()) {
+      mana=manaBuilder.setMana(Mana.BlackMana(1)).build();
+    }
+ else     if (choice.getColor().isBlue()) {
+      mana=manaBuilder.setMana(Mana.BlueMana(1)).build();
+    }
+ else     if (choice.getColor().isRed()) {
+      mana=manaBuilder.setMana(Mana.RedMana(1)).build();
+    }
+ else     if (choice.getColor().isGreen()) {
+      mana=manaBuilder.setMana(Mana.GreenMana(1)).build();
+    }
+ else     if (choice.getColor().isWhite()) {
+      mana=manaBuilder.setMana(Mana.WhiteMana(1)).build();
+    }
+    if (mana != null) {
+      player.getManaPool().addMana(mana,game,source);
+      result=true;
+    }
+  }
+  return result;
+}
