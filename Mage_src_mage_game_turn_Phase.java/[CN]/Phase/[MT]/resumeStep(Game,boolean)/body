@@ -1,6 +1,9 @@
 {
   boolean resuming=true;
-  if (currentStep == null || currentStep.getStepPart() == null)   game.end();
+  if (currentStep == null || currentStep.getStepPart() == null) {
+    game.end();
+    return;
+  }
 switch (currentStep.getStepPart()) {
 case PRE:
     if (wasPaused) {
@@ -11,8 +14,12 @@ case PRE:
       prePriority(game,activePlayerId);
     }
 case PRIORITY:
-  if (!game.isPaused() && !game.isGameOver())   currentStep.priority(game,activePlayerId,resuming);
+  if (!game.isPaused() && !game.isGameOver()) {
+    currentStep.priority(game,activePlayerId,resuming);
+  }
 case POST:
-if (!game.isPaused() && !game.isGameOver()) postPriority(game,activePlayerId);
+if (!game.isPaused() && !game.isGameOver()) {
+  postPriority(game,activePlayerId);
+}
 }
 }

@@ -1,9 +1,11 @@
 {
   this.roomId=roomId;
   session=MageFrame.getSession();
+  UUID chatRoomId=null;
   if (session != null) {
     btnQuickStart.setVisible(session.isTestMode());
     gameChooser.init(session);
+    chatRoomId=session.getRoomChatId(roomId);
   }
   if (newTableDialog == null) {
     newTableDialog=new NewTableDialog();
@@ -17,7 +19,6 @@
     joinTableDialog=new JoinTableDialog();
     MageFrame.getDesktop().add(joinTableDialog,JLayeredPane.MODAL_LAYER);
   }
-  UUID chatRoomId=session.getRoomChatId(roomId);
   if (chatRoomId != null) {
     this.chatPanel.connect(chatRoomId);
     startTasks();

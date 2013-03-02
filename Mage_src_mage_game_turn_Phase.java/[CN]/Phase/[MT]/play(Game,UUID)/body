@@ -1,14 +1,24 @@
 {
-  if (game.isPaused() || game.isGameOver())   return false;
+  if (game.isPaused() || game.isGameOver()) {
+    return false;
+  }
   this.activePlayerId=activePlayerId;
   if (beginPhase(game,activePlayerId)) {
     for (    Step step : steps) {
-      if (game.isPaused() || game.isGameOver())       return false;
+      if (game.isPaused() || game.isGameOver()) {
+        return false;
+      }
       currentStep=step;
-      if (!game.isSimulation() && checkStopOnStepOption(game))       return false;
-      if (!game.getState().getTurnMods().skipStep(activePlayerId,getStep().getType()))       playStep(game);
+      if (!game.isSimulation() && checkStopOnStepOption(game)) {
+        return false;
+      }
+      if (!game.getState().getTurnMods().skipStep(activePlayerId,getStep().getType())) {
+        playStep(game);
+      }
     }
-    if (game.isPaused() || game.isGameOver())     return false;
+    if (game.isPaused() || game.isGameOver()) {
+      return false;
+    }
     count++;
     endPhase(game,activePlayerId);
     return true;
