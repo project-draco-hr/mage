@@ -12,8 +12,14 @@
               return new ImageView(elem){
                 @Override public URL getImageURL(){
                   URL url=super.getImageURL();
-                  if (url != null && imageCache.get(url) == null) {
-                    imageCache.put(url,Toolkit.getDefaultToolkit().createImage(url));
+                  URI uri=null;
+                  try {
+                    uri=url.toURI();
+                  }
+ catch (                  URISyntaxException ex) {
+                  }
+                  if (uri != null && imageCache.get(uri) == null) {
+                    imageCache.put(uri,Toolkit.getDefaultToolkit().createImage(url));
                   }
                   return url;
                 }
