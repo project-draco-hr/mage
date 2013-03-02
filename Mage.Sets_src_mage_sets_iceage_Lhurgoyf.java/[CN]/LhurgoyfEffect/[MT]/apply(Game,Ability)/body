@@ -1,0 +1,15 @@
+{
+  Permanent target=game.getPermanent(source.getSourceId());
+  if (target != null) {
+    int number=0;
+    for (    Player player : game.getPlayers().values()) {
+      if (player != null) {
+        number+=player.getGraveyard().count(new FilterCreatureCard(),game);
+      }
+    }
+    target.getPower().setValue(number);
+    target.getToughness().setValue(number + 1);
+    return true;
+  }
+  return false;
+}
