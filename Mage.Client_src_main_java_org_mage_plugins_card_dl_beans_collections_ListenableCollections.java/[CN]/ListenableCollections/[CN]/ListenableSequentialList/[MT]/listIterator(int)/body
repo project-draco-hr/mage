@@ -3,37 +3,37 @@
     private final ListIterator<E> it=delegate.listIterator(index);
     private int lastIndex;
     private E lastValue;
-    public boolean hasNext(){
+    @Override public boolean hasNext(){
       return it.hasNext();
     }
-    public boolean hasPrevious(){
+    @Override public boolean hasPrevious(){
       return it.hasPrevious();
     }
-    public E next(){
+    @Override public E next(){
       lastIndex=it.nextIndex();
       lastValue=it.next();
       return lastValue;
     }
-    public int nextIndex(){
+    @Override public int nextIndex(){
       return it.nextIndex();
     }
-    public E previous(){
+    @Override public E previous(){
       lastIndex=it.previousIndex();
       lastValue=it.previous();
       return lastValue;
     }
-    public int previousIndex(){
+    @Override public int previousIndex(){
       return it.previousIndex();
     }
-    public void add(    E o){
+    @Override public void add(    E o){
       it.add(o);
       listener.add(previousIndex(),o);
     }
-    public void set(    E o){
+    @Override public void set(    E o){
       it.set(o);
       listener.set(lastIndex,lastValue,o);
     }
-    public void remove(){
+    @Override public void remove(){
       it.remove();
       listener.remove(lastIndex,lastValue);
     }

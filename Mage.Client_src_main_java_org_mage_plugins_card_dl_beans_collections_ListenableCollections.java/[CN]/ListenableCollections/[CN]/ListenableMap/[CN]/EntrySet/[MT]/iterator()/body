@@ -3,16 +3,18 @@
     private final Iterator<Entry<K,V>> it=delegate.iterator();
     private boolean hasLast;
     private Entry<K,V> last;
-    public boolean hasNext(){
+    @Override public boolean hasNext(){
       return it.hasNext();
     }
-    public Entry<K,V> next(){
+    @Override public Entry<K,V> next(){
       last=it.next();
       hasLast=true;
       return last;
     }
-    public void remove(){
-      if (!hasLast)       throw new IllegalStateException();
+    @Override public void remove(){
+      if (!hasLast) {
+        throw new IllegalStateException();
+      }
       hasLast=false;
       it.remove();
       listener.remove(last.getKey(),last.getValue());
