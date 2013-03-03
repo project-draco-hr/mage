@@ -2,13 +2,10 @@
   ThreadUtils.threadPool2.submit(new Runnable(){
     @Override public void run(){
       ThreadUtils.sleep(300);
-      if (popupCard == null || !popupCard.equals(data.card)) {
+      if (popupCard == null || !popupCard.equals(data.card) || session == null || !state || enlarged) {
         return;
       }
       try {
-        if (session == null || !state || enlarged) {
-          return;
-        }
         final Component popupContainer=MageFrame.getUI().getComponent(MageComponents.POPUP_CONTAINER);
         Component popup2=MageFrame.getUI().getComponent(MageComponents.CARD_INFO_PANE);
         ((CardInfoPane)popup2).setCard(data.card,popupContainer);

@@ -6,40 +6,32 @@
   combat.hideDialog();
   MageFrame.getDesktop().add(pickNumber,JLayeredPane.POPUP_LAYER);
   this.feedbackPanel.setConnectedChatPanel(this.userChatPanel);
-  try {
-    this.setLayout(new BorderLayout());
-    final JLayeredPane j=new JLayeredPane();
-    j.setSize(1024,768);
-    this.add(j);
-    j.add(jSplitPane0,JLayeredPane.DEFAULT_LAYER);
-    Map<String,JComponent> myUi=getUIComponents(j);
-    Plugins.getInstance().updateGamePanel(myUi);
-    addComponentListener(new ComponentAdapter(){
-      @Override public void componentResized(      ComponentEvent e){
-        int width=((JComponent)e.getSource()).getWidth();
-        int height=((JComponent)e.getSource()).getHeight();
-        j.setSize(width,height);
-        jSplitPane0.setSize(width,height);
-        if (height < storedHeight) {
-          pnlBattlefield.setSize(0,200);
+  this.setLayout(new BorderLayout());
+  final JLayeredPane j=new JLayeredPane();
+  j.setSize(1024,768);
+  this.add(j);
+  j.add(jSplitPane0,JLayeredPane.DEFAULT_LAYER);
+  Map<String,JComponent> myUi=getUIComponents(j);
+  Plugins.getInstance().updateGamePanel(myUi);
+  addComponentListener(new ComponentAdapter(){
+    @Override public void componentResized(    ComponentEvent e){
+      int width=((JComponent)e.getSource()).getWidth();
+      int height=((JComponent)e.getSource()).getHeight();
+      j.setSize(width,height);
+      jSplitPane0.setSize(width,height);
+      if (height < storedHeight) {
+        pnlBattlefield.setSize(0,200);
+      }
+      storedHeight=height;
+      sizeToScreen();
+      if (!initialized) {
+        String state=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_BIG_CARD_TOGGLED,null);
+        if (state != null && state.equals("down")) {
+          jSplitPane0.setDividerLocation(1.0);
         }
-        storedHeight=height;
-        sizeToScreen();
-        if (!initialized) {
-          String state=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_BIG_CARD_TOGGLED,null);
-          if (state != null) {
-            if (state.equals("down")) {
-              jSplitPane0.setDividerLocation(1.0);
-            }
-          }
-          initialized=true;
-        }
+        initialized=true;
       }
     }
+  }
 );
-  }
- catch (  Exception e) {
-    e.printStackTrace();
-    throw new RuntimeException(e);
-  }
 }
