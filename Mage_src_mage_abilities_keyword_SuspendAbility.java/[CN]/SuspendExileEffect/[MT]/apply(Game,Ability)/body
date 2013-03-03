@@ -1,0 +1,17 @@
+{
+  Card card=game.getCard(source.getSourceId());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (card != null && card.getSpellAbility().canActivate(source.getControllerId(),game) && card.getSpellAbility().isInUseableZone(game,card,false)) {
+    UUID exileId=(UUID)game.getState().getValue("SuspendExileId" + source.getControllerId().toString());
+    if (exileId == null) {
+      exileId=UUID.randomUUID();
+      game.getState().setValue("SuspendExileId" + source.getControllerId().toString(),exileId);
+    }
+    if (card.moveToExile(exileId,new StringBuilder("Suspended cards of ").append(controller.getName()).toString(),source.getSourceId(),game)) {
+      card.addCounters(CounterType.TIME.createInstance(suspend),game);
+      game.informPlayers(new StringBuilder(controller.getName()).append(" suspends (").append(suspend).append(") ").append(card.getName()).toString());
+      return true;
+    }
+  }
+  return false;
+}

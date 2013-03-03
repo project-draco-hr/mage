@@ -1,0 +1,9 @@
+{
+  if (event.getType() == GameEvent.EventType.COUNTER_REMOVED && event.getTargetId().equals(getSourceId())) {
+    Card card=game.getCard(getSourceId());
+    if (game.getState().getZone(card.getId()) == Zone.EXILED && card != null && card.getCounters().getCount(CounterType.TIME) == 0) {
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,14 @@
+{
+  super(Zone.HAND,new SuspendExileEffect(suspend),cost);
+  this.usesStack=false;
+  ruleText=new StringBuilder("Suspend ").append(suspend).append(" - ").append(cost.getText()).append(" <i>(Rather than cast this card from your hand, pay ").append(cost.getText()).append(" and exile it with ").append(suspend == 1 ? "a time counter" : suspend + " time counters").append(" on it.").append(" At the beginning of your upkeep, remove a time counter. When the last is removed, cast it without paying its mana cost.").append(card.getCardType().contains(CardType.CREATURE) ? " If you play it this way and it's a creature, it gains haste until you lose control of it." : "").append(")</i>").toString();
+  Ability ability=new ConditionalTriggeredAbility(new BeginningOfUpkeepTriggeredAbility(Zone.EXILED,new RemoveCounterSourceEffect(CounterType.TIME.createInstance()),TargetController.YOU,false),SuspendedCondition.getInstance(),"At the beginning of your upkeep, if this card is suspended, remove a time counter from it.");
+  ability.setRuleVisible(false);
+  card.addAbility(ability);
+  card.addAbility(new SuspendPlayCardAbility(card.getCardType().contains(CardType.CREATURE)));
+  if (card.getCardType().contains(CardType.CREATURE)) {
+    ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new GainHasteEffect(Duration.WhileOnBattlefield));
+    ability.setRuleVisible(false);
+    card.addAbility(ability);
+  }
+}
