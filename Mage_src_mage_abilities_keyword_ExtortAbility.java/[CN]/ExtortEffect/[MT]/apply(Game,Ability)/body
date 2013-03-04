@@ -1,14 +1,23 @@
 {
-  int loseLife=0;
-  for (  UUID opponentId : game.getOpponents(source.getControllerId())) {
-    loseLife+=game.getPlayer(opponentId).loseLife(1,game);
-  }
-  if (loseLife > 0) {
-    game.getPlayer(source.getControllerId()).gainLife(loseLife,game);
-  }
+  Player player=game.getPlayer(source.getControllerId());
   Permanent permanent=game.getPermanent(source.getSourceId());
-  if (permanent != null) {
-    game.informPlayers(new StringBuilder(permanent.getName()).append(" extorted opponents ").append(loseLife).append(" life").toString());
+  if (player != null && permanent != null) {
+    if (player.chooseUse(Constants.Outcome.Damage,new StringBuilder("Extort opponents? (").append(permanent.getName()).append(")").toString(),game)) {
+      Cost cost=new ManaCostsImpl("{W/B}");
+      if (cost.pay(source,game,source.getSourceId(),player.getId(),false)) {
+        int loseLife=0;
+        for (        UUID opponentId : game.getOpponents(source.getControllerId())) {
+          loseLife+=game.getPlayer(opponentId).loseLife(1,game);
+        }
+        if (loseLife > 0) {
+          game.getPlayer(source.getControllerId()).gainLife(loseLife,game);
+        }
+        if (permanent != null) {
+          game.informPlayers(new StringBuilder(permanent.getName()).append(" extorted opponents ").append(loseLife).append(" life").toString());
+        }
+      }
+    }
+    return true;
   }
-  return true;
+  return false;
 }
