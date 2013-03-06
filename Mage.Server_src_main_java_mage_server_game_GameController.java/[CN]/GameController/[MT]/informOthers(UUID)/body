@@ -1,13 +1,15 @@
 {
-  String message="";
-  if (game.getStep() != null)   message+=game.getStep().getType().toString() + " - ";
-  message+="Waiting for " + game.getPlayer(playerId).getName();
+  StringBuilder message=new StringBuilder();
+  if (game.getStep() != null) {
+    message.append(game.getStep().getType().toString()).append(" - ");
+  }
+  message.append("Waiting for ").append(game.getPlayer(playerId).getName());
   for (  final Entry<UUID,GameSession> entry : gameSessions.entrySet()) {
     if (!entry.getKey().equals(playerId)) {
-      entry.getValue().inform(message);
+      entry.getValue().inform(message.toString());
     }
   }
   for (  final GameWatcher watcher : watchers.values()) {
-    watcher.inform(message);
+    watcher.inform(message.toString());
   }
 }

@@ -1,6 +1,6 @@
 {
   perform(playerId,new Command(){
-    public void execute(    UUID playerId){
+    @Override public void execute(    UUID playerId){
       if (cards != null) {
         gameSessions.get(playerId).target(question,new CardsView(cards.getCards(game)),targets,required,options);
       }
@@ -11,7 +11,9 @@
         }
         gameSessions.get(playerId).target(question,permsView,targets,required,options);
       }
- else       gameSessions.get(playerId).target(question,new CardsView(),targets,required,options);
+ else {
+        gameSessions.get(playerId).target(question,new CardsView(),targets,required,options);
+      }
     }
   }
 );

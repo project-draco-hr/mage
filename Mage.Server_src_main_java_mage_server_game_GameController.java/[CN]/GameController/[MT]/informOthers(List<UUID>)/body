@@ -1,5 +1,5 @@
 {
-  final String message=game.getStep().toString() + " - Waiting for " + game.getPlayer(players.get(0)).getName();
+  final String message=new StringBuilder(game.getStep().toString()).append(" - Waiting for ").append(game.getPlayer(players.get(0)).getName()).toString();
   for (  final Entry<UUID,GameSession> entry : gameSessions.entrySet()) {
     boolean skip=false;
     for (    UUID uuid : players) {
@@ -8,7 +8,9 @@
         break;
       }
     }
-    if (!skip)     entry.getValue().inform(message);
+    if (!skip) {
+      entry.getValue().inform(message);
+    }
   }
   for (  final GameWatcher watcher : watchers.values()) {
     watcher.inform(message);

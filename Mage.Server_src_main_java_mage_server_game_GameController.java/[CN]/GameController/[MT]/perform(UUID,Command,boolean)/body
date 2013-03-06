@@ -1,13 +1,21 @@
 {
   if (game.getPlayer(playerId).isGameUnderControl()) {
-    if (gameSessions.containsKey(playerId))     command.execute(playerId);
-    if (informOthers)     informOthers(playerId);
+    if (gameSessions.containsKey(playerId)) {
+      command.execute(playerId);
+    }
+    if (informOthers) {
+      informOthers(playerId);
+    }
   }
  else {
     List<UUID> players=Splitter.split(game,playerId);
     for (    UUID uuid : players) {
-      if (gameSessions.containsKey(uuid))       command.execute(uuid);
+      if (gameSessions.containsKey(uuid)) {
+        command.execute(uuid);
+      }
     }
-    if (informOthers)     informOthers(players);
+    if (informOthers) {
+      informOthers(players);
+    }
   }
 }

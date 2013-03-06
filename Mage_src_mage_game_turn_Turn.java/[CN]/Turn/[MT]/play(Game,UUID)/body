@@ -1,18 +1,25 @@
 {
-  if (game.isPaused() || game.isGameOver())   return;
-  if (game.getState().getTurnMods().skipTurn(activePlayerId))   return;
+  if (game.isPaused() || game.isGameOver()) {
+    return;
+  }
+  if (game.getState().getTurnMods().skipTurn(activePlayerId)) {
+    return;
+  }
   checkTurnIsControlledByOtherPlayer(game,activePlayerId);
   this.activePlayerId=activePlayerId;
   resetCounts();
   game.getPlayer(activePlayerId).beginTurn(game);
   for (  Phase phase : phases) {
-    if (game.isPaused() || game.isGameOver())     return;
+    if (game.isPaused() || game.isGameOver()) {
+      return;
+    }
     currentPhase=phase;
     game.fireEvent(new GameEvent(GameEvent.EventType.PHASE_CHANGED,activePlayerId,null,activePlayerId));
     if (!game.getState().getTurnMods().skipPhase(activePlayerId,currentPhase.getType())) {
       if (phase.play(game,activePlayerId)) {
         game.emptyManaPools();
-        while (playExtraPhases(game,phase.getType()))         ;
+        while (playExtraPhases(game,phase.getType())) {
+        }
       }
     }
   }
