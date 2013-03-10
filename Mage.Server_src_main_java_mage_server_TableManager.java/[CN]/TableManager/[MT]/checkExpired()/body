@@ -1,0 +1,20 @@
+{
+  logger.info("Table expire checking...");
+  Date now=new Date();
+  List<UUID> toRemove=new ArrayList<UUID>();
+  for (  Table table : tables.values()) {
+    long diff=(now.getTime() - table.getCreateTime().getTime()) / EXPIRE_TIME_UNIT_VALUE;
+    if (diff >= EXPIRE_TIME) {
+      logger.info("Table expired: id = " + table.getId() + ", created_by="+ table.getControllerName()+ ". Removing...");
+      toRemove.add(table.getId());
+    }
+  }
+  for (  UUID tableId : toRemove) {
+    try {
+      removeTable(tableId);
+    }
+ catch (    Exception e) {
+      logger.error(e);
+    }
+  }
+}
