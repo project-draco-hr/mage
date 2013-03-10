@@ -3,13 +3,8 @@
   if (player == null) {
     return false;
   }
-  for (  UUID playerId : player.getInRange()) {
-    FilterCreaturePermanent filter=new FilterCreaturePermanent();
-    filter.add(new ControllerIdPredicate(playerId));
-    List<Permanent> creatures=game.getBattlefield().getActivePermanents(filter,player.getId(),source.getSourceId(),game);
-    for (    Permanent creature : creatures) {
-      creature.tap(game);
-    }
+  for (  Permanent creature : game.getBattlefield().getActivePermanents(filter,player.getId(),source.getSourceId(),game)) {
+    creature.tap(game);
   }
   return true;
 }
