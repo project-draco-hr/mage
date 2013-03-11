@@ -1,0 +1,11 @@
+{
+  int numberFaeries=game.getState().getBattlefield().countAll(SpellstutterSprite.filter,source.getControllerId(),game);
+  StackObject stackObject=game.getStack().getStackObject(source.getFirstTarget());
+  if (stackObject.getManaCost().convertedManaCost() <= numberFaeries) {
+    if (game.getStack().counter(source.getFirstTarget(),source.getSourceId(),game)) {
+      game.informPlayers(new StringBuilder(stackObject.getName()).append(" was countered").toString());
+      return true;
+    }
+  }
+  return false;
+}
