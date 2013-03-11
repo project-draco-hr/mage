@@ -16,9 +16,22 @@
       sbMessage.append("Could not find card: '").append(lineName).append("' at line ").append(lineCount).append("\n");
     }
  else {
-      Random random=new Random();
+      Date lastReleaseDate=new GregorianCalendar(1900,1,1).getTime();
+      CardInfo lastReleasedCard=null;
+      for (      CardInfo cardinfo : cards) {
+        ExpansionSet set=Sets.findSet(cardinfo.getSetCode());
+        if (set != null) {
+          if (lastReleaseDate == null || set.getReleaseDate().after(lastReleaseDate)) {
+            lastReleasedCard=cardinfo;
+            lastReleaseDate=set.getReleaseDate();
+          }
+        }
+      }
+      if (lastReleasedCard == null) {
+        lastReleasedCard=cards.get(0);
+      }
       for (int i=0; i < num; i++) {
-        String className=cards.get(random.nextInt(cards.size())).getClassName();
+        String className=lastReleasedCard.getClassName();
         if (!sideboard) {
           deckList.getCards().add(className);
         }
