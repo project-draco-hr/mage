@@ -7,7 +7,9 @@
   Integer val=null;
   SimulationNode2 bestNode=null;
   SimulatedPlayer2 attacker=(SimulatedPlayer2)game.getPlayer(attackerId);
-  if (logger.isDebugEnabled())   logger.debug(attacker.getName() + "'s possible attackers: " + attacker.getAvailableAttackers(game));
+  if (logger.isDebugEnabled()) {
+    logger.debug(attacker.getName() + "'s possible attackers: " + attacker.getAvailableAttackers(game));
+  }
   for (  Combat engagement : attacker.addAttackers(game)) {
     if (logger.isDebugEnabled()) {
       logger.debug("Sim Attackers: " + engagement.getAttackers() + ", blockers: "+ engagement.getBlockers());
@@ -25,7 +27,9 @@
     }
     sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_ATTACKERS,attackerId,attackerId));
     SimulationNode2 newNode=new SimulationNode2(node,sim,depth,attackerId);
-    if (logger.isDebugEnabled())     logger.debug("Sim attack for player:" + game.getPlayer(attackerId).getName());
+    if (logger.isDebugEnabled()) {
+      logger.debug("Sim attack for player:" + game.getPlayer(attackerId).getName());
+    }
     sim.checkStateAndTriggered();
     while (!sim.getStack().isEmpty()) {
       sim.getStack().resolve(sim);
@@ -57,12 +61,16 @@
       }
     }
   }
-  if (val == null)   val=GameStateEvaluator2.evaluate(playerId,game);
+  if (val == null) {
+    val=GameStateEvaluator2.evaluate(playerId,game);
+  }
   if (bestNode != null) {
     node.children.clear();
     node.children.add(bestNode);
     node.setScore(bestNode.getScore());
   }
-  if (logger.isDebugEnabled())   logger.debug("Sim attackers: returning score: " + val + " depth:"+ depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
+  if (logger.isDebugEnabled()) {
+    logger.debug("Sim attackers: returning score: " + val + " depth:"+ depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
+  }
   return val;
 }

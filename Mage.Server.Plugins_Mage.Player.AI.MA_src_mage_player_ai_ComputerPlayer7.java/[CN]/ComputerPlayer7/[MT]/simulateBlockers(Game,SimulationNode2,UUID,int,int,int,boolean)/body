@@ -8,7 +8,9 @@
   SimulationNode2 bestNode=null;
   if (game.getCombat().isAttacked(defenderId,game)) {
     SimulatedPlayer2 defender=(SimulatedPlayer2)game.getPlayer(defenderId);
-    if (logger.isDebugEnabled())     logger.debug(defender.getName() + "'s possible blockers: " + defender.getAvailableBlockers(game));
+    if (logger.isDebugEnabled()) {
+      logger.debug(defender.getName() + "'s possible blockers: " + defender.getAvailableBlockers(game));
+    }
     List<Combat> combats=defender.addBlockers(game);
     for (    Combat engagement : combats) {
       if (alpha >= beta) {
@@ -26,7 +28,9 @@
       }
       sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,defenderId,defenderId));
       SimulationNode2 newNode=new SimulationNode2(node,sim,depth,defenderId);
-      if (logger.isDebugEnabled())       logger.debug("Sim block for player:" + game.getPlayer(defenderId).getName());
+      if (logger.isDebugEnabled()) {
+        logger.debug("Sim block for player:" + game.getPlayer(defenderId).getName());
+      }
       sim.checkStateAndTriggered();
       while (!sim.getStack().isEmpty()) {
         sim.getStack().resolve(sim);
@@ -42,7 +46,9 @@
  else       if (!counter) {
         val=simulatePostCombatMain(sim,newNode,depth - 1,alpha,beta);
       }
- else       val=GameStateEvaluator2.evaluate(playerId,sim);
+ else {
+        val=GameStateEvaluator2.evaluate(playerId,sim);
+      }
       if (!defenderId.equals(playerId)) {
         if (val < beta) {
           beta=val;
@@ -61,12 +67,16 @@
       }
     }
   }
-  if (val == null)   val=GameStateEvaluator2.evaluate(playerId,game);
+  if (val == null) {
+    val=GameStateEvaluator2.evaluate(playerId,game);
+  }
   if (bestNode != null) {
     node.children.clear();
     node.children.add(bestNode);
     node.setScore(bestNode.getScore());
   }
-  if (logger.isDebugEnabled())   logger.debug("Sim blockers: returning score: " + val + " depth:"+ depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
+  if (logger.isDebugEnabled()) {
+    logger.debug("Sim blockers: returning score: " + val + " depth:"+ depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
+  }
   return val;
 }
