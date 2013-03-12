@@ -1,6 +1,9 @@
 {
   boolean stepFinished=false;
   int val;
+  if (logger.isTraceEnabled() && node != null && node.getAbilities() != null && !node.getAbilities().toString().equals("[Pass]")) {
+    logger.trace("Add Action [" + depth + "] "+ node.getAbilities().toString()+ "  a: "+ alpha+ " b: "+ beta);
+  }
   Game game=node.getGame();
   if (Thread.interrupted()) {
     Thread.currentThread().interrupt();
@@ -8,15 +11,24 @@
     return GameStateEvaluator2.evaluate(playerId,game);
   }
   if (depth <= 0 || SimulationNode2.nodeCount > maxNodes || game.isGameOver()) {
-    logger.debug("Simulating -- reached end state");
     val=GameStateEvaluator2.evaluate(playerId,game);
+    if (logger.isDebugEnabled()) {
+      StringBuilder sb=new StringBuilder("Add Action [").append(depth).append("] -- reached end state  val = ").append(val);
+      SimulationNode2 logNode=node;
+      StringBuilder sb2=new StringBuilder(" --> ").append(node.getAbilities().get(0).toString());
+      while (logNode.getParent() != null) {
+        logNode=logNode.getParent();
+        sb2.insert(0,"[" + node.getDepth() + "] s:"+ logNode.score).insert(0," (0/" + node.getAbilities().size() + " "+ node.getAbilities().get(0).toString()).insert(0,") --> ");
+      }
+      logger.debug(sb.append(sb2));
+    }
   }
  else   if (node.getChildren().size() > 0) {
-    logger.debug("Simulating -- something added children:" + node.getChildren().size());
+    logger.debug("Add Action -- something added children:" + node.getChildren().size());
     val=minimaxAB(node,depth - 1,alpha,beta);
   }
  else {
-    logger.trace("Simulating -- alpha: " + alpha + " beta: "+ beta+ " depth:"+ depth+ " step:"+ game.getTurn().getStepType()+ " for player:"+ game.getPlayer(game.getPlayerList().get()).getName());
+    logger.trace("Add Action -- alpha: " + alpha + " beta: "+ beta+ " depth:"+ depth+ " step:"+ game.getTurn().getStepType()+ " for player:"+ game.getPlayer(game.getPlayerList().get()).getName());
     if (allPassed(game)) {
       if (!game.getStack().isEmpty()) {
         resolve(node,depth,game);
@@ -44,7 +56,7 @@
       }
     }
  else     if (node.getChildren().size() > 0) {
-      logger.debug("Simulating -- trigger added children:" + node.getChildren().size());
+      logger.debug("Add Action -- trigger added children:" + node.getChildren().size());
       val=minimaxAB(node,depth,alpha,beta);
     }
  else {

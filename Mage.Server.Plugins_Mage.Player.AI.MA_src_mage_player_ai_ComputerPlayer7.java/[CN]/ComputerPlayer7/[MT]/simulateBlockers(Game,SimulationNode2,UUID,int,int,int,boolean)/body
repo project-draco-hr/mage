@@ -12,7 +12,7 @@
     List<Combat> combats=defender.addBlockers(game);
     for (    Combat engagement : combats) {
       if (alpha >= beta) {
-        logger.debug("simulating -- pruning blockers");
+        logger.debug("Sim blockers -- pruning blockers");
         break;
       }
       Game sim=game.copy();
@@ -26,11 +26,11 @@
       }
       sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,defenderId,defenderId));
       SimulationNode2 newNode=new SimulationNode2(node,sim,depth,defenderId);
-      if (logger.isDebugEnabled())       logger.debug("simulating block for player:" + game.getPlayer(defenderId).getName());
+      if (logger.isDebugEnabled())       logger.debug("Sim block for player:" + game.getPlayer(defenderId).getName());
       sim.checkStateAndTriggered();
       while (!sim.getStack().isEmpty()) {
         sim.getStack().resolve(sim);
-        logger.debug("resolving triggered abilities");
+        logger.debug("Sim blockers: resolving triggered abilities");
         sim.applyEffects();
       }
       sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARE_BLOCKERS_STEP_POST,sim.getActivePlayerId(),sim.getActivePlayerId()));
@@ -67,6 +67,6 @@
     node.children.add(bestNode);
     node.setScore(bestNode.getScore());
   }
-  if (logger.isDebugEnabled())   logger.debug("returning -- combat blocker score: " + val + " depth:"+ depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
+  if (logger.isDebugEnabled())   logger.debug("Sim blockers: returning score: " + val + " depth:"+ depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
   return val;
 }

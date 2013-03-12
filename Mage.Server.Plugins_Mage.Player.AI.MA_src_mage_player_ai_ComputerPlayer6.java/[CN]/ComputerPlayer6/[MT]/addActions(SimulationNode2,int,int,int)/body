@@ -1,5 +1,7 @@
 {
-  logger.debug("addActions: " + depth + ", alpha="+ alpha+ ", beta="+ beta);
+  if (logger.isInfoEnabled() && node != null && node.getAbilities() != null && !node.getAbilities().toString().equals("[Pass]")) {
+    logger.info("Add actions [" + depth + "] "+ (node.getAbilities().toString() + " -- a: " + alpha+ " b: "+ beta));
+  }
   Game game=node.getGame();
   int val;
   if (Thread.interrupted()) {
@@ -9,18 +11,18 @@
     return val;
   }
   if (depth <= 0 || SimulationNode2.nodeCount > maxNodes || game.isGameOver()) {
-    logger.trace("Simulating -- reached end state, node count=" + SimulationNode2.nodeCount + ", depth="+ depth);
+    logger.trace("Add actions -- reached end state, node count=" + SimulationNode2.nodeCount + ", depth="+ depth);
     val=GameStateEvaluator2.evaluate(playerId,game);
     UUID currentPlayerId=node.getGame().getPlayerList().get();
     return val;
   }
  else   if (node.getChildren().size() > 0) {
-    logger.trace("Simulating -- something added children:" + node.getChildren().size());
+    logger.trace("Add actions -- something added children:" + node.getChildren().size());
     val=minimaxAB(node,depth - 1,alpha,beta);
     return val;
   }
  else {
-    logger.trace("Simulating -- alpha: " + alpha + " beta: "+ beta+ " depth:"+ depth+ " step:"+ game.getTurn().getStepType()+ " for player:"+ (node.getPlayerId().equals(playerId) ? "yes" : "no"));
+    logger.trace("Add actions -- alpha: " + alpha + " beta: "+ beta+ " depth:"+ depth+ " step:"+ game.getTurn().getStepType()+ " for player:"+ (node.getPlayerId().equals(playerId) ? "yes" : "no"));
     if (allPassed(game)) {
       if (!game.getStack().isEmpty()) {
         resolve(node,depth,game);
@@ -34,7 +36,7 @@
       val=GameStateEvaluator2.evaluate(playerId,game);
     }
  else     if (node.getChildren().size() > 0) {
-      logger.debug("simulating -- attack/block/trigger added children:" + node.getChildren().size());
+      logger.debug("Add actions -- attack/block/trigger added children:" + node.getChildren().size());
       val=minimaxAB(node,depth - 1,alpha,beta);
     }
  else {

@@ -10,10 +10,10 @@
   if (logger.isDebugEnabled())   logger.debug(attacker.getName() + "'s possible attackers: " + attacker.getAvailableAttackers(game));
   for (  Combat engagement : attacker.addAttackers(game)) {
     if (logger.isDebugEnabled()) {
-      logger.debug("Attackers: " + engagement.getAttackers() + ", blockers: "+ engagement.getBlockers());
+      logger.debug("Sim Attackers: " + engagement.getAttackers() + ", blockers: "+ engagement.getBlockers());
     }
     if (alpha >= beta) {
-      logger.debug("simulating -- pruning attackers");
+      logger.debug("Sim Attackers -- pruning attackers");
       break;
     }
     Game sim=game.copy();
@@ -25,11 +25,11 @@
     }
     sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_ATTACKERS,attackerId,attackerId));
     SimulationNode2 newNode=new SimulationNode2(node,sim,depth,attackerId);
-    if (logger.isDebugEnabled())     logger.debug("simulating attack for player:" + game.getPlayer(attackerId).getName());
+    if (logger.isDebugEnabled())     logger.debug("Sim attack for player:" + game.getPlayer(attackerId).getName());
     sim.checkStateAndTriggered();
     while (!sim.getStack().isEmpty()) {
       sim.getStack().resolve(sim);
-      logger.debug("resolving triggered abilities");
+      logger.debug("Sim attack: resolving triggered abilities");
       sim.applyEffects();
     }
     sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARE_ATTACKERS_STEP_POST,sim.getActivePlayerId(),sim.getActivePlayerId()));
@@ -63,6 +63,6 @@
     node.children.add(bestNode);
     node.setScore(bestNode.getScore());
   }
-  if (logger.isDebugEnabled())   logger.debug("returning -- combat attacker score: " + val + " depth:"+ depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
+  if (logger.isDebugEnabled())   logger.debug("Sim attackers: returning score: " + val + " depth:"+ depth+ " for player:"+ game.getPlayer(node.getPlayerId()).getName());
   return val;
 }
