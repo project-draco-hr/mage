@@ -1,0 +1,10 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  Permanent opponentCreature=game.getPermanent(getTargetPointer().getFirst(game,source));
+  Permanent prisonTerm=game.getPermanent(source.getSourceId());
+  if (you != null && opponentCreature != null && prisonTerm != null && opponentCreature.getCardType().contains(CardType.CREATURE)) {
+    game.getState().setValue("attachTo:" + prisonTerm.getId(),opponentCreature);
+    return opponentCreature.addAttachment(prisonTerm.getId(),game);
+  }
+  return false;
+}
