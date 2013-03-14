@@ -1,0 +1,9 @@
+{
+  ManaCost unpaid=new ManaCostsImpl(manaToPay);
+  Card card=CardRepository.instance.findCard(landName).getCard();
+  Assert.assertNotNull(card);
+  HashMap<UUID,ManaAbility> useableAbilities=getManaAbilities(card);
+  Assert.assertEquals(expected1,useableAbilities.size());
+  useableAbilities=ManaUtil.tryToAutoPay(unpaid,(LinkedHashMap)useableAbilities);
+  Assert.assertEquals(expected2,useableAbilities.size());
+}

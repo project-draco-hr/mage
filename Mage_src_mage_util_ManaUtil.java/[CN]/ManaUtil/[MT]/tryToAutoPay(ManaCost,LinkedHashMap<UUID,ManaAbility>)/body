@@ -1,0 +1,46 @@
+{
+  if (unpaid != null) {
+    Mana mana=unpaid.getMana();
+    for (    ManaAbility ability : useableAbilities.values()) {
+      if (!(ability instanceof BasicManaAbility)) {
+        return useableAbilities;
+      }
+    }
+    int countColorfull=0;
+    int countColorless=0;
+    ManaAbility chosenManaAbility=null;
+    for (    ManaAbility ability : useableAbilities.values()) {
+      if (ability instanceof RedManaAbility && mana.contains(Mana.RedMana)) {
+        chosenManaAbility=ability;
+        countColorfull++;
+      }
+      if (ability instanceof BlackManaAbility && mana.contains(Mana.BlackMana)) {
+        chosenManaAbility=ability;
+        countColorfull++;
+      }
+      if (ability instanceof BlueManaAbility && mana.contains(Mana.BlueMana)) {
+        chosenManaAbility=ability;
+        countColorfull++;
+      }
+      if (ability instanceof WhiteManaAbility && mana.contains(Mana.WhiteMana)) {
+        chosenManaAbility=ability;
+        countColorfull++;
+      }
+      if (ability instanceof GreenManaAbility && mana.contains(Mana.GreenMana)) {
+        chosenManaAbility=ability;
+        countColorfull++;
+      }
+    }
+    if (countColorfull == 0) {
+      if (mana.getColorless() > 0) {
+        return replace(useableAbilities,useableAbilities.values().iterator().next());
+      }
+      return useableAbilities;
+    }
+    if (countColorfull > 1) {
+      return useableAbilities;
+    }
+    return replace(useableAbilities,chosenManaAbility);
+  }
+  return useableAbilities;
+}
