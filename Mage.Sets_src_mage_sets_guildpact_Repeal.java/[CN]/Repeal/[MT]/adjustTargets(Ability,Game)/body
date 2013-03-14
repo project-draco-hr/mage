@@ -1,0 +1,9 @@
+{
+  if (ability instanceof SpellAbility) {
+    ability.getTargets().clear();
+    int xValue=ability.getManaCostsToPay().getX();
+    FilterNonlandPermanent filter=new FilterNonlandPermanent(new StringBuilder("nonland permanent with converted mana cost ").append(xValue).toString());
+    filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,xValue));
+    ability.addTarget(new TargetNonlandPermanent(filter));
+  }
+}
