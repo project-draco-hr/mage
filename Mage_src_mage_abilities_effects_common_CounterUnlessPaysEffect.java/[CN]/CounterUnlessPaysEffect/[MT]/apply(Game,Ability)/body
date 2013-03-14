@@ -3,8 +3,12 @@
   if (spell != null) {
     Player player=game.getPlayer(spell.getControllerId());
     if (player != null) {
-      cost.clearPaid();
-      if (!cost.pay(source,game,spell.getControllerId(),spell.getControllerId(),false)) {
+      Cost costToPay=cost.copy();
+      if (cost == null) {
+        costToPay=new GenericManaCost(genericMana.calculate(game,source));
+      }
+      costToPay.clearPaid();
+      if (!costToPay.pay(source,game,spell.getControllerId(),spell.getControllerId(),false)) {
         return game.getStack().counter(source.getFirstTarget(),source.getSourceId(),game);
       }
     }
