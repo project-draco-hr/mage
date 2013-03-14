@@ -2,14 +2,19 @@
   for (  Mode mode : option.getModes().values()) {
     Ability newOption=option.copy();
     newOption.getModes().setMode(mode);
-    if (option.getTargets().getUnchosen().size() > 0) {
-      addTargetOptions(options,option,0,game);
+    if (newOption.getTargets().getUnchosen().size() > 0) {
+      if (newOption.getManaCosts().getVariableCosts().size() > 0) {
+        addVariableXOptions(options,newOption,0,game);
+      }
+ else {
+        addTargetOptions(options,newOption,0,game);
+      }
     }
- else     if (option.getChoices().getUnchosen().size() > 0) {
-      addChoiceOptions(options,option,0,game);
+ else     if (newOption.getChoices().getUnchosen().size() > 0) {
+      addChoiceOptions(options,newOption,0,game);
     }
- else     if (option.getCosts().getTargets().getUnchosen().size() > 0) {
-      addCostTargetOptions(options,option,0,game);
+ else     if (newOption.getCosts().getTargets().getUnchosen().size() > 0) {
+      addCostTargetOptions(options,newOption,0,game);
     }
  else {
       options.add(newOption);

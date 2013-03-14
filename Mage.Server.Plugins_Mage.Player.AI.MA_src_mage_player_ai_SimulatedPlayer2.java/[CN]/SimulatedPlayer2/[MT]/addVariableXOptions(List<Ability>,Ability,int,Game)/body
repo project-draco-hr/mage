@@ -1,0 +1,36 @@
+{
+  int numAvailable=getAvailableManaProducers(game).size() - ability.getManaCosts().convertedManaCost();
+  Card card=game.getCard(ability.getSourceId());
+  if (card != null && numAvailable > 0) {
+    VariableManaCost variableManaCost=null;
+    for (    ManaCost cost : ability.getManaCostsToPay()) {
+      if (cost instanceof VariableManaCost && !cost.isPaid()) {
+        variableManaCost=(VariableManaCost)cost;
+        break;
+      }
+    }
+    if (variableManaCost != null) {
+      int multiplier=variableManaCost.getMultiplier();
+      for (int mana=0; mana <= numAvailable; mana++) {
+        if (mana % multiplier == 0) {
+          int xAmount=mana / multiplier;
+          Ability newAbility=ability.copy();
+          VariableManaCost varCost=null;
+          for (          ManaCost cost : newAbility.getManaCostsToPay()) {
+            if (cost instanceof VariableManaCost && !cost.isPaid()) {
+              varCost=(VariableManaCost)cost;
+              break;
+            }
+          }
+          newAbility.getManaCostsToPay().add(new ManaCostsImpl(new StringBuilder("{").append(xAmount).append("}").toString()));
+          newAbility.getManaCostsToPay().setX(xAmount);
+          varCost.setPaid();
+          card.adjustTargets(newAbility,game);
+          if (newAbility.getTargets().getUnchosen().size() > 0) {
+            addTargetOptions(options,newAbility,targetNum,game);
+          }
+        }
+      }
+    }
+  }
+}

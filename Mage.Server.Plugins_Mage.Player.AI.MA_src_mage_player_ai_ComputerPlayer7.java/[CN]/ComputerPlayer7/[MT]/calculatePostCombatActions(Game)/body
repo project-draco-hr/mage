@@ -9,9 +9,13 @@
     if (root.children.size() > 0) {
       root=root.children.get(0);
       int bestScore=root.getScore();
-      actions=new LinkedList<Ability>(root.abilities);
-      combat=root.combat;
-      logger.debug("final score: " + bestScore);
+      if (bestScore > currentScore || allowBadMoves) {
+        actions=new LinkedList<Ability>(root.abilities);
+        combat=root.combat;
+      }
+ else {
+        logger.debug("[" + game.getPlayer(playerId).getName() + "] no better score  current: "+ currentScore+ " bestScore: "+ bestScore);
+      }
     }
  else {
       logger.debug("[" + game.getPlayer(playerId).getName() + "][post] Action: skip");

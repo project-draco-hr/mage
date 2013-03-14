@@ -1,6 +1,10 @@
 {
+  if (lastLoggedTurn != game.getTurnNum()) {
+    lastLoggedTurn=game.getTurnNum();
+    logger.info(new StringBuilder("------------------------ ").append("Turn: ").append(game.getTurnNum()).append(" [").append(game.getPlayer(game.getActivePlayerId()).getName()).append("----------------------------------------------------").toString());
+  }
   logState(game);
-  logger.debug("Game State: Turn-" + game.getTurnNum() + " Step-"+ game.getTurn().getStepType()+ " ActivePlayer-"+ game.getPlayer(game.getActivePlayerId()).getName()+ " PriorityPlayer-"+ name);
+  logger.debug("Priority -- Step: " + (game.getTurn().getStepType() + "                       ").substring(0,25) + " ActivePlayer-"+ game.getPlayer(game.getActivePlayerId()).getName()+ " PriorityPlayer-"+ name);
   game.getState().setPriorityPlayerId(playerId);
   game.firePriorityEvent(playerId);
 switch (game.getTurn().getStepType()) {
@@ -10,8 +14,7 @@ case DRAW:
   return false;
 case PRECOMBAT_MAIN:
 if (game.getActivePlayerId().equals(playerId)) {
-  printOutState(game,playerId);
-  printOutState(game,game.getOpponents(playerId).iterator().next());
+  printOutState(game);
   if (actions.size() == 0) {
     calculatePreCombatActions(game);
   }
@@ -27,8 +30,7 @@ pass();
 return false;
 case DECLARE_ATTACKERS:
 if (!game.getActivePlayerId().equals(playerId)) {
-printOutState(game,playerId);
-printOutState(game,game.getOpponents(playerId).iterator().next());
+printOutState(game);
 if (actions.size() == 0) {
 calculatePreCombatActions(game);
 }
@@ -46,19 +48,12 @@ case END_COMBAT:
 pass();
 return false;
 case POSTCOMBAT_MAIN:
-if (game.getActivePlayerId().equals(playerId)) {
-printOutState(game,playerId);
-printOutState(game,game.getOpponents(playerId).iterator().next());
+printOutState(game);
 if (actions.size() == 0) {
 calculatePostCombatActions(game);
 }
 act(game);
 return true;
-}
- else {
-pass();
-}
-return false;
 case END_TURN:
 case CLEANUP:
 actionCache.clear();

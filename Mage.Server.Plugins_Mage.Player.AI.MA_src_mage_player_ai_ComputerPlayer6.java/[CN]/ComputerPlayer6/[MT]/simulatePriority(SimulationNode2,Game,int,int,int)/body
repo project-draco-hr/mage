@@ -32,20 +32,41 @@
         sim.getPlayerList().getNext();
       }
       SimulationNode2 newNode=new SimulationNode2(node,sim,action,depth,currentPlayer.getId());
+      logger.trace(new StringBuilder("Sim Prio [").append(depth).append("]#").append(counter).append(" -- newNode (").append(action.toString()).append(") ").append(newNode.hashCode()).append(" parent node ").append(node.hashCode()));
       sim.checkStateAndTriggered();
       int val=addActions(newNode,depth - 1,alpha,beta);
       if (logger.isInfoEnabled() && depth == maxDepth) {
-        StringBuilder sb=new StringBuilder("Sim Prio [").append(depth).append("] #").append(counter).append("  -- val = ").append(val).append(" (").append(action).append(")");
+        StringBuilder sb=new StringBuilder("Sim Prio [").append(depth).append("] #").append(counter).append(" <").append(val).append("> (").append(action).append(action.isModal() ? " Mode = " + action.getModes().getMode().toString() : "").append(listTargets(game,action.getTargets())).append(")").append(logger.isTraceEnabled() ? " #" + newNode.hashCode() : "");
         SimulationNode2 logNode=newNode;
         while (logNode.getChildren() != null && logNode.getChildren().size() > 0) {
           logNode=logNode.getChildren().get(0);
           if (logNode.getAbilities() != null && logNode.getAbilities().size() > 0) {
-            sb.append(" --> ").append(logNode.getAbilities().get(0).toString());
+            sb.append(" -> [").append(logNode.getDepth()).append("]").append(logNode.getAbilities().toString()).append("<").append(logNode.getScore()).append(">");
           }
         }
-        logger.info(sb.toString());
+        logger.info(sb);
       }
-      if (!currentPlayer.getId().equals(playerId)) {
+      if (currentPlayer.getId().equals(playerId)) {
+        if (val > alpha) {
+          alpha=val;
+          bestNode=newNode;
+          bestNode.setScore(val);
+          if (newNode.getChildren().size() > 0) {
+            bestNode.setCombat(newNode.getChildren().get(0).getCombat());
+          }
+          if (depth == maxDepth) {
+            logger.info(new StringBuilder("Sim Prio [").append(depth).append("] -- Saved best node yet <").append(bestNode.getScore()).append("> ").append(bestNode.getAbilities().toString()).toString());
+            node.children.clear();
+            node.children.add(bestNode);
+            node.setScore(bestNode.getScore());
+          }
+        }
+        if (val == GameStateEvaluator2.WIN_GAME_SCORE) {
+          logger.debug("Sim Prio -- win - break");
+          break;
+        }
+      }
+ else {
         if (val < beta) {
           beta=val;
           bestNode=newNode;
@@ -59,26 +80,6 @@
           break;
         }
       }
- else {
-        if (val > alpha) {
-          alpha=val;
-          bestNode=newNode;
-          bestNode.setScore(val);
-          if (newNode.getChildren().size() > 0) {
-            bestNode.setCombat(newNode.getChildren().get(0).getCombat());
-          }
-          if (depth == maxDepth) {
-            logger.info(new StringBuilder("Sim Prio [").append(depth).append("] -- Saved best node yet with score: ").append(bestNode.getScore()).append(" abilities: ").append(bestNode.getAbilities().toString()).toString());
-            node.children.clear();
-            node.children.add(bestNode);
-            node.setScore(bestNode.getScore());
-          }
-        }
-        if (val == GameStateEvaluator2.WIN_GAME_SCORE) {
-          logger.debug("Sim Prio -- win - break");
-          break;
-        }
-      }
       if (alpha >= beta) {
         break;
       }
@@ -89,14 +90,14 @@
     }
   }
   if (depth == maxDepth) {
-    logger.info(new StringBuilder("Sim Prio [").append(depth).append("] -- End for Max Depth").toString());
+    logger.info(new StringBuilder("Sim Prio [").append(depth).append("] -- End for Max Depth  -- Nodes calculated: ").append(SimulationNode2.nodeCount));
   }
   if (bestNode != null) {
     node.children.clear();
     node.children.add(bestNode);
     node.setScore(bestNode.getScore());
     if (logger.isTraceEnabled() && !bestNode.getAbilities().toString().equals("[Pass]")) {
-      logger.trace(new StringBuilder("Sim Prio [").append(depth).append("] -- Set after (depth=").append(depth).append(")  Score: ").append(bestNode.getScore()).append(" abilities: ").append(bestNode.getAbilities().toString()).toString());
+      logger.trace(new StringBuilder("Sim Prio [").append(depth).append("] -- Set after (depth=").append(depth).append(")  <").append(bestNode.getScore()).append("> ").append(bestNode.getAbilities().toString()).toString());
     }
   }
   if (currentPlayer.getId().equals(playerId)) {

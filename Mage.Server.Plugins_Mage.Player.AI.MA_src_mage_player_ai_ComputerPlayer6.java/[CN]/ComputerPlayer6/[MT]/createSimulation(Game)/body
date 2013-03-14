@@ -2,7 +2,9 @@
   Game sim=game.copy();
   for (  Player copyPlayer : sim.getState().getPlayers().values()) {
     Player origPlayer=game.getState().getPlayers().get(copyPlayer.getId()).copy();
-    logger.debug(origPlayer.getName() + " suggested: " + suggested);
+    if (!suggested.isEmpty()) {
+      logger.debug(origPlayer.getName() + " suggested: " + suggested);
+    }
     SimulatedPlayer2 newPlayer=new SimulatedPlayer2(copyPlayer.getId(),copyPlayer.getId().equals(playerId),suggested);
     newPlayer.restore(origPlayer);
     sim.getState().getPlayers().put(copyPlayer.getId(),newPlayer);
