@@ -98,7 +98,9 @@
       if (perm.getAttachedTo() != null) {
         Permanent creature=getPermanent(perm.getAttachedTo());
         if (creature == null || !creature.getAttachments().contains(perm.getId())) {
+          UUID wasAttachedTo=perm.getAttachedTo();
           perm.attachTo(null,this);
+          fireEvent(new GameEvent(GameEvent.EventType.UNATTACHED,wasAttachedTo,perm.getId(),perm.getControllerId()));
         }
  else         if (!creature.getCardType().contains(CardType.CREATURE) || creature.hasProtectionFrom(perm,this)) {
           if (creature.removeAttachment(perm.getId(),this)) {
