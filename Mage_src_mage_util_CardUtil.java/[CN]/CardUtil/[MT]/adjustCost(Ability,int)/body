@@ -1,20 +1,23 @@
 {
   ManaCosts<ManaCost> previousCost=ability.getManaCostsToPay();
   ManaCosts<ManaCost> adjustedCost=new ManaCostsImpl<ManaCost>();
-  boolean reduced=false;
+  boolean updated=false;
   for (  ManaCost manaCost : previousCost) {
     Mana mana=manaCost.getOptions().get(0);
     int colorless=mana != null ? mana.getColorless() : 0;
-    if (!reduced && colorless > 0) {
+    if (!updated && colorless > 0) {
       if ((colorless - reduceCount) > 0) {
         int newColorless=colorless - reduceCount;
         adjustedCost.add(new GenericManaCost(newColorless));
       }
-      reduced=true;
+      updated=true;
     }
  else {
       adjustedCost.add(manaCost);
     }
+  }
+  if (!updated && reduceCount < 0) {
+    adjustedCost.add(new GenericManaCost(-reduceCount));
   }
   ability.getManaCostsToPay().clear();
   ability.getManaCostsToPay().addAll(adjustedCost);

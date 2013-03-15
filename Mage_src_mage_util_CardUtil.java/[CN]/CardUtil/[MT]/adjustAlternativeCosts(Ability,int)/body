@@ -1,0 +1,34 @@
+{
+  for (  AlternativeCost alternativeCost : ability.getAlternativeCosts()) {
+    if (alternativeCost instanceof AlternativeCostImpl) {
+      AlternativeCostImpl impl=(AlternativeCostImpl)alternativeCost;
+      ManaCosts<ManaCost> adjustedCost=new ManaCostsImpl<ManaCost>();
+      boolean updated=false;
+      Iterator it=impl.iterator();
+      while (it.hasNext()) {
+        Object cost=it.next();
+        if (cost instanceof ManaCosts) {
+          for (          Object object : ((ManaCosts)cost)) {
+            if (object instanceof ManaCost) {
+              ManaCost manaCost=(ManaCost)object;
+              Mana mana=manaCost.getOptions().get(0);
+              int colorless=mana != null ? mana.getColorless() : 0;
+              if (!updated && colorless > 0) {
+                if ((colorless - reduceCount) > 0) {
+                  int newColorless=colorless - reduceCount;
+                  it.remove();
+                  adjustedCost.add(new GenericManaCost(newColorless));
+                }
+                updated=true;
+              }
+ else {
+                adjustedCost.add(manaCost);
+              }
+            }
+          }
+        }
+      }
+      impl.add(adjustedCost);
+    }
+  }
+}
