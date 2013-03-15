@@ -1,5 +1,8 @@
 {
   Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment == null) {
+    enchantment=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+  }
   if (enchantment != null && enchantment.getAttachedTo() != null) {
     Permanent creature=game.getPermanent(enchantment.getAttachedTo());
     if (creature != null) {
