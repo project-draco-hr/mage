@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent == null) {
+    permanent=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+  }
+  if (player != null && permanent != null) {
+    while (player.getLibrary().size() > 0) {
+      Card card=player.getLibrary().getFromTop(game);
+      player.revealCards(permanent.getName(),new CardsImpl(card),game);
+      if (card.getCardType().contains(CardType.LAND)) {
+        card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,true);
+      }
+ else {
+        break;
+      }
+    }
+    return true;
+  }
+  return false;
+}
