@@ -1,7 +1,12 @@
 {
   Card card=game.getCard(source.getSourceId());
   Player controller=game.getPlayer(source.getControllerId());
-  if (card != null && card.getSpellAbility().canActivate(source.getControllerId(),game) && card.getSpellAbility().isInUseableZone(game,card,false)) {
+  if (card != null && controller != null) {
+    if (!card.getSpellAbility().canActivate(source.getControllerId(),game)) {
+      if (!controller.chooseUse(outcome,new StringBuilder("Suspend ").append(card.getName()).append("?").toString(),game)) {
+        return false;
+      }
+    }
     UUID exileId=(UUID)game.getState().getValue("SuspendExileId" + source.getControllerId().toString());
     if (exileId == null) {
       exileId=UUID.randomUUID();
