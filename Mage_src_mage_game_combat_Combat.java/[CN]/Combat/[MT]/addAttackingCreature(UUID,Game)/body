@@ -1,0 +1,17 @@
+{
+  Player player=game.getPlayer(attackerId);
+  if (defenders.size() == 1) {
+    declareAttacker(creatureId,defenders.iterator().next(),game);
+    return true;
+  }
+ else {
+    TargetDefender target=new TargetDefender(defenders,creatureId);
+    target.setRequired(true);
+    player.chooseTarget(Outcome.Damage,target,null,game);
+    if (target.getFirstTarget() != null) {
+      declareAttacker(creatureId,target.getFirstTarget(),game);
+      return true;
+    }
+  }
+  return false;
+}
