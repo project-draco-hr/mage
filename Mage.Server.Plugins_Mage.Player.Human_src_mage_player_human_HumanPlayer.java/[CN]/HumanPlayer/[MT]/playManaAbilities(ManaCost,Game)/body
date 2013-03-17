@@ -1,11 +1,12 @@
 {
   updateGameStatePriority("playManaAbilities",game);
   MageObject object=game.getObject(response.getUUID());
-  if (object == null)   return;
-  LinkedHashMap<UUID,ManaAbility> useableAbilities=null;
+  if (object == null) {
+    return;
+  }
   Zone zone=game.getState().getZone(object.getId());
   if (zone != null) {
-    useableAbilities=getUseableManaAbilities(object,zone,game);
+    LinkedHashMap<UUID,ManaAbility> useableAbilities=getUseableManaAbilities(object,zone,game);
     if (useableAbilities != null && useableAbilities.size() > 0) {
       useableAbilities=ManaUtil.tryToAutoPay(unpaid,useableAbilities);
       activateAbility(useableAbilities,game);
