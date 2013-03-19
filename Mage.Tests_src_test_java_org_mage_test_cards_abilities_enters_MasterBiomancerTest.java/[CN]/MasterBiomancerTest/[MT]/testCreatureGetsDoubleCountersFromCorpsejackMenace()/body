@@ -1,0 +1,20 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Forest",2);
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Swamp",1);
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Master Biomancer",1);
+  addCard(Constants.Zone.HAND,playerA,"Corpsejack Menace");
+  addCard(Constants.Zone.HAND,playerA,"Mindeye Drake");
+  castSpell(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Corpsejack Menace");
+  castSpell(3,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"Mindeye Drake");
+  setStopAt(3,Constants.PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Master Biomancer",1);
+  assertPermanentCount(playerA,"Corpsejack Menace",1);
+  assertPermanentCount(playerA,"Mindeye Drake",1);
+  assertPowerToughness(playerA,"Master Biomancer",2,4);
+  assertPowerToughness(playerA,"Corpsejack Menace",6,6);
+  assertPowerToughness(playerA,"Mindeye Drake",6,9);
+}
