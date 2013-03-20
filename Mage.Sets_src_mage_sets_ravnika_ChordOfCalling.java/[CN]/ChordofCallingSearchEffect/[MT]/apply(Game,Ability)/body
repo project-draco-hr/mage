@@ -1,6 +1,7 @@
 {
   Player player=game.getPlayer(source.getControllerId());
-  if (player == null) {
+  Card sourceCard=game.getCard(source.getSourceId());
+  if (player == null || sourceCard == null) {
     return false;
   }
   int xCost=source.getManaCostsToPay().getX();
@@ -12,7 +13,8 @@
     if (target.getTargets().size() > 0) {
       Card card=player.getLibrary().getCard(target.getFirstTarget(),game);
       if (card != null) {
-        card.putOntoBattlefield(game,Constants.Zone.LIBRARY,source.getId(),source.getControllerId());
+        game.informPlayers(new StringBuilder(sourceCard.getName()).append(": Put ").append(card.getName()).append(" onto the battlefield").toString());
+        card.putOntoBattlefield(game,Constants.Zone.LIBRARY,source.getSourceId(),source.getControllerId());
       }
     }
     player.shuffleLibrary(game);
