@@ -3,7 +3,20 @@
   lifeLabel.setText(Integer.toString(player.getLife()));
   poisonLabel.setText(Integer.toString(player.getPoison()));
   handLabel.setText(Integer.toString(player.getHandCount()));
-  libraryLabel.setText(Integer.toString(player.getLibraryCount()));
+  int count=player.getLibraryCount();
+  if (count > 99) {
+    Font font=libraryLabel.getFont();
+    font=font.deriveFont(9f);
+    libraryLabel.setFont(font);
+    changedFont=true;
+  }
+ else   if (changedFont) {
+    Font font=libraryLabel.getFont();
+    font=font.deriveFont(12f);
+    libraryLabel.setFont(font);
+    changedFont=false;
+  }
+  libraryLabel.setText(Integer.toString(count));
   graveLabel.setText(Integer.toString(player.getGraveyard().size()));
   if (!MageFrame.isLite()) {
     int id=player.getUserData().getAvatarId();
