@@ -3,6 +3,7 @@
   matchesModel=new MatchesTableModel();
   gameChooser=new GameChooser();
   initComponents();
+  tableModel.setSession(session);
   chkShowCompleted.setVisible(false);
   tableTables.createDefaultColumnsFromModel();
   chatPanel.useExtendedView(ChatPanel.VIEW_MODE.NONE);
@@ -53,6 +54,9 @@
           logger.info("Joining table " + tableId);
           joinTableDialog.showDialog(roomId,tableId);
         }
+      }
+ else       if (state.equals("Remove")) {
+        session.removeTable(roomId,tableId);
       }
  else       if (state.equals("Watch")) {
         logger.info("Watching table " + tableId);
