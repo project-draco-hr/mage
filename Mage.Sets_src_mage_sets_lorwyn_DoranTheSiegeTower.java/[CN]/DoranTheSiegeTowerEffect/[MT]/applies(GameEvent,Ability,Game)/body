@@ -1,0 +1,23 @@
+{
+switch (event.getType()) {
+case DAMAGE_PLAYER:
+    if (((DamagePlayerEvent)event).isCombatDamage() && (event.getAppliedEffects() == null || !event.getAppliedEffects().contains(this.getId()))) {
+      event.getAppliedEffects().add(this.getId());
+      return true;
+    }
+  break;
+case DAMAGE_PLANESWALKER:
+if (((DamagePlaneswalkerEvent)event).isCombatDamage() && (event.getAppliedEffects() == null || !event.getAppliedEffects().contains(this.getId()))) {
+  event.getAppliedEffects().add(this.getId());
+  return true;
+}
+break;
+case DAMAGE_CREATURE:
+if (((DamageCreatureEvent)event).isCombatDamage() && (event.getAppliedEffects() == null || !event.getAppliedEffects().contains(this.getId()))) {
+event.getAppliedEffects().add(this.getId());
+return true;
+}
+break;
+}
+return false;
+}
