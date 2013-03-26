@@ -1,0 +1,19 @@
+{
+  RevealTargetFromHandCost revealCost=null;
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof RevealTargetFromHandCost) {
+      revealCost=(RevealTargetFromHandCost)cost;
+    }
+  }
+  Player controller=game.getPlayer(source.getControllerId());
+  Card sourceCard=game.getCard(source.getSourceId());
+  if (controller != null && sourceCard != null && revealCost != null) {
+    int live=revealCost.getNumberRevealedCards() * 3;
+    if (live > 0) {
+      controller.gainLife(live,game);
+    }
+    game.informPlayers(new StringBuilder(sourceCard.getName()).append(": ").append(controller.getName()).append(" revealed ").append(revealCost.getNumberRevealedCards()).append(revealCost.getNumberRevealedCards() == 1 ? "white card" : "white cards").append(" and gained ").append(live).append(" live").toString());
+    return true;
+  }
+  return false;
+}

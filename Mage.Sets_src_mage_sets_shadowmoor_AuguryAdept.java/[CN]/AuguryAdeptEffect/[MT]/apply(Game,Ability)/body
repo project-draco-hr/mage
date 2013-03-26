@@ -1,0 +1,20 @@
+{
+  Card sourceCard=game.getCard(source.getSourceId());
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null || sourceCard == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl();
+  Card card=player.getLibrary().removeFromTop(game);
+  if (card != null) {
+    card.moveToZone(Constants.Zone.HAND,source.getSourceId(),game,true);
+    int cmc=card.getManaCost().convertedManaCost();
+    if (cmc > 0) {
+      player.gainLife(cmc,game);
+    }
+    cards.add(card);
+    player.revealCards(sourceCard.getName(),cards,game);
+    game.informPlayers(sourceCard.getName() + ": " + player.getName()+ " revealed "+ card.getName()+ " and gained "+ cmc+ " live");
+  }
+  return true;
+}

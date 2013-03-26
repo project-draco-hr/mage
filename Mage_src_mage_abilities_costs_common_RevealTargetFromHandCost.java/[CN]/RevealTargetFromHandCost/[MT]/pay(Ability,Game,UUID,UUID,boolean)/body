@@ -1,16 +1,19 @@
 {
-  if (targets.choose(Constants.Outcome.Benefit,controllerId,sourceId,game)) {
+  if (targets.choose(Outcome.Benefit,controllerId,sourceId,game)) {
+    convertedManaCosts=0;
+    numberCardsRevealed=0;
     Player player=game.getPlayer(controllerId);
     Cards cards=new CardsImpl();
     for (    UUID targetId : targets.get(0).getTargets()) {
       Card card=player.getHand().get(targetId,game);
       if (card == null)       return false;
-      convertedManaCosts=card.getManaCost().convertedManaCost();
+      convertedManaCosts+=card.getManaCost().convertedManaCost();
+      numberCardsRevealed++;
       cards.add(card);
-      player.revealCards("Revealed card",cards,game);
       paid=true;
-      return paid;
     }
+    player.revealCards("Revealed card",cards,game);
+    return paid;
   }
   paid=false;
   return paid;

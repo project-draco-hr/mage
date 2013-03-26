@@ -1,4 +1,14 @@
 {
+  if (optional) {
+    Player controller=game.getPlayer(source.getControllerId());
+    MageObject object=game.getObject(source.getSourceId());
+    if (controller == null || object == null) {
+      return false;
+    }
+    if (!controller.chooseUse(outcome,new StringBuilder("Use effect of ").append(object.getName()).append("?").toString(),game)) {
+      return false;
+    }
+  }
   Spell spell=game.getStack().getSpell(event.getSourceId());
   for (  Effect effect : baseEffects) {
     if (source.activate(game,false)) {
