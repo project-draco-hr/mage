@@ -15,7 +15,12 @@
   matchView=matchList;
   List<String> players=new ArrayList<String>();
   for (  User user : UserManager.getInstance().getUsers()) {
-    players.add(user.getName());
+    if (user.isConnected()) {
+      players.add(user.getName());
+    }
+ else {
+      players.add(new StringBuilder(user.getName()).append(" (discon.)").toString());
+    }
   }
   playersView=players;
 }
