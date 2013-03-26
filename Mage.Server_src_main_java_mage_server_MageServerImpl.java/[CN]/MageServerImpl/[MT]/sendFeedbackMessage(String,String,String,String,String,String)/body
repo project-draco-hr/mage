@@ -1,7 +1,7 @@
 {
   if (title != null && message != null) {
     execute("sendFeedbackMessage",sessionId,new Action(){
-      public void execute(){
+      @Override public void execute(){
         String host=SessionManager.getInstance().getSession(sessionId).getHost();
         FeedbackServiceImpl.instance.feedback(username,title,type,message,email,host);
         LogServiceImpl.instance.log(LogKeys.KEY_FEEDBACK_ADDED,sessionId,username,host);
