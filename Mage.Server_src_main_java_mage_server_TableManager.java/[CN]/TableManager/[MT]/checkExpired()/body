@@ -3,10 +3,25 @@
   Date now=new Date();
   List<UUID> toRemove=new ArrayList<UUID>();
   for (  Table table : tables.values()) {
-    long diff=(now.getTime() - table.getCreateTime().getTime()) / EXPIRE_TIME_UNIT_VALUE;
-    if (diff >= EXPIRE_TIME) {
-      logger.info("Table expired: id = " + table.getId() + ", created_by="+ table.getControllerName()+ ". Removing...");
-      toRemove.add(table.getId());
+    if (!table.getState().equals(Constants.TableState.FINISHED)) {
+      long diff=(now.getTime() - table.getCreateTime().getTime()) / EXPIRE_TIME_UNIT_VALUE;
+      if (diff >= EXPIRE_TIME) {
+        logger.info("Table expired: id = " + table.getId() + ", created_by="+ table.getControllerName()+ ". Removing...");
+        toRemove.add(table.getId());
+      }
+ else       if (!table.isTournament()) {
+        boolean canBeRemoved=true;
+        for (        MatchPlayer matchPlayer : table.getMatch().getPlayers()) {
+          Player player=matchPlayer.getPlayer();
+          if (player != null && player.isHuman()) {
+            canBeRemoved=false;
+          }
+        }
+        if (canBeRemoved) {
+          logger.info("Table with no human player: id = " + table.getId() + ", created_by="+ table.getControllerName()+ ". Removing...");
+          toRemove.add(table.getId());
+        }
+      }
     }
   }
   for (  UUID tableId : toRemove) {

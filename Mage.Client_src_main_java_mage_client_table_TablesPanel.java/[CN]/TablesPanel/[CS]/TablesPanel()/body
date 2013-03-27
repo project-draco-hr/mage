@@ -4,7 +4,7 @@
   gameChooser=new GameChooser();
   initComponents();
   tableModel.setSession(session);
-  chkShowCompleted.setVisible(false);
+  chkShowCompleted.setVisible(true);
   tableTables.createDefaultColumnsFromModel();
   chatPanel.useExtendedView(ChatPanel.VIEW_MODE.NONE);
   chatPanel.setBorder(null);
@@ -67,7 +67,6 @@
       }
  else       if (state.equals("Replay")) {
         logger.info("Replaying game " + gameId);
-        session.replayGame(gameId);
       }
     }
   }
@@ -75,7 +74,7 @@
   Action replayMatch=new AbstractAction(){
     @Override public void actionPerformed(    ActionEvent e){
       int modelRow=Integer.valueOf(e.getActionCommand());
-      List<UUID> games=(List<UUID>)matchesModel.getValueAt(modelRow,7);
+      List<UUID> games=(List<UUID>)matchesModel.getValueAt(modelRow,6);
       if (games.size() == 1) {
         session.replayGame(games.get(0));
       }
