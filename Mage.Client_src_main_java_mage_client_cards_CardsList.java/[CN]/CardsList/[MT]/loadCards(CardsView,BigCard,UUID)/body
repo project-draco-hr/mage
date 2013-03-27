@@ -2,5 +2,9 @@
   this.cards=showCards;
   this.bigCard=bigCard;
   this.gameId=gameId;
-  currentView.loadCards(showCards,null,false,bigCard,gameId);
+  boolean piles=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_DRAFT_PILES_TOGGLE,"True").equals("True");
+  chkPiles.setSelected(piles);
+  SortBy sortBy=SortBy.getByString(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_DRAFT_SORT_BY,"Color"));
+  cbSortBy.setSelectedIndex(sortBy.ordinal());
+  currentView.loadCards(showCards,sortBy,piles,bigCard,gameId);
 }

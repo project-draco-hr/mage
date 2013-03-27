@@ -15,12 +15,22 @@
   mainTable.getColumnModel().getColumn(5).setPreferredWidth(30);
   mainTable.getColumnModel().getColumn(6).setPreferredWidth(15);
   mainTable.getColumnModel().getColumn(7).setPreferredWidth(15);
-  jScrollPane1.setViewportView(mainTable);
+  if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_DRAFT_PILES_TOGGLE,"cardView").equals("listView")) {
+    jScrollPane1.setViewportView(mainTable);
+    cbSortBy.setEnabled(false);
+    chkPiles.setEnabled(false);
+  }
+ else {
+    jToggleCardView.setSelected(true);
+    jToggleListView.setSelected(false);
+    currentView=this;
+    jScrollPane1.setViewportView(cardArea);
+    cbSortBy.setEnabled(true);
+    chkPiles.setEnabled(true);
+  }
   mainTable.setOpaque(false);
-  cbSortBy.setEnabled(false);
-  chkPiles.setEnabled(false);
   mainTable.addMouseListener(new MouseAdapter(){
-    public void mousePressed(    MouseEvent e){
+    @Override public void mousePressed(    MouseEvent e){
       if (e.getClickCount() == 2 && !e.isConsumed()) {
         e.consume();
         handleDoubleClick();
