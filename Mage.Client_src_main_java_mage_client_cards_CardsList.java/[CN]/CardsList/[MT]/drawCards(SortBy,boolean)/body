@@ -8,7 +8,6 @@
   cardArea.removeAll();
   if (cards != null && cards.size() > 0) {
     Rectangle rectangle=new Rectangle(Config.dimensions.frameWidth,Config.dimensions.frameHeight);
-    int count=0;
     List<CardView> sortedCards=new ArrayList<CardView>(cards.values());
 switch (sortBy) {
 case NAME:
@@ -30,7 +29,9 @@ break;
 CardView lastCard=null;
 for (CardView card : sortedCards) {
 if (chkPiles.isSelected()) {
-if (lastCard == null) lastCard=card;
+if (lastCard == null) {
+lastCard=card;
+}
 switch (sortBy) {
 case NAME:
 if (!card.getName().equals(lastCard.getName())) {
@@ -65,16 +66,24 @@ break;
 }
 rectangle.setLocation(curColumn * Config.dimensions.frameWidth,curRow * 20);
 addCard(card,bigCard,gameId,rectangle);
-if (card.getCardTypes().contains(CardType.LAND)) landCount++;
-if (card.getCardTypes().contains(CardType.CREATURE)) creatureCount++;
+if (card.getCardTypes().contains(CardType.LAND)) {
+landCount++;
+}
+if (card.getCardTypes().contains(CardType.CREATURE)) {
+creatureCount++;
+}
 curRow++;
 lastCard=card;
 }
  else {
 rectangle.setLocation(curColumn * Config.dimensions.frameWidth,curRow * 20);
 addCard(card,bigCard,gameId,rectangle);
-if (card.getCardTypes().contains(CardType.LAND)) landCount++;
-if (card.getCardTypes().contains(CardType.CREATURE)) creatureCount++;
+if (card.getCardTypes().contains(CardType.LAND)) {
+landCount++;
+}
+if (card.getCardTypes().contains(CardType.CREATURE)) {
+creatureCount++;
+}
 curColumn++;
 if (curColumn == numColumns) {
 curColumn=0;
