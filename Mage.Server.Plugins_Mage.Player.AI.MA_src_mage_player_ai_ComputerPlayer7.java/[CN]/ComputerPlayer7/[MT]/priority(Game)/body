@@ -10,7 +10,7 @@
 switch (game.getTurn().getStepType()) {
 case UPKEEP:
 case DRAW:
-    pass();
+    pass(game);
   return false;
 case PRECOMBAT_MAIN:
 if (game.getActivePlayerId().equals(playerId)) {
@@ -22,11 +22,11 @@ if (game.getActivePlayerId().equals(playerId)) {
   return true;
 }
  else {
-  pass();
+  pass(game);
 }
 return false;
 case BEGIN_COMBAT:
-pass();
+pass(game);
 return false;
 case DECLARE_ATTACKERS:
 if (!game.getActivePlayerId().equals(playerId)) {
@@ -38,14 +38,14 @@ act(game);
 return true;
 }
  else {
-pass();
+pass(game);
 }
 return false;
 case DECLARE_BLOCKERS:
 case FIRST_COMBAT_DAMAGE:
 case COMBAT_DAMAGE:
 case END_COMBAT:
-pass();
+pass(game);
 return false;
 case POSTCOMBAT_MAIN:
 printOutState(game);
@@ -57,7 +57,7 @@ return true;
 case END_TURN:
 case CLEANUP:
 actionCache.clear();
-pass();
+pass(game);
 return false;
 }
 return false;

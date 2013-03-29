@@ -3,7 +3,9 @@
     int bookmark=game.bookmarkState();
     if (ability.activate(game,false)) {
       ability.resolve(game);
-      game.removeBookmark(bookmark);
+      if (storedBookmark == -1) {
+        setStoredBookmark(bookmark);
+      }
       return true;
     }
     game.restoreState(bookmark);

@@ -8,6 +8,7 @@
         game.fireEvent(GameEvent.getEvent(GameEvent.EventType.ACTIVATED_ABILITY,ability.getId(),ability.getSourceId(),playerId));
         game.fireInformEvent(name + ability.getActivatedMessage(game));
         game.removeBookmark(bookmark);
+        resetStoredBookmark(game);
         return true;
       }
       game.restoreState(bookmark);
@@ -18,6 +19,7 @@
     if (ability.activate(game,false)) {
       ability.resolve(game);
       game.removeBookmark(bookmark);
+      resetStoredBookmark(game);
       return true;
     }
     game.restoreState(bookmark);
