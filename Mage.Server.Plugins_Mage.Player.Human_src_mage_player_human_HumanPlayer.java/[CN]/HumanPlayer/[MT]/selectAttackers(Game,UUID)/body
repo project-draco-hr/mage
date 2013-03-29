@@ -3,7 +3,7 @@
   FilterCreatureForCombat filter=filterCreatureForCombat.copy();
   filter.add(new ControllerIdPredicate(attackingPlayerId));
   while (!abort) {
-    if (passedAllTurns || passedTurn) {
+    if (passedAllTurns) {
       return;
     }
     game.fireSelectEvent(playerId,"Select attackers");
@@ -12,10 +12,6 @@
       return;
     }
  else     if (response.getInteger() != null) {
-      if (response.getInteger() == -9999) {
-        passedAllTurns=true;
-      }
-      passedTurn=true;
       return;
     }
  else     if (response.getUUID() != null) {

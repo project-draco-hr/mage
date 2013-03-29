@@ -29,11 +29,16 @@
           ChatMessage message=(ChatMessage)callback.getData();
           ChatPanel panel=frame.getChat(callback.getObjectId());
           if (panel != null) {
-            if (message.isUserMessage() && panel.getConnectedChat() != null) {
-              panel.getConnectedChat().receiveMessage(message.getUsername(),message.getMessage(),message.getTime(),ChatMessage.MessageColor.BLACK);
+            if (message.getMessage().equals(Constants.MSG_TIP_HOT_KEYS_CODE)) {
+              panel.receiveMessage("[Tips] ","You may use hot keys to play faster: " + "" + "\nF2 - press Ok, Yes or Done"+ "\nF4 - skip current turn but stop on declare attackers"+ "\nF9 - skip everything until you next turn"+ "\nF2 - undo F4/F9","",ChatMessage.MessageColor.ORANGE);
             }
  else {
-              panel.receiveMessage(message.getUsername(),message.getMessage(),message.getTime(),message.getColor());
+              if (message.isUserMessage() && panel.getConnectedChat() != null) {
+                panel.getConnectedChat().receiveMessage(message.getUsername(),message.getMessage(),message.getTime(),ChatMessage.MessageColor.BLACK);
+              }
+ else {
+                panel.receiveMessage(message.getUsername(),message.getMessage(),message.getTime(),message.getColor());
+              }
             }
           }
         }
