@@ -1,0 +1,12 @@
+{
+  if (source.getFirstTarget() == null) {
+    return false;
+  }
+  FilterLandPermanent filter=new FilterLandPermanent();
+  filter.add(new ControllerIdPredicate(source.getFirstTarget()));
+  List<Permanent> lands=game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game);
+  for (  Permanent land : lands) {
+    land.tap(game);
+  }
+  return true;
+}
