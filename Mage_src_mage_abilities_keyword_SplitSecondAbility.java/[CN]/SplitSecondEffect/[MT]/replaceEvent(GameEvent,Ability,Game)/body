@@ -1,6 +1,12 @@
 {
-  if (event.getType() == GameEvent.EventType.ACTIVATED_ABILITY || event.getType() == GameEvent.EventType.CAST_SPELL) {
+  if (event.getType() == GameEvent.EventType.CAST_SPELL) {
     return true;
+  }
+  if (event.getType() == GameEvent.EventType.ACTIVATE_ABILITY) {
+    Ability ability=game.getAbility(event.getTargetId(),event.getSourceId());
+    if (ability != null && !(ability instanceof ManaAbility)) {
+      return true;
+    }
   }
   return false;
 }
