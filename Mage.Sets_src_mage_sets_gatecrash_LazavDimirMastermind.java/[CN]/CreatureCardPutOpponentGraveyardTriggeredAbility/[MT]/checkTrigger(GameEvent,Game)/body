@@ -5,9 +5,7 @@
       return false;
     }
     if (game.getOpponents(controllerId).contains(event.getPlayerId()) && card.getCardType().contains(CardType.CREATURE)) {
-      for (      Effect effect : this.getEffects()) {
-        effect.setTargetPointer(new FixedTarget(card.getId()));
-      }
+      game.getState().setValue(new StringBuilder("CardToCopy").append(getSourceId().toString()).toString(),card.getId());
       return true;
     }
   }

@@ -1,0 +1,21 @@
+{
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Lazav, Dimir Mastermind",1);
+  addCard(Constants.Zone.BATTLEFIELD,playerA,"Codex Shredder",1);
+  addCard(Constants.Zone.LIBRARY,playerB,"Silvercoat Lion",2);
+  addCard(Constants.Zone.LIBRARY,playerB,"Nightveil Specter",1);
+  skipInitShuffling();
+  activateAbility(1,Constants.PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Target player puts the top card of his or her library into his or her graveyard.",playerB);
+  attack(3,playerA,"Lazav, Dimir Mastermind");
+  castSpell(3,Constants.PhaseStep.POSTCOMBAT_MAIN,playerA,"Silvercoat Lion");
+  setStopAt(3,Constants.PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Lazav, Dimir Mastermind",1);
+  assertPowerToughness(playerA,"Lazav, Dimir Mastermind",2,3);
+  Permanent lazav=getPermanent("Lazav, Dimir Mastermind",playerA.getId());
+  Assert.assertTrue(lazav.getAbilities().contains(FlyingAbility.getInstance()));
+  Assert.assertTrue(lazav.getSubtype().contains("Specter"));
+  Assert.assertTrue(lazav.getSupertype().contains("Legendary"));
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertPowerToughness(playerA,"Silvercoat Lion",2,2);
+}
