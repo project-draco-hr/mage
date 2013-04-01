@@ -1,0 +1,9 @@
+{
+  if (event.getType() == GameEvent.EventType.DAMAGED_CREATURE || event.getType() == GameEvent.EventType.DAMAGED_PLANESWALKER || event.getType() == GameEvent.EventType.DAMAGED_PLAYER) {
+    Permanent permanent=game.getPermanent(event.getSourceId());
+    if (permanent != null && filter.match(permanent,sourceId,controllerId,game) && ((DamagedEvent)event).isCombatDamage()) {
+      return true;
+    }
+  }
+  return false;
+}
