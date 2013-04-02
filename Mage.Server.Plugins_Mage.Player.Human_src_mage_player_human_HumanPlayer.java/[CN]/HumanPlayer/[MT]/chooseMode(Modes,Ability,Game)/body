@@ -5,14 +5,18 @@
     Map<UUID,String> modeMap=new LinkedHashMap<UUID,String>();
     for (    Mode mode : modes.values()) {
       String modeText=mode.getEffects().getText(mode);
-      if (obj != null)       modeText=modeText.replace("{source}",obj.getName());
+      if (obj != null) {
+        modeText=modeText.replace("{source}",obj.getName());
+      }
       modeMap.put(mode.getId(),modeText);
     }
     game.fireGetModeEvent(playerId,"Choose Mode",modeMap);
     waitForResponse();
     if (response.getUUID() != null) {
       for (      Mode mode : modes.values()) {
-        if (mode.getId().equals(response.getUUID()))         return mode;
+        if (mode.getId().equals(response.getUUID())) {
+          return mode;
+        }
       }
     }
     return null;
