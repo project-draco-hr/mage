@@ -1,0 +1,29 @@
+{
+  selectedCost=null;
+  if (!firstCost.canPay(sourceId,controllerId,game)) {
+    selectedCost=secondCost;
+  }
+  if (!secondCost.canPay(sourceId,controllerId,game)) {
+    selectedCost=firstCost;
+  }
+  if (selectedCost == null) {
+    Player controller=game.getPlayer(controllerId);
+    if (controller != null) {
+      StringBuilder sb=new StringBuilder();
+      if (firstCost instanceof ManaCost) {
+        sb.append("Pay ");
+      }
+      sb.append(firstCost.getText()).append("?");
+      if (controller.chooseUse(Constants.Outcome.Detriment,sb.toString(),game)) {
+        selectedCost=firstCost;
+      }
+ else {
+        selectedCost=secondCost;
+      }
+    }
+  }
+  if (selectedCost == null) {
+    return false;
+  }
+  return selectedCost.pay(ability,game,sourceId,controllerId,noMana);
+}
