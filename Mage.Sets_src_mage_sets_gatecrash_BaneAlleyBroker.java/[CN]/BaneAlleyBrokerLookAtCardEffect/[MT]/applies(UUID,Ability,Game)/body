@@ -1,0 +1,19 @@
+{
+  Card card=game.getCard(sourceId);
+  if (card != null && game.getState().getZone(sourceId) == Zone.EXILED) {
+    Card sourceCard=game.getCard(source.getSourceId());
+    if (sourceCard == null) {
+      return false;
+    }
+    UUID exileId=(UUID)game.getState().getValue(new StringBuilder("exileZone").append(source.getSourceId()).append(sourceCard.getZoneChangeCounter()).toString());
+    ExileZone exile=game.getExile().getExileZone(exileId);
+    if (exile != null && exile.contains(sourceId)) {
+      Cards cards=new CardsImpl(card);
+      Player controller=game.getPlayer(source.getControllerId());
+      if (controller != null) {
+        controller.lookAtCards("Exiled with " + sourceCard.getName(),cards,game);
+      }
+    }
+  }
+  return false;
+}
