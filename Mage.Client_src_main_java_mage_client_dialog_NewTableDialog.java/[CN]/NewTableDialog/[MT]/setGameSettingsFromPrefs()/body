@@ -1,0 +1,31 @@
+{
+  txtName.setText(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_NAME,"Game"));
+  String gameTypeName=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_GAME_TYPE,"Two Player Duel");
+  for (  GameTypeView gtv : session.getGameTypes()) {
+    if (gtv.getName().equals(gameTypeName)) {
+      cbGameType.setSelectedItem(gtv);
+      break;
+    }
+  }
+  cbDeckType.setSelectedItem(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_DECK_TYPE,"Limited"));
+  String deckFile=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_DECK_FILE,null);
+  if (deckFile != null) {
+    this.player1Panel.setDeckFile(deckFile);
+  }
+  this.spnNumWins.setValue(Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_NUMBER_OF_WINS,"2")));
+  this.spnNumPlayers.setValue(Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_NUMBER_PLAYERS,"2")));
+  int range=Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_RANGE,"1"));
+  for (  RangeOfInfluence roi : RangeOfInfluence.values()) {
+    if (roi.getRange() == range) {
+      this.cbRange.setSelectedItem(roi);
+      break;
+    }
+  }
+  String attackOption=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_ATTACK_OPTION,"Attack Multiple Players");
+  for (  MultiplayerAttackOption mao : MultiplayerAttackOption.values()) {
+    if (mao.toString().equals(attackOption)) {
+      this.cbAttackOption.setSelectedItem(mao);
+      break;
+    }
+  }
+}
