@@ -1,10 +1,12 @@
 {
   if (sourceId.equals(cardId)) {
     Card card=game.getCard(cardId);
+    Card sourceCard=game.getCard(source.getSourceId());
     Player controller=game.getPlayer(source.getControllerId());
     if (controller != null && card != null && game.getState().getZone(cardId) == Zone.EXILED) {
-      if (card.getCardType().contains(CardType.INSTANT) || game.canPlaySorcery(source.getControllerId())) {
-        return true;
+      if (controller.chooseUse(outcome,"Reveal exiled card?",game)) {
+        Cards cards=new CardsImpl(card);
+        controller.lookAtCards("Exiled with " + sourceCard.getName(),cards,game);
       }
     }
   }
