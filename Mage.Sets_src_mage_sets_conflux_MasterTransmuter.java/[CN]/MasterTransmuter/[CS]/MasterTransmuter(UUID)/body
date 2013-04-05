@@ -1,0 +1,14 @@
+{
+  super(ownerId,31,"Master Transmuter",Rarity.RARE,new CardType[]{CardType.ARTIFACT,CardType.CREATURE},"{3}{U}");
+  this.expansionSetCode="CON";
+  this.subtype.add("Human");
+  this.subtype.add("Artificer");
+  this.color.setBlue(true);
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(2);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new PutOntoBattlefieldTargetEffect(false,true),new ManaCostsImpl("{U}"));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new ReturnToHandTargetCost(new TargetControlledPermanent(new FilterControlledArtifactPermanent("an artifact"))));
+  ability.addTarget(new TargetCardInHand(new FilterArtifactCard("an artifact card from your hand")));
+  this.addAbility(ability);
+}
