@@ -1,5 +1,11 @@
 {
   boolean result=false;
+  if (optional) {
+    Player controller=game.getPlayer(source.getControllerId());
+    if (controller == null || !controller.chooseUse(Constants.Outcome.PutCreatureInPlay,new StringBuilder("Put ").append(source.getTargets() != null ? source.getTargets().get(0).getTargetName() : "target").append(" onto the battlefield?").toString(),game)) {
+      return false;
+    }
+  }
   for (  UUID targetId : targetPointer.getTargets(game,source)) {
     Card card=game.getCard(targetId);
     if (card != null) {
