@@ -4,10 +4,10 @@
   this.subtype.add("Scarecrow");
   this.power=new MageInt(1);
   this.toughness=new MageInt(2);
-  Ability firstAbility=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new DrawCardControllerEffect(1),new GenericManaCost(1));
-  firstAbility.addCost(new SacrificeSourceCost());
+  Ability firstAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DrawCardControllerEffect(1),new GenericManaCost(1));
+  firstAbility.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filterScarecrow,false,true)));
   this.addAbility(firstAbility);
-  Ability secondAbility=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new ReturnFromGraveyardToBattlefieldTargetEffect(),new GenericManaCost(4));
+  Ability secondAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ReturnFromGraveyardToBattlefieldTargetEffect(),new GenericManaCost(4));
   secondAbility.addCost(new TapSourceCost());
   secondAbility.addTarget(new TargetCardInYourGraveyard(filter));
   this.addAbility(secondAbility);
