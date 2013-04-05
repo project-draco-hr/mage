@@ -1,0 +1,14 @@
+{
+  super(ownerId,91,"Vein Drinker",Rarity.RARE,new CardType[]{CardType.CREATURE},"{4}{B}{B}");
+  this.expansionSetCode="ALA";
+  this.subtype.add("Vampire");
+  this.color.setBlack(true);
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  this.addAbility(FlyingAbility.getInstance());
+  Ability ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new VeinDrinkerEffect(),new ManaCostsImpl("{R}"));
+  ability.addCost(new TapSourceCost());
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+  this.addAbility(new DiesAndDealtDamageThisTurnTriggeredAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance())));
+}

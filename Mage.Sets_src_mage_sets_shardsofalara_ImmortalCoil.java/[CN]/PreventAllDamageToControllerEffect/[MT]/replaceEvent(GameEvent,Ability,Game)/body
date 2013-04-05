@@ -1,0 +1,22 @@
+{
+  GameEvent preventEvent=new GameEvent(GameEvent.EventType.PREVENT_DAMAGE,source.getFirstTarget(),source.getId(),source.getControllerId(),event.getAmount(),false);
+  if (!game.replaceEvent(preventEvent)) {
+    int damage=event.getAmount();
+    Player player=game.getPlayer(source.getControllerId());
+    if (player != null) {
+      TargetCardInYourGraveyard target=new TargetCardInYourGraveyard(Math.min(damage,player.getGraveyard().size()),new FilterCard());
+      target.setRequired(true);
+      if (target.choose(Constants.Outcome.Exile,source.getControllerId(),source.getId(),game)) {
+        for (        UUID targetId : target.getTargets()) {
+          Card card=player.getGraveyard().get(targetId,game);
+          if (card != null) {
+            card.moveToZone(Constants.Zone.EXILED,source.getSourceId(),game,false);
+          }
+        }
+      }
+    }
+    event.setAmount(0);
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.PREVENTED_DAMAGE,source.getFirstTarget(),source.getId(),source.getControllerId(),damage));
+  }
+  return false;
+}

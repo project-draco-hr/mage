@@ -1,0 +1,11 @@
+{
+  super(ownerId,84,"Salvage Titan",Rarity.RARE,new CardType[]{CardType.ARTIFACT,CardType.CREATURE},"{4}{B}{B}");
+  this.expansionSetCode="ALA";
+  this.subtype.add("Golem");
+  this.color.setBlack(true);
+  this.power=new MageInt(6);
+  this.toughness=new MageInt(4);
+  Cost cost=new SacrificeTargetCost(new TargetControlledPermanent(3,3,new FilterControlledArtifactPermanent(),true));
+  this.getSpellAbility().addAlternativeCost(new AlternativeCostImpl("You may sacrifice three artifacts rather than pay {this}'s mana cost",cost));
+  this.addAbility(new SimpleActivatedAbility(Constants.Zone.GRAVEYARD,new ReturnSourceFromGraveyardToHandEffect(),new ExileFromGraveCost(new TargetCardInYourGraveyard(3,new FilterArtifactCard()))));
+}

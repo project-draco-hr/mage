@@ -1,0 +1,14 @@
+{
+  Permanent banewaspAffliction=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+  if (banewaspAffliction != null) {
+    Permanent creature=(Permanent)game.getLastKnownInformation(banewaspAffliction.getAttachedTo(),Zone.BATTLEFIELD);
+    if (creature != null) {
+      Player player=game.getPlayer(creature.getOwnerId());
+      if (player != null) {
+        player.loseLife(creature.getToughness().getValue(),game);
+        return true;
+      }
+    }
+  }
+  return false;
+}
