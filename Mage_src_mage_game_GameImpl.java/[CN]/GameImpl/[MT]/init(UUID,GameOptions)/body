@@ -2,7 +2,10 @@
   for (  Player player : state.getPlayers().values()) {
     player.beginTurn(this);
   }
-  fireInformEvent("game has started");
+  if (startMessage.isEmpty()) {
+    startMessage="Game has started";
+  }
+  fireStatusEvent(startMessage,false);
   if (!gameOptions.skipInitShuffling) {
     for (    Player player : state.getPlayers().values()) {
       player.shuffleLibrary(this);

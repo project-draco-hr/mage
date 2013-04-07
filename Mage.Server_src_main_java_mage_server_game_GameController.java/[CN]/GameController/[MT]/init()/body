@@ -10,6 +10,10 @@ case INFO:
       ChatManager.getInstance().broadcast(chatId,"",event.getMessage(),MessageColor.BLACK);
     logger.debug(game.getId() + " " + event.getMessage());
   break;
+case STATUS:
+ChatManager.getInstance().broadcast(chatId,"",event.getMessage(),MessageColor.ORANGE,event.getWithTime());
+logger.debug(game.getId() + " " + event.getMessage());
+break;
 case REVEAL:
 revealCards(event.getMessage(),event.getCards());
 break;
@@ -76,10 +80,5 @@ logger.fatal("Player event listener error ",ex);
 }
 }
 );
-for (Player player : game.getPlayers().values()) {
-if (!player.isHuman()) {
-ChatManager.getInstance().broadcast(chatId,"",player.getName() + " has joined the game",MessageColor.BLACK);
-}
-}
 checkStart();
 }
