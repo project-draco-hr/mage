@@ -3,8 +3,12 @@
     if (!this.loses) {
       if (game.getPlayers().size() > 2) {
         for (        UUID opponentId : game.getOpponents(playerId)) {
-          game.getPlayer(opponentId).lost(game);
+          Player opponent=game.getPlayer(opponentId);
+          if (!opponent.hasLost()) {
+            game.getPlayer(opponentId).lost(game);
+          }
         }
+        this.wins=true;
       }
  else {
         this.wins=true;
