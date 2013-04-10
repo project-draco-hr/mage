@@ -1,12 +1,28 @@
 {
-  if ((!onlyOpponentCanActivate && !controlsAbility(playerId,game)) || (onlyOpponentCanActivate && !game.getOpponents(controllerId).contains(playerId))) {
+switch (mayActivate) {
+case ANY:
+    break;
+case NOT_YOU:
+  if (controlsAbility(playerId,game)) {
     return false;
   }
-  if (timing == TimingRule.INSTANT || game.canPlaySorcery(playerId)) {
-    if (costs.canPay(sourceId,controllerId,game) && canChooseTarget(game)) {
-      this.activatorId=playerId;
-      return true;
-    }
-  }
-  return false;
+break;
+case OPPONENT:
+if (!game.getOpponents(controllerId).contains(playerId)) {
+return false;
+}
+break;
+case YOU:
+if (!controlsAbility(playerId,game)) {
+return false;
+}
+break;
+}
+if (timing == TimingRule.INSTANT || game.canPlaySorcery(playerId)) {
+if (costs.canPay(sourceId,controllerId,game) && canChooseTarget(game)) {
+this.activatorId=playerId;
+return true;
+}
+}
+return false;
 }

@@ -71,15 +71,15 @@
     return false;
   }
   game.getContinuousEffects().costModification(this,game);
-  if (!useAlternativeCost(game)) {
-    if (!manaCostsToPay.pay(this,game,sourceId,controllerId,noMana)) {
-      logger.debug("activate failed - mana");
-      return false;
-    }
-  }
   UUID activatorId=controllerId;
   if ((this instanceof ActivatedAbilityImpl) && ((ActivatedAbilityImpl)this).getActivatorId() != null) {
     activatorId=((ActivatedAbilityImpl)this).getActivatorId();
+  }
+  if (!useAlternativeCost(game)) {
+    if (!manaCostsToPay.pay(this,game,sourceId,activatorId,noMana)) {
+      logger.debug("activate failed - mana");
+      return false;
+    }
   }
   if (!costs.pay(this,game,sourceId,activatorId,noMana)) {
     logger.debug("activate failed - non mana costs");
