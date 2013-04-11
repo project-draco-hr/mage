@@ -1,0 +1,39 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment != null && enchantment.getAttachedTo() != null) {
+    Permanent land=game.getPermanent(enchantment.getAttachedTo());
+    if (land != null) {
+switch (layer) {
+case AbilityAddingRemovingEffects_6:
+        land.removeAllAbilities(source.getSourceId(),game);
+      for (      String landType : landTypes) {
+        if (landType.equals("Swamp")) {
+          land.addAbility(new BlackManaAbility(),game);
+        }
+ else         if (landType.equals("Mountain")) {
+          land.addAbility(new RedManaAbility(),game);
+        }
+ else         if (landType.equals("Forest")) {
+          land.addAbility(new GreenManaAbility(),game);
+        }
+ else         if (landType.equals("Island")) {
+          land.addAbility(new BlueManaAbility(),game);
+        }
+ else         if (landType.equals("Plains")) {
+          land.addAbility(new WhiteManaAbility(),game);
+        }
+      }
+    break;
+case TypeChangingEffects_4:
+  if (!land.getCardType().contains(CardType.LAND)) {
+    land.getCardType().add(CardType.LAND);
+  }
+land.getSubtype().clear();
+land.getSubtype().addAll(landTypes);
+break;
+}
+return true;
+}
+}
+return false;
+}
