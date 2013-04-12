@@ -1,0 +1,12 @@
+{
+  if (event.getType() == GameEvent.EventType.SPELL_CAST) {
+    Spell spell=game.getStack().getSpell(event.getTargetId());
+    if (spell != null && spell.getControllerId().equals(controllerId)) {
+      this.getEffects().remove(0);
+      this.addEffect(new BoostSourceEffect(spell.getManaCost().convertedManaCost(),spell.getManaCost().convertedManaCost(),Constants.Duration.EndOfTurn));
+      this.getEffects().get(0).setTargetPointer(new FixedTarget(event.getPlayerId()));
+      return true;
+    }
+  }
+  return false;
+}
