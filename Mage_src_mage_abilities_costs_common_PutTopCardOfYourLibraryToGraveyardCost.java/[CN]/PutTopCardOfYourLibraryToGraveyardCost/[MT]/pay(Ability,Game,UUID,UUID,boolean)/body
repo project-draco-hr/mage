@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(controllerId);
+  if (player != null && player.getLibrary().size() >= numberOfCards) {
+    int i=0;
+    paid=true;
+    while (i < numberOfCards) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        paid&=card.moveToZone(Zone.GRAVEYARD,sourceId,game,true);
+      }
+      ++i;
+    }
+  }
+  return paid;
+}
