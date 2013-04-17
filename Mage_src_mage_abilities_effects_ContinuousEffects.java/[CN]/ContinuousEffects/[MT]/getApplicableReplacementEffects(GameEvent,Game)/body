@@ -1,31 +1,43 @@
 {
-  List<ReplacementEffect> replaceEffects=new ArrayList<ReplacementEffect>();
+  HashMap<ReplacementEffect,HashSet<Ability>> replaceEffects=new HashMap<ReplacementEffect,HashSet<Ability>>();
   if (planeswalkerRedirectionEffect.applies(event,null,game)) {
-    replaceEffects.add(planeswalkerRedirectionEffect);
+    replaceEffects.put(planeswalkerRedirectionEffect,null);
   }
   if (auraReplacementEffect.applies(event,null,game)) {
-    replaceEffects.add(auraReplacementEffect);
+    replaceEffects.put(auraReplacementEffect,null);
   }
   for (  ReplacementEffect effect : replacementEffects) {
-    Ability ability=replacementEffects.getAbility(effect.getId());
-    if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,null,false)) {
-      if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
-        if (!game.getScopeRelevant() || effect.hasSelfScope() || !event.getTargetId().equals(this.replacementEffects.getAbility(effect.getId()).getSourceId())) {
-          if (effect.applies(event,ability,game)) {
-            replaceEffects.add(effect);
+    HashSet<Ability> abilities=replacementEffects.getAbility(effect.getId());
+    HashSet<Ability> applicableAbilities=new HashSet<Ability>();
+    for (    Ability ability : abilities) {
+      if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,null,false)) {
+        if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
+          if (!game.getScopeRelevant() || effect.hasSelfScope() || !event.getTargetId().equals(ability.getSourceId())) {
+            if (effect.applies(event,ability,game)) {
+              applicableAbilities.add(ability);
+            }
           }
         }
       }
     }
+    if (!applicableAbilities.isEmpty()) {
+      replaceEffects.put((ReplacementEffect)effect,applicableAbilities);
+    }
   }
   for (  PreventionEffect effect : preventionEffects) {
-    Ability ability=preventionEffects.getAbility(effect.getId());
-    if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,null,false)) {
-      if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
-        if (effect.applies(event,ability,game)) {
-          replaceEffects.add(effect);
+    HashSet<Ability> abilities=preventionEffects.getAbility(effect.getId());
+    HashSet<Ability> applicableAbilities=new HashSet<Ability>();
+    for (    Ability ability : abilities) {
+      if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,null,false)) {
+        if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
+          if (effect.applies(event,ability,game)) {
+            applicableAbilities.add(ability);
+          }
         }
       }
+    }
+    if (!applicableAbilities.isEmpty()) {
+      replaceEffects.put((ReplacementEffect)effect,applicableAbilities);
     }
   }
   return replaceEffects;

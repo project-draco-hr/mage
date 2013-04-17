@@ -1,10 +1,13 @@
 {
   List<AsThoughEffect> asThoughEffectsList=new ArrayList<AsThoughEffect>();
   for (  AsThoughEffect effect : asThoughEffects) {
-    Ability ability=asThoughEffects.getAbility(effect.getId());
-    if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,null,false)) {
-      if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
-        asThoughEffectsList.add(effect);
+    HashSet<Ability> abilities=asThoughEffects.getAbility(effect.getId());
+    for (    Ability ability : abilities) {
+      if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,null,false)) {
+        if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
+          asThoughEffectsList.add(effect);
+          break;
+        }
       }
     }
   }

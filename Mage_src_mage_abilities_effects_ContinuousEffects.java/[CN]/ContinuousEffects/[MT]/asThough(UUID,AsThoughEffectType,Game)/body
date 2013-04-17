@@ -2,8 +2,11 @@
   List<AsThoughEffect> asThoughEffectsList=getApplicableAsThoughEffects(game);
   for (  AsThoughEffect effect : asThoughEffectsList) {
     if (effect.getAsThoughEffectType() == type) {
-      if (effect.applies(objectId,asThoughEffects.getAbility(effect.getId()),game)) {
-        return true;
+      HashSet<Ability> abilities=asThoughEffects.getAbility(effect.getId());
+      for (      Ability ability : abilities) {
+        if (effect.applies(objectId,ability,game)) {
+          return true;
+        }
       }
     }
   }

@@ -1,5 +1,16 @@
 {
-  if (abilityMap.containsKey(effect.getId()))   return;
+  if (effectAbilityMap.containsKey(effect.getId())) {
+    HashSet<Ability> set=effectAbilityMap.get(effect.getId());
+    for (    Ability ability : set) {
+      if (ability.getId().equals(source.getId()) && ability.getSourceId().equals(source.getSourceId())) {
+        return;
+      }
+    }
+    set.add(source);
+    return;
+  }
+  HashSet<Ability> set=new HashSet<Ability>();
+  set.add(source);
+  this.effectAbilityMap.put(effect.getId(),set);
   this.add(effect);
-  this.abilityMap.put(effect.getId(),source);
 }

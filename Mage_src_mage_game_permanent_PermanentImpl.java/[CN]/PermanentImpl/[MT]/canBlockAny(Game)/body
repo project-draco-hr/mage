@@ -2,9 +2,12 @@
   if (tapped) {
     return false;
   }
-  for (  RestrictionEffect effect : game.getContinuousEffects().getApplicableRestrictionEffects(this,game)) {
-    if (!effect.canBlock(null,this,game.getContinuousEffects().getAbility(effect.getId()),game)) {
-      return false;
+  for (  Map.Entry entry : game.getContinuousEffects().getApplicableRestrictionEffects(this,game).entrySet()) {
+    RestrictionEffect effect=(RestrictionEffect)entry.getKey();
+    for (    Ability ability : (HashSet<Ability>)entry.getValue()) {
+      if (!effect.canBlock(null,this,ability,game)) {
+        return false;
+      }
     }
   }
   return true;

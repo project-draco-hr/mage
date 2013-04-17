@@ -1,11 +1,17 @@
 {
-  List<RequirementEffect> effects=new ArrayList<RequirementEffect>();
+  HashMap<RequirementEffect,HashSet<Ability>> effects=new HashMap<RequirementEffect,HashSet<Ability>>();
   for (  RequirementEffect effect : requirementEffects) {
-    Ability ability=requirementEffects.getAbility(effect.getId());
-    if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,null,false)) {
-      if (effect.applies(permanent,ability,game)) {
-        effects.add(effect);
+    HashSet<Ability> abilities=requirementEffects.getAbility(effect.getId());
+    HashSet<Ability> applicableAbilities=new HashSet<Ability>();
+    for (    Ability ability : abilities) {
+      if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,null,false)) {
+        if (effect.applies(permanent,ability,game)) {
+          applicableAbilities.add(ability);
+        }
       }
+    }
+    if (!applicableAbilities.isEmpty()) {
+      effects.put(effect,abilities);
     }
   }
   return effects;

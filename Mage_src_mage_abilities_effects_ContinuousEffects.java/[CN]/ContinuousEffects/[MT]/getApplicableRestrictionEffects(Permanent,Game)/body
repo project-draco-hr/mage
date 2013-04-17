@@ -1,11 +1,17 @@
 {
-  List<RestrictionEffect> effects=new ArrayList<RestrictionEffect>();
+  HashMap<RestrictionEffect,HashSet<Ability>> effects=new HashMap<RestrictionEffect,HashSet<Ability>>();
   for (  RestrictionEffect effect : restrictionEffects) {
-    Ability ability=restrictionEffects.getAbility(effect.getId());
-    if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,permanent,false)) {
-      if (effect.applies(permanent,ability,game)) {
-        effects.add(effect);
+    HashSet<Ability> abilities=restrictionEffects.getAbility(effect.getId());
+    HashSet<Ability> applicableAbilities=new HashSet<Ability>();
+    for (    Ability ability : abilities) {
+      if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,permanent,false)) {
+        if (effect.applies(permanent,ability,game)) {
+          applicableAbilities.add(ability);
+        }
       }
+    }
+    if (!applicableAbilities.isEmpty()) {
+      effects.put(effect,abilities);
     }
   }
   return effects;

@@ -1,31 +1,102 @@
 {
   boolean caught=false;
-  List<UUID> consumed=new ArrayList<UUID>();
+  HashMap<UUID,HashSet<UUID>> consumed=new HashMap<UUID,HashSet<UUID>>();
   do {
-    List<ReplacementEffect> rEffects=getApplicableReplacementEffects(event,game);
-    for (Iterator<ReplacementEffect> i=rEffects.iterator(); i.hasNext(); ) {
-      ReplacementEffect entry=i.next();
-      if (consumed.contains(entry.getId())) {
-        i.remove();
+    HashMap<ReplacementEffect,HashSet<Ability>> rEffects=getApplicableReplacementEffects(event,game);
+    for (Iterator<ReplacementEffect> it1=rEffects.keySet().iterator(); it1.hasNext(); ) {
+      ReplacementEffect entry=it1.next();
+      if (consumed.containsKey(entry.getId())) {
+        HashSet<UUID> consumedAbilitiesIds=consumed.get(entry.getId());
+        if (consumedAbilitiesIds.size() == ((HashSet<Ability>)rEffects.get(entry)).size()) {
+          it1.remove();
+        }
+ else {
+          Iterator it=((HashSet<Ability>)rEffects.get(entry)).iterator();
+          while (it.hasNext()) {
+            Ability ability=(Ability)it.next();
+            if (consumedAbilitiesIds.contains(ability.getId())) {
+              it.remove();
+            }
+          }
+        }
       }
     }
     if (rEffects.isEmpty()) {
       break;
     }
     int index;
+    boolean onlyOne=false;
     if (rEffects.size() == 1) {
+      ReplacementEffect effect=(ReplacementEffect)rEffects.keySet().iterator().next();
+      HashSet<Ability> abilities=replacementEffects.getAbility(effect.getId());
+      if (abilities == null || abilities.size() == 1) {
+        onlyOne=true;
+      }
+    }
+    if (onlyOne) {
       index=0;
     }
  else {
       Player player=game.getPlayer(event.getPlayerId());
       index=player.chooseEffect(getReplacementEffectsTexts(rEffects,game),game);
     }
-    ReplacementEffect rEffect=rEffects.get(index);
-    caught=rEffect.replaceEvent(event,this.getAbility(rEffect.getId()),game);
+    int checked=0;
+    ReplacementEffect rEffect=null;
+    Ability rAbility=null;
+    for (    Map.Entry entry : rEffects.entrySet()) {
+      if (entry.getValue() == null) {
+        if (checked == index) {
+          rEffect=(ReplacementEffect)entry.getKey();
+          break;
+        }
+ else {
+          checked++;
+        }
+      }
+ else {
+        HashSet<Ability> abilities=(HashSet<Ability>)entry.getValue();
+        int size=abilities.size();
+        if (index > (checked + size - 1)) {
+          checked+=size;
+        }
+ else {
+          rEffect=(ReplacementEffect)entry.getKey();
+          Iterator it=abilities.iterator();
+          while (it.hasNext() && rAbility == null) {
+            if (checked == index) {
+              rAbility=(Ability)it.next();
+            }
+ else {
+              it.next();
+              checked++;
+            }
+          }
+        }
+      }
+    }
+    if (rEffect != null) {
+      caught=rEffect.replaceEvent(event,rAbility,game);
+    }
     if (caught) {
       break;
     }
-    consumed.add(rEffect.getId());
+    if (rEffect != null) {
+      if (consumed.containsKey(rEffect.getId())) {
+        HashSet<UUID> set=consumed.get(rEffect.getId());
+        if (rAbility != null) {
+          if (!set.contains(rAbility.getId())) {
+            set.add(rAbility.getId());
+          }
+        }
+      }
+ else {
+        HashSet<UUID> set=new HashSet<UUID>();
+        if (rAbility != null) {
+          set.add(rAbility.getId());
+        }
+        consumed.put(rEffect.getId(),set);
+      }
+    }
     game.applyEffects();
   }
  while (true);

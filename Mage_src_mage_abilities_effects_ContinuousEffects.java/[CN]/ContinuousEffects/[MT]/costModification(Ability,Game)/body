@@ -1,8 +1,11 @@
 {
   List<CostModificationEffect> costEffects=getApplicableCostModificationEffects(game);
   for (  CostModificationEffect effect : costEffects) {
-    if (effect.applies(abilityToModify,costModificationEffects.getAbility(effect.getId()),game)) {
-      effect.apply(game,costModificationEffects.getAbility(effect.getId()),abilityToModify);
+    HashSet<Ability> abilities=costModificationEffects.getAbility(effect.getId());
+    for (    Ability ability : abilities) {
+      if (effect.applies(abilityToModify,ability,game)) {
+        effect.apply(game,ability,abilityToModify);
+      }
     }
   }
 }

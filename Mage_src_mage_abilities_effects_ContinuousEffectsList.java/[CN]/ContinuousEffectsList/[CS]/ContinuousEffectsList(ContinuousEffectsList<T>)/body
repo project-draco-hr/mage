@@ -3,7 +3,11 @@
   for (  ContinuousEffect cost : effects) {
     this.add((T)cost.copy());
   }
-  for (  Map.Entry<UUID,Ability> entry : effects.abilityMap.entrySet()) {
-    abilityMap.put(entry.getKey(),entry.getValue().copy());
+  for (  Map.Entry<UUID,HashSet<Ability>> entry : effects.effectAbilityMap.entrySet()) {
+    HashSet<Ability> newSet=new HashSet<Ability>();
+    for (    Ability ability : (HashSet<Ability>)entry.getValue()) {
+      newSet.add(ability.copy());
+    }
+    effectAbilityMap.put(entry.getKey(),newSet);
   }
 }

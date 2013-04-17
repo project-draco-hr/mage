@@ -1,16 +1,30 @@
 {
-  Ability ability=abilityMap.get(effect.getId());
-  if (ability == null)   return true;
-  if (effect.isDiscarded())   return true;
+  HashSet<Ability> set=effectAbilityMap.get(effect.getId());
+  Iterator it=set.iterator();
+  while (it.hasNext()) {
+    Ability ability=(Ability)it.next();
+    if (ability == null) {
+      it.remove();
+    }
+ else     if (effect.isDiscarded()) {
+      it.remove();
+    }
+ else {
 switch (effect.getDuration()) {
 case WhileOnBattlefield:
-    if (game.getObject(ability.getSourceId()) == null) {
-      return (true);
-    }
+        if (game.getObject(ability.getSourceId()) == null) {
+          it.remove();
+        }
 case OneUse:
-  return effect.isUsed();
+      if (effect.isUsed()) {
+        it.remove();
+      }
 case Custom:
-return effect.isInactive(abilityMap.get(effect.getId()),game);
+    if (effect.isInactive(ability,game)) {
+      it.remove();
+    }
 }
-return false;
+}
+}
+return set.isEmpty();
 }
