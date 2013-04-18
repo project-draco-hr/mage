@@ -4,12 +4,21 @@
     sb.append("a ").append(token.getDescription());
   }
  else {
-    sb.append(amount.toString()).append(" ").append(token.getDescription());
+    sb.append(CardUtil.numberToText(amount.toString())).append(" ").append(token.getDescription());
     if (token.getDescription().endsWith("token")) {
       sb.append("s ");
     }
   }
   sb.append(" onto the battlefield");
+  if (tapped) {
+    sb.append(" tapped");
+  }
+  if (attacking) {
+    if (tapped) {
+      sb.append(" and");
+    }
+    sb.append(" attacking");
+  }
   String message=amount.getMessage();
   if (message.length() > 0) {
     if (amount.toString().equals("X")) {

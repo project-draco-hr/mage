@@ -1,0 +1,28 @@
+{
+  Card source=game.getCard(sourceId);
+  String setCode=source != null ? source.getExpansionSetCode() : null;
+  GameEvent event=GameEvent.getEvent(EventType.CREATE_TOKEN,null,sourceId,controllerId,amount);
+  if (!game.replaceEvent(event)) {
+    amount=event.getAmount();
+    for (int i=0; i < amount; i++) {
+      PermanentToken newToken=new PermanentToken(this,controllerId,setCode,game);
+      game.getState().addCard(newToken);
+      game.addPermanent(newToken);
+      if (tapped) {
+        newToken.setTapped(true);
+      }
+      this.lastAddedTokenId=newToken.getId();
+      game.setScopeRelevant(true);
+      game.applyEffects();
+      newToken.entersBattlefield(sourceId,game,Zone.OUTSIDE,true);
+      game.setScopeRelevant(false);
+      game.applyEffects();
+      game.fireEvent(new ZoneChangeEvent(newToken,controllerId,Zone.OUTSIDE,Zone.BATTLEFIELD));
+      if (attacking && game.getCombat() != null) {
+        game.getCombat().addAttackingCreature(newToken.getId(),game);
+      }
+    }
+    return true;
+  }
+  return false;
+}
