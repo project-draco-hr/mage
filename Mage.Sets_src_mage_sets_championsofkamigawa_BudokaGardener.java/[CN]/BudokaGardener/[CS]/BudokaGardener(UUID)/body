@@ -9,7 +9,9 @@
   this.flipCard=true;
   this.flipCardName="Dokai, Weaver of Life";
   Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BudokaGardenerEffect(),new TapSourceCost());
-  ability.addTarget(new TargetCardInHand(new FilterLandCard()));
+  ability.addTarget(new TargetCardInHand(0,1,new FilterLandCard()));
   this.addAbility(ability);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinousEffect(new CopyTokenEffect(new DokaiWeaverofLife()),FlippedCondition.getInstance(),"")));
+  Ability flipAbility=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinousEffect(new CopyTokenEffect(new DokaiWeaverofLife()),FlippedCondition.getInstance(),"{this} becomes Dokai, Weaver of Life"));
+  ability.setRuleVisible(false);
+  this.addAbility(flipAbility);
 }
