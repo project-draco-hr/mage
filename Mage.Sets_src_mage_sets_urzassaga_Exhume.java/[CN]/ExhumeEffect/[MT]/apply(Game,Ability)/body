@@ -1,0 +1,20 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  for (  UUID playerId : controller.getInRange()) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      FilterCreatureCard filterCreatureCard=new FilterCreatureCard("creature card from your graveyard");
+      TargetCardInYourGraveyard target=new TargetCardInYourGraveyard(filterCreatureCard);
+      if (player.choose(Outcome.PutCreatureInPlay,target,source.getSourceId(),game)) {
+        Card card=game.getCard(target.getFirstTarget());
+        if (card != null) {
+          card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getId(),player.getId());
+        }
+      }
+    }
+  }
+  return true;
+}
