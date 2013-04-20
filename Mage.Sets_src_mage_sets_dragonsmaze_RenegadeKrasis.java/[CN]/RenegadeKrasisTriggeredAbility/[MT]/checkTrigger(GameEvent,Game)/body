@@ -1,0 +1,17 @@
+{
+  if (event.getType().equals(GameEvent.EventType.COUNTER_ADDED) && event.getTargetId().equals(getSourceId())) {
+    Object object=game.getState().getValue("EvolveAddCounterActive");
+    if (object != null && (Boolean)object) {
+      StackObject stackObject=game.getStack().getLast();
+      if (stackObject.getStackAbility() instanceof EvolveAbility) {
+        object=game.getState().getValue(this.getId() + "_lastUsedEvolveStackObject");
+        if (object != null && ((UUID)object).equals(stackObject.getId())) {
+          return false;
+        }
+        game.getState().setValue(this.getId() + "_lastUsedEvolveStackObject",stackObject.getId());
+        return true;
+      }
+    }
+  }
+  return false;
+}
