@@ -3,13 +3,15 @@
   int score=0;
   for (int i=0; i < amount; i++) {
     int value=drawCard(game);
-    if (value == -1) {
-      break;
+    if (value == NEGATIVE_VALUE) {
+      continue;
     }
     numDrawn++;
     score+=value;
   }
-  game.fireInformEvent(player.getName() + " draws " + Integer.toString(numDrawn)+ " card"+ (numDrawn > 1 ? "s" : ""));
+  if (numDrawn > 0) {
+    game.fireInformEvent(player.getName() + " draws " + Integer.toString(numDrawn)+ " card"+ (numDrawn > 1 ? "s" : ""));
+  }
   if (player.isEmptyDraw()) {
     game.doAction(new MageLoseGameAction(player,MageLoseGameAction.DRAW_REASON));
   }
