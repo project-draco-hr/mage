@@ -9,17 +9,21 @@
       }
       sb.append("put into your hand");
       pickFilter.setMessage(sb.toString());
-      TargetCard target=new TargetCard(Zone.PICK,pickFilter);
+      TargetCard target=new TargetCard((upTo ? 0 : numberToPick.calculate(game,source)),numberToPick.calculate(game,source),Zone.PICK,pickFilter);
       if (player.choose(Outcome.DrawCard,cards,target,game)) {
-        Card card=cards.get(target.getFirstTarget(),game);
-        if (card != null) {
-          cards.remove(card);
-          card.moveToZone(targetPickedCards,source.getId(),game,false);
-          if (revealPickedCards) {
-            Cards reveal=new CardsImpl();
-            reveal.add(card);
-            player.revealCards(windowName,reveal,game);
+        Cards reveal=new CardsImpl();
+        for (        UUID cardId : (List<UUID>)target.getTargets()) {
+          Card card=cards.get(cardId,game);
+          if (card != null) {
+            cards.remove(card);
+            card.moveToZone(targetPickedCards,source.getId(),game,false);
+            if (revealPickedCards) {
+              reveal.add(card);
+            }
           }
+        }
+        if (revealPickedCards) {
+          player.revealCards(windowName,reveal,game);
         }
       }
     }
