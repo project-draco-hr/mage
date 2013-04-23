@@ -66,9 +66,18 @@
           }
  else {
             Filter auraFilter=perm.getSpellAbility().getTargets().get(0).getFilter();
-            if (!auraFilter.match(attachedTo,this) || attachedTo.hasProtectionFrom(perm,this)) {
-              if (perm.moveToZone(Zone.GRAVEYARD,null,this,false)) {
-                somethingHappened=true;
+            if (auraFilter instanceof FilterControlledCreaturePermanent) {
+              if (!((FilterControlledCreaturePermanent)auraFilter).match(attachedTo,perm.getId(),perm.getControllerId(),this) || attachedTo.hasProtectionFrom(perm,this)) {
+                if (perm.moveToZone(Zone.GRAVEYARD,null,this,false)) {
+                  somethingHappened=true;
+                }
+              }
+            }
+ else {
+              if (!auraFilter.match(attachedTo,this) || attachedTo.hasProtectionFrom(perm,this)) {
+                if (perm.moveToZone(Zone.GRAVEYARD,null,this,false)) {
+                  somethingHappened=true;
+                }
               }
             }
           }
