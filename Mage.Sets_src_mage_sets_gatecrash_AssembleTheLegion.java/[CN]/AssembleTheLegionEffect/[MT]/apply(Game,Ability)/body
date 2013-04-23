@@ -1,8 +1,17 @@
 {
   Permanent sourcePermanent=game.getPermanent(source.getSourceId());
-  if (sourcePermanent != null) {
+  int amountCounters=0;
+  if (sourcePermanent == null) {
+    Permanent lki=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+    if (lki != null) {
+      amountCounters=lki.getCounters().getCount("Muster");
+    }
+  }
+ else {
     new AddCountersSourceEffect(new MusterCounter(),false).apply(game,source);
-    int amountCounters=sourcePermanent.getCounters().getCount("Muster");
+    amountCounters=sourcePermanent.getCounters().getCount("Muster");
+  }
+  if (amountCounters > 0) {
     return new CreateTokenEffect(new SoldierToken(),amountCounters).apply(game,source);
   }
   return false;
