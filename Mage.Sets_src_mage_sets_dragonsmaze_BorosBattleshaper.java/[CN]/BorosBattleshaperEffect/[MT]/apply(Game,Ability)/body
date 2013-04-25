@@ -1,0 +1,35 @@
+{
+  Permanent creature1=game.getPermanent(this.getTargetPointer().getFirst(game,source));
+  if (creature1 != null) {
+    if (game.getOpponents(creature1.getControllerId()).contains(game.getActivePlayerId())) {
+      ContinuousEffectImpl effect=new BlocksIfAbleTargetEffect(Duration.EndOfTurn);
+      effect.setTargetPointer(new FixedTarget(creature1.getId()));
+      game.addEffect(effect,source);
+      effect=new GainAbilityTargetEffect(BlocksThisTurnMarkerAbility.getInstance(),Duration.EndOfTurn,"");
+      effect.setTargetPointer(new FixedTarget(creature1.getId()));
+      game.addEffect(effect,source);
+    }
+ else {
+      ContinuousEffectImpl effect=new AttacksIfAbleTargetEffect(Duration.EndOfTurn);
+      effect.setTargetPointer(new FixedTarget(creature1.getId()));
+      game.addEffect(effect,source);
+      effect=new GainAbilityTargetEffect(AttacksThisTurnMarkerAbility.getInstance(),Duration.EndOfTurn,"");
+      effect.setTargetPointer(new FixedTarget(creature1.getId()));
+      game.addEffect(effect,source);
+    }
+  }
+  Permanent creature2=game.getPermanent(source.getTargets().get(1).getFirstTarget());
+  if (creature2 != null) {
+    if (game.getOpponents(creature2.getControllerId()).contains(game.getActivePlayerId())) {
+      ContinuousEffectImpl effect=new CantBlockTargetEffect(Duration.EndOfTurn);
+      effect.setTargetPointer(new FixedTarget(creature2.getId()));
+      game.addEffect(effect,source);
+    }
+ else {
+      ContinuousEffectImpl effect=new CantAttackTargetEffect(Duration.EndOfTurn);
+      effect.setTargetPointer(new FixedTarget(creature2.getId()));
+      game.addEffect(effect,source);
+    }
+  }
+  return true;
+}
