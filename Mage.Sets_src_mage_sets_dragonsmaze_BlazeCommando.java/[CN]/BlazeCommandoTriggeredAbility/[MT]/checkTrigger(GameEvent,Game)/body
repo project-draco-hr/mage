@@ -1,0 +1,15 @@
+{
+  if (event.getType() == EventType.DAMAGED_CREATURE || event.getType() == EventType.DAMAGED_PLANESWALKER || event.getType() == EventType.DAMAGED_PLAYER) {
+    StackObject stackObject=game.getStack().getStackObject(event.getSourceId());
+    if (stackObject != null && stackObject.getControllerId().equals(getControllerId())) {
+      MageObject object=game.getObject(stackObject.getSourceId());
+      if (object.getCardType().contains(CardType.INSTANT) || object.getCardType().contains(CardType.SORCERY)) {
+        if (!handledStackObjects.contains(stackObject.getId())) {
+          handledStackObjects.add(stackObject.getId());
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
