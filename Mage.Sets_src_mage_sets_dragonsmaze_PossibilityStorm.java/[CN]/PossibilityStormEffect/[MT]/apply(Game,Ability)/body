@@ -1,0 +1,35 @@
+{
+  Spell spell=game.getStack().getSpell(targetPointer.getFirst(game,source));
+  if (spell != null) {
+    if (spell.moveToExile(source.getSourceId(),"Possibility Storm Exile",source.getSourceId(),game)) {
+      Player player=game.getPlayer(spell.getControllerId());
+      if (player != null && player.getLibrary().size() > 0) {
+        Library library=player.getLibrary();
+        Card card;
+        do {
+          card=library.removeFromTop(game);
+          if (card != null) {
+            card.moveToExile(source.getId(),"Possibility Storm Exile",source.getSourceId(),game);
+          }
+        }
+ while (library.size() > 0 && card != null && !sharesType(card,spell.getCardType()));
+        if (card != null && sharesType(card,spell.getCardType())) {
+          player.revealCards("Possibility Storm cast",new CardsImpl(card),game);
+          if (player.chooseUse(Outcome.PlayForFree,new StringBuilder("Cast ").append(card.getName()).append(" without paying cost?").toString(),game)) {
+            player.cast(card.getSpellAbility(),game,true);
+          }
+        }
+        ExileZone exile=game.getExile().getExileZone(source.getSourceId());
+        if (exile != null) {
+          while (exile.size() > 0) {
+            card=exile.getRandom(game);
+            exile.remove(card.getId());
+            card.moveToZone(Zone.LIBRARY,source.getId(),game,false);
+          }
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}
