@@ -1,0 +1,33 @@
+{
+  boolean result=false;
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Permanent permanent=game.getPermanent(source.getFirstTarget());
+    if (permanent != null) {
+      if (permanent.isTapped()) {
+        if (player.chooseUse(Constants.Outcome.Untap,"Untap that permanent?",game)) {
+          result|=permanent.untap(game);
+        }
+      }
+ else {
+        if (player.chooseUse(Constants.Outcome.Tap,"Tap that permanent?",game)) {
+          result|=permanent.tap(game);
+        }
+      }
+    }
+    permanent=game.getPermanent(source.getTargets().get(1).getFirstTarget());
+    if (permanent != null) {
+      if (permanent.isTapped()) {
+        if (player.chooseUse(Constants.Outcome.Untap,"Untap that permanent?",game)) {
+          result|=permanent.untap(game);
+        }
+      }
+ else {
+        if (player.chooseUse(Constants.Outcome.Tap,"Tap that permanent?",game)) {
+          result|=permanent.tap(game);
+        }
+      }
+    }
+  }
+  return result;
+}
