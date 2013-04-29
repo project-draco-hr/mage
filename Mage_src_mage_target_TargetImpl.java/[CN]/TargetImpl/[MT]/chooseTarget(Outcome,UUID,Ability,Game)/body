@@ -2,8 +2,26 @@
   Player player=game.getPlayer(playerId);
   while (!isChosen() && !doneChosing()) {
     chosen=targets.size() >= minNumberOfTargets;
-    if (!player.chooseTarget(outcome,this,source,game)) {
-      return chosen;
+    if (isRandom()) {
+      Set<UUID> possibleTargets=possibleTargets(source.getSourceId(),playerId,game);
+      if (possibleTargets.size() > 0) {
+        int i=0;
+        int rnd=new Random().nextInt(possibleTargets.size());
+        Iterator it=possibleTargets.iterator();
+        while (i < rnd) {
+          it.next();
+          i++;
+        }
+        this.addTarget(((UUID)it.next()),source,game);
+      }
+ else {
+        return chosen;
+      }
+    }
+ else {
+      if (!player.chooseTarget(outcome,this,source,game)) {
+        return chosen;
+      }
     }
     chosen=targets.size() >= minNumberOfTargets;
   }
