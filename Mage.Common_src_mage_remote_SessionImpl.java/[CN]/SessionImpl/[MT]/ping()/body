@@ -1,7 +1,9 @@
 {
   try {
     if (isConnected()) {
-      server.ping(sessionId);
+      if (!server.ping(sessionId)) {
+        logger.error(new StringBuilder("Ping failed: ").append(this.getUserName()).append(" Session: ").append(sessionId).append(" to MAGE server at ").append(connection.getHost()).append(":").append(connection.getPort()).toString());
+      }
     }
     return true;
   }
