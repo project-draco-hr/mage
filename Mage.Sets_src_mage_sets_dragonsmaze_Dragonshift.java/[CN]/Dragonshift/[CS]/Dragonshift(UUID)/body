@@ -1,0 +1,12 @@
+{
+  super(ownerId,66,"Dragonshift",Rarity.RARE,new CardType[]{CardType.INSTANT},"{1}{U}{R}");
+  this.expansionSetCode="DGM";
+  this.color.setRed(true);
+  this.color.setBlue(true);
+  this.getSpellAbility().addEffect(new LoseAllAbilitiesTargetEffect(Duration.EndOfTurn));
+  this.getSpellAbility().addEffect(new BecomesCreatureTargetEffect(new DragonToken(),null,Duration.EndOfTurn));
+  this.getSpellAbility().addTarget(new TargetControlledCreaturePermanent(true));
+  Ability ability=new OverloadAbility(this,new LoseAllAbilitiesAllEffect(new FilterControlledCreaturePermanent(""),Duration.EndOfTurn),new ManaCostsImpl("{3}{U}{U}{R}{R}"));
+  ability.addEffect(new BecomesCreatureAllEffect(new DragonToken(),null,filter,Duration.EndOfTurn));
+  this.addAbility(ability);
+}
