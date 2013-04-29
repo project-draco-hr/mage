@@ -1,7 +1,23 @@
 {
-  for (  UUID playerId : game.getPlayer(source.getControllerId()).getInRange()) {
-    Player player=game.getPlayer(playerId);
-    if (player != null)     player.damage(amount.calculate(game,source),source.getId(),game,false,true);
+switch (controller) {
+case ANY:
+    for (    UUID playerId : game.getPlayer(source.getControllerId()).getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        player.damage(amount.calculate(game,source),source.getId(),game,false,true);
+      }
+    }
+  break;
+case OPPONENT:
+for (UUID playerId : game.getOpponents(source.getControllerId())) {
+  Player player=game.getPlayer(playerId);
+  if (player != null) {
+    player.damage(amount.calculate(game,source),source.getId(),game,false,true);
   }
-  return true;
+}
+break;
+default :
+throw new UnsupportedOperationException("TargetController type not supported.");
+}
+return true;
 }
