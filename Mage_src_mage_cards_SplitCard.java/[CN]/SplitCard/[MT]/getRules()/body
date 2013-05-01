@@ -1,0 +1,21 @@
+{
+  List<String> rules=new ArrayList<String>();
+  if (activeCardHalve.equals(ActiveCardHalve.NONE) || activeCardHalve.equals(ActiveCardHalve.LEFT)) {
+    rules.add(new StringBuilder("<b>").append(leftHalveCard.getName()).append("<b/>").toString());
+    rules.addAll(leftHalveCard.getRules());
+  }
+  if (activeCardHalve.equals(ActiveCardHalve.NONE)) {
+    rules.add("<br/>");
+  }
+  if (activeCardHalve.equals(ActiveCardHalve.NONE) || activeCardHalve.equals(ActiveCardHalve.RIGHT)) {
+    rules.add(new StringBuilder("<b>").append(rightHalveCard.getName()).append("<b/>").toString());
+    rules.addAll(rightHalveCard.getRules());
+  }
+  for (  Ability ability : super.getAbilities()) {
+    if (ability instanceof FuseAbility) {
+      rules.add("<br/>------------------------------------------------------------");
+      rules.add(ability.getRule());
+    }
+  }
+  return rules;
+}
