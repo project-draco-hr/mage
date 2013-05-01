@@ -1,0 +1,13 @@
+{
+  super(ownerId,129,"Give - Take",Rarity.UNCOMMON,new CardType[]{CardType.SORCERY},"{2}{G}{2}{U}");
+  this.expansionSetCode="DGM";
+  this.color.setGreen(true);
+  this.color.setBlue(true);
+  Card leftHalvCard=this.createLeftHalveCard("Give","{2}{G}");
+  leftHalvCard.getSpellAbility().addEffect(new AddCountersTargetEffect(CounterType.P1P1.createInstance(3)));
+  leftHalvCard.getSpellAbility().addTarget(new TargetCreaturePermanent(true));
+  Card rightHalvCard=this.createRightHalveCard("Take","{2}{U}");
+  rightHalvCard.getSpellAbility().addEffect(new TakeEffect());
+  rightHalvCard.getSpellAbility().addTarget(new TargetControlledCreaturePermanent(true));
+  this.addAbility(new FuseAbility(this,this.getManaCost()));
+}
