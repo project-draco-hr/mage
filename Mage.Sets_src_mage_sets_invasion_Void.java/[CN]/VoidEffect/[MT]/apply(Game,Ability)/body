@@ -1,0 +1,21 @@
+{
+  int number=Integer.parseInt(source.getChoices().get(0).getChoice());
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(source.getControllerId(),game)) {
+    if ((permanent.getCardType().contains(CardType.ARTIFACT) || permanent.getCardType().contains(CardType.CREATURE)) && permanent.getManaCost().convertedManaCost() == number) {
+      permanent.destroy(source.getId(),game,false);
+    }
+  }
+  Player targetPlayer=game.getPlayer(targetPointer.getFirst(game,source));
+  if (targetPlayer != null) {
+    targetPlayer.revealCards("Void",targetPlayer.getHand(),game);
+    for (    Card card : targetPlayer.getHand().getCards(game)) {
+      if (!card.getCardType().contains(CardType.LAND) && card.getManaCost().convertedManaCost() == number) {
+        card.moveToZone(Constants.Zone.GRAVEYARD,source.getId(),game,false);
+      }
+    }
+  }
+ else {
+    return false;
+  }
+  return true;
+}
