@@ -1,0 +1,13 @@
+{
+  SourceDidDamageWatcher watcher=(SourceDidDamageWatcher)game.getState().getWatchers().get("SourceDidDamageWatcher");
+  if (watcher != null) {
+    for (    UUID permId : watcher.damageSources) {
+      Permanent perm=game.getPermanent(permId);
+      if (perm != null) {
+        perm.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+      }
+    }
+    return true;
+  }
+  return false;
+}
