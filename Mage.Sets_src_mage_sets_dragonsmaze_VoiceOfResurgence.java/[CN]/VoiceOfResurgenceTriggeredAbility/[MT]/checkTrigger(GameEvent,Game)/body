@@ -1,0 +1,16 @@
+{
+  if (event.getType() == GameEvent.EventType.SPELL_CAST) {
+    Spell spell=game.getStack().getSpell(event.getTargetId());
+    if (spell != null && game.getOpponents(super.getControllerId()).contains(spell.getControllerId()) && game.getActivePlayerId().equals(super.getControllerId())) {
+      return true;
+    }
+  }
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE) {
+    if (super.getSourceId().equals(event.getTargetId())) {
+      MageObject before=game.getLastKnownInformation(event.getTargetId(),Constants.Zone.BATTLEFIELD);
+      Constants.Zone after=game.getState().getZone(event.getTargetId());
+      return before != null && after != null && Constants.Zone.GRAVEYARD.match(after);
+    }
+  }
+  return false;
+}
