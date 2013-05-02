@@ -1,16 +1,18 @@
 {
-  super(ownerId,132,"Ready - Willing",Rarity.RARE,new CardType[]{CardType.INSTANT},"{1}{G}{W}{1}{W}{B}");
+  super(ownerId,132,"Ready","Willing",Rarity.RARE,new CardType[]{CardType.INSTANT},"{1}{G}{W}","{1}{W}{B}");
   this.expansionSetCode="DGM";
   this.color.setGreen(true);
   this.color.setWhite(true);
   this.color.setBlack(true);
-  Card leftHalfCard=this.createLeftHalfCard("Ready","{1}{G}{W}");
-  leftHalfCard.getSpellAbility().addEffect(new IndestructibleAllEffect(new FilterControlledCreaturePermanent("Creatures you controll"),Constants.Duration.EndOfTurn));
-  leftHalfCard.getSpellAbility().addEffect(new UntapAllControllerEffect(new FilterControlledCreaturePermanent(),"Untap each creature you control"));
-  Card rightHalfCard=this.createRightHalfCard("Willing","{1}{W}{B}");
-  rightHalfCard.getSpellAbility().addEffect(new GainAbilityControlledEffect(DeathtouchAbility.getInstance(),Duration.EndOfTurn,new FilterCreaturePermanent("Creatures")));
+  getLeftHalfCard().getColor().setGreen(true);
+  getLeftHalfCard().getColor().setWhite(true);
+  getLeftHalfCard().getSpellAbility().addEffect(new IndestructibleAllEffect(new FilterControlledCreaturePermanent("Creatures you controll"),Constants.Duration.EndOfTurn));
+  getLeftHalfCard().getSpellAbility().addEffect(new UntapAllControllerEffect(new FilterControlledCreaturePermanent(),"Untap each creature you control"));
+  getRightHalfCard().getColor().setWhite(true);
+  getRightHalfCard().getColor().setBlack(true);
+  getRightHalfCard().getSpellAbility().addEffect(new GainAbilityControlledEffect(DeathtouchAbility.getInstance(),Duration.EndOfTurn,new FilterCreaturePermanent("Creatures")));
   Effect effect=new GainAbilityControlledEffect(LifelinkAbility.getInstance(),Duration.EndOfTurn,new FilterCreaturePermanent("Creatures"));
   effect.setText("Creatures you control gain lifelink until end of turn.");
-  rightHalfCard.getSpellAbility().addEffect(effect);
+  getRightHalfCard().getSpellAbility().addEffect(effect);
   this.addAbility(new FuseAbility(this,this.getManaCost()));
 }

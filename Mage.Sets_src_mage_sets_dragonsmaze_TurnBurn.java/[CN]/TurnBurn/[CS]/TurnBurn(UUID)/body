@@ -1,16 +1,16 @@
 {
-  super(ownerId,134,"Turn - Burn",Rarity.UNCOMMON,new CardType[]{CardType.INSTANT},"{2}{U}{1}{R}");
+  super(ownerId,134,"Turn","Burn",Rarity.UNCOMMON,new CardType[]{CardType.INSTANT},"{2}{U}","{1}{R}");
   this.expansionSetCode="DGM";
   this.color.setBlue(true);
   this.color.setRed(true);
-  Card leftHalfCard=this.createLeftHalfCard("Turn","{2}{U}");
-  leftHalfCard.getSpellAbility().addEffect(new LoseAllAbilitiesTargetEffect(Duration.EndOfTurn));
-  leftHalfCard.getSpellAbility().addEffect(new BecomesCreatureTargetEffect(new WeirdToken(),null,Duration.EndOfTurn));
-  leftHalfCard.getSpellAbility().addTarget(new TargetCreaturePermanent(true));
-  Card rightHalfCard=this.createRightHalfCard("Burn","{1}{R}");
+  getLeftHalfCard().getColor().setBlue(true);
+  getLeftHalfCard().getSpellAbility().addEffect(new LoseAllAbilitiesTargetEffect(Duration.EndOfTurn));
+  getLeftHalfCard().getSpellAbility().addEffect(new BecomesCreatureTargetEffect(new WeirdToken(),null,Duration.EndOfTurn));
+  getLeftHalfCard().getSpellAbility().addTarget(new TargetCreaturePermanent(true));
+  getRightHalfCard().getColor().setRed(true);
   Effect effect=new DamageTargetEffect(2);
   effect.setText("Burn deals 2 damage to target creature or player.");
-  rightHalfCard.getSpellAbility().addEffect(effect);
-  rightHalfCard.getSpellAbility().addTarget(new TargetCreatureOrPlayer(true));
+  getRightHalfCard().getSpellAbility().addEffect(effect);
+  getRightHalfCard().getSpellAbility().addTarget(new TargetCreatureOrPlayer(true));
   this.addAbility(new FuseAbility(this,this.getManaCost()));
 }

@@ -1,13 +1,13 @@
 {
-  super(ownerId,129,"Give - Take",Rarity.UNCOMMON,new CardType[]{CardType.SORCERY},"{2}{G}{2}{U}");
+  super(ownerId,129,"Give","Take",Rarity.UNCOMMON,new CardType[]{CardType.SORCERY},"{2}{G}","{2}{U}");
   this.expansionSetCode="DGM";
   this.color.setGreen(true);
   this.color.setBlue(true);
-  Card leftHalfCard=this.createLeftHalfCard("Give","{2}{G}");
-  leftHalfCard.getSpellAbility().addEffect(new AddCountersTargetEffect(CounterType.P1P1.createInstance(3)));
-  leftHalfCard.getSpellAbility().addTarget(new TargetCreaturePermanent(true));
-  Card rightHalfCard=this.createRightHalfCard("Take","{2}{U}");
-  rightHalfCard.getSpellAbility().addEffect(new TakeEffect());
-  rightHalfCard.getSpellAbility().addTarget(new TargetControlledCreaturePermanent(true));
+  getLeftHalfCard().getSpellAbility().addEffect(new AddCountersTargetEffect(CounterType.P1P1.createInstance(3)));
+  getLeftHalfCard().getSpellAbility().addTarget(new TargetCreaturePermanent(true));
+  getLeftHalfCard().getColor().setGreen(true);
+  getRightHalfCard().getSpellAbility().addEffect(new TakeEffect());
+  getRightHalfCard().getSpellAbility().addTarget(new TargetControlledCreaturePermanent(true));
+  getLeftHalfCard().getColor().setBlue(true);
   this.addAbility(new FuseAbility(this,this.getManaCost()));
 }
