@@ -5,11 +5,14 @@
       permanent.destroy(source.getId(),game,false);
     }
   }
+  FilterCard filterCard=new FilterCard();
+  filterCard.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,number));
+  filterCard.add(Predicates.not(new CardTypePredicate(CardType.LAND)));
   Player targetPlayer=game.getPlayer(targetPointer.getFirst(game,source));
   if (targetPlayer != null) {
     targetPlayer.revealCards("Void",targetPlayer.getHand(),game);
     for (    Card card : targetPlayer.getHand().getCards(game)) {
-      if (!card.getCardType().contains(CardType.LAND) && card.getManaCost().convertedManaCost() == number) {
+      if (filterCard.match(card,game)) {
         card.moveToZone(Constants.Zone.GRAVEYARD,source.getId(),game,false);
       }
     }
