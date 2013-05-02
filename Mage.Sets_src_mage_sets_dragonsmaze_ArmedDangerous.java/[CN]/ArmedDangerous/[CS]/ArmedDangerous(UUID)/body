@@ -1,0 +1,14 @@
+{
+  super(ownerId,122,"Armed","Dangerous",Rarity.UNCOMMON,new CardType[]{CardType.SORCERY},"{1}{R}","{3}{G}");
+  this.expansionSetCode="DGM";
+  this.color.setRed(true);
+  this.color.setGreen(true);
+  getLeftHalfCard().getColor().setRed(true);
+  getLeftHalfCard().getSpellAbility().addEffect(new BoostTargetEffect(1,1,Duration.EndOfTurn));
+  getLeftHalfCard().getSpellAbility().addEffect(new GainAbilityTargetEffect(DoubleStrikeAbility.getInstance(),Duration.EndOfTurn));
+  getLeftHalfCard().getSpellAbility().addTarget(new TargetCreaturePermanent(true));
+  getRightHalfCard().getColor().setGreen(true);
+  getRightHalfCard().getSpellAbility().addEffect(new GainAbilityTargetEffect(new SimpleStaticAbility(Zone.BATTLEFIELD,new MustBlockSourceEffect()),Duration.EndOfTurn));
+  getRightHalfCard().getSpellAbility().addTarget(new TargetCreaturePermanent(true));
+  this.addAbility(new FuseAbility(this,this.getManaCost()));
+}
