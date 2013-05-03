@@ -1,0 +1,21 @@
+{
+  Card card=game.getCard(source.getFirstTarget());
+  if (card != null) {
+    Player player=game.getPlayer(card.getOwnerId());
+    if (player != null) {
+      card.moveToZone(Constants.Zone.HAND,source.getSourceId(),game,false);
+      int damage=card.getPower().getValue();
+      Permanent creature=game.getPermanent(source.getTargets().get(1).getTargets().get(0));
+      if (creature != null) {
+        creature.damage(damage,source.getSourceId(),game,true,false);
+        return true;
+      }
+      Player targetPlayer=game.getPlayer(source.getTargets().get(1).getTargets().get(0));
+      if (targetPlayer != null) {
+        targetPlayer.damage(damage,source.getSourceId(),game,true,false);
+        return true;
+      }
+    }
+  }
+  return false;
+}
