@@ -1,0 +1,15 @@
+{
+  this(ownerId,name);
+  this.rarity=rarity;
+  this.cardNumber=cardNumber;
+  this.cardType.addAll(Arrays.asList(cardTypes));
+  this.manaCost.load(costs);
+  if (cardType.contains(CardType.LAND)) {
+    addAbility(new PlayLandAbility(name));
+  }
+ else {
+    addAbility(new SpellAbility(manaCost,name,Zone.HAND,spellAbilityType));
+  }
+  this.usesVariousArt=Character.isDigit(this.getClass().getName().charAt(this.getClass().getName().length() - 1));
+  this.counters=new Counters();
+}

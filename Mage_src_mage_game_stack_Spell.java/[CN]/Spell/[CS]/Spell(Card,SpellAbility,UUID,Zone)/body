@@ -1,7 +1,18 @@
 {
   this.card=card;
+  id=ability.getId();
   this.ability=ability;
   this.ability.setControllerId(controllerId);
+  if (ability.getSpellAbilityType().equals(Constants.SpellAbilityType.SPLIT_FUSED)) {
+    spellCards.add(((SplitCard)card).getLeftHalfCard());
+    spellAbilities.add(((SplitCard)card).getLeftHalfCard().getSpellAbility().copy());
+    spellCards.add(((SplitCard)card).getRightHalfCard());
+    spellAbilities.add(((SplitCard)card).getRightHalfCard().getSpellAbility().copy());
+  }
+ else {
+    spellCards.add(card);
+    spellAbilities.add(ability);
+  }
   this.controllerId=controllerId;
   this.fromZone=fromZone;
 }

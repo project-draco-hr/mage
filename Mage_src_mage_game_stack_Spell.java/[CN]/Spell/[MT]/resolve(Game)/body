@@ -1,9 +1,18 @@
 {
   boolean result;
   if (card.getCardType().contains(CardType.INSTANT) || card.getCardType().contains(CardType.SORCERY)) {
-    if (ability.getTargets().stillLegal(ability,game)) {
-      updateOptionalCosts();
-      result=ability.resolve(game);
+    int index=0;
+    result=false;
+    boolean legalParts=false;
+    for (    SpellAbility spellAbility : this.spellAbilities) {
+      if (spellAbility.getTargets().stillLegal(ability,game)) {
+        legalParts=true;
+        updateOptionalCosts(index);
+        result|=spellAbility.resolve(game);
+      }
+      index++;
+    }
+    if (legalParts) {
       if (!copiedSpell) {
         for (        Effect effect : ability.getEffects()) {
           if (effect instanceof PostResolveEffect) {
@@ -23,7 +32,7 @@
   }
  else   if (card.getCardType().contains(CardType.ENCHANTMENT) && card.getSubtype().contains("Aura")) {
     if (ability.getTargets().stillLegal(ability,game)) {
-      updateOptionalCosts();
+      updateOptionalCosts(0);
       if (card.putOntoBattlefield(game,Zone.HAND,ability.getId(),controllerId)) {
         return ability.resolve(game);
       }
@@ -34,7 +43,7 @@
     return false;
   }
  else {
-    updateOptionalCosts();
+    updateOptionalCosts(0);
     result=card.putOntoBattlefield(game,Zone.HAND,ability.getId(),controllerId);
     return result;
   }

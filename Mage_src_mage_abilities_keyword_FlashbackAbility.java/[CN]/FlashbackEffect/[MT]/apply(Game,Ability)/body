@@ -3,14 +3,25 @@
   if (card != null) {
     Player controller=game.getPlayer(source.getControllerId());
     if (controller != null) {
-      card.getSpellAbility().clear();
-      int amount=source.getManaCostsToPay().getX();
-      card.getSpellAbility().getManaCostsToPay().setX(amount);
-      for (      Target target : card.getSpellAbility().getTargets()) {
-        target.setRequired(true);
-      }
-      return controller.cast(card.getSpellAbility(),game,true);
-    }
-  }
-  return false;
+      SpellAbility spellAbility;
+switch (((FlashbackAbility)source).getSpellAbilityType()) {
+case SPLIT_LEFT:
+        spellAbility=((SplitCard)card).getLeftHalfCard().getSpellAbility();
+      break;
+case SPLIT_RIGHT:
+    spellAbility=((SplitCard)card).getRightHalfCard().getSpellAbility();
+  break;
+default :
+spellAbility=card.getSpellAbility();
+}
+spellAbility.clear();
+int amount=source.getManaCostsToPay().getX();
+spellAbility.getManaCostsToPay().setX(amount);
+for (Target target : spellAbility.getTargets()) {
+target.setRequired(true);
+}
+return controller.cast(spellAbility,game,true);
+}
+}
+return false;
 }

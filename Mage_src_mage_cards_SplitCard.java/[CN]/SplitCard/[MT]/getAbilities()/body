@@ -1,15 +1,12 @@
 {
   Abilities<Ability> allAbilites=new AbilitiesImpl<Ability>();
-  if (activeCardHalf.equals(ActiveCardHalf.NONE) || activeCardHalf.equals(ActiveCardHalf.LEFT)) {
-    allAbilites.addAll(leftHalfCard.getAbilities());
-  }
-  if (activeCardHalf.equals(ActiveCardHalf.NONE) || activeCardHalf.equals(ActiveCardHalf.RIGHT)) {
-    allAbilites.addAll(rightHalfCard.getAbilities());
-  }
   for (  Ability ability : super.getAbilities()) {
-    if (ability instanceof FuseAbility) {
+    if (ability instanceof SpellAbility && !((SpellAbility)ability).getSpellAbilityType().equals(SpellAbilityType.SPLIT)) {
       allAbilites.add(ability);
     }
   }
+  allAbilites.addAll(super.getAbilities());
+  allAbilites.addAll(leftHalfCard.getAbilities());
+  allAbilites.addAll(rightHalfCard.getAbilities());
   return allAbilites;
 }
