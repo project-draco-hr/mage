@@ -1,6 +1,15 @@
 {
   List<String> rules=new ArrayList<String>();
-  rules.add(new StringBuilder("<b>").append(this.getName()).append("<b/>").toString());
+  StringBuilder buffer=new StringBuilder();
+  buffer.append("<table cellspacing=0 cellpadding=0 border=0 width='100%'>");
+  buffer.append("<tr><td valign='top'><b>");
+  buffer.append(this.getName());
+  buffer.append("</b></td><td align='right' valign='top' style='width:");
+  buffer.append(getSpellAbility().getManaCosts().getSymbols().size() * 11 + 1);
+  buffer.append("px'>");
+  buffer.append(getSpellAbility().getManaCosts().getText());
+  buffer.append("</td></tr></table>");
+  rules.add(buffer.toString());
   rules.addAll(super.getRules());
   return rules;
 }
