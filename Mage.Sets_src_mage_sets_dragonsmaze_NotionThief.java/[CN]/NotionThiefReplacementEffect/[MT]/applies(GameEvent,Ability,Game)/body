@@ -1,0 +1,9 @@
+{
+  if (event.getType() == EventType.DRAW_CARD && game.getOpponents(source.getControllerId()).contains(event.getPlayerId())) {
+    NotionThiefDrawWatcher watcher=(NotionThiefDrawWatcher)game.getState().getWatchers().get("NotionThiefDrawWatcher");
+    if (!game.getPhase().getStep().getType().equals(PhaseStep.DRAW) || watcher != null && watcher.getAmountCardsDrawn(event.getPlayerId()) > 0) {
+      return true;
+    }
+  }
+  return false;
+}
