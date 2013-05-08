@@ -1,0 +1,57 @@
+{
+  Cards exiledCards=new CardsImpl();
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  Player you=game.getPlayer(source.getControllerId());
+  if (targetPlayer != null) {
+    targetPlayer.revealCards("Reap Intellect",targetPlayer.getHand(),game);
+    if (you != null) {
+      int xCost=Math.min(source.getManaCostsToPay().getX(),targetPlayer.getHand().size());
+      TargetCard target=new TargetCard(0,xCost,Zone.PICK,filter);
+      target.setNotTarget(true);
+      if (you.choose(Outcome.Benefit,targetPlayer.getHand(),target,game)) {
+        for (        UUID cardId : (List<UUID>)target.getTargets()) {
+          Card chosenCard=game.getCard(cardId);
+          if (chosenCard != null) {
+            if (chosenCard.moveToExile(source.getSourceId(),"Reap Intellect",source.getId(),game)) {
+              exiledCards.add(chosenCard);
+            }
+          }
+        }
+        for (        UUID cardId : exiledCards) {
+          if (cardId != null) {
+            if (targetPlayer != null) {
+              Card card=game.getCard(cardId);
+              Cards cardsInGraveyard=new CardsImpl(Constants.Zone.GRAVEYARD);
+              cardsInGraveyard.addAll(targetPlayer.getGraveyard());
+              you.lookAtCards("Reap Intellect search of Graveyard",cardsInGraveyard,game);
+              Cards cardsInHand=new CardsImpl(Constants.Zone.HAND);
+              cardsInHand.addAll(targetPlayer.getHand());
+              you.lookAtCards("Reap Intellect search of Hand",cardsInHand,game);
+              Cards cardsInLibrary=new CardsImpl(Constants.Zone.LIBRARY);
+              cardsInLibrary.addAll(targetPlayer.getLibrary().getCards(game));
+              you.lookAtCards("Reap Intellect search of Library",cardsInLibrary,game);
+              for (              Card checkCard : cardsInGraveyard.getCards(game)) {
+                if (checkCard.getName().equals(card.getName())) {
+                  checkCard.moveToExile(source.getSourceId(),"Graveyard",source.getId(),game);
+                }
+              }
+              for (              Card checkCard : cardsInHand.getCards(game)) {
+                if (checkCard.getName().equals(card.getName())) {
+                  checkCard.moveToExile(source.getSourceId(),"Hand",source.getId(),game);
+                }
+              }
+              for (              Card checkCard : cardsInLibrary.getCards(game)) {
+                if (checkCard.getName().equals(card.getName())) {
+                  checkCard.moveToExile(source.getSourceId(),"Library",source.getId(),game);
+                }
+              }
+            }
+          }
+        }
+        targetPlayer.shuffleLibrary(game);
+        return true;
+      }
+    }
+  }
+  return false;
+}
