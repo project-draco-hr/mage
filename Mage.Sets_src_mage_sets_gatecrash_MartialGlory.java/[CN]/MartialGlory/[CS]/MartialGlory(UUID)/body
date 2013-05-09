@@ -5,11 +5,13 @@
   this.color.setWhite(true);
   Effect effect=new BoostTargetEffect(3,0,Duration.EndOfTurn);
   effect.setText("Target creature gets +3/+0 until end of turn");
-  this.getSpellAbility().addEffect(effect);
-  this.getSpellAbility().addTarget(new TargetCreaturePermanent(new FilterCreaturePermanent("first creature")));
+  Target target=new TargetCreaturePermanent(new FilterCreaturePermanent("first creature"));
+  target.setRequired(true);
+  this.getSpellAbility().addTarget(target);
   Effect effect2=new BoostTargetEffect(0,3,Duration.EndOfTurn);
   effect2.setText("<br></br>Target creature gets +0/+3 until end of turn");
   effect2.setTargetPointer(SecondTargetPointer.getInstance());
-  this.getSpellAbility().addEffect(effect2);
-  this.getSpellAbility().addTarget(new TargetCreaturePermanent(new FilterCreaturePermanent("second creature (can be the same as the first)")));
+  target=new TargetCreaturePermanent(new FilterCreaturePermanent("second creature (can be the same as the first)"));
+  target.setRequired(true);
+  this.getSpellAbility().addTarget(target);
 }
