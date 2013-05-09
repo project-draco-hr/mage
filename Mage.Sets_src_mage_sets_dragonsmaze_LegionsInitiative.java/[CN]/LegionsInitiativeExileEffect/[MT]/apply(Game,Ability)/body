@@ -1,0 +1,18 @@
+{
+  boolean creatureExiled=false;
+  for (  Permanent creature : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
+    if (creature != null) {
+      if (creature.moveToExile(source.getSourceId(),"Legion's Initiative",source.getSourceId(),game)) {
+        creatureExiled=true;
+      }
+    }
+  }
+  if (creatureExiled) {
+    AtTheBeginOfCombatDelayedTriggeredAbility delayedAbility=new AtTheBeginOfCombatDelayedTriggeredAbility(new LegionsInitiativeReturnFromExileEffect());
+    delayedAbility.setSourceId(source.getSourceId());
+    delayedAbility.setControllerId(source.getControllerId());
+    game.addDelayedTriggeredAbility(delayedAbility);
+    return true;
+  }
+  return true;
+}
