@@ -4,8 +4,47 @@
     fillEmpty();
     return;
   }
+  Card cardHalf=null;
+  SplitCard splitCard=null;
+  this.isSplitCard=card.isSplitCard();
+  if (card instanceof Spell) {
+    if (((Spell)card).getSpellAbility().getSpellAbilityType().equals(Constants.SpellAbilityType.SPLIT_LEFT)) {
+      splitCard=(SplitCard)((Spell)card).getCard();
+      cardHalf=((SplitCard)splitCard).getLeftHalfCard();
+    }
+ else     if (((Spell)card).getSpellAbility().getSpellAbilityType().equals(Constants.SpellAbilityType.SPLIT_RIGHT)) {
+      splitCard=(SplitCard)((Spell)card).getCard();
+      cardHalf=((SplitCard)splitCard).getRightHalfCard();
+    }
+ else     if (((Spell)card).getSpellAbility().getSpellAbilityType().equals(Constants.SpellAbilityType.SPLIT_FUSED)) {
+      isSplitCard=true;
+      splitCard=(SplitCard)((Spell)card).getCard();
+    }
+  }
+ else   if (card.isSplitCard()) {
+    splitCard=(SplitCard)card;
+  }
+  if (this.isSplitCard && splitCard != null) {
+    leftSplitName=splitCard.getLeftHalfCard().getName();
+    leftSplitCosts=splitCard.getLeftHalfCard().getManaCost();
+    leftSplitRules=splitCard.getLeftHalfCard().getRules();
+    rightSplitName=splitCard.getRightHalfCard().getName();
+    rightSplitCosts=splitCard.getRightHalfCard().getManaCost();
+    rightSplitRules=splitCard.getRightHalfCard().getRules();
+  }
   this.name=card.getName();
-  this.rules=card.getRules();
+  if (cardHalf != null) {
+    this.displayName=cardHalf.getName();
+    this.rules=cardHalf.getRules();
+    this.manaCost=cardHalf.getManaCost().getSymbols();
+    this.convertedManaCost=cardHalf.getManaCost().convertedManaCost();
+  }
+ else {
+    this.displayName=card.getName();
+    this.rules=card.getRules();
+    this.manaCost=card.getManaCost().getSymbols();
+    this.convertedManaCost=card.getManaCost().convertedManaCost();
+  }
   if (card instanceof Permanent) {
     Permanent permanent=(Permanent)card;
     this.power=Integer.toString(card.getPower().getValue());
@@ -22,8 +61,6 @@
   this.subTypes=card.getSubtype();
   this.superTypes=card.getSupertype();
   this.color=card.getColor();
-  this.manaCost=card.getManaCost().getSymbols();
-  this.convertedManaCost=card.getManaCost().convertedManaCost();
   this.canTransform=card.canTransform();
   if (card instanceof PermanentToken) {
     this.rarity=Rarity.COMMON;

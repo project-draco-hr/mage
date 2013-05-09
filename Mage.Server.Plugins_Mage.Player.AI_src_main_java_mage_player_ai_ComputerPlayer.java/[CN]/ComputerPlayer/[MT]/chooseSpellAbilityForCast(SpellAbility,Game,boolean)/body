@@ -1,0 +1,17 @@
+{
+switch (ability.getSpellAbilityType()) {
+case SPLIT:
+case SPLIT_FUSED:
+    MageObject object=game.getObject(ability.getSourceId());
+  if (object != null) {
+    LinkedHashMap<UUID,ActivatedAbility> useableAbilities=getSpellAbilities(object,game.getState().getZone(object.getId()),game);
+    if (useableAbilities != null && useableAbilities.size() > 0) {
+      game.fireGetChoiceEvent(playerId,name,new ArrayList<ActivatedAbility>(useableAbilities.values()));
+      return (SpellAbility)useableAbilities.values().iterator().next();
+    }
+  }
+return null;
+default :
+return ability;
+}
+}

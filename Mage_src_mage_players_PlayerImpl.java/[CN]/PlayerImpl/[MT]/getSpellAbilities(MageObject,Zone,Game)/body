@@ -1,0 +1,22 @@
+{
+  LinkedHashMap<UUID,ActivatedAbility> useable=new LinkedHashMap<UUID,ActivatedAbility>();
+  for (  Ability ability : object.getAbilities()) {
+    if (ability instanceof SpellAbility) {
+      if (((SpellAbility)ability).getSpellAbilityType().equals(SpellAbilityType.SPLIT_FUSED)) {
+        if (zone.equals(Zone.HAND)) {
+          useable.clear();
+          useable.put(ability.getId(),(SpellAbility)ability);
+          return useable;
+        }
+ else {
+          continue;
+        }
+      }
+      if (((SpellAbility)ability).getSpellAbilityType().equals(SpellAbilityType.SPLIT)) {
+        continue;
+      }
+      useable.put(ability.getId(),(SpellAbility)ability);
+    }
+  }
+  return useable;
+}

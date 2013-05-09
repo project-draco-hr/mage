@@ -1,6 +1,9 @@
 {
   MageObject object=game.getObject(sourceId);
   if ((object.getCardType().contains(CardType.INSTANT) || object.getAbilities().containsKey(FlashAbility.getInstance().getId()) || game.getContinuousEffects().asThough(sourceId,AsThoughEffectType.CAST,game)|| game.canPlaySorcery(playerId))) {
+    if (spellAbilityType.equals(SpellAbilityType.SPLIT)) {
+      return false;
+    }
     if (!controllerId.equals(playerId)) {
       return false;
     }
