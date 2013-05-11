@@ -6,5 +6,15 @@
     card.setOwnerId(ownerId);
     gameCards.put(card.getId(),card);
     state.addCard(card);
+    if (card.isSplitCard()) {
+      Card leftCard=((SplitCard)card).getLeftHalfCard();
+      leftCard.setOwnerId(ownerId);
+      gameCards.put(leftCard.getId(),leftCard);
+      state.addCard(leftCard);
+      Card rightCard=((SplitCard)card).getRightHalfCard();
+      rightCard.setOwnerId(ownerId);
+      gameCards.put(rightCard.getId(),rightCard);
+      state.addCard(rightCard);
+    }
   }
 }
