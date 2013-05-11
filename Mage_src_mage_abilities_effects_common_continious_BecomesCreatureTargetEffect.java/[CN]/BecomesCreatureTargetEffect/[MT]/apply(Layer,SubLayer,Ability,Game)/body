@@ -6,18 +6,20 @@
 switch (layer) {
 case TypeChangingEffects_4:
         if (sublayer == SubLayer.NA) {
-          if (token.getCardType().size() > 0) {
-            for (            CardType t : token.getCardType()) {
-              if (!permanent.getCardType().contains(t)) {
-                permanent.getCardType().add(t);
-              }
-            }
-          }
           if (type == null) {
             permanent.getSubtype().clear();
+            if (token.getSubtype().size() > 0) {
+              permanent.getSubtype().addAll(token.getSubtype());
+            }
           }
-          if (token.getSubtype().size() > 0) {
-            permanent.getSubtype().addAll(token.getSubtype());
+ else {
+            if (token.getCardType().size() > 0) {
+              for (              CardType t : token.getCardType()) {
+                if (!permanent.getCardType().contains(t)) {
+                  permanent.getCardType().add(t);
+                }
+              }
+            }
           }
         }
       break;
@@ -37,12 +39,8 @@ if (sublayer == SubLayer.NA) {
 break;
 case PTChangingEffects_7:
 if (sublayer == SubLayer.SetPT_7b) {
-int power=token.getPower().getValue();
-int toughness=token.getToughness().getValue();
-if (power != 0 && toughness != 0) {
-permanent.getPower().setValue(power);
-permanent.getToughness().setValue(toughness);
-}
+permanent.getToughness().setValue(token.getToughness().getValue());
+permanent.getPower().setValue(token.getPower().getValue());
 }
 }
 }
