@@ -26,6 +26,14 @@
       perm.moveToExile(null,"",null,this);
     }
   }
+  for (  ExileZone exile : this.getExile().getExileZones()) {
+    for (Iterator<UUID> it=exile.iterator(); it.hasNext(); ) {
+      Card card=this.getCard(it.next());
+      if (card != null && card.getOwnerId().equals(playerId)) {
+        it.remove();
+      }
+    }
+  }
   Iterator it=gameCards.entrySet().iterator();
   while (it.hasNext()) {
     Entry<UUID,Card> entry=(Entry<UUID,Card>)it.next();
