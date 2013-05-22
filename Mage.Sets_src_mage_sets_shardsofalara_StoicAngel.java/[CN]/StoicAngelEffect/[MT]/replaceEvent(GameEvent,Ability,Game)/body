@@ -1,0 +1,21 @@
+{
+  if (game.getState().getValue("StoicAngelUntapCreature") == null) {
+    List<Permanent> permanents=game.getBattlefield().getActivePermanents(filter,event.getPlayerId(),game);
+    if (permanents.size() == 1) {
+      game.getState().setValue("StoicAngelUntapCreature",permanents.get(0).getId());
+    }
+ else     if (permanents.size() > 1) {
+      Player player=game.getPlayer(event.getPlayerId());
+      Target target=new TargetControlledCreaturePermanent(1,1,filter,true,true);
+      if (player != null && player.choose(Outcome.Untap,target,source.getId(),game)) {
+        game.getState().setValue("StoicAngelUntapCreature",target.getFirstTarget());
+      }
+    }
+  }
+  if (event.getTargetId().equals(game.getState().getValue("StoicAngelUntapCreature"))) {
+    return false;
+  }
+ else {
+    return true;
+  }
+}
