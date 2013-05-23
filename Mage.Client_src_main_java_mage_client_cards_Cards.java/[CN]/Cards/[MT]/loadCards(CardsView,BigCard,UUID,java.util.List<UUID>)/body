@@ -8,6 +8,23 @@
       changed=true;
     }
   }
+  if (cardsView.size() == 0 && countCards() > 0) {
+    logger.fatal("Card object on the cards panel was not removed");
+    for (    Component comp : cardArea.getComponents()) {
+      if (comp instanceof Card) {
+        Card card=(Card)comp;
+        logger.fatal("Card name:" + card.getName() + " type:"+ card.getType(null));
+      }
+ else       if (comp instanceof MageCard) {
+        MageCard mageCard=(MageCard)comp;
+        logger.fatal("MageCard name:" + mageCard.getName() + " toolTiptext:"+ mageCard.getToolTipText());
+      }
+ else {
+        logger.fatal("Unknown object:" + comp.getName() + " className:"+ comp.getClass().getName());
+      }
+      cardArea.remove(comp);
+    }
+  }
   java.util.List<CardView> orderedList=new ArrayList<CardView>();
   for (  CardView card : cardsView.values()) {
     orderedList.add(0,card);
