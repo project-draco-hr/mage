@@ -6,10 +6,12 @@
   this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.LOYALTY.createInstance(4)),false));
   LoyaltyAbility ability=new LoyaltyAbility(new TapTargetEffect(),1);
   ability.addEffect(new SkipNextUntapTargetEffect());
-  ability.addTarget(new TargetPermanent());
+  Target target=new TargetPermanent();
+  target.setRequired(true);
+  ability.addTarget(target);
   this.addAbility(ability);
   ability=new LoyaltyAbility(new DrawCardControllerEffect(new TappedCreaturesControlledByTargetCount()),-2);
-  ability.addTarget(new TargetPlayer());
+  ability.addTarget(new TargetPlayer(true));
   this.addAbility(ability);
   this.addAbility(new LoyaltyAbility(new GetEmblemEffect(new TamiyoTheMoonSageEmblem()),-8));
 }
