@@ -1,0 +1,31 @@
+{
+switch (event.getType()) {
+case ENTERS_THE_BATTLEFIELD:
+    if (game.getState().getZone(getSourceId()).equals(Constants.Zone.BATTLEFIELD)) {
+      return event.getTargetId().equals(getSourceId());
+    }
+  break;
+case ZONE_CHANGE:
+if (!usedFromExile && game.getState().getZone(getSourceId()).equals(Constants.Zone.EXILED)) {
+  ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+  if (zEvent.isDiesEvent()) {
+    Card card=game.getCard(getSourceId());
+    if (card != null) {
+      String key=new StringBuilder("Haunting_").append(getSourceId().toString()).append("_").append(card.getZoneChangeCounter()).toString();
+      Object object=game.getState().getValue(key);
+      if (object != null && object instanceof FixedTarget) {
+        FixedTarget target=(FixedTarget)object;
+        if (target.getTarget() != null && target.getTarget().equals(event.getTargetId())) {
+          usedFromExile=true;
+          return true;
+        }
+      }
+    }
+  }
+}
+break;
+default :
+return false;
+}
+return false;
+}

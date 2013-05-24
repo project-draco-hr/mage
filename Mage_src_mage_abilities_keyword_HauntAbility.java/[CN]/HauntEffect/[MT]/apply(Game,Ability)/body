@@ -1,0 +1,17 @@
+{
+  Card card=game.getCard(source.getSourceId());
+  if (card != null) {
+    Permanent hauntedCreature=game.getPermanent(targetPointer.getFirst(game,source));
+    if (hauntedCreature != null) {
+      if (card.moveToExile(source.getSourceId(),"Haunting",id,game)) {
+        String key=new StringBuilder("Haunting_").append(source.getSourceId().toString()).append("_").append(card.getZoneChangeCounter()).toString();
+        game.getState().setValue(key,new FixedTarget(targetPointer.getFirst(game,source)));
+        card.addInfo("001",new StringBuilder("Haunting ").append(hauntedCreature.getName()).toString());
+        hauntedCreature.addInfo("001",new StringBuilder("Haunted by ").append(card.getName()).toString());
+        game.informPlayers(new StringBuilder(card.getName()).append(" haunting ").append(hauntedCreature.getName()).toString());
+      }
+      return true;
+    }
+  }
+  return false;
+}
