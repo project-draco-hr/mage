@@ -1,0 +1,25 @@
+{
+  if (ability instanceof SpellAbility) {
+    Player player=game.getPlayer(controllerId);
+    if (player != null) {
+      this.resetEvoke();
+      for (      AlternativeCost2 evokeCost : evokeCosts) {
+        if (evokeCost.canPay(sourceId,controllerId,game) && player.chooseUse(Constants.Outcome.Benefit,new StringBuilder(EVOKE_KEYWORD).append(" the creature for ").append(evokeCost.getText(true)).append(" ?").toString(),game)) {
+          evokeCost.activate();
+          ability.getManaCostsToPay().clear();
+          ability.getCosts().clear();
+          for (Iterator it=((Costs)evokeCost).iterator(); it.hasNext(); ) {
+            Cost cost=(Cost)it.next();
+            if (cost instanceof ManaCostsImpl) {
+              ability.getManaCostsToPay().add((ManaCostsImpl)cost.copy());
+            }
+ else {
+              ability.getCosts().add(cost.copy());
+            }
+          }
+        }
+      }
+    }
+  }
+  return isActivated();
+}

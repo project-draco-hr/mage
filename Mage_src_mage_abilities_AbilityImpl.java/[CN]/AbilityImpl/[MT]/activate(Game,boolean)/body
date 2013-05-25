@@ -12,6 +12,11 @@
   }
   if (card != null) {
     for (    Ability ability : card.getAbilities()) {
+      if (ability instanceof AlternativeSourceCosts) {
+        if (((AlternativeSourceCosts)ability).askToActivateAlternativeCosts(this,game)) {
+          break;
+        }
+      }
       if (ability instanceof OptionalAdditionalSourceCosts) {
         ((OptionalAdditionalSourceCosts)ability).addOptionalAdditionalCosts(this,game);
       }
