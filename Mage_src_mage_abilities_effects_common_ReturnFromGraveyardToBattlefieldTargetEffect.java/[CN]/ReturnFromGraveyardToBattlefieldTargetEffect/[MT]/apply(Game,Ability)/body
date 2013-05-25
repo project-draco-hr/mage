@@ -1,18 +1,19 @@
 {
-  Card card=game.getCard(source.getFirstTarget());
-  if (card != null) {
-    Player player=game.getPlayer(card.getOwnerId());
-    if (player != null) {
-      if (card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getId(),source.getControllerId())) {
-        if (tapped) {
-          Permanent permanent=game.getPermanent(card.getId());
-          if (permanent != null) {
-            permanent.setTapped(true);
+  for (  UUID targetId : getTargetPointer().getTargets(game,source)) {
+    Card card=game.getCard(targetId);
+    if (card != null) {
+      Player player=game.getPlayer(card.getOwnerId());
+      if (player != null) {
+        if (card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getId(),source.getControllerId())) {
+          if (tapped) {
+            Permanent permanent=game.getPermanent(card.getId());
+            if (permanent != null) {
+              permanent.setTapped(true);
+            }
           }
         }
-        return true;
       }
     }
   }
-  return false;
+  return true;
 }
