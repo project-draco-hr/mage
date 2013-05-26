@@ -1,6 +1,11 @@
 {
   ManaCosts<ManaCost> previousCost=spellAbility.getManaCostsToPay();
   ManaCosts<ManaCost> adjustedCost=new ManaCostsImpl<ManaCost>();
+  for (  VariableCost vCost : previousCost.getVariableCosts()) {
+    if (vCost instanceof VariableManaCost) {
+      adjustedCost.add((VariableManaCost)vCost);
+    }
+  }
   Mana reduceMana=new Mana();
   for (  ManaCost manaCost : manaCostsToReduce) {
     reduceMana.add(manaCost.getMana());
