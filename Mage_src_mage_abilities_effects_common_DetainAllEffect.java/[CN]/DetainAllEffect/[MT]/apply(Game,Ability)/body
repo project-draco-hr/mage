@@ -1,8 +1,11 @@
 {
+  List<FixedTarget> detainedObjects=new ArrayList<FixedTarget>();
   for (  Permanent permanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
     game.informPlayers("Detained permanent: " + permanent.getName());
+    FixedTarget fixedTarget=new FixedTarget(permanent.getId());
+    fixedTarget.init(game,source);
+    detainedObjects.add(fixedTarget);
   }
-  game.getContinuousEffects().addEffect(new DetainAllReplacementEffect(filter),source);
-  game.getContinuousEffects().addEffect(new DetainAllRestrictionEffect(filter),source);
+  game.addEffect(new DetainAllRestrictionEffect(detainedObjects),source);
   return false;
 }

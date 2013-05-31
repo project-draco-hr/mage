@@ -1,6 +1,12 @@
 {
   if (game.getPhase().getStep().getType() == Constants.PhaseStep.UNTAP && game.getStep().getStepPart() == Step.StepPart.PRE) {
     if (game.getActivePlayerId().equals(source.getControllerId())) {
+      for (      FixedTarget fixedTarget : this.detainedObjects) {
+        Permanent permanent=game.getPermanent(fixedTarget.getFirst(game,source));
+        if (permanent != null) {
+          permanent.addInfo(new StringBuilder("detain").append(getId()).toString(),"");
+        }
+      }
       return true;
     }
   }
