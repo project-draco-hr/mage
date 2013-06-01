@@ -1,9 +1,9 @@
 {
   int count=0;
-  FilterCard cardsInAllGraveyards=new FilterCard();
-  for (  Player player : game.getPlayers().values()) {
+  for (  UUID playerId : game.getPlayer(sourceAbility.getControllerId()).getInRange()) {
+    Player player=game.getPlayer(playerId);
     if (player != null) {
-      count+=player.getGraveyard().count(cardsInAllGraveyards,game);
+      count+=player.getGraveyard().size();
     }
   }
   return count;
