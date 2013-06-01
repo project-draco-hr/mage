@@ -2,6 +2,7 @@
   if (super.checkTrigger(event,game)) {
     Permanent p=(Permanent)game.getLastKnownInformation(event.getTargetId(),Constants.Zone.BATTLEFIELD);
     if (!p.getCounters().containsKey(CounterType.P1P1) || p.getCounters().getCount(CounterType.P1P1) == 0) {
+      game.getState().setValue(new StringBuilder("undying").append(getSourceId()).toString(),new FixedTarget(p.getId()));
       return true;
     }
   }
