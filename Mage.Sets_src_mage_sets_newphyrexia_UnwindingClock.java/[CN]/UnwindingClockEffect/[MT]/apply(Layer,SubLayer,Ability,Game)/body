@@ -1,6 +1,8 @@
 {
   Boolean applied=(Boolean)game.getState().getValue(source.getSourceId() + "applied");
-  if (applied == null)   applied=Boolean.FALSE;
+  if (applied == null) {
+    applied=Boolean.FALSE;
+  }
   if (!applied && layer.equals(Layer.RulesEffects)) {
     if (!game.getActivePlayerId().equals(source.getControllerId()) && game.getStep().getType() == PhaseStep.UNTAP) {
       game.getState().setValue(source.getSourceId() + "applied",true);
@@ -9,7 +11,9 @@
         for (        RestrictionEffect effect : game.getContinuousEffects().getApplicableRestrictionEffects(artifact,game).keySet()) {
           untap&=effect.canBeUntapped(artifact,game);
         }
-        if (untap)         artifact.untap(game);
+        if (untap) {
+          artifact.untap(game);
+        }
       }
     }
   }
