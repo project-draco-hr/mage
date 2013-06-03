@@ -1,0 +1,13 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment == null) {
+    enchantment=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+  }
+  if (enchantment != null) {
+    Permanent enchanted=game.getPermanent(enchantment.getAttachedTo());
+    if (enchanted != null) {
+      return enchanted.destroy(source.getSourceId(),game,false);
+    }
+  }
+  return false;
+}
