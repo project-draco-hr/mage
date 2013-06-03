@@ -1,0 +1,25 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Choice cardChoice=new ChoiceImpl();
+    cardChoice.setChoices(CardRepository.instance.getNames());
+    cardChoice.clearChoice();
+    while (!controller.choose(Constants.Outcome.Detriment,cardChoice,game)) {
+      game.debugMessage("player canceled choosing name. retrying.");
+    }
+    String cardName=cardChoice.getChoice();
+    game.informPlayers("Runed Halo, named card: [" + cardName + "]");
+    FilterCard filter=new FilterCard(cardName);
+    filter.add(new NamePredicate(cardName));
+    Permanent permanent=game.getPermanent(source.getSourceId());
+    if (permanent != null) {
+      for (      Ability ability : permanent.getAbilities()) {
+        if (ability instanceof ProtectionAbility) {
+          ((ProtectionAbility)ability).setFilter(filter);
+        }
+      }
+    }
+    permanent.addInfo("Named card",new StringBuilder("[Named card: ").append(cardName).append("]").toString());
+  }
+  return false;
+}
