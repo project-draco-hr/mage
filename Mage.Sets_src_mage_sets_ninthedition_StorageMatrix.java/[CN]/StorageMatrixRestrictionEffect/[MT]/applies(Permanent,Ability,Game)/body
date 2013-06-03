@@ -1,0 +1,35 @@
+{
+  if (game.getStep().getType() == PhaseStep.UNTAP) {
+    if (game.getTurnNum() != turn) {
+      turn=game.getTurnNum();
+      applies=false;
+      Permanent storageMatrix=game.getPermanent(source.getSourceId());
+      if (storageMatrix != null && !storageMatrix.isTapped()) {
+        Choice choiceImpl=new ChoiceImpl();
+        choiceImpl.setMessage("Untap which kind of permanent?");
+        choiceImpl.setChoices(choice);
+        Player player=game.getPlayer(game.getActivePlayerId());
+        if (player != null) {
+          while (!player.choose(outcome,choiceImpl,game)) {
+          }
+          String choosenType=choiceImpl.getChoice();
+          game.informPlayers(new StringBuilder(storageMatrix.getName()).append(": ").append(player.getName()).append(" chose to untap ").append(choosenType).toString());
+          if (choosenType.equals(CardType.ARTIFACT.toString())) {
+            type=CardType.ARTIFACT;
+          }
+ else           if (choosenType.equals(CardType.LAND.toString())) {
+            type=CardType.LAND;
+          }
+ else {
+            type=CardType.CREATURE;
+          }
+          applies=true;
+        }
+      }
+    }
+    if (applies) {
+      return !permanent.getCardType().contains(type);
+    }
+  }
+  return false;
+}
