@@ -2,6 +2,12 @@
   Card card=game.getCard(id);
   if (card != null && game.getState().getZone(card.getId()) == Constants.Zone.GRAVEYARD) {
     if (game.getOpponents(source.getControllerId()).contains(card.getOwnerId())) {
+      if (allFromOneOpponent && !targets.isEmpty()) {
+        Card firstCard=game.getCard((UUID)targets.keySet().iterator().next());
+        if (firstCard != null && !card.getOwnerId().equals(firstCard.getOwnerId())) {
+          return false;
+        }
+      }
       return filter.match(card,game);
     }
   }
