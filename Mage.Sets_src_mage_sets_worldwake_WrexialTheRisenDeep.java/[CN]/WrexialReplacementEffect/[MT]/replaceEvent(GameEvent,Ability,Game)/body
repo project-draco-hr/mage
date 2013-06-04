@@ -1,12 +1,14 @@
 {
   UUID eventObject=((ZoneChangeEvent)event).getTargetId();
   StackObject card=game.getStack().getStackObject(eventObject);
-  if (card instanceof Spell) {
-    game.rememberLKI(card.getId(),Zone.STACK,(Spell)card);
-  }
-  if (card instanceof Card && card != null && eventObject == cardid) {
-    ((Card)card).moveToExile(id,"Wrexial, The Risen Deep",id,game);
-    return true;
+  if (card != null) {
+    if (card instanceof Spell) {
+      game.rememberLKI(card.getId(),Zone.STACK,(Spell)card);
+    }
+    if (card instanceof Card && eventObject == cardid) {
+      ((Card)card).moveToExile(source.getSourceId(),"Wrexial, The Risen Deep",source.getSourceId(),game);
+      return true;
+    }
   }
   return false;
 }
