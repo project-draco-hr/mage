@@ -1,0 +1,30 @@
+{
+  if (staticText != null && !staticText.isEmpty()) {
+    return staticText;
+  }
+  StringBuilder sb=new StringBuilder();
+  String message=amount.getMessage();
+  sb.append("{source} deals ");
+  if (message.isEmpty() || !message.equals("1")) {
+    sb.append(amount);
+  }
+  sb.append(" damage to you");
+  if (message.length() > 0) {
+    if (message.equals("1")) {
+      sb.append(" equal to the number of ");
+    }
+ else {
+      if (message.startsWith("the") || message.startsWith("twice")) {
+        sb.append(" equal to ");
+      }
+ else {
+        sb.append(" for each ");
+      }
+    }
+    sb.append(message);
+  }
+  if (!preventable) {
+    sb.append(". The damage can't be prevented");
+  }
+  return sb.toString();
+}
