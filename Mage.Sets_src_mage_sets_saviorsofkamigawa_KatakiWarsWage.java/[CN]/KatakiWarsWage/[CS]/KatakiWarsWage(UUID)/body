@@ -7,5 +7,7 @@
   this.power=new MageInt(2);
   this.toughness=new MageInt(1);
   Ability gainedAbility=new BeginningOfUpkeepTriggeredAbility(new SacrificeSourceUnlessPaysEffect(new GenericManaCost(1)),Constants.TargetController.YOU,false);
-  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new GainAbilityAllEffect(gainedAbility,Constants.Duration.WhileOnBattlefield,filter,false)));
+  Effect effect=new GainAbilityAllEffect(gainedAbility,Constants.Duration.WhileOnBattlefield,filter,false);
+  effect.setText("All artifacts have \"At the beginning of your upkeep, sacrifice this artifact unless you pay {1}.\"");
+  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,effect));
 }
