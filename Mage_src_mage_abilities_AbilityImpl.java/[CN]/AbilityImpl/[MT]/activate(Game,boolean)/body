@@ -22,27 +22,7 @@
       }
     }
   }
-  VariableManaCost variableManaCost=null;
-  for (  ManaCost cost : manaCostsToPay) {
-    if (cost instanceof VariableManaCost) {
-      variableManaCost=(VariableManaCost)cost;
-      break;
-    }
-  }
-  if (variableManaCost != null) {
-    int xValue;
-    if (!variableManaCost.isPaid()) {
-      if (!noMana) {
-        xValue=game.getPlayer(this.controllerId).announceXMana(variableManaCost.getMinX(),Integer.MAX_VALUE,"Announce the value for " + variableManaCost.getText(),game,this);
-        int amountMana=xValue * variableManaCost.getMultiplier();
-        manaCostsToPay.add(new ManaCostsImpl(new StringBuilder("{").append(amountMana).append("}").toString()));
-        manaCostsToPay.setX(amountMana);
-      }
-      variableManaCost.setPaid();
-    }
-    xValue=getManaCostsToPay().getX();
-    game.informPlayers(new StringBuilder(game.getPlayer(this.controllerId).getName()).append(" announced a value of ").append(xValue).append(" for ").append(variableManaCost.getText()).toString());
-  }
+  VariableManaCost variableManaCost=handleXCosts(game,noMana);
   if (card != null) {
     card.adjustTargets(this,game);
   }

@@ -1,0 +1,52 @@
+{
+  VariableManaCost variableManaCost=null;
+  for (  ManaCost cost : manaCostsToPay) {
+    if (cost instanceof VariableManaCost) {
+      variableManaCost=(VariableManaCost)cost;
+      break;
+    }
+  }
+  if (variableManaCost != null) {
+    int xValue;
+    if (!variableManaCost.isPaid()) {
+      if (!noMana) {
+        xValue=game.getPlayer(this.controllerId).announceXMana(variableManaCost.getMinX(),Integer.MAX_VALUE,"Announce the value for " + variableManaCost.getText(),game,this);
+        int amountMana=xValue * variableManaCost.getMultiplier();
+        StringBuilder manaString=new StringBuilder();
+        if (variableManaCost.getFilter() == null || variableManaCost.getFilter().isColorless()) {
+          manaString.append("{").append(amountMana).append("}");
+        }
+ else {
+          String manaSymbol=null;
+          if (variableManaCost.getFilter().isBlack()) {
+            manaSymbol="B";
+          }
+ else           if (variableManaCost.getFilter().isRed()) {
+            manaSymbol="R";
+          }
+ else           if (variableManaCost.getFilter().isBlue()) {
+            manaSymbol="U";
+          }
+ else           if (variableManaCost.getFilter().isGreen()) {
+            manaSymbol="G";
+          }
+ else           if (variableManaCost.getFilter().isWhite()) {
+            manaSymbol="W";
+          }
+          if (manaSymbol == null) {
+            throw new UnsupportedOperationException("ManaFilter is not supported: " + this.toString());
+          }
+          for (int i=0; i < amountMana; i++) {
+            manaString.append("{").append(manaSymbol).append("}");
+          }
+        }
+        manaCostsToPay.add(new ManaCostsImpl(manaString.toString()));
+        manaCostsToPay.setX(amountMana);
+      }
+      variableManaCost.setPaid();
+    }
+    xValue=getManaCostsToPay().getX();
+    game.informPlayers(new StringBuilder(game.getPlayer(this.controllerId).getName()).append(" announced a value of ").append(xValue).append(" for ").append(variableManaCost.getText()).toString());
+  }
+  return variableManaCost;
+}
