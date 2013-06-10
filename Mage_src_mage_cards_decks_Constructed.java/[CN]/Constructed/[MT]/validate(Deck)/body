@@ -38,7 +38,15 @@
   if (!setCodes.isEmpty()) {
     for (    Card card : deck.getCards()) {
       if (!setCodes.contains(card.getExpansionSetCode())) {
-        if (!invalid.containsKey(card.getName())) {
+        boolean legal=false;
+        List<CardInfo> cardInfos=CardRepository.instance.findCards(card.getName());
+        for (        CardInfo cardInfo : cardInfos) {
+          if (setCodes.contains(cardInfo.getSetCode())) {
+            legal=true;
+            break;
+          }
+        }
+        if (!legal && !invalid.containsKey(card.getName())) {
           invalid.put(card.getName(),"Invalid set: " + card.getExpansionSetCode());
           valid=false;
         }
@@ -46,7 +54,15 @@
     }
     for (    Card card : deck.getSideboard()) {
       if (!setCodes.contains(card.getExpansionSetCode())) {
-        if (!invalid.containsKey(card.getName())) {
+        boolean legal=false;
+        List<CardInfo> cardInfos=CardRepository.instance.findCards(card.getName());
+        for (        CardInfo cardInfo : cardInfos) {
+          if (setCodes.contains(cardInfo.getSetCode())) {
+            legal=true;
+            break;
+          }
+        }
+        if (!legal && !invalid.containsKey(card.getName())) {
           invalid.put(card.getName(),"Invalid set: " + card.getExpansionSetCode());
           valid=false;
         }
