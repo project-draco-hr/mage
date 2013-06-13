@@ -1,0 +1,14 @@
+{
+  ExileZone exZone=game.getExile().getExileZone(source.getSourceId());
+  if (exZone != null) {
+    for (    Card card : exZone.getCards(game)) {
+      if (card != null) {
+        if (card.putOntoBattlefield(game,Constants.Zone.EXILED,source.getSourceId(),card.getOwnerId())) {
+          game.getPermanent(card.getId()).setTapped(true);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
