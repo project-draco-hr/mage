@@ -1,0 +1,19 @@
+{
+  try {
+    audioInputStream=AudioSystem.getAudioInputStream(file);
+    audioFormat=audioInputStream.getFormat();
+    if (audioFormat.getEncoding() != AudioFormat.Encoding.PCM_SIGNED) {
+      audioFormat=new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,audioFormat.getSampleRate(),16,audioFormat.getChannels(),audioFormat.getChannels() * 2,audioFormat.getSampleRate(),false);
+      audioInputStream=AudioSystem.getAudioInputStream(audioFormat,audioInputStream);
+    }
+    DataLine.Info dataLineInfo=new DataLine.Info(SourceDataLine.class,audioFormat,AudioSystem.NOT_SPECIFIED);
+    sourceDataLine=(SourceDataLine)AudioSystem.getLine(dataLineInfo);
+    sourceDataLine.open(audioFormat);
+    volume=(FloatControl)sourceDataLine.getControl(FloatControl.Type.MASTER_GAIN);
+    sourceDataLine.start();
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    System.exit(0);
+  }
+}
