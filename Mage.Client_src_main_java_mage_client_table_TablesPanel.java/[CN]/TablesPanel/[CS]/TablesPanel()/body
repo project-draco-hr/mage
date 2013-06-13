@@ -18,10 +18,10 @@
   joinTable=new AbstractAction(){
     @Override public void actionPerformed(    ActionEvent e){
       int modelRow=Integer.valueOf(e.getActionCommand());
-      UUID tableId=(UUID)tableModel.getValueAt(modelRow,10);
-      UUID gameId=(UUID)tableModel.getValueAt(modelRow,9);
-      String state=(String)tableModel.getValueAt(modelRow,7);
-      boolean isTournament=(Boolean)tableModel.getValueAt(modelRow,8);
+      UUID tableId=(UUID)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN + 3);
+      UUID gameId=(UUID)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN + 2);
+      String state=(String)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN);
+      boolean isTournament=(Boolean)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN + 1);
       String owner=(String)tableModel.getValueAt(modelRow,1);
       if (state.equals("Join")) {
         if (owner.equals(session.getUserName())) {
@@ -76,7 +76,7 @@
   Action replayMatch=new AbstractAction(){
     @Override public void actionPerformed(    ActionEvent e){
       int modelRow=Integer.valueOf(e.getActionCommand());
-      List<UUID> games=(List<UUID>)matchesModel.getValueAt(modelRow,6);
+      List<UUID> games=(List<UUID>)matchesModel.getValueAt(modelRow,MatchesTableModel.ACTION_COLUMN);
       if (games.size() == 1) {
         session.replayGame(games.get(0));
       }
@@ -86,6 +86,6 @@
     }
   }
 ;
-  new ButtonColumn(tableTables,joinTable,7);
-  new ButtonColumn(tableCompleted,replayMatch,5);
+  new ButtonColumn(tableTables,joinTable,TableTableModel.ACTION_COLUMN);
+  new ButtonColumn(tableCompleted,replayMatch,MatchesTableModel.ACTION_COLUMN);
 }
