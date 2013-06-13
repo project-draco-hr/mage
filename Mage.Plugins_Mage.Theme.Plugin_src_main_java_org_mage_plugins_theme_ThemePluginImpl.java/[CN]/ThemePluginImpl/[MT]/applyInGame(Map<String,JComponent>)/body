@@ -1,11 +1,14 @@
 {
-  String filename="/dragon.png";
+  String filename;
+  if (loadimages()) {
+    int it=(int)Math.abs(Math.random() * (flist.getItemCount()));
+    filename=BackgroundDir + flist.getItem(it);
+  }
+ else {
+    filename="/dragon.png";
+  }
   try {
-    InputStream is=this.getClass().getResourceAsStream(filename);
-    if (is == null) {
-      throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
-    }
-    BufferedImage background=ImageIO.read(is);
+    BufferedImage background=ImageIO.read(new File(filename));
     if (background == null) {
       throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
     }
