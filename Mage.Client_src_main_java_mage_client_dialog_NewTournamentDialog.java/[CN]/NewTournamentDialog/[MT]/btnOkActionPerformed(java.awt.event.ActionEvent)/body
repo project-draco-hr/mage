@@ -13,13 +13,17 @@
     tOptions.setLimitedOptions(options);
   }
   if (tournamentType.isLimited()) {
-    if (tOptions.getLimitedOptions() == null)     tOptions.setLimitedOptions(new LimitedOptions());
+    if (tOptions.getLimitedOptions() == null) {
+      tOptions.setLimitedOptions(new LimitedOptions());
+      tOptions.getLimitedOptions().setConstructionTime((Integer)this.spnConstructTime.getValue());
+    }
     for (    JComboBox pack : packs) {
       tOptions.getLimitedOptions().getSetCodes().add(((ExpansionSet)pack.getSelectedItem()).getCode());
     }
   }
   tOptions.getMatchOptions().setDeckType("Limited");
   tOptions.getMatchOptions().setWinsNeeded((Integer)this.spnNumWins.getValue());
+  tOptions.getMatchOptions().setFreeMulligans((Integer)this.spnFreeMulligans.getValue());
   tOptions.getMatchOptions().setAttackOption(MultiplayerAttackOption.LEFT);
   tOptions.getMatchOptions().setRange(RangeOfInfluence.ALL);
   tOptions.getMatchOptions().setLimited(true);
