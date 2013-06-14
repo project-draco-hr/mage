@@ -1,0 +1,23 @@
+{
+  try {
+    Thread.sleep(100);
+  }
+ catch (  Exception e) {
+  }
+  while (!stopped) {
+    int it=(int)Math.abs(Math.random() * (filelist.getItemCount()));
+    File file=new File(filepath + filelist.getItem(it));
+    load(file);
+    Thread PlayThread=new Thread(new PlayThread());
+    PlayThread.start();
+    while (!(breaked || breaked_out)) {
+      try {
+        Thread.sleep(10);
+      }
+ catch (      Exception e) {
+        log.error("Thread error: " + e);
+      }
+    }
+    breaked=false;
+  }
+}
