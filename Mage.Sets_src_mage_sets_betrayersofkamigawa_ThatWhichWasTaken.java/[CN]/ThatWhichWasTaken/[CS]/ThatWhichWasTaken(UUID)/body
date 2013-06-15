@@ -6,5 +6,7 @@
   ability.addCost(new TapSourceCost());
   ability.addTarget(new TargetPermanent(filter));
   this.addAbility(ability);
-  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,new IndestructibleAllEffect(filterIndestructible)));
+  Effect effect=new GainAbilityAllEffect(IndestructibleAbility.getInstance(),Constants.Duration.WhileOnBattlefield,filterIndestructible,false);
+  effect.setText("Each permanent with a divinity counter on it is indestructible");
+  this.addAbility(new SimpleStaticAbility(Constants.Zone.BATTLEFIELD,effect));
 }

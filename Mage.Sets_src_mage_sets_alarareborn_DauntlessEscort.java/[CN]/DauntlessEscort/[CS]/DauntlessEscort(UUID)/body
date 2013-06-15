@@ -8,5 +8,7 @@
   this.power=new MageInt(3);
   this.toughness=new MageInt(3);
   FilterPermanent filter=new FilterControlledCreaturePermanent("Creatures you control");
-  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new IndestructibleAllEffect(filter,Duration.EndOfTurn),new SacrificeSourceCost()));
+  Effect effect=new GainAbilityAllEffect(IndestructibleAbility.getInstance(),Duration.WhileOnBattlefield,filter,false);
+  effect.setText("Creatures you control are indestructible this turn");
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new SacrificeSourceCost()));
 }
