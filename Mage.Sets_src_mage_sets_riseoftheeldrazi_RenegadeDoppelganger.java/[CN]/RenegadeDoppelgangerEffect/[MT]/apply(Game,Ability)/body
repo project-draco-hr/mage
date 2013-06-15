@@ -1,9 +1,12 @@
 {
-  Permanent creature=game.getPermanent(targetPointer.getFirst(game,source));
   Permanent permanent=game.getPermanent(source.getSourceId());
-  if (creature == null || permanent == null) {
+  Permanent targetCreature=game.getPermanent(targetPointer.getFirst(game,source));
+  if (targetCreature == null) {
+    targetCreature=(Permanent)game.getLastKnownInformation(getTargetPointer().getFirst(game,source),Zone.BATTLEFIELD);
+  }
+  if (targetCreature == null || permanent == null) {
     return false;
   }
-  game.copyPermanent(creature,permanent,source,new EmptyApplyToPermanent());
-  return true;
+  game.copyPermanent(Duration.EndOfTurn,targetCreature,permanent,source,new EmptyApplyToPermanent());
+  return false;
 }
