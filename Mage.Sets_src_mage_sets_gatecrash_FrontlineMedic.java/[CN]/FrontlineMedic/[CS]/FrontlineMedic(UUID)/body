@@ -6,7 +6,9 @@
   this.color.setWhite(true);
   this.power=new MageInt(3);
   this.toughness=new MageInt(3);
-  this.addAbility(new BattalionAbility(new IndestructibleAllEffect(new FilterControlledCreaturePermanent(),Constants.Duration.EndOfTurn)));
+  Effect effect=new GainAbilityAllEffect(IndestructibleAbility.getInstance(),Duration.EndOfTurn,new FilterControlledCreaturePermanent(),false);
+  effect.setText("creatures you control are indestructible this turn");
+  this.addAbility(new BattalionAbility(effect));
   Ability ability=new SimpleActivatedAbility(Constants.Zone.BATTLEFIELD,new CounterUnlessPaysEffect(new GenericManaCost(3)),new SacrificeSourceCost());
   ability.addTarget(new TargetSpell(filter));
   this.addAbility(ability);

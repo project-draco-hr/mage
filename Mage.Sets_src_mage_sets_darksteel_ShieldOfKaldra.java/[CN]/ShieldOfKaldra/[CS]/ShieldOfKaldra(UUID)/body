@@ -3,7 +3,11 @@
   this.expansionSetCode="DST";
   this.supertype.add("Legendary");
   this.subtype.add("Equipment");
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new IndestructibleAllEffect(filter)));
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new IndestructibleAttachedEffect(AttachmentType.EQUIPMENT)));
+  Effect effect=new GainAbilityAllEffect(IndestructibleAbility.getInstance(),Duration.WhileOnBattlefield,filter,false);
+  effect.setText("Equipment named Sword of Kaldra, Shield of Kaldra, and Helm of Kaldra are indestructible");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  effect=new GainAbilityAttachedEffect(IndestructibleAbility.getInstance(),AttachmentType.EQUIPMENT,Constants.Duration.WhileOnBattlefield);
+  effect.setText("Equipped creature is indestructible");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
   this.addAbility(new EquipAbility(Outcome.Benefit,new GenericManaCost(4)));
 }

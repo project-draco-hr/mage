@@ -6,7 +6,9 @@
   this.getSpellAbility().addEffect(new DamageTargetEffect(4));
   this.getSpellAbility().addTarget(new TargetPlayer());
   Mode mode=new Mode();
-  mode.getEffects().add(new IndestructibleAllEffect(new FilterControlledPermanent(),Constants.Duration.EndOfTurn));
+  Effect effect=new GainAbilityAllEffect(IndestructibleAbility.getInstance(),Duration.EndOfTurn,new FilterControlledPermanent(),false);
+  effect.setText("permanents you control are indestructible this turn");
+  mode.getEffects().add(effect);
   this.getSpellAbility().addMode(mode);
   Mode mode2=new Mode();
   mode2.getEffects().add(new GainAbilityTargetEffect(DoubleStrikeAbility.getInstance(),Constants.Duration.EndOfTurn));
