@@ -1,20 +1,20 @@
 {
-  String filename;
   BufferedImage background;
   try {
-    if (loadimages()) {
-      int it=(int)Math.abs(Math.random() * (flist.getItemCount()));
-      filename=BackgroundDir + flist.getItem(it);
-      background=ImageIO.read(new File(filename));
+    if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_BATTLEFIELD_IMAGE_DEFAULT,"true").equals("true")) {
+      background=loadbuffer_default();
+    }
+ else     if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_BATTLEFIELD_IMAGE_RANDOM,"true").equals("true")) {
+      background=loadbuffer_random();
+    }
+ else     if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_BATTLEFIELD_IMAGE,"") != null) {
+      background=loadbuffer_selected();
     }
  else {
-      filename="/dragon.png";
-      InputStream is=this.getClass().getResourceAsStream(filename);
-      if (is == null)       throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
-      background=ImageIO.read(is);
+      background=loadbuffer_default();
     }
     if (background == null) {
-      throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
+      throw new FileNotFoundException("Couldn't find background file in resources.");
     }
     if (ui.containsKey("gamePanel") && ui.containsKey("jLayeredPane")) {
       ImagePanel bgPanel=new ImagePanel(background,ImagePanel.TILED);

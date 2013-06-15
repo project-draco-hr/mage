@@ -4,9 +4,22 @@ synchronized (ThemePluginImpl.class) {
       if (background == null) {
         String filename="/background.png";
         try {
-          InputStream is=this.getClass().getResourceAsStream(filename);
-          if (is == null)           throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
-          background=ImageIO.read(is);
+          if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_BACKGROUND_IMAGE_DEFAULT,"true").equals("true")) {
+            InputStream is=this.getClass().getResourceAsStream(filename);
+            if (is == null)             throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
+            background=ImageIO.read(is);
+          }
+ else           if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_BACKGROUND_IMAGE,"") != null) {
+            String path=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_BATTLEFIELD_IMAGE,"");
+            if (path != null) {
+              background=ImageIO.read(new File(path));
+            }
+ else {
+              InputStream is=this.getClass().getResourceAsStream(filename);
+              if (is == null)               throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
+              background=ImageIO.read(is);
+            }
+          }
           if (background == null)           throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
         }
  catch (        Exception e) {
