@@ -13,4 +13,37 @@
   }
   load(prefs,dialog.checkForNewImages,KEY_CARD_IMAGES_CHECK,"true");
   load(prefs,dialog.saveToZipFiles,KEY_CARD_IMAGES_SAVE_TO_ZIP,"true");
+  prop=prefs.get(KEY_BACKGROUND_IMAGE_DEFAULT,"true");
+  if (prop.equals("true")) {
+    dialog.useDefaultBackground.setSelected(true);
+    dialog.useDefualtBackgroundImage();
+  }
+ else {
+    dialog.useDefaultBackground.setSelected(false);
+    dialog.useSelectBackgroundImage();
+    String path=prefs.get(KEY_BACKGROUND_IMAGE,"");
+    dialog.BackgroundImagePath.setText(path);
+    updateCache(KEY_BACKGROUND_IMAGE,path);
+  }
+  prop=prefs.get(KEY_BATTLEFIELD_IMAGE_DEFAULT,"true");
+  if (prop.equals("true")) {
+    dialog.useDefaultBattleImage.setSelected(true);
+    dialog.useDefaultBattlefield();
+  }
+ else {
+    dialog.useDefaultBattleImage.setSelected(false);
+    dialog.useSelectedOrRandom();
+  }
+  prop=prefs.get(KEY_BATTLEFIELD_IMAGE_RANDOM,"true");
+  if (dialog.useRandomBattleImage.isEnabled())   if (prop.equals("true")) {
+    dialog.useRandomBattleImage.setSelected(true);
+    dialog.useRandomBattleField();
+  }
+ else {
+    dialog.useRandomBattleImage.setSelected(false);
+    dialog.useSelectedBattleField();
+    String path=prefs.get(KEY_BATTLEFIELD_IMAGE,"");
+    dialog.BattlefieldImagePath.setText(path);
+    updateCache(KEY_BATTLEFIELD_IMAGE,path);
+  }
 }
