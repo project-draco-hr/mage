@@ -13,17 +13,17 @@
         }
       }
       player.revealCards("Reveal",cards,game);
-      TargetCard targetCard=new TargetCard(Constants.Zone.PICK,new FilterCard());
+      TargetCard targetCard=new TargetCard(Zone.PICK,new FilterCard());
       targetCard.setRequired(true);
       while (!opponent.choose(Outcome.Neutral,cards,targetCard,game))       ;
       Card card=cards.get(targetCard.getFirstTarget(),game);
       if (card != null) {
         cards.remove(card);
-        card.moveToZone(Constants.Zone.HAND,source.getId(),game,false);
+        card.moveToZone(Zone.HAND,source.getId(),game,false);
       }
       for (      UUID uuid : cards) {
         card=cards.get(uuid,game);
-        card.moveToZone(Constants.Zone.GRAVEYARD,source.getId(),game,false);
+        card.moveToZone(Zone.GRAVEYARD,source.getId(),game,false);
       }
     }
     player.shuffleLibrary(game);

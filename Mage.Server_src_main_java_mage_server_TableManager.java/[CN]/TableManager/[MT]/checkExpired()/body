@@ -3,7 +3,7 @@
   Date now=new Date();
   List<UUID> toRemove=new ArrayList<UUID>();
   for (  Table table : tables.values()) {
-    if (!table.getState().equals(Constants.TableState.FINISHED)) {
+    if (!table.getState().equals(TableState.FINISHED)) {
       long diff=(now.getTime() - table.getCreateTime().getTime()) / EXPIRE_TIME_UNIT_VALUE;
       if (diff >= EXPIRE_TIME) {
         logger.info("Table expired: id = " + table.getId() + ", created_by="+ table.getControllerName()+ ". Removing...");

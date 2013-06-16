@@ -5,14 +5,14 @@
     FilterCard filter=new FilterCard("aura that could enchant the lone attacking creature");
     filter.add(new SubtypePredicate("Aura"));
     filter.add(new AuraCardCanAttachToPermanentId(attackingCreature.getId()));
-    if (you.chooseUse(Constants.Outcome.Benefit,"Do you want to search your library?",game)) {
+    if (you.chooseUse(Outcome.Benefit,"Do you want to search your library?",game)) {
       TargetCardInLibrary target=new TargetCardInLibrary(filter);
       target.setNotTarget(true);
       if (you.searchLibrary(target,game)) {
         if (target.getFirstTarget() != null) {
           Card aura=game.getCard(target.getFirstTarget());
           game.getState().setValue("attachTo:" + aura.getId(),attackingCreature);
-          aura.putOntoBattlefield(game,Constants.Zone.LIBRARY,source.getId(),you.getId());
+          aura.putOntoBattlefield(game,Zone.LIBRARY,source.getId(),you.getId());
           return attackingCreature.addAttachment(aura.getId(),game);
         }
       }
