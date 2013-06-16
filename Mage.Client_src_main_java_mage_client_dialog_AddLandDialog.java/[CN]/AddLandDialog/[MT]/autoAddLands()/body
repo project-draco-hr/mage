@@ -1,0 +1,37 @@
+{
+  int red=0;
+  int green=0;
+  int black=0;
+  int blue=0;
+  int white=0;
+  Set<Card> cards=deck.getCards();
+  int land_number=DEFAULT_SEALED_DECK_CARD_NUMBER - cards.size();
+  if (land_number < 0)   land_number=0;
+  for (  Card cd : cards) {
+    Mana m=cd.getManaCost().getMana();
+    red+=m.getRed();
+    green+=m.getGreen();
+    black+=m.getBlack();
+    blue+=m.getBlue();
+    white+=m.getWhite();
+  }
+  int total=red + green + black+ blue+ white;
+  int redcards=Math.round(land_number * ((float)red / (float)total));
+  total-=red;
+  land_number-=redcards;
+  int greencards=Math.round(land_number * ((float)green / (float)total));
+  total-=green;
+  land_number-=greencards;
+  int blackcards=Math.round(land_number * ((float)black / (float)total));
+  total-=black;
+  land_number-=blackcards;
+  int bluecards=Math.round(land_number * ((float)blue / (float)total));
+  total-=blue;
+  land_number-=bluecards;
+  int whitecards=land_number;
+  spnMountain.setValue(redcards);
+  spnForest.setValue(greencards);
+  spnSwamp.setValue(blackcards);
+  spnIsland.setValue(bluecards);
+  spnPlains.setValue(whitecards);
+}
