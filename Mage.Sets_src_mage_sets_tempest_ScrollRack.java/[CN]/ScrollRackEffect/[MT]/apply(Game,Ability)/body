@@ -5,7 +5,7 @@
   TargetCardInHand target=new TargetCardInHand(0,you.getHand().size(),filter);
   int amountExiled=0;
   if (you != null) {
-    if (target.canChoose(source.getControllerId(),game) && target.choose(Constants.Outcome.Neutral,source.getControllerId(),source.getId(),game)) {
+    if (target.canChoose(source.getControllerId(),game) && target.choose(Outcome.Neutral,source.getControllerId(),source.getId(),game)) {
       if (!target.getTargets().isEmpty()) {
         List<UUID> targets=target.getTargets();
         for (        UUID targetId : targets) {
@@ -24,7 +24,7 @@
       for (int i=0; i < count; i++) {
         Card card=you.getLibrary().removeFromTop(game);
         if (card != null) {
-          card.moveToZone(Constants.Zone.HAND,id,game,false);
+          card.moveToZone(Zone.HAND,id,game,false);
         }
       }
     }
@@ -36,17 +36,17 @@
         if (you != null) {
           you.lookAtCards("exiled cards with " + game.getCard(source.getSourceId()).getName(),scrollRackExileZone,game);
         }
-        you.choose(Constants.Outcome.Neutral,scrollRackExileZone,target2,game);
+        you.choose(Outcome.Neutral,scrollRackExileZone,target2,game);
         Card card=game.getCard(target2.getFirstTarget());
         if (card != null) {
           game.getExile().removeCard(card,game);
-          card.moveToZone(Constants.Zone.LIBRARY,source.getId(),game,true);
+          card.moveToZone(Zone.LIBRARY,source.getId(),game,true);
         }
         target2.clearChosen();
       }
       if (scrollRackExileZone.count(filter,game) == 1) {
         Card card=scrollRackExileZone.get(scrollRackExileZone.iterator().next(),game);
-        card.moveToZone(Constants.Zone.LIBRARY,source.getId(),game,true);
+        card.moveToZone(Zone.LIBRARY,source.getId(),game,true);
       }
       return true;
     }

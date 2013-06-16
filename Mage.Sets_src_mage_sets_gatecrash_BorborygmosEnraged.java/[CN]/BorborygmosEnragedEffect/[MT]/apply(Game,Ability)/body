@@ -1,18 +1,18 @@
 {
   Player player=game.getPlayer(source.getControllerId());
   if (player != null) {
-    Cards cards=new CardsImpl(Constants.Zone.PICK);
+    Cards cards=new CardsImpl(Zone.PICK);
     int count=Math.min(player.getLibrary().size(),3);
     for (int i=0; i < count; i++) {
       Card card=player.getLibrary().removeFromTop(game);
       if (card != null) {
         cards.add(card);
-        game.setZone(card.getId(),Constants.Zone.PICK);
+        game.setZone(card.getId(),Zone.PICK);
         if (card.getCardType().contains(CardType.LAND)) {
-          card.moveToZone(Constants.Zone.HAND,source.getId(),game,true);
+          card.moveToZone(Zone.HAND,source.getId(),game,true);
         }
  else {
-          card.moveToZone(Constants.Zone.GRAVEYARD,source.getId(),game,false);
+          card.moveToZone(Zone.GRAVEYARD,source.getId(),game,false);
         }
       }
     }
