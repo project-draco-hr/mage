@@ -8,7 +8,7 @@
     typeChoice.getChoices().add(CardType.ENCHANTMENT.toString());
     typeChoice.getChoices().add(CardType.LAND.toString());
     typeChoice.getChoices().add(CardType.PLANESWALKER.toString());
-    while (!controller.choose(Constants.Outcome.ReturnToHand,typeChoice,game))     ;
+    while (!controller.choose(Outcome.ReturnToHand,typeChoice,game))     ;
     String typeName=typeChoice.getChoice();
     CardType chosenType=null;
     for (    CardType cardType : CardType.values()) {
@@ -19,7 +19,7 @@
     if (chosenType != null) {
       for (      Card card : controller.getGraveyard().getCards(game)) {
         if (card.getCardType().contains(chosenType)) {
-          card.moveToZone(Constants.Zone.HAND,source.getSourceId(),game,false);
+          card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
         }
       }
       return true;

@@ -1,0 +1,13 @@
+{
+  if (zone.equals(Zone.BATTLEFIELD)) {
+    card.putOntoBattlefield(game,Zone.OUTSIDE,null,player.getId());
+  }
+ else   if (zone.equals(Zone.LIBRARY)) {
+    game.setZone(card.getId(),Zone.LIBRARY);
+    player.getLibrary().putOnTop(card,game);
+  }
+ else {
+    card.moveToZone(zone,null,game,false);
+  }
+  logger.info("Added card to player's " + zone.toString() + ": "+ card.getName()+ ", player = "+ player.getName());
+}

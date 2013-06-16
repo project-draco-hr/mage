@@ -1,7 +1,7 @@
 {
   Player player=game.getPlayer(source.getControllerId());
   if (player != null) {
-    Cards cards=new CardsImpl(Constants.Zone.PICK);
+    Cards cards=new CardsImpl(Zone.PICK);
     boolean properCardFound=false;
     int count=Math.min(player.getLibrary().size(),5);
     for (int i=0; i < count; i++) {
@@ -17,18 +17,18 @@
       player.revealCards("Grisly Salvage",cards,game);
       FilterCard filter=new FilterCard("creature or land card to put in hand");
       filter.add(Predicates.or(new CardTypePredicate(CardType.CREATURE),new CardTypePredicate(CardType.LAND)));
-      TargetCard target=new TargetCard(Constants.Zone.PICK,filter);
-      if (properCardFound && player.choose(Constants.Outcome.DrawCard,cards,target,game)) {
+      TargetCard target=new TargetCard(Zone.PICK,filter);
+      if (properCardFound && player.choose(Outcome.DrawCard,cards,target,game)) {
         Card card=game.getCard(target.getFirstTarget());
         if (card != null) {
           cards.remove(card);
-          card.moveToZone(Constants.Zone.HAND,source.getId(),game,false);
+          card.moveToZone(Zone.HAND,source.getId(),game,false);
         }
       }
       for (      UUID cardId : cards) {
         Card card=game.getCard(cardId);
         if (card != null) {
-          card.moveToZone(Constants.Zone.GRAVEYARD,source.getId(),game,true);
+          card.moveToZone(Zone.GRAVEYARD,source.getId(),game,true);
         }
       }
     }
