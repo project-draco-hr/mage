@@ -1,7 +1,7 @@
 {
   Player player=game.getPlayer(source.getControllerId());
   if (player != null) {
-    while (player.chooseUse(Constants.Outcome.Benefit,choiceText,game)) {
+    while (player.chooseUse(Outcome.Benefit,choiceText,game)) {
       Cards cards=player.getSideboard();
       if (cards.isEmpty()) {
         game.informPlayer(player,"You have no cards outside the game.");
@@ -16,11 +16,11 @@
       for (      Card card : filtered) {
         filteredCards.add(card.getId());
       }
-      TargetCard target=new TargetCard(Constants.Zone.PICK,filter);
-      if (player.choose(Constants.Outcome.Benefit,filteredCards,target,game)) {
+      TargetCard target=new TargetCard(Zone.PICK,filter);
+      if (player.choose(Outcome.Benefit,filteredCards,target,game)) {
         Card card=player.getSideboard().get(target.getFirstTarget(),game);
         if (card != null) {
-          card.moveToZone(Constants.Zone.HAND,source.getId(),game,false);
+          card.moveToZone(Zone.HAND,source.getId(),game,false);
           Cards revealCard=new CardsImpl();
           revealCard.add(card);
           player.revealCards("Cunning Wish",revealCard,game);
