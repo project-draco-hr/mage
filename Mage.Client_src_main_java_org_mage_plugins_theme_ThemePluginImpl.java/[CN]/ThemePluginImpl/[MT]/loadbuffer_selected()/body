@@ -1,9 +1,14 @@
 {
   BufferedImage res;
   String path=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_BATTLEFIELD_IMAGE,"");
-  if (path != null) {
-    res=ImageIO.read(new File(path));
-    return res;
+  if (path != null && !path.equals("")) {
+    try {
+      res=ImageIO.read(new File(path));
+      return res;
+    }
+ catch (    Exception e) {
+      res=null;
+    }
   }
   return null;
 }
