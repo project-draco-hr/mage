@@ -45,13 +45,21 @@
   this.color=card.getColor();
   this.canTransform=card.canTransform();
   if (card instanceof PermanentToken) {
+    this.isToken=true;
     this.rarity=Rarity.COMMON;
-    this.expansionSetCode=((PermanentToken)card).getExpansionSetCode();
+    if (((PermanentToken)card).getToken().getOriginalCardNumber() > 0) {
+      this.expansionSetCode=((PermanentToken)card).getToken().getOriginalExpansionSetCode();
+      this.cardNumber=((PermanentToken)card).getToken().getOriginalCardNumber();
+    }
+ else {
+      this.expansionSetCode=((PermanentToken)card).getExpansionSetCode();
+    }
     this.rules=((PermanentToken)card).getRules();
     this.type=((PermanentToken)card).getToken().getTokenType();
   }
  else {
     this.rarity=card.getRarity();
+    this.isToken=false;
   }
   if (card.getCounters() != null && !card.getCounters().isEmpty()) {
     counters=new ArrayList<CounterView>();
