@@ -1,0 +1,14 @@
+{
+  TableUtils.createTableIfNotExists(connectionSource,DatabaseVersion.class);
+  Dao<DatabaseVersion,Object> dbVersionDao=DaoManager.createDao(connectionSource,DatabaseVersion.class);
+  QueryBuilder<DatabaseVersion,Object> queryBuilder=dbVersionDao.queryBuilder();
+  queryBuilder.where().eq("entity",new SelectArg(entityName)).and().eq("version",version);
+  List<DatabaseVersion> dbVersions=dbVersionDao.query(queryBuilder.prepare());
+  if (dbVersions.isEmpty()) {
+    DatabaseVersion dbVersion=new DatabaseVersion();
+    dbVersion.setEntity(entityName);
+    dbVersion.setVersion(version);
+    dbVersionDao.create(dbVersion);
+  }
+  return dbVersions.isEmpty();
+}
