@@ -1,6 +1,7 @@
 {
   response.clear();
   log.debug("Waiting response from player: " + getId());
+  game.resumeTimer(playerId);
 synchronized (response) {
     try {
       response.wait();
@@ -8,6 +9,9 @@ synchronized (response) {
     }
  catch (    InterruptedException ex) {
       ex.printStackTrace();
+    }
+ finally {
+      game.pauseTimer(playerId);
     }
   }
 }
