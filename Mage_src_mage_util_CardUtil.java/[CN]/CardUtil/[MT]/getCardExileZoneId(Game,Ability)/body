@@ -1,0 +1,12 @@
+{
+  UUID exileId=null;
+  Card card=game.getCard(source.getSourceId());
+  if (card != null) {
+    exileId=(UUID)game.getState().getValue(new StringBuilder("SourceExileZone").append(source.getSourceId()).append(card.getZoneChangeCounter()).toString());
+    if (exileId == null) {
+      exileId=UUID.randomUUID();
+      game.getState().setValue(new StringBuilder("SourceExileZone").append(source.getSourceId()).append(card.getZoneChangeCounter()).toString(),exileId);
+    }
+  }
+  return exileId;
+}
