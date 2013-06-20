@@ -1,0 +1,12 @@
+{
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (sourcePermanent != null) {
+    SacrificeTargetEffect sacrificeEffect=new SacrificeTargetEffect("sacrifice {this}");
+    sacrificeEffect.setTargetPointer(new FixedTarget(sourcePermanent.getId()));
+    DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(sacrificeEffect);
+    delayedAbility.setSourceId(source.getSourceId());
+    delayedAbility.setControllerId(source.getControllerId());
+    game.addDelayedTriggeredAbility(delayedAbility);
+  }
+  return false;
+}

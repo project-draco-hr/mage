@@ -1,0 +1,17 @@
+{
+  response.clear();
+  log.debug("Waiting response from player: " + getId());
+  game.resumeTimer(playerId);
+synchronized (response) {
+    try {
+      response.wait();
+      log.debug("Got response from player: " + getId());
+    }
+ catch (    InterruptedException ex) {
+      ex.printStackTrace();
+    }
+ finally {
+      game.pauseTimer(playerId);
+    }
+  }
+}

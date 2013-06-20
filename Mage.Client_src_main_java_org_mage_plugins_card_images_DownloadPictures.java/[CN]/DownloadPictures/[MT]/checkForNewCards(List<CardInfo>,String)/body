@@ -1,0 +1,13 @@
+{
+  TFile file;
+  for (  CardInfo card : allCards) {
+    if (card.getCardNumber() > 0 && !card.getSetCode().isEmpty()) {
+      CardDownloadData url=new CardDownloadData(card.getName(),card.getSetCode(),card.getCardNumber(),usesVariousArt(card),0,false,card.isDoubleFaced(),card.isNightCard());
+      file=new TFile(CardImageUtils.getImagePath(url,imagesPath));
+      if (!file.exists()) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

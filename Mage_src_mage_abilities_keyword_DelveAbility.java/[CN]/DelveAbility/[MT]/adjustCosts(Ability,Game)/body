@@ -1,0 +1,27 @@
+{
+  Player player=game.getPlayer(controllerId);
+  if (player == null || !(ability instanceof SpellAbility)) {
+    return;
+  }
+  Target target=new TargetCardInYourGraveyard(1,Integer.MAX_VALUE,new FilterCard());
+  target.setTargetName("cards to delve from your graveyard");
+  if (!target.canChoose(sourceId,controllerId,game)) {
+    return;
+  }
+  if (player.chooseUse(Outcome.Detriment,"Delve cards from your graveyard?",game)) {
+    player.chooseTarget(Outcome.Detriment,target,ability,game);
+    if (target.getTargets().size() > 0) {
+      int adjCost=0;
+      for (      UUID cardId : target.getTargets()) {
+        Card card=game.getCard(cardId);
+        if (card == null) {
+          continue;
+        }
+        card.moveToExile(null,null,this.getSourceId(),game);
+        ++adjCost;
+      }
+      game.informPlayers(new StringBuilder(player.getName()).append(" delved ").append(adjCost).append(" creature").append(adjCost != 1 ? "s" : "").append(" from his or her graveyard").toString());
+      CardUtil.adjustCost((SpellAbility)ability,adjCost);
+    }
+  }
+}
