@@ -1,17 +1,37 @@
 {
-  Permanent permanent=game.getPermanent(source.getSourceId());
-  if (permanent != null) {
-    if (counter != null) {
-      Counter newCounter=counter.copy();
-      newCounter.add(amount.calculate(game,source));
-      permanent.addCounters(newCounter,game);
-      if (informPlayers) {
-        Player player=game.getPlayer(source.getControllerId());
-        if (player != null) {
-          game.informPlayers(new StringBuilder(player.getName()).append(" puts ").append(newCounter.getCount()).append(" ").append(newCounter.getName().toLowerCase()).append(" counter on ").append(permanent.getName()).toString());
+  if (putOnCard) {
+    Card card=game.getCard(source.getSourceId());
+    if (card != null) {
+      if (counter != null) {
+        Counter newCounter=counter.copy();
+        newCounter.add(amount.calculate(game,source));
+        card.addCounters(newCounter,game);
+        if (informPlayers) {
+          Player player=game.getPlayer(source.getControllerId());
+          if (player != null) {
+            game.informPlayers(new StringBuilder(player.getName()).append(" puts ").append(newCounter.getCount()).append(" ").append(newCounter.getName().toLowerCase()).append(" counter on ").append(card.getName()).toString());
+          }
         }
       }
+      return true;
     }
   }
-  return true;
+ else {
+    Permanent permanent=game.getPermanent(source.getSourceId());
+    if (permanent != null) {
+      if (counter != null) {
+        Counter newCounter=counter.copy();
+        newCounter.add(amount.calculate(game,source));
+        permanent.addCounters(newCounter,game);
+        if (informPlayers) {
+          Player player=game.getPlayer(source.getControllerId());
+          if (player != null) {
+            game.informPlayers(new StringBuilder(player.getName()).append(" puts ").append(newCounter.getCount()).append(" ").append(newCounter.getName().toLowerCase()).append(" counter on ").append(permanent.getName()).toString());
+          }
+        }
+      }
+      return true;
+    }
+  }
+  return false;
 }

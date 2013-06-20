@@ -2,6 +2,17 @@
   Player player=game.getPlayer(source.getControllerId());
   Card card=game.getCard(source.getSourceId());
   if (player != null && card != null) {
+    Ability abilityToRemove=null;
+    for (    Ability ability : card.getAbilities()) {
+      if (ability instanceof SuspendAbility) {
+        if (((SuspendAbility)ability).isGainedTemporary()) {
+          abilityToRemove=ability;
+        }
+      }
+    }
+    if (abilityToRemove != null) {
+      card.getAbilities().remove(abilityToRemove);
+    }
     player.cast(card.getSpellAbility(),game,true);
   }
   return false;
