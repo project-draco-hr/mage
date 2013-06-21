@@ -1,0 +1,14 @@
+{
+  if (allExileZones) {
+    Set<UUID> possibleTargets=new HashSet<UUID>();
+    for (    Card card : game.getExile().getAllCards(game)) {
+      if (filter.match(card,sourceControllerId,game)) {
+        possibleTargets.add(card.getId());
+      }
+    }
+    return possibleTargets;
+  }
+ else {
+    return super.possibleTargets(sourceId,sourceControllerId,game);
+  }
+}
