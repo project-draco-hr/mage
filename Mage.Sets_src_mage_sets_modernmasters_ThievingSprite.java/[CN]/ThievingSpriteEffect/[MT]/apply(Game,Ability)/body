@@ -1,0 +1,37 @@
+{
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (targetPlayer == null || controller == null) {
+    return false;
+  }
+  FilterControlledPermanent filter=new FilterControlledPermanent();
+  filter.add(new SubtypePredicate("Faerie"));
+  int numberOfFaeries=game.getBattlefield().countAll(filter,controller.getId(),game);
+  Cards cardsInHand=new CardsImpl(Zone.PICK);
+  cardsInHand.addAll(targetPlayer.getHand());
+  int count=Math.min(cardsInHand.size(),numberOfFaeries);
+  TargetCard target=new TargetCard(count,Zone.PICK,new FilterCard());
+  target.setRequired(true);
+  Cards revealedCards=new CardsImpl();
+  if (targetPlayer.choose(Outcome.Discard,cardsInHand,target,game)) {
+    List<UUID> targets=target.getTargets();
+    for (    UUID targetId : targets) {
+      Card card=game.getCard(targetId);
+      if (card != null) {
+        revealedCards.add(card);
+      }
+    }
+  }
+  TargetCard targetInHand=new TargetCard(Zone.PICK,new FilterCard("card to discard"));
+  targetInHand.setRequired(true);
+  if (!revealedCards.isEmpty()) {
+    targetPlayer.revealCards("Thieving Sprite",revealedCards,game);
+    controller.choose(Outcome.Discard,revealedCards,targetInHand,game);
+    Card card=revealedCards.get(targetInHand.getFirstTarget(),game);
+    if (card != null) {
+      targetPlayer.discard(card,source,game);
+      game.informPlayers(new StringBuilder("Thieving Sprite").append(targetPlayer.getName()).append("discarded ").append(card.getName()).toString());
+    }
+  }
+  return true;
+}
