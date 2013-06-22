@@ -1,13 +1,18 @@
 {
   if (this.size() > 1) {
+    this.selectedModes.clear();
     Player player=game.getPlayer(source.getControllerId());
-    Mode choice=player.chooseMode(this,source,game);
-    if (choice == null) {
-      return false;
+    while (this.selectedModes.size() < this.getMaxModes()) {
+      Mode choice=player.chooseMode(this,source,game);
+      if (choice == null) {
+        return this.selectedModes.size() >= this.getMinModes();
+      }
+      setMode(choice);
+      this.selectedModes.add(choice.getId());
     }
-    setMode(choice);
     return true;
   }
   this.modeId=this.values().iterator().next().getId();
+  this.selectedModes.add(modeId);
   return true;
 }

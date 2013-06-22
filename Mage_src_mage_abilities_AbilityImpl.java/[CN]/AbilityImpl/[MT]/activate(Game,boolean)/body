@@ -6,9 +6,12 @@
   if (card != null) {
     card.adjustChoices(this,game);
   }
-  if (getChoices().size() > 0 && getChoices().choose(game,this) == false) {
-    logger.debug("activate failed - choice");
-    return false;
+  for (  UUID modeId : this.getModes().getSelectedModes()) {
+    this.getModes().setMode(this.getModes().get(modeId));
+    if (getChoices().size() > 0 && getChoices().choose(game,this) == false) {
+      logger.debug("activate failed - choice");
+      return false;
+    }
   }
   if (card != null) {
     for (    Ability ability : card.getAbilities()) {
@@ -23,17 +26,20 @@
     }
   }
   VariableManaCost variableManaCost=handleXCosts(game,noMana);
-  if (card != null) {
-    card.adjustTargets(this,game);
-  }
-  if (getTargets().size() > 0 && getTargets().chooseTargets(getEffects().get(0).getOutcome(),this.controllerId,this,game) == false) {
-    if (variableManaCost != null) {
-      game.informPlayers(new StringBuilder(card.getName()).append(": no valid targets with this value of X").toString());
+  for (  UUID modeId : this.getModes().getSelectedModes()) {
+    this.getModes().setMode(this.getModes().get(modeId));
+    if (card != null) {
+      card.adjustTargets(this,game);
     }
+    if (getTargets().size() > 0 && getTargets().chooseTargets(getEffects().get(0).getOutcome(),this.controllerId,this,game) == false) {
+      if (variableManaCost != null) {
+        game.informPlayers(new StringBuilder(card != null ? card.getName() : "").append(": no valid targets with this value of X").toString());
+      }
  else {
-      logger.debug("activate failed - target");
+        logger.debug("activate failed - target");
+      }
+      return false;
     }
-    return false;
   }
   for (  Cost cost : optionalCosts) {
     if (cost instanceof ManaCost) {

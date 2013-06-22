@@ -73,14 +73,18 @@
   if (card instanceof Spell) {
     Spell<?> spell=(Spell<?>)card;
     for (    SpellAbility spellAbility : spell.getSpellAbilities()) {
-      if (spellAbility.getTargets().size() > 0) {
-        setTargets(spellAbility.getTargets());
+      for (      UUID modeId : spellAbility.getModes().getSelectedModes()) {
+        spellAbility.getModes().setMode(spellAbility.getModes().get(modeId));
+        if (spellAbility.getTargets().size() > 0) {
+          setTargets(spellAbility.getTargets());
+        }
       }
     }
     if (spell.getSpellAbility().isModal()) {
-      Mode activeMode=spell.getSpellAbility().getModes().getMode();
-      if (activeMode != null) {
-        this.rules.add("<span color='green'><i>Chosen mode: " + activeMode.getEffects().getText(activeMode) + "</i></span>");
+      Modes modes=spell.getSpellAbility().getModes();
+      for (      UUID modeId : modes.getSelectedModes()) {
+        modes.setMode(modes.get(modeId));
+        this.rules.add("<span color='green'><i>Chosen mode: " + spell.getSpellAbility().getEffects().getText(modes.get(modeId)) + "</i></span>");
       }
     }
   }
