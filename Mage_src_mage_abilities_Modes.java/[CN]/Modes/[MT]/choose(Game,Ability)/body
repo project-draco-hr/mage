@@ -1,6 +1,22 @@
 {
   if (this.size() > 1) {
     this.selectedModes.clear();
+    Card card=game.getCard(source.getSourceId());
+    if (card != null) {
+      for (      Ability modeModifyingAbility : card.getAbilities()) {
+        if (modeModifyingAbility instanceof OptionalAdditionalModeSourceCosts) {
+          ((OptionalAdditionalModeSourceCosts)modeModifyingAbility).addOptionalAdditionalModeCosts(source,game);
+        }
+      }
+    }
+    if (this.size() == this.getMinModes()) {
+      for (      Mode mode : this.values()) {
+        if (mode.getTargets().canChoose(source.getSourceId(),source.getControllerId(),game)) {
+          this.selectedModes.add(mode.getId());
+        }
+      }
+      return selectedModes.size() > 0;
+    }
     Player player=game.getPlayer(source.getControllerId());
     while (this.selectedModes.size() < this.getMaxModes()) {
       Mode choice=player.chooseMode(this,source,game);
