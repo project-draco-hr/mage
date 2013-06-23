@@ -1,0 +1,49 @@
+{
+  paid=false;
+  Player controller=game.getPlayer(controllerId);
+  if (target.choose(Outcome.UnboostCreature,controllerId,sourceId,game)) {
+    for (    UUID targetId : (List<UUID>)target.getTargets()) {
+      Card card=game.getCard(targetId);
+      if (card != null) {
+        if (card.getCounters().size() > 0 && (counterTypeToRemove == null || card.getCounters().containsKey(counterTypeToRemove))) {
+          String counterName=null;
+          if (counterTypeToRemove != null) {
+            counterName=counterTypeToRemove.getName();
+          }
+ else {
+            if (card.getCounters().size() > 1 && counterTypeToRemove == null) {
+              Choice choice=new ChoiceImpl(true);
+              Set<String> choices=new HashSet<String>();
+              for (              Counter counter : card.getCounters().values()) {
+                if (card.getCounters().getCount(counter.getName()) > 0) {
+                  choices.add(counter.getName());
+                }
+              }
+              choice.setChoices(choices);
+              choice.setMessage("Choose a counter to remove from " + card.getName());
+              controller.choose(Outcome.UnboostCreature,choice,game);
+              counterName=choice.getChoice();
+            }
+ else {
+              for (              Counter counter : card.getCounters().values()) {
+                if (counter.getCount() > 0) {
+                  counterName=counter.getName();
+                }
+              }
+            }
+          }
+          if (counterName != null) {
+            card.removeCounters(counterName,1,game);
+            if (card.getCounters().getCount(counterName) == 0) {
+              card.getCounters().removeCounter(counterName);
+            }
+            this.paid=true;
+            game.informPlayers(new StringBuilder(controller.getName()).append(" removes a ").append(counterName).append(" counter from ").append(card.getName()).toString());
+          }
+        }
+      }
+    }
+  }
+  target.clearChosen();
+  return paid;
+}
