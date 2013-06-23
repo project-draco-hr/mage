@@ -1,0 +1,24 @@
+{
+  if (ability instanceof SpellAbility) {
+    Player player=game.getPlayer(controllerId);
+    if (player != null) {
+      this.resetCosts();
+      if (additionalCost != null) {
+        if (player.chooseUse(Outcome.Benefit,new StringBuilder("Pay ").append(additionalCost.getText(false)).append(" ?").toString(),game)) {
+          additionalCost.activate();
+          for (Iterator it=((Costs)additionalCost).iterator(); it.hasNext(); ) {
+            Cost cost=(Cost)it.next();
+            if (cost instanceof ManaCostsImpl) {
+              ability.getManaCostsToPay().add((ManaCostsImpl)cost.copy());
+            }
+ else {
+              ability.getCosts().add(cost.copy());
+            }
+          }
+          ability.getModes().setMinModes(2);
+          ability.getModes().setMaxModes(2);
+        }
+      }
+    }
+  }
+}

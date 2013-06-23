@@ -1,13 +1,34 @@
 {
   if (this.size() > 1) {
-    Player player=game.getPlayer(source.getControllerId());
-    Mode choice=player.chooseMode(this,source,game);
-    if (choice == null) {
-      return false;
+    this.selectedModes.clear();
+    Card card=game.getCard(source.getSourceId());
+    if (card != null) {
+      for (      Ability modeModifyingAbility : card.getAbilities()) {
+        if (modeModifyingAbility instanceof OptionalAdditionalModeSourceCosts) {
+          ((OptionalAdditionalModeSourceCosts)modeModifyingAbility).addOptionalAdditionalModeCosts(source,game);
+        }
+      }
     }
-    setMode(choice);
+    if (this.size() == this.getMinModes()) {
+      for (      Mode mode : this.values()) {
+        if (mode.getTargets().canChoose(source.getSourceId(),source.getControllerId(),game)) {
+          this.selectedModes.add(mode.getId());
+        }
+      }
+      return selectedModes.size() > 0;
+    }
+    Player player=game.getPlayer(source.getControllerId());
+    while (this.selectedModes.size() < this.getMaxModes()) {
+      Mode choice=player.chooseMode(this,source,game);
+      if (choice == null) {
+        return this.selectedModes.size() >= this.getMinModes();
+      }
+      setMode(choice);
+      this.selectedModes.add(choice.getId());
+    }
     return true;
   }
   this.modeId=this.values().iterator().next().getId();
+  this.selectedModes.add(modeId);
   return true;
 }

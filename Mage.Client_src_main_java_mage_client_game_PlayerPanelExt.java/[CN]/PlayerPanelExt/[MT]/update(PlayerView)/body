@@ -66,10 +66,18 @@
     }
   }
   this.avatar.setText(player.getName());
-  if (player.getPriorityTimeLeft() != Integer.MAX_VALUE) {
-    String priorityTimeValue=getPriorityTimeLeftString(player);
-    this.timer.setCount(player.getPriorityTimeLeft());
-    this.avatar.setTopText(priorityTimeValue);
+  if (this.timer != null) {
+    if (player.getPriorityTimeLeft() != Integer.MAX_VALUE) {
+      String priorityTimeValue=getPriorityTimeLeftString(player);
+      this.timer.setCount(player.getPriorityTimeLeft());
+      this.avatar.setTopText(priorityTimeValue);
+    }
+    if (player.hasPriority()) {
+      this.timer.resume();
+    }
+ else {
+      this.timer.pause();
+    }
   }
   this.btnPlayer.setText(player.getName());
   if (player.isActive()) {
@@ -83,12 +91,6 @@
  else {
     this.avatar.setBorder(emptyBorder);
     this.btnPlayer.setBorder(emptyBorder);
-  }
-  if (player.hasPriority()) {
-    this.timer.resume();
-  }
- else {
-    this.timer.pause();
   }
 synchronized (this) {
     if (player.getTopCard() != null) {

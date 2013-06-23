@@ -5,10 +5,13 @@
     result=false;
     boolean legalParts=false;
     for (    SpellAbility spellAbility : this.spellAbilities) {
-      if (spellAbility.getTargets().stillLegal(spellAbility,game)) {
-        legalParts=true;
-        updateOptionalCosts(index);
-        result|=spellAbility.resolve(game);
+      for (      UUID modeId : spellAbility.getModes().getSelectedModes()) {
+        spellAbility.getModes().setMode(spellAbility.getModes().get(modeId));
+        if (spellAbility.getTargets().stillLegal(spellAbility,game)) {
+          legalParts=true;
+          updateOptionalCosts(index);
+          result|=spellAbility.resolve(game);
+        }
       }
       index++;
     }
