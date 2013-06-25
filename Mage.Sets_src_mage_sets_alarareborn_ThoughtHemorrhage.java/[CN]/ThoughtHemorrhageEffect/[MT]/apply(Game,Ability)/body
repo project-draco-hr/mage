@@ -1,0 +1,40 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  if (you != null) {
+    Choice cardChoice=new ChoiceImpl();
+    cardChoice.setChoices(CardRepository.instance.getNonLandNames());
+    cardChoice.clearChoice();
+    while (!you.choose(Outcome.Detriment,cardChoice,game)) {
+      game.debugMessage("player canceled choosing name. retrying.");
+    }
+    cardName=cardChoice.getChoice();
+    game.informPlayers("Thought Hemorrhage, named card: [" + cardName + "]");
+  }
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (targetPlayer != null) {
+    targetPlayer.revealCards("hand of target player",targetPlayer.getHand(),game);
+    for (    Card card : targetPlayer.getHand().getCards(game)) {
+      if (card.getName().equals(cardName)) {
+        targetPlayer.damage(3,source.getId(),game,false,true);
+      }
+    }
+    for (    Card card : targetPlayer.getGraveyard().getCards(game)) {
+      if (card.getName().equals(cardName)) {
+        card.moveToExile(null,"",source.getId(),game);
+      }
+    }
+    for (    Card card : targetPlayer.getHand().getCards(game)) {
+      if (card.getName().equals(cardName)) {
+        card.moveToExile(null,"",source.getId(),game);
+      }
+    }
+    for (    Card card : targetPlayer.getLibrary().getCards(game)) {
+      if (card.getName().equals(cardName)) {
+        card.moveToExile(null,"",source.getId(),game);
+      }
+    }
+    targetPlayer.shuffleLibrary(game);
+    return true;
+  }
+  return false;
+}
