@@ -1,7 +1,18 @@
 {
+  if (!spellAbilities.get(0).activate(game,noMana)) {
+    return false;
+  }
+  boolean ignoreAbility=true;
+  boolean payNoMana=noMana;
   for (  SpellAbility spellAbility : spellAbilities) {
-    if (!spellAbility.activate(game,noMana)) {
-      return false;
+    payNoMana|=spellAbility.getSpellAbilityType().equals(SpellAbilityType.SPLICE);
+    if (ignoreAbility) {
+      ignoreAbility=false;
+    }
+ else {
+      if (!spellAbility.activate(game,payNoMana)) {
+        return false;
+      }
     }
   }
   return true;

@@ -1,10 +1,24 @@
 {
   int affectedTargets=0;
-  for (  UUID permanentId : targetPointer.getTargets(game,source)) {
-    Permanent permanent=game.getPermanent(permanentId);
-    if (permanent != null) {
-      permanent.addAbility(ability,source.getSourceId(),game);
-      affectedTargets++;
+  if (onCard) {
+    for (    UUID cardId : targetPointer.getTargets(game,source)) {
+      Card card=game.getCard(cardId);
+      if (card != null) {
+        card.addAbility(ability);
+        affectedTargets++;
+      }
+    }
+    if (duration.equals(Duration.OneUse)) {
+      discard();
+    }
+  }
+ else {
+    for (    UUID permanentId : targetPointer.getTargets(game,source)) {
+      Permanent permanent=game.getPermanent(permanentId);
+      if (permanent != null) {
+        permanent.addAbility(ability,source.getSourceId(),game);
+        affectedTargets++;
+      }
     }
   }
   return affectedTargets > 0;

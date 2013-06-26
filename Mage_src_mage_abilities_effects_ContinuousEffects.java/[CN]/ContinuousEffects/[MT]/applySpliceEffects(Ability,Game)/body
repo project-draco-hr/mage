@@ -1,0 +1,14 @@
+{
+  if (((SpellAbility)abilityToModify).getSpellAbilityType().equals(SpellAbilityType.SPLICE)) {
+    return;
+  }
+  List<SpliceCardEffect> spliceEffects=getApplicableSpliceCardEffects(game);
+  for (  SpliceCardEffect effect : spliceEffects) {
+    HashSet<Ability> abilities=spliceCardEffects.getAbility(effect.getId());
+    for (    Ability ability : abilities) {
+      if (effect.applies(abilityToModify,ability,game)) {
+        effect.apply(game,ability,abilityToModify);
+      }
+    }
+  }
+}
