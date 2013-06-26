@@ -14,6 +14,11 @@
       Card card=CardImpl.createCard(c);
       if (card != null) {
         cardsToAdd.add(new CardInfo(card));
+        if (card instanceof SplitCard) {
+          SplitCard splitCard=(SplitCard)card;
+          cardsToAdd.add(new CardInfo(splitCard.getLeftHalfCard()));
+          cardsToAdd.add(new CardInfo(splitCard.getRightHalfCard()));
+        }
       }
     }
   }
