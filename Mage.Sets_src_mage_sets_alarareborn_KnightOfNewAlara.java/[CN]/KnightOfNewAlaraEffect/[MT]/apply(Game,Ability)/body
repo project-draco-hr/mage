@@ -1,0 +1,11 @@
+{
+  FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent();
+  filter.add(new MulticoloredPredicate());
+  for (  Permanent creature : game.getBattlefield().getAllActivePermanents(filter,source.getControllerId(),game)) {
+    DynamicValue colors=new KnightOfNewAlaraColorCount(creature);
+    if (creature != null && creature != game.getPermanent(source.getSourceId())) {
+      creature.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostSourceEffect(colors,colors,Duration.WhileOnBattlefield)),source.getId(),game);
+    }
+  }
+  return true;
+}
