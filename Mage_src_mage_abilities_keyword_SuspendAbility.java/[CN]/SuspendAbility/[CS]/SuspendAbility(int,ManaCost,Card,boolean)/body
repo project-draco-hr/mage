@@ -16,8 +16,6 @@
   if (card.getManaCost().isEmpty()) {
     setRuleAtTheTop(true);
   }
-  Ability ability=new ConditionalTriggeredAbility(new BeginningOfUpkeepTriggeredAbility(Zone.EXILED,new RemoveCounterSourceEffect(CounterType.TIME.createInstance()),TargetController.YOU,false),SuspendedCondition.getInstance(),"At the beginning of your upkeep, if this card is suspended, remove a time counter from it.");
-  ability.setRuleVisible(false);
-  card.addAbility(ability);
+  card.addAbility(new SuspendBeginningOfUpkeepTriggeredAbility());
   card.addAbility(new SuspendPlayCardAbility(card.getCardType().contains(CardType.CREATURE)));
 }

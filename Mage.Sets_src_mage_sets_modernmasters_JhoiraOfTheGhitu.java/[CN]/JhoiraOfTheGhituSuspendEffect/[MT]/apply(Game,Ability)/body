@@ -26,9 +26,15 @@
     if (card.moveToExile(exileId,new StringBuilder("Suspended cards of ").append(controller.getName()).toString(),source.getSourceId(),game)) {
       card.addCounters(CounterType.TIME.createInstance(4),game);
       if (!hasSuspend) {
-        ContinuousEffect effect=new GainAbilityTargetEffect(new SuspendAbility(4,null,card),Duration.OneUse,null,true);
-        effect.setTargetPointer(new FixedTarget(card.getId()));
-        game.addEffect(effect,source);
+        Abilities oldAbilities=card.getAbilities().copy();
+        SuspendAbility suspendAbility=new SuspendAbility(4,null,card);
+        card.addAbility(suspendAbility);
+        for (        Ability ability : card.getAbilities()) {
+          if (!oldAbilities.contains(ability)) {
+            ability.setControllerId(source.getControllerId());
+            game.getState().addAbility(ability,card.getId(),card);
+          }
+        }
       }
       game.informPlayers(new StringBuilder(controller.getName()).append(" suspends (").append(4).append(") ").append(card.getName()).toString());
       return true;
