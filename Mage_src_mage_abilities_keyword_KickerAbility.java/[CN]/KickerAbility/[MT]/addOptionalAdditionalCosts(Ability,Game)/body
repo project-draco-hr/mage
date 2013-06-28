@@ -17,7 +17,7 @@
               Cost cost=(Cost)it.next();
               if (cost instanceof ManaCostsImpl) {
                 List<VariableManaCost> varCosts=((ManaCostsImpl)cost).getVariableCosts();
-                if (varCosts != null) {
+                if (!varCosts.isEmpty()) {
                   xManaValue=game.getPlayer(this.controllerId).announceXMana(varCosts.get(0).getMinX(),Integer.MAX_VALUE,"Announce kicker value for " + varCosts.get(0).getText(),game,this);
                   game.informPlayers(new StringBuilder(game.getPlayer(this.controllerId).getName()).append(" announced a value of ").append(xManaValue).append(" for ").append(" kicker X ").toString());
                   ability.getManaCostsToPay().add(new GenericManaCost(xManaValue));
