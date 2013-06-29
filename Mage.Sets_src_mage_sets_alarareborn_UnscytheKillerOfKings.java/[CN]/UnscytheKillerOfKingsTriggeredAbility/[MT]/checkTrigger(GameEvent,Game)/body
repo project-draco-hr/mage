@@ -1,0 +1,14 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).isDiesEvent()) {
+    Card card=game.getCard(event.getTargetId());
+    if (card != null) {
+      EquippedDidDamageWatcher watcher=(EquippedDidDamageWatcher)game.getState().getWatchers().get("equippedDamagedTargets",this.getSourceId());
+      if (watcher != null && watcher.equippedDamagedTargets.contains(event.getTargetId())) {
+        Effect effect=this.getEffects().get(0);
+        effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+        return true;
+      }
+    }
+  }
+  return false;
+}

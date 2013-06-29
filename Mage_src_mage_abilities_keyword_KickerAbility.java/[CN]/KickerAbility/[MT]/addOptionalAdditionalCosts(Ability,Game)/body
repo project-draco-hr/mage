@@ -16,7 +16,15 @@
             for (Iterator it=((Costs)kickerCost).iterator(); it.hasNext(); ) {
               Cost cost=(Cost)it.next();
               if (cost instanceof ManaCostsImpl) {
-                ability.getManaCostsToPay().add((ManaCostsImpl)cost.copy());
+                List<VariableManaCost> varCosts=((ManaCostsImpl)cost).getVariableCosts();
+                if (!varCosts.isEmpty()) {
+                  xManaValue=game.getPlayer(this.controllerId).announceXMana(varCosts.get(0).getMinX(),Integer.MAX_VALUE,"Announce kicker value for " + varCosts.get(0).getText(),game,this);
+                  game.informPlayers(new StringBuilder(game.getPlayer(this.controllerId).getName()).append(" announced a value of ").append(xManaValue).append(" for ").append(" kicker X ").toString());
+                  ability.getManaCostsToPay().add(new GenericManaCost(xManaValue));
+                }
+ else {
+                  ability.getManaCostsToPay().add((ManaCostsImpl)cost.copy());
+                }
               }
  else {
                 ability.getCosts().add(cost.copy());

@@ -9,7 +9,9 @@
         spellAbility.getModes().setMode(spellAbility.getModes().get(modeId));
         if (spellAbility.getTargets().stillLegal(spellAbility,game)) {
           legalParts=true;
-          updateOptionalCosts(index);
+          if (!spellAbility.getSpellAbilityType().equals(SpellAbilityType.SPLICE)) {
+            updateOptionalCosts(index);
+          }
           result|=spellAbility.resolve(game);
         }
       }

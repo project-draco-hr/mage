@@ -1,0 +1,24 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Card spliceCard=game.getCard(source.getSourceId());
+  if (spliceCard != null && controller != null) {
+    Spell spell=game.getStack().getSpell(abilityToModify.getId());
+    if (spell != null) {
+      SpellAbility splicedAbility=spliceCard.getSpellAbility().copy();
+      splicedAbility.setSpellAbilityType(SpellAbilityType.SPLICE);
+      splicedAbility.setSourceId(abilityToModify.getSourceId());
+      spell.addSpellAbility(splicedAbility);
+      for (Iterator it=((SpliceOntoArcaneAbility)source).getSpliceCosts().iterator(); it.hasNext(); ) {
+        Cost cost=(Cost)it.next();
+        if (cost instanceof ManaCostsImpl) {
+          spell.getSpellAbility().getManaCostsToPay().add((ManaCostsImpl)cost.copy());
+        }
+ else {
+          spell.getSpellAbility().getCosts().add(cost.copy());
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
