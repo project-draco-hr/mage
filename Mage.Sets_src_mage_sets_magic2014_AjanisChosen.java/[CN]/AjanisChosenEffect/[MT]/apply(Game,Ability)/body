@@ -1,0 +1,18 @@
+{
+  Token token=new CatToken();
+  if (token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId())) {
+    Player player=game.getPlayer(source.getControllerId());
+    Permanent enchantement=game.getPermanent(this.getTargetPointer().getFirst(game,source));
+    Permanent tokenPermanent=game.getPermanent(token.getLastAddedToken());
+    if (player != null && enchantement != null && tokenPermanent != null && enchantement.getSubtype().contains("Aura")) {
+      Permanent oldCreature=game.getPermanent(enchantement.getAttachedTo());
+      if (oldCreature != null && enchantement.getSpellAbility().getTargets().get(0).canTarget(tokenPermanent.getId(),game) && player.chooseUse(Outcome.Neutral,"Attach " + enchantement.getName() + " to the token ?",game)) {
+        if (oldCreature.removeAttachment(enchantement.getId(),game)) {
+          tokenPermanent.addAttachment(enchantement.getId(),game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
