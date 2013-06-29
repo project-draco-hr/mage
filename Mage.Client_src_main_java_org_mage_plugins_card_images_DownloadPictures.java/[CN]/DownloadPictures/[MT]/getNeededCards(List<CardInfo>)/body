@@ -7,7 +7,7 @@
     for (    CardInfo card : allCards) {
       if (card.getCardNumber() > 0 && !card.getSetCode().isEmpty() && !ignoreUrls.contains(card.getSetCode())) {
         String cardName=card.getName();
-        CardDownloadData url=new CardDownloadData(cardName,card.getSetCode(),card.getCardNumber(),usesVariousArt(card),0,false,card.isDoubleFaced(),card.isNightCard());
+        CardDownloadData url=new CardDownloadData(cardName,card.getSetCode(),card.getCardNumber(),card.usesVariousArt(),0,false,card.isDoubleFaced(),card.isNightCard());
         if (url.getUsesVariousArt()) {
           url.setDownloadName(createDownloadName(card));
         }
@@ -18,14 +18,14 @@
           if (card.getSecondSideName() == null || card.getSecondSideName().trim().isEmpty()) {
             throw new IllegalStateException("Second side card can't have empty name.");
           }
-          url=new CardDownloadData(card.getSecondSideName(),card.getSetCode(),card.getCardNumber(),usesVariousArt(card),0,false,card.isDoubleFaced(),true);
+          url=new CardDownloadData(card.getSecondSideName(),card.getSetCode(),card.getCardNumber(),card.usesVariousArt(),0,false,card.isDoubleFaced(),true);
           allCardsUrls.add(url);
         }
         if (card.isFlipCard()) {
           if (card.getFlipCardName() == null || card.getFlipCardName().trim().isEmpty()) {
             throw new IllegalStateException("Flipped card can't have empty name.");
           }
-          url=new CardDownloadData(card.getFlipCardName(),card.getSetCode(),card.getCardNumber(),usesVariousArt(card),0,false,card.isDoubleFaced(),card.isNightCard());
+          url=new CardDownloadData(card.getFlipCardName(),card.getSetCode(),card.getCardNumber(),card.usesVariousArt(),0,false,card.isDoubleFaced(),card.isNightCard());
           url.setFlipCard(true);
           url.setFlippedSide(true);
           allCardsUrls.add(url);
@@ -49,7 +49,7 @@
   }
   TFile file;
   for (  CardDownloadData card : allCardsUrls) {
-    file=new TFile(CardImageUtils.getImagePath(card,imagesPath));
+    file=new TFile(CardImageUtils.generateImagePath(card));
     if (!file.exists()) {
       cardsToDownload.add(card);
     }
