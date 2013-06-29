@@ -1,4 +1,25 @@
 {
+  if (!titleSet) {
+    Component c=this.getParent();
+    while (c != null && !(c instanceof TournamentPane)) {
+      c=c.getParent();
+    }
+    if (c != null) {
+      ((TournamentPane)c).setTitle("Tournament [" + tournament.getTournamentName() + "]");
+    }
+    titleSet=true;
+  }
+  txtName.setText(tournament.getTournamentName());
+  txtType.setText(tournament.getTournamentType());
+  txtStartTime.setText(df.format(tournament.getStartTime()));
+  if (tournament.getEndTime() != null) {
+    txtEndTime.setText(df.format(tournament.getEndTime()));
+    btnCloseWindow.setVisible(true);
+  }
+ else {
+    txtEndTime.setText("running...");
+    btnCloseWindow.setVisible(false);
+  }
   playersModel.loadData(tournament);
   matchesModel.loadData(tournament);
   this.tablePlayers.repaint();
