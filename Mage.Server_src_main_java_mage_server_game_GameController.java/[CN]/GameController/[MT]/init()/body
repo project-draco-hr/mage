@@ -2,6 +2,8 @@
   game.addTableEventListener(new Listener<TableEvent>(){
     @Override public void event(    TableEvent event){
       try {
+        PriorityTimer timer;
+        UUID playerId;
 switch (event.getEventType()) {
 case UPDATE:
           updateGame();
@@ -19,6 +21,44 @@ revealCards(event.getMessage(),event.getCards());
 break;
 case ERROR:
 error(event.getMessage(),event.getException());
+break;
+case INIT_TIMER:
+final UUID initPlayerId=event.getPlayerId();
+if (initPlayerId == null) {
+throw new IllegalStateException("INIT_TIMER: playerId can't be null");
+}
+long delay=250L;
+timer=new PriorityTimer(game.getPriorityTime(),delay,new Action(){
+@Override public void execute() throws MageException {
+game.concede(initPlayerId);
+logger.info("Game timeout for player: " + initPlayerId + ". Conceding.");
+}
+}
+);
+timers.put(initPlayerId,timer);
+timer.init();
+break;
+case RESUME_TIMER:
+playerId=event.getPlayerId();
+if (playerId == null) {
+throw new IllegalStateException("RESUME_TIMER: playerId can't be null");
+}
+timer=timers.get(playerId);
+if (timer == null) {
+throw new IllegalStateException("RESUME_TIMER: couldn't find timer for player: " + playerId);
+}
+timer.resume();
+break;
+case PAUSE_TIMER:
+playerId=event.getPlayerId();
+if (playerId == null) {
+throw new IllegalStateException("PAUSE_TIMER: playerId can't be null");
+}
+timer=timers.get(playerId);
+if (timer == null) {
+throw new IllegalStateException("PAUSE_TIMER: couldn't find timer for player: " + playerId);
+}
+timer.pause();
 break;
 }
 }

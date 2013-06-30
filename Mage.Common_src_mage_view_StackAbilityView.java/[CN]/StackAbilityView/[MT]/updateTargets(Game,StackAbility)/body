@@ -1,27 +1,37 @@
 {
-  if (ability.getTargets().size() > 0) {
-    setTargets(ability.getTargets());
-  }
- else {
-    List<UUID> targetList=new ArrayList<UUID>();
-    for (    Effect effect : ability.getEffects()) {
-      TargetPointer targetPointer=effect.getTargetPointer();
-      if (targetPointer instanceof FixedTarget) {
-        targetList.add(((FixedTarget)targetPointer).getTarget());
-      }
+  List<String> names=new ArrayList<String>();
+  for (  UUID modeId : ability.getModes().getSelectedModes()) {
+    ability.getModes().setMode(ability.getModes().get(modeId));
+    if (ability.getTargets().size() > 0) {
+      setTargets(ability.getTargets());
     }
-    if (targetList.size() > 0) {
-      overrideTargets(targetList);
-      List<String> names=new ArrayList<String>();
-      for (      UUID uuid : targetList) {
-        MageObject mageObject=game.getObject(uuid);
-        if (mageObject != null) {
-          names.add(mageObject.getName());
+ else {
+      List<UUID> targetList=new ArrayList<UUID>();
+      for (      Effect effect : ability.getEffects()) {
+        TargetPointer targetPointer=effect.getTargetPointer();
+        if (targetPointer instanceof FixedTarget) {
+          targetList.add(((FixedTarget)targetPointer).getTarget());
         }
       }
-      if (!names.isEmpty()) {
-        getRules().add("<i>Targets: " + names.toString() + "</i>");
+      if (targetList.size() > 0) {
+        overrideTargets(targetList);
+        for (        UUID uuid : targetList) {
+          MageObject mageObject=game.getObject(uuid);
+          if (mageObject != null) {
+            names.add(mageObject.getName());
+          }
+        }
       }
+    }
+  }
+  if (!names.isEmpty()) {
+    getRules().add("<i>Targets: " + names.toString() + "</i>");
+  }
+  if (ability.isModal()) {
+    Modes modes=ability.getModes();
+    for (    UUID modeId : modes.getSelectedModes()) {
+      modes.setMode(modes.get(modeId));
+      this.rules.add("<span color='green'><i>Chosen mode: " + ability.getEffects().getText(modes.get(modeId)) + "</i></span>");
     }
   }
 }

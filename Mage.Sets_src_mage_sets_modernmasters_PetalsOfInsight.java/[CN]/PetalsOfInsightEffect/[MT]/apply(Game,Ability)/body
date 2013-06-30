@@ -29,6 +29,7 @@
       Card card=cards.get(cards.iterator().next(),game);
       card.moveToZone(Zone.LIBRARY,source.getId(),game,false);
     }
+    game.getState().setValue(source.getSourceId().toString(),Boolean.TRUE);
   }
  else {
     for (    UUID cardId : cards) {
@@ -37,8 +38,7 @@
         card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
       }
     }
-    player.drawCards(3,game,null);
-    return true;
+    game.getState().setValue(source.getSourceId().toString(),Boolean.FALSE);
   }
-  return false;
+  return true;
 }

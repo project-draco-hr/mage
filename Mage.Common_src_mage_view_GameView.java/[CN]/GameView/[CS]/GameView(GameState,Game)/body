@@ -1,4 +1,5 @@
 {
+  priorityTime=game.getPriorityTime();
   for (  Player player : state.getPlayers().values()) {
     players.add(new PlayerView(player,state,game));
   }
@@ -54,10 +55,18 @@
   this.phase=state.getTurn().getPhaseType();
   this.step=state.getTurn().getStepType();
   this.turn=state.getTurnNum();
-  if (state.getActivePlayerId() != null)   this.activePlayerName=state.getPlayer(state.getActivePlayerId()).getName();
- else   this.activePlayerName="";
-  if (state.getPriorityPlayerId() != null)   this.priorityPlayerName=state.getPlayer(state.getPriorityPlayerId()).getName();
- else   this.priorityPlayerName="";
+  if (state.getActivePlayerId() != null) {
+    this.activePlayerName=state.getPlayer(state.getActivePlayerId()).getName();
+  }
+ else {
+    this.activePlayerName="";
+  }
+  if (state.getPriorityPlayerId() != null) {
+    this.priorityPlayerName=state.getPlayer(state.getPriorityPlayerId()).getName();
+  }
+ else {
+    this.priorityPlayerName="";
+  }
   for (  CombatGroup combatGroup : state.getCombat().getGroups()) {
     combat.add(new CombatGroupView(combatGroup,game));
   }

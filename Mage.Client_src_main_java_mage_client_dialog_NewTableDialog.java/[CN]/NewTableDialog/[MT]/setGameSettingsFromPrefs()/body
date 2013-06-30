@@ -7,13 +7,19 @@
       break;
     }
   }
+  int timeLimit=Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_TIME_LIMIT,"1500"));
+  for (  MatchTimeLimit mtl : MatchTimeLimit.values()) {
+    if (mtl.getTimeLimit() == timeLimit) {
+      this.cbTimeLimit.setSelectedItem(mtl);
+      break;
+    }
+  }
   cbDeckType.setSelectedItem(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_DECK_TYPE,"Limited"));
   String deckFile=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_DECK_FILE,null);
   if (deckFile != null) {
     this.player1Panel.setDeckFile(deckFile);
   }
   this.spnNumWins.setValue(Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_NUMBER_OF_WINS,"2")));
-  this.spnFreeMulligans.setValue(Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_NUMBER_OF_FREE_MULLIGANS,"0")));
   this.spnNumPlayers.setValue(Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_NUMBER_PLAYERS,"2")));
   int range=Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_RANGE,"1"));
   for (  RangeOfInfluence roi : RangeOfInfluence.values()) {

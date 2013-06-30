@@ -1,0 +1,23 @@
+{
+  if (state == States.RUNNING) {
+    count--;
+    if (taskOnTick != null) {
+      try {
+        taskOnTick.execute();
+      }
+ catch (      MageException e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
+  if (logger.isDebugEnabled())   logger.debug("Count is: " + count);
+  if (count <= 0) {
+    cancel();
+    try {
+      taskOnTimeout.execute();
+    }
+ catch (    MageException e) {
+      throw new RuntimeException(e);
+    }
+  }
+}

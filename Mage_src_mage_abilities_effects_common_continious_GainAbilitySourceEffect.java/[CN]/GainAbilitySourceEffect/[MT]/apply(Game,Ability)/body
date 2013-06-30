@@ -1,8 +1,18 @@
 {
-  Permanent permanent=game.getPermanent(source.getSourceId());
-  if (permanent != null) {
-    permanent.addAbility(ability,game);
-    return true;
+  if (onCard) {
+    Card card=game.getCard(source.getSourceId());
+    if (card != null) {
+      card.addAbility(ability);
+      discard();
+      return true;
+    }
+  }
+ else {
+    Permanent permanent=game.getPermanent(source.getSourceId());
+    if (permanent != null) {
+      permanent.addAbility(ability,source.getSourceId(),game);
+      return true;
+    }
   }
   return false;
 }

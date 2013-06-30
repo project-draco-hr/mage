@@ -1,0 +1,15 @@
+{
+  List<SpliceCardEffect> spliceEffects=new ArrayList<SpliceCardEffect>();
+  for (  SpliceCardEffect effect : spliceCardEffects) {
+    HashSet<Ability> abilities=spliceCardEffects.getAbility(effect.getId());
+    for (    Ability ability : abilities) {
+      if (ability.getControllerId().equals(playerId) && (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,null,false))) {
+        if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
+          spliceEffects.add(effect);
+          break;
+        }
+      }
+    }
+  }
+  return spliceEffects;
+}

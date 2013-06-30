@@ -66,6 +66,19 @@
     }
   }
   this.avatar.setText(player.getName());
+  if (this.timer != null) {
+    if (player.getPriorityTimeLeft() != Integer.MAX_VALUE) {
+      String priorityTimeValue=getPriorityTimeLeftString(player);
+      this.timer.setCount(player.getPriorityTimeLeft());
+      this.avatar.setTopText(priorityTimeValue);
+    }
+    if (player.hasPriority()) {
+      this.timer.resume();
+    }
+ else {
+      this.timer.pause();
+    }
+  }
   this.btnPlayer.setText(player.getName());
   if (player.isActive()) {
     this.avatar.setBorder(greenBorder);

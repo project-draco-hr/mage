@@ -15,12 +15,13 @@
   if (tournamentType.isLimited()) {
     if (tOptions.getLimitedOptions() == null) {
       tOptions.setLimitedOptions(new LimitedOptions());
-      tOptions.getLimitedOptions().setConstructionTime((Integer)this.spnConstructTime.getValue());
+      tOptions.getLimitedOptions().setConstructionTime((Integer)this.spnConstructTime.getValue() * 60);
     }
     for (    JComboBox pack : packs) {
       tOptions.getLimitedOptions().getSetCodes().add(((ExpansionSet)pack.getSelectedItem()).getCode());
     }
   }
+  tOptions.getMatchOptions().setMatchTimeLimit((MatchTimeLimit)this.cbTimeLimit.getSelectedItem());
   tOptions.getMatchOptions().setDeckType("Limited");
   tOptions.getMatchOptions().setWinsNeeded((Integer)this.spnNumWins.getValue());
   tOptions.getMatchOptions().setFreeMulligans((Integer)this.spnFreeMulligans.getValue());

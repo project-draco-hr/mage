@@ -1,0 +1,15 @@
+{
+  super(ownerId,66,"Take Possession",Rarity.UNCOMMON,new CardType[]{CardType.ENCHANTMENT},"{5}{U}{U}");
+  this.expansionSetCode="MMA";
+  this.subtype.add("Aura");
+  this.color.setBlue(true);
+  this.addAbility(SplitSecondAbility.getInstance());
+  TargetPermanent auraTarget=new TargetPermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.GainControl));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  Effect effect=new ControlEnchantedEffect();
+  effect.setText("You control enchanted permanent");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+}

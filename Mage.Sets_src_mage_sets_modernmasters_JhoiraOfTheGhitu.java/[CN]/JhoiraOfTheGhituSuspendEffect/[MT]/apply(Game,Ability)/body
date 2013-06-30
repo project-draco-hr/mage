@@ -1,0 +1,44 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  List<Card> cards=new ArrayList<Card>();
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof ExileFromHandCost) {
+      cards=((ExileFromHandCost)cost).getCards();
+    }
+  }
+  if (cards != null && !cards.isEmpty()) {
+    Card card=game.getCard(cards.get(0).getId());
+    boolean hasSuspend=false;
+    for (    Ability ability : card.getAbilities()) {
+      if (ability instanceof SuspendAbility) {
+        hasSuspend=true;
+        break;
+      }
+    }
+    UUID exileId=(UUID)game.getState().getValue("SuspendExileId" + source.getControllerId().toString());
+    if (exileId == null) {
+      exileId=UUID.randomUUID();
+      game.getState().setValue("SuspendExileId" + source.getControllerId().toString(),exileId);
+    }
+    if (card.moveToExile(exileId,new StringBuilder("Suspended cards of ").append(controller.getName()).toString(),source.getSourceId(),game)) {
+      card.addCounters(CounterType.TIME.createInstance(4),game);
+      if (!hasSuspend) {
+        Abilities oldAbilities=card.getAbilities().copy();
+        SuspendAbility suspendAbility=new SuspendAbility(4,null,card);
+        card.addAbility(suspendAbility);
+        for (        Ability ability : card.getAbilities()) {
+          if (!oldAbilities.contains(ability)) {
+            ability.setControllerId(source.getControllerId());
+            game.getState().addAbility(ability,card.getId(),card);
+          }
+        }
+      }
+      game.informPlayers(new StringBuilder(controller.getName()).append(" suspends (").append(4).append(") ").append(card.getName()).toString());
+      return true;
+    }
+  }
+  return false;
+}

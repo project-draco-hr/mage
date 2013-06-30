@@ -1,0 +1,27 @@
+{
+  this.gameId=gameId;
+  this.playerId=playerId;
+  this.bigCard=bigCard;
+  session=MageFrame.getSession();
+  cheat.setVisible(session.isTestMode());
+  cheat.setFocusable(false);
+  if (priorityTime > 0) {
+    long delay=1000L;
+    timer=new PriorityTimer(priorityTime,delay,new mage.interfaces.Action(){
+      @Override public void execute() throws MageException {
+      }
+    }
+);
+    final PriorityTimer pt=timer;
+    timer.setTaskOnTick(new mage.interfaces.Action(){
+      @Override public void execute() throws MageException {
+        int priorityTimeValue=pt.getCount();
+        String text=getPriorityTimeLeftString(priorityTimeValue);
+        PlayerPanelExt.this.avatar.setTopText(text);
+        PlayerPanelExt.this.avatar.repaint();
+      }
+    }
+);
+    timer.init();
+  }
+}

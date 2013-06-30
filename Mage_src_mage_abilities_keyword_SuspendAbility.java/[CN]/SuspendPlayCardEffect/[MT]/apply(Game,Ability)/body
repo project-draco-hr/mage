@@ -2,6 +2,24 @@
   Player player=game.getPlayer(source.getControllerId());
   Card card=game.getCard(source.getSourceId());
   if (player != null && card != null) {
+    List<Ability> abilitiesToRemove=new ArrayList<Ability>();
+    for (    Ability ability : card.getAbilities()) {
+      if (ability instanceof SuspendAbility) {
+        if (((SuspendAbility)ability).isGainedTemporary()) {
+          abilitiesToRemove.add(ability);
+        }
+      }
+    }
+    if (!abilitiesToRemove.isEmpty()) {
+      for (      Ability ability : card.getAbilities()) {
+        if (ability instanceof SuspendBeginningOfUpkeepTriggeredAbility || ability instanceof SuspendPlayCardAbility) {
+          abilitiesToRemove.add(ability);
+        }
+      }
+      game.getState().resetTriggersForSourceId(card.getId());
+      game.getState().getContinuousEffects().removeGainedEffectsForSource(card.getId());
+      card.getAbilities().removeAll(abilitiesToRemove);
+    }
     player.cast(card.getSpellAbility(),game,true);
   }
   return false;

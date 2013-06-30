@@ -1,3 +1,9 @@
 {
-  return game.getStack().counter(source.getFirstTarget(),source.getSourceId(),game);
+  boolean countered=false;
+  for (  UUID targetId : source.getTargets().get(0).getTargets()) {
+    if (game.getStack().counter(targetId,source.getSourceId(),game)) {
+      countered=true;
+    }
+  }
+  return countered;
 }
