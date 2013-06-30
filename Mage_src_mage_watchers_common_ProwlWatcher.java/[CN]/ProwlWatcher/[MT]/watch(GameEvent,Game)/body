@@ -3,13 +3,18 @@
     DamagedPlayerEvent dEvent=(DamagedPlayerEvent)event;
     if (dEvent.isCombatDamage()) {
       Permanent creature=game.getPermanent(dEvent.getSourceId());
-      if (creature != null) {
-        Set<String> subtypes=damagingSubtypes.get(creature.getControllerId());
-        if (subtypes == null) {
-          subtypes=new LinkedHashSet<String>();
+      if (creature != null && !allSubtypes.contains(creature.getControllerId())) {
+        if (creature.getAbilities().containsKey(ChangelingAbility.getInstance().getId())) {
+          allSubtypes.add(creature.getControllerId());
         }
-        subtypes.addAll(creature.getSubtype());
-        damagingSubtypes.put(creature.getControllerId(),subtypes);
+ else {
+          Set<String> subtypes=damagingSubtypes.get(creature.getControllerId());
+          if (subtypes == null) {
+            subtypes=new LinkedHashSet<String>();
+          }
+          subtypes.addAll(creature.getSubtype());
+          damagingSubtypes.put(creature.getControllerId(),subtypes);
+        }
       }
     }
   }
