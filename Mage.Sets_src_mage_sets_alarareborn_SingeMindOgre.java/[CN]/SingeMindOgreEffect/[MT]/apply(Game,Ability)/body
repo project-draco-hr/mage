@@ -1,0 +1,12 @@
+{
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (targetPlayer != null && targetPlayer.getHand().size() > 0) {
+    Cards revealed=new CardsImpl();
+    Card card=targetPlayer.getHand().getRandom(game);
+    revealed.add(card);
+    targetPlayer.revealCards("Ignite Memories",revealed,game);
+    targetPlayer.loseLife(card.getManaCost().convertedManaCost(),game);
+    return true;
+  }
+  return false;
+}
