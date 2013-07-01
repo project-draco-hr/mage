@@ -1,19 +1,21 @@
 {
   String prop=prefs.get(KEY_SOUNDS_ON,"true");
   if (prop.equals("true")) {
-    dialog.jEnableSounds.setSelected(true);
+    dialog.cbEnableSounds.setSelected(true);
   }
  else {
-    dialog.jEnableSounds.setSelected(false);
+    dialog.cbEnableSounds.setSelected(false);
   }
-  prop=prefs.get(KEY_MUSICS_ON,"true");
-  String path=prefs.get(KEY_MUSICS_PATH,"");
+  prop=prefs.get(KEY_SOUNDS_MATCH_MUSIC_ON,"true");
   if (prop.equals("true")) {
-    dialog.jEnableMusics.setSelected(true);
-    dialog.BattlefieldIBGMPath.setText(path);
+    dialog.cbEnableBattlefieldBGM.setSelected(true);
   }
  else {
-    dialog.jEnableMusics.setSelected(false);
+    dialog.cbEnableBattlefieldBGM.setSelected(false);
   }
-  updateCache(KEY_MUSICS_PATH,path);
+  dialog.txtBattlefieldIBGMPath.setEnabled(dialog.cbEnableBattlefieldBGM.isSelected());
+  dialog.btnBattlefieldBGMBrowse.setEnabled(dialog.cbEnableBattlefieldBGM.isSelected());
+  String path=prefs.get(KEY_SOUNDS_MATCH_MUSIC_PATH,"");
+  dialog.txtBattlefieldIBGMPath.setText(path);
+  updateCache(KEY_SOUNDS_MATCH_MUSIC_PATH,path);
 }
