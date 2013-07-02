@@ -1,7 +1,9 @@
 {
   for (  MatchPlayer player : this.players) {
-    player.setSideboarding();
-    player.getPlayer().sideboard(this,player.getDeck());
+    if (!player.hasQuitted()) {
+      player.setSideboarding();
+      player.getPlayer().sideboard(this,player.getDeck());
+    }
   }
 synchronized (this) {
     while (!isDoneSideboarding()) {

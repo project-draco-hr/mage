@@ -1,9 +1,17 @@
 {
+  int activePlayers=0;
   for (  MatchPlayer player : players) {
+    if (!player.hasQuitted()) {
+      activePlayers++;
+    }
     if (player.getWins() >= options.getWinsNeeded()) {
       endTime=new Date();
       return true;
     }
+  }
+  if (activePlayers < 2) {
+    endTime=new Date();
+    return true;
   }
   return false;
 }
