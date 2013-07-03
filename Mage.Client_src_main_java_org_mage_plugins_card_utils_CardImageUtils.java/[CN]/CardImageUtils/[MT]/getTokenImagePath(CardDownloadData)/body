@@ -1,17 +1,15 @@
 {
-  String useDefault=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_IMAGES_USE_DEFAULT,"true");
-  String path=useDefault.equals("true") ? null : PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_IMAGES_PATH,null);
-  String filename=getImagePath(card,path);
+  String filename=generateImagePath(card);
   TFile file=new TFile(filename);
   if (!file.exists()) {
     CardDownloadData updated=new CardDownloadData(card);
     updated.setName(card.getName() + " 1");
-    filename=getImagePath(updated,path);
+    filename=generateImagePath(updated);
     file=new TFile(filename);
     if (!file.exists()) {
       updated=new CardDownloadData(card);
       updated.setName(card.getName() + " 2");
-      filename=getImagePath(updated,path);
+      filename=generateImagePath(updated);
     }
   }
   return filename;

@@ -1,0 +1,23 @@
+{
+  String useDefault=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_IMAGES_USE_DEFAULT,"true");
+  String imagesPath=useDefault.equals("true") ? null : PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_IMAGES_PATH,null);
+  String imageDir=getImageDir(card,imagesPath);
+  String imageName;
+  String type=card.getType() != 0 ? " " + Integer.toString(card.getType()) : "";
+  String name=card.getName().replace(":","").replace("//","-");
+  if (card.getUsesVariousArt()) {
+    imageName=name + "." + card.getCollectorId()+ ".full.jpg";
+  }
+ else {
+    imageName=name + type + ".full.jpg";
+  }
+  if (new TFile(imageDir).exists() && !new TFile(imageDir + TFile.separator + imageName).exists()) {
+    for (    String fileName : new TFile(imageDir).list()) {
+      if (fileName.toLowerCase().equals(imageName.toLowerCase())) {
+        imageName=fileName;
+        break;
+      }
+    }
+  }
+  return imageDir + TFile.separator + imageName;
+}

@@ -1,0 +1,30 @@
+{
+  super(null,card.getCardNumber(),getLeftHalfName(card),getRightHalfName(card),card.getRarity(),card.getTypes().toArray(new CardType[0]),join(card.getManaCosts()),"",join(card.getRules()).contains("Fuse"));
+  this.expansionSetCode=card.getSetCode();
+  this.power=mageIntFromString(card.getPower());
+  this.toughness=mageIntFromString(card.getToughness());
+  this.cardType=card.getTypes();
+  this.subtype=card.getSubTypes();
+  this.supertype=card.getSupertypes();
+  this.usesVariousArt=card.usesVariousArt();
+  this.color=card.getColor();
+  this.splitCard=card.isSplitCard();
+  this.flipCard=card.isFlipCard();
+  this.canTransform=card.isDoubleFaced();
+  this.nightCard=card.isNightCard();
+  if (card.getSecondSideName() != null && !card.getSecondSideName().isEmpty()) {
+    this.secondSideCard=new MockCard(CardRepository.instance.findCard(card.getSecondSideName()));
+  }
+  this.flipCardName=card.getFlipCardName();
+  for (  String ruleText : card.getRules()) {
+    this.addAbility(textAbilityFromString(ruleText));
+  }
+  CardInfo leftHalf=CardRepository.instance.findCard(getLeftHalfName(card));
+  if (leftHalf != null) {
+    this.leftHalfCard=new MockCard(leftHalf);
+  }
+  CardInfo rightHalf=CardRepository.instance.findCard(getRightHalfName(card));
+  if (rightHalf != null) {
+    this.rightHalfCard=new MockCard(rightHalf);
+  }
+}
