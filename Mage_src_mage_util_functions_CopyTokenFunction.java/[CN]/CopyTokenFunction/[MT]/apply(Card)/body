@@ -5,9 +5,13 @@
   MageObject sourceObj=source;
   if (source instanceof PermanentToken) {
     sourceObj=((PermanentToken)source).getToken();
+    target.setOriginalExpansionSetCode(((Token)sourceObj).getOriginalExpansionSetCode());
+    target.setOriginalCardNumber(((Token)sourceObj).getOriginalCardNumber());
   }
  else   if (source instanceof PermanentCard) {
     sourceObj=((PermanentCard)source).getCard();
+    target.setOriginalExpansionSetCode(source.getExpansionSetCode());
+    target.setOriginalCardNumber(source.getCardNumber());
   }
   target.setName(sourceObj.getName());
   target.getColor().setColor(sourceObj.getColor());
@@ -25,8 +29,6 @@
   for (  String type : sourceObj.getSupertype()) {
     target.getSupertype().add(type);
   }
-  target.setOriginalExpansionSetCode(source.getExpansionSetCode());
-  target.setOriginalCardNumber(source.getCardNumber());
   target.getAbilities().clear();
   for (  Ability ability0 : sourceObj.getAbilities()) {
     Ability ability=ability0.copy();
