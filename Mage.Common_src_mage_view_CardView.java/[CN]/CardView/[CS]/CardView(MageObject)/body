@@ -1,31 +1,40 @@
 {
-  super(card.getId(),"",0,false,false);
-  this.name=card.getName();
-  if (card instanceof Permanent) {
-    this.power=Integer.toString(card.getPower().getValue());
-    this.toughness=Integer.toString(card.getToughness().getValue());
-    this.loyalty=Integer.toString(((Permanent)card).getCounters().getCount(CounterType.LOYALTY));
+  super(object.getId(),"",0,false,false);
+  this.name=object.getName();
+  this.displayName=object.getName();
+  if (object instanceof Permanent) {
+    this.mageObjectType=MageObjectType.PERMANENT;
+    this.power=Integer.toString(object.getPower().getValue());
+    this.toughness=Integer.toString(object.getToughness().getValue());
+    this.loyalty=Integer.toString(((Permanent)object).getCounters().getCount(CounterType.LOYALTY));
   }
  else {
-    this.power=card.getPower().toString();
-    this.toughness=card.getToughness().toString();
+    this.power=object.getPower().toString();
+    this.toughness=object.getToughness().toString();
     this.loyalty="";
   }
-  this.cardTypes=card.getCardType();
-  this.subTypes=card.getSubtype();
-  this.superTypes=card.getSupertype();
-  this.color=card.getColor();
-  this.manaCost=card.getManaCost().getSymbols();
-  this.convertedManaCost=card.getManaCost().convertedManaCost();
-  if (card instanceof PermanentToken) {
-    PermanentToken permanentToken=(PermanentToken)card;
+  this.cardTypes=object.getCardType();
+  this.subTypes=object.getSubtype();
+  this.superTypes=object.getSupertype();
+  this.color=object.getColor();
+  this.manaCost=object.getManaCost().getSymbols();
+  this.convertedManaCost=object.getManaCost().convertedManaCost();
+  if (object instanceof PermanentToken) {
+    this.mageObjectType=MageObjectType.TOKEN;
+    PermanentToken permanentToken=(PermanentToken)object;
     this.rarity=Rarity.COMMON;
     this.expansionSetCode=permanentToken.getExpansionSetCode();
     this.rules=permanentToken.getRules();
     this.type=permanentToken.getToken().getTokenType();
   }
-  if (this.rarity == null && card instanceof StackAbility) {
-    StackAbility stackAbility=(StackAbility)card;
+ else   if (object instanceof Emblem) {
+    this.mageObjectType=MageObjectType.EMBLEM;
+    Emblem emblem=(Emblem)object;
+    this.rarity=Rarity.SPECIAL;
+    this.rules=emblem.getAbilities().getRules(emblem.getName());
+  }
+  if (this.rarity == null && object instanceof StackAbility) {
+    StackAbility stackAbility=(StackAbility)object;
     this.rarity=Rarity.NA;
     this.rules=new ArrayList<String>();
     this.rules.add(stackAbility.getRule());
