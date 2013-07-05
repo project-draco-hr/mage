@@ -11,18 +11,18 @@
     int count=Integer.parseInt(m.group(2));
     String setCode=m.group(3);
     int cardNum=Integer.parseInt(m.group(4));
-    String className=null;
+    DeckCardInfo deckCardInfo=null;
     CardInfo cardInfo=CardRepository.instance.findCard(setCode,cardNum);
     if (cardInfo != null) {
-      className=cardInfo.getClassName();
+      deckCardInfo=new DeckCardInfo(cardInfo.getName(),cardInfo.getCardNumber(),cardInfo.getSetCode());
     }
-    if (className != null) {
+    if (deckCardInfo != null) {
       for (int i=0; i < count; i++) {
         if (!sideboard) {
-          deckList.getCards().add(className);
+          deckList.getCards().add(deckCardInfo);
         }
  else {
-          deckList.getSideboard().add(className);
+          deckList.getSideboard().add(deckCardInfo);
         }
       }
     }
