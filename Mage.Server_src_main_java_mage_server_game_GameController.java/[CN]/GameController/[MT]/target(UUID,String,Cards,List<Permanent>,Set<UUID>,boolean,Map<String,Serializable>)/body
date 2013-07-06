@@ -2,17 +2,17 @@
   perform(playerId,new Command(){
     @Override public void execute(    UUID playerId){
       if (cards != null) {
-        gameSessions.get(playerId).target(question,new CardsView(cards.getCards(game)),targets,required,options);
+        getGameSession(playerId).target(question,new CardsView(cards.getCards(game)),targets,required,options);
       }
  else       if (perms != null) {
         CardsView permsView=new CardsView();
         for (        Permanent perm : perms) {
           permsView.put(perm.getId(),new PermanentView(perm,game.getCard(perm.getId())));
         }
-        gameSessions.get(playerId).target(question,permsView,targets,required,options);
+        getGameSession(playerId).target(question,permsView,targets,required,options);
       }
  else {
-        gameSessions.get(playerId).target(question,new CardsView(),targets,required,options);
+        getGameSession(playerId).target(question,new CardsView(),targets,required,options);
       }
     }
   }

@@ -27,16 +27,7 @@ final UUID initPlayerId=event.getPlayerId();
 if (initPlayerId == null) {
 throw new IllegalStateException("INIT_TIMER: playerId can't be null");
 }
-long delay=250L;
-timer=new PriorityTimer(game.getPriorityTime(),delay,new Action(){
-@Override public void execute() throws MageException {
-game.concede(initPlayerId);
-logger.info("Game timeout for player: " + initPlayerId + ". Conceding.");
-}
-}
-);
-timers.put(initPlayerId,timer);
-timer.init();
+createPlayerTimer(event.getPlayerId(),game.getPriorityTime());
 break;
 case RESUME_TIMER:
 playerId=event.getPlayerId();
@@ -45,7 +36,13 @@ throw new IllegalStateException("RESUME_TIMER: playerId can't be null");
 }
 timer=timers.get(playerId);
 if (timer == null) {
-throw new IllegalStateException("RESUME_TIMER: couldn't find timer for player: " + playerId);
+Player player=game.getState().getPlayer(playerId);
+if (player != null) {
+timer=createPlayerTimer(event.getPlayerId(),player.getPriorityTimeLeft());
+}
+ else {
+throw new IllegalStateException("RESUME_TIMER: player can't be null");
+}
 }
 timer.resume();
 break;
