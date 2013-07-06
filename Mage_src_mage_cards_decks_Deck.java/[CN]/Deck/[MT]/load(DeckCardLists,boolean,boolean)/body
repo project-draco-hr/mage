@@ -2,31 +2,21 @@
   Deck deck=new Deck();
   deck.setName(deckCardLists.getName());
   for (  DeckCardInfo deckCardInfo : deckCardLists.getCards()) {
-    Card card;
-    if (mockCards) {
-      card=CardRepository.instance.findCard(deckCardInfo.getSetCode(),deckCardInfo.getCardNum()).getMockCard();
-    }
- else {
-      card=CardImpl.createCard(CardRepository.instance.findCard(deckCardInfo.getSetCode(),deckCardInfo.getCardNum()).getClassName());
-    }
+    Card card=createCard(deckCardInfo,mockCards);
     if (card != null) {
       deck.cards.add(card);
     }
- else {
-      if (!ignoreErrors) {
-        throw new GameException("Error loading card - " + deckCardInfo.getCardName() + " for deck - "+ deck.getName());
-      }
+ else     if (!ignoreErrors) {
+      throw new GameException("Error loading card - " + deckCardInfo.getCardName() + " for deck - "+ deck.getName());
     }
   }
   for (  DeckCardInfo deckCardInfo : deckCardLists.getSideboard()) {
-    Card card=CardRepository.instance.findCard(deckCardInfo.getSetCode(),deckCardInfo.getCardNum()).getMockCard();
+    Card card=createCard(deckCardInfo,mockCards);
     if (card != null) {
       deck.sideboard.add(card);
     }
- else {
-      if (!ignoreErrors) {
-        throw new GameException("Error loading card - " + deckCardInfo.getCardName() + " for deck - "+ deck.getName());
-      }
+ else     if (!ignoreErrors) {
+      throw new GameException("Error loading card - " + deckCardInfo.getCardName() + " for deck - "+ deck.getName());
     }
   }
   return deck;
