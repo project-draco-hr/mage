@@ -1,0 +1,29 @@
+{
+  boolean condition1=false;
+  boolean condition2=false;
+  Player you=game.getPlayer(source.getControllerId());
+  if (you == null) {
+    return false;
+  }
+  FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent();
+  for (  Permanent creature : game.getBattlefield().getAllActivePermanents(filter,game)) {
+    if (creature.getPower().getValue() > 4) {
+      condition1=true;
+    }
+    if (creature.getPower().getValue() > 9) {
+      condition2=true;
+    }
+    if (creature.getPower().getValue() > 19) {
+      you.won(game);
+    }
+  }
+  if (condition1) {
+    for (    Permanent creature : game.getBattlefield().getAllActivePermanents(filter,game)) {
+      creature.addCounters(CounterType.P1P1.createInstance(),game);
+    }
+  }
+  if (condition2) {
+    you.gainLife(10,game);
+  }
+  return true;
+}
