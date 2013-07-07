@@ -1,6 +1,33 @@
 {
   Random random=new Random();
-  Set<String> landSets=Sets.getSetsWithBasicLandsAsCodes(deck.getExpansionSetCodes());
+  Set<String> landSets=new HashSet<String>();
+  for (  String setCode : deck.getExpansionSetCodes()) {
+    ExpansionInfo expansionInfo=ExpansionRepository.instance.getSetByCode(setCode);
+    if (expansionInfo.hasBasicLands()) {
+      landSets.add(expansionInfo.getCode());
+    }
+  }
+  if (landSets.isEmpty()) {
+    for (    String setCode : deck.getExpansionSetCodes()) {
+      ExpansionInfo expansionInfo=ExpansionRepository.instance.getSetByCode(setCode);
+      ExpansionInfo[] blockSets=ExpansionRepository.instance.getSetsFromBlock(expansionInfo.getBlockName());
+      for (      ExpansionInfo blockSet : blockSets) {
+        if (blockSet.hasBasicLands()) {
+          landSets.add(blockSet.getCode());
+        }
+      }
+    }
+  }
+  if (landSets.isEmpty()) {
+    Random generator=new Random();
+    ExpansionInfo[] basicLandSets=ExpansionRepository.instance.getSetsWithBasicLandsByReleaseDate();
+    if (basicLandSets.length > 0) {
+      landSets.add(basicLandSets[generator.nextInt(basicLandSets.length) - 1].getCode());
+    }
+  }
+  if (landSets.isEmpty()) {
+    throw new IllegalArgumentException("No set with basic land was found");
+  }
   CardCriteria criteria=new CardCriteria();
   if (!landSets.isEmpty()) {
     criteria.setCodes(landSets.toArray(new String[landSets.size()]));

@@ -1,6 +1,32 @@
 {
   this.deck=deck;
-  this.setCodesland=Sets.getSetsWithBasicLandsAsCodes(deck.getExpansionSetCodes());
+  for (  String setCode : deck.getExpansionSetCodes()) {
+    ExpansionInfo expansionInfo=ExpansionRepository.instance.getSetByCode(setCode);
+    if (expansionInfo.hasBasicLands()) {
+      this.setCodesland.add(expansionInfo.getCode());
+    }
+  }
+  if (this.setCodesland.isEmpty()) {
+    for (    String setCode : deck.getExpansionSetCodes()) {
+      ExpansionInfo expansionInfo=ExpansionRepository.instance.getSetByCode(setCode);
+      ExpansionInfo[] blockSets=ExpansionRepository.instance.getSetsFromBlock(expansionInfo.getBlockName());
+      for (      ExpansionInfo blockSet : blockSets) {
+        if (blockSet.hasBasicLands()) {
+          this.setCodesland.add(blockSet.getCode());
+        }
+      }
+    }
+  }
+  if (this.setCodesland.isEmpty()) {
+    Random generator=new Random();
+    ExpansionInfo[] landSets=ExpansionRepository.instance.getSetsWithBasicLandsByReleaseDate();
+    if (landSets.length > 0) {
+      this.setCodesland.add(landSets[generator.nextInt(landSets.length) - 1].getCode());
+    }
+  }
+  if (this.setCodesland.isEmpty()) {
+    throw new IllegalArgumentException("No set with basic land was found");
+  }
   MageFrame.getDesktop().add(this,JLayeredPane.PALETTE_LAYER);
   this.setVisible(true);
 }
