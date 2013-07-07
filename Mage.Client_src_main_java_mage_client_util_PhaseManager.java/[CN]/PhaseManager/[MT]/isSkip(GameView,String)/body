@@ -2,25 +2,19 @@
   if (GameManager.getInstance().getStackSize() > 0) {
     return false;
   }
-  UUID activePlayer=null;
-  Map<String,String> map=mapOthers;
-  for (  PlayerView playerView : gameView.getPlayers()) {
-    if (playerView.isActive()) {
-      activePlayer=playerView.getPlayerId();
-      if (activePlayer.equals(GameManager.getInstance().getCurrentPlayerUUID())) {
-        map=mapYou;
-      }
-    }
-  }
-  if (activePlayer == null) {
+  if (gameView.getActivePlayerId() == null) {
     throw new IllegalStateException("No active player found.");
   }
-  for (  Map.Entry<String,String> entry : map.entrySet()) {
-    if (message.equals(entry.getKey())) {
-      Preferences prefs=MageFrame.getPreferences();
-      String prop=prefs.get(entry.getValue(),PHASE_ON);
-      return !prop.equals(PHASE_ON);
-    }
+  String prefKey;
+  if (gameView.getActivePlayerId().equals(GameManager.getInstance().getCurrentPlayerUUID())) {
+    prefKey=mapYou.get(message);
+  }
+ else {
+    prefKey=mapOthers.get(message);
+  }
+  if (prefKey != null) {
+    String prop=prefs.get(prefKey,PHASE_ON);
+    return !prop.equals(PHASE_ON);
   }
   return false;
 }
