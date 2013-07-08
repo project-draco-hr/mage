@@ -1,0 +1,34 @@
+{
+  Cards cards=new CardsImpl();
+  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  if (player != null) {
+    int cardsCount=Math.min(5,player.getLibrary().size());
+    for (int i=0; i < cardsCount; i++) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        card.moveToZone(Zone.GRAVEYARD,source.getId(),game,false);
+        if (filter.match(card,game)) {
+          cards.add(card);
+        }
+      }
+ else {
+        throw new IllegalArgumentException("couldn't get card from library");
+      }
+    }
+  }
+  if (cards.size() > 0) {
+    Player controller=game.getPlayer(source.getControllerId());
+    if (controller != null) {
+      TargetCard target=new TargetCard(Zone.PICK,filter);
+      target.setRequired(true);
+      target.setNotTarget(true);
+      if (controller.chooseUse(outcome,"Cast an instant or sorcery card from among them for free?",game) && controller.choose(outcome,cards,target,game)) {
+        Card card=cards.get(target.getFirstTarget(),game);
+        if (card != null) {
+          controller.cast(card.getSpellAbility(),game,true);
+        }
+      }
+    }
+  }
+  return false;
+}

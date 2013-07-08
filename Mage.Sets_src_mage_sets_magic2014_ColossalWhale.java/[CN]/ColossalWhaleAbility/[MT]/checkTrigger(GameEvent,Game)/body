@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.ATTACKER_DECLARED && event.getSourceId().equals(this.getSourceId())) {
+    FilterCreaturePermanent filter=new FilterCreaturePermanent("creature defending player controls");
+    UUID defenderId=game.getCombat().getDefendingPlayer(sourceId);
+    filter.add(new ControllerIdPredicate(defenderId));
+    this.getTargets().clear();
+    TargetCreaturePermanent target=new TargetCreaturePermanent(filter);
+    target.setRequired(true);
+    this.addTarget(target);
+    return true;
+  }
+  return false;
+}
