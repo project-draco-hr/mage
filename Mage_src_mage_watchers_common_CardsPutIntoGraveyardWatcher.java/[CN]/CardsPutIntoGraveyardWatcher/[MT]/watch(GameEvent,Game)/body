@@ -4,7 +4,7 @@
   }
   if (event.getType() == GameEvent.EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).getToZone() == Zone.GRAVEYARD) {
     UUID playerId=event.getPlayerId();
-    if (playerId != null) {
+    if (playerId != null && game.getCard(event.getTargetId()) != null) {
       Integer amount=amountOfCardsThisTurn.get(playerId);
       if (amount == null) {
         amount=new Integer(1);
@@ -13,6 +13,9 @@
         ++amount;
       }
       amountOfCardsThisTurn.put(playerId,amount);
+      if (((ZoneChangeEvent)event).getFromZone().equals(Zone.BATTLEFIELD)) {
+        cardsPutToGraveyardFromBattlefield.add(event.getTargetId());
+      }
     }
   }
 }
