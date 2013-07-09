@@ -1,0 +1,13 @@
+{
+  CardsPutIntoGraveyardWatcher watcher=(CardsPutIntoGraveyardWatcher)game.getState().getWatchers().get("CardsPutIntoGraveyardWatcher");
+  if (watcher != null) {
+    FilterCard filter=new FilterCreatureCard(textFilter);
+    List<CardIdPredicate> uuidPredicates=new ArrayList<CardIdPredicate>();
+    for (    UUID uuid : watcher.getCardsPutToGraveyardFromBattlefield()) {
+      uuidPredicates.add(new CardIdPredicate(uuid));
+    }
+    filter.add(Predicates.or(uuidPredicates));
+    ability.getTargets().clear();
+    ability.addTarget(new TargetCardInGraveyard(filter));
+  }
+}
