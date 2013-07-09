@@ -1,0 +1,21 @@
+{
+  int tappedAmount=0;
+  TargetPermanent target=new TargetPermanent(filter);
+  while (true) {
+    target.clearChosen();
+    if (target.canChoose(source.getControllerId(),game) && target.choose(Outcome.Tap,source.getControllerId(),source.getId(),game)) {
+      UUID creature=target.getFirstTarget();
+      if (creature != null) {
+        game.getPermanent(creature).tap(game);
+        tappedAmount++;
+      }
+    }
+ else     break;
+  }
+  if (tappedAmount > 0) {
+    AngelToken angelToken=new AngelToken();
+    angelToken.putOntoBattlefield(tappedAmount,game,source.getId(),source.getControllerId());
+    return true;
+  }
+  return false;
+}
