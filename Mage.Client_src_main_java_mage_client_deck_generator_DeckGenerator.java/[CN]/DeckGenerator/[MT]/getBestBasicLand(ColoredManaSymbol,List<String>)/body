@@ -18,16 +18,32 @@ cardName="Island";
 break;
 }
 List<String> landSets=new LinkedList<String>();
-if (!setsToUse.isEmpty()) {
 for (String setCode : setsToUse) {
-ExpansionSet expansionSet=Sets.findSet(setCode);
-if (expansionSet.hasBasicLands()) {
-landSets.add(setCode);
-}
- else if (expansionSet.getParentSet() != null && !landSets.contains(expansionSet.getParentSet().getCode())) {
-landSets.add(expansionSet.getParentSet().getCode());
+ExpansionInfo expansionInfo=ExpansionRepository.instance.getSetByCode(setCode);
+if (expansionInfo.hasBasicLands()) {
+landSets.add(expansionInfo.getCode());
 }
 }
+if (landSets.isEmpty()) {
+for (String setCode : setsToUse) {
+ExpansionInfo expansionInfo=ExpansionRepository.instance.getSetByCode(setCode);
+ExpansionInfo[] blockSets=ExpansionRepository.instance.getSetsFromBlock(expansionInfo.getBlockName());
+for (ExpansionInfo blockSet : blockSets) {
+if (blockSet.hasBasicLands()) {
+landSets.add(blockSet.getCode());
+}
+}
+}
+}
+if (landSets.isEmpty()) {
+Random generator=new Random();
+ExpansionInfo[] randomLandSets=ExpansionRepository.instance.getSetsWithBasicLandsByReleaseDate();
+if (randomLandSets.length > 0) {
+landSets.add(randomLandSets[generator.nextInt(randomLandSets.length) - 1].getCode());
+}
+}
+if (landSets.isEmpty()) {
+throw new IllegalArgumentException("No set with basic land was found");
 }
 CardCriteria criteria=new CardCriteria();
 if (!landSets.isEmpty()) {
