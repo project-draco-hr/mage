@@ -1,0 +1,18 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  if (you == null) {
+    return false;
+  }
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("creature defending player controls");
+  UUID defenderId=game.getCombat().getDefendingPlayer(source.getSourceId());
+  filter.add(new ControllerIdPredicate(defenderId));
+  TargetCreaturePermanent target=new TargetCreaturePermanent(filter);
+  target.setRequired(true);
+  if (you.choose(Outcome.Tap,target,source.getId(),game)) {
+    Permanent targetCreature=game.getPermanent(target.getFirstTarget());
+    if (targetCreature != null) {
+      return targetCreature.tap(game);
+    }
+  }
+  return false;
+}

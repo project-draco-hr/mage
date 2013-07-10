@@ -1,0 +1,8 @@
+{
+  GameEvent preventEvent=new GameEvent(GameEvent.EventType.PREVENT_DAMAGE,target,source.getId(),source.getControllerId(),event.getAmount(),false);
+  if (!game.replaceEvent(preventEvent)) {
+    int damage=event.getAmount();
+    event.setAmount(0);
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.PREVENTED_DAMAGE,target,source.getId(),source.getControllerId(),damage));
+  }
+}
