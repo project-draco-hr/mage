@@ -1,0 +1,13 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  Card molten=game.getCard(source.getSourceId());
+  if (you != null) {
+    ElementalToken token=new ElementalToken();
+    token.putOntoBattlefield(2,game,source.getId(),source.getControllerId());
+    if (you.flipCoin(game)) {
+      molten.moveToZone(Zone.HAND,source.getId(),game,true);
+      game.informPlayers(you.getName() + "won the flip.  Molten Birth is returned to" + you.getName()+ "hand.");
+    }
+  }
+  return false;
+}
