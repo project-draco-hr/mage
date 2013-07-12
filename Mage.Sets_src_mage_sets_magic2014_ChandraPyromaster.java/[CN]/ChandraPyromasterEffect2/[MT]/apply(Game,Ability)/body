@@ -1,0 +1,13 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  if (you != null && you.getLibrary().size() > 0) {
+    Library library=you.getLibrary();
+    Card card=library.removeFromTop(game);
+    if (card != null) {
+      card.moveToExile(source.getSourceId(),"Chandra Pyromaster <this card may be played the turn it was exiled>",source.getSourceId(),game);
+      game.addEffect(new ChandraPyromasterCastFromExileEffect(card.getId()),source);
+    }
+    return true;
+  }
+  return false;
+}
