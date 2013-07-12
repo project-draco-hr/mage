@@ -1,0 +1,9 @@
+{
+  if (event.getType() == GameEvent.EventType.SPELL_CAST) {
+    Spell spell=game.getStack().getSpell(event.getTargetId());
+    if (spell != null && filter.match(spell,game) && game.getOpponents(this.getControllerId()).contains(spell.getControllerId()) && game.getActivePlayerId().equals(this.getControllerId())) {
+      return true;
+    }
+  }
+  return false;
+}
