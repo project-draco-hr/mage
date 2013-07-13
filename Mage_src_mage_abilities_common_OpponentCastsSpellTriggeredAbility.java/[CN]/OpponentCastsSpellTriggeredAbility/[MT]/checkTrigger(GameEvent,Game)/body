@@ -1,8 +1,12 @@
 {
   if (event.getType() == GameEvent.EventType.SPELL_CAST && game.getOpponents(controllerId).contains(event.getPlayerId())) {
     Spell spell=game.getStack().getSpell(event.getTargetId());
-    if (spell != null && filter.match(spell,game)) {
+    if (spell != null && filter.match(spell,game) && !setTargetPointerPlayer) {
       this.getEffects().get(0).setTargetPointer(new FixedTarget(event.getTargetId()));
+      return true;
+    }
+ else {
+      this.getEffects().get(0).setTargetPointer(new FixedTarget(event.getPlayerId()));
       return true;
     }
   }
