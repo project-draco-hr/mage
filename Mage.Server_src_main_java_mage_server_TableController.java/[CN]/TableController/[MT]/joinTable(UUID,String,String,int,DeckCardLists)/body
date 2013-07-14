@@ -11,6 +11,9 @@
     throw new InvalidDeckException(name + " has an invalid deck for this format",table.getValidator().getInvalid());
   }
   Player player=createPlayer(name,seat.getPlayerType(),skill);
+  if (player == null) {
+    throw new GameException(new StringBuilder("Could not create player ").append(name).append(" of type ").append(seat.getPlayerType().toString()).toString());
+  }
   match.addPlayer(player,deck);
   table.joinTable(player,seat);
   User user=UserManager.getInstance().getUser(userId);
