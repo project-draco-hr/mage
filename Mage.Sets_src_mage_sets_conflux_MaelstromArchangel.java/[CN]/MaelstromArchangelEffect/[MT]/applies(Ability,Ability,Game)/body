@@ -1,0 +1,19 @@
+{
+  if (abilityToModify instanceof SpellAbility || abilityToModify instanceof FlashbackAbility || abilityToModify instanceof RetraceAbility) {
+    Card sourceCard=game.getCard(abilityToModify.getSourceId());
+    StackObject stackObject=game.getStack().getStackObject(abilityToModify.getSourceId());
+    if (stackObject != null && stackObject instanceof Spell) {
+      Zone zone=((Spell)stackObject).getFromZone();
+      if (zone != null && zone.equals(Zone.HAND)) {
+        if (sourceCard != null && sourceCard.getOwnerId().equals(source.getControllerId()) && !sourceCard.getCardType().contains(CardType.LAND)) {
+          Player you=game.getPlayer(source.getControllerId());
+          String message="Cast " + sourceCard.getName() + " without paying its mana costs?";
+          if (you != null && you.chooseUse(Outcome.PlayForFree,message,game)) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
