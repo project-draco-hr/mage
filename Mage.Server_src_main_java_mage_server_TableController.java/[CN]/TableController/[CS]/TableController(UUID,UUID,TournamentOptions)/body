@@ -4,7 +4,13 @@
   tournament=TournamentFactory.getInstance().createTournament(options.getTournamentType(),options);
   if (userId != null) {
     User user=UserManager.getInstance().getUser(userId);
-    controllerName=user.getName();
+    if (user == null) {
+      logger.fatal(new StringBuilder("User for userId ").append(userId).append(" could not be retrieved from UserManager").toString());
+      controllerName="[unknown]";
+    }
+ else {
+      controllerName=user.getName();
+    }
   }
  else {
     controllerName="System";
