@@ -155,9 +155,19 @@
       for (      String planeswalkertype : planeswalker.getSubtype()) {
         FilterPlaneswalkerPermanent filterPlaneswalker=new FilterPlaneswalkerPermanent();
         filterPlaneswalker.add(new SubtypePredicate(planeswalkertype));
+        filterPlaneswalker.add(new ControllerIdPredicate(planeswalker.getControllerId()));
         if (getBattlefield().contains(filterPlaneswalker,planeswalker.getControllerId(),this,2)) {
-          for (          Permanent perm : getBattlefield().getActivePermanents(filterPlaneswalker,planeswalker.getControllerId(),this)) {
-            perm.moveToZone(Zone.GRAVEYARD,null,this,false);
+          Player controller=this.getPlayer(planeswalker.getControllerId());
+          if (controller != null) {
+            Target targetPlaneswalkerToKeep=new TargetPermanent(filterPlaneswalker);
+            targetPlaneswalkerToKeep.setTargetName(new StringBuilder(planeswalker.getName()).append(" to keep?").toString());
+            targetPlaneswalkerToKeep.setRequired(true);
+            controller.chooseTarget(Outcome.Sacrifice,targetPlaneswalkerToKeep,null,this);
+            for (            Permanent dupPlaneswalker : this.getBattlefield().getActivePermanents(filterPlaneswalker,planeswalker.getControllerId(),this)) {
+              if (!targetPlaneswalkerToKeep.getTargets().contains(dupPlaneswalker.getId())) {
+                dupPlaneswalker.moveToZone(Zone.GRAVEYARD,null,this,false);
+              }
+            }
           }
           return true;
         }
@@ -169,9 +179,19 @@
       FilterPermanent filterLegendName=new FilterPermanent();
       filterLegendName.add(new SupertypePredicate("Legendary"));
       filterLegendName.add(new NamePredicate(legend.getName()));
+      filterLegendName.add(new ControllerIdPredicate(legend.getControllerId()));
       if (getBattlefield().contains(filterLegendName,legend.getControllerId(),this,2)) {
-        for (        Permanent dupLegend : getBattlefield().getActivePermanents(filterLegendName,legend.getControllerId(),this)) {
-          dupLegend.moveToZone(Zone.GRAVEYARD,null,this,false);
+        Player controller=this.getPlayer(legend.getControllerId());
+        if (controller != null) {
+          Target targetLegendaryToKeep=new TargetPermanent(filterLegendName);
+          targetLegendaryToKeep.setTargetName(new StringBuilder(legend.getName()).append(" to keep (Legendary Rule)?").toString());
+          targetLegendaryToKeep.setRequired(true);
+          controller.chooseTarget(Outcome.Sacrifice,targetLegendaryToKeep,null,this);
+          for (          Permanent dupLegend : getBattlefield().getActivePermanents(filterLegendName,legend.getControllerId(),this)) {
+            if (!targetLegendaryToKeep.getTargets().contains(dupLegend.getId())) {
+              dupLegend.moveToZone(Zone.GRAVEYARD,null,this,false);
+            }
+          }
         }
         return true;
       }
