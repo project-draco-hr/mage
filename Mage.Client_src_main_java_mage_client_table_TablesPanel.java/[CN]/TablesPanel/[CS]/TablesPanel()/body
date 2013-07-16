@@ -20,10 +20,10 @@
       int modelRow=Integer.valueOf(e.getActionCommand());
       UUID tableId=(UUID)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN + 3);
       UUID gameId=(UUID)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN + 2);
-      String state=(String)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN);
+      String action=(String)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN);
       boolean isTournament=(Boolean)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN + 1);
       String owner=(String)tableModel.getValueAt(modelRow,1);
-      if (state.equals("Join")) {
+      if (action.equals("Join")) {
         if (owner.equals(session.getUserName())) {
           try {
             JDesktopPane desktopPane=(JDesktopPane)MageFrame.getUI().getComponent(MageComponents.DESKTOP_PANE);
@@ -56,18 +56,24 @@
           joinTableDialog.showDialog(roomId,tableId);
         }
       }
- else       if (state.equals("Remove")) {
+ else       if (action.equals("Remove")) {
         if (JOptionPane.showConfirmDialog(null,"Are you sure you want to remove table?","Removing table",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
           session.removeTable(roomId,tableId);
         }
       }
- else       if (state.equals("Watch")) {
+ else       if (action.equals("Show")) {
+        if (isTournament) {
+          logger.info("Showing tournament table " + tableId);
+          session.watchTable(roomId,tableId);
+        }
+      }
+ else       if (action.equals("Watch")) {
         if (!isTournament) {
           logger.info("Watching table " + tableId);
           session.watchTable(roomId,tableId);
         }
       }
- else       if (state.equals("Replay")) {
+ else       if (action.equals("Replay")) {
         logger.info("Replaying game " + gameId);
       }
     }
@@ -76,12 +82,14 @@
   Action replayMatch=new AbstractAction(){
     @Override public void actionPerformed(    ActionEvent e){
       int modelRow=Integer.valueOf(e.getActionCommand());
-      List<UUID> games=(List<UUID>)matchesModel.getValueAt(modelRow,MatchesTableModel.ACTION_COLUMN);
-      if (games.size() == 1) {
-        session.replayGame(games.get(0));
-      }
+      if (matchesModel.getValueAt(modelRow,MatchesTableModel.ACTION_COLUMN) instanceof List) {
+        List<UUID> games=(List<UUID>)matchesModel.getValueAt(modelRow,MatchesTableModel.ACTION_COLUMN);
+        if (games.size() == 1) {
+          session.replayGame(games.get(0));
+        }
  else {
-        gameChooser.show(games,MageFrame.getDesktop().getMousePosition());
+          gameChooser.show(games,MageFrame.getDesktop().getMousePosition());
+        }
       }
     }
   }

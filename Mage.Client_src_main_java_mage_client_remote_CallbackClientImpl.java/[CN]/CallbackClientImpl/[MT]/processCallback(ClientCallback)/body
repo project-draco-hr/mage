@@ -22,12 +22,15 @@
  else         if (callback.getMethod().equals("replayGame")) {
           replayGame(callback.getObjectId());
         }
+ else         if (callback.getMethod().equals("showTournament")) {
+          showTournament((UUID)callback.getObjectId());
+        }
  else         if (callback.getMethod().equals("watchGame")) {
           watchGame((UUID)callback.getObjectId());
         }
  else         if (callback.getMethod().equals("chatMessage")) {
           ChatMessage message=(ChatMessage)callback.getData();
-          ChatPanel panel=frame.getChat(callback.getObjectId());
+          ChatPanel panel=MageFrame.getChat(callback.getObjectId());
           if (panel != null) {
             if (message.getMessage().equals(Constants.MSG_TIP_HOT_KEYS_CODE) && panel.getConnectedChat() != null) {
               panel.getConnectedChat().receiveMessage("[Tips] ","You may use hot keys to play faster: " + "" + "\nF2 - Confirm \"Ok\", \"Yes\" or \"Done\" button"+ "\nF4 - Skip current turn but stop on declare attackers"+ "\nF9 - Skip everything until your next turn"+ "\nF3 - Undo F4/F9","",ChatMessage.MessageColor.ORANGE);
@@ -58,27 +61,31 @@
           joinedTable(message.getRoomId(),message.getTableId(),message.getFlag());
         }
  else         if (callback.getMethod().equals("replayInit")) {
-          GamePanel panel=frame.getGame(callback.getObjectId());
-          if (panel != null)           panel.init((GameView)callback.getData());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
+          if (panel != null) {
+            panel.init((GameView)callback.getData());
+          }
         }
  else         if (callback.getMethod().equals("replayDone")) {
-          GamePanel panel=frame.getGame(callback.getObjectId());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
           if (panel != null) {
             panel.endMessage((String)callback.getData());
           }
         }
  else         if (callback.getMethod().equals("replayUpdate")) {
-          GamePanel panel=frame.getGame(callback.getObjectId());
-          if (panel != null)           panel.updateGame((GameView)callback.getData());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
+          if (panel != null) {
+            panel.updateGame((GameView)callback.getData());
+          }
         }
  else         if (callback.getMethod().equals("gameInit")) {
-          GamePanel panel=frame.getGame(callback.getObjectId());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
           if (panel != null) {
             panel.init((GameView)callback.getData());
           }
         }
  else         if (callback.getMethod().equals("gameOver")) {
-          GamePanel panel=frame.getGame(callback.getObjectId());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
           if (panel != null) {
             panel.endMessage((String)callback.getData());
           }
@@ -88,57 +95,79 @@
         }
  else         if (callback.getMethod().equals("gameAsk")) {
           GameClientMessage message=(GameClientMessage)callback.getData();
-          GamePanel panel=frame.getGame(callback.getObjectId());
-          if (panel != null)           panel.ask(message.getMessage(),message.getGameView());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
+          if (panel != null) {
+            panel.ask(message.getMessage(),message.getGameView());
+          }
         }
  else         if (callback.getMethod().equals("gameTarget")) {
           GameClientMessage message=(GameClientMessage)callback.getData();
-          GamePanel panel=frame.getGame(callback.getObjectId());
-          if (panel != null)           panel.pickTarget(message.getMessage(),message.getCardsView(),message.getGameView(),message.getTargets(),message.isFlag(),message.getOptions());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
+          if (panel != null) {
+            panel.pickTarget(message.getMessage(),message.getCardsView(),message.getGameView(),message.getTargets(),message.isFlag(),message.getOptions());
+          }
         }
  else         if (callback.getMethod().equals("gameSelect")) {
           GameClientMessage message=(GameClientMessage)callback.getData();
-          GamePanel panel=frame.getGame(callback.getObjectId());
-          if (panel != null)           panel.select(message.getMessage(),message.getGameView());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
+          if (panel != null) {
+            panel.select(message.getMessage(),message.getGameView());
+          }
         }
  else         if (callback.getMethod().equals("gameChooseAbility")) {
-          GamePanel panel=frame.getGame(callback.getObjectId());
-          if (panel != null)           panel.pickAbility((AbilityPickerView)callback.getData());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
+          if (panel != null) {
+            panel.pickAbility((AbilityPickerView)callback.getData());
+          }
         }
  else         if (callback.getMethod().equals("gameChoosePile")) {
           GameClientMessage message=(GameClientMessage)callback.getData();
-          GamePanel panel=frame.getGame(callback.getObjectId());
-          if (panel != null)           panel.pickPile(message.getMessage(),message.getPile1(),message.getPile2());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
+          if (panel != null) {
+            panel.pickPile(message.getMessage(),message.getPile1(),message.getPile2());
+          }
         }
  else         if (callback.getMethod().equals("gameChoose")) {
           GameClientMessage message=(GameClientMessage)callback.getData();
-          GamePanel panel=frame.getGame(callback.getObjectId());
-          if (panel != null)           panel.getChoice(message.getMessage(),message.getStrings());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
+          if (panel != null) {
+            panel.getChoice(message.getMessage(),message.getStrings());
+          }
         }
  else         if (callback.getMethod().equals("gamePlayMana")) {
           GameClientMessage message=(GameClientMessage)callback.getData();
-          GamePanel panel=frame.getGame(callback.getObjectId());
-          if (panel != null)           panel.playMana(message.getMessage(),message.getGameView());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
+          if (panel != null) {
+            panel.playMana(message.getMessage(),message.getGameView());
+          }
         }
  else         if (callback.getMethod().equals("gamePlayXMana")) {
           GameClientMessage message=(GameClientMessage)callback.getData();
-          GamePanel panel=frame.getGame(callback.getObjectId());
-          if (panel != null)           panel.playXMana(message.getMessage(),message.getGameView());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
+          if (panel != null) {
+            panel.playXMana(message.getMessage(),message.getGameView());
+          }
         }
  else         if (callback.getMethod().equals("gameSelectAmount")) {
           GameClientMessage message=(GameClientMessage)callback.getData();
-          GamePanel panel=frame.getGame(callback.getObjectId());
-          if (panel != null)           panel.getAmount(message.getMin(),message.getMax(),message.getMessage());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
+          if (panel != null) {
+            panel.getAmount(message.getMin(),message.getMax(),message.getMessage());
+          }
         }
  else         if (callback.getMethod().equals("gameUpdate")) {
-          GamePanel panel=frame.getGame(callback.getObjectId());
-          if (panel != null)           panel.updateGame((GameView)callback.getData());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
+          if (panel != null) {
+            panel.updateGame((GameView)callback.getData());
+          }
         }
  else         if (callback.getMethod().equals("gameInform")) {
           if (callback.getMessageId() > messageId) {
             GameClientMessage message=(GameClientMessage)callback.getData();
-            GamePanel panel=frame.getGame(callback.getObjectId());
-            if (panel != null)             panel.inform(message.getMessage(),message.getGameView());
+            GamePanel panel=MageFrame.getGame(callback.getObjectId());
+            if (panel != null) {
+              panel.inform(message.getMessage(),message.getGameView());
+            }
           }
  else {
             logger.warn("message out of sequence - ignoring");
@@ -146,7 +175,7 @@
         }
  else         if (callback.getMethod().equals("gameInformPersonal")) {
           GameClientMessage message=(GameClientMessage)callback.getData();
-          GamePanel panel=frame.getGame(callback.getObjectId());
+          GamePanel panel=MageFrame.getGame(callback.getObjectId());
           if (panel != null) {
             JOptionPane.showMessageDialog(panel,message.getMessage(),"Game message",JOptionPane.INFORMATION_MESSAGE);
           }
@@ -155,8 +184,12 @@
           TableClientMessage message=(TableClientMessage)callback.getData();
           DeckView deckView=message.getDeck();
           Deck deck=DeckUtil.construct(deckView);
-          if (message.getFlag())           construct(deck,message.getTableId(),message.getTime());
- else           sideboard(deck,message.getTableId(),message.getTime());
+          if (message.getFlag()) {
+            construct(deck,message.getTableId(),message.getTime());
+          }
+ else {
+            sideboard(deck,message.getTableId(),message.getTime());
+          }
         }
  else         if (callback.getMethod().equals("construct")) {
           TableClientMessage message=(TableClientMessage)callback.getData();
@@ -165,17 +198,23 @@
           construct(deck,message.getTableId(),message.getTime());
         }
  else         if (callback.getMethod().equals("draftOver")) {
-          DraftPanel panel=frame.getDraft(callback.getObjectId());
-          if (panel != null)           panel.hideDraft();
+          DraftPanel panel=MageFrame.getDraft(callback.getObjectId());
+          if (panel != null) {
+            panel.hideDraft();
+          }
         }
  else         if (callback.getMethod().equals("draftPick")) {
           DraftClientMessage message=(DraftClientMessage)callback.getData();
-          DraftPanel panel=frame.getDraft(callback.getObjectId());
-          if (panel != null)           panel.loadBooster(message.getDraftPickView());
+          DraftPanel panel=MageFrame.getDraft(callback.getObjectId());
+          if (panel != null) {
+            panel.loadBooster(message.getDraftPickView());
+          }
         }
  else         if (callback.getMethod().equals("draftUpdate")) {
-          DraftPanel panel=frame.getDraft(callback.getObjectId());
-          if (panel != null)           panel.updateDraft((DraftView)callback.getData());
+          DraftPanel panel=MageFrame.getDraft(callback.getObjectId());
+          if (panel != null) {
+            panel.updateDraft((DraftView)callback.getData());
+          }
         }
  else         if (callback.getMethod().equals("draftInform")) {
           if (callback.getMessageId() > messageId) {
@@ -187,8 +226,10 @@
         }
  else         if (callback.getMethod().equals("draftInit")) {
           DraftClientMessage message=(DraftClientMessage)callback.getData();
-          DraftPanel panel=frame.getDraft(callback.getObjectId());
-          if (panel != null)           panel.loadBooster(message.getDraftPickView());
+          DraftPanel panel=MageFrame.getDraft(callback.getObjectId());
+          if (panel != null) {
+            panel.loadBooster(message.getDraftPickView());
+          }
         }
  else         if (callback.getMethod().equals("tournamentInit")) {
         }

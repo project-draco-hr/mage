@@ -1,5 +1,5 @@
 {
-  if (!titleSet) {
+  if (!firstInitDone) {
     Component c=this.getParent();
     while (c != null && !(c instanceof TournamentPane)) {
       c=c.getParent();
@@ -7,18 +7,14 @@
     if (c != null) {
       ((TournamentPane)c).setTitle("Tournament [" + tournament.getTournamentName() + "]");
     }
-    titleSet=true;
-  }
-  txtName.setText(tournament.getTournamentName());
-  txtType.setText(tournament.getTournamentType());
-  txtStartTime.setText(df.format(tournament.getStartTime()));
-  if (tournament.getEndTime() != null) {
-    txtEndTime.setText(df.format(tournament.getEndTime()));
-    btnCloseWindow.setVisible(true);
-  }
- else {
+    txtName.setText(tournament.getTournamentName());
+    txtType.setText(tournament.getTournamentType());
+    txtStartTime.setText(df.format(tournament.getStartTime()));
     txtEndTime.setText("running...");
-    btnCloseWindow.setVisible(false);
+    firstInitDone=true;
+  }
+  if (txtEndTime.getText().equals("running...") && tournament.getEndTime() != null) {
+    txtEndTime.setText(df.format(tournament.getEndTime()));
   }
   playersModel.loadData(tournament);
   matchesModel.loadData(tournament);

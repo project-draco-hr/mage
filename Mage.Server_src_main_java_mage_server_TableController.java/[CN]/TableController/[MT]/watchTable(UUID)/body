@@ -1,10 +1,19 @@
 {
-  if (table.getState() != TableState.DUELING) {
-    return false;
+  if (table.isTournament()) {
+    UserManager.getInstance().getUser(userId).showTournament(table.getTournament().getId());
+    return true;
   }
-  if (userPlayerMap.get(userId) != null) {
-    return false;
+ else {
+    if (table.isTournamentSubTable() && !table.getTournament().getOptions().isWatchingAllowed()) {
+      return false;
+    }
+    if (table.getState() != TableState.DUELING) {
+      return false;
+    }
+    if (userPlayerMap.get(userId) != null) {
+      return false;
+    }
+    UserManager.getInstance().getUser(userId).watchGame(match.getGame().getId());
+    return true;
   }
-  UserManager.getInstance().getUser(userId).watchGame(match.getGame().getId());
-  return true;
 }

@@ -11,9 +11,11 @@
       int modelRow=Integer.valueOf(e.getActionCommand());
       UUID gameId=UUID.fromString((String)tableMatches.getValueAt(modelRow,3));
       String state=(String)tableMatches.getValueAt(modelRow,4);
-      if (state.equals("Finished")) {
-        logger.info("Replaying game " + gameId);
-        session.replayGame(gameId);
+      String actionText=(String)tableMatches.getValueAt(modelRow,6);
+      UUID tableId=UUID.fromString((String)matchesModel.getValueAt(modelRow,7));
+      if (state.equals("Dueling") && actionText.equals("Watch")) {
+        logger.info("Watching game " + gameId);
+        session.watchTournamentTable(tableId);
       }
     }
   }
