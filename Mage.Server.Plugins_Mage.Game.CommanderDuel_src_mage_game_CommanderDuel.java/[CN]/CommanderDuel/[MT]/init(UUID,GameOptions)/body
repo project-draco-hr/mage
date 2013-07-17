@@ -1,4 +1,15 @@
 {
   super.init(choosingPlayerId,gameOptions);
+  for (  UUID playerId : state.getPlayerList(startingPlayerId)) {
+    Player player=getPlayer(playerId);
+    if (player != null) {
+      if (player.getSideboard().size() > 0) {
+        Card commander=getCard((UUID)player.getSideboard().toArray()[0]);
+        if (commander != null) {
+          commander.moveToZone(Zone.COMMAND,null,this,true);
+        }
+      }
+    }
+  }
   state.getTurnMods().add(new TurnMod(startingPlayerId,PhaseStep.DRAW));
 }

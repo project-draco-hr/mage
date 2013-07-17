@@ -31,7 +31,16 @@
       if (emblem.getControllerId().equals(this.playerId)) {
         Card sourceCard=game.getCard(((CommandObject)emblem).getSourceId());
         if (sourceCard != null) {
-          emblemList.add(new EmblemView(emblem,sourceCard));
+          commandList.add(new EmblemView(emblem,sourceCard));
+        }
+      }
+    }
+ else     if (commandObject instanceof Commander) {
+      Commander commander=(Commander)commandObject;
+      if (commander.getControllerId().equals(this.playerId)) {
+        Card sourceCard=game.getCard(commander.getSourceId());
+        if (sourceCard != null) {
+          commandList.add(new CommanderView(commander,sourceCard));
         }
       }
     }
