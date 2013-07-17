@@ -1,0 +1,18 @@
+{
+  MageObject object=game.getObject(source.getSourceId());
+  if (object != null && object instanceof Commander) {
+    Commander commander=(Commander)object;
+    Player controller=game.getPlayer(source.getControllerId());
+    if (controller != null) {
+      SpellAbility spellAbility=commander.getCard().getSpellAbility();
+      spellAbility.clear();
+      int amount=source.getManaCostsToPay().getX();
+      spellAbility.getManaCostsToPay().setX(amount);
+      for (      Target target : spellAbility.getTargets()) {
+        target.setRequired(true);
+      }
+      return controller.cast(spellAbility,game,true);
+    }
+  }
+  return false;
+}
