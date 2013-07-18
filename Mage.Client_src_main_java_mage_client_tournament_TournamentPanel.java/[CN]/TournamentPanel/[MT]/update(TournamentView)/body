@@ -20,4 +20,15 @@
   matchesModel.loadData(tournament);
   this.tablePlayers.repaint();
   this.tableMatches.repaint();
+  btnQuitTournament.setVisible(false);
+  if (tournament.getEndTime() == null) {
+    for (    TournamentPlayerView player : tournament.getPlayers()) {
+      if (player.getName().equals(session.getUserName())) {
+        if (!player.hasQuit()) {
+          btnQuitTournament.setVisible(true);
+        }
+        break;
+      }
+    }
+  }
 }

@@ -1,0 +1,17 @@
+{
+  UUID playerId=userPlayerMap.get(userId);
+  if (playerId != null) {
+    TournamentPlayer player=tournament.getPlayer(playerId);
+    if (player != null) {
+      ChatManager.getInstance().broadcast(chatId,"",player.getPlayer().getName() + " has quit the tournament",MessageColor.BLACK);
+      String info;
+      if (tournament.isDoneConstructing()) {
+        info=new StringBuilder("during round ").append(tournament.getRounds().size()).toString();
+      }
+ else {
+        info="during Construction phase";
+      }
+      player.setQuit(info);
+    }
+  }
+}
