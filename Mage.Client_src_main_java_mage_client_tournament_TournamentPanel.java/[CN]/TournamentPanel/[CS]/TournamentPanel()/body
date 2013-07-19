@@ -2,6 +2,7 @@
   playersModel=new TournamentPlayersTableModel();
   matchesModel=new TournamentMatchesTableModel();
   initComponents();
+  this.restoreDividerLocations();
   btnQuitTournament.setVisible(false);
   df=DateFormat.getDateTimeInstance();
   tablePlayers.createDefaultColumnsFromModel();
@@ -10,10 +11,10 @@
   Action action=new AbstractAction(){
     @Override public void actionPerformed(    ActionEvent e){
       int modelRow=Integer.valueOf(e.getActionCommand());
-      UUID gameId=UUID.fromString((String)tableMatches.getValueAt(modelRow,3));
-      String state=(String)tableMatches.getValueAt(modelRow,4);
-      String actionText=(String)tableMatches.getValueAt(modelRow,6);
-      UUID tableId=UUID.fromString((String)matchesModel.getValueAt(modelRow,7));
+      String state=(String)tableMatches.getValueAt(modelRow,2);
+      String actionText=(String)tableMatches.getValueAt(modelRow,TournamentMatchesTableModel.ACTION_COLUMN);
+      UUID tableId=UUID.fromString((String)matchesModel.getValueAt(modelRow,TournamentMatchesTableModel.ACTION_COLUMN + 1));
+      UUID gameId=UUID.fromString((String)matchesModel.getValueAt(modelRow,TournamentMatchesTableModel.ACTION_COLUMN + 3));
       if (state.equals("Dueling") && actionText.equals("Watch")) {
         logger.info("Watching game " + gameId);
         session.watchTournamentTable(tableId);
@@ -21,5 +22,5 @@
     }
   }
 ;
-  ButtonColumn buttonColumn=new ButtonColumn(tableMatches,action,6);
+  ButtonColumn buttonColumn=new ButtonColumn(tableMatches,action,TournamentMatchesTableModel.ACTION_COLUMN);
 }
