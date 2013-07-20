@@ -11,7 +11,19 @@
       for (      Target target : spellAbility.getTargets()) {
         target.setRequired(true);
       }
-      return controller.cast(spellAbility,game,true);
+      if (controller.cast(spellAbility,game,true)) {
+        Integer castCount=(Integer)game.getState().getValue(commander.getId() + "_castCount");
+        if (castCount != null) {
+          castCount++;
+          game.getState().setValue(commander.getId() + "_castCount",castCount);
+        }
+ else {
+          castCount=1;
+          game.getState().setValue(commander.getId() + "_castCount",castCount);
+        }
+        return true;
+      }
+      return false;
     }
   }
   return false;
