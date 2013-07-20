@@ -1,5 +1,6 @@
 {
   super.init(choosingPlayerId,gameOptions);
+  Ability ability=new SimpleStaticAbility(Zone.COMMAND,new EmptyEffect("Commander effects"));
   for (  UUID playerId : state.getPlayerList(startingPlayerId)) {
     Player player=getPlayer(playerId);
     if (player != null) {
@@ -7,9 +8,13 @@
         Card commander=getCard((UUID)player.getSideboard().toArray()[0]);
         if (commander != null) {
           commander.moveToZone(Zone.COMMAND,null,this,true);
+          ability.addEffect(new CommanderReplacementEffect(commander.getId()));
+          ability.addEffect(new CommanderCostModification(commander.getId()));
+          getState().setValue(commander + "_castCount",new Integer(0));
         }
       }
     }
   }
+  this.getState().addAbility(ability,null,null);
   state.getTurnMods().add(new TurnMod(startingPlayerId,PhaseStep.DRAW));
 }
