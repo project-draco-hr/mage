@@ -2,11 +2,17 @@
   StringBuilder sb=new StringBuilder();
   sb.append("put ");
   if (counter.getCount() > 1) {
-    sb.append(Integer.toString(counter.getCount())).append(" ").append(counter.getName()).append(" counters on target ");
+    sb.append(CardUtil.numberToText(counter.getCount())).append(" ");
   }
  else {
-    sb.append("a ").append(counter.getName()).append(" counter on target ");
+    sb.append("a ");
   }
-  if (mode.getTargets().size() > 0)   sb.append(mode.getTargets().get(0).getTargetName());
+  sb.append(counter.getName().toLowerCase()).append(" counter on target ");
+  if (mode.getTargets().size() > 0) {
+    sb.append(mode.getTargets().get(0).getTargetName());
+  }
+  if (amount.getMessage().length() > 0) {
+    sb.append(" for each ").append(amount.getMessage());
+  }
   return sb.toString();
 }
