@@ -1,0 +1,19 @@
+{
+  if (event.getType() == EventType.DAMAGED_PLAYER && event instanceof DamagedPlayerEvent) {
+    if (sourceId.equals(event.getSourceId())) {
+      DamagedPlayerEvent damageEvent=(DamagedPlayerEvent)event;
+      UUID playerUUID=event.getTargetId();
+      Integer damage=damageToPlayer.get(playerUUID);
+      if (damage == null) {
+        damage=0;
+      }
+      damage+=damageEvent.getAmount();
+      damageToPlayer.put(playerUUID,damage);
+      Player player=game.getPlayer(playerUUID);
+      MageObject commander=game.getObject(sourceId);
+      if (player != null && commander != null) {
+        game.informPlayers(commander.getName() + " did " + damage+ "damages to "+ player.getName()+ " during the game.");
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  for (  Watcher watcher : getState().getWatchers().values()) {
+    if (watcher instanceof CommanderCombatDamageWatcher) {
+      CommanderCombatDamageWatcher damageWatcher=(CommanderCombatDamageWatcher)watcher;
+      for (      UUID playerUUID : damageWatcher.getDamageToPlayer().keySet()) {
+        Player player=getPlayer(playerUUID);
+        if (player != null && damageWatcher.getDamageToPlayer().get(playerUUID) >= 21) {
+          player.lost(this);
+        }
+      }
+    }
+  }
+  return super.checkStateBasedActions();
+}
