@@ -1,16 +1,20 @@
 {
   if (!game.replaceEvent(new GameEvent(GameEvent.EventType.WINS,null,null,playerId))) {
     if (!this.loses) {
-      if (game.getPlayers().size() > 2) {
-        for (        UUID opponentId : game.getOpponents(playerId)) {
-          Player opponent=game.getPlayer(opponentId);
-          if (opponent != null && !opponent.hasLost()) {
-            opponent.lost(game);
-          }
+      for (      UUID opponentId : game.getOpponents(playerId)) {
+        Player opponent=game.getPlayer(opponentId);
+        if (opponent != null && !opponent.hasLost()) {
+          opponent.lost(game);
         }
-        this.wins=true;
       }
- else {
+      int opponentsAlive=0;
+      for (      UUID opponentId : game.getOpponents(playerId)) {
+        Player opponent=game.getPlayer(opponentId);
+        if (!opponent.hasLost()) {
+          opponentsAlive++;
+        }
+      }
+      if (opponentsAlive == 0) {
         this.wins=true;
         game.end();
       }
