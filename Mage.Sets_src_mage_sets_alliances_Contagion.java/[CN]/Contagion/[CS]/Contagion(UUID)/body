@@ -1,0 +1,14 @@
+{
+  super(ownerId,4,"Contagion",Rarity.UNCOMMON,new CardType[]{CardType.INSTANT},"{3}{B}{B}");
+  this.expansionSetCode="ALL";
+  this.color.setBlack(true);
+  FilterOwnedCard filter=new FilterOwnedCard("black card from your hand");
+  filter.add(new ColorPredicate(ObjectColor.BLACK));
+  filter.add(Predicates.not(new CardIdPredicate(this.getId())));
+  CostsImpl<Cost> costs=new CostsImpl<Cost>();
+  costs.add(new PayLifeCost(1));
+  costs.add(new ExileFromHandCost(new TargetCardInHand(filter)));
+  this.getSpellAbility().addAlternativeCost(new AlternativeCostImpl("Pay 1 life and exile a black card from your hand rather than pay {source}'s mana cost",costs));
+  this.getSpellAbility().addTarget(new TargetCreaturePermanentAmount(2));
+  this.getSpellAbility().addEffect(new DistributeCountersEffect());
+}

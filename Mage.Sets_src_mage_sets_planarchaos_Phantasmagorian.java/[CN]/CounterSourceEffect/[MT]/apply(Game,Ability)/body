@@ -1,0 +1,23 @@
+{
+  StackObject spell=null;
+  for (  StackObject objet : game.getStack()) {
+    if (objet instanceof Spell && objet.getSourceId().equals(source.getSourceId())) {
+      spell=objet;
+    }
+  }
+  if (spell != null) {
+    for (    UUID uuid : game.getPlayerList()) {
+      Player player=game.getPlayer(uuid);
+      if (player.chooseUse(Outcome.Detriment,"Discard tree cards to counter " + spell.getName() + "?",game)) {
+        DiscardTargetCost cost=new DiscardTargetCost(new TargetCardInHand(3,3,new FilterCard()));
+        if (cost.pay(source,game,source.getSourceId(),uuid,false)) {
+          game.informPlayers(player.getName() + " discards 3 cards to counter " + spell.getName()+ ".");
+          game.getStack().counter(spell.getId(),source.getSourceId(),game);
+          return true;
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
