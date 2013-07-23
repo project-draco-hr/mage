@@ -6,8 +6,9 @@
   this.color.setBlack(true);
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
-  ConditionalContinousEffect effect1=new ConditionalContinousEffect(new BoostSourceEffect(2,1,Duration.WhileOnBattlefield),EquippedCondition.getInstance(),rule1);
+  Condition condition=new TenOrLessLifeCondition(TenOrLessLifeCondition.CheckType.AN_OPPONENT);
+  ConditionalContinousEffect effect1=new ConditionalContinousEffect(new BoostSourceEffect(2,1,Duration.WhileOnBattlefield),condition,rule1);
   this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect1));
-  ConditionalContinousEffect effect2=new ConditionalContinousEffect(new GainAbilitySourceEffect(IntimidateAbility.getInstance()),EquippedCondition.getInstance(),rule2);
+  ConditionalContinousEffect effect2=new ConditionalContinousEffect(new GainAbilitySourceEffect(IntimidateAbility.getInstance(),Duration.WhileOnBattlefield),condition,rule2);
   this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect2));
 }
