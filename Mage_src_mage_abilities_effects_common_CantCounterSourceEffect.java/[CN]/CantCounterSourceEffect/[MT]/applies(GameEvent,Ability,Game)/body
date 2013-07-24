@@ -1,8 +1,11 @@
 {
   if (event.getType() == EventType.COUNTER) {
-    UUID spellId=game.getCard(source.getSourceId()).getSpellAbility().getId();
-    if (event.getTargetId().equals(spellId)) {
-      return true;
+    Card card=game.getCard(source.getSourceId());
+    if (card != null) {
+      UUID spellId=card.getSpellAbility().getId();
+      if (event.getTargetId().equals(spellId)) {
+        return true;
+      }
     }
   }
   return false;
