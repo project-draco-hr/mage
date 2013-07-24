@@ -1,14 +1,15 @@
 {
+  boolean result=false;
   for (  UUID targetId : getTargetPointer().getTargets(game,source)) {
     Card card=game.getCard(targetId);
     if (card != null) {
       Player player=game.getPlayer(card.getOwnerId());
       if (player != null) {
         if (card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),source.getControllerId(),tapped)) {
-          return true;
+          result=true;
         }
       }
     }
   }
-  return true;
+  return result;
 }
