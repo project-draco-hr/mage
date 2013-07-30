@@ -1,10 +1,14 @@
 {
   List<ColoredManaSymbol> allowedColors=new ArrayList<ColoredManaSymbol>();
   selectedColors=selectedColors != null ? selectedColors.toUpperCase() : getRandomColors("X");
-  String format=(String)formats.getSelectedItem();
+  String format=(String)cbSets.getSelectedItem();
   List<String> setsToUse=ConstructedFormats.getSetsByFormat(format);
   if (setsToUse.isEmpty()) {
     setsToUse=ExpansionRepository.instance.getSetCodes();
+  }
+  int deckSize=Integer.parseInt(cbDeckSize.getSelectedItem().toString());
+  if (deckSize < 40) {
+    deckSize=40;
   }
   if (selectedColors.contains("X")) {
     selectedColors=getRandomColors(selectedColors);
@@ -20,7 +24,7 @@
   List<Card> spellCardPool=generateSpellCardPool(cardPoolSize,allowedColors,setsToUse);
   List<Card> landCardPool=generateNonBasicLandCardPool(MAX_NON_BASIC_SOURCE,allowedColors,setsToUse);
   final List<String> setsToUseFinal=setsToUse;
-  deck=DeckBuilder.buildDeck(spellCardPool,allowedColors,setsToUseFinal,landCardPool,new RateCallback(){
+  deck=DeckBuilder.buildDeck(spellCardPool,allowedColors,setsToUseFinal,landCardPool,deckSize,new RateCallback(){
     @Override public int rateCard(    Card card){
       return 6;
     }

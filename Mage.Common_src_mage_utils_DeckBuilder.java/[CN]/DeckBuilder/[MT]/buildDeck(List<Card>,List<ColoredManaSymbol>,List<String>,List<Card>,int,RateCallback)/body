@@ -1,4 +1,5 @@
 {
+  deckSize=deckCardSize;
   deck=new Deck();
   final Collection<MageScoredCard> remainingCards=new ArrayList<MageScoredCard>();
   Set<String> names=new HashSet<String>();
@@ -10,13 +11,23 @@
     names.add(card.getName());
   }
   int min=0;
-  for (int index=0; index < DECK_COUNT.length; index++) {
+  if (deckSize == 40) {
+    deckCount=DECK_COUNT40;
+    deckSpells=23;
+    deckLands=17;
+  }
+ else {
+    deckCount=DECK_COUNT60;
+    deckSpells=35;
+    deckLands=25;
+  }
+  for (int index=0; index < deckCount.length; index++) {
     final int max=DECK_COST[index];
-    addCardsToDeck(remainingCards,min,max,DECK_COUNT[index]);
+    addCardsToDeck(remainingCards,min,max,deckCount[index]);
     min=max + 1;
   }
-  addCardsToDeck(remainingCards,0,4,DECK_SPELLS - deck.getCards().size());
-  addCardsToDeck(remainingCards,5,10,DECK_SPELLS - deck.getCards().size());
+  addCardsToDeck(remainingCards,0,4,deckSpells - deck.getCards().size());
+  addCardsToDeck(remainingCards,5,10,deckSpells - deck.getCards().size());
   addLandsToDeck(allowedColors,setsToUse,landCardPool,callback);
   return deck;
 }
