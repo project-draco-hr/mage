@@ -1,0 +1,17 @@
+{
+  if (event.getType() == GameEvent.EventType.BLOCKER_DECLARED) {
+    Permanent blocker=game.getPermanent(event.getSourceId());
+    Permanent blocked=game.getPermanent(event.getTargetId());
+    Permanent rockBasilisk=game.getPermanent(sourceId);
+    if (blocker != null && blocker != rockBasilisk && !blocker.getSubtype().contains("Wall") && blocked == rockBasilisk) {
+      this.getEffects().get(0).setTargetPointer(new FixedTarget(blocker.getId()));
+      return true;
+    }
+    if (blocker != null && blocker == rockBasilisk && !blocked.getSubtype().contains("Wall")) {
+      this.getEffects().get(0).setTargetPointer(new FixedTarget(blocked.getId()));
+      return true;
+    }
+    return false;
+  }
+  return false;
+}
