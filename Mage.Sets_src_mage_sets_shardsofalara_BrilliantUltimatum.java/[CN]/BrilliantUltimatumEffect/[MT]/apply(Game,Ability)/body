@@ -1,0 +1,89 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  if (you == null) {
+    return false;
+  }
+  Cards pile2=new CardsImpl();
+  int max=Math.min(you.getLibrary().size(),5);
+  for (int i=0; i < max; i++) {
+    Card card=you.getLibrary().removeFromTop(game);
+    if (card != null) {
+      card.moveToExile(source.getSourceId(),"Brilliant Ultimatum",source.getId(),game);
+      pile2.add(card);
+    }
+  }
+  Player opponent=game.getPlayer(source.getFirstTarget());
+  if (opponent != null) {
+    TargetCard target=new TargetCard(0,pile2.size(),Zone.EXILED,new FilterCard("cards to put in the first pile"));
+    Cards pile1=new CardsImpl();
+    List<Card> pileOne=new ArrayList<Card>();
+    List<Card> pileTwo=new ArrayList<Card>();
+    if (opponent.choose(Outcome.Neutral,pile2,target,game)) {
+      List<UUID> targets=target.getTargets();
+      for (      UUID targetId : targets) {
+        Card card=pile2.get(targetId,game);
+        if (card != null) {
+          pile1.add(card);
+          pile2.remove(card);
+        }
+      }
+    }
+    for (    UUID cardID : pile1) {
+      Card card=pile1.get(cardID,game);
+      pileOne.add(card);
+    }
+    for (    UUID cardId : pile2) {
+      Card card=pile2.get(cardId,game);
+      pileTwo.add(card);
+    }
+    you.revealCards("Pile 1 (Brilliant Ultimatum)",pile1,game);
+    you.revealCards("Pile 2 (Brilliant Ultimatum)",pile2,game);
+    boolean choice=you.choosePile(Outcome.PlayForFree,"Which pile (play for free)?",pileOne,pileTwo,game);
+    if (choice) {
+      game.informPlayer(you,you.getName() + " chose Pile 1.");
+      while (!pileOne.isEmpty() && you.chooseUse(Outcome.PlayForFree,"Do you want to play a card from Pile 1?",game)) {
+        TargetCard targetExiledCard=new TargetCard(Zone.EXILED,new FilterCard());
+        targetExiledCard.setRequired(true);
+        if (you.chooseTarget(Outcome.PlayForFree,pile1,targetExiledCard,source,game)) {
+          Card card=pile1.get(targetExiledCard.getFirstTarget(),game);
+          if (card != null) {
+            if (card.getCardType().contains(CardType.LAND)) {
+              you.playLand(card,game);
+              pileOne.remove(card);
+              pile1.remove(card);
+            }
+ else {
+              you.cast(card.getSpellAbility(),game,true);
+              pileOne.remove(card);
+              pile1.remove(card);
+            }
+          }
+        }
+      }
+    }
+ else {
+      game.informPlayer(you,you.getName() + " chose Pile 2.");
+      while (!pileTwo.isEmpty() && you.chooseUse(Outcome.PlayForFree,"Do you want to play a card from Pile 2?",game)) {
+        TargetCard targetExiledCard=new TargetCard(Zone.EXILED,new FilterCard());
+        targetExiledCard.setRequired(true);
+        if (you.chooseTarget(Outcome.PlayForFree,pile2,targetExiledCard,source,game)) {
+          Card card=pile2.get(targetExiledCard.getFirstTarget(),game);
+          if (card != null) {
+            if (card.getCardType().contains(CardType.LAND)) {
+              you.playLand(card,game);
+              pileTwo.remove(card);
+              pile2.remove(card);
+            }
+ else {
+              you.cast(card.getSpellAbility(),game,true);
+              pileTwo.remove(card);
+              pile2.remove(card);
+            }
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
