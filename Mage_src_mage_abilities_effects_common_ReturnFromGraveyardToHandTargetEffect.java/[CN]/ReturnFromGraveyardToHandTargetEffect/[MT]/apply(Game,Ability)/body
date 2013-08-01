@@ -1,11 +1,12 @@
 {
-  Card card=game.getCard(source.getFirstTarget());
-  if (card != null) {
-    Player player=game.getPlayer(card.getOwnerId());
-    if (player != null) {
-      card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
-      return true;
+  for (  UUID cardId : getTargetPointer().getTargets(game,source)) {
+    Card card=game.getCard(cardId);
+    if (card != null && game.getState().getZone(cardId).equals(Zone.GRAVEYARD)) {
+      Player player=game.getPlayer(card.getOwnerId());
+      if (player != null) {
+        card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+      }
     }
   }
-  return false;
+  return true;
 }
