@@ -5,5 +5,7 @@
   this.color.setRed(true);
   this.power=new MageInt(5);
   this.toughness=new MageInt(3);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new MaraudingMaulhornEffect()));
+  Effect effect=new ConditionalRequirementEffect(new AttacksIfAbleSourceEffect(Duration.WhileOnBattlefield),new ControlsPermanentCondition(filter,ControlsPermanentCondition.CountType.FEWER_THAN,1));
+  effect.setText("{this} attacks each combat if able unless you control a creature named Advocate of the Beast");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
 }

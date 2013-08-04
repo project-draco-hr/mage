@@ -9,5 +9,7 @@
   Ability ability=new EnchantAbility(auraTarget.getTargetName());
   this.addAbility(ability);
   this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinousEffect(new BoostEquippedEffect(2,2),new EquippedHasSubtypeCondition("Human"),rule)));
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BondsOfFaithEffect()));
+  Effect effect=new ConditionalRestrictionEffect(new CantAttackBlockAttachedEffect(AttachmentType.AURA),new InvertCondition(new EquippedHasSubtypeCondition("Human")));
+  effect.setText("Otherwise, it can't attack or block");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
 }
