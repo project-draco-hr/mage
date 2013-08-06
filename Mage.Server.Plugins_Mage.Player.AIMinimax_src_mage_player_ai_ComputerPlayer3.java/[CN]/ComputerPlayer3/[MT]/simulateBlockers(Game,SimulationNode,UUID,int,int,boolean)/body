@@ -8,7 +8,9 @@
   SimulationNode bestNode=null;
   if (game.getCombat().isAttacked(defenderId,game)) {
     SimulatedPlayer defender=(SimulatedPlayer)game.getPlayer(defenderId);
-    if (logger.isDebugEnabled())     logger.debug(indent(node.depth) + defender.getName() + "'s possible blockers: "+ defender.getAvailableBlockers(game));
+    if (logger.isDebugEnabled()) {
+      logger.debug(indent(node.depth) + defender.getName() + "'s possible blockers: "+ defender.getAvailableBlockers(game));
+    }
     for (    Combat engagement : defender.addBlockers(game)) {
       if (alpha >= beta) {
         logger.debug(indent(node.depth) + "simulating -- pruning blockers");
@@ -19,13 +21,15 @@
         if (group.getAttackers().size() > 0) {
           UUID attackerId=group.getAttackers().get(0);
           for (          UUID blockerId : group.getBlockers()) {
-            sim.getPlayer(defenderId).declareBlocker(blockerId,attackerId,sim);
+            sim.getPlayer(defenderId).declareBlocker(defenderId,blockerId,attackerId,sim);
           }
         }
       }
       sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,defenderId,defenderId));
       SimulationNode newNode=new SimulationNode(node,sim,defenderId);
-      if (logger.isDebugEnabled())       logger.debug(indent(node.depth) + "simulating block for player:" + game.getPlayer(defenderId).getName());
+      if (logger.isDebugEnabled()) {
+        logger.debug(indent(node.depth) + "simulating block for player:" + game.getPlayer(defenderId).getName());
+      }
       sim.checkStateAndTriggered();
       while (!sim.getStack().isEmpty()) {
         sim.getStack().resolve(sim);
