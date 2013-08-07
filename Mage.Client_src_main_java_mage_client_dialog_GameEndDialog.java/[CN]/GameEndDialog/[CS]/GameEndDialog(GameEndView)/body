@@ -1,0 +1,41 @@
+{
+  initComponents();
+  this.modal=true;
+  pnlText.setOpaque(true);
+  pnlText.setBackground(new Color(240,240,240,140));
+  Rectangle r=new Rectangle(610,250);
+  Image image=ImageHelper.getImageFromResources(gameEndView.hasWon() ? "/game_won.jpg" : "/game_lost.jpg");
+  BufferedImage imageResult=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
+  ImageIcon icon=new ImageIcon(imageResult);
+  lblResultImage.setIcon(icon);
+  this.lblResultText.setText(gameEndView.getResultMessage());
+  txtDurationGame.setText(Format.getDuration(gameEndView.getStartTime(),gameEndView.getEndTime()));
+  txtDurationGame.setToolTipText(new StringBuilder(df.format(gameEndView.getStartTime())).append(" - ").append(df.format(gameEndView.getEndTime())).toString());
+  Calendar cal=Calendar.getInstance();
+  txtDurationMatch.setText(Format.getDuration(gameEndView.getMatchView().getStartTime(),cal.getTime()));
+  txtDurationMatch.setToolTipText(new StringBuilder(df.format(gameEndView.getMatchView().getStartTime())).append(" - ").append(df.format(cal.getTime())).toString());
+  StringBuilder sb=new StringBuilder();
+  for (  PlayerView player : gameEndView.getPlayers()) {
+    sb.append(player.getName()).append(" Life: ").append(player.getLife()).append(" ");
+  }
+  this.txtLife.setText(sb.toString());
+  if (gameEndView.hasWon()) {
+    AudioManager.playPlayerJoinedTable();
+  }
+ else {
+    AudioManager.playButtonCancel();
+  }
+  txtMatchScore.setText(gameEndView.getMatchView().getResult());
+  if (gameEndView.getNameMatchWinner() != null) {
+    if (gameEndView.getClientPlayer().getName().equals(gameEndView.getNameMatchWinner())) {
+      lblMatchInfo.setText("You won the match!");
+    }
+ else {
+      lblMatchInfo.setText(new StringBuilder(gameEndView.getNameMatchWinner()).append(" won the match!").toString());
+    }
+  }
+ else {
+    int winsNeeded=gameEndView.getWinsNeeded() - gameEndView.getWins();
+    lblMatchInfo.setText(new StringBuilder("You need ").append(winsNeeded == 1 ? "one win " : winsNeeded + " wins ").append("to win the match.").toString());
+  }
+}

@@ -1,0 +1,40 @@
+{
+  startTime=game.getStartTime();
+  endTime=game.getEndTime();
+  int winner=0;
+  Player you=null;
+  for (  Player player : state.getPlayers().values()) {
+    PlayerView playerView=new PlayerView(player,state,game);
+    if (playerView.getPlayerId().equals(playerId)) {
+      clientPlayer=playerView;
+      you=player;
+    }
+    players.add(playerView);
+    if (player.hasWon()) {
+      winner++;
+    }
+  }
+  if (you != null) {
+    won=you.hasWon();
+    if (you.hasWon()) {
+      resultMessage=new StringBuilder("You won the game on turn ").append(game.getTurnNum()).append(".").toString();
+    }
+ else     if (winner > 0) {
+      resultMessage=new StringBuilder("You lost the game on turn ").append(game.getTurnNum()).append(".").toString();
+    }
+ else {
+      resultMessage=new StringBuilder("Game is a draw on Turn ").append(game.getTurnNum()).append(".").toString();
+    }
+  }
+  matchView=new MatchView(match);
+  winsNeeded=match.getOptions().getWinsNeeded();
+  for (  MatchPlayer mPlayer : match.getPlayers()) {
+    if (mPlayer.getPlayer().equals(you)) {
+      wins=mPlayer.getWins();
+      loses=mPlayer.getLoses();
+    }
+    if (mPlayer.getWins() == winsNeeded) {
+      nameMatchWinner=mPlayer.getPlayer().getName();
+    }
+  }
+}
