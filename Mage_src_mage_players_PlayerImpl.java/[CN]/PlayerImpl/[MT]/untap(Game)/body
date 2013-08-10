@@ -1,11 +1,103 @@
 {
-  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
-    boolean untap=true;
-    for (    RestrictionEffect effect : game.getContinuousEffects().getApplicableRestrictionEffects(permanent,game).keySet()) {
-      untap&=effect.canBeUntapped(permanent,game);
+  HashMap<Entry<RestrictionUntapNotMoreThanEffect,HashSet<Ability>>,Integer> notMoreThanEffectsUsage=new HashMap<Entry<RestrictionUntapNotMoreThanEffect,HashSet<Ability>>,Integer>();
+  for (  Entry<RestrictionUntapNotMoreThanEffect,HashSet<Ability>> restrictionEffect : game.getContinuousEffects().getApplicableRestrictionUntapNotMoreThanEffects(this,game).entrySet()) {
+    notMoreThanEffectsUsage.put(restrictionEffect,new Integer(restrictionEffect.getKey().getNumber()));
+  }
+  if (!notMoreThanEffectsUsage.isEmpty()) {
+    List<Permanent> canBeUntapped=new ArrayList<Permanent>();
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
+      boolean untap=true;
+      for (      RestrictionEffect effect : game.getContinuousEffects().getApplicableRestrictionEffects(permanent,game).keySet()) {
+        untap&=effect.canBeUntapped(permanent,game);
+      }
+      if (untap) {
+        canBeUntapped.add(permanent);
+      }
     }
-    if (untap) {
-      permanent.untap(game);
+    List<Permanent> selectedToUntap=new ArrayList<Permanent>();
+    boolean playerCanceledSelection;
+    do {
+      playerCanceledSelection=false;
+      for (      Map.Entry<Entry<RestrictionUntapNotMoreThanEffect,HashSet<Ability>>,Integer> handledEntry : notMoreThanEffectsUsage.entrySet()) {
+        int numberToUntap=handledEntry.getValue().intValue();
+        if (numberToUntap > 0) {
+          List<Permanent> leftForUntap=getPermanentsThatCanBeUntapped(game,canBeUntapped,handledEntry.getKey().getKey(),notMoreThanEffectsUsage);
+          FilterControlledPermanent filter=handledEntry.getKey().getKey().getFilter().copy();
+          String message=filter.getMessage();
+          for (          Permanent permanent : selectedToUntap) {
+            filter.add(Predicates.not(new PermanentIdPredicate(permanent.getId())));
+          }
+          while (leftForUntap.size() > 0 && numberToUntap > 0) {
+            Ability ability=handledEntry.getKey().getValue().iterator().next();
+            if (ability != null) {
+              StringBuilder sb=new StringBuilder(message).append(" to untap").append(" (").append(Math.min(leftForUntap.size(),numberToUntap)).append(" in total");
+              MageObject effectSource=game.getObject(ability.getSourceId());
+              if (effectSource != null) {
+                sb.append(" from ").append(effectSource.getName()).toString();
+              }
+              sb.append(")");
+              filter.setMessage(sb.toString());
+              Target target=new TargetPermanent(filter);
+              if (!this.chooseTarget(Outcome.Untap,target,ability,game)) {
+                playerCanceledSelection=true;
+                break;
+              }
+              Permanent selectedPermanent=game.getPermanent(target.getFirstTarget());
+              if (leftForUntap.contains(selectedPermanent)) {
+                selectedToUntap.add(selectedPermanent);
+                numberToUntap--;
+                filter.add(Predicates.not(new PermanentIdPredicate(selectedPermanent.getId())));
+                for (                Entry<Entry<RestrictionUntapNotMoreThanEffect,HashSet<Ability>>,Integer> notMoreThanEffect : notMoreThanEffectsUsage.entrySet()) {
+                  if (notMoreThanEffect.getValue().intValue() > 0 && notMoreThanEffect.getKey().getKey().getFilter().match(selectedPermanent,game)) {
+                    notMoreThanEffect.setValue(new Integer(notMoreThanEffect.getValue().intValue() - 1));
+                  }
+                }
+                leftForUntap=getPermanentsThatCanBeUntapped(game,canBeUntapped,handledEntry.getKey().getKey(),notMoreThanEffectsUsage);
+                for (                Permanent permanent : selectedToUntap) {
+                  if (leftForUntap.contains(permanent)) {
+                    leftForUntap.remove(permanent);
+                  }
+                }
+              }
+ else {
+                filter.add(Predicates.not(new PermanentIdPredicate(selectedPermanent.getId())));
+                if (this.isHuman()) {
+                  game.informPlayer(this,"This permanent can't be untapped because of other restricting effect.");
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+ while (playerCanceledSelection);
+    for (    Permanent permanent : selectedToUntap) {
+      game.informPlayers(new StringBuilder(this.getName()).append(" untapped ").append(permanent.getName()).toString());
+    }
+    for (    Permanent permanent : canBeUntapped) {
+      boolean doUntap=true;
+      if (!selectedToUntap.contains(permanent)) {
+        for (        Entry<Entry<RestrictionUntapNotMoreThanEffect,HashSet<Ability>>,Integer> notMoreThanEffect : notMoreThanEffectsUsage.entrySet()) {
+          if (notMoreThanEffect.getKey().getKey().getFilter().match(permanent,game)) {
+            doUntap=false;
+            break;
+          }
+        }
+      }
+      if (permanent != null && doUntap) {
+        permanent.untap(game);
+      }
+    }
+  }
+ else {
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
+      boolean untap=true;
+      for (      RestrictionEffect effect : game.getContinuousEffects().getApplicableRestrictionEffects(permanent,game).keySet()) {
+        untap&=effect.canBeUntapped(permanent,game);
+      }
+      if (untap) {
+        permanent.untap(game);
+      }
     }
   }
 }
