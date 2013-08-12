@@ -8,11 +8,13 @@
   if (target.canChoose(player.getId(),game)) {
     player.choose(Outcome.Sacrifice,target,source.getSourceId(),game);
     Permanent permanent=game.getPermanent(target.getFirstTarget());
-    if (permanent != null && permanent.getSubtype().contains("Goblin")) {
+    if (permanent != null) {
       permanent.sacrifice(source.getSourceId(),game);
-      Effect effect=new CreateTokenTargetEffect(new WarrenWeirdingBlackGoblinRogueToken(),2);
-      effect.setTargetPointer(new FixedTarget(player.getId()));
-      effect.apply(game,source);
+      if (filterGoblin.match(permanent,game)) {
+        Effect effect=new CreateTokenTargetEffect(new WarrenWeirdingBlackGoblinRogueToken(),2);
+        effect.setTargetPointer(new FixedTarget(player.getId()));
+        effect.apply(game,source);
+      }
     }
     return true;
   }
