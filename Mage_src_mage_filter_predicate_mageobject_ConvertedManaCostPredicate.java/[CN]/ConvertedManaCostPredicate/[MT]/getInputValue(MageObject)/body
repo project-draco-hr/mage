@@ -1,3 +1,17 @@
 {
-  return input.getManaCost().convertedManaCost();
+  if (input instanceof StackObject) {
+    int manaCost=0;
+    for (    ManaCost cost : input.getManaCost()) {
+      if (cost instanceof VariableManaCost) {
+        manaCost+=((StackObject)input).getStackAbility().getManaCostsToPay().getX();
+      }
+ else {
+        manaCost+=cost.convertedManaCost();
+      }
+    }
+    return manaCost;
+  }
+ else {
+    return input.getManaCost().convertedManaCost();
+  }
 }
