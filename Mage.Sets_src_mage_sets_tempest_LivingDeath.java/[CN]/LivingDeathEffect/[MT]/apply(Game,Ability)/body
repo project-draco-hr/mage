@@ -1,0 +1,21 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        for (        Card card : player.getGraveyard().getCards(new FilterCreatureCard(),game)) {
+          card.moveToExile(source.getSourceId(),"Living End",source.getSourceId(),game);
+        }
+      }
+    }
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game)) {
+      permanent.sacrifice(source.getSourceId(),game);
+    }
+    for (    Card card : game.getState().getExile().getExileZone(source.getSourceId()).getCards(game)) {
+      card.putOntoBattlefield(game,Zone.EXILED,source.getSourceId(),card.getOwnerId());
+    }
+    return true;
+  }
+  return false;
+}
