@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Soulmender");
+  addCard(Zone.HAND,playerA,"Test of Faith");
+  addCard(Zone.BATTLEFIELD,playerB,"Blur Sliver");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerA,"Test of Faith","Soulmender");
+  attack(2,playerB,"Blur Sliver");
+  block(2,playerA,"Soulmender","Blur Sliver");
+  setStopAt(2,PhaseStep.END_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Soulmender",1);
+  assertPowerToughness(playerA,"Soulmender",3,3);
+  assertPermanentCount(playerB,"Blur Sliver",1);
+}

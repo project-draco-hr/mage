@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Soulmender");
+  addCard(Zone.BATTLEFIELD,playerA,"Elvish Mystic");
+  addCard(Zone.HAND,playerA,"Test of Faith",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Kalonian Tusker");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerA,"Test of Faith","Soulmender");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerA,"Test of Faith","Elvish Mystic");
+  attack(2,playerB,"Kalonian Tusker");
+  block(2,playerA,"Elvish Mystic","Kalonian Tusker");
+  block(2,playerA,"Soulmender","Kalonian Tusker");
+  setStopAt(2,PhaseStep.END_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Soulmender",1);
+  assertPowerToughness(playerA,"Soulmender",2,2);
+  assertPermanentCount(playerA,"Elvish Mystic",1);
+  assertPowerToughness(playerA,"Elvish Mystic",2,2);
+  assertPermanentCount(playerB,"Kalonian Tusker",1);
+}
