@@ -3,9 +3,9 @@
   ManaCosts cost=new ManaCostsImpl("{X}{R}");
   if (player != null) {
     if (player.chooseUse(Outcome.Damage,"Pay " + cost.getText() + "? If you do, Flameblast Dragon deals X damage to target creature or player",game)) {
-      cost.clearPaid();
+      int costX=player.announceXMana(0,Integer.MAX_VALUE,"Announce the value for {X}",game,source);
+      cost.add(new GenericManaCost(costX));
       if (cost.pay(source,game,source.getId(),source.getControllerId(),false)) {
-        int costX=cost.getX();
         Permanent permanent=game.getPermanent(source.getFirstTarget());
         if (permanent != null) {
           permanent.damage(costX,source.getId(),game,true,false);
