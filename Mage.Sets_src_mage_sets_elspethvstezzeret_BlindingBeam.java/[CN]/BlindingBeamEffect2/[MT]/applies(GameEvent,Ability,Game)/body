@@ -1,6 +1,14 @@
 {
-  if (game.getTurn().getStepType() == PhaseStep.UNTAP && event.getType() == EventType.UNTAP && event.getTargetId().equals(creatureId)) {
-    return true;
+  if (game.getTurn().getStepType() == PhaseStep.UNTAP && event.getType() == EventType.UNTAP) {
+    Permanent permanent=game.getPermanent(event.getTargetId());
+    if (permanent != null && permanent.getControllerId().equals(targetPlayerId) && filter.match(permanent,game)) {
+      return true;
+    }
+  }
+  if (event.getType().equals(EventType.UNTAP_STEP_POST)) {
+    if (targetPlayerId.equals(event.getPlayerId())) {
+      discard();
+    }
   }
   return false;
 }
