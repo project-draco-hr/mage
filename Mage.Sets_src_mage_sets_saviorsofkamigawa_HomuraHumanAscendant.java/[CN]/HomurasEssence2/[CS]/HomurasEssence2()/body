@@ -1,0 +1,11 @@
+{
+  super("Homura's Essence","");
+  supertype.add("Legendary");
+  cardType.add(CardType.ENCHANTMENT);
+  color.setRed(true);
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostControlledEffect(2,2,Duration.WhileOnBattlefield,new FilterCreaturePermanent(),false));
+  ability.addEffect(new GainAbilityControlledEffect(FlyingAbility.getInstance(),Duration.WhileOnBattlefield));
+  Ability gainedAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostSourceEffect(1,0,Duration.EndOfTurn),new ManaCostsImpl("{R}"));
+  ability.addEffect(new GainAbilityControlledEffect(gainedAbility,Duration.WhileOnBattlefield));
+  this.addAbility(ability);
+}

@@ -1,0 +1,25 @@
+{
+  Spell spell=game.getStack().getSpell(targetPointer.getFirst(game,source));
+  if (spell != null) {
+    Player targetPlayer=null;
+    for (    Target target : source.getTargets()) {
+      if (target instanceof TargetPlayer) {
+        targetPlayer=game.getPlayer(target.getFirstTarget());
+      }
+    }
+    if (targetPlayer != null) {
+      int cardsCount=Math.min(spell.getManaCost().convertedManaCost(),targetPlayer.getLibrary().size());
+      for (int i=0; i < cardsCount; i++) {
+        Card card=targetPlayer.getLibrary().removeFromTop(game);
+        if (card != null) {
+          card.moveToZone(Zone.GRAVEYARD,source.getId(),game,false);
+        }
+ else {
+          break;
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}

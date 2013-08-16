@@ -1,0 +1,17 @@
+{
+  super(ownerId,103,"Homura, Human Ascendant",Rarity.RARE,new CardType[]{CardType.CREATURE},"{4}{R}{R}");
+  this.expansionSetCode="SOK";
+  this.supertype.add("Legendary");
+  this.subtype.add("Human");
+  this.subtype.add("Monk");
+  this.color.setRed(true);
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  this.flipCard=true;
+  this.flipCardName="Homura's Essence";
+  this.addAbility(new CantBlockAbility());
+  this.addAbility(new DiesTriggeredAbility(new FlipSourceEffect()));
+  Ability flipAbility=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinousEffect(new CopyTokenEffect(new HomurasEssence2()),FlippedCondition.getInstance(),"{this} becomes Homura's Essence"));
+  flipAbility.setRuleVisible(false);
+  this.addAbility(flipAbility);
+}
