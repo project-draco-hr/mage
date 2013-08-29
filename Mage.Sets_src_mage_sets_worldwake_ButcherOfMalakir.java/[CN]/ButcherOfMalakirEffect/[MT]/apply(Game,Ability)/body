@@ -1,15 +1,9 @@
 {
-  FilterControlledPermanent filter=new FilterControlledPermanent("creature you control");
-  filter.add(new CardTypePredicate(CardType.CREATURE));
-  filter.add(new ControllerPredicate(TargetController.YOU));
-  Set<UUID> opponents=game.getOpponents(source.getControllerId());
-  for (  UUID opponentId : opponents) {
+  for (  UUID opponentId : game.getOpponents(source.getControllerId())) {
     Player player=game.getPlayer(opponentId);
-    Target target=new TargetControlledPermanent(filter);
+    Target target=new TargetControlledCreaturePermanent(true);
     if (target.canChoose(player.getId(),game)) {
-      while (!target.isChosen() && target.canChoose(player.getId(),game)) {
-        player.choose(Outcome.Sacrifice,target,source.getSourceId(),game);
-      }
+      player.choose(Outcome.Sacrifice,target,source.getSourceId(),game);
       Permanent permanent=game.getPermanent(target.getFirstTarget());
       if (permanent != null) {
         permanent.sacrifice(source.getSourceId(),game);
