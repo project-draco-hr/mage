@@ -1,0 +1,31 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Runeclaw Bear",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",4);
+  addCard(Zone.HAND,playerB,"Progenitor Mimic");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",3);
+  addCard(Zone.BATTLEFIELD,playerB,"Forest",3);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Progenitor Mimic");
+  castSpell(2,PhaseStep.POSTCOMBAT_MAIN,playerA,"Anaconda");
+  setStopAt(4,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Runeclaw Bear",1);
+  assertPermanentCount(playerB,"Runeclaw Bear",2);
+  int tokens=0;
+  int nonTokens=0;
+  for (  Permanent permanent : currentGame.getBattlefield().getAllPermanents()) {
+    if (permanent.getControllerId().equals(playerB.getId())) {
+      if (permanent.getCardType().contains(CardType.CREATURE)) {
+        if (permanent instanceof PermanentToken) {
+          tokens++;
+        }
+ else {
+          nonTokens++;
+        }
+      }
+    }
+  }
+  Assert.assertTrue("Only one non token permanent ",nonTokens == 1);
+  Assert.assertTrue("Only one token permanent ",tokens == 1);
+}

@@ -1,0 +1,24 @@
+{
+  Permanent copyFromPermanent=null;
+  for (  Effect effect : game.getState().getContinuousEffects().getLayeredEffects(game)) {
+    if (effect instanceof CopyEffect) {
+      CopyEffect copyEffect=(CopyEffect)effect;
+      if (copyEffect.getSourceId().equals(source.getSourceId())) {
+        MageObject object=((CopyEffect)effect).getTarget();
+        if (object instanceof Permanent) {
+          copyFromPermanent=(Permanent)object;
+        }
+      }
+    }
+  }
+  if (copyFromPermanent != null) {
+    EmptyToken token=new EmptyToken();
+    token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
+    Permanent sourcePermanent=game.getPermanent(token.getLastAddedToken());
+    if (sourcePermanent != null) {
+      game.copyPermanent(copyFromPermanent,sourcePermanent,source,new ProgenitorMimicApplyToPermanent());
+      return true;
+    }
+  }
+  return false;
+}
