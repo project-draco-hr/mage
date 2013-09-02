@@ -1,0 +1,16 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && event.getTargetId().equals(sourceId)) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getFromZone() == Zone.BATTLEFIELD) {
+      ExileZone exile=game.getExile().getExileZone(exileId);
+      if (exile != null) {
+        LinkedList<UUID> cards=new LinkedList<UUID>(exile);
+        for (        UUID cardId : cards) {
+          Card card=game.getCard(cardId);
+          card.moveToZone(Zone.BATTLEFIELD,this.getSourceId(),game,false);
+        }
+        exile.clear();
+      }
+    }
+  }
+}
