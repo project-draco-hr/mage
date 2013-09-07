@@ -1,7 +1,24 @@
 {
   StringBuilder sb=new StringBuilder();
-  sb.append("Target ").append(mode.getTargets().get(0).getTargetName()).append(" becomes a ").append(token.getDescription());
+  Target target=mode.getTargets().get(0);
+  if (target.getMaxNumberOfTargets() > 1) {
+    if (target.getNumberOfTargets() < target.getMaxNumberOfTargets()) {
+      sb.append("Up to ");
+    }
+    sb.append(CardUtil.numberToText(target.getMaxNumberOfTargets())).append(" target ").append(target.getTargetName()).append("  each become ");
+  }
+ else {
+    sb.append("Target ").append(target.getTargetName()).append(" becomes a ");
+  }
+  sb.append(token.getDescription());
   sb.append(" ").append(duration.toString());
-  if (type != null && type.length() > 0)   sb.append(". It's still a ").append(type);
+  if (type != null && type.length() > 0) {
+    if (target.getMaxNumberOfTargets() > 1) {
+      sb.append(". They're still ").append(type);
+    }
+ else {
+      sb.append(". It's still a ").append(type);
+    }
+  }
   return sb.toString();
 }
