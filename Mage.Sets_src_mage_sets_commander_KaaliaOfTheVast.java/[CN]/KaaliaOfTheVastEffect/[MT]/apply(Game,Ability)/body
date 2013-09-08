@@ -1,0 +1,23 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null || !player.chooseUse(Outcome.PutCreatureInPlay,"Put an Angel, Demon, or Dragon creature card from your hand onto the battlefield tapped and attacking?",game)) {
+    return false;
+  }
+  TargetCardInHand target=new TargetCardInHand(filter);
+  if (target.canChoose(player.getId(),game) && target.choose(getOutcome(),player.getId(),source.getSourceId(),game)) {
+    if (target.getTargets().size() > 0) {
+      UUID cardId=target.getFirstTarget();
+      Card card=game.getCard(cardId);
+      if (card != null && game.getCombat() != null) {
+        UUID defenderId=game.getCombat().getDefendingPlayerId(source.getSourceId(),game);
+        if (defenderId != null) {
+          player.getHand().remove(card);
+          card.moveToZone(Zone.BATTLEFIELD,source.getId(),game,true);
+          game.getCombat().declareAttacker(card.getId(),defenderId,game);
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

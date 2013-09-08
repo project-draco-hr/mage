@@ -1,0 +1,20 @@
+{
+  super(ownerId,200,"Ghave, Guru of Spores",Rarity.MYTHIC,new CardType[]{CardType.CREATURE},"{2}{B}{G}{W}");
+  this.expansionSetCode="CMD";
+  this.supertype.add("Legendary");
+  this.subtype.add("Fungus");
+  this.subtype.add("Shaman");
+  this.color.setBlack(true);
+  this.color.setGreen(true);
+  this.color.setWhite(true);
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(5))));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new SaprolingToken()),new GenericManaCost(1));
+  ability.addCost(new RemoveCounterCost(new TargetControlledCreaturePermanent(),CounterType.P1P1));
+  this.addAbility(ability);
+  Ability ability2=new SimpleActivatedAbility(Zone.BATTLEFIELD,new AddCountersTargetEffect(CounterType.P1P1.createInstance()),new GenericManaCost(1));
+  ability2.addCost(new SacrificeTargetCost(new TargetControlledPermanent(filter)));
+  ability2.addTarget(new TargetCreaturePermanent(true));
+  this.addAbility(ability2);
+}
