@@ -1,0 +1,45 @@
+{
+  Controllable object=input.getObject();
+  UUID playerId=input.getPlayerId();
+switch (controller) {
+case YOU:
+    PlayerDamagedBySourceWatcher watcher=(PlayerDamagedBySourceWatcher)game.getState().getWatchers().get("PlayerDamagedBySource",playerId);
+  if (watcher != null && watcher.damageSources.contains(object.getId())) {
+    return true;
+  }
+break;
+case OPPONENT:
+for (UUID opponentId : game.getOpponents(playerId)) {
+watcher=(PlayerDamagedBySourceWatcher)game.getState().getWatchers().get("PlayerDamagedBySource",opponentId);
+if (watcher != null && watcher.damageSources.contains(object.getId())) {
+  return true;
+}
+}
+break;
+case NOT_YOU:
+Player you=game.getPlayer(playerId);
+if (you != null) {
+for (UUID notYouId : you.getInRange()) {
+if (!notYouId.equals(playerId)) {
+watcher=(PlayerDamagedBySourceWatcher)game.getState().getWatchers().get("PlayerDamagedBySource",notYouId);
+if (watcher != null && watcher.damageSources.contains(object.getId())) {
+return true;
+}
+}
+}
+}
+break;
+case ANY:
+you=game.getPlayer(playerId);
+if (you != null) {
+for (UUID anyId : you.getInRange()) {
+watcher=(PlayerDamagedBySourceWatcher)game.getState().getWatchers().get("PlayerDamagedBySource",anyId);
+if (watcher != null && watcher.damageSources.contains(object.getId())) {
+return true;
+}
+}
+}
+return true;
+}
+return false;
+}
