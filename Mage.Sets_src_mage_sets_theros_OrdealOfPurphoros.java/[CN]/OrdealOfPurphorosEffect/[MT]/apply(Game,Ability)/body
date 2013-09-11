@@ -1,0 +1,17 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment != null) {
+    Permanent permanent=game.getPermanent(enchantment.getAttachedTo());
+    if (permanent != null) {
+      if (counter != null) {
+        Counter newCounter=counter.copy();
+        permanent.addCounters(newCounter,game);
+        if (permanent.getCounters().get(counter.getName()).getCount() >= 3) {
+          enchantment.sacrifice(source.getId(),game);
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}
