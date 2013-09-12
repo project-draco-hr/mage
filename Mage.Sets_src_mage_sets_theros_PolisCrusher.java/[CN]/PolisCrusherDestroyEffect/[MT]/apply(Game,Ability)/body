@@ -1,0 +1,17 @@
+{
+  Player attackedPlayer=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && attackedPlayer != null) {
+    FilterPermanent filter=new FilterEnchantmentPermanent("enchantment attacked player controls");
+    filter.add(new ControllerIdPredicate(attackedPlayer.getId()));
+    Target target=new TargetPermanent(filter);
+    target.setRequired(true);
+    if (target.canChoose(source.getSourceId(),source.getControllerId(),game) && controller.chooseTarget(outcome,target,source,game)) {
+      Permanent enchantment=game.getPermanent(target.getFirstTarget());
+      if (enchantment != null) {
+        return enchantment.destroy(source.getSourceId(),game,false);
+      }
+    }
+  }
+  return false;
+}

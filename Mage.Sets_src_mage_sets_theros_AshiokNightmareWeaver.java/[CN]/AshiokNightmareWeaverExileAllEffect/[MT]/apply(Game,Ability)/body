@@ -1,0 +1,21 @@
+{
+  UUID exileId=CardUtil.getCardExileZoneId(game,source);
+  for (  UUID opponentId : game.getOpponents(source.getControllerId())) {
+    Player opponent=game.getPlayer(opponentId);
+    if (opponent != null) {
+      for (      UUID cardId : opponent.getHand()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          card.moveToExile(exileId,"Ashiok, Nightmare Weaver",source.getSourceId(),game);
+        }
+      }
+      for (      UUID cardId : opponent.getGraveyard()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          card.moveToExile(exileId,"Ashiok, Nightmare Weaver",source.getSourceId(),game);
+        }
+      }
+    }
+  }
+  return true;
+}
