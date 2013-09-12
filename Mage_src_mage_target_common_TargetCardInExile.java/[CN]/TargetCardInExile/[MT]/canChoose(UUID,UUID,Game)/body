@@ -7,9 +7,14 @@
         return true;
       }
     }
-    return false;
   }
  else {
-    return super.canChoose(sourceControllerId,game);
+    ExileZone exileZone=game.getExile().getExileZone(zoneId);
+    if (exileZone != null) {
+      if (exileZone.count(filter,sourceId,sourceControllerId,game) >= this.minNumberOfTargets) {
+        return true;
+      }
+    }
   }
+  return false;
 }

@@ -3,9 +3,10 @@
   this.expansionSetCode="THS";
   this.supertype.add("Legendary");
   this.color.setGreen(true);
-  GainAbilityControlledEffect gainEffect=new GainAbilityControlledEffect(DeathtouchAbility.getInstance(),Duration.WhileOnBattlefield,new FilterAttackingCreature(),false);
+  GainAbilityControlledEffect gainEffect=new GainAbilityControlledEffect(DeathtouchAbility.getInstance(),Duration.WhileOnBattlefield,new FilterAttackingCreature("Attacking creatures"),false);
   this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,gainEffect));
   Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new AddCountersTargetEffect(CounterType.P1P1.createInstance()),new ManaCostsImpl("{1}{G}"));
+  ability.addTarget(new TargetCreaturePermanent());
   ability.addCost(new TapSourceCost());
   Mode mode=new Mode();
   mode.getEffects().add(new DamageTargetEffect(2));

@@ -3,13 +3,17 @@
   for (  UUID opponentId : game.getOpponents(source.getControllerId())) {
     Player opponent=game.getPlayer(opponentId);
     if (opponent != null) {
-      for (      UUID cardId : opponent.getHand()) {
+      Cards cards=new CardsImpl();
+      cards.addAll(opponent.getHand());
+      for (      UUID cardId : cards) {
         Card card=game.getCard(cardId);
         if (card != null) {
           card.moveToExile(exileId,"Ashiok, Nightmare Weaver",source.getSourceId(),game);
         }
       }
-      for (      UUID cardId : opponent.getGraveyard()) {
+      cards.clear();
+      cards.addAll(opponent.getGraveyard());
+      for (      UUID cardId : cards) {
         Card card=game.getCard(cardId);
         if (card != null) {
           card.moveToExile(exileId,"Ashiok, Nightmare Weaver",source.getSourceId(),game);
