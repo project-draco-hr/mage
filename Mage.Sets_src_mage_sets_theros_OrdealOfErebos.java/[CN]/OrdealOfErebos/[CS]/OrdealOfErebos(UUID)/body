@@ -1,8 +1,8 @@
 {
-  super(ownerId,131,"Ordeal of Purphoros",Rarity.UNCOMMON,new CardType[]{CardType.ENCHANTMENT},"{1}{R}");
+  super(ownerId,99,"Ordeal of Erebos",Rarity.UNCOMMON,new CardType[]{CardType.ENCHANTMENT},"{1}{B}");
   this.expansionSetCode="THS";
   this.subtype.add("Aura");
-  this.color.setRed(true);
+  this.color.setBlack(true);
   TargetPermanent auraTarget=new TargetCreaturePermanent();
   this.getSpellAbility().addTarget(auraTarget);
   this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
@@ -11,7 +11,7 @@
   ability=new AttacksAttachedTriggeredAbility(new AddCountersAttachedEffect(CounterType.P1P1.createInstance(),"it"),AttachmentType.AURA,false);
   ability.addEffect(new ConditionalOneShotEffect(new SacrificeSourceEffect(),new AttachedToCounterCondition(CounterType.P1P1,3),"Then if it has three or more +1/+1 counters on it, sacrifice {this}"));
   this.addAbility(ability);
-  ability=new SacrificeSourceTriggeredAbility(new DamageTargetEffect(3),false);
-  ability.addTarget(new TargetCreatureOrPlayer());
+  ability=new SacrificeSourceTriggeredAbility(new DiscardTargetEffect(2),false);
+  ability.addTarget(new TargetPlayer(true));
   this.addAbility(ability);
 }
