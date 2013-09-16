@@ -23,7 +23,11 @@ requirementEffects.addEffect(newRequirementEffect,source);
 break;
 case ASTHOUGH:
 AsThoughEffect newAsThoughEffect=(AsThoughEffect)effect;
-asThoughEffects.addEffect(newAsThoughEffect,source);
+if (!asThoughEffectsMap.containsKey(newAsThoughEffect.getAsThoughEffectType())) {
+ContinuousEffectsList list=new ContinuousEffectsList();
+asThoughEffectsMap.put(newAsThoughEffect.getAsThoughEffectType(),list);
+}
+asThoughEffectsMap.get(newAsThoughEffect.getAsThoughEffectType()).addEffect(newAsThoughEffect,source);
 break;
 case COSTMODIFICATION:
 CostModificationEffect newCostModificationEffect=(CostModificationEffect)effect;
