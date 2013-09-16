@@ -1,0 +1,40 @@
+{
+  Player opponent=game.getPlayer(source.getFirstTarget());
+  if (opponent != null) {
+    opponent.revealCards("Psychic Intrusion",opponent.getHand(),game);
+    Player you=game.getPlayer(source.getControllerId());
+    if (you != null) {
+      int cardsGraveyard=opponent.getGraveyard().count(filter,game);
+      int cardsHand=opponent.getHand().count(filter,game);
+      boolean fromHand=false;
+      if (cardsGraveyard > 0 && cardsHand > 0) {
+        if (opponent.chooseUse(Outcome.Detriment,"Exile card from opponents Hand?",game)) {
+          fromHand=true;
+        }
+      }
+      Card card=null;
+      if (cardsHand > 0 && fromHand) {
+        TargetCard target=new TargetCard(Zone.PICK,filter);
+        target.setRequired(true);
+        if (you.choose(Outcome.Benefit,opponent.getHand(),target,game)) {
+          card=opponent.getHand().get(target.getFirstTarget(),game);
+        }
+      }
+      if (cardsGraveyard > 0 && !fromHand) {
+        TargetCard target=new TargetCard(Zone.PICK,filter);
+        target.setRequired(true);
+        if (you.choose(Outcome.Benefit,opponent.getGraveyard(),target,game)) {
+          card=opponent.getGraveyard().get(target.getFirstTarget(),game);
+        }
+      }
+      if (card != null) {
+        UUID exileId=CardUtil.getCardExileZoneId(game,source);
+        card.moveToExile(exileId,"Daxos of Meletis",source.getSourceId(),game);
+        game.addEffect(new PsychicIntrusionCastFromExileEffect(card.getId(),exileId),source);
+        game.addEffect(new PsychicIntrusionSpendAnyManaEffect(card.getId()),source);
+      }
+      return true;
+    }
+  }
+  return false;
+}
