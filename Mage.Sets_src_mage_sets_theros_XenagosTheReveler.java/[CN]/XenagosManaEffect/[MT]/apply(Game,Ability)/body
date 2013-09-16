@@ -1,0 +1,26 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    int x=game.getBattlefield().count(new FilterControlledCreaturePermanent(),source.getSourceId(),source.getControllerId(),game);
+    Choice manaChoice=new ChoiceImpl();
+    Set<String> choices=new LinkedHashSet<String>();
+    choices.add("Red");
+    choices.add("Green");
+    manaChoice.setChoices(choices);
+    manaChoice.setMessage("Select color of mana to add");
+    for (int i=0; i < x; i++) {
+      Mana mana=new Mana();
+      while (!player.choose(Outcome.Benefit,manaChoice,game)) {
+        game.debugMessage("player canceled choosing color. retrying.");
+      }
+      if (manaChoice.getChoice().equals("Green")) {
+        mana.addGreen();
+      }
+ else       if (manaChoice.getChoice().equals("Red")) {
+        mana.addRed();
+      }
+      player.getManaPool().addMana(mana,game,source);
+    }
+  }
+  return false;
+}
