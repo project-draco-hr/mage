@@ -1,0 +1,21 @@
+{
+  if (source.getTargets().size() > 0) {
+    Target multiTarget=source.getTargets().get(0);
+    Set<Permanent> permanents=new HashSet<Permanent>();
+    for (    UUID target : multiTarget.getTargets()) {
+      Permanent permanent=game.getPermanent(target);
+      if (permanent != null) {
+        permanents.add(permanent);
+        permanent.damage(multiTarget.getTargetAmount(target),source.getSourceId(),game,true,false);
+      }
+    }
+    Permanent sourceCreature=game.getPermanent(source.getSourceId());
+    if (sourceCreature != null) {
+      for (      Permanent permanent : permanents) {
+        sourceCreature.damage(permanent.getPower().getValue(),source.getSourceId(),game,true,false);
+      }
+    }
+    return true;
+  }
+  return false;
+}
