@@ -51,8 +51,11 @@
     }
     if (filterAura.match(perm,this)) {
       if (perm.getAttachedTo() == null) {
-        if (perm.moveToZone(Zone.GRAVEYARD,null,this,false)) {
-          somethingHappened=true;
+        Card card=this.getCard(perm.getId());
+        if (card != null && !card.getCardType().contains(CardType.CREATURE)) {
+          if (perm.moveToZone(Zone.GRAVEYARD,null,this,false)) {
+            somethingHappened=true;
+          }
         }
       }
  else {
