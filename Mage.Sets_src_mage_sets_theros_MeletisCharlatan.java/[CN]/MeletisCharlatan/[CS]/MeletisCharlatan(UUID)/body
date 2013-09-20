@@ -6,6 +6,10 @@
   this.color.setBlue(true);
   this.power=new MageInt(2);
   this.toughness=new MageInt(3);
-  this.getSpellAbility().addEffect(new MeletisCharlatanCopyTargetSpellEffect());
-  this.getSpellAbility().addTarget(new TargetSpell(filter));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new MeletisCharlatanCopyTargetSpellEffect(),new ManaCostsImpl("{2}{U}"));
+  ability.addCost(new TapSourceCost());
+  Target target=new TargetSpell(filter);
+  target.setRequired(true);
+  ability.addTarget(target);
+  this.addAbility(ability);
 }
