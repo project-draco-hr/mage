@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",10);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",10);
+  addCard(Zone.HAND,playerA,"Disenchant",1);
+  addCard(Zone.HAND,playerA,"Oblivion Ring",1);
+  addCard(Zone.HAND,playerA,"Gather Specimens",1);
+  addCard(Zone.LIBRARY,playerA,"Plains",10);
+  addCard(Zone.BATTLEFIELD,playerB,"Memnite",1);
+  addCard(Zone.LIBRARY,playerB,"Plains",10);
+  castSpell(1,PhaseStep.UPKEEP,playerA,"Gather Specimens");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Oblivion Ring");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Disenchant","Oblivion Ring");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Memnite",1);
+  assertPermanentCount(playerB,"Memnite",0);
+}

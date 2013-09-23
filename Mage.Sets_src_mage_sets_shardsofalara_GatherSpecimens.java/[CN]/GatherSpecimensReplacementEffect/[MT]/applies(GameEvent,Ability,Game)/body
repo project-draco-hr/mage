@@ -1,0 +1,9 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).getToZone() == Zone.BATTLEFIELD) {
+    Card card=game.getCard(((ZoneChangeEvent)event).getTargetId());
+    if (card != null && card.getCardType().contains(CardType.CREATURE) && card.getOwnerId() != source.getControllerId()) {
+      return true;
+    }
+  }
+  return false;
+}
