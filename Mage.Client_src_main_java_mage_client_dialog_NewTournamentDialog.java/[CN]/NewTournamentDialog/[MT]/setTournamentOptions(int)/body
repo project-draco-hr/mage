@@ -1,8 +1,10 @@
 {
   TournamentTypeView tournamentType=(TournamentTypeView)cbTournamentType.getSelectedItem();
-  this.spnNumPlayers.setModel(new SpinnerNumberModel(tournamentType.getMinPlayers(),tournamentType.getMinPlayers(),tournamentType.getMaxPlayers(),1));
+  if (numbPlayers < tournamentType.getMinPlayers() || numbPlayers > tournamentType.getMaxPlayers()) {
+    numbPlayers=tournamentType.getMinPlayers();
+  }
+  this.spnNumPlayers.setModel(new SpinnerNumberModel(numbPlayers,tournamentType.getMinPlayers(),tournamentType.getMaxPlayers(),1));
   this.spnNumPlayers.setEnabled(tournamentType.getMinPlayers() != tournamentType.getMaxPlayers());
-  createPlayers(tournamentType.getMinPlayers() - 1);
   if (tournamentType.isLimited()) {
     this.pnlPacks.setVisible(true);
     createPacks(tournamentType.getNumBoosters());
