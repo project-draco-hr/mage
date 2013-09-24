@@ -10,8 +10,10 @@
       if (cmc > 0) {
         controller.gainLife(cmc,game);
       }
-      game.addEffect(new DaxosOfMeletisCastFromExileEffect(card.getId(),exileId),source);
-      game.addEffect(new DaxosOfMeletisSpendAnyManaEffect(card.getId()),source);
+      if (card.getSpellAbility() != null) {
+        game.addEffect(new DaxosOfMeletisCastFromExileEffect(card.getId(),exileId),source);
+        game.addEffect(new DaxosOfMeletisSpendAnyManaEffect(card.getId()),source);
+      }
     }
     return true;
   }
