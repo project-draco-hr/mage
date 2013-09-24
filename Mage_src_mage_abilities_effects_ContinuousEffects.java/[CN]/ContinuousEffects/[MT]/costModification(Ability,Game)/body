@@ -1,10 +1,32 @@
 {
   List<CostModificationEffect> costEffects=getApplicableCostModificationEffects(game);
   for (  CostModificationEffect effect : costEffects) {
-    HashSet<Ability> abilities=costModificationEffects.getAbility(effect.getId());
-    for (    Ability ability : abilities) {
-      if (effect.applies(abilityToModify,ability,game)) {
-        effect.apply(game,ability,abilityToModify);
+    if (effect.getModificationType() == CostModificationType.INCREASE_COST) {
+      HashSet<Ability> abilities=costModificationEffects.getAbility(effect.getId());
+      for (      Ability ability : abilities) {
+        if (effect.applies(abilityToModify,ability,game)) {
+          effect.apply(game,ability,abilityToModify);
+        }
+      }
+    }
+  }
+  for (  CostModificationEffect effect : costEffects) {
+    if (effect.getModificationType() == CostModificationType.REDUCE_COST) {
+      HashSet<Ability> abilities=costModificationEffects.getAbility(effect.getId());
+      for (      Ability ability : abilities) {
+        if (effect.applies(abilityToModify,ability,game)) {
+          effect.apply(game,ability,abilityToModify);
+        }
+      }
+    }
+  }
+  for (  CostModificationEffect effect : costEffects) {
+    if (effect.getModificationType() == CostModificationType.SET_COST) {
+      HashSet<Ability> abilities=costModificationEffects.getAbility(effect.getId());
+      for (      Ability ability : abilities) {
+        if (effect.applies(abilityToModify,ability,game)) {
+          effect.apply(game,ability,abilityToModify);
+        }
       }
     }
   }
