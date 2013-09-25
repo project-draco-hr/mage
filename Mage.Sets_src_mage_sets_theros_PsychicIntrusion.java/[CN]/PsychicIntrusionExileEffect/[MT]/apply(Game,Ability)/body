@@ -1,5 +1,5 @@
 {
-  Player opponent=game.getPlayer(source.getFirstTarget());
+  Player opponent=game.getPlayer(targetPointer.getFirst(game,source));
   if (opponent != null) {
     opponent.revealCards("Psychic Intrusion",opponent.getHand(),game);
     Player you=game.getPlayer(source.getControllerId());
@@ -9,6 +9,11 @@
       boolean fromHand=false;
       if (cardsGraveyard > 0 && cardsHand > 0) {
         if (opponent.chooseUse(Outcome.Detriment,"Exile card from opponents Hand?",game)) {
+          fromHand=true;
+        }
+      }
+ else {
+        if (cardsHand > 0) {
           fromHand=true;
         }
       }
@@ -29,9 +34,10 @@
       }
       if (card != null) {
         UUID exileId=CardUtil.getCardExileZoneId(game,source);
-        card.moveToExile(exileId,"Daxos of Meletis",source.getSourceId(),game);
+        card.moveToExile(exileId,"Psychic Intrusion",source.getSourceId(),game);
         game.addEffect(new PsychicIntrusionCastFromExileEffect(card.getId(),exileId),source);
         game.addEffect(new PsychicIntrusionSpendAnyManaEffect(card.getId()),source);
+        game.informPlayers(new StringBuilder("Psychic Intrusion: ").append(you.getName()).append(" exiles ").append(card.getName()).append(" from").append(fromHand ? " hand" : " graveyard").toString());
       }
       return true;
     }
