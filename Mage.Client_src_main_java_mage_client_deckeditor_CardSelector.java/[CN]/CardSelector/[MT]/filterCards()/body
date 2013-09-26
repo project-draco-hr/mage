@@ -19,7 +19,10 @@
         }
       }
     }
-    this.currentView.loadCards(new CardsView(filteredCards),(SortBy)cbSortBy.getSelectedItem(),chkPiles.isSelected(),bigCard,null);
+    if (currentView instanceof CardGrid && filteredCards.size() > CardGrid.MAX_IMAGES) {
+      this.toggleViewMode();
+    }
+    this.currentView.loadCards(new CardsView(filteredCards),(SortBy)cbSortBy.getSelectedItem(),chkPiles.isSelected(),bigCard,null,false);
     this.cardCount.setText(String.valueOf(filteredCards.size()));
   }
   finally {
