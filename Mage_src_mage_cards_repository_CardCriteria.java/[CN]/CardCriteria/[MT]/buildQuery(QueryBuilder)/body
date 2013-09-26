@@ -29,12 +29,14 @@
     where.or(setCodes.size());
     clausesCount++;
   }
-  for (  CardType type : types) {
-    where.like("types",new SelectArg('%' + type.name() + '%'));
-  }
-  if (!types.isEmpty()) {
-    where.or(types.size());
-    clausesCount++;
+  if (types.size() != 7) {
+    for (    CardType type : types) {
+      where.like("types",new SelectArg('%' + type.name() + '%'));
+    }
+    if (!types.isEmpty()) {
+      where.or(types.size());
+      clausesCount++;
+    }
   }
   for (  CardType type : notTypes) {
     where.not().like("types",new SelectArg('%' + type.name() + '%'));
@@ -96,5 +98,4 @@
   if (count != null) {
     qb.limit(count);
   }
-  qb.orderBy("cardNumber",true);
 }
