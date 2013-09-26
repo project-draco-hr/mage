@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    controller.drawCards(2,game);
+    for (    UUID playerId : controller.getInRange()) {
+      if (!playerId.equals(controller.getId())) {
+        Player player=game.getPlayer(playerId);
+        if (player != null) {
+          player.drawCards(1,game);
+        }
+      }
+    }
+  }
+  return false;
+}
