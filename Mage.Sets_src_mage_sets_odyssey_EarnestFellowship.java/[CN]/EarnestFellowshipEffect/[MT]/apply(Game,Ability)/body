@@ -1,34 +1,25 @@
 {
-  List<Permanent> permanents=game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game);
-  for (  Permanent permanent : permanents) {
-    if (!this.affectedObjectsSet || objects.contains(permanent.getId())) {
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
+    if (permanent.getColor().hasColor()) {
       ObjectColor color=permanent.getColor();
       FilterCard filterColor=new FilterCard("its own Colors");
       if (color.contains(ObjectColor.BLACK)) {
         filterColor.add(new ColorPredicate(ObjectColor.BLACK));
-        Ability ability=new ProtectionAbility(filterColor);
-        permanent.addAbility(ability,id,game);
       }
       if (color.contains(ObjectColor.BLUE)) {
         filterColor.add(new ColorPredicate(ObjectColor.BLUE));
-        Ability ability=new ProtectionAbility(filterColor);
-        permanent.addAbility(ability,id,game);
       }
       if (color.contains(ObjectColor.WHITE)) {
         filterColor.add(new ColorPredicate(ObjectColor.WHITE));
-        Ability ability=new ProtectionAbility(filterColor);
-        permanent.addAbility(ability,id,game);
       }
       if (color.contains(ObjectColor.RED)) {
         filterColor.add(new ColorPredicate(ObjectColor.RED));
-        Ability ability=new ProtectionAbility(filterColor);
-        permanent.addAbility(ability,id,game);
       }
       if (color.contains(ObjectColor.GREEN)) {
         filterColor.add(new ColorPredicate(ObjectColor.GREEN));
-        Ability ability=new ProtectionAbility(filterColor);
-        permanent.addAbility(ability,id,game);
       }
+      Ability ability=new ProtectionAbility(filterColor);
+      permanent.addAbility(ability,source.getSourceId(),game);
     }
   }
   return true;
