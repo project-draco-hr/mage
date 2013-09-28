@@ -1,13 +1,17 @@
 {
   String lastFolder=MageFrame.getPreferences().get("lastDeckFolder","");
-  if (!lastFolder.isEmpty())   fcSelectDeck.setCurrentDirectory(new File(lastFolder));
+  if (!lastFolder.isEmpty()) {
+    fcSelectDeck.setCurrentDirectory(new File(lastFolder));
+  }
   deck.setName(this.txtDeckName.getText());
   int ret=fcSelectDeck.showSaveDialog(this);
   if (ret == JFileChooser.APPROVE_OPTION) {
     File file=fcSelectDeck.getSelectedFile();
     try {
       String fileName=file.getPath();
-      if (!fileName.endsWith(".dck"))       fileName+=".dck";
+      if (!fileName.endsWith(".dck")) {
+        fileName+=".dck";
+      }
       setCursor(new Cursor(Cursor.WAIT_CURSOR));
       Sets.saveDeck(fileName,deck.getDeckCardLists());
     }
