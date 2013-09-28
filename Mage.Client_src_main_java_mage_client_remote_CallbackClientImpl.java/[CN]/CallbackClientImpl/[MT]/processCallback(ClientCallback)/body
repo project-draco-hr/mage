@@ -172,6 +172,12 @@ case PlayerSubmittedDeck:
  else if (callback.getMethod().equals("endGameInfo")) {
   MageFrame.getInstance().showGameEndDialog((GameEndView)callback.getData());
 }
+ else if (callback.getMethod().equals("showUserMessage")) {
+  List<String> messageData=(List<String>)callback.getData();
+  if (messageData.size() == 2) {
+    JOptionPane.showMessageDialog(null,messageData.get(1),messageData.get(0),JOptionPane.WARNING_MESSAGE);
+  }
+}
  else if (callback.getMethod().equals("gameInform")) {
   if (callback.getMessageId() > messageId) {
     GameClientMessage message=(GameClientMessage)callback.getData();
