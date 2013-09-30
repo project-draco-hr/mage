@@ -1,0 +1,14 @@
+{
+  super(ownerId,119,"Cabal Inquisitor",Rarity.COMMON,new CardType[]{CardType.CREATURE},"{1}{B}");
+  this.expansionSetCode="ODY";
+  this.subtype.add("Human");
+  this.subtype.add("Minion");
+  this.color.setBlack(true);
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Ability ability=new ActivateAsSorceryConditionalActivatedAbility(Zone.BATTLEFIELD,new DiscardTargetEffect(1),new ManaCostsImpl("{1}{B}"),new CardsInControllerGraveCondition(7),"<br/><br/><i>Threshold</i> - {1}{B}, {tap}, Exile two cards from your graveyard: Target player discards a card. Activate this ability only any time you could cast a sorcery, and only if seven or more cards are in your graveyard.");
+  ability.addTarget(new TargetPlayer(true));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new ExileFromGraveCost(new TargetCardInYourGraveyard(2,new FilterCard("cards from your graveyard"))));
+  this.addAbility(ability);
+}
