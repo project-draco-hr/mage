@@ -1,0 +1,13 @@
+{
+  super(ownerId,156,"Patriarch's Desire",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{3}{B}");
+  this.expansionSetCode="ODY";
+  this.subtype.add("Aura");
+  this.color.setBlack(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability.addEffect(new BoostEnchantedEffect(2,-2,Duration.WhileOnBattlefield));
+  ability.addEffect(new ConditionalContinousEffect(new BoostEnchantedEffect(2,-2,Duration.WhileOnBattlefield),new CardsInControllerGraveCondition(7),"<br/><br/><i>Threshold</i> - Enchanted creature gets an additional +2/-2 as long as seven or more cards are in your graveyard."));
+}
