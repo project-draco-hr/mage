@@ -52,13 +52,22 @@ Dimension d=bar.getPreferredSize();
 d.width=300;
 bar.setPreferredSize(d);
 p0.add(Box.createVerticalStrut(5));
-checkBox=new JCheckBox("Download for current game only.");
+checkBox=new JCheckBox("Download images for Standard (Type2) only");
 p0.add(checkBox);
 p0.add(Box.createVerticalStrut(5));
-checkBox.setEnabled(!offlineMode);
 checkBox.addActionListener(new ActionListener(){
 @Override public void actionPerformed(ActionEvent e){
-int count=DownloadPictures.this.cards.size();
+ArrayList<CardDownloadData> cardsToDownload=DownloadPictures.this.cards;
+if (checkBox.isSelected()) {
+DownloadPictures.this.type2cards=new ArrayList<CardDownloadData>();
+for (CardDownloadData data : DownloadPictures.this.cards) {
+  if (data.isType2()) {
+    DownloadPictures.this.type2cards.add(data);
+  }
+}
+cardsToDownload=DownloadPictures.this.type2cards;
+}
+int count=cardsToDownload.size();
 float mb=(count * cardImageSource.getAverageSize()) / 1024;
 bar.setString(String.format(cardIndex == count ? "%d of %d cards finished! Please close!" : "%d of %d cards finished! Please wait! [%.1f Mb]",0,count,mb));
 }

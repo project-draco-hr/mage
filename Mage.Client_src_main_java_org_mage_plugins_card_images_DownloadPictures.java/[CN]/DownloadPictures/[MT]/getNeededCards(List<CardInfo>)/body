@@ -2,6 +2,8 @@
   ArrayList<CardDownloadData> cardsToDownload=new ArrayList<CardDownloadData>();
   ArrayList<CardDownloadData> allCardsUrls=new ArrayList<CardDownloadData>();
   HashSet<String> ignoreUrls=SettingsManager.getIntance().getIgnoreUrls();
+  Set<String> type2SetsFilter=new HashSet<String>();
+  type2SetsFilter.addAll(ConstructedFormats.getSetsByFormat(ConstructedFormats.STANDARD));
   try {
     offlineMode=true;
     for (    CardInfo card : allCards) {
@@ -13,6 +15,9 @@
         }
         url.setFlipCard(card.isFlipCard());
         url.setSplitCard(card.isSplitCard());
+        if (type2SetsFilter.contains(card.getSetCode())) {
+          url.setType2(true);
+        }
         allCardsUrls.add(url);
         if (card.isDoubleFaced()) {
           if (card.getSecondSideName() == null || card.getSecondSideName().trim().isEmpty()) {
