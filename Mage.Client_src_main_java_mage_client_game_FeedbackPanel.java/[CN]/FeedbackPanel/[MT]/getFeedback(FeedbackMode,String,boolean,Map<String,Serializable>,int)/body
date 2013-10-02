@@ -1,5 +1,12 @@
 {
   logger.info("text: " + message);
+synchronized (this) {
+    if (messageId < this.lastMessageId) {
+      logger.warn("ignoring message from later source: " + messageId + ", text="+ message);
+      return;
+    }
+    this.lastMessageId=messageId;
+  }
   this.lblMessage.setText(message);
   this.helper.setMessage(message);
   this.selected=false;
