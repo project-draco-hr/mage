@@ -1,0 +1,26 @@
+{
+  for (  Entry<UUID,UUID> entry : userPlayerMap.entrySet()) {
+    if (entry.getValue().equals(playerId)) {
+      User user=UserManager.getInstance().getUser(entry.getKey());
+      if (user != null) {
+        StringBuilder sb=new StringBuilder();
+        if (table.isTournamentSubTable()) {
+          sb.append("Your tournament match of round ");
+          sb.append(table.getTournament().getRounds().size());
+          sb.append(" is over. ");
+        }
+ else {
+          sb.append("Match [").append(match.getName()).append("] is over. ");
+        }
+        if (match.getPlayers().size() > 2) {
+          sb.append("All your opponents have lost or quit the match.");
+        }
+ else {
+          sb.append("Your opponent has quit the match.");
+        }
+        user.showUserMessage("Match info",sb.toString());
+      }
+      break;
+    }
+  }
+}

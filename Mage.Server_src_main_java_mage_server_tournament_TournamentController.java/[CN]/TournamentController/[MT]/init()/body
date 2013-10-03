@@ -10,11 +10,18 @@ case START_DRAFT:
   startDraft(event.getDraft());
 break;
 case CONSTRUCT:
+if (!abort) {
 construct();
+}
+ else {
+endTournament();
+}
 break;
 case START_MATCH:
+if (!abort) {
 initTournament();
 startMatch(event.getPair(),event.getMatchOptions());
+}
 break;
 case END:
 endTournament();

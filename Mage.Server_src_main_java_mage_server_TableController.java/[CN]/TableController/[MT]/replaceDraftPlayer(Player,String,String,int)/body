@@ -1,0 +1,13 @@
+{
+  Player newPlayer=createPlayer(name,playerType,skill);
+  if (newPlayer == null || table.getState() != TableState.DRAFTING) {
+    return false;
+  }
+  TournamentPlayer oldTournamentPlayer=tournament.getPlayer(oldPlayer.getId());
+  tournament.removePlayer(oldPlayer.getId());
+  tournament.addPlayer(newPlayer,playerType);
+  TournamentPlayer newTournamentPlayer=tournament.getPlayer(newPlayer.getId());
+  newTournamentPlayer.setState(oldTournamentPlayer.getState());
+  DraftManager.getInstance().getController(table.getId()).replacePlayer(oldPlayer,newPlayer);
+  return true;
+}

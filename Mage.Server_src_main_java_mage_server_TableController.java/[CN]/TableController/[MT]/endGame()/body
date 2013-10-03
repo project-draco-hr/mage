@@ -9,7 +9,17 @@
       setupTimeout(Match.SIDEBOARD_TIME);
       match.sideboard();
       cancelTimeout();
-      startGame(choosingPlayerId);
+      if (!match.isMatchOver()) {
+        startGame(choosingPlayerId);
+      }
+ else {
+        table.endGame();
+        for (        MatchPlayer mPlayer : match.getPlayers()) {
+          if (!mPlayer.hasQuit()) {
+            this.sendMatchEndInfo(mPlayer.getPlayer().getId());
+          }
+        }
+      }
     }
  else {
       match.getGames().clear();

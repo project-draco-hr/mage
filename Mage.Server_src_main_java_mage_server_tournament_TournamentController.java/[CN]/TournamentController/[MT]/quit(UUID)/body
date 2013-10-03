@@ -1,18 +1,34 @@
 {
   UUID playerId=userPlayerMap.get(userId);
   if (playerId != null) {
-    TournamentPlayer player=tournament.getPlayer(playerId);
-    if (player != null) {
-      ChatManager.getInstance().broadcast(chatId,"",player.getPlayer().getName() + " has quit the tournament",MessageColor.BLACK,true,SoundToPlay.PlayerLeft);
-      String info;
-      if (tournament.isDoneConstructing()) {
-        info=new StringBuilder("during round ").append(tournament.getRounds().size()).toString();
+    TournamentPlayer tPlayer=tournament.getPlayer(playerId);
+    if (tPlayer != null) {
+      if (started) {
+        ChatManager.getInstance().broadcast(chatId,"",tPlayer.getPlayer().getName() + " has quit the tournament",MessageColor.BLACK,true,SoundToPlay.PlayerLeft);
+        String info;
+        if (tournament.isDoneConstructing()) {
+          info=new StringBuilder("during round ").append(tournament.getRounds().size()).toString();
+        }
+ else {
+          if (tPlayer.getState().equals(TournamentPlayerState.DRAFTING)) {
+            info="during Draft phase";
+            if (!checkToReplaceDraftPlayerByAi(userId,tPlayer)) {
+              this.abortTournament();
+            }
+          }
+ else           if (tPlayer.getState().equals(TournamentPlayerState.CONSTRUCTING)) {
+            info="during Construction phase";
+          }
+ else {
+            info="";
+          }
+        }
+        tPlayer.setQuit(info);
+        tournament.quit(playerId);
       }
  else {
-        info="during Construction phase";
+        tournament.leave(playerId);
       }
-      player.setQuit(info);
-      tournament.quit(playerId);
     }
   }
 }
