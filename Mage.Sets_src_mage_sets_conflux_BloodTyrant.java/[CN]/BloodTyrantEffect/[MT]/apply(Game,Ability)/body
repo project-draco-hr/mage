@@ -1,0 +1,14 @@
+{
+  int counters=0;
+  for (  Player player : game.getPlayers().values()) {
+    if (player != null) {
+      player.loseLife(1,game);
+      counters++;
+    }
+  }
+  Permanent bloodTyrant=game.getPermanent(source.getSourceId());
+  if (bloodTyrant != null && counters != 0) {
+    bloodTyrant.addCounters(CounterType.P1P1.createInstance(counters),game);
+  }
+  return true;
+}

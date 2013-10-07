@@ -1,0 +1,14 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment != null && enchantment.getAttachedTo() != null) {
+    UUID uuid=getTargetPointer().getFirst(game,source);
+    Permanent creature=game.getPermanent(uuid);
+    if (creature == null) {
+      creature=game.getPermanent(enchantment.getAttachedTo());
+    }
+    if (creature != null) {
+      return creature.destroy(source.getId(),game,false);
+    }
+  }
+  return false;
+}
