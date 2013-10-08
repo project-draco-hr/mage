@@ -3,6 +3,9 @@
     return false;
   }
   Permanent attacker=game.getPermanent(attackerId);
+  if (!game.getOpponents(this.getControllerId()).contains(attacker.getControllerId())) {
+    return false;
+  }
   for (  Map.Entry entry : game.getContinuousEffects().getApplicableRestrictionEffects(this,game).entrySet()) {
     RestrictionEffect effect=(RestrictionEffect)entry.getKey();
     for (    Ability ability : (HashSet<Ability>)entry.getValue()) {
