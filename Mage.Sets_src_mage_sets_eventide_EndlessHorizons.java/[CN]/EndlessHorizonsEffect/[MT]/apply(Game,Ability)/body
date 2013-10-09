@@ -1,0 +1,16 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  if (you != null && you.searchLibrary(target,game)) {
+    if (target.getTargets().size() > 0) {
+      for (      UUID cardId : target.getTargets()) {
+        Card card=you.getLibrary().remove(cardId,game);
+        if (card != null) {
+          card.moveToExile(CardUtil.getCardExileZoneId(game,source),"Endless Horizons",source.getSourceId(),game);
+        }
+      }
+      you.shuffleLibrary(game);
+      return true;
+    }
+  }
+  return false;
+}

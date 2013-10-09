@@ -1,0 +1,14 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  Player opponent=game.getPlayer(source.getFirstTarget());
+  FilterPermanent filter=new FilterPermanent();
+  filter.add(Predicates.or(new ColorPredicate(ObjectColor.BLACK),new ColorPredicate(ObjectColor.RED)));
+  if (opponent != null) {
+    int amount=game.getBattlefield().countAll(filter,opponent.getId(),game);
+    if (you != null) {
+      you.gainLife(amount,game);
+      return true;
+    }
+  }
+  return false;
+}
