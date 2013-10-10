@@ -2,12 +2,11 @@
   ExileZone exZone=game.getExile().getExileZone(CardUtil.getCardExileZoneId(game,source));
   if (exZone != null) {
     for (    Card card : exZone.getCards(game)) {
-      if (card != null && card.getOwnerId() == source.getControllerId()) {
-        if (card.moveToZone(Zone.HAND,source.getId(),game,false)) {
-          return true;
-        }
+      if (card.getOwnerId() == source.getControllerId()) {
+        card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+        break;
       }
     }
   }
-  return false;
+  return true;
 }
