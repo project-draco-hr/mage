@@ -2,7 +2,11 @@
   Card card;
   Player player=game.getPlayer(source.getControllerId());
   ExileZone exile=game.getExile().createZone(source.getSourceId(),player.getName() + " Cascade");
-  int sourceCost=game.getCard(source.getSourceId()).getManaCost().convertedManaCost();
+  Card stackCard=game.getCard(targetPointer.getFirst(game,source));
+  if (stackCard == null) {
+    return false;
+  }
+  int sourceCost=stackCard.getManaCost().convertedManaCost();
   do {
     card=player.getLibrary().removeFromTop(game);
     if (card == null) {

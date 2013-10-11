@@ -1,6 +1,8 @@
 {
   if (userPlayerMap.containsKey(userId)) {
-    ChatManager.getInstance().broadcast(chatId,"",game.getPlayer(userPlayerMap.get(userId)).getName() + " has timed out.  Auto concede.",MessageColor.BLACK);
+    ;
+    StringBuilder sb=new StringBuilder(game.getPlayer(userPlayerMap.get(userId)).getName()).append(" has timed out (player had priority and was not active for ").append(ConfigSettings.getInstance().getMaxSecondsIdle()).append(" seconds ) - Auto concede.");
+    ChatManager.getInstance().broadcast(chatId,"",sb.toString(),MessageColor.BLACK);
     concede(userId);
   }
 }

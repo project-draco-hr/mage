@@ -1,14 +1,9 @@
 {
   Player player=game.getPlayer(source.getControllerId());
   if (player != null && foundCardsToPick > 0) {
-    if (!optional || player.chooseUse(Outcome.DrawCard,"Do you wish to reveal " + filter.getMessage() + " and put it into your hand?",game)) {
+    if (!optional || player.chooseUse(Outcome.DrawCard,getMayText(),game)) {
       FilterCard pickFilter=filter.copy();
-      StringBuilder sb=new StringBuilder(filter.getMessage()).append(" to ");
-      if (revealPickedCards) {
-        sb.append("reveal and ");
-      }
-      sb.append("put into your hand");
-      pickFilter.setMessage(sb.toString());
+      pickFilter.setMessage(getPickText());
       TargetCard target=new TargetCard((upTo ? 0 : numberToPick.calculate(game,source)),numberToPick.calculate(game,source),Zone.PICK,pickFilter);
       if (player.choose(Outcome.DrawCard,cards,target,game)) {
         Cards reveal=new CardsImpl();
@@ -16,7 +11,12 @@
           Card card=cards.get(cardId,game);
           if (card != null) {
             cards.remove(card);
-            card.moveToZone(targetPickedCards,source.getId(),game,false);
+            if (targetZoneLookedCards.equals(Zone.BATTLEFIELD)) {
+              card.putOntoBattlefield(game,Zone.PICK,source.getSourceId(),source.getControllerId());
+            }
+ else {
+              card.moveToZone(targetPickedCards,source.getId(),game,false);
+            }
             if (revealPickedCards) {
               reveal.add(card);
             }

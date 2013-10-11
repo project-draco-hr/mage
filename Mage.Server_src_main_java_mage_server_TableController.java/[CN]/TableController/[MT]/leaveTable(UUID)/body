@@ -1,10 +1,10 @@
 {
-  if (table.getState() == TableState.WAITING || table.getState() == TableState.STARTING) {
-    UUID playerId=userPlayerMap.get(userId);
-    if (playerId != null) {
-      table.leaveTable(playerId);
+  UUID playerId=userPlayerMap.get(userId);
+  if (playerId != null) {
+    if (table.getState() == TableState.WAITING || table.getState() == TableState.STARTING) {
+      table.leaveNotStartedTable(playerId);
       if (table.isTournament()) {
-        tournament.leave(playerId);
+        TournamentManager.getInstance().quit(tournament.getId(),userId);
       }
  else {
         match.leave(playerId);
@@ -12,6 +12,15 @@
       User user=UserManager.getInstance().getUser(userId);
       user.removeTable(playerId);
       userPlayerMap.remove(userId);
+    }
+ else     if (!table.getState().equals(TableState.FINISHED)) {
+      if (table.isTournament()) {
+        TableManager.getInstance().userQuitTournamentSubTables(userId);
+        TournamentManager.getInstance().quit(tournament.getId(),userId);
+      }
+ else {
+        match.leave(playerId);
+      }
     }
   }
 }

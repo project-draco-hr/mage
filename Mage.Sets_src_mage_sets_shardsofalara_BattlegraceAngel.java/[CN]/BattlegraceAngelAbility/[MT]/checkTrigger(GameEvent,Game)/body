@@ -1,9 +1,9 @@
 {
-  if (event.getType() == GameEvent.EventType.DECLARED_ATTACKERS && game.getActivePlayerId().equals(this.controllerId)) {
+  if (event.getType() == EventType.DECLARED_ATTACKERS && game.getActivePlayerId().equals(this.controllerId)) {
     if (game.getCombat().attacksAlone()) {
-      TargetCreaturePermanent target=new TargetCreaturePermanent();
-      this.addTarget(target);
-      this.getTargets().get(0).add(game.getCombat().getAttackers().get(0),game);
+      for (      Effect effect : this.getEffects()) {
+        effect.setTargetPointer(new FixedTarget(game.getCombat().getAttackers().get(0)));
+      }
       return true;
     }
   }

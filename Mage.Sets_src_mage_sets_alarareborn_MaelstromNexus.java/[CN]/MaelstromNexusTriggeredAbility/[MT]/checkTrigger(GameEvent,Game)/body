@@ -3,6 +3,7 @@
     Spell spell=game.getStack().getSpell(event.getTargetId());
     FirstSpellCastThisTurnWatcher watcher=(FirstSpellCastThisTurnWatcher)game.getState().getWatchers().get("FirstSpellCastThisTurn",this.getSourceId());
     if (spell != null && watcher != null && watcher.conditionMet()) {
+      this.getEffects().get(0).setTargetPointer(new FixedTarget(spell.getSourceId()));
       return true;
     }
   }

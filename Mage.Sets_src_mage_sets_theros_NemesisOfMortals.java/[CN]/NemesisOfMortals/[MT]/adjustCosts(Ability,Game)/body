@@ -1,0 +1,20 @@
+{
+  if (ability instanceof SpellAbility || ability instanceof MonstrosityAbility) {
+    Player player=game.getPlayer(this.getOwnerId());
+    int creatureCount=player.getGraveyard().count(new FilterCreatureCard(),game);
+    int genericMana;
+    if (ability instanceof MonstrosityAbility) {
+      genericMana=7 - creatureCount;
+    }
+ else {
+      genericMana=4 - creatureCount;
+    }
+    StringBuilder adjustedCost=new StringBuilder();
+    if (genericMana > 0) {
+      adjustedCost.append("{").append(genericMana).append("}");
+    }
+    adjustedCost.insert(0,"{G}{G}");
+    ability.getManaCostsToPay().clear();
+    ability.getManaCostsToPay().load(adjustedCost.toString());
+  }
+}

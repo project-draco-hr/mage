@@ -1,0 +1,20 @@
+{
+  if (staticText != null && !staticText.isEmpty()) {
+    return staticText;
+  }
+  StringBuilder sb=new StringBuilder();
+  Target target=mode.getTargets().get(0);
+  if (target.getNumberOfTargets() > 1) {
+    if (target.getNumberOfTargets() < target.getMaxNumberOfTargets()) {
+      sb.append("Up to");
+    }
+    sb.append(target.getMaxNumberOfTargets()).append(" target ").append(target.getTargetName()).append(" gain ");
+  }
+ else {
+    sb.append("Target ").append(target.getTargetName()).append(" can't be blocked");
+  }
+  if (duration.equals(Duration.EndOfTurn)) {
+    sb.append(" this turn");
+  }
+  return sb.toString();
+}

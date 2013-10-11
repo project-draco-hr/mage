@@ -10,11 +10,18 @@ case START_DRAFT:
   startDraft(event.getDraft());
 break;
 case CONSTRUCT:
+if (!abort) {
 construct();
+}
+ else {
+endTournament();
+}
 break;
 case START_MATCH:
+if (!abort) {
 initTournament();
 startMatch(event.getPair(),event.getMatchOptions());
+}
 break;
 case END:
 endTournament();
@@ -41,7 +48,7 @@ logger.fatal("Player event listener error",ex);
 for (TournamentPlayer player : tournament.getPlayers()) {
 if (!player.getPlayer().isHuman()) {
 player.setJoined();
-logger.info("player " + player.getPlayer().getId() + " has joined tournament "+ tournament.getId());
+logger.debug("player " + player.getPlayer().getId() + " has joined tournament "+ tournament.getId());
 ChatManager.getInstance().broadcast(chatId,"",player.getPlayer().getName() + " has joined the tournament",MessageColor.BLACK);
 }
 }

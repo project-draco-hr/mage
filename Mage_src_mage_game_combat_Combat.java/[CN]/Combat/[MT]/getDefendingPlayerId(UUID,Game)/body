@@ -1,0 +1,19 @@
+{
+  UUID defenderId=null;
+  for (  CombatGroup group : groups) {
+    if (group.getAttackers().contains(attackerId)) {
+      defenderId=group.getDefenderId();
+      if (group.defenderIsPlaneswalker) {
+        Permanent permanent=game.getPermanent(defenderId);
+        if (permanent != null) {
+          defenderId=permanent.getControllerId();
+        }
+ else {
+          defenderId=null;
+        }
+      }
+      break;
+    }
+  }
+  return defenderId;
+}

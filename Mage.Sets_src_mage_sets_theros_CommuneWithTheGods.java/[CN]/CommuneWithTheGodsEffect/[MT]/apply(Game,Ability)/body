@@ -1,0 +1,36 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Cards cards=new CardsImpl(Zone.PICK);
+    boolean properCardFound=false;
+    int count=Math.min(player.getLibrary().size(),5);
+    for (int i=0; i < count; i++) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        cards.add(card);
+        if (filterPutInHand.match(card,source.getSourceId(),source.getControllerId(),game)) {
+          properCardFound=true;
+        }
+      }
+    }
+    if (!cards.isEmpty()) {
+      player.revealCards("Commune with the Gods",cards,game);
+      TargetCard target=new TargetCard(Zone.PICK,filterPutInHand);
+      if (properCardFound && player.choose(Outcome.DrawCard,cards,target,game)) {
+        Card card=game.getCard(target.getFirstTarget());
+        if (card != null) {
+          cards.remove(card);
+          card.moveToZone(Zone.HAND,source.getId(),game,false);
+        }
+      }
+      for (      UUID cardId : cards) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          card.moveToZone(Zone.GRAVEYARD,source.getId(),game,true);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

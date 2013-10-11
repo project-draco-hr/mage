@@ -1,13 +1,11 @@
 {
-  if (lockedInCondition && !(condition instanceof FixedCondition)) {
-    condition=new FixedCondition(condition.apply(game,source));
+  if (!initDone) {
+    init(source,game);
   }
   if (condition.apply(game,source)) {
-    effect.setTargetPointer(this.targetPointer);
     return effect.apply(layer,sublayer,source,game);
   }
  else   if (otherwiseEffect != null) {
-    otherwiseEffect.setTargetPointer(this.targetPointer);
     return otherwiseEffect.apply(layer,sublayer,source,game);
   }
   if (!condition.apply(game,source) && effect.getDuration() == Duration.OneUse) {

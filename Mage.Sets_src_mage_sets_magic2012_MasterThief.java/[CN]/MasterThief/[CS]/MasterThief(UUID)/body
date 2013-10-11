@@ -6,7 +6,8 @@
   this.color.setBlue(true);
   this.power=new MageInt(2);
   this.toughness=new MageInt(2);
-  Ability ability=new EntersBattlefieldTriggeredAbility(new GainControlTargetEffect(Duration.WhileOnBattlefield),false);
+  ConditionalContinousEffect effect=new ConditionalContinousEffect(new GainControlTargetEffect(Duration.Custom),new PermanentOnBattlefieldControlUnchangedCondition(),"gain control of target artifact for as long as you control Master Thief");
+  Ability ability=new EntersBattlefieldTriggeredAbility(effect,false);
   ability.addTarget(new TargetPermanent(filter));
   this.addAbility(ability);
 }

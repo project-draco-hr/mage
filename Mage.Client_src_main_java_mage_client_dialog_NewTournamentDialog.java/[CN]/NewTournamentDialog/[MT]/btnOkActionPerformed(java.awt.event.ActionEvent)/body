@@ -29,16 +29,15 @@
   tOptions.getMatchOptions().setAttackOption(MultiplayerAttackOption.LEFT);
   tOptions.getMatchOptions().setRange(RangeOfInfluence.ALL);
   tOptions.getMatchOptions().setLimited(true);
+  saveTournamentSettingsToPrefs(tOptions);
   table=session.createTournamentTable(roomId,tOptions);
   if (table == null) {
-    JOptionPane.showMessageDialog(MageFrame.getDesktop(),"Error creating table.","Error",JOptionPane.ERROR_MESSAGE);
     return;
   }
   if (session.joinTournamentTable(roomId,table.getTableId(),this.txtPlayer1Name.getText(),"Human",1)) {
     for (    TournamentPlayerPanel player : players) {
-      if (!player.getPlayerType().equals("Human")) {
+      if (!player.getPlayerType().toString().equals("Human")) {
         if (!player.joinTournamentTable(roomId,table.getTableId())) {
-          JOptionPane.showMessageDialog(MageFrame.getDesktop(),"Error joining tournament.","Error",JOptionPane.ERROR_MESSAGE);
           session.removeTable(roomId,table.getTableId());
           table=null;
           return;

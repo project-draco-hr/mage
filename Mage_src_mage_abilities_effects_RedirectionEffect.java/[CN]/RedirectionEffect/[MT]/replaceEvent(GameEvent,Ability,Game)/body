@@ -1,14 +1,13 @@
 {
   DamageEvent damageEvent=(DamageEvent)event;
   Permanent permanent=game.getPermanent(redirectTarget.getFirstTarget());
-  Ability damageSource=getSource(damageEvent.getSourceId(),game);
-  if (permanent != null && damageSource != null) {
-    permanent.damage(damageEvent.getAmount(),damageSource.getId(),game,damageEvent.isPreventable(),damageEvent.isCombatDamage());
+  if (permanent != null) {
+    permanent.damage(damageEvent.getAmount(),event.getSourceId(),game,damageEvent.isPreventable(),damageEvent.isCombatDamage(),event.getAppliedEffects());
     return true;
   }
   Player player=game.getPlayer(redirectTarget.getFirstTarget());
   if (player != null) {
-    player.damage(damageEvent.getAmount(),damageSource.getId(),game,damageEvent.isCombatDamage(),damageEvent.isPreventable());
+    player.damage(damageEvent.getAmount(),event.getSourceId(),game,damageEvent.isCombatDamage(),damageEvent.isPreventable(),event.getAppliedEffects());
     return true;
   }
   return false;

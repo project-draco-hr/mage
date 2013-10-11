@@ -1,0 +1,28 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    if (player.chooseUse(Outcome.PutCreatureInPlay,choiceText,game)) {
+      TargetCardInHand target=new TargetCardInHand(new FilterCreatureCard());
+      if (player.choose(Outcome.PutCreatureInPlay,target,source.getSourceId(),game)) {
+        Card card=game.getCard(target.getFirstTarget());
+        if (card != null) {
+          if (card.putOntoBattlefield(game,Zone.HAND,source.getId(),source.getControllerId())) {
+            Permanent permanent=game.getPermanent(card.getId());
+            ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.WhileOnBattlefield);
+            effect.setTargetPointer(new FixedTarget(permanent.getId()));
+            game.addEffect(effect,source);
+            SacrificeTargetEffect sacrificeEffect=new SacrificeTargetEffect("sacrifice boosted " + card.getName());
+            sacrificeEffect.setTargetPointer(new FixedTarget(card.getId()));
+            DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(sacrificeEffect);
+            delayedAbility.setSourceId(source.getSourceId());
+            delayedAbility.setControllerId(source.getControllerId());
+            game.addDelayedTriggeredAbility(delayedAbility);
+          }
+          return true;
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,17 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    TargetControlledPermanent target=new TargetControlledPermanent(filter);
+    target.setNotTarget(true);
+    target.setRequired(true);
+    if (player.choose(this.outcome,target,source.getSourceId(),game)) {
+      Permanent permanent=game.getPermanent(target.getFirstTarget());
+      if (permanent != null) {
+        game.informPlayers(player.getName() + " returns " + permanent.getName()+ " to his or her hand.");
+        return permanent.moveToZone(Zone.HAND,source.getId(),game,false);
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,7 +1,23 @@
 {
   if (object instanceof Permanent || object instanceof StackObject) {
     MageObject copy=object.copy();
-    lki.put(objectId,copy);
-    shortLivingLKI.put(objectId,copy);
+    Map<UUID,MageObject> lkiMap=lki.get(zone);
+    if (lkiMap != null) {
+      lkiMap.put(objectId,copy);
+    }
+ else {
+      HashMap<UUID,MageObject> newMap=new HashMap<UUID,MageObject>();
+      newMap.put(objectId,copy);
+      lki.put(zone,newMap);
+    }
+    Map<UUID,MageObject> shortLivingLkiMap=shortLivingLKI.get(zone);
+    if (shortLivingLkiMap != null) {
+      shortLivingLkiMap.put(objectId,copy);
+    }
+ else {
+      HashMap<UUID,MageObject> newMap=new HashMap<UUID,MageObject>();
+      newMap.put(objectId,copy);
+      shortLivingLKI.put(zone,newMap);
+    }
   }
 }

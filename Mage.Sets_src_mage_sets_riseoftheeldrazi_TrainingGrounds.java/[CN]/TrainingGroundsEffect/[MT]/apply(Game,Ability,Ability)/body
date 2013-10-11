@@ -1,0 +1,27 @@
+{
+  Mana mana=abilityToModify.getManaCostsToPay().getMana();
+  int reduceMax=mana.getColorless();
+  if (mana.count() == mana.getColorless()) {
+    reduceMax--;
+  }
+  if (reduceMax > 2) {
+    reduceMax=2;
+  }
+  Player player=game.getPlayer(abilityToModify.getControllerId());
+  if (player != null) {
+    ChoiceImpl choice=new ChoiceImpl(true);
+    LinkedHashSet<String> set=new LinkedHashSet<String>();
+    for (int i=0; i <= reduceMax; i++) {
+      set.add(String.valueOf(i));
+    }
+    choice.setChoices(set);
+    choice.setMessage("Reduce ability cost");
+    if (player.choose(Outcome.Benefit,choice,game)) {
+      int reduce=Integer.parseInt(choice.getChoice());
+      mana.setColorless(mana.getColorless() - reduce);
+      abilityToModify.getManaCostsToPay().load(mana.toString());
+      return true;
+    }
+  }
+  return false;
+}

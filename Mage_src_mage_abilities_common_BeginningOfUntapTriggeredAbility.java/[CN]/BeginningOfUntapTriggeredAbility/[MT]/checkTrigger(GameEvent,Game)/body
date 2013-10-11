@@ -11,23 +11,37 @@ case YOU:
       }
     }
   return yours;
-case OPPONENT:
-if (game.getOpponents(this.controllerId).contains(event.getPlayerId())) {
-  if (getTargets().size() == 0) {
-    for (    Effect effect : this.getEffects()) {
-      effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
-    }
+case NOT_YOU:
+Player controller=game.getPlayer(this.getControllerId());
+if (controller != null && controller.getInRange().contains(event.getPlayerId()) && !event.getPlayerId().equals(this.getControllerId())) {
+if (getTargets().size() == 0) {
+  for (  Effect effect : this.getEffects()) {
+    effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
   }
-  return true;
+}
+return true;
 }
 break;
-case ANY:
+case OPPONENT:
+if (game.getOpponents(this.controllerId).contains(event.getPlayerId())) {
 if (getTargets().size() == 0) {
 for (Effect effect : this.getEffects()) {
 effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
 }
 }
 return true;
+}
+break;
+case ANY:
+controller=game.getPlayer(this.getControllerId());
+if (controller != null && controller.getInRange().contains(event.getPlayerId())) {
+if (getTargets().size() == 0) {
+for (Effect effect : this.getEffects()) {
+effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
+}
+}
+return true;
+}
 }
 }
 return false;

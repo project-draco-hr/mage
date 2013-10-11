@@ -7,6 +7,7 @@
       Player owner=game.getPlayer(ownerId);
       game.rememberLKI(objectId,Zone.BATTLEFIELD,this);
       if (owner != null) {
+        this.setControllerId(ownerId);
 switch (event.getToZone()) {
 case GRAVEYARD:
           owner.putInGraveyard(card,game,!flag);
@@ -21,8 +22,12 @@ case COMMAND:
 game.addCommander(new Commander(card));
 break;
 case LIBRARY:
-if (flag) owner.getLibrary().putOnTop(card,game);
- else owner.getLibrary().putOnBottom(card,game);
+if (flag) {
+owner.getLibrary().putOnTop(card,game);
+}
+ else {
+owner.getLibrary().putOnBottom(card,game);
+}
 break;
 case BATTLEFIELD:
 break;

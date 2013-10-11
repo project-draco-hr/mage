@@ -1,0 +1,39 @@
+{
+  int numPlayers;
+  txtName.setText(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_NAME,"Tournament"));
+  int timeLimit=Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_TIME_LIMIT,"1500"));
+  for (  MatchTimeLimit mtl : MatchTimeLimit.values()) {
+    if (mtl.getTimeLimit() == timeLimit) {
+      this.cbTimeLimit.setSelectedItem(mtl);
+      break;
+    }
+  }
+  this.spnConstructTime.setValue(Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_CONSTR_TIME,"600")) / 60);
+  String tournamentTypeName=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_TYPE,"Sealed Elimination");
+  for (  TournamentTypeView tournamentTypeView : session.getTournamentTypes()) {
+    if (tournamentTypeView.getName().equals(tournamentTypeName)) {
+      cbTournamentType.setSelectedItem(tournamentTypeView);
+      break;
+    }
+  }
+  this.spnFreeMulligans.setValue(Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_NUMBER_OF_FREE_MULLIGANS,"0")));
+  this.spnNumWins.setValue(Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_NUMBER_OF_WINS,"2")));
+  if (cbTournamentType.getSelectedItem().toString().equals("Sealed Elimination")) {
+    numPlayers=Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PLAYERS_SEALED,"2"));
+    setTournamentOptions(numPlayers);
+    loadBoosterPacks(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PACKS_SEALED,""));
+  }
+  if (cbTournamentType.getSelectedItem().toString().equals("Elimination Booster Draft")) {
+    numPlayers=Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PLAYERS_DRAFT,"4"));
+    setTournamentOptions(numPlayers);
+    loadBoosterPacks(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PACKS_DRAFT,""));
+    String draftTiming=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_DRAFT_TIMING,"REGULAR");
+    for (    TimingOption timingOption : DraftOptions.TimingOption.values()) {
+      if (timingOption.toString().equals(draftTiming)) {
+        cbDraftTiming.setSelectedItem(draftTiming);
+        break;
+      }
+    }
+  }
+  this.cbAllowSpectators.setSelected(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_ALLOW_SPECTATORS,"Yes").equals("Yes"));
+}

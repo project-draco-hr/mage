@@ -1,0 +1,13 @@
+{
+  super(ownerId,39,"Aqueous Form",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{U}");
+  this.expansionSetCode="THS";
+  this.subtype.add("Aura");
+  this.color.setBlue(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(new UnblockableAbility(),AttachmentType.AURA,Duration.WhileOnBattlefield)));
+  this.addAbility(new AttacksAttachedTriggeredAbility(new ScryEffect(1),AttachmentType.AURA,false));
+}

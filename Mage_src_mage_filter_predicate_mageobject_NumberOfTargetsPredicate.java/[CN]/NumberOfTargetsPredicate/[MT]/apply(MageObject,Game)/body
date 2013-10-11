@@ -1,11 +1,13 @@
 {
   Spell spell=game.getStack().getSpell(input.getId());
   if (spell != null) {
-    Targets target=spell.getSpellAbility().getTargets();
-    if (target != null) {
-      if (target.size() == targets) {
-        return true;
-      }
+    Targets spellTargets=spell.getSpellAbility().getTargets();
+    int numberOfTargets=0;
+    for (    Target target : spellTargets) {
+      numberOfTargets+=target.getTargets().size();
+    }
+    if (numberOfTargets == targets) {
+      return true;
     }
   }
   return false;

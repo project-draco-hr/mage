@@ -1,10 +1,12 @@
 {
-  Permanent permanent=game.getPermanent(source.getFirstTarget());
-  if (targetPointer != null) {
-    permanent=game.getPermanent(targetPointer.getFirst(game,source));
-  }
+  Permanent permanent=game.getPermanent(targetPointer.getFirst(game,source));
   if (permanent != null) {
-    return permanent.changeControllerId(source.getControllerId(),game);
+    if (fixedController) {
+      return permanent.changeControllerId(fixedControllerId,game);
+    }
+ else {
+      return permanent.changeControllerId(source.getControllerId(),game);
+    }
   }
   return false;
 }

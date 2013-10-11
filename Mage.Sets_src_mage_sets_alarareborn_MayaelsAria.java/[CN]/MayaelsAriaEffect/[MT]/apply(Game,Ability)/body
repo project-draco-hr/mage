@@ -5,8 +5,8 @@
   if (you == null) {
     return false;
   }
-  FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent();
-  for (  Permanent creature : game.getBattlefield().getAllActivePermanents(filter,game)) {
+  FilterCreaturePermanent filter=new FilterCreaturePermanent();
+  for (  Permanent creature : game.getBattlefield().getAllActivePermanents(filter,source.getControllerId(),game)) {
     if (creature.getPower().getValue() > 4) {
       condition1=true;
     }
@@ -18,7 +18,7 @@
     }
   }
   if (condition1) {
-    for (    Permanent creature : game.getBattlefield().getAllActivePermanents(filter,game)) {
+    for (    Permanent creature : game.getBattlefield().getAllActivePermanents(filter,source.getControllerId(),game)) {
       creature.addCounters(CounterType.P1P1.createInstance(),game);
     }
   }

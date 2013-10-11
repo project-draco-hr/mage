@@ -1,0 +1,12 @@
+{
+  Permanent permanent=game.getPermanent(this.getTargetPointer().getFirst(game,source));
+  if (permanent != null) {
+    permanent.destroy(source.getSourceId(),game,false);
+    Player permController=game.getPlayer(permanent.getControllerId());
+    if (permController != null) {
+      permController.damage(2,source.getSourceId(),game,false,true);
+      return true;
+    }
+  }
+  return false;
+}

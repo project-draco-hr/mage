@@ -1,0 +1,28 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  int cmc=0;
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof PayVariableLoyaltyCost) {
+      cmc=((PayVariableLoyaltyCost)cost).getAmount();
+    }
+  }
+  FilterCard filter=new FilterCreatureCard(new StringBuilder("creature card with converted mana cost {").append(cmc).append("} exiled with Ashiok, Nightmare Weaver").toString());
+  filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,cmc));
+  Target target=new TargetCardInExile(filter,CardUtil.getCardExileZoneId(game,source));
+  target.setRequired(true);
+  if (target.canChoose(source.getSourceId(),player.getId(),game)) {
+    if (player.chooseTarget(Outcome.PutCreatureInPlay,target,source,game)) {
+      Card card=game.getCard(target.getFirstTarget());
+      if (card != null && card.putOntoBattlefield(game,Zone.EXILED,source.getSourceId(),player.getId())) {
+        ContinuousEffectImpl effect=new AshiokNightmareWeaverAddTypeEffect();
+        effect.setTargetPointer(new FixedTarget(card.getId()));
+        game.addEffect(effect,source);
+        return true;
+      }
+    }
+  }
+  return false;
+}

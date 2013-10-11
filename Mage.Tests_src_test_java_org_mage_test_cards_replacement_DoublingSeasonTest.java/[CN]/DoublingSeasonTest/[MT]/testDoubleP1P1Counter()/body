@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Doubling Season");
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.HAND,playerA,"Test of Faith");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",1);
+  addCard(Zone.HAND,playerB,"Lightning Helix");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Test of Faith","Silvercoat Lion");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Lightning Helix","Silvercoat Lion");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,23);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertCounterCount("Silvercoat Lion",CounterType.P1P1,6);
+  assertPowerToughness(playerA,"Silvercoat Lion",8,8);
+}

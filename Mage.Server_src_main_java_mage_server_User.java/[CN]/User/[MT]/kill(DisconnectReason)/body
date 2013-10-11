@@ -9,10 +9,7 @@
     session.setKilled();
   }
   for (  Entry<UUID,Table> entry : tables.entrySet()) {
-    entry.getValue().leaveTable(entry.getKey());
-    if (TableManager.getInstance().isTableOwner(entry.getValue().getId(),userId) && (entry.getValue().getState().equals(TableState.WAITING) || entry.getValue().getState().equals(TableState.STARTING))) {
-      TableManager.getInstance().removeTable(userId,entry.getValue().getId());
-    }
+    TableManager.getInstance().leaveTable(userId,entry.getValue().getId());
   }
   ChatManager.getInstance().removeUser(userId,reason);
 }

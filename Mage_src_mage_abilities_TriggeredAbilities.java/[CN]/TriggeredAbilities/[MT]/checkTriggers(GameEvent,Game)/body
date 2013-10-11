@@ -1,7 +1,13 @@
 {
   for (  TriggeredAbility ability : this.values()) {
     if (ability.isInUseableZone(game,null,true)) {
-      MageObject object=getMageObject(event,game,ability);
+      MageObject object=null;
+      if (!ability.getZone().equals(Zone.COMMAND) && !game.getState().getZone(ability.getSourceId()).equals(ability.getZone())) {
+        object=game.getShortLivingLKI(ability.getSourceId(),ability.getZone());
+      }
+      if (object == null) {
+        object=getMageObject(event,game,ability);
+      }
       if (object != null) {
         if (checkAbilityStillExists(ability,event,object)) {
           if (object instanceof Permanent) {

@@ -1,0 +1,15 @@
+{
+  if (lockedInCondition && !(condition instanceof FixedCondition)) {
+    condition=new FixedCondition(condition.apply(game,source));
+  }
+  conditionState=condition.apply(game,source);
+  if (conditionState) {
+    effect.setTargetPointer(this.targetPointer);
+    return effect.applies(sourceId,source,game);
+  }
+ else   if (otherwiseEffect != null) {
+    otherwiseEffect.setTargetPointer(this.targetPointer);
+    return otherwiseEffect.applies(sourceId,source,game);
+  }
+  return false;
+}

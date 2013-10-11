@@ -1,11 +1,14 @@
 {
+  StringBuilder sb=new StringBuilder();
 switch (targetController) {
 case YOU:
-    return "At the beginning of your untap step, " + generateZoneString() + getEffects().getText(modes.getMode());
+    return sb.append("At the beginning of your untap step, ").append(generateZoneString()).append(getEffects().getText(modes.getMode())).toString();
+case NOT_YOU:
+  return sb.append(getEffects().getText(modes.getMode())).append(" during each other player's untap step").append(generateZoneString()).toString();
 case OPPONENT:
-  return "At the beginning of each opponent's untap step, " + generateZoneString() + getEffects().getText(modes.getMode());
+return sb.append("At the beginning of each opponent's untap step, ").append(generateZoneString()).append(getEffects().getText(modes.getMode())).toString();
 case ANY:
-return "At the beginning of each player's untap step, " + generateZoneString() + getEffects().getText(modes.getMode());
+return sb.append("At the beginning of each player's untap step, ").append(generateZoneString()).append(getEffects().getText(modes.getMode())).toString();
 }
-return "";
+return "BeginningOfUntapTriggeredAbility: targetController value not supported";
 }

@@ -8,16 +8,14 @@
       Card card=player.getLibrary().removeFromTop(game);
       if (card != null) {
         cards.add(card);
-        if (card.getCardType().contains(CardType.CREATURE) || card.getCardType().contains(CardType.LAND)) {
+        if (filterPutInHand.match(card,source.getSourceId(),source.getControllerId(),game)) {
           properCardFound=true;
         }
       }
     }
     if (!cards.isEmpty()) {
       player.revealCards("Grisly Salvage",cards,game);
-      FilterCard filter=new FilterCard("creature or land card to put in hand");
-      filter.add(Predicates.or(new CardTypePredicate(CardType.CREATURE),new CardTypePredicate(CardType.LAND)));
-      TargetCard target=new TargetCard(Zone.PICK,filter);
+      TargetCard target=new TargetCard(Zone.PICK,filterPutInHand);
       if (properCardFound && player.choose(Outcome.DrawCard,cards,target,game)) {
         Card card=game.getCard(target.getFirstTarget());
         if (card != null) {

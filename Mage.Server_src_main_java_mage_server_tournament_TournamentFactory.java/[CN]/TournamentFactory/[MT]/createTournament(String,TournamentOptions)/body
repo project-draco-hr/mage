@@ -4,6 +4,7 @@
   try {
     con=tournaments.get(tournamentType).getConstructor(new Class[]{TournamentOptions.class});
     tournament=con.newInstance(new Object[]{options});
+    tournament.setTournamentType(tournamentTypes.get(tournamentType));
     Map<String,Integer> setInfo=new LinkedHashMap<String,Integer>();
     for (    String setCode : options.getLimitedOptions().getSetCodes()) {
       tournament.getSets().add(Sets.findSet(setCode));
@@ -20,6 +21,6 @@
     logger.fatal("TournamentFactory error ",ex);
     return null;
   }
-  logger.info("Tournament created: " + tournamentType);
+  logger.debug("Tournament created: " + tournamentType);
   return tournament;
 }

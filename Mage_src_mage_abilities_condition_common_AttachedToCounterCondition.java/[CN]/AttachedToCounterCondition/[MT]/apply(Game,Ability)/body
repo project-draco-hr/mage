@@ -1,0 +1,20 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent == null || permanent.getAttachedTo() == null) {
+    return false;
+  }
+  Permanent attachedTo=game.getPermanent(permanent.getAttachedTo());
+  if (attachedTo == null) {
+    return false;
+  }
+  if (from != -1) {
+    int count=attachedTo.getCounters().getCount(counterType);
+    if (to == Integer.MAX_VALUE) {
+      return count >= from;
+    }
+    return count >= from && count <= to;
+  }
+ else {
+    return attachedTo.getCounters().getCount(counterType) >= amount;
+  }
+}

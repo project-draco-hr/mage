@@ -9,6 +9,10 @@
   ImageIcon icon=new ImageIcon(imageResult);
   lblResultImage.setIcon(icon);
   this.lblResultText.setText(gameEndView.getResultMessage());
+  String autoSave=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_GAME_LOG_AUTO_SAVE,"true");
+  if (autoSave.equals("true")) {
+    this.saveGameLog(gameEndView);
+  }
   txtDurationGame.setText(Format.getDuration(gameEndView.getStartTime(),gameEndView.getEndTime()));
   txtDurationGame.setToolTipText(new StringBuilder(df.format(gameEndView.getStartTime())).append(" - ").append(df.format(gameEndView.getEndTime())).toString());
   Calendar cal=Calendar.getInstance();
@@ -20,10 +24,10 @@
   }
   this.txtLife.setText(sb.toString());
   if (gameEndView.hasWon()) {
-    AudioManager.playPlayerJoinedTable();
+    AudioManager.playPlayerWon();
   }
  else {
-    AudioManager.playButtonCancel();
+    AudioManager.playPlayerLost();
   }
   txtMatchScore.setText(gameEndView.getMatchView().getResult());
   if (gameEndView.getNameMatchWinner() != null) {

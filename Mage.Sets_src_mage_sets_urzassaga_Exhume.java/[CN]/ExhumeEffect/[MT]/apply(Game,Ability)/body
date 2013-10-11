@@ -7,9 +7,10 @@
     Player player=game.getPlayer(playerId);
     if (player != null) {
       FilterCreatureCard filterCreatureCard=new FilterCreatureCard("creature card from your graveyard");
-      TargetCardInYourGraveyard target=new TargetCardInYourGraveyard(filterCreatureCard);
+      filterCreatureCard.add(new OwnerIdPredicate(playerId));
+      TargetCardInGraveyard target=new TargetCardInGraveyard(filterCreatureCard);
       target.setRequired(true);
-      if (player.chooseTarget(outcome,target,source,game)) {
+      if (target.canChoose(playerId,game) && player.chooseTarget(outcome,target,source,game)) {
         Card card=game.getCard(target.getFirstTarget());
         if (card != null) {
           card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getId(),player.getId());

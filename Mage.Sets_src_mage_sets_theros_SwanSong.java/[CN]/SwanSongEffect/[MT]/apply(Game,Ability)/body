@@ -1,0 +1,14 @@
+{
+  boolean countered=false;
+  for (  UUID targetId : targetPointer.getTargets(game,source)) {
+    Spell spell=game.getStack().getSpell(targetId);
+    if (game.getStack().counter(targetId,source.getSourceId(),game)) {
+      countered=true;
+    }
+    if (spell != null) {
+      Token token=new SwanSongBirdToken();
+      token.putOntoBattlefield(1,game,source.getSourceId(),spell.getControllerId());
+    }
+  }
+  return countered;
+}

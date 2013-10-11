@@ -1,48 +1,56 @@
 {
-  int minPermanent=Integer.MAX_VALUE, minCard=Integer.MAX_VALUE;
-  for (  Player player : game.getPlayers().values()) {
-    if (player != null) {
-      int count=game.getBattlefield().getActivePermanents(new FilterControlledPermanent(),player.getId(),source.getId(),game).size();
-      if (count < minPermanent) {
-        minPermanent=count;
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int minPermanent=Integer.MAX_VALUE, minCard=Integer.MAX_VALUE;
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        int count=game.getBattlefield().getActivePermanents(new FilterControlledPermanent(),player.getId(),source.getId(),game).size();
+        if (count < minPermanent) {
+          minPermanent=count;
+        }
       }
     }
-  }
-  for (  Player player : game.getPlayers().values()) {
-    if (player != null) {
-      TargetControlledPermanent target=new TargetControlledPermanent(minPermanent,minPermanent,new FilterControlledPermanent(),true);
-      target.setRequired(true);
-      if (target.choose(Outcome.Benefit,player.getId(),source.getId(),game)) {
-        for (        Permanent permanent : game.getBattlefield().getActivePermanents(new FilterControlledPermanent(),player.getId(),source.getId(),game)) {
-          if (permanent != null && !target.getTargets().contains(permanent.getId())) {
-            permanent.sacrifice(source.getSourceId(),game);
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        TargetControlledPermanent target=new TargetControlledPermanent(minPermanent,minPermanent,new FilterControlledPermanent(),true);
+        target.setRequired(true);
+        if (target.choose(Outcome.Benefit,player.getId(),source.getId(),game)) {
+          for (          Permanent permanent : game.getBattlefield().getActivePermanents(new FilterControlledPermanent(),player.getId(),source.getId(),game)) {
+            if (permanent != null && !target.getTargets().contains(permanent.getId())) {
+              permanent.sacrifice(source.getSourceId(),game);
+            }
           }
         }
       }
     }
-  }
-  for (  Player player : game.getPlayers().values()) {
-    if (player != null) {
-      int count=player.getHand().size();
-      if (count < minCard) {
-        minCard=count;
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        int count=player.getHand().size();
+        if (count < minCard) {
+          minCard=count;
+        }
       }
     }
-  }
-  for (  Player player : game.getPlayers().values()) {
-    if (player != null) {
-      TargetCardInHand target=new TargetCardInHand(minCard,new FilterCard());
-      target.setRequired(true);
-      if (target.choose(Outcome.Benefit,player.getId(),source.getId(),game)) {
-        Cards cards=player.getHand().copy();
-        for (        UUID cardUUID : cards) {
-          Card card=player.getHand().get(cardUUID,game);
-          if (card != null && !target.getTargets().contains(cardUUID)) {
-            player.discard(card,source,game);
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        TargetCardInHand target=new TargetCardInHand(minCard,new FilterCard());
+        target.setRequired(true);
+        if (target.choose(Outcome.Benefit,player.getId(),source.getId(),game)) {
+          Cards cards=player.getHand().copy();
+          for (          UUID cardUUID : cards) {
+            Card card=player.getHand().get(cardUUID,game);
+            if (card != null && !target.getTargets().contains(cardUUID)) {
+              player.discard(card,source,game);
+            }
           }
         }
       }
     }
+    return true;
   }
-  return true;
+  return false;
 }

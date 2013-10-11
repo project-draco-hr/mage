@@ -1,0 +1,19 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  UUID targetId=source.getSourceId();
+  if (targetId != null && player != null) {
+    MageObject target=game.getPermanent(targetId);
+    if (target == null) {
+      target=game.getLastKnownInformation(targetId,Zone.BATTLEFIELD);
+    }
+    if (target != null) {
+      if (target instanceof Permanent) {
+        EmptyToken token=new EmptyToken();
+        CardUtil.copyTo(token).from((Permanent)target);
+        token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
+        return true;
+      }
+    }
+  }
+  return false;
+}

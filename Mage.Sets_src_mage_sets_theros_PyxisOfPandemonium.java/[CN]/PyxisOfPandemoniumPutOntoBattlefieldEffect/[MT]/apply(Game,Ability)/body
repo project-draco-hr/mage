@@ -1,0 +1,34 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Map<String,UUID> exileIds;
+    String valueKey=CardUtil.getCardZoneString("exileIds",source.getSourceId(),game);
+    Object object=game.getState().getValue(valueKey);
+    if (object != null && object instanceof Map) {
+      exileIds=(Map<String,UUID>)object;
+    }
+ else {
+      return true;
+    }
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        String exileKey=new StringBuilder(playerId.toString()).append(source.getSourceId().toString()).toString();
+        UUID exileId=exileIds.get(exileKey);
+        if (exileId != null) {
+          ExileZone exileZone=game.getState().getExile().getExileZone(exileId);
+          if (exileZone != null) {
+            for (            Card card : exileZone.getCards(game)) {
+              card.setFaceDown(false);
+              if (CardUtil.isPermanentCard(card)) {
+                card.putOntoBattlefield(game,Zone.EXILED,source.getSourceId(),playerId);
+              }
+            }
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -23,6 +23,10 @@
   jPanel.add(text3);
   jPanel.add(cbSets);
   p0.add(jPanel);
+  String prefSet=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_DECK_GENERATOR_SET,null);
+  if (prefSet != null) {
+    cbSets.setSelectedItem(prefSet);
+  }
   p0.add(Box.createVerticalStrut(5));
   JPanel jPanel2=new JPanel();
   JLabel textDeckSize=new JLabel("Deck size:");
@@ -34,6 +38,10 @@
   jPanel2.add(textDeckSize);
   jPanel2.add(cbDeckSize);
   p0.add(jPanel2);
+  String prefSize=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_DECK_GENERATOR_DECK_SIZE,"60");
+  if (prefSet != null) {
+    cbDeckSize.setSelectedItem(prefSize);
+  }
   final JButton btnGenerate=new JButton("Ok");
   btnGenerate.addActionListener(new ActionListener(){
     @Override public void actionPerformed(    ActionEvent e){
@@ -59,6 +67,8 @@
   dlg.setVisible(true);
   dlg.dispose();
   if (selectedColors != null) {
+    PreferencesDialog.saveValue(PreferencesDialog.KEY_NEW_DECK_GENERATOR_DECK_SIZE,cbDeckSize.getSelectedItem().toString());
+    PreferencesDialog.saveValue(PreferencesDialog.KEY_NEW_DECK_GENERATOR_SET,cbSets.getSelectedItem().toString());
     buildDeck();
     try {
       File tmp=File.createTempFile("tempDeck" + UUID.randomUUID().toString(),".dck");

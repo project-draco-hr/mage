@@ -1,19 +1,19 @@
 {
-  logger.info("Table expire checking...");
+  logger.debug("Table expire checking...");
   Date now=new Date();
   List<UUID> toRemove=new ArrayList<UUID>();
   for (  Table table : tables.values()) {
     if (!table.getState().equals(TableState.FINISHED)) {
       long diff=(now.getTime() - table.getCreateTime().getTime()) / EXPIRE_TIME_UNIT_VALUE;
       if (diff >= EXPIRE_TIME) {
-        logger.info("Table expired: id = " + table.getId() + ", created_by="+ table.getControllerName()+ ". Removing...");
+        logger.warn("Table expired: id = " + table.getId() + ", created_by="+ table.getControllerName()+ ". Removing...");
         toRemove.add(table.getId());
       }
  else       if (!table.isTournament()) {
         boolean canBeRemoved=true;
         for (        MatchPlayer matchPlayer : table.getMatch().getPlayers()) {
           Player player=matchPlayer.getPlayer();
-          if (player != null && player.isHuman()) {
+          if (player != null && player.isHuman() && !player.hasLeft()) {
             canBeRemoved=false;
           }
           if (table.isTournamentSubTable() && table.getTournament().getEndTime() == null) {
@@ -21,7 +21,7 @@
           }
         }
         if (canBeRemoved) {
-          logger.info("Table with no human player: id = " + table.getId() + ", created_by="+ table.getControllerName()+ ". Removing...");
+          logger.warn("Table with no active human player: id = " + table.getId() + ", created_by="+ table.getControllerName()+ ". Removing...");
           toRemove.add(table.getId());
         }
       }

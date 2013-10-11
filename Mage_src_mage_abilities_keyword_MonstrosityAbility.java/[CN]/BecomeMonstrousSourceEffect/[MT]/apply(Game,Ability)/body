@@ -1,0 +1,14 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null && !permanent.isMonstrous() && source instanceof MonstrosityAbility) {
+    int monstrosityValue=((MonstrosityAbility)source).getMonstrosityValue();
+    if (monstrosityValue == Integer.MAX_VALUE) {
+      monstrosityValue=source.getManaCostsToPay().getX();
+    }
+    new AddCountersSourceEffect(CounterType.P1P1.createInstance(monstrosityValue)).apply(game,source);
+    permanent.setMonstrous(true);
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.BECOMES_MONSTROUS,source.getSourceId(),source.getSourceId(),source.getControllerId(),monstrosityValue));
+    return true;
+  }
+  return false;
+}

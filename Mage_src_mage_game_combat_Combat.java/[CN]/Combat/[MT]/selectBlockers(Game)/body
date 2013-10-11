@@ -18,6 +18,28 @@
         choose=!checkBlockRequirementsAfter(defender,defender,game);
       }
       game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,defenderId,defenderId));
+      for (      CombatGroup group : this.getGroups()) {
+        StringBuilder sb=new StringBuilder();
+        for (        UUID attackingCreatureId : group.getAttackers()) {
+          Permanent attackingCreature=game.getPermanent(attackingCreatureId);
+          if (attackingCreature != null) {
+            sb.append(attackingCreature.getName()).append(" ");
+          }
+        }
+        if (group.getBlockers().size() > 0) {
+          sb.append("blocked by ");
+          for (          UUID blockingCreatureId : group.getBlockers()) {
+            Permanent blockingCreature=game.getPermanent(blockingCreatureId);
+            if (blockingCreature != null) {
+              sb.append(blockingCreature.getName()).append(" ");
+            }
+          }
+        }
+ else {
+          sb.append("unblocked");
+        }
+        game.informPlayers(sb.toString());
+      }
     }
     TraceUtil.traceCombatIfNeeded(game,this);
   }

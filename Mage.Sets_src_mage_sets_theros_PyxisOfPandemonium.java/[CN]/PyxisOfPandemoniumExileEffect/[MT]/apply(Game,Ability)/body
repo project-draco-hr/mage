@@ -1,0 +1,33 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Map<String,UUID> exileIds;
+    String valueKey=CardUtil.getCardZoneString("exileIds",source.getSourceId(),game);
+    Object object=game.getState().getValue(valueKey);
+    if (object != null && object instanceof Map) {
+      exileIds=(Map<String,UUID>)object;
+    }
+ else {
+      exileIds=new HashMap<String,UUID>();
+      game.getState().setValue(valueKey,exileIds);
+    }
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        if (player.getLibrary().size() > 0) {
+          Card card=player.getLibrary().removeFromTop(game);
+          String exileKey=new StringBuilder(playerId.toString()).append(source.getSourceId().toString()).toString();
+          UUID exileId=exileIds.get(exileKey);
+          if (exileId == null) {
+            exileId=UUID.randomUUID();
+            exileIds.put(exileKey,exileId);
+          }
+          card.setFaceDown(true);
+          card.moveToExile(exileId,new StringBuilder("Pyxis of Pandemonium (").append(player.getName()).append(")").toString(),source.getSourceId(),game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
