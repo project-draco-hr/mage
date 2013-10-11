@@ -1,0 +1,25 @@
+{
+  String message="Add the exiled card to your hand?";
+  Card sourceCard=game.getCard(source.getSourceId());
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null || sourceCard == null) {
+    return false;
+  }
+  game.getExile().createZone(source.getSourceId(),"Tainted Pact");
+  while (player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      FilterCard filter=new FilterCard();
+      filter.add(new NamePredicate(card.getName()));
+      card.moveToExile(source.getSourceId(),message,source.getSourceId(),game);
+      if (game.getExile().getExileZone(source.getSourceId()).count(filter,game) > 1) {
+        break;
+      }
+      if (player.chooseUse(outcome,message,game)) {
+        card.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+        break;
+      }
+    }
+  }
+  return false;
+}
