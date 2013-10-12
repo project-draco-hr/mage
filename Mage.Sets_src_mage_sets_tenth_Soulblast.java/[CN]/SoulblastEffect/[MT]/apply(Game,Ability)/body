@@ -1,0 +1,18 @@
+{
+  Player player=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+  if (player != null) {
+    int power=0;
+    for (    Cost cost : source.getCosts()) {
+      if (cost instanceof SacrificeAllCost) {
+        for (        Permanent permanent : ((SacrificeAllCost)cost).getPermanents()) {
+          power+=permanent.getPower().getValue();
+        }
+      }
+    }
+    if (power > 0) {
+      player.damage(power,source.getSourceId(),game,false,true);
+    }
+    return true;
+  }
+  return false;
+}
