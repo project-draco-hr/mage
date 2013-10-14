@@ -1,13 +1,21 @@
 {
   StringBuilder sbText=new StringBuilder();
+  String rule=null;
   for (  Effect effect : this) {
-    String rule=effect.getText(mode);
-    if (rule != null) {
-      sbText.append(rule);
-      if (!rule.endsWith(". ")) {
-        sbText.append(". ");
-      }
+    String endString="";
+    if (rule != null && rule.length() > 3 && !rule.endsWith(". ")) {
+      endString=". ";
     }
+    rule=effect.getText(mode);
+    if (rule != null) {
+      if (rule.startsWith("and ")) {
+        endString=" ";
+      }
+      sbText.append(endString).append(rule);
+    }
+  }
+  if (rule != null && rule.length() > 3 && !rule.endsWith(". ")) {
+    sbText.append(".");
   }
   return sbText.toString();
 }
