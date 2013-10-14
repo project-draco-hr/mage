@@ -1,10 +1,11 @@
 {
-  if (event.getType() == GameEvent.EventType.ACTIVATE_ABILITY) {
+  if (event.getType().equals(GameEvent.EventType.ACTIVATE_ABILITY) && event.getSourceId().equals(targetPointer.getFirst(game,source))) {
     Permanent target=game.getPermanent(targetPointer.getFirst(game,source));
     if (target != null) {
-      if (event.getSourceId().equals(target.getId())) {
-        return true;
-      }
+      return true;
+    }
+ else {
+      this.discard();
     }
   }
   return false;

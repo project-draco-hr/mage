@@ -1,9 +1,18 @@
 {
-  MageObject o=game.getObject(targetPointer.getFirst(game,source));
-  if (o != null) {
-    if (o instanceof Permanent || o instanceof StackObject) {
-      o.getColor().setColor(setColor);
+  boolean result=false;
+  for (  UUID targetId : targetPointer.getTargets(game,source)) {
+    MageObject o=game.getObject(targetId);
+    if (o != null) {
+      if (o instanceof Permanent || o instanceof StackObject) {
+        o.getColor().setColor(setColor);
+        result=true;
+      }
     }
   }
-  return false;
+  if (!result) {
+    if (this.getDuration().equals(Duration.Custom)) {
+      this.discard();
+    }
+  }
+  return result;
 }
