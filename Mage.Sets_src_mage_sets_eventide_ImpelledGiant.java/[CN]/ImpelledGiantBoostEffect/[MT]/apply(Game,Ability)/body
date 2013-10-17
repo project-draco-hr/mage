@@ -1,0 +1,12 @@
+{
+  Permanent impelledGiant=game.getPermanent(source.getSourceId());
+  Permanent tappedCreature=game.getPermanent(this.targetPointer.getFirst(game,source));
+  if (tappedCreature == null) {
+    tappedCreature=(Permanent)game.getLastKnownInformation(this.targetPointer.getFirst(game,source),Zone.BATTLEFIELD);
+  }
+  if (tappedCreature != null && impelledGiant != null) {
+    int amount=tappedCreature.getPower().getValue();
+    impelledGiant.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostSourceEffect(amount,0,Duration.EndOfTurn)),source.getSourceId(),game);
+  }
+  return true;
+}
