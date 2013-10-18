@@ -4,12 +4,7 @@
     Card card=player.getLibrary().removeFromTop(game);
     Card sourceCard=game.getCard(source.getSourceId());
     if (card != null && sourceCard != null) {
-      UUID exileId=(UUID)game.getState().getValue(new StringBuilder("exileZone").append(source.getSourceId()).append(sourceCard.getZoneChangeCounter()).toString());
-      if (exileId == null) {
-        exileId=UUID.randomUUID();
-        game.getState().setValue(new StringBuilder("exileZone").append(source.getSourceId()).append(sourceCard.getZoneChangeCounter()).toString(),exileId);
-      }
-      return card.moveToExile(exileId,sourceCard.getName(),source.getSourceId(),game);
+      return card.moveToExile(CardUtil.getCardExileZoneId(game,source),sourceCard.getName(),source.getSourceId(),game);
     }
   }
   return false;
