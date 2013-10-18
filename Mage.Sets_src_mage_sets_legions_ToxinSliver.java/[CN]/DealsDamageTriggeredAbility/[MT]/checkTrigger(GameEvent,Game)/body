@@ -1,0 +1,14 @@
+{
+  if (event.getType() == GameEvent.EventType.DAMAGED_CREATURE) {
+    if (game.getPermanent(event.getSourceId()).hasSubtype("Sliver")) {
+      if (setTargetPointer) {
+        for (        Effect effect : this.getEffects()) {
+          effect.setTargetPointer(new FixedTarget(game.getControllerId(event.getTargetId())));
+          effect.setValue("damage",event.getAmount());
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,11 @@
+{
+  super(ownerId,127,"Decaying Soil",Rarity.RARE,new CardType[]{CardType.ENCHANTMENT},"{1}{B}{B}");
+  this.expansionSetCode="ODY";
+  this.color.setBlack(true);
+  Ability ability=new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,new ExileTargetEffect(),TargetController.YOU,false);
+  TargetCardInYourGraveyard target=new TargetCardInYourGraveyard();
+  target.setRequired(true);
+  ability.addTarget(target);
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinousEffect(new GainAbilitySourceEffect(new DecayingSoilTriggeredAbility()),new CardsInControllerGraveCondition(7),"<br/><br/><i>Threshold</i> - As long as seven or more cards are in your graveyard, {this} has \"Whenever a nontoken creature is put into your graveyard from the battlefield, you may pay {1}. If you do, return that card to your hand.")));
+}
