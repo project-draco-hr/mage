@@ -1,7 +1,12 @@
 {
   Player player=game.getPlayer(source.getControllerId());
   if (player != null) {
-    player.setLandsPerTurn(player.getLandsPerTurn() + this.additionalCards);
+    if (player.getLandsPerTurn() == Integer.MAX_VALUE || this.additionalCards == Integer.MAX_VALUE) {
+      player.setLandsPerTurn(Integer.MAX_VALUE);
+    }
+ else {
+      player.setLandsPerTurn(player.getLandsPerTurn() + this.additionalCards);
+    }
     return true;
   }
   return true;
