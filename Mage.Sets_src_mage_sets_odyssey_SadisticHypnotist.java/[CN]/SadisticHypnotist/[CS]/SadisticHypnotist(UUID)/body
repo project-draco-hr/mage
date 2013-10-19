@@ -6,7 +6,9 @@
   this.color.setBlack(true);
   this.power=new MageInt(2);
   this.toughness=new MageInt(2);
-  Ability ability=new ActivateAsSorceryActivatedAbility(Zone.BATTLEFIELD,new DiscardTargetEffect(2),new SacrificeTargetCost(new TargetControlledCreaturePermanent(true)));
+  TargetControlledPermanent target=new TargetControlledCreaturePermanent(1,1,new FilterControlledCreaturePermanent("a creature"),true);
+  target.setRequired(true);
+  Ability ability=new ActivateAsSorceryActivatedAbility(Zone.BATTLEFIELD,new DiscardTargetEffect(2),new SacrificeTargetCost(target));
   ability.addTarget(new TargetPlayer(true));
   this.addAbility(ability);
 }
