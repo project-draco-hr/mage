@@ -3,6 +3,11 @@
     match.updateDeck(playerId,deck);
   }
  else {
-    TournamentManager.getInstance().updateDeck(tournament.getId(),playerId,deck);
+    if (tournament != null) {
+      TournamentManager.getInstance().updateDeck(tournament.getId(),playerId,deck);
+    }
+ else {
+      logger.fatal("Tournament == null  table: " + table.getId());
+    }
   }
 }
