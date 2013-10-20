@@ -8,8 +8,6 @@
   }
   Player player=createPlayer(name,seat.getPlayerType(),skill);
   if (player != null) {
-    tournament.addPlayer(player,seat.getPlayerType());
-    table.joinTable(player,seat);
     User user=UserManager.getInstance().getUser(userId);
     if (user == null) {
       logger.fatal(new StringBuilder("couldn't get user ").append(name).append(" for join tornament userId = ").append(userId).toString());
@@ -19,6 +17,8 @@
       user.showUserMessage("Join Table",new StringBuilder("A ").append(seat.getPlayerType()).append(" player can't join this table.").toString());
       return false;
     }
+    tournament.addPlayer(player,seat.getPlayerType());
+    table.joinTable(player,seat);
     user.addTable(player.getId(),table);
     logger.debug("player joined " + player.getId());
     if (seat.getPlayer().isHuman()) {
