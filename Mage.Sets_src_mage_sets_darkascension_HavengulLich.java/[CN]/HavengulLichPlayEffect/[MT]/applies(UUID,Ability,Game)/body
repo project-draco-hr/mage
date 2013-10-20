@@ -1,7 +1,11 @@
 {
-  Card card=game.getCard(sourceId);
-  if (card != null && game.getState().getZone(card.getId()) == Zone.GRAVEYARD) {
-    if (targetPointer.getFirst(game,source).equals(card.getId()))     return true;
+  if (targetPointer.getFirst(game,source).equals(sourceId)) {
+    if (game.getState().getZone(sourceId) == Zone.GRAVEYARD) {
+      Card card=game.getCard(sourceId);
+      if (card != null && card.getSpellAbility() != null && card.getSpellAbility().spellCanBeActivatedRegularlyNow(source.getControllerId(),game)) {
+        return true;
+      }
+    }
   }
   return false;
 }
