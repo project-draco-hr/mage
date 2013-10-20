@@ -1,7 +1,10 @@
 {
   Permanent attachment=game.getPermanent(source.getSourceId());
   if (attachment != null && attachment.getAttachedTo() != null) {
-    return permanent.canBlock(attachment.getAttachedTo(),game);
+    Permanent attachedCreature=game.getPermanent(attachment.getAttachedTo());
+    if (attachedCreature != null && attachedCreature.isAttacking()) {
+      return permanent.canBlock(attachment.getAttachedTo(),game);
+    }
   }
-  return true;
+  return false;
 }
