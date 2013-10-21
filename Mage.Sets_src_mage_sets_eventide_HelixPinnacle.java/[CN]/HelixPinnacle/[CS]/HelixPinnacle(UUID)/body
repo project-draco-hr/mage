@@ -1,0 +1,9 @@
+{
+  super(ownerId,68,"Helix Pinnacle",Rarity.RARE,new CardType[]{CardType.ENCHANTMENT},"{G}");
+  this.expansionSetCode="EVE";
+  this.color.setGreen(true);
+  this.addAbility(ShroudAbility.getInstance());
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new HelixPinnacleEffect(),new ManaCostsImpl("{X}")));
+  Condition condition=new HasCounterCondition(CounterType.TOWER,100);
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,new ConditionalOneShotEffect(new WinGameEffect(),condition,rule),TargetController.YOU,false));
+}

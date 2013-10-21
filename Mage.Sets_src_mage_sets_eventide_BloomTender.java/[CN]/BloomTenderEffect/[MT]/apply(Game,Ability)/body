@@ -1,0 +1,28 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  Mana mana=new Mana();
+  if (you != null) {
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(you.getId(),game)) {
+      if (permanent.getColor().contains(ObjectColor.BLACK) && !mana.contains(Mana.BlackMana)) {
+        mana=Mana.BlackMana(1);
+      }
+      if (permanent.getColor().contains(ObjectColor.BLUE) && !mana.contains(Mana.BlueMana)) {
+        mana=Mana.BlueMana(1);
+      }
+      if (permanent.getColor().contains(ObjectColor.RED) && !mana.contains(Mana.RedMana)) {
+        mana=Mana.RedMana(1);
+      }
+      if (permanent.getColor().contains(ObjectColor.GREEN) && !mana.contains(Mana.GreenMana)) {
+        mana=Mana.GreenMana(1);
+      }
+      if (permanent.getColor().contains(ObjectColor.WHITE) && !mana.contains(Mana.WhiteMana)) {
+        mana=Mana.WhiteMana(1);
+      }
+    }
+  }
+  if (you != null && mana != null) {
+    you.getManaPool().addMana(mana,game,source);
+    return true;
+  }
+  return false;
+}
