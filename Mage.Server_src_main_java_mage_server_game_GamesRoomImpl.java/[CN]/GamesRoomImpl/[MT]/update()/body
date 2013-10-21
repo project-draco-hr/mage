@@ -26,12 +26,12 @@
   matchView=matchList;
   List<String> players=new ArrayList<String>();
   for (  User user : UserManager.getInstance().getUsers()) {
-    if (user.isConnected()) {
-      players.add(user.getName());
+    StringBuilder sb=new StringBuilder(user.getName());
+    sb.append(user.getUserInfo());
+    if (!user.isConnected()) {
+      sb.append(" (discon.)");
     }
- else {
-      players.add(new StringBuilder(user.getName()).append(" (discon.)").toString());
-    }
+    players.add(sb.toString());
   }
   playersView=players;
 }
