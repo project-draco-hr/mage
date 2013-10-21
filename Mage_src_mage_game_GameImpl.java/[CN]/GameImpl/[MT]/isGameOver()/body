@@ -13,13 +13,13 @@
     }
   }
   if (remainingPlayers <= 1 || numLosers >= state.getPlayers().size() - 1) {
+    end();
     for (    Player player : state.getPlayers().values()) {
       if (!player.hasLeft() && !player.hasLost()) {
-        logger.info(new StringBuilder("Player ").append(player.getName()).append(" won the game ").append(this.getId()));
+        logger.debug(new StringBuilder("Player ").append(player.getName()).append(" won the game ").append(this.getId()));
         player.won(this);
       }
     }
-    end();
     endTime=new Date();
     return true;
   }
