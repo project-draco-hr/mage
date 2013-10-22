@@ -9,6 +9,9 @@
   int delim=line.indexOf(' ');
   String lineNum=line.substring(0,delim).trim();
   String lineName=line.substring(delim).replace("???","\'").trim();
+  if (IGNORE_NAMES.contains(lineName)) {
+    return;
+  }
   try {
     int num=Integer.parseInt(lineNum);
     List<CardInfo> cards=CardRepository.instance.findCards(lineName);
