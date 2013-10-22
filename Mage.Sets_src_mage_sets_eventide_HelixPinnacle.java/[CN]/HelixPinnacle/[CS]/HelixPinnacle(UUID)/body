@@ -4,6 +4,5 @@
   this.color.setGreen(true);
   this.addAbility(ShroudAbility.getInstance());
   this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new AddCountersSourceEffect(CounterType.TOWER.createInstance(),new ManacostVariableValue(),true),new ManaCostsImpl("{X}")));
-  Condition condition=new HasCounterCondition(CounterType.TOWER,100);
-  this.addAbility(new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,new ConditionalOneShotEffect(new WinGameEffect(),condition,rule),TargetController.YOU,false));
+  this.addAbility(new ConditionalTriggeredAbility(new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,new WinGameEffect(),TargetController.YOU,false),new HasCounterCondition(CounterType.TOWER,100),rule,false));
 }
