@@ -1,0 +1,18 @@
+{
+  Spell spell=game.getStack().getSpell(source.getFirstTarget());
+  if (spell != null) {
+    Spell copy=spell.copySpell();
+    copy.setControllerId(source.getControllerId());
+    copy.setCopiedSpell(true);
+    game.getStack().push(copy);
+    copy.chooseNewTargets(game,source.getControllerId());
+    Player player=game.getPlayer(source.getControllerId());
+    String activateMessage=copy.getActivatedMessage(game);
+    if (activateMessage.startsWith(" casts ")) {
+      activateMessage=activateMessage.substring(6);
+    }
+    game.informPlayers(player.getName() + " copies " + activateMessage);
+    return true;
+  }
+  return false;
+}
