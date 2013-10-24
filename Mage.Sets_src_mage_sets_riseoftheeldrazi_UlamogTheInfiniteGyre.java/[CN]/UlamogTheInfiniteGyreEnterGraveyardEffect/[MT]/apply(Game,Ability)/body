@@ -1,5 +1,16 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
+  UUID ownerId=null;
+  Card card=game.getCard(source.getSourceId());
+  if (card != null) {
+    ownerId=card.getOwnerId();
+  }
+  if (ownerId == null) {
+    Permanent permanent=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+    if (permanent != null) {
+      ownerId=permanent.getOwnerId();
+    }
+  }
+  Player player=game.getPlayer(ownerId);
   if (player != null) {
     player.getLibrary().addAll(player.getGraveyard().getCards(game),game);
     player.getGraveyard().clear();
