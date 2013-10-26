@@ -1,0 +1,10 @@
+{
+  if (target.choose(Outcome.Untap,controllerId,sourceId,game)) {
+    for (    UUID targetId : (List<UUID>)target.getTargets()) {
+      Permanent permanent=game.getPermanent(targetId);
+      if (permanent == null)       return false;
+      paid|=permanent.untap(game);
+    }
+  }
+  return paid;
+}
