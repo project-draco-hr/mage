@@ -1,0 +1,14 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  if (you != null && you.getLibrary().size() > 0) {
+    Card card=you.getLibrary().removeFromTop(game);
+    cards.add(card);
+    you.revealCards("Sapling of Colfenor",cards,game);
+    if (card.getCardType().contains(CardType.CREATURE)) {
+      you.gainLife(card.getToughness().getValue(),game);
+      you.loseLife(card.getPower().getValue(),game);
+      return card.moveToZone(Zone.HAND,source.getId(),game,false);
+    }
+  }
+  return false;
+}

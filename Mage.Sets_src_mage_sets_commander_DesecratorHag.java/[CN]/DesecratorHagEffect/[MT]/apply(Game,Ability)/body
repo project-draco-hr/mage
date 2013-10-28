@@ -1,0 +1,33 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  if (you != null) {
+    for (    Card card : you.getGraveyard().getCards(game)) {
+      if (card.getCardType().contains(CardType.CREATURE)) {
+        if (card.getPower().getValue() > creatureGreatestPower) {
+          creatureGreatestPower=card.getPower().getValue();
+          cards.clear();
+          cards.add(card);
+        }
+ else {
+          if (card.getPower().getValue() == creatureGreatestPower) {
+            cards.add(card);
+          }
+        }
+      }
+    }
+    if (cards.size() == 0) {
+      return false;
+    }
+    if (cards.size() > 1 && you.choose(Outcome.DrawCard,cards,target,game)) {
+      if (target != null) {
+        return game.getCard(target.getFirstTarget()).moveToZone(Zone.HAND,source.getId(),game,false);
+      }
+    }
+ else {
+      for (      Card card : cards.getCards(game)) {
+        return card.moveToZone(Zone.HAND,source.getId(),game,false);
+      }
+    }
+  }
+  return false;
+}
