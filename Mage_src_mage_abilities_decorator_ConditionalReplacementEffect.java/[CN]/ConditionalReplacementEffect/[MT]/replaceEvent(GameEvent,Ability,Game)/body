@@ -1,0 +1,17 @@
+{
+  if (conditionState) {
+    effect.setTargetPointer(this.targetPointer);
+    return effect.replaceEvent(event,source,game);
+  }
+ else   if (otherwiseEffect != null) {
+    otherwiseEffect.setTargetPointer(this.targetPointer);
+    return otherwiseEffect.replaceEvent(event,source,game);
+  }
+  if (!conditionState && effect.getDuration() == Duration.OneUse) {
+    used=true;
+  }
+  if (!conditionState && effect.getDuration() == Duration.Custom) {
+    this.discard();
+  }
+  return true;
+}
