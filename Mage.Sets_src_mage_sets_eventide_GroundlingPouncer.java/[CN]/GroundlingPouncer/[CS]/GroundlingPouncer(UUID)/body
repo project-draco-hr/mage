@@ -1,0 +1,16 @@
+{
+  super(ownerId,154,"Groundling Pouncer",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{1}{G/U}");
+  this.expansionSetCode="EVE";
+  this.subtype.add("Faerie");
+  this.color.setBlue(true);
+  this.color.setGreen(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(1);
+  Condition condition=new GroundingPouncerCondition();
+  Effect effect=new BoostSourceEffect(1,3,Duration.EndOfTurn);
+  Effect effect2=new GainAbilitySourceEffect(FlyingAbility.getInstance(),Duration.EndOfTurn,false,true);
+  Ability ability=new ConditionalActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl("{G/U}"),condition,rule);
+  ability.addEffect(effect2);
+  this.addAbility(ability);
+  this.addWatcher(new ActivatedAbilityUsedThisTurnWatcher());
+}
