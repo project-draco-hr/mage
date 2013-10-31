@@ -1,0 +1,17 @@
+{
+  Set<UUID> toRemove=new HashSet<UUID>();
+  for (  UUID creatureId : objects) {
+    Permanent creature=game.getPermanent(creatureId);
+    if (creature != null) {
+      creature.changeControllerId(creature.getOwnerId(),game);
+    }
+ else {
+      toRemove.add(creatureId);
+    }
+  }
+  objects.removeAll(toRemove);
+  if (objects.isEmpty()) {
+    this.discard();
+  }
+  return true;
+}

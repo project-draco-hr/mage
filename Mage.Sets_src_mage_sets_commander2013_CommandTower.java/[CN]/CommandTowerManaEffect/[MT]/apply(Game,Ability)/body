@@ -1,0 +1,28 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Mana mana=new Mana();
+    Card commander=game.getCard(controller.getCommanderId());
+    if (commander != null) {
+      Mana commanderMana=commander.getManaCost().getMana();
+      if (commanderMana.getBlack() > 0) {
+        mana.addBlack();
+      }
+      if (commanderMana.getBlue() > 0) {
+        mana.addBlue();
+      }
+      if (commanderMana.getGreen() > 0) {
+        mana.addGreen();
+      }
+      if (commanderMana.getRed() > 0) {
+        mana.addRed();
+      }
+      if (commanderMana.getWhite() > 0) {
+        mana.addWhite();
+      }
+    }
+    controller.getManaPool().addMana(mana,game,source);
+    return true;
+  }
+  return false;
+}
