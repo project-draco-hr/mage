@@ -1,0 +1,23 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int cmc=0;
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        if (player.getLibrary().size() > 0) {
+          Card card=player.getLibrary().getFromTop(game);
+          cmc+=card.getManaCost().convertedManaCost();
+          player.revealCards(new StringBuilder("Naya Soulbeast (").append(player.getName()).append(")").toString(),new CardsImpl(card),game);
+        }
+      }
+    }
+    for (    Effect effect : source.getEffects()) {
+      if (effect instanceof NayaSoulbeastReplacementEffect) {
+        effect.setValue("NayaSoulbeastCounters",new Integer(cmc));
+      }
+    }
+    return true;
+  }
+  return false;
+}
