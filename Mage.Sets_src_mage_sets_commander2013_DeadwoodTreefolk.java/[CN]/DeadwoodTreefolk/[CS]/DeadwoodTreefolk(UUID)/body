@@ -1,0 +1,18 @@
+{
+  super(ownerId,141,"Deadwood Treefolk",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{5}{G}");
+  this.expansionSetCode="C13";
+  this.subtype.add("Treefolk");
+  this.color.setGreen(true);
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(6);
+  Ability ability=new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.TIME.createInstance(3)));
+  ability.setRuleVisible(false);
+  this.addAbility(ability);
+  this.addAbility(new VanishingUpkeepAbility(3));
+  this.addAbility(new VanishingSacrificeAbility());
+  ability=new EntersBattlefieldOrDiesSourceTriggeredAbility(new ReturnFromGraveyardToHandTargetEffect(),false);
+  Target target=new TargetCardInYourGraveyard(filter);
+  target.setRequired(true);
+  ability.addTarget(target);
+  this.addAbility(ability);
+}

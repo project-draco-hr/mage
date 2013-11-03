@@ -1,0 +1,23 @@
+{
+  Player player=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+  if (player != null) {
+    Target target=new TargetPermanent(true);
+    if (target.canChoose(source.getSourceId(),player.getId(),game) && player.choose(outcome,target,source.getSourceId(),game)) {
+      Permanent targetPermanent=game.getPermanent(target.getFirstTarget());
+      if (targetPermanent != null) {
+        if (targetPermanent.isTapped()) {
+          if (player.chooseUse(Outcome.Untap,"Untap that permanent?",game)) {
+            targetPermanent.untap(game);
+          }
+        }
+ else {
+          if (player.chooseUse(Outcome.Tap,"Tap that permanent?",game)) {
+            targetPermanent.tap(game);
+          }
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}
