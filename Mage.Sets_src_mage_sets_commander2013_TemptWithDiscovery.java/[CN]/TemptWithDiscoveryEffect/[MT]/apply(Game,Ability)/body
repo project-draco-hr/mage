@@ -1,0 +1,45 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(new FilterLandCard());
+    if (controller.searchLibrary(target,game)) {
+      for (      UUID cardId : target.getTargets()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          card.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),controller.getId());
+        }
+      }
+    }
+    int opponentsUsedSearch=0;
+    for (    UUID playerId : game.getOpponents(controller.getId())) {
+      Player opponent=game.getPlayer(playerId);
+      if (opponent != null) {
+        if (opponent.chooseUse(outcome,"Search your library for a land card and put it onto the battlefield?",game)) {
+          target.clearChosen();
+          opponentsUsedSearch++;
+          if (opponent.searchLibrary(target,game)) {
+            for (            UUID cardId : target.getTargets()) {
+              Card card=game.getCard(cardId);
+              if (card != null) {
+                card.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),opponent.getId());
+              }
+            }
+          }
+        }
+      }
+    }
+    if (opponentsUsedSearch > 0) {
+      target=new TargetCardInLibrary(0,opponentsUsedSearch,new FilterLandCard());
+      if (controller.searchLibrary(target,game)) {
+        for (        UUID cardId : target.getTargets()) {
+          Card card=game.getCard(cardId);
+          if (card != null) {
+            card.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),controller.getId());
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
