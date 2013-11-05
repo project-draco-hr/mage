@@ -1,0 +1,33 @@
+{
+  if (event.getType() == GameEvent.EventType.DECLARE_ATTACKER && game.getPlayers().size() > 2) {
+    Player controller=game.getPlayer(source.getControllerId());
+    if (controller != null) {
+      if (controller.getInRange().contains(event.getPlayerId())) {
+        String allowedDirection=(String)game.getState().getValue(new StringBuilder("attack_direction_").append(source.getSourceId()).toString());
+        if (allowedDirection != null) {
+          Player defender=game.getPlayer(event.getTargetId());
+          if (defender == null) {
+            Permanent planeswalker=game.getPermanent(event.getTargetId());
+            if (planeswalker != null) {
+              defender=game.getPlayer(planeswalker.getControllerId());
+            }
+          }
+          if (defender != null) {
+            PlayerList playerList=game.getState().getPlayerList(event.getPlayerId());
+            if (allowedDirection.equals(MysticBarrier.ALLOW_ATTACKING_LEFT)) {
+              if (!playerList.getNext().equals(defender.getId())) {
+                return true;
+              }
+            }
+            if (allowedDirection.equals(MysticBarrier.ALLOW_ATTACKING_RIGHT)) {
+              if (!playerList.getPrevious().equals(defender.getId())) {
+                return true;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
