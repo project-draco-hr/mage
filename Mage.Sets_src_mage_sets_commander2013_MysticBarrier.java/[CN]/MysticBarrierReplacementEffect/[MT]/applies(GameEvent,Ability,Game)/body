@@ -16,11 +16,19 @@
             PlayerList playerList=game.getState().getPlayerList(event.getPlayerId());
             if (allowedDirection.equals(MysticBarrier.ALLOW_ATTACKING_LEFT)) {
               if (!playerList.getNext().equals(defender.getId())) {
+                Player attacker=game.getPlayer(event.getPlayerId());
+                if (attacker != null) {
+                  game.informPlayer(attacker,"You can only attack to the left!");
+                }
                 return true;
               }
             }
             if (allowedDirection.equals(MysticBarrier.ALLOW_ATTACKING_RIGHT)) {
               if (!playerList.getPrevious().equals(defender.getId())) {
+                Player attacker=game.getPlayer(event.getPlayerId());
+                if (attacker != null) {
+                  game.informPlayer(attacker,"You can only attack to the right!");
+                }
                 return true;
               }
             }
