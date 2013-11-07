@@ -1,0 +1,21 @@
+{
+  Player targetOpponent=game.getPlayer(source.getFirstTarget());
+  Player you=game.getPlayer(source.getControllerId());
+  Cards revealed=new CardsImpl();
+  int amount;
+  if (you == null) {
+    return false;
+  }
+  amount=(Math.min(10,you.getLibrary().size()));
+  for (int i=0; i < amount; i++) {
+    revealed.add(you.getLibrary().removeFromTop(game));
+  }
+  you.revealCards("Sanity Grinding",revealed,game);
+  if (targetOpponent != null) {
+    amount=(Math.min(targetOpponent.getLibrary().size(),new ChromaSanityGrindingCount(ManaType.BLUE,revealed).calculate(game,source)));
+    for (int i=0; i < amount; i++) {
+      targetOpponent.getLibrary().removeFromTop(game).moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,false);
+    }
+  }
+  return you.putCardsOnBottomOfLibrary(revealed,game,source,true);
+}
