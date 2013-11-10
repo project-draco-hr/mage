@@ -1,0 +1,26 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  Card sourceCard=game.getCard(source.getSourceId());
+  if (sourceCard == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl(Zone.PICK);
+  while (controller.getLibrary().size() > 0) {
+    Card card=controller.getLibrary().getFromTop(game);
+    if (card != null) {
+      cards.add(card);
+      if (filter.match(card,game)) {
+        card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+        break;
+      }
+ else {
+        card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,false);
+      }
+    }
+  }
+  controller.revealCards(sourceCard.getName(),cards,game);
+  return true;
+}
