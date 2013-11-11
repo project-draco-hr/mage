@@ -8,8 +8,7 @@
   this.toughness=new MageInt(2);
   this.addAbility(new NinjutsuAbility(new ManaCostsImpl("{1}{U}")));
   this.addAbility(new DealsCombatDamageToAPlayerTriggeredAbility(new WalkerOfSecretWaysEffect(),true,true));
-  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ReturnToHandTargetEffect(),new ManaCostsImpl("{1}{U}"));
+  Ability ability=new ActivateIfConditionActivatedAbility(Zone.BATTLEFIELD,new ReturnToHandTargetEffect(),new ManaCostsImpl("{1}{U}"),MyTurnCondition.getInstance());
   ability.addTarget(new TargetControlledCreaturePermanent(1,1,filterCreature,false));
-  ability.addCost(new OnlyDuringYourTurnCost());
   this.addAbility(ability);
 }
