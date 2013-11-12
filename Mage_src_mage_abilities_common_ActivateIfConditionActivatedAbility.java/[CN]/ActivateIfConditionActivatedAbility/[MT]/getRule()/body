@@ -1,3 +1,13 @@
 {
-  return new StringBuilder(super.getRule()).append(" Activate this ability only if ").append(condition.toString()).append(".").toString();
+  StringBuilder sb=new StringBuilder(super.getRule()).append(" Activate this ability only ");
+  if (condition.toString() != null) {
+    if (!condition.toString().startsWith("during")) {
+      sb.append("if ");
+    }
+    sb.append(condition.toString()).append(".");
+  }
+ else {
+    sb.append(" [Condition toSting() == null] ");
+  }
+  return sb.toString();
 }
