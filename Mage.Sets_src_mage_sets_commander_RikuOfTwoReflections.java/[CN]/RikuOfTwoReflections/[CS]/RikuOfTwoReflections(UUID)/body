@@ -1,0 +1,16 @@
+{
+  super(ownerId,220,"Riku of Two Reflections",Rarity.MYTHIC,new CardType[]{CardType.CREATURE},"{2}{U}{R}{G}");
+  this.expansionSetCode="CMD";
+  this.supertype.add("Legendary");
+  this.subtype.add("Human");
+  this.subtype.add("Wizard");
+  this.color.setRed(true);
+  this.color.setBlue(true);
+  this.color.setGreen(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new SpellCastControllerTriggeredAbility(new DoIfCostPaid(new RikuOfTwoReflectionsCopyEffect(),new ManaCostsImpl("{U}{R}")),filter,false,true));
+  Ability ability=new EntersBattlefieldAllTriggeredAbility(Zone.BATTLEFIELD,new RikuOfTwoReflectionsCopyTokenEffect(),filterPermanent,false,true,"Whenever another nontoken creature enters the battlefield under your control, you may pay {G}{U}. If you do, put a token that's a copy of that creature onto the battlefield.",true);
+  ability.addCost(new ManaCostsImpl("{G}{U}"));
+  this.addAbility(ability);
+}
