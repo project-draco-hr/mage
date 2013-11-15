@@ -28,8 +28,9 @@
   for (  ExileZone exile : game.getExile().getExileZones()) {
     for (    Card card : exile.getCards(game)) {
       if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,game)) {
-        for (        ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
-          if (ability instanceof SpellAbility || ability instanceof PlayLandAbility) {
+        for (        Ability ability : card.getAbilities()) {
+          ability.setControllerId(this.getId());
+          if (ability.getZone().match(Zone.HAND) && (ability instanceof SpellAbility || ability instanceof PlayLandAbility)) {
             playable.add(ability);
           }
         }
