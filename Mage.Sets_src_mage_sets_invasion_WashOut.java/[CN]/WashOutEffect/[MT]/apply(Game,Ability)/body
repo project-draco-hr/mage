@@ -1,0 +1,12 @@
+{
+  FilterPermanent filter=new FilterPermanent();
+  ObjectColor color=((ChoiceColor)source.getChoices().get(0)).getColor();
+  if (color != null) {
+    filter.add(new ColorPredicate(color));
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
+      permanent.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+    }
+    return true;
+  }
+  return false;
+}
