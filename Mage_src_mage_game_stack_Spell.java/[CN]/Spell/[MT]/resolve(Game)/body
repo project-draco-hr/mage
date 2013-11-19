@@ -38,14 +38,14 @@
  else   if (this.getCardType().contains(CardType.ENCHANTMENT) && this.getSubtype().contains("Aura")) {
     if (ability.getTargets().stillLegal(ability,game)) {
       updateOptionalCosts(0);
-      if (card.putOntoBattlefield(game,Zone.HAND,ability.getId(),controllerId)) {
+      if (card.putOntoBattlefield(game,fromZone,ability.getId(),controllerId)) {
         return ability.resolve(game);
       }
       return false;
     }
     if (this.getCardType().contains(CardType.CREATURE)) {
       updateOptionalCosts(0);
-      result=card.putOntoBattlefield(game,Zone.HAND,ability.getId(),controllerId);
+      result=card.putOntoBattlefield(game,fromZone,ability.getId(),controllerId);
       return result;
     }
  else {
@@ -56,7 +56,7 @@
   }
  else {
     updateOptionalCosts(0);
-    result=card.putOntoBattlefield(game,Zone.HAND,ability.getId(),controllerId);
+    result=card.putOntoBattlefield(game,fromZone,ability.getId(),controllerId);
     return result;
   }
 }
