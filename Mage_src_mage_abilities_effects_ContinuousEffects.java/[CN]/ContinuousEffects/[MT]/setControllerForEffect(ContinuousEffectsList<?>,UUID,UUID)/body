@@ -2,8 +2,15 @@
   for (  Effect effect : effects) {
     HashSet<Ability> abilities=effects.getAbility(effect.getId());
     for (    Ability ability : abilities) {
-      if (ability.getSourceId().equals(cardId)) {
-        ability.setControllerId(controllerId);
+      if (ability.getSourceId() != null) {
+        if (ability.getSourceId().equals(cardId)) {
+          ability.setControllerId(controllerId);
+        }
+      }
+ else {
+        if (!ability.getZone().equals(Zone.COMMAND)) {
+          logger.fatal(new StringBuilder("No sourceId Ability: ").append(ability));
+        }
       }
     }
   }
