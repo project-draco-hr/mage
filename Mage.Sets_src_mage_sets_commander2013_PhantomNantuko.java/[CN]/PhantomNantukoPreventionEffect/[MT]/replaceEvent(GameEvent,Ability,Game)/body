@@ -1,0 +1,30 @@
+{
+  boolean retValue=false;
+  GameEvent preventEvent=new GameEvent(GameEvent.EventType.PREVENT_DAMAGE,source.getSourceId(),event.getSourceId(),source.getControllerId(),event.getAmount(),false);
+  int damage=event.getAmount();
+  if (!game.replaceEvent(preventEvent)) {
+    event.setAmount(0);
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.PREVENTED_DAMAGE,source.getSourceId(),event.getSourceId(),source.getControllerId(),damage));
+    retValue=true;
+  }
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    boolean removeCounter=true;
+    if (game.getTurn().getPhase().getStep().getType().equals(PhaseStep.COMBAT_DAMAGE)) {
+      if (game.getTurnNum() == turn && game.getTurn().getStep().equals(combatPhaseStep)) {
+        removeCounter=false;
+      }
+ else {
+        turn=game.getTurnNum();
+        combatPhaseStep=game.getTurn().getStep();
+      }
+    }
+    StringBuilder sb=new StringBuilder(permanent.getName()).append(": ");
+    if (removeCounter && permanent.getCounters().containsKey(CounterType.P1P1)) {
+      permanent.removeCounters(CounterType.P1P1.createInstance(),game);
+      sb.append("removed a +1/+1 counter ");
+    }
+    game.informPlayers(sb.append(" prevented ").append(damage).append(" Damage").toString());
+  }
+  return retValue;
+}
