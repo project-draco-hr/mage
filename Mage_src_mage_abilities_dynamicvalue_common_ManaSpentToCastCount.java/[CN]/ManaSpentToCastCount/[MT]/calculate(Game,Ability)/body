@@ -1,10 +1,10 @@
 {
-  int count=0;
   if (!game.getStack().isEmpty()) {
-    StackObject spell=game.getStack().getFirst();
-    if (spell != null && spell instanceof Spell && ((Spell)spell).getSourceId().equals(source.getSourceId())) {
-      count=((Spell)spell).getSpellAbility().getManaCostsToPay().convertedManaCost();
+    for (    StackObject stackObject : game.getStack()) {
+      if (stackObject instanceof Spell && ((Spell)stackObject).getSourceId().equals(source.getSourceId())) {
+        return ((Spell)stackObject).getSpellAbility().getManaCostsToPay().convertedManaCost();
+      }
     }
   }
-  return count;
+  return 0;
 }
