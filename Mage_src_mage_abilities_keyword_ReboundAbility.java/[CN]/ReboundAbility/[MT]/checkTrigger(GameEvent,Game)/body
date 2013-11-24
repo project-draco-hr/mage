@@ -10,9 +10,11 @@
     if (spell != null && spell.getSourceId().equals(this.getSourceId())) {
       Effect reboundEffect=new ReboundEffect();
       boolean found=false;
-      for (      Effect effect : spell.getSpellAbility().getEffects())       if (effect instanceof ReboundEffect) {
-        found=true;
-        break;
+      for (      Effect effect : spell.getSpellAbility().getEffects()) {
+        if (effect instanceof ReboundEffect) {
+          found=true;
+          break;
+        }
       }
       if (!found) {
         spell.getSpellAbility().addEffect(reboundEffect);

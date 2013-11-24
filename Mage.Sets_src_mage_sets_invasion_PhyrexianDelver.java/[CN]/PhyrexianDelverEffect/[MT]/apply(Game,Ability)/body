@@ -1,0 +1,10 @@
+{
+  Card creatureCard=game.getCard(this.getTargetPointer().getFirst(game,source));
+  Player controller=game.getPlayer(source.getControllerId());
+  if (creatureCard != null && controller != null) {
+    boolean result=creatureCard.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),source.getControllerId());
+    controller.loseLife(creatureCard.getManaCost().convertedManaCost(),game);
+    return result;
+  }
+  return false;
+}
