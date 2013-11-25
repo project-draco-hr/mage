@@ -1,9 +1,12 @@
 {
   Player controller=game.getPlayer(controllerId);
-  this.amountPaid=controller.getAmount(0,controller.getLife(),"Choose X",game);
-  if (this.amountPaid > 0) {
-    controller.loseLife(amountPaid,game);
+  if (controller != null) {
+    this.amountPaid=controller.getAmount(0,controller.getLife(),"Choose X (life to pay)",game);
+    if (this.amountPaid > 0) {
+      controller.loseLife(amountPaid,game);
+    }
+    game.informPlayers(new StringBuilder(controller.getName()).append(" pays ").append(amountPaid).append(" life.").toString());
+    this.paid=true;
   }
-  this.paid=true;
   return paid;
 }
