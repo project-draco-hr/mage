@@ -1,0 +1,20 @@
+{
+  boolean result=false;
+  for (  Player player : game.getPlayers().values()) {
+    if (player != null) {
+      Cards cards=player.getGraveyard();
+      for (      Card card : cards.getCards(game)) {
+        if (card != null && card.getCardType().contains(CardType.CREATURE)) {
+          if (card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),card.getOwnerId(),false)) {
+            Permanent permanent=game.getPermanent(card.getId());
+            if (permanent != null) {
+              permanent.addCounters(CounterType.M1M1.createInstance(),game);
+            }
+            result=true;
+          }
+        }
+      }
+    }
+  }
+  return result;
+}
