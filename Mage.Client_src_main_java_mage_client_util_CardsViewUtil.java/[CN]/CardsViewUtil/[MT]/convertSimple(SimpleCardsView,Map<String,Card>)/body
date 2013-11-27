@@ -1,0 +1,16 @@
+{
+  CardsView cards=new CardsView();
+  for (  SimpleCardView simple : view.values()) {
+    String key=simple.getExpansionSetCode() + "_" + simple.getCardNumber();
+    Card card=loadedCards.get(key);
+    if (card == null) {
+      CardInfo cardInfo=CardRepository.instance.findCard(simple.getExpansionSetCode(),simple.getCardNumber());
+      card=cardInfo != null ? cardInfo.getMockCard() : null;
+      loadedCards.put(key,card);
+    }
+    if (card != null) {
+      cards.put(simple.getId(),new CardView(card,simple.getId()));
+    }
+  }
+  return cards;
+}
