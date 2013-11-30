@@ -1,0 +1,34 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    returnCreatureFromGraveToBattlefield(controller,source,game);
+    int opponentsReturnedCreatures=0;
+    for (    UUID playerId : game.getOpponents(controller.getId())) {
+      Player opponent=game.getPlayer(playerId);
+      if (opponent != null) {
+        FilterCard filter=new FilterCreatureCard("creature card from your graveyard");
+        filter.add(new OwnerIdPredicate(opponent.getId()));
+        Target targetOpponent=new TargetCardInGraveyard(filter);
+        targetOpponent.setRequired(true);
+        if (targetOpponent.canChoose(source.getSourceId(),opponent.getId(),game)) {
+          if (opponent.chooseUse(outcome,new StringBuilder("Return a creature card from your graveyard to the battlefield?").toString(),game)) {
+            if (opponent.chooseTarget(outcome,targetOpponent,source,game)) {
+              Card card=game.getCard(targetOpponent.getFirstTarget());
+              if (card != null) {
+                opponentsReturnedCreatures++;
+                card.moveToZone(Zone.BATTLEFIELD,source.getSourceId(),game,false);
+              }
+            }
+          }
+        }
+      }
+    }
+    if (opponentsReturnedCreatures > 0) {
+      for (int i=0; i < opponentsReturnedCreatures; i++) {
+        returnCreatureFromGraveToBattlefield(controller,source,game);
+      }
+    }
+    return true;
+  }
+  return false;
+}
