@@ -1,6 +1,24 @@
 {
-  defenders.add(defenderId);
-  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(filterPlaneswalker,defenderId,game)) {
-    defenders.add(permanent.getId());
+  if (!defenders.contains(defenderId)) {
+    if (maxAttackers < Integer.MAX_VALUE) {
+      Player defendingPlayer=game.getPlayer(defenderId);
+      if (defendingPlayer != null) {
+        if (defendingPlayer.getMaxAttackedBy() == Integer.MAX_VALUE) {
+          maxAttackers=Integer.MAX_VALUE;
+        }
+ else {
+          if (maxAttackers == Integer.MIN_VALUE) {
+            maxAttackers=defendingPlayer.getMaxAttackedBy();
+          }
+ else {
+            maxAttackers+=defendingPlayer.getMaxAttackedBy();
+          }
+        }
+      }
+    }
+    defenders.add(defenderId);
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(filterPlaneswalker,defenderId,game)) {
+      defenders.add(permanent.getId());
+    }
   }
 }

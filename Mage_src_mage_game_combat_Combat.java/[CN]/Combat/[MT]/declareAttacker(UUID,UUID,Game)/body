@@ -1,8 +1,11 @@
 {
   if (!defenders.contains(defenderId)) {
-    return;
+    return false;
   }
   Permanent defender=game.getPermanent(defenderId);
+  if (!canDefenderBeAttacked(attackerId,defenderId,game)) {
+    return false;
+  }
   CombatGroup newGroup=new CombatGroup(defenderId,defender != null,defender != null ? defender.getControllerId() : defenderId);
   newGroup.attackers.add(attackerId);
   Permanent attacker=game.getPermanent(attackerId);
@@ -11,4 +14,5 @@
   }
   attacker.setAttacking(true);
   groups.add(newGroup);
+  return true;
 }

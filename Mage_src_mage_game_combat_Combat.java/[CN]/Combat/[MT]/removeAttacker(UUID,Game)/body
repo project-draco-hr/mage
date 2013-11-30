@@ -3,6 +3,9 @@
     if (group.attackers.contains(attackerId)) {
       group.attackers.remove(attackerId);
       group.attackerOrder.remove(attackerId);
+      for (      Set<UUID> attackingCreatures : numberCreaturesDefenderAttackedBy.values()) {
+        attackingCreatures.remove(attackerId);
+      }
       Permanent creature=game.getPermanent(attackerId);
       if (creature != null) {
         creature.setAttacking(false);

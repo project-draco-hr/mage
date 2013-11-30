@@ -1,26 +1,36 @@
 {
   for (  Permanent creature : player.getAvailableAttackers(game)) {
+    boolean mustAttack=false;
+    Set<UUID> defendersForcedToAttack=new HashSet<UUID>();
     for (    Map.Entry entry : game.getContinuousEffects().getApplicableRequirementEffects(creature,game).entrySet()) {
       RequirementEffect effect=(RequirementEffect)entry.getKey();
       if (effect.mustAttack(game)) {
+        mustAttack=true;
         for (        Ability ability : (HashSet<Ability>)entry.getValue()) {
           UUID defenderId=effect.mustAttackDefender(ability,game);
-          if (defenderId == null) {
-            if (defenders.size() == 1) {
-              player.declareAttacker(creature.getId(),defenders.iterator().next(),game);
-            }
- else {
-              TargetDefender target=new TargetDefender(defenders,creature.getId());
-              target.setRequired(true);
-              if (player.chooseTarget(Outcome.Damage,target,null,game)) {
-                player.declareAttacker(creature.getId(),target.getFirstTarget(),game);
-              }
-            }
+          if (defenderId != null) {
+            defendersForcedToAttack.add(defenderId);
           }
+          break;
+        }
+      }
+    }
+    if (mustAttack) {
+      creaturesForcedToAttack.put(creature.getId(),defendersForcedToAttack);
+      if (defendersForcedToAttack.isEmpty()) {
+        if (defenders.size() == 1) {
+          player.declareAttacker(creature.getId(),defenders.iterator().next(),game);
+        }
  else {
-            player.declareAttacker(creature.getId(),defenderId,game);
+          TargetDefender target=new TargetDefender(defenders,creature.getId());
+          target.setRequired(true);
+          if (player.chooseTarget(Outcome.Damage,target,null,game)) {
+            player.declareAttacker(creature.getId(),target.getFirstTarget(),game);
           }
         }
+      }
+ else {
+        player.declareAttacker(creature.getId(),defendersForcedToAttack.iterator().next(),game);
       }
     }
   }

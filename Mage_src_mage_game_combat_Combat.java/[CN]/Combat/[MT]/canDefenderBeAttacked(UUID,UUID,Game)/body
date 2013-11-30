@@ -1,0 +1,27 @@
+{
+  Permanent defender=game.getPermanent(defenderId);
+  if (defender != null) {
+    return true;
+  }
+  Player defendingPlayer=game.getPlayer(defenderId);
+  if (defendingPlayer == null) {
+    return false;
+  }
+  Set<UUID> defenderAttackedBy;
+  if (numberCreaturesDefenderAttackedBy.containsKey(defendingPlayer.getId())) {
+    defenderAttackedBy=numberCreaturesDefenderAttackedBy.get(defendingPlayer.getId());
+  }
+ else {
+    defenderAttackedBy=new HashSet<UUID>();
+    numberCreaturesDefenderAttackedBy.put(defendingPlayer.getId(),defenderAttackedBy);
+  }
+  if (defenderAttackedBy.size() >= defendingPlayer.getMaxAttackedBy()) {
+    Player attackingPlayer=game.getPlayer(game.getControllerId(attackerId));
+    if (attackingPlayer != null) {
+      game.informPlayer(attackingPlayer,new StringBuilder("No more than ").append(CardUtil.numberToText(defendingPlayer.getMaxAttackedBy())).append(" creatures can attack ").append(defendingPlayer.getName()).toString());
+    }
+    return false;
+  }
+  defenderAttackedBy.add(attackerId);
+  return true;
+}
