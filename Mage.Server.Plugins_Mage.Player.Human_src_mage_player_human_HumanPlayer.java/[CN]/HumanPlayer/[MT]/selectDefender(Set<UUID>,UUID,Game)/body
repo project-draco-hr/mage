@@ -1,10 +1,26 @@
 {
-  if (defenders.size() == 1) {
+  boolean forcedToAttack=false;
+  Set<UUID> possibleDefender=game.getCombat().getCreaturesForcedToAttack().get(attackerId);
+  if (possibleDefender != null) {
+    forcedToAttack=true;
+  }
+  if (possibleDefender == null || possibleDefender.isEmpty()) {
+    possibleDefender=defenders;
+  }
+  if (possibleDefender.size() == 1) {
     declareAttacker(attackerId,defenders.iterator().next(),game);
     return true;
   }
  else {
-    TargetDefender target=new TargetDefender(defenders,attackerId);
+    TargetDefender target=new TargetDefender(possibleDefender,attackerId);
+    if (forcedToAttack) {
+      StringBuilder sb=new StringBuilder(target.getTargetName());
+      Permanent attacker=game.getPermanent(attackerId);
+      if (attacker != null) {
+        sb.append(" (").append(attacker.getName()).append(")");
+        target.setTargetName(sb.toString());
+      }
+    }
     if (chooseTarget(Outcome.Damage,target,null,game)) {
       declareAttacker(attackerId,response.getUUID(),game);
       return true;

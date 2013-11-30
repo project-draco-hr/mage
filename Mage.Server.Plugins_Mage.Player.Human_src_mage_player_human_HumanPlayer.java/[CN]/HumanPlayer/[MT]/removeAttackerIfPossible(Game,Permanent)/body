@@ -2,7 +2,9 @@
   for (  Map.Entry entry : game.getContinuousEffects().getApplicableRequirementEffects(attacker,game).entrySet()) {
     RequirementEffect effect=(RequirementEffect)entry.getKey();
     if (effect.mustAttack(game)) {
-      return;
+      if (game.getCombat().getMaxAttackers() >= game.getCombat().getCreaturesForcedToAttack().size() && game.getCombat().getDefenders().size() == 1) {
+        return;
+      }
     }
   }
   game.getCombat().removeAttacker(attacker.getId(),game);
