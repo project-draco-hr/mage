@@ -1,0 +1,21 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (controller != null && sourcePermanent != null) {
+    int xValue=sourcePermanent.getSpellAbility().getManaCostsToPay().convertedManaCost();
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        int cardsToExile=Math.min(player.getLibrary().size(),xValue);
+        for (int i=0; i < cardsToExile; i++) {
+          Card card=player.getLibrary().removeFromTop(game);
+          if (card != null) {
+            card.moveToExile(CardUtil.getCardExileZoneId(game,source),"Jeleva, Nephalia's Scourge",source.getSourceId(),game);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

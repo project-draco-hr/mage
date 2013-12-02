@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        int cards=player.getHand().size();
+        if (cards > 0) {
+          player.discard(cards,source,game);
+          player.drawCards(cards,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
