@@ -1,0 +1,11 @@
+{
+  if (event.getType() == GameEvent.EventType.SPELL_CAST && event.getPlayerId().equals(this.getControllerId())) {
+    Spell spell=game.getStack().getSpell(event.getTargetId());
+    if (isControlledInstantOrSorcery(spell)) {
+      this.getTargets().get(0).clearChosen();
+      this.getTargets().get(0).add(spell.getId(),game);
+      return true;
+    }
+  }
+  return false;
+}
