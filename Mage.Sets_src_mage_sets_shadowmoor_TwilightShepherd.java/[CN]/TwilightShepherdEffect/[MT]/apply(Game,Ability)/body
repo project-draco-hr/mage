@@ -1,0 +1,13 @@
+{
+  CardsPutIntoGraveyardWatcher watcher=(CardsPutIntoGraveyardWatcher)game.getState().getWatchers().get("CardsPutIntoGraveyardWatcher");
+  if (watcher != null) {
+    Set<UUID> cardsInGraveyardId=watcher.getCardsPutToGraveyardFromBattlefield();
+    for (    UUID cardId : cardsInGraveyardId) {
+      Card card=game.getCard(cardId);
+      if (card != null && card.getOwnerId().equals(source.getControllerId())) {
+        applied=card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+      }
+    }
+  }
+  return applied;
+}
