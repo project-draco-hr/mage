@@ -1,0 +1,42 @@
+{
+  Permanent permanent=game.getPermanent(this.getTargetPointer().getFirst(game,source));
+  if (permanent == null) {
+    permanent=(Permanent)game.getLastKnownInformation(source.getFirstTarget(),Zone.BATTLEFIELD);
+  }
+  if (permanent != null) {
+    EmptyToken token=new EmptyToken();
+    CardUtil.copyTo(token).from(permanent);
+    token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
+    Set<UUID> playersSaidYes=new HashSet<UUID>();
+    PlayerList playerList=game.getPlayerList().copy();
+    playerList.setCurrent(game.getActivePlayerId());
+    Player player=game.getPlayer(game.getActivePlayerId());
+    do {
+      if (game.getOpponents(source.getControllerId()).contains(player.getId())) {
+        String decision;
+        if (player.chooseUse(outcome,"Put a copy of target creature onto the battlefield for you?",game)) {
+          playersSaidYes.add(player.getId());
+          decision=" chooses to copy ";
+        }
+ else {
+          decision=" won't copy ";
+        }
+        game.informPlayers((new StringBuilder(player.getName()).append(decision).append(permanent.getName()).toString()));
+      }
+      player=playerList.getNext(game);
+    }
+ while (!player.getId().equals(game.getActivePlayerId()));
+    for (    UUID playerId : playersSaidYes) {
+      token=new EmptyToken();
+      CardUtil.copyTo(token).from(permanent);
+      token.putOntoBattlefield(1,game,source.getSourceId(),playerId);
+    }
+    if (playersSaidYes.size() > 0) {
+      token=new EmptyToken();
+      CardUtil.copyTo(token).from(permanent);
+      token.putOntoBattlefield(playersSaidYes.size(),game,source.getSourceId(),source.getControllerId());
+    }
+    return true;
+  }
+  return false;
+}
