@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Elder of Laurels");
+  addCard(Zone.HAND,playerA,"Ranger's Guile");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",4);
+  addCard(Zone.HAND,playerB,"Into the Void");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Into the Void","Elder of Laurels");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerA,"Ranger's Guile","Elder of Laurels");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Elder of Laurels",1);
+  assertPowerToughness(playerA,"Elder of Laurels",3,4);
+  assertAbility(playerA,"Elder of Laurels",HexproofAbility.getInstance(),true);
+}
