@@ -10,13 +10,10 @@
     if (lifePlayer1 == lifePlayer2) {
       return false;
     }
-    if (!sourcePlayer.isLifeTotalCanChange() || !targetPlayer.isLifeTotalCanChange()) {
+    if (lifePlayer1 < lifePlayer2 && (!sourcePlayer.isCanGainLife() || !targetPlayer.isCanLoseLife())) {
       return false;
     }
-    if (lifePlayer1 < lifePlayer2 && (!targetPlayer.isCanGainLife() || !targetPlayer.isCanLoseLife())) {
-      return false;
-    }
-    if (lifePlayer1 > lifePlayer2 && (!targetPlayer.isCanLoseLife() || !targetPlayer.isCanGainLife())) {
+    if (lifePlayer1 > lifePlayer2 && (!sourcePlayer.isCanLoseLife() || !targetPlayer.isCanGainLife())) {
       return false;
     }
     sourcePlayer.setLife(lifePlayer2,game);
