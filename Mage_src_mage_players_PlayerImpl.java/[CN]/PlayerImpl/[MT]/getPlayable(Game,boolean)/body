@@ -58,6 +58,19 @@
       }
     }
   }
+  if (!(this.getCommanderId() == null)) {
+    Zone zone=game.getState().getZone(this.getCommanderId());
+    if (zone != null && zone.equals(Zone.COMMAND)) {
+      MageObject object=game.getObject(this.getCommanderId());
+      if (object != null) {
+        for (        ActivatedAbility ability : ((Commander)object).getAbilities().getActivatedAbilities(Zone.COMMAND)) {
+          if (canPlay(ability,available,game)) {
+            playableActivated.put(ability.toString(),ability);
+          }
+        }
+      }
+    }
+  }
   playable.addAll(playableActivated.values());
   return playable;
 }
