@@ -1,4 +1,8 @@
 {
-  game.getCombat().removeFromCombat(objectId,game);
+  if (this.isAttacking() || this.blocking > 0) {
+    if (game.getCombat().removeFromCombat(objectId,game)) {
+      game.informPlayers(new StringBuilder(this.getName()).append(" removed from combat").toString());
+    }
+  }
   return true;
 }
