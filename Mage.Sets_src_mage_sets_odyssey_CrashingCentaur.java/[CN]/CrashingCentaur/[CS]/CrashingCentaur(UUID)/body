@@ -1,0 +1,14 @@
+{
+  super(ownerId,235,"Crashing Centaur",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{4}{G}{G}");
+  this.expansionSetCode="ODY";
+  this.subtype.add("Centaur");
+  this.color.setGreen(true);
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(4);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainAbilitySourceEffect(TrampleAbility.getInstance(),Duration.EndOfTurn),new ManaCostsImpl("{G}"));
+  ability.addCost(new DiscardCardCost());
+  this.addAbility(ability);
+  Ability thresholdAbility=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinousEffect(new BoostSourceEffect(2,2,Duration.WhileOnBattlefield),new CardsInControllerGraveCondition(7),"<i>Threshold</i> - If seven or more cards are in your graveyard, Crashing Centaur gets +2/+2"));
+  Effect effect=new ConditionalContinousEffect(new GainAbilitySourceEffect(ShroudAbility.getInstance()),new CardsInControllerGraveCondition(7),"and has shroud");
+  thresholdAbility.addEffect(effect);
+}
