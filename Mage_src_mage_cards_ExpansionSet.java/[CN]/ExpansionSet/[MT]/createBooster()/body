@@ -16,9 +16,6 @@
   criteria=new CardCriteria();
   criteria.setCodes(this.code).rarities(Rarity.MYTHIC).doubleFaced(false);
   List<CardInfo> mythic=CardRepository.instance.findCards(criteria);
-  criteria=new CardCriteria();
-  criteria.setCodes(this.code).doubleFaced(true);
-  List<CardInfo> doubleFaced=CardRepository.instance.findCards(criteria);
   for (int i=0; i < numBoosterLands; i++) {
     addToBooster(booster,basicLand);
   }
@@ -36,12 +33,11 @@
       addToBooster(booster,rare);
     }
   }
-  for (int i=0; i < numBoosterDoubleFaced; i++) {
-    addToBooster(booster,doubleFaced);
+  if (numBoosterDoubleFaced > 0) {
+    this.addDoubleFace(booster);
   }
   if (numBoosterSpecial > 0) {
     int specialCards=0;
-    Random randomno=new Random();
     List<CardInfo> specialMythic=getSpecialMythic();
     if (specialMythic != null) {
       specialCards+=specialMythic.size();
@@ -60,7 +56,7 @@
     }
     if (specialCards > 0) {
       for (int i=0; i < numBoosterSpecial; i++) {
-        if (randomno.nextInt(15) < 10) {
+        if (rnd.nextInt(15) < 10) {
           if (specialCommon != null) {
             addToBooster(booster,specialCommon);
           }
@@ -69,7 +65,7 @@
           }
           continue;
         }
-        if (randomno.nextInt(5) < 4) {
+        if (rnd.nextInt(5) < 4) {
           if (specialUncommon != null) {
             addToBooster(booster,specialUncommon);
           }
@@ -78,7 +74,7 @@
           }
           continue;
         }
-        if (randomno.nextInt(8) < 7) {
+        if (rnd.nextInt(8) < 7) {
           if (specialRare != null) {
             addToBooster(booster,specialRare);
           }
