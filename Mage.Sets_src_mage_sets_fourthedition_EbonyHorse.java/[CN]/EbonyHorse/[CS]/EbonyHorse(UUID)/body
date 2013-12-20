@@ -3,8 +3,10 @@
   this.expansionSetCode="4ED";
   Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new UntapTargetEffect(),new GenericManaCost(2));
   ability.addCost(new TapSourceCost());
-  ability.addEffect(new PreventDamageFromTargetEffect(Duration.EndOfTurn,true));
-  ability.addEffect(new PreventDamageTargetEffect(Duration.EndOfTurn,Integer.MAX_VALUE));
-  ability.addTarget(new TargetCreaturePermanent(filter));
+  ability.addEffect(new PreventCombatDamageSourceEffect(Duration.EndOfTurn));
+  ability.addEffect(new PreventCombatDamageFromSourceEffect(Duration.EndOfTurn));
+  Target target=new TargetCreaturePermanent(filter);
+  target.setRequired(true);
+  ability.addTarget(target);
   this.addAbility(ability);
 }
