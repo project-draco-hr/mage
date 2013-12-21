@@ -1,20 +1,30 @@
 {
+  Set<UUID> illegalTargets=new HashSet<UUID>();
+  int replacedTargets=0;
   for (  UUID targetId : targets.keySet()) {
     Card card=game.getCard(targetId);
     if (card != null) {
       if (zoneChangeCounters.containsKey(targetId) && zoneChangeCounters.get(targetId) != card.getZoneChangeCounter()) {
+        illegalTargets.add(targetId);
         continue;
       }
     }
     if (game.replaceEvent(GameEvent.getEvent(EventType.TARGET,targetId,source.getId(),source.getControllerId()))) {
+      replacedTargets++;
       continue;
     }
-    if (canTarget(targetId,source,game)) {
-      return true;
+    if (!canTarget(targetId,source,game)) {
+      illegalTargets.add(targetId);
     }
+  }
+  for (  UUID targetId : illegalTargets) {
+    targets.remove(targetId);
+  }
+  if (replacedTargets > 0 && replacedTargets == targets.size()) {
+    return false;
   }
   if (minNumberOfTargets == 0 && targets.isEmpty()) {
     return true;
   }
-  return false;
+  return targets.size() > 0;
 }
