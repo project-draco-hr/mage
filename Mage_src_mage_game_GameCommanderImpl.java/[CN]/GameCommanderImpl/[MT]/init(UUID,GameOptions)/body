@@ -12,7 +12,9 @@
           ability.addEffect(new CommanderReplacementEffect(commander.getId()));
           ability.addEffect(new CommanderCostModification(commander.getId()));
           getState().setValue(commander.getId() + "_castCount",new Integer(0));
-          getState().getWatchers().add(new CommanderCombatDamageWatcher(commander.getId()));
+          CommanderCombatDamageWatcher watcher=new CommanderCombatDamageWatcher(commander.getId());
+          getState().getWatchers().add(watcher);
+          watcher.addCardInfoToCommander(this);
         }
       }
     }

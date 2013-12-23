@@ -1,0 +1,21 @@
+{
+  MageObject object=game.getPermanent(sourceId);
+  if (object == null) {
+    object=game.getCard(sourceId);
+  }
+  if (object != null) {
+    StringBuilder sb=new StringBuilder();
+    sb.append("<b>Commander</b>");
+    Integer castCount=(Integer)game.getState().getValue(sourceId + "_castCount");
+    if (castCount != null) {
+      sb.append(" was ").append(castCount).append(castCount.intValue() == 1 ? " time" : " times").append(" casted from the command zone.");
+    }
+    this.addInfo(object,"Commander",sb.toString());
+    for (    Map.Entry<UUID,Integer> entry : damageToPlayer.entrySet()) {
+      Player damagedPlayer=game.getPlayer(entry.getKey());
+      sb.setLength(0);
+      sb.append("<b>Commander</b> did ").append(entry.getValue()).append(" combat damage to player ").append(damagedPlayer.getName()).append(".");
+      this.addInfo(object,new StringBuilder("Commander").append(entry.getKey()).toString(),sb.toString());
+    }
+  }
+}
