@@ -1,0 +1,34 @@
+{
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  Player player=game.getPlayer(source.getControllerId());
+  if (sourcePermanent != null && player != null) {
+    int chargeCounters=sourcePermanent.getCounters().getCount(CounterType.CHARGE);
+    sourcePermanent.removeCounters(CounterType.CHARGE.createInstance(chargeCounters),game);
+    Mana mana=new Mana();
+    ChoiceColor choice=new ChoiceColor();
+    for (int i=0; i < chargeCounters; i++) {
+      while (player.isInGame() && !choice.isChosen()) {
+        player.choose(outcome,choice,game);
+      }
+      if (choice.getColor().isBlack()) {
+        mana.addBlack();
+      }
+ else       if (choice.getColor().isBlue()) {
+        mana.addBlue();
+      }
+ else       if (choice.getColor().isRed()) {
+        mana.addRed();
+      }
+ else       if (choice.getColor().isGreen()) {
+        mana.addGreen();
+      }
+ else       if (choice.getColor().isWhite()) {
+        mana.addWhite();
+      }
+      choice.clearChoice();
+    }
+    player.getManaPool().addMana(mana,game,source);
+    return true;
+  }
+  return false;
+}

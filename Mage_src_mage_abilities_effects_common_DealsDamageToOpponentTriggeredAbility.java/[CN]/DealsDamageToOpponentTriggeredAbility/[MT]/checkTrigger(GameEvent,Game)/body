@@ -1,7 +1,14 @@
 {
   if (event.getType() == GameEvent.EventType.DAMAGED_PLAYER && event.getSourceId().equals(this.sourceId) && game.getOpponents(this.getControllerId()).contains(event.getTargetId())) {
+    if (onlyCombat && event instanceof DamagedPlayerEvent) {
+      DamagedPlayerEvent damageEvent=(DamagedPlayerEvent)event;
+      if (!damageEvent.isCombatDamage()) {
+        return false;
+      }
+    }
     for (    Effect effect : getEffects()) {
       effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+      effect.setValue("damage",event.getAmount());
     }
     return true;
   }
