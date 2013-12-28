@@ -1,0 +1,14 @@
+{
+  super(ownerId,178,"Crimson Hellkite",Rarity.RARE,new CardType[]{CardType.CREATURE},"{6}{R}{R}{R}");
+  this.expansionSetCode="7ED";
+  this.subtype.add("Dragon");
+  this.color.setRed(true);
+  this.power=new MageInt(6);
+  this.toughness=new MageInt(6);
+  this.addAbility(FlyingAbility.getInstance());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(new ManacostVariableValue()),new ManaCostsImpl("{X}"));
+  ability.addCost(new TapSourceCost());
+  ability.getManaCostsToPay().getVariableCosts().get(0).setFilter(filterRedMana);
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}
