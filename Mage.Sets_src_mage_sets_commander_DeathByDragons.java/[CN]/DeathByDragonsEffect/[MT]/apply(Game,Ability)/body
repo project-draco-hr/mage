@@ -1,0 +1,13 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : controller.getInRange()) {
+      if (!playerId.equals(this.getTargetPointer().getFirst(game,source))) {
+        Token token=new DragonToken();
+        token.putOntoBattlefield(1,game,source.getSourceId(),playerId);
+      }
+    }
+    return true;
+  }
+  return false;
+}
