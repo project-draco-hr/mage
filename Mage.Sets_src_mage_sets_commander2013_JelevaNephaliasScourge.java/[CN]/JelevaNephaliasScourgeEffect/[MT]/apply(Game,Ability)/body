@@ -1,21 +1,26 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
-  if (controller != null && sourcePermanent != null) {
-    int xValue=sourcePermanent.getSpellAbility().getManaCostsToPay().convertedManaCost();
-    for (    UUID playerId : controller.getInRange()) {
-      Player player=game.getPlayer(playerId);
-      if (player != null) {
-        int cardsToExile=Math.min(player.getLibrary().size(),xValue);
-        for (int i=0; i < cardsToExile; i++) {
-          Card card=player.getLibrary().removeFromTop(game);
-          if (card != null) {
-            card.moveToExile(CardUtil.getCardExileZoneId(game,source),"Jeleva, Nephalia's Scourge",source.getSourceId(),game);
+  Card sourceCard=game.getCard(source.getSourceId());
+  if (controller != null && sourceCard != null) {
+    JelevaNephaliasWatcher watcher=(JelevaNephaliasWatcher)game.getState().getWatchers().get("ManaPaidToCastJelevaNephalias",source.getSourceId());
+    if (watcher != null) {
+      int xValue=watcher.getManaSpentToCastLastTime(sourceCard.getZoneChangeCounter() - 1);
+      if (xValue > 0) {
+        for (        UUID playerId : controller.getInRange()) {
+          Player player=game.getPlayer(playerId);
+          if (player != null) {
+            int cardsToExile=Math.min(player.getLibrary().size(),xValue);
+            for (int i=0; i < cardsToExile; i++) {
+              Card card=player.getLibrary().removeFromTop(game);
+              if (card != null) {
+                card.moveToExile(CardUtil.getCardExileZoneId(game,source),sourceCard.getName(),source.getSourceId(),game);
+              }
+            }
           }
         }
       }
+      return true;
     }
-    return true;
   }
   return false;
 }
