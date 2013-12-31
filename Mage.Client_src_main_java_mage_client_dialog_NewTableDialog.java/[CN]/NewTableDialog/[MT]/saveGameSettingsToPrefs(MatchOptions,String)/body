@@ -8,4 +8,14 @@
   PreferencesDialog.saveValue(PreferencesDialog.KEY_NEW_TABLE_NUMBER_PLAYERS,spnNumPlayers.getValue().toString());
   PreferencesDialog.saveValue(PreferencesDialog.KEY_NEW_TABLE_RANGE,Integer.toString(options.getRange().getRange()));
   PreferencesDialog.saveValue(PreferencesDialog.KEY_NEW_TABLE_ATTACK_OPTION,options.getAttackOption().toString());
+  StringBuilder playerTypesString=new StringBuilder();
+  ListIterator iterator=players.listIterator();
+  while (iterator.hasNext()) {
+    if (playerTypesString.length() > 0) {
+      playerTypesString.append(",");
+    }
+    TablePlayerPanel tpp=(TablePlayerPanel)iterator.next();
+    playerTypesString.append(tpp.getPlayerType());
+  }
+  PreferencesDialog.saveValue(PreferencesDialog.KEY_NEW_TABLE_PLAYER_TYPES,playerTypesString.toString());
 }

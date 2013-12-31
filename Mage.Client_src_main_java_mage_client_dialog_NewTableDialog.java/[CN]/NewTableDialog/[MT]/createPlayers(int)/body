@@ -2,7 +2,11 @@
   if (numPlayers > players.size()) {
     while (players.size() != numPlayers) {
       TablePlayerPanel playerPanel=new TablePlayerPanel();
-      playerPanel.init(players.size() + 2);
+      String playerType="Human";
+      if (prefPlayerTypes.size() >= players.size() && players.size() > 0) {
+        playerType=prefPlayerTypes.get(players.size() - 1);
+      }
+      playerPanel.init(players.size() + 2,playerType);
       players.add(playerPanel);
       playerPanel.addPlayerTypeEventListener(new Listener<Event>(){
         @Override public void event(        Event event){

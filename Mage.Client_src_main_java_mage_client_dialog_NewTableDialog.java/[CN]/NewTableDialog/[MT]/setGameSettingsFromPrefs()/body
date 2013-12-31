@@ -1,5 +1,9 @@
 {
   txtName.setText(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_NAME,"Game"));
+  String playerTypes=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_PLAYER_TYPES,"Human");
+  prefPlayerTypes.clear();
+  prefPlayerTypes.addAll(Arrays.asList(playerTypes.split(",")));
+  this.spnNumPlayers.setValue(Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_NUMBER_PLAYERS,"2")));
   String gameTypeName=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_GAME_TYPE,"Two Player Duel");
   for (  GameTypeView gtv : session.getGameTypes()) {
     if (gtv.getName().equals(gameTypeName)) {
@@ -20,7 +24,6 @@
     this.player1Panel.setDeckFile(deckFile);
   }
   this.spnNumWins.setValue(Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_NUMBER_OF_WINS,"2")));
-  this.spnNumPlayers.setValue(Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_NUMBER_PLAYERS,"2")));
   int range=Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TABLE_RANGE,"1"));
   for (  RangeOfInfluence roi : RangeOfInfluence.values()) {
     if (roi.getRange() == range) {
