@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Targets targets=source.getTargets();
+    int i=0;
+    for (    Target target : targets) {
+      Card card=game.getCard(target.getFirstTarget());
+      player.discard(card,source,game);
+      i++;
+    }
+    game.addEffect(new BoostControlledEffect(0,i,Duration.EndOfTurn),source);
+    return true;
+  }
+  return false;
+}
