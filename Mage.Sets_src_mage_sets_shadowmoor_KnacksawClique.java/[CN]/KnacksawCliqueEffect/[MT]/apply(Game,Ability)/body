@@ -1,0 +1,16 @@
+{
+  Player opponent=game.getPlayer(source.getFirstTarget());
+  if (opponent != null) {
+    Player you=game.getPlayer(source.getControllerId());
+    UUID exileId=CardUtil.getCardExileZoneId(game,source);
+    Card card=opponent.getLibrary().getFromTop(game);
+    if (card != null && you != null) {
+      card.moveToExile(exileId,"Knacksaw Clique",source.getSourceId(),game);
+      if (card.getSpellAbility() != null) {
+        game.addEffect(new KnacksawCliqueCastFromExileEffect(card.getId(),exileId),source);
+      }
+    }
+    return true;
+  }
+  return false;
+}
