@@ -1,10 +1,9 @@
 {
-  for (  Watcher watcher : getState().getWatchers().values()) {
-    if (watcher instanceof CommanderCombatDamageWatcher) {
-      CommanderCombatDamageWatcher damageWatcher=(CommanderCombatDamageWatcher)watcher;
-      for (      UUID playerUUID : damageWatcher.getDamageToPlayer().keySet()) {
-        Player player=getPlayer(playerUUID);
-        if (player != null && damageWatcher.getDamageToPlayer().get(playerUUID) >= 21) {
+  for (  CommanderCombatDamageWatcher damageWatcher : commanderCombatWatcher) {
+    for (    Map.Entry<UUID,Integer> entrySet : damageWatcher.getDamageToPlayer().entrySet()) {
+      if (entrySet.getValue() > 20) {
+        Player player=getPlayer(entrySet.getKey());
+        if (player != null && player.isInGame()) {
           player.lost(this);
         }
       }
