@@ -1,0 +1,14 @@
+{
+  super(ownerId,95,"Psionic Gift",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{1}{U}");
+  this.expansionSetCode="ODY";
+  this.subtype.add("Aura");
+  this.color.setBlue(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  Ability psiAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new TapSourceCost());
+  psiAbility.addTarget(new TargetCreatureOrPlayer(true));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(psiAbility,AttachmentType.AURA)));
+}

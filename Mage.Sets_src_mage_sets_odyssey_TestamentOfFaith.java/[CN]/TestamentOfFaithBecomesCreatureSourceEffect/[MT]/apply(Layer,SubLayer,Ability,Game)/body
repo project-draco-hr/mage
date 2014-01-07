@@ -1,0 +1,56 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null && permanent.getZoneChangeCounter() == this.zoneChangeCounter) {
+switch (layer) {
+case TypeChangingEffects_4:
+      if (sublayer == SubLayer.NA) {
+        if (token.getCardType().size() > 0) {
+          for (          CardType t : token.getCardType()) {
+            if (!permanent.getCardType().contains(t)) {
+              permanent.getCardType().add(t);
+            }
+          }
+        }
+        if ("".equals(type) || type == null) {
+          permanent.getSubtype().clear();
+        }
+        if (token.getSubtype().size() > 0) {
+          permanent.getSubtype().addAll(token.getSubtype());
+        }
+      }
+    break;
+case ColorChangingEffects_5:
+  if (sublayer == SubLayer.NA) {
+    if (token.getColor().hasColor()) {
+      permanent.getColor().setColor(token.getColor());
+    }
+  }
+break;
+case AbilityAddingRemovingEffects_6:
+if (sublayer == SubLayer.NA) {
+if (token.getAbilities().size() > 0) {
+  for (  Ability ability : token.getAbilities()) {
+    permanent.addAbility(ability,game);
+  }
+}
+}
+break;
+case PTChangingEffects_7:
+if (sublayer == SubLayer.SetPT_7b) {
+MageInt power=new MageInt(source.getManaCosts().getVariableCosts().get(0).getAmount());
+MageInt toughness=new MageInt(source.getManaCosts().getVariableCosts().get(0).getAmount());
+if (power != null && toughness != null) {
+permanent.getPower().setValue(power.getValue());
+permanent.getToughness().setValue(toughness.getValue());
+}
+}
+}
+return true;
+}
+ else {
+if (duration.equals(Duration.Custom)) {
+this.discard();
+}
+}
+return false;
+}

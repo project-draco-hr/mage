@@ -1,0 +1,14 @@
+{
+  super(ownerId,59,"Aboshan's Desire",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{U}");
+  this.expansionSetCode="ODY";
+  this.subtype.add("Aura");
+  this.color.setBlue(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(FlyingAbility.getInstance(),AttachmentType.AURA,Duration.WhileOnBattlefield));
+  ability.addEffect(new ConditionalContinousEffect(new GainAbilityAttachedEffect(ShroudAbility.getInstance(),AttachmentType.AURA,Duration.WhileOnBattlefield),new CardsInControllerGraveCondition(7),"<i>Threshold</i> - Enchanted creature gets shroud as long as seven or more cards are in your graveyard"));
+  this.addAbility(ability);
+}

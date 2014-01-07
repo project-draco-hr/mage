@@ -1,0 +1,15 @@
+{
+  super(ownerId,83,"Dreamwinder",Rarity.COMMON,new CardType[]{CardType.CREATURE},"{3}{U}");
+  this.expansionSetCode="ODY";
+  this.subtype.add("Serpent");
+  this.color.setBlue(true);
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(3);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new DreamwinderEffect()));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BecomesBasicLandTargetEffect(Duration.EndOfTurn,"Island"),new ManaCostsImpl("{U}"));
+  Target target=new TargetLandPermanent();
+  target.setRequired(true);
+  ability.addTarget(target);
+  ability.addCost(new SacrificeTargetCost(new TargetControlledPermanent(1,1,filter,true)));
+  this.addAbility(ability);
+}

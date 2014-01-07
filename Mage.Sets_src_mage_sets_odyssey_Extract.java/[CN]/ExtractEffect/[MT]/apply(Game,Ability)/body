@@ -1,0 +1,17 @@
+{
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null && targetPlayer != null) {
+    Cards targetLibrary=new CardsImpl();
+    targetLibrary.addAll(targetPlayer.getLibrary().getCardList());
+    TargetCardInLibrary target=new TargetCardInLibrary(1,1,filter);
+    if (player.choose(Outcome.Benefit,targetLibrary,target,game)) {
+      Card card=targetPlayer.getLibrary().remove(target.getFirstTarget(),game);
+      if (card != null) {
+        card.moveToExile(getId(),"Extract",source.getSourceId(),game);
+      }
+    }
+  }
+  targetPlayer.shuffleLibrary(game);
+  return true;
+}
