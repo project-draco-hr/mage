@@ -40,9 +40,9 @@
     }
   }
   Map<ContinuousEffect,List<Ability>> appliedEffects=new HashMap<ContinuousEffect,List<Ability>>();
-  boolean allApplied=false;
-  while (!allApplied) {
-    boolean effectApplied=false;
+  boolean done=false;
+  while (!done) {
+    done=true;
     layer=filterLayeredEffects(layerEffects,Layer.AbilityAddingRemovingEffects_6);
     for (    ContinuousEffect effect : layer) {
       if (layerEffects.contains(effect)) {
@@ -56,14 +56,11 @@
             }
             appliedAbilities.add(ability);
             effect.apply(Layer.AbilityAddingRemovingEffects_6,SubLayer.NA,ability,game);
-            effectApplied=true;
+            done=false;
+            layerEffects=getLayeredEffects(game);
           }
         }
       }
-    }
-    allApplied=!effectApplied;
-    if (effectApplied) {
-      layerEffects=getLayeredEffects(game);
     }
   }
   layer=filterLayeredEffects(layerEffects,Layer.PTChangingEffects_7);
