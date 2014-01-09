@@ -41,9 +41,15 @@ listenerMetadata.put(ConnectionValidator.VALIDATOR_PING_TIMEOUT,"9000");
 callbackClient.connect(new ClientConnectionListener(),listenerMetadata);
 Map<String,String> callbackMetadata=new HashMap<String,String>();
 callbackMetadata.put(Bisocket.IS_CALLBACK_SERVER,"true");
-CallbackHandler callbackHandler=new CallbackHandler();
+if (callbackHandler == null) {
+callbackHandler=new CallbackHandler();
+}
 callbackClient.addListener(callbackHandler,callbackMetadata);
-callbackClient.invoke("");
+Set callbackConnectors=callbackClient.getCallbackConnectors(callbackHandler);
+if (callbackConnectors.size() != 1) {
+logger.warn("There should be one callback Connector (number existing = " + callbackConnectors.size() + ")");
+}
+callbackClient.invoke(null);
 this.sessionId=callbackClient.getSessionId();
 boolean registerResult;
 if (connection.getPassword() == null) {
