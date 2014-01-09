@@ -24,14 +24,14 @@
   }
   tableView=tableList;
   matchView=matchList;
-  List<String> players=new ArrayList<String>();
+  List<UsersView> users=new ArrayList<UsersView>();
   for (  User user : UserManager.getInstance().getUsers()) {
-    StringBuilder sb=new StringBuilder(user.getName());
-    sb.append(user.getUserInfo());
+    StringBuilder sb=new StringBuilder(user.getGameInfo());
     if (!user.isConnected()) {
       sb.append(" (discon.)");
     }
-    players.add(sb.toString());
+    users.add(new UsersView(user.getName(),user.getInfo(),sb.toString()));
   }
-  playersView=players;
+  Collections.sort(users,new UserNameSorter());
+  usersView=users;
 }

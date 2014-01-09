@@ -1,0 +1,38 @@
+{
+  if (time != null) {
+    this.txtConversation.append(TIMESTAMP_COLOR,time + " ");
+  }
+  Color userColor;
+  Color textColor;
+  String userSeparator=" ";
+switch (messageType) {
+case STATUS:
+    textColor=STATUS_COLOR;
+  userColor=STATUS_COLOR;
+break;
+case USER_INFO:
+textColor=USER_INFO_COLOR;
+userColor=USER_INFO_COLOR;
+break;
+default :
+if (parentChatRef != null) {
+userColor=parentChatRef.session.getUserName().equals(username) ? MY_COLOR : OPPONENT_COLOR;
+}
+ else {
+userColor=session.getUserName().equals(username) ? MY_COLOR : OPPONENT_COLOR;
+}
+textColor=MESSAGE_COLOR;
+userSeparator=": ";
+}
+if (color.equals(MessageColor.ORANGE)) {
+textColor=Color.ORANGE;
+}
+if (color.equals(MessageColor.YELLOW)) {
+textColor=Color.YELLOW;
+}
+if (username != null && !username.isEmpty()) {
+this.txtConversation.append(userColor,username);
+this.txtConversation.append(userColor,userSeparator);
+}
+this.txtConversation.append(textColor,message + "\n");
+}
