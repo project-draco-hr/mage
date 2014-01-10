@@ -1,10 +1,21 @@
 {
   for (  TournamentPlayer player : this.players.values()) {
     player.setDeck(new Deck());
-    for (    ExpansionSet set : sets) {
-      List<Card> booster=set.createBooster();
-      for (      Card card : booster) {
-        player.getDeck().getSideboard().add(card);
+    if (options.getLimitedOptions().getDraftCube() != null) {
+      DraftCube cube=options.getLimitedOptions().getDraftCube();
+      for (int i=0; i < options.getLimitedOptions().getNumberBoosters(); i++) {
+        List<Card> booster=cube.createBooster();
+        for (        Card card : booster) {
+          player.getDeck().getSideboard().add(card);
+        }
+      }
+    }
+ else {
+      for (      ExpansionSet set : sets) {
+        List<Card> booster=set.createBooster();
+        for (        Card card : booster) {
+          player.getDeck().getSideboard().add(card);
+        }
       }
     }
   }

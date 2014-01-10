@@ -1,0 +1,49 @@
+{
+  Round round=new Round(rounds.size() + 1);
+  rounds.add(round);
+  List<TournamentPlayer> roundPlayers=getActivePlayers();
+  Collections.sort(roundPlayers,new Comparator<TournamentPlayer>(){
+    @Override public int compare(    TournamentPlayer p1,    TournamentPlayer p2){
+      return p2.getPoints() - p1.getPoints();
+    }
+  }
+);
+  while (roundPlayers.size() > 0) {
+    TournamentPlayer player1=roundPlayers.get(0);
+    roundPlayers.remove(0);
+    TournamentPlayer playerForPossibleSecondPairing=null;
+    for (    TournamentPlayer player2 : roundPlayers) {
+      if (alreadyPaired(player1,player2)) {
+        if (playerForPossibleSecondPairing == null) {
+          playerForPossibleSecondPairing=player2;
+        }
+      }
+ else {
+        if (player2.getPoints() < player1.getPoints() && playerForPossibleSecondPairing != null) {
+          round.addPairing(new TournamentPairing(player1,playerForPossibleSecondPairing));
+          roundPlayers.remove(playerForPossibleSecondPairing);
+          player1=null;
+          break;
+        }
+ else {
+          round.addPairing(new TournamentPairing(player1,player2));
+          roundPlayers.remove(player2);
+          player1=null;
+          break;
+        }
+      }
+    }
+    if (player1 != null) {
+      if (playerForPossibleSecondPairing != null) {
+        round.addPairing(new TournamentPairing(player1,playerForPossibleSecondPairing));
+        roundPlayers.remove(playerForPossibleSecondPairing);
+      }
+ else {
+        round.getPlayerByes().add(player1);
+        player1.setState(TournamentPlayerState.WAITING);
+        player1.setStateInfo("Round Bye");
+      }
+    }
+  }
+  return round;
+}

@@ -2,6 +2,7 @@
   for (  TournamentPlayer player : players.values()) {
     player.setResults("");
     player.setPoints(0);
+    player.setStateInfo("");
   }
   for (  Round round : rounds) {
     for (    TournamentPairing pair : round.getPairs()) {
@@ -32,6 +33,14 @@
         points=players.get(player2Id).getPoints();
         players.get(player2Id).setPoints(points + 1);
       }
+    }
+    for (    TournamentPlayer tournamentPlayer : round.getPlayerByes()) {
+      UUID player1Id=tournamentPlayer.getPlayer().getId();
+      StringBuilder sb1=new StringBuilder(players.get(player1Id).getResults());
+      sb1.append("(Round Bye) ");
+      players.get(player1Id).setResults(sb1.toString());
+      int points=players.get(player1Id).getPoints();
+      players.get(player1Id).setPoints(points + 3);
     }
   }
 }

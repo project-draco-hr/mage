@@ -1,2 +1,13 @@
 {
+  for (  Map.Entry<UUID,TournamentPlayer> entry : players.entrySet()) {
+    if (entry.getValue().getPlayer().autoLoseGame()) {
+      entry.getValue().setEliminated();
+      entry.getValue().setResults("Auto Eliminated");
+    }
+  }
+  while (this.getActivePlayers().size() > 1 && this.getNumberRounds() > this.getRounds().size()) {
+    Round round=createRoundSwiss();
+    playRound(round);
+  }
+  nextStep();
 }

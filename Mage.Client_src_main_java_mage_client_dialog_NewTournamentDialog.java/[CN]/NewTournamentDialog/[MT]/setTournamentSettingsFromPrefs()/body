@@ -18,20 +18,24 @@
   }
   this.spnFreeMulligans.setValue(Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_NUMBER_OF_FREE_MULLIGANS,"0")));
   this.spnNumWins.setValue(Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_NUMBER_OF_WINS,"2")));
-  if (cbTournamentType.getSelectedItem().toString().equals("Sealed Elimination")) {
-    numPlayers=Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PLAYERS_SEALED,"2"));
-    setTournamentOptions(numPlayers);
-    loadBoosterPacks(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PACKS_SEALED,""));
-  }
-  if (cbTournamentType.getSelectedItem().toString().equals("Elimination Booster Draft")) {
-    numPlayers=Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PLAYERS_DRAFT,"4"));
-    setTournamentOptions(numPlayers);
-    loadBoosterPacks(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PACKS_DRAFT,""));
-    String draftTiming=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_DRAFT_TIMING,"REGULAR");
-    for (    TimingOption timingOption : DraftOptions.TimingOption.values()) {
-      if (timingOption.toString().equals(draftTiming)) {
-        cbDraftTiming.setSelectedItem(draftTiming);
-        break;
+  TournamentTypeView tournamentType=(TournamentTypeView)cbTournamentType.getSelectedItem();
+  activatePanelElements(tournamentType);
+  if (tournamentType.isLimited()) {
+    if (!tournamentType.isDraft()) {
+      numPlayers=Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PLAYERS_SEALED,"2"));
+      setTournamentOptions(numPlayers);
+      loadBoosterPacks(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PACKS_SEALED,""));
+    }
+    if (tournamentType.isDraft()) {
+      numPlayers=Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PLAYERS_DRAFT,"4"));
+      setTournamentOptions(numPlayers);
+      loadBoosterPacks(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PACKS_DRAFT,""));
+      String draftTiming=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_DRAFT_TIMING,"REGULAR");
+      for (      TimingOption timingOption : DraftOptions.TimingOption.values()) {
+        if (timingOption.toString().equals(draftTiming)) {
+          cbDraftTiming.setSelectedItem(draftTiming);
+          break;
+        }
       }
     }
   }
