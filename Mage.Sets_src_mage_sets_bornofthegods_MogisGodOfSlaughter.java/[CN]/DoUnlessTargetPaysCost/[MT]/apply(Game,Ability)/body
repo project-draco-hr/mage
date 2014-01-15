@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  MageObject mageObject=game.getObject(source.getSourceId());
+  if (player != null && mageObject != null) {
+    String message=userMessage;
+    if (message == null) {
+      message=new StringBuilder(getCostText()).append(" to prevent ").append(executingEffect.getText(source.getModes().getMode())).append("?").toString();
+    }
+    message=CardUtil.replaceSourceName(message,mageObject.getName());
+    cost.clearPaid();
+    if (cost.canPay(source.getSourceId(),player.getId(),game) && player.chooseUse(executingEffect.getOutcome(),message,game)) {
+      cost.pay(source,game,source.getSourceId(),player.getId(),false);
+    }
+    if (!cost.isPaid()) {
+      executingEffect.setTargetPointer(this.targetPointer);
+      return executingEffect.apply(game,source);
+    }
+    return true;
+  }
+  return false;
+}
