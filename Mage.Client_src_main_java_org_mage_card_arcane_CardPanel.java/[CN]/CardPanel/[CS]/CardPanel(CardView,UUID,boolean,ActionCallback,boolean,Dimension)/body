@@ -2,44 +2,49 @@
   this.gameCard=newGameCard;
   this.callback=callback;
   this.gameId=gameId;
+  this.setCardBounds(0,0,dimension.width,dimension.height);
   this.isPermanent=this.gameCard instanceof PermanentView;
   if (isPermanent) {
     this.hasSickness=((PermanentView)this.gameCard).hasSummoningSickness();
   }
-  buttonPanel=new JPanel();
-  buttonPanel.setLayout(null);
-  buttonPanel.setOpaque(false);
-  add(buttonPanel);
-  dayNightButton=new JButton("");
-  dayNightButton.setLocation(2,2);
-  dayNightButton.setSize(25,25);
-  buttonPanel.setVisible(this.gameCard.canTransform());
-  BufferedImage day=ImageManagerImpl.getInstance().getDayImage();
-  dayNightButton.setIcon(new ImageIcon(day));
-  buttonPanel.add(dayNightButton);
-  dayNightButton.addActionListener(new ActionListener(){
-    @Override public void actionPerformed(    ActionEvent e){
-      if (animationInProgress || isTapped() || isPermanent) {
-        if (isPermanent) {
-          JOptionPane.showMessageDialog(null,"You can't transform cards on battlefield.");
+  if (this.gameCard.canTransform()) {
+    buttonPanel=new JPanel();
+    buttonPanel.setLayout(null);
+    buttonPanel.setOpaque(false);
+    add(buttonPanel);
+    dayNightButton=new JButton("");
+    dayNightButton.setLocation(2,2);
+    dayNightButton.setSize(25,25);
+    buttonPanel.setVisible(this.gameCard.canTransform());
+    BufferedImage day=ImageManagerImpl.getInstance().getDayImage();
+    dayNightButton.setIcon(new ImageIcon(day));
+    buttonPanel.add(dayNightButton);
+    dayNightButton.addActionListener(new ActionListener(){
+      @Override public void actionPerformed(      ActionEvent e){
+        if (animationInProgress || isTapped() || isPermanent) {
+          if (isPermanent) {
+            JOptionPane.showMessageDialog(null,"You can't transform cards on battlefield.");
+          }
+          return;
         }
-        return;
+        Animation.transformCard(CardPanel.this,CardPanel.this,true);
       }
-      Animation.transformCard(CardPanel.this,CardPanel.this,true);
     }
-  }
 );
-  iconPanel=new JPanel();
-  iconPanel.setLayout(null);
-  iconPanel.setOpaque(false);
-  add(iconPanel);
-  tokenButton=new JButton("");
-  tokenButton.setLocation(2,2);
-  tokenButton.setSize(25,25);
-  iconPanel.setVisible(this.gameCard.isToken());
-  BufferedImage tokenIconImage=ImageManagerImpl.getInstance().getTokenIconImage();
-  tokenButton.setIcon(new ImageIcon(tokenIconImage));
-  iconPanel.add(tokenButton);
+  }
+  if (this.gameCard.isToken()) {
+    iconPanel=new JPanel();
+    iconPanel.setLayout(null);
+    iconPanel.setOpaque(false);
+    add(iconPanel);
+    tokenButton=new JButton("");
+    tokenButton.setLocation(2,2);
+    tokenButton.setSize(25,25);
+    iconPanel.setVisible(this.gameCard.isToken());
+    BufferedImage tokenIconImage=ImageManagerImpl.getInstance().getTokenIconImage();
+    tokenButton.setIcon(new ImageIcon(tokenIconImage));
+    iconPanel.add(tokenButton);
+  }
   setBackground(Color.black);
   setOpaque(false);
   addMouseListener(this);
@@ -83,12 +88,11 @@
         if (!loadImage || gameCard.isFaceDown()) {
           return;
         }
-        BufferedImage srcImage=ImageCache.getThumbnail(gameCard);
+        BufferedImage srcImage=ImageCache.getImage(gameCard,getCardWidth(),getCardHeight());
         if (srcImage != null) {
           hasImage=true;
           setText(gameCard);
           setImage(srcImage);
-          setFoil(foil);
         }
         if (gameCard.isTransformed()) {
           toggleTransformed();

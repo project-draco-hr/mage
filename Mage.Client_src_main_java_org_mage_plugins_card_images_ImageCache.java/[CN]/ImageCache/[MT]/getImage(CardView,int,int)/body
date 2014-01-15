@@ -1,7 +1,14 @@
 {
+  if (Constants.THUMBNAIL_SIZE_FULL.width + 10 > width) {
+    return getThumbnail(card);
+  }
   String key=getKey(card);
+  if (card.getUsesVariousArt()) {
+    key+="#usesVariousArt";
+  }
   BufferedImage original=getImage(key);
   if (original == null) {
+    log.warn(key + " not found");
     return null;
   }
   double scale=Math.min((double)width / original.getWidth(),(double)height / original.getHeight());
