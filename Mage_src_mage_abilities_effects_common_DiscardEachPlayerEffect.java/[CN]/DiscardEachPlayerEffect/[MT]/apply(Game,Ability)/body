@@ -5,40 +5,52 @@
     for (    UUID playerId : controller.getInRange()) {
       Player player=game.getPlayer(playerId);
       if (player != null) {
-        int numberOfCardsToDiscard=Math.min(amount.calculate(game,source),player.getHand().size());
-        Cards cards=new CardsImpl();
-        if (randomDiscard) {
-          while (cards.size() < numberOfCardsToDiscard) {
-            Card card=player.getHand().getRandom(game);
-            if (!cards.contains(card.getId())) {
-              cards.add(card);
-            }
+switch (targetController) {
+case NOT_YOU:
+          if (playerId.equals(source.getControllerId())) {
+            continue;
           }
-        }
- else {
-          Target target=new TargetDiscard(numberOfCardsToDiscard,numberOfCardsToDiscard,new FilterCard(),playerId);
-          target.setRequired(true);
-          player.chooseTarget(outcome,target,source,game);
-          cards.addAll(target.getTargets());
-        }
-        cardsToDiscard.put(playerId,cards);
+        break;
+case OPPONENT:
+      if (!game.getOpponents(source.getControllerId()).contains(playerId)) {
+        continue;
       }
-    }
-    for (    UUID playerId : controller.getInRange()) {
-      Player player=game.getPlayer(playerId);
-      if (player != null) {
-        Cards cardsPlayer=cardsToDiscard.get(playerId);
-        if (cardsPlayer != null) {
-          for (          UUID cardId : cardsPlayer) {
-            Card card=game.getCard(cardId);
-            if (card != null) {
-              player.discard(card,source,game);
-            }
-          }
-          game.informPlayers(new StringBuilder(player.getName()).append(" discards ").append(Integer.toString(cardsPlayer.size())).append(" card").append(cardsPlayer.size() > 1 ? "s" : "").toString());
-        }
-      }
+    break;
+}
+int numberOfCardsToDiscard=Math.min(amount.calculate(game,source),player.getHand().size());
+Cards cards=new CardsImpl();
+if (randomDiscard) {
+  while (cards.size() < numberOfCardsToDiscard) {
+    Card card=player.getHand().getRandom(game);
+    if (!cards.contains(card.getId())) {
+      cards.add(card);
     }
   }
-  return true;
+}
+ else {
+  Target target=new TargetDiscard(numberOfCardsToDiscard,numberOfCardsToDiscard,new FilterCard(),playerId);
+  target.setRequired(true);
+  player.chooseTarget(outcome,target,source,game);
+  cards.addAll(target.getTargets());
+}
+cardsToDiscard.put(playerId,cards);
+}
+}
+for (UUID playerId : controller.getInRange()) {
+Player player=game.getPlayer(playerId);
+if (player != null) {
+Cards cardsPlayer=cardsToDiscard.get(playerId);
+if (cardsPlayer != null) {
+  for (  UUID cardId : cardsPlayer) {
+    Card card=game.getCard(cardId);
+    if (card != null) {
+      player.discard(card,source,game);
+    }
+  }
+  game.informPlayers(new StringBuilder(player.getName()).append(" discards ").append(Integer.toString(cardsPlayer.size())).append(" card").append(cardsPlayer.size() > 1 ? "s" : "").toString());
+}
+}
+}
+}
+return true;
 }

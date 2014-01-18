@@ -1,17 +1,32 @@
 {
+  if (staticText != null && !staticText.isEmpty()) {
+    return staticText;
+  }
   StringBuilder sb=new StringBuilder();
-  sb.append("Each player discards ");
-  sb.append(CardUtil.numberToText(amount.toString())).append(" card");
-  try {
-    if (Integer.parseInt(amount.toString()) > 1) {
-      sb.append("s");
-    }
-  }
- catch (  Exception e) {
-    sb.append("s");
-  }
-  if (randomDiscard) {
-    sb.append(" at random");
-  }
-  return sb.toString();
+  sb.append("each ");
+switch (targetController) {
+case NOT_YOU:
+    sb.append("other player");
+  break;
+case OPPONENT:
+sb.append("opponent");
+break;
+case ANY:
+sb.append("player");
+break;
+}
+sb.append(" discards ");
+sb.append(CardUtil.numberToText(amount.toString())).append(" card");
+try {
+if (Integer.parseInt(amount.toString()) > 1) {
+sb.append("s");
+}
+}
+ catch (Exception e) {
+sb.append("s");
+}
+if (randomDiscard) {
+sb.append(" at random");
+}
+return sb.toString();
 }

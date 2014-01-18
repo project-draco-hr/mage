@@ -4,7 +4,13 @@
   this.color.setBlack(true);
   DynamicValue xValue=new ManacostVariableValue();
   this.getSpellAbility().addEffect(new LoseLifePlayersEffect(xValue));
-  this.getSpellAbility().addEffect(new DiscardEachPlayerEffect(xValue,false));
-  this.getSpellAbility().addEffect(new SacrificeAllEffect(xValue,new FilterControlledCreaturePermanent("creatures")));
-  this.getSpellAbility().addEffect(new SacrificeAllEffect(xValue,new FilterControlledLandPermanent("lands")));
+  Effect effect=new DiscardEachPlayerEffect(xValue,false);
+  effect.setText(", discards X cards");
+  this.getSpellAbility().addEffect(effect);
+  effect=new SacrificeAllEffect(xValue,new FilterControlledCreaturePermanent("creatures"));
+  effect.setText(", sacrifices X creatures");
+  this.getSpellAbility().addEffect(effect);
+  effect=new SacrificeAllEffect(xValue,new FilterControlledLandPermanent("lands"));
+  effect.setText("then sacrifices X lands");
+  this.getSpellAbility().addEffect(effect);
 }
