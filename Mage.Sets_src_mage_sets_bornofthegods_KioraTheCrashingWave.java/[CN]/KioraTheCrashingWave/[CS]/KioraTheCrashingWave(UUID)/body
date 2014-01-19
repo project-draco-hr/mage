@@ -1,0 +1,15 @@
+{
+  super(ownerId,149,"Kiora, the Crashing Wave",Rarity.MYTHIC,new CardType[]{CardType.PLANESWALKER},"{2}{G}{U}");
+  this.expansionSetCode="BNG";
+  this.subtype.add("Kiora");
+  this.color.setBlue(true);
+  this.color.setGreen(true);
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.LOYALTY.createInstance(2)),false));
+  LoyaltyAbility ability=new LoyaltyAbility(new KioraPreventionEffect(),1);
+  ability.addTarget(new TargetPermanent(filter,true));
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new DrawCardControllerEffect(1),-1);
+  ability.addEffect(new PlayAdditionalLandsControllerEffect(1,Duration.EndOfTurn));
+  this.addAbility(ability);
+  this.addAbility(new LoyaltyAbility(new GetEmblemEffect(new KioraEmblem()),-5));
+}

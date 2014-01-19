@@ -1,0 +1,14 @@
+{
+  if (game.getPhase().getStep().getType() == PhaseStep.UNTAP && game.getStep().getStepPart() == Step.StepPart.PRE) {
+    if (game.getActivePlayerId().equals(source.getControllerId()) || game.getPlayer(source.getControllerId()).hasReachedNextTurnAfterLeaving()) {
+      for (      UUID targetId : this.getTargetPointer().getTargets(game,source)) {
+        Permanent permanent=game.getPermanent(targetId);
+        if (permanent != null) {
+          permanent.addInfo(new StringBuilder("kioraPrevention").append(getId()).toString(),"");
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}
