@@ -1,0 +1,15 @@
+{
+  super.init(source,game);
+  if (this.affectedObjectsSet) {
+    UUID permanentId=targetPointer.getFirst(game,source);
+    Permanent target=game.getPermanent(permanentId);
+    if (target != null) {
+      String name=target.getName();
+      for (      Permanent perm : game.getBattlefield().getActivePermanents(source.getControllerId(),game)) {
+        if (perm.getName().equals(name)) {
+          this.objects.add(perm.getId());
+        }
+      }
+    }
+  }
+}
