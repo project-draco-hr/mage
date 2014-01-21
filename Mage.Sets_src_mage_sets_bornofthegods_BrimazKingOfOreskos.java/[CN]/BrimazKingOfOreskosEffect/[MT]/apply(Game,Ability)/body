@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Token token=new CatSoldierCreatureToken();
+    token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
+    Permanent catToken=game.getPermanent(token.getLastAddedToken());
+    Permanent attackingCreature=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (catToken != null && attackingCreature != null && game.getState().getCombat() != null) {
+      CombatGroup combatGroup=game.getState().getCombat().findGroup(attackingCreature.getId());
+      if (combatGroup != null) {
+        combatGroup.addBlocker(catToken.getId(),source.getControllerId(),game);
+        game.getCombat().addBlockingGroup(catToken.getId(),attackingCreature.getId(),source.getControllerId(),game);
+      }
+    }
+    return true;
+  }
+  return false;
+}
