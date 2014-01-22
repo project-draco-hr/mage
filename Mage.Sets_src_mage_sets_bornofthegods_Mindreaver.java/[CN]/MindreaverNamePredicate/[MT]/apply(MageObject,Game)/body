@@ -1,0 +1,20 @@
+{
+  Set<String> cardNames=new HashSet<String>();
+  UUID exileId=CardUtil.getCardExileZoneId(game,sourceId);
+  ExileZone exileZone=game.getExile().getExileZone(exileId);
+  if (exileZone != null) {
+    for (    Card card : exileZone.getCards(game)) {
+      cardNames.add(card.getName());
+    }
+  }
+  if (input instanceof SplitCard) {
+    return cardNames.contains(((SplitCard)input).getLeftHalfCard().getName()) || cardNames.contains(((SplitCard)input).getRightHalfCard().getName());
+  }
+ else   if (input instanceof Spell && ((Spell)input).getSpellAbility().getSpellAbilityType().equals(SpellAbilityType.SPLIT_FUSED)) {
+    SplitCard card=(SplitCard)((Spell)input).getCard();
+    return cardNames.contains(card.getLeftHalfCard().getName()) || cardNames.contains(card.getRightHalfCard().getName());
+  }
+ else {
+    return cardNames.contains(input.getName());
+  }
+}
