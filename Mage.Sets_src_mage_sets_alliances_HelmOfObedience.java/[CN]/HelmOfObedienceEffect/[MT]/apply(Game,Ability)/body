@@ -7,8 +7,15 @@
       while (player.getLibrary().size() > 0) {
         Card card=player.getLibrary().removeFromTop(game);
         if (card != null) {
-          if (card.moveToZone(Zone.GRAVEYARD,source.getId(),game,false)) {
+          if (card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,false)) {
             if (card.getCardType().contains(CardType.CREATURE)) {
+              Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+              if (sourcePermanent != null) {
+                sourcePermanent.sacrifice(source.getSourceId(),game);
+              }
+              if (game.getState().getZone(card.getId()).equals(Zone.GRAVEYARD)) {
+                card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),source.getControllerId());
+              }
               break;
             }
  else {
@@ -24,6 +31,7 @@
         }
       }
     }
+    return true;
   }
-  return true;
+  return false;
 }
