@@ -1,0 +1,27 @@
+{
+  this.computedMana.clear();
+  if (!source.getChoices().isEmpty()) {
+    Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+    ChoiceColor choice=(ChoiceColor)source.getChoices().get(0);
+    if (choice != null && choice instanceof ChoiceColor && choice.getChoice() != null) {
+      String color=choice.getChoice();
+      int counters=sourcePermanent.getCounters().getCount(CounterType.CHARGE.getName());
+      if (color.equals("Red")) {
+        computedMana.setRed(counters);
+      }
+ else       if (color.equals("Blue")) {
+        computedMana.setBlue(counters);
+      }
+ else       if (color.equals("White")) {
+        computedMana.setWhite(counters);
+      }
+ else       if (color.equals("Black")) {
+        computedMana.setBlack(counters);
+      }
+ else       if (color.equals("Green")) {
+        computedMana.setGreen(counters);
+      }
+    }
+  }
+  return computedMana;
+}
