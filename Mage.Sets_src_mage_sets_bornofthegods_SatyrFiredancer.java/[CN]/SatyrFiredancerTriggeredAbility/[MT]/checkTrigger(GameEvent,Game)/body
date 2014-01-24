@@ -1,0 +1,21 @@
+{
+  if (event.getType() == EventType.DAMAGED_PLAYER) {
+    StackObject stackObject=game.getStack().getStackObject(event.getSourceId());
+    if (stackObject != null && stackObject.getControllerId().equals(getControllerId())) {
+      MageObject object=game.getObject(stackObject.getSourceId());
+      if (object.getCardType().contains(CardType.INSTANT) || object.getCardType().contains(CardType.SORCERY)) {
+        if (game.getOpponents(getControllerId()).contains(event.getTargetId())) {
+          if (!handledStackObjects.contains(stackObject.getId())) {
+            handledStackObjects.add(stackObject.getId());
+            for (            Effect effect : this.getEffects()) {
+              effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+              effect.setValue("damage",event.getAmount());
+            }
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
