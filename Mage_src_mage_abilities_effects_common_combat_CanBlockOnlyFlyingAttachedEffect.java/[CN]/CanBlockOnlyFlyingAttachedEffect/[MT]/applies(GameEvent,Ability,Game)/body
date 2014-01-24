@@ -1,0 +1,12 @@
+{
+  if (event.getType() == EventType.DECLARE_BLOCKER) {
+    Permanent attachment=game.getPermanent(source.getSourceId());
+    if (attachment != null && attachment.getAttachedTo() != null && event.getSourceId().equals(attachment.getAttachedTo())) {
+      Permanent permanent=game.getPermanent(event.getTargetId());
+      if (permanent != null && !permanent.getAbilities().containsKey(FlyingAbility.getInstance().getId())) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

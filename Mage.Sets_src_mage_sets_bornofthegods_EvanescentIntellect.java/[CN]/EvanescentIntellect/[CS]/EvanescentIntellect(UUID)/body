@@ -1,0 +1,15 @@
+{
+  super(ownerId,38,"Evanescent Intellect",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{U}");
+  this.expansionSetCode="BNG";
+  this.subtype.add("Aura");
+  this.color.setBlue(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new PutTopCardOfTargetPlayerLibraryIntoGraveEffect(3),new ManaCostsImpl("{1}{U}"));
+  ability.addCost(new TapSourceCost());
+  ability.addTarget(new TargetPlayer(true));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(ability,AttachmentType.AURA,Duration.WhileOnBattlefield)));
+}
