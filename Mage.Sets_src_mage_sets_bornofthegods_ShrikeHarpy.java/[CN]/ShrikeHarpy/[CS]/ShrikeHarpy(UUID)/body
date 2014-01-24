@@ -1,0 +1,13 @@
+{
+  super(ownerId,83,"Shrike Harpy",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{3}{B}{B}");
+  this.expansionSetCode="BNG";
+  this.subtype.add("Harpy");
+  this.color.setBlack(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(FlyingAbility.getInstance());
+  this.addAbility(new TributeAbility(2));
+  TriggeredAbility ability=new EntersBattlefieldTriggeredAbility(new SacrificeEffect(new FilterCreaturePermanent("a creature"),1,"target opponent"),false);
+  ability.addTarget(new TargetOpponent(true));
+  this.addAbility(new ConditionalTriggeredAbility(ability,TributeNotPaidCondition.getInstance(),"When {this} enters the battlefield, if its tribute wasn't paid, target opponent sacrifices a creature."));
+}

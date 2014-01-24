@@ -1,0 +1,15 @@
+{
+  SpellAbility spellAbility=(SpellAbility)abilityToModify;
+  Mana mana=spellAbility.getManaCostsToPay().getMana();
+  if (mana.getColorless() > 0) {
+    int count=new DevotionCount(ColoredManaSymbol.B).calculate(game,source);
+    int newCount=mana.getColorless() - count;
+    if (newCount < 0) {
+      newCount=0;
+    }
+    mana.setColorless(newCount);
+    spellAbility.getManaCostsToPay().load(mana.toString());
+    return true;
+  }
+  return false;
+}
