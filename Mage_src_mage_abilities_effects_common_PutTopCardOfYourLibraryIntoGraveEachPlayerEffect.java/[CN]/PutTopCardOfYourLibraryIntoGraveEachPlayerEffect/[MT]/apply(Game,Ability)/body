@@ -1,0 +1,34 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+switch (targetController) {
+case OPPONENT:
+      for (      UUID playerId : game.getOpponents(source.getControllerId())) {
+        putCardsToGravecard(playerId,source,game);
+      }
+    break;
+case ANY:
+  for (  UUID playerId : player.getInRange()) {
+    putCardsToGravecard(playerId,source,game);
+  }
+break;
+case NOT_YOU:
+for (UUID playerId : player.getInRange()) {
+if (!playerId.equals(source.getSourceId())) {
+  putCardsToGravecard(playerId,source,game);
+}
+}
+default :
+throw new UnsupportedOperationException("TargetController type not supported.");
+}
+int cardsCount=Math.min(numberCards,player.getLibrary().size());
+for (int i=0; i < cardsCount; i++) {
+Card card=player.getLibrary().removeFromTop(game);
+if (card != null) {
+card.moveToZone(Zone.GRAVEYARD,source.getId(),game,true);
+}
+}
+return true;
+}
+return false;
+}
