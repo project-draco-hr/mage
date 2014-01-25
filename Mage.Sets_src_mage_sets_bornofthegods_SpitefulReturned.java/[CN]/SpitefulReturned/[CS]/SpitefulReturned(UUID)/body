@@ -6,9 +6,8 @@
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
   this.addAbility(new BestowAbility(this,"{3}{B}"));
-  Ability ability=new AttacksTriggeredAbility(new SpitefulReturnedEffect(),false);
-  this.addAbility(ability);
-  ability=new AttacksAttachedTriggeredAbility(new SpitefulReturnedEffect(),AttachmentType.AURA,false);
-  this.addAbility(ability);
+  Effect effect=new LoseLifeTargetEffect(2);
+  effect.setText("defending player loses 2 life");
+  this.addAbility(new SpitefulReturnedTriggeredAbility(effect));
   this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(1,1,Duration.WhileOnBattlefield)));
 }
