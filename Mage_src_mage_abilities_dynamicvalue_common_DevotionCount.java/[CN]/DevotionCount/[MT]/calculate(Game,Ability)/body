@@ -1,8 +1,13 @@
 {
   int devotion=0;
   for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(sourceAbility.getControllerId())) {
-    for (    ColoredManaSymbol coloredManaSymbol : devotionColors) {
-      devotion+=permanent.getManaCost().getMana().getColor(coloredManaSymbol);
+    for (    ManaCost manaCost : permanent.getManaCost()) {
+      for (      ColoredManaSymbol coloredManaSymbol : devotionColors) {
+        if (manaCost.containsColor(coloredManaSymbol)) {
+          devotion++;
+          break;
+        }
+      }
     }
   }
   return devotion;
