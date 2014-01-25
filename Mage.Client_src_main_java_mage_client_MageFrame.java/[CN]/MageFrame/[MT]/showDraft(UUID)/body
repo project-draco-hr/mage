@@ -1,7 +1,15 @@
 {
   try {
-    DraftPane draftPane=new DraftPane();
-    desktopPane.add(draftPane,JLayeredPane.DEFAULT_LAYER);
+    DraftPane draftPane=null;
+    for (    Component component : desktopPane.getComponents()) {
+      if (component instanceof DraftPane) {
+        draftPane=(DraftPane)component;
+      }
+    }
+    if (draftPane == null) {
+      draftPane=new DraftPane();
+      desktopPane.add(draftPane,JLayeredPane.DEFAULT_LAYER);
+    }
     draftPane.setMaximum(true);
     draftPane.setVisible(true);
     draftPane.showDraft(draftId);
