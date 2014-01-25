@@ -1,0 +1,23 @@
+{
+  amountPaid=0;
+  int creaturesToSacrifice=ability.getTargets().get(0).getTargets().size();
+  this.text=new StringBuilder(creaturesToSacrifice).append(" other creatures you control").toString();
+  FilterCreaturePermanent filter=new FilterCreaturePermanent(this.text);
+  filter.add(new ControllerPredicate(TargetController.YOU));
+  filter.add(new AnotherPredicate());
+  TargetCreaturePermanent target=new TargetCreaturePermanent(creaturesToSacrifice,creaturesToSacrifice,filter,true);
+  if (target.canChoose(controllerId,game) && target.choose(Outcome.Sacrifice,controllerId,sourceId,game)) {
+    for (    UUID creatureId : (List<UUID>)target.getTargets()) {
+      Permanent creature=game.getPermanent(creatureId);
+      if (creature != null) {
+        creature.sacrifice(sourceId,game);
+        amountPaid++;
+      }
+    }
+  }
+ else {
+    return false;
+  }
+  paid=true;
+  return true;
+}
