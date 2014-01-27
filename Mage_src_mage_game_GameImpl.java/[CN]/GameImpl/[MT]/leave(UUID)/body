@@ -29,10 +29,12 @@
       it.remove();
     }
   }
-  for (Iterator<Permanent> it=getBattlefield().getAllPermanents().iterator(); it.hasNext(); ) {
-    Permanent perm=it.next();
-    if (perm.getControllerId().equals(playerId)) {
-      perm.moveToExile(null,"",null,this);
+synchronized (getBattlefield()) {
+    for (Iterator<Permanent> it=getBattlefield().getAllPermanents().iterator(); it.hasNext(); ) {
+      Permanent perm=it.next();
+      if (perm.getControllerId().equals(playerId)) {
+        perm.moveToExile(null,"",null,this);
+      }
     }
   }
   for (  ExileZone exile : this.getExile().getExileZones()) {
