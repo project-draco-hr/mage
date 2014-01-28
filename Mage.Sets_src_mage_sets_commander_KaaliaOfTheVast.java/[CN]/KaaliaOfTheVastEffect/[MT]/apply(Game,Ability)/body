@@ -12,9 +12,12 @@
         UUID defenderId=game.getCombat().getDefendingPlayerId(source.getSourceId(),game);
         if (defenderId != null) {
           player.getHand().remove(card);
-          card.moveToZone(Zone.BATTLEFIELD,source.getId(),game,true);
-          game.getCombat().declareAttacker(card.getId(),defenderId,game);
-          return true;
+          player.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId());
+          Permanent creature=game.getPermanent(cardId);
+          if (creature != null) {
+            game.getCombat().declareAttacker(card.getId(),defenderId,game);
+            return true;
+          }
         }
       }
     }
