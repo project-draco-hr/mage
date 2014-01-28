@@ -1,0 +1,28 @@
+{
+  for (  UUID attackingCreatureId : this.getAttackers()) {
+    Permanent attackingCreature=game.getPermanent(attackingCreatureId);
+    if (attackingCreature != null) {
+      for (      Map.Entry entry : game.getContinuousEffects().getApplicableRestrictionEffects(attackingCreature,game).entrySet()) {
+        RestrictionEffect effect=(RestrictionEffect)entry.getKey();
+        for (        Ability ability : (HashSet<Ability>)entry.getValue()) {
+          if (!effect.canBeBlockedCheckAfter(attackingCreature,ability,game)) {
+            if (controller.isHuman()) {
+              game.informPlayer(controller,new StringBuilder(attackingCreature.getName()).append(" can't be blocked this way.").toString());
+              return false;
+            }
+ else {
+              for (              CombatGroup combatGroup : this.getGroups()) {
+                if (combatGroup.getAttackers().contains(attackingCreatureId)) {
+                  for (                  UUID blockerId : combatGroup.getBlockers()) {
+                    removeBlocker(blockerId,game);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return true;
+}
