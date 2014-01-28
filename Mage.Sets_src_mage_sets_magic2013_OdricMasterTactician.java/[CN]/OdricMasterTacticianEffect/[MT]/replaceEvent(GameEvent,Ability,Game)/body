@@ -1,21 +1,8 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  game.getCombat().checkBlockRequirementsBefore(player,game);
-  for (  UUID defenderId : game.getCombat().getPlayerDefenders(game)) {
-    boolean choose=true;
-    while (choose) {
-      game.getPlayer(source.getControllerId()).selectBlockers(game,defenderId);
-      if (game.isPaused() || game.isGameOver()) {
-        return true;
-      }
-      if (!game.getCombat().checkBlockRestrictions(game.getPlayer(defenderId),game)) {
-        if (player.isHuman()) {
-          continue;
-        }
-      }
-      choose=!game.getCombat().checkBlockRequirementsAfter(game.getPlayer(defenderId),player,game);
-    }
-    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,defenderId,defenderId));
+  Player blockController=game.getPlayer(source.getControllerId());
+  if (blockController != null) {
+    game.getCombat().selectBlockers(blockController,game);
+    return true;
   }
-  return true;
+  return false;
 }
