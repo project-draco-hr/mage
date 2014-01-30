@@ -1,0 +1,26 @@
+{
+  if (!game.getContinuousEffects().existRequirementEffects()) {
+    return;
+  }
+  for (  Permanent possibleBlocker : game.getBattlefield().getActivePermanents(filterBlockers,attackingPlayer.getId(),game)) {
+    for (    Map.Entry<RequirementEffect,HashSet<Ability>> requirementEntry : game.getContinuousEffects().getApplicableRequirementEffects(possibleBlocker,game).entrySet()) {
+      if (requirementEntry.getKey().mustBlock(game)) {
+        for (        Ability ability : requirementEntry.getValue()) {
+          UUID attackingCreatureId=requirementEntry.getKey().mustBlockAttacker(ability,game);
+          Player defender=game.getPlayer(possibleBlocker.getControllerId());
+          if (attackingCreatureId != null && defender != null) {
+            if (creatureMustBlockAttackers.containsKey(possibleBlocker.getId())) {
+              creatureMustBlockAttackers.get(possibleBlocker.getId()).add(attackingCreatureId);
+            }
+ else {
+              Set<UUID> forcingAttackers=new HashSet<UUID>();
+              forcingAttackers.add(attackingCreatureId);
+              creatureMustBlockAttackers.put(possibleBlocker.getId(),forcingAttackers);
+              defender.declareBlocker(defender.getId(),possibleBlocker.getId(),attackingCreatureId,game);
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -77,7 +77,7 @@
           if (toBeBlockedCreature != null) {
             boolean possibleBlockerAvailable=false;
             for (            UUID possibleBlockerId : mustBeBlockedByAtLeastOne.get(toBeBlockedCreatureId)) {
-              Set<UUID> forcingAttackers=creaturesForcedToBlockAttackers.get(possibleBlockerId);
+              Set<UUID> forcingAttackers=creatureMustBlockAttackers.get(possibleBlockerId);
               if (forcingAttackers == null) {
                 possibleBlockerAvailable=true;
                 break;
@@ -95,7 +95,7 @@
               }
               possibleBlockerAvailable=true;
               for (              UUID blockedAttackerId : blockedAttackers) {
-                if (creaturesForcedToBlockAttackers.get(possibleBlockerId).contains(blockedAttackerId)) {
+                if (creatureMustBlockAttackers.get(possibleBlockerId).contains(blockedAttackerId)) {
                   possibleBlockerAvailable=false;
                   break;
                 }
@@ -124,7 +124,7 @@
     }
   }
   StringBuilder sb=new StringBuilder();
-  for (  Map.Entry<UUID,Set<UUID>> entry : creaturesForcedToBlockAttackers.entrySet()) {
+  for (  Map.Entry<UUID,Set<UUID>> entry : creatureMustBlockAttackers.entrySet()) {
     boolean blockIsValid;
     Permanent creatureForcedToBlock=game.getPermanent(entry.getKey());
     if (creatureForcedToBlock == null) {
