@@ -2,10 +2,32 @@
   MageFrame.removeGame(gameId);
   saveDividerLocations();
   this.gameChatPanel.disconnect();
+  for (  MouseListener ml : this.getMouseListeners()) {
+    this.removeMouseListener(ml);
+  }
+  for (  MouseListener ml : this.btnConcede.getMouseListeners()) {
+    this.btnConcede.removeMouseListener(ml);
+  }
+  for (  MouseListener ml : this.btnEndTurn.getMouseListeners()) {
+    this.btnEndTurn.removeMouseListener(ml);
+  }
+  for (  MouseListener ml : this.btnSwitchHands.getMouseListeners()) {
+    this.btnSwitchHands.removeMouseListener(ml);
+  }
+  for (  ActionListener al : this.btnStopWatching.getActionListeners()) {
+    this.btnStopWatching.removeActionListener(al);
+  }
+  for (  ActionListener al : this.btnNextPlay.getActionListeners()) {
+    this.btnNextPlay.removeActionListener(al);
+  }
+  for (  Map.Entry<UUID,PlayAreaPanel> playAreaPanelEntry : players.entrySet()) {
+    playAreaPanelEntry.getValue().CleanUp();
+  }
   this.players.clear();
   this.pnlBattlefield.removeAll();
   this.getUI().uninstallUI(this);
   if (pickNumber != null) {
+    MageFrame.getDesktop().remove(pickNumber);
     pickNumber.removeDialog();
   }
   for (  ExileZoneDialog exile : exiles.values()) {
@@ -14,6 +36,8 @@
   for (  ShowCardsDialog reveal : revealed.values()) {
     reveal.hideDialog();
   }
+  this.jSplitPane0.getUI().uninstallUI(jSplitPane0);
+  this.jSplitPane0.removeAll();
   try {
     Component popupContainer=MageFrame.getUI().getComponent(MageComponents.POPUP_CONTAINER);
     popupContainer.setVisible(false);
@@ -21,4 +45,5 @@
  catch (  InterruptedException ex) {
     logger.fatal("popupContainer error:",ex);
   }
+  this.removeAll();
 }

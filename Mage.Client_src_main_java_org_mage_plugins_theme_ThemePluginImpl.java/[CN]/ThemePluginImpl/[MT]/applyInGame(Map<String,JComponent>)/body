@@ -1,26 +1,26 @@
 {
-  BufferedImage background;
+  BufferedImage backgroundImage;
   try {
     if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_BATTLEFIELD_IMAGE_DEFAULT,"true").equals("true")) {
-      background=loadbuffer_default();
+      backgroundImage=loadbuffer_default();
     }
  else     if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_BATTLEFIELD_IMAGE_RANDOM,"true").equals("true")) {
-      background=loadbuffer_random();
+      backgroundImage=loadbuffer_random();
     }
  else     if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_BATTLEFIELD_IMAGE,"") != null) {
-      background=loadbuffer_selected();
+      backgroundImage=loadbuffer_selected();
     }
  else {
-      background=loadbuffer_default();
+      backgroundImage=loadbuffer_default();
     }
-    if (background == null) {
-      background=loadbuffer_default();
+    if (backgroundImage == null) {
+      backgroundImage=loadbuffer_default();
     }
-    if (background == null) {
+    if (backgroundImage == null) {
       throw new FileNotFoundException("Couldn't find in resources.");
     }
     if (ui.containsKey("gamePanel") && ui.containsKey("jLayeredPane")) {
-      ImagePanel bgPanel=new ImagePanel(background,ImagePanel.TILED);
+      ImagePanel bgPanel=new ImagePanel(backgroundImage,ImagePanel.TILED);
       unsetOpaque(ui.get("jSplitPane1"));
       unsetOpaque(ui.get("pnlBattlefield"));
       unsetOpaque(ui.get("jPanel3"));
@@ -37,6 +37,5 @@
   }
  catch (  Exception e) {
     log.error(e.getMessage(),e);
-    return;
   }
 }

@@ -4,17 +4,17 @@
   MageFrame.getDesktop().add(pickNumber,JLayeredPane.MODAL_LAYER);
   this.feedbackPanel.setConnectedChatPanel(this.userChatPanel);
   this.setLayout(new BorderLayout());
-  final JLayeredPane j=new JLayeredPane();
-  j.setSize(1024,768);
-  this.add(j);
-  j.add(jSplitPane0,JLayeredPane.DEFAULT_LAYER);
-  Map<String,JComponent> myUi=getUIComponents(j);
+  final JLayeredPane jLayeredBackgroundPane=new JLayeredPane();
+  jLayeredBackgroundPane.setSize(1024,768);
+  this.add(jLayeredBackgroundPane);
+  jLayeredBackgroundPane.add(jSplitPane0,JLayeredPane.DEFAULT_LAYER);
+  Map<String,JComponent> myUi=getUIComponents(jLayeredBackgroundPane);
   Plugins.getInstance().updateGamePanel(myUi);
   addComponentListener(new ComponentAdapter(){
     @Override public void componentResized(    ComponentEvent e){
       int width=((JComponent)e.getSource()).getWidth();
       int height=((JComponent)e.getSource()).getHeight();
-      j.setSize(width,height);
+      jLayeredBackgroundPane.setSize(width,height);
       jSplitPane0.setSize(width,height);
       if (height < storedHeight) {
         pnlBattlefield.setSize(0,200);

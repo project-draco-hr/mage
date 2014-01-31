@@ -6,7 +6,9 @@ synchronized (ThemePluginImpl.class) {
         try {
           if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_BACKGROUND_IMAGE_DEFAULT,"true").equals("true")) {
             InputStream is=this.getClass().getResourceAsStream(filename);
-            if (is == null)             throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
+            if (is == null) {
+              throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
+            }
             background=ImageIO.read(is);
           }
  else {
@@ -14,7 +16,9 @@ synchronized (ThemePluginImpl.class) {
             if (path != null && !path.equals("")) {
               try {
                 File f=new File(path);
-                if (f != null)                 background=ImageIO.read(f);
+                if (f != null) {
+                  background=ImageIO.read(f);
+                }
               }
  catch (              Exception e) {
                 background=null;
@@ -23,10 +27,14 @@ synchronized (ThemePluginImpl.class) {
           }
           if (background == null) {
             InputStream is=this.getClass().getResourceAsStream(filename);
-            if (is == null)             throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
+            if (is == null) {
+              throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
+            }
             background=ImageIO.read(is);
           }
-          if (background == null)           throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
+          if (background == null) {
+            throw new FileNotFoundException("Couldn't find " + filename + " in resources.");
+          }
         }
  catch (        Exception e) {
           log.error(e.getMessage(),e);
