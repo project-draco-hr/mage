@@ -1,16 +1,5 @@
 {
   KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
-  gamePanel.cleanUp();
-  try {
-    this.setClosed(true);
-  }
- catch (  PropertyVetoException ex) {
-    logger.fatal("Closing Game: setClosed - ",ex);
-  }
-  MageFrame.deactivate(this);
-  MageFrame.getDesktop().remove(this);
-  logger.warn("Remove Dialog " + this.getClass().getName() + " Components left: "+ this.getComponentCount());
-  for (  Component comp : this.getComponents()) {
-    logger.warn("Existing Component: " + comp.getClass().getName());
-  }
+  this.cleanUp();
+  this.removeFrame();
 }

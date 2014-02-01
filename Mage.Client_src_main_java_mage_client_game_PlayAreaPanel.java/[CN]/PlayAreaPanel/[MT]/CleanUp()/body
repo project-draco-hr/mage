@@ -2,6 +2,22 @@
   for (  MouseListener ml : battlefieldPanel.getMainPanel().getMouseListeners()) {
     battlefieldPanel.getMainPanel().removeMouseListener(ml);
   }
-  this.removeAll();
-  this.getUI().uninstallUI(this);
+  playerPanel.cleanUp();
+  for (  KeyListener kl : popupMenu.getKeyListeners()) {
+    popupMenu.removeKeyListener(kl);
+  }
+  for (  MenuKeyListener mkl : popupMenu.getMenuKeyListeners()) {
+    popupMenu.removeMenuKeyListener(mkl);
+  }
+  for (  Component child : popupMenu.getComponents()) {
+    if (child instanceof JMenuItem) {
+      JMenuItem menuItem=(JMenuItem)child;
+      for (      ActionListener al : menuItem.getActionListeners()) {
+        menuItem.removeActionListener(al);
+      }
+    }
+  }
+  for (  MouseListener ml : battlefieldPanel.getMainPanel().getMouseListeners()) {
+    battlefieldPanel.getMainPanel().removeMouseListener(ml);
+  }
 }
