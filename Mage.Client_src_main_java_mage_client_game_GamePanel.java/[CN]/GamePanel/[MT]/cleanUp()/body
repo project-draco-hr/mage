@@ -4,6 +4,8 @@
   this.gameChatPanel.disconnect();
   this.userChatPanel.disconnect();
   this.removeListener();
+  this.handContainer.cleanUp();
+  this.stack.cleanUp();
   for (  Map.Entry<UUID,PlayAreaPanel> playAreaPanelEntry : players.entrySet()) {
     playAreaPanelEntry.getValue().CleanUp();
   }
@@ -12,16 +14,20 @@
   this.abilityPicker.cleanUp();
   jLayeredPane.remove(DialogManager.getManager(gameId));
   DialogManager.removeGame(gameId);
-  this.getInputMap().clear();
-  this.getActionMap().clear();
   if (pickNumber != null) {
     pickNumber.removeDialog();
   }
-  for (  ExileZoneDialog exile : exiles.values()) {
-    exile.hideDialog();
+  for (  ExileZoneDialog exileDialog : exiles.values()) {
+    exileDialog.cleanUp();
+    exileDialog.removeDialog();
   }
-  for (  ShowCardsDialog reveal : revealed.values()) {
-    reveal.hideDialog();
+  for (  ShowCardsDialog revealDialog : revealed.values()) {
+    revealDialog.cleanUp();
+    revealDialog.removeDialog();
+  }
+  for (  ShowCardsDialog lookedAtDialog : lookedAt.values()) {
+    lookedAtDialog.cleanUp();
+    lookedAtDialog.removeDialog();
   }
   try {
     Component popupContainer=MageFrame.getUI().getComponent(MageComponents.POPUP_CONTAINER);

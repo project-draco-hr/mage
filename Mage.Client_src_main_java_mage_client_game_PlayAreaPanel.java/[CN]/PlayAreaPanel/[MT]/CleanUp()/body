@@ -1,23 +1,23 @@
 {
-  for (  MouseListener ml : battlefieldPanel.getMainPanel().getMouseListeners()) {
-    battlefieldPanel.getMainPanel().removeMouseListener(ml);
-  }
+  battlefieldPanel.cleanUp();
   playerPanel.cleanUp();
-  for (  KeyListener kl : popupMenu.getKeyListeners()) {
-    popupMenu.removeKeyListener(kl);
+  for (  ActionListener al : btnCheat.getActionListeners()) {
+    btnCheat.removeActionListener(al);
   }
-  for (  MenuKeyListener mkl : popupMenu.getMenuKeyListeners()) {
-    popupMenu.removeMenuKeyListener(mkl);
-  }
-  for (  Component child : popupMenu.getComponents()) {
-    if (child instanceof JMenuItem) {
-      JMenuItem menuItem=(JMenuItem)child;
-      for (      ActionListener al : menuItem.getActionListeners()) {
-        menuItem.removeActionListener(al);
+  for (  ChangeListener listener : MenuSelectionManager.defaultManager().getChangeListeners()) {
+    if (listener.getClass().getName().contains("MenuKeyboardHelper")) {
+      try {
+        Field field=listener.getClass().getDeclaredField("menuInputMap");
+        field.setAccessible(true);
+        field.set(listener,null);
       }
+ catch (      Exception e) {
+      }
+      break;
     }
   }
   for (  MouseListener ml : battlefieldPanel.getMainPanel().getMouseListeners()) {
     battlefieldPanel.getMainPanel().removeMouseListener(ml);
   }
+  popupMenu.getUI().uninstallUI(this);
 }
