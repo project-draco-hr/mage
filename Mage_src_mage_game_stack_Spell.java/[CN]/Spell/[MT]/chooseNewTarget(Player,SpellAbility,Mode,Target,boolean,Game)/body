@@ -3,7 +3,7 @@
   newTarget.clearChosen();
   for (  UUID targetId : target.getTargets()) {
     String targetNames=getNamesOftargets(targetId,game);
-    if (targetNames != null && (forceChange || player.chooseUse(mode.getEffects().get(0).getOutcome(),"Change current target (" + targetNames + ")?",game))) {
+    if (targetNames != null && (forceChange || player.chooseUse(mode.getEffects().get(0).getOutcome(),"Change this target: " + targetNames + "?",game))) {
       if (forceChange && target.possibleTargets(this.getSourceId(),player.getId(),game).size() > 1) {
         int iteration=0;
         do {
@@ -12,17 +12,40 @@
           }
           iteration++;
           newTarget.clearChosen();
-          player.chooseTarget(mode.getEffects().get(0).getOutcome(),newTarget,spellAbility,game);
+          newTarget.chooseTarget(mode.getEffects().get(0).getOutcome(),player.getId(),spellAbility,game);
         }
  while (player.isInGame() && (targetId.equals(newTarget.getFirstTarget()) || newTarget.getTargets().size() != 1));
       }
  else {
-        if (!newTarget.chooseTarget(mode.getEffects().get(0).getOutcome(),player.getId(),spellAbility,game)) {
-          newTarget.addTarget(targetId,target.getTargetAmount(targetId),spellAbility,game,false);
+        Target tempTarget=target.copy();
+        if (target instanceof TargetAmount) {
+          ((TargetAmount)tempTarget).setAmountDefinition(new StaticValue(target.getTargetAmount(targetId)));
         }
+        tempTarget.setMinNumberOfTargets(1);
+        tempTarget.setMaxNumberOftargets(1);
+        boolean again;
+        do {
+          again=false;
+          tempTarget.clearChosen();
+          if (!tempTarget.chooseTarget(mode.getEffects().get(0).getOutcome(),player.getId(),spellAbility,game)) {
+            if (player.chooseUse(Outcome.Detriment,"No target object selected. Reset to original target?",game)) {
+              newTarget.addTarget(targetId,target.getTargetAmount(targetId),spellAbility,game,false);
+            }
  else {
-          break;
+              again=true;
+            }
+          }
+ else {
+            if (newTarget.getTargets().contains(tempTarget.getFirstTarget()) || target.getTargets().contains(tempTarget.getFirstTarget())) {
+              game.informPlayer(player,"This target was already selected from origin spell. You can only keep this target!");
+              again=true;
+            }
+ else {
+              newTarget.addTarget(tempTarget.getFirstTarget(),target.getTargetAmount(targetId),spellAbility,game,false);
+            }
+          }
         }
+ while (again && player.isInGame());
       }
     }
  else {
