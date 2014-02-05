@@ -28,7 +28,7 @@
           again=false;
           tempTarget.clearChosen();
           if (!tempTarget.chooseTarget(mode.getEffects().get(0).getOutcome(),player.getId(),spellAbility,game)) {
-            if (player.chooseUse(Outcome.Detriment,"No target object selected. Reset to original target?",game)) {
+            if (player.chooseUse(Outcome.Benefit,"No target object selected. Reset to original target?",game)) {
               newTarget.addTarget(targetId,target.getTargetAmount(targetId),spellAbility,game,false);
             }
  else {
@@ -37,8 +37,13 @@
           }
  else {
             if (newTarget.getTargets().contains(tempTarget.getFirstTarget()) || target.getTargets().contains(tempTarget.getFirstTarget())) {
-              game.informPlayer(player,"This target was already selected from origin spell. You can only keep this target!");
-              again=true;
+              if (player.isHuman()) {
+                game.informPlayer(player,"This target was already selected from origin spell. You can only keep this target!");
+                again=true;
+              }
+ else {
+                newTarget.addTarget(targetId,target.getTargetAmount(targetId),spellAbility,game,false);
+              }
             }
  else {
               newTarget.addTarget(tempTarget.getFirstTarget(),target.getTargetAmount(targetId),spellAbility,game,false);
