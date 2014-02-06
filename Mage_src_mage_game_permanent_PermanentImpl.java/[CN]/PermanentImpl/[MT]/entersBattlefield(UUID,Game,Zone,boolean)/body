@@ -3,7 +3,12 @@
   EntersTheBattlefieldEvent event=new EntersTheBattlefieldEvent(this,sourceId,getControllerId(),fromZone);
   if (!game.replaceEvent(event)) {
     if (fireEvent) {
-      game.fireEvent(event);
+      if (sourceId == null) {
+        game.fireEvent(event);
+      }
+ else {
+        game.addSimultaneousEvent(event);
+      }
     }
   }
 }
