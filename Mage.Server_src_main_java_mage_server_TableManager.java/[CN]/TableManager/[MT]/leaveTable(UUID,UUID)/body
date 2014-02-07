@@ -1,10 +1,10 @@
 {
   if (controllers.containsKey(tableId)) {
-    controllers.get(tableId).leaveTable(userId);
-    if (isTableOwner(tableId,userId)) {
-      if (getTable(tableId).getState().equals(TableState.WAITING) || getTable(tableId).getState().equals(TableState.STARTING)) {
-        removeTable(tableId);
-      }
+    if (isTableOwner(tableId,userId) && (getTable(tableId).getState().equals(TableState.WAITING) || getTable(tableId).getState().equals(TableState.STARTING))) {
+      removeTable(tableId);
+    }
+ else {
+      controllers.get(tableId).leaveTable(userId);
     }
   }
 }

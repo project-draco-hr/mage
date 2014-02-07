@@ -19,6 +19,13 @@
         TournamentManager.getInstance().quit(tournament.getId(),userId);
       }
  else {
+        MatchPlayer matchPlayer=match.getPlayer(playerId);
+        if (matchPlayer != null) {
+          if (table.getState().equals(TableState.SIDEBOARDING)) {
+            matchPlayer.submitDeck(matchPlayer.getDeck());
+          }
+          matchPlayer.setQuit(true);
+        }
         match.leave(playerId);
       }
     }

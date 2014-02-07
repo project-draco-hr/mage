@@ -76,6 +76,7 @@
       }
  else       if (action.equals("Replay")) {
         logger.info("Replaying game " + gameId);
+        session.replayGame(gameId);
       }
     }
   }
@@ -83,8 +84,8 @@
   Action replayMatch=new AbstractAction(){
     @Override public void actionPerformed(    ActionEvent e){
       int modelRow=Integer.valueOf(e.getActionCommand());
-      if (matchesModel.getValueAt(modelRow,MatchesTableModel.ACTION_COLUMN) instanceof List) {
-        List<UUID> games=(List<UUID>)matchesModel.getValueAt(modelRow,MatchesTableModel.ACTION_COLUMN);
+      if (matchesModel.getValueAt(modelRow,MatchesTableModel.GAMES_LIST_COLUMN) instanceof List) {
+        List<UUID> games=(List<UUID>)matchesModel.getValueAt(modelRow,MatchesTableModel.GAMES_LIST_COLUMN);
         if (games.size() == 1) {
           session.replayGame(games.get(0));
         }

@@ -5,9 +5,15 @@
     return (TournamentType)Class.forName(plugin.getTypeName(),true,classLoader).newInstance();
   }
  catch (  ClassNotFoundException ex) {
-    logger.warn("Tournament type not found:" + plugin.getName() + " / "+ plugin.getJar()+ " - check plugin folder");
+    logger.warn("Tournament type not found:" + plugin.getName() + " / "+ plugin.getJar()+ " - check plugin folder",ex);
   }
-catch (  Exception ex) {
+catch (  IllegalAccessException ex) {
+    logger.fatal("Error loading game type " + plugin.getJar(),ex);
+  }
+catch (  InstantiationException ex) {
+    logger.fatal("Error loading game type " + plugin.getJar(),ex);
+  }
+catch (  MalformedURLException ex) {
     logger.fatal("Error loading game type " + plugin.getJar(),ex);
   }
   return null;

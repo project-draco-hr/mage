@@ -5,9 +5,9 @@
     return Class.forName(plugin.getClassName(),true,classLoader);
   }
  catch (  ClassNotFoundException ex) {
-    logger.warn(new StringBuilder("Plugin not Found: ").append(plugin.getClassName()).append(" - ").append(plugin.getJar()).append(" - check plugin folder"));
+    logger.warn(new StringBuilder("Plugin not Found: ").append(plugin.getClassName()).append(" - ").append(plugin.getJar()).append(" - check plugin folder"),ex);
   }
-catch (  Exception ex) {
+catch (  MalformedURLException ex) {
     logger.fatal("Error loading plugin " + plugin.getJar(),ex);
   }
   return null;

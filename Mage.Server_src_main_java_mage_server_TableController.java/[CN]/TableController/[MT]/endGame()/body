@@ -2,6 +2,11 @@
   UUID choosingPlayerId=match.getChooser();
   match.endGame();
   table.endGame();
+  if (ConfigSettings.getInstance().isSaveGameActivated() && !match.getGame().isSimulation()) {
+    if (GameManager.getInstance().saveGame(match.getGame().getId())) {
+      match.setReplayAvailable(true);
+    }
+  }
   GameManager.getInstance().removeGame(match.getGame().getId());
   try {
     if (!match.isMatchOver()) {
@@ -13,16 +18,19 @@
         startGame(choosingPlayerId);
       }
  else {
-        table.endGame();
-        for (        MatchPlayer mPlayer : match.getPlayers()) {
-          if (!mPlayer.hasQuit()) {
-            this.sendMatchEndInfo(mPlayer.getPlayer().getId());
-          }
+        this.matchEnd();
+        if (!ConfigSettings.getInstance().isSaveGameActivated() || match.getGame().isSimulation()) {
+          match.getGames().clear();
         }
+        table.endGame();
       }
     }
  else {
-      match.getGames().clear();
+      this.matchEnd();
+      if (!ConfigSettings.getInstance().isSaveGameActivated() || match.getGame().isSimulation()) {
+        match.getGames().clear();
+      }
+      table.endGame();
     }
   }
  catch (  GameException ex) {
