@@ -1,0 +1,18 @@
+{
+  UUID exileId=CardUtil.getCardExileZoneId(game,source);
+  boolean applied=false;
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  Player you=game.getPlayer(source.getControllerId());
+  if (targetPlayer != null && you != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(new CardsInControllerHandCount().calculate(game,source),new FilterCard());
+    you.searchLibrary(target,game,targetPlayer.getId());
+    for (    UUID cardId : target.getTargets()) {
+      final Card targetCard=game.getCard(cardId);
+      if (targetCard != null) {
+        applied=targetCard.moveToExile(exileId,"Neverending Torment",source.getSourceId(),game);
+      }
+    }
+    targetPlayer.shuffleLibrary(game);
+  }
+  return applied;
+}

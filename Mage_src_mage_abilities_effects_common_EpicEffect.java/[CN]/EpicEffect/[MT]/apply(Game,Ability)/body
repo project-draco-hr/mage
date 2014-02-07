@@ -1,0 +1,24 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    StackObject stackObject=game.getStack().getStackObject(source.getId());
+    Spell spell=(Spell)stackObject;
+    spell=spell.copySpell();
+    spell.setCopiedSpell(true);
+    spell.setControllerId(source.getControllerId());
+    Effect epicEffect=null;
+    for (    Effect effect : spell.getSpellAbility().getEffects()) {
+      if (effect instanceof EpicEffect) {
+        epicEffect=effect;
+      }
+    }
+    spell.getSpellAbility().getEffects().remove(epicEffect);
+    DelayedTriggeredAbility ability=new AtTheBeginOfYourNextUpkeepDelayedTriggeredAbility(new EpicPushEffect(spell,rule),Duration.EndOfGame,false);
+    ability.setSourceId(source.getSourceId());
+    ability.setControllerId(source.getControllerId());
+    game.addDelayedTriggeredAbility(ability);
+    game.addEffect(new EpicReplacementEffect(),source);
+    return true;
+  }
+  return false;
+}

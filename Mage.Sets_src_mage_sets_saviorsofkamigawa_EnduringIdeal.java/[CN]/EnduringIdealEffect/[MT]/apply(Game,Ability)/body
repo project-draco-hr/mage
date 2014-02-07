@@ -1,0 +1,14 @@
+{
+  boolean applied=false;
+  Player you=game.getPlayer(source.getControllerId());
+  if (you != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(filter);
+    you.searchLibrary(target,game);
+    Card targetCard=game.getCard(target.getFirstTarget());
+    if (targetCard != null) {
+      applied=targetCard.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),you.getId());
+    }
+    you.shuffleLibrary(game);
+  }
+  return applied;
+}

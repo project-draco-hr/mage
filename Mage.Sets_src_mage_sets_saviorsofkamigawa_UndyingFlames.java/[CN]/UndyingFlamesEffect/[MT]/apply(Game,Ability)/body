@@ -1,0 +1,31 @@
+{
+  UUID exileId=CardUtil.getCardExileZoneId(game,source);
+  boolean applied=false;
+  Player you=game.getPlayer(source.getControllerId());
+  while (you != null && you.getLibrary().size() > 0) {
+    Card card=you.getLibrary().removeFromTop(game);
+    if (card != null) {
+      if (card.getCardType().contains(CardType.LAND)) {
+        card.moveToExile(exileId,"Undying Flames",source.getSourceId(),game);
+      }
+ else {
+        Target target=new TargetCreatureOrPlayer();
+        if (you.chooseTarget(Outcome.Damage,target,source,game)) {
+          Permanent creature=game.getPermanent(target.getFirstTarget());
+          if (creature != null) {
+            creature.damage(card.getManaCost().convertedManaCost(),source.getSourceId(),game,true,false);
+            applied=true;
+            break;
+          }
+          Player player=game.getPlayer(target.getFirstTarget());
+          if (player != null) {
+            player.damage(card.getManaCost().convertedManaCost(),source.getSourceId(),game,true,false);
+            applied=true;
+            break;
+          }
+        }
+      }
+    }
+  }
+  return applied;
+}
