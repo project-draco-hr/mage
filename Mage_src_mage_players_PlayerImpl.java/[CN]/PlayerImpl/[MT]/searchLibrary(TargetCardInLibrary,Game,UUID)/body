@@ -12,17 +12,17 @@
   if (searchedLibrary == null) {
     return false;
   }
-  if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.SEARCH_LIBRARY,targetPlayerId,playerId))) {
+  GameEvent event=GameEvent.getEvent(GameEvent.EventType.SEARCH_LIBRARY,targetPlayerId,playerId,playerId,Integer.MAX_VALUE);
+  if (!game.replaceEvent(event)) {
     TargetCardInLibrary newTarget=target.copy();
     int count;
-    Integer cardLimit=(Integer)game.getState().getValue("LibrarySearchLimit");
-    if (cardLimit != null) {
-      newTarget.setCardLimit(cardLimit);
-      game.getState().setValue("LibrarySearchLimit",null);
-      count=Math.min(searchedLibrary.count(target.getFilter(),game),cardLimit.intValue());
+    int librarySearchLimit=event.getAmount();
+    if (librarySearchLimit == Integer.MAX_VALUE) {
+      count=searchedLibrary.count(target.getFilter(),game);
     }
  else {
-      count=searchedLibrary.count(target.getFilter(),game);
+      newTarget.setCardLimit(librarySearchLimit);
+      count=Math.min(searchedLibrary.count(target.getFilter(),game),librarySearchLimit);
     }
     if (count < target.getNumberOfTargets()) {
       newTarget.setMinNumberOfTargets(count);

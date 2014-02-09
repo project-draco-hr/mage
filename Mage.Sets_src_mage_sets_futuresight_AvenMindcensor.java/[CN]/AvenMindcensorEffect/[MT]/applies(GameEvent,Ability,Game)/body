@@ -1,6 +1,9 @@
 {
-  if (event.getType() == GameEvent.EventType.SEARCH_LIBRARY && game.getOpponents(source.getControllerId()).contains(event.getPlayerId())) {
-    return true;
+  if (event.getType() == GameEvent.EventType.SEARCH_LIBRARY) {
+    Player controller=game.getPlayer(source.getControllerId());
+    if (controller != null && game.isOpponent(controller,event.getPlayerId())) {
+      return true;
+    }
   }
   return false;
 }
