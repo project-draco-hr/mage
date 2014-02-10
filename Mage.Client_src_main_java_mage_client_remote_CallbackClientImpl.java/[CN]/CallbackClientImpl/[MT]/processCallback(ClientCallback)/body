@@ -182,7 +182,7 @@ JOptionPane.showMessageDialog(null,messageData.get(1),messageData.get(0),JOption
 }
 }
  else if (callback.getMethod().equals("gameInform")) {
-if (callback.getMessageId() > messageId) {
+if (callback.getMessageId() > gameInformMessageId) {
 GameClientMessage message=(GameClientMessage)callback.getData();
 GamePanel panel=MageFrame.getGame(callback.getObjectId());
 if (panel != null) {
@@ -190,8 +190,9 @@ if (panel != null) {
 }
 }
  else {
-logger.warn("message out of sequence - ignoring");
+logger.warn(new StringBuilder("message out of sequence - ignoring").append("MessageId = ").append(callback.getMessageId()).append(" method = ").append(callback.getMethod()));
 }
+gameInformMessageId=messageId;
 }
  else if (callback.getMethod().equals("gameInformPersonal")) {
 GameClientMessage message=(GameClientMessage)callback.getData();
