@@ -1,9 +1,13 @@
 {
+  ShowCardsDialog dialog=null;
   updateGame(gameView);
   Map<String,Serializable> options0=options == null ? new HashMap<String,Serializable>() : options;
   if (cardView != null && cardView.size() > 0) {
-    ShowCardsDialog dialog=showCards(message,cardView,required,options0);
+    dialog=showCards(message,cardView,required,options0);
     options0.put("dialog",dialog);
   }
   this.feedbackPanel.getFeedback(required ? FeedbackMode.INFORM : FeedbackMode.CANCEL,message,gameView.getSpecial(),options0,messageId);
+  if (dialog != null) {
+    this.pickTarget.add(dialog);
+  }
 }
