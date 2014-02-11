@@ -1,0 +1,15 @@
+{
+  if (event.getType() == EventType.DECLARE_ATTACKER) {
+    Permanent attachment=game.getPermanent(source.getSourceId());
+    if (attachment != null && attachment.getAttachedTo() != null && event.getSourceId().equals(attachment.getAttachedTo())) {
+      if (event.getTargetId().equals(source.getControllerId())) {
+        return true;
+      }
+      Permanent plainswalker=game.getPermanent(event.getTargetId());
+      if (plainswalker != null && plainswalker.getControllerId().equals(source.getSourceId())) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
