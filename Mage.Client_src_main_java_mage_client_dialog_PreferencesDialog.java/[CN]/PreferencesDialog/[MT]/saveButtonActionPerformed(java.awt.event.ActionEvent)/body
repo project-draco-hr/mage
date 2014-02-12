@@ -4,7 +4,7 @@
   save(prefs,dialog.displayBigCardsInHand,KEY_HAND_USE_BIG_CARDS,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.nonLandPermanentsInOnePile,KEY_PERMANENTS_IN_ONE_PILE,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.showPlayerNamesPermanently,KEY_SHOW_PLAYER_NAMES_PERMANENTLY,"true","false",UPDATE_CACHE_POLICY);
-  save(prefs,dialog.showAbilityPickerForSimpleAbilities,KEY_SHOW_ABILITY_PICKER,"true","false",UPDATE_CACHE_POLICY);
+  save(prefs,dialog.showAbilityPickerForced,KEY_SHOW_ABILITY_PICKER_FORCED,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.cbGameLogAutoSave,KEY_GAME_LOG_AUTO_SAVE,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.checkBoxUpkeepYou,PhaseManager.UPKEEP_YOU);
   save(prefs,dialog.checkBoxDrawYou,PhaseManager.DRAW_YOU);
@@ -45,6 +45,7 @@
     updateCache(KEY_AVATAR,String.valueOf(selectedAvatarId));
   }
   try {
+    MageFrame.getSession().updatePreferencesForServer(getSelectedAvatar(),dialog.showAbilityPickerForced.isSelected());
     prefs.flush();
   }
  catch (  BackingStoreException ex) {
