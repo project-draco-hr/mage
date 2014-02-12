@@ -3,8 +3,14 @@
     if (ability instanceof PlayLandAbility) {
       return true;
     }
+    if (ability.getManaCostsToPay().convertedManaCost() > 0) {
+      return true;
+    }
+    if (ability instanceof ManaAbility) {
+      return true;
+    }
     for (    Cost cost : ability.getCosts()) {
-      if (!(cost instanceof TapSourceCost) || !((cost instanceof ManaCosts) && ((ManaCosts)cost).convertedManaCost() > 0)) {
+      if (!(cost instanceof TapSourceCost)) {
         return true;
       }
     }
