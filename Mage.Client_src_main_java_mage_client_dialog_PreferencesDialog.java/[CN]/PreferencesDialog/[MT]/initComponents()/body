@@ -7,6 +7,7 @@
   main_game=new javax.swing.JPanel();
   nonLandPermanentsInOnePile=new javax.swing.JCheckBox();
   showPlayerNamesPermanently=new javax.swing.JCheckBox();
+  showAbilityPickerForSimpleAbilities=new javax.swing.JCheckBox();
   main_gamelog=new javax.swing.JPanel();
   cbGameLogAutoSave=new javax.swing.JCheckBox();
   tabPhases=new javax.swing.JPanel();
@@ -53,7 +54,8 @@
   jLabel15=new javax.swing.JLabel();
   tabSounds=new javax.swing.JPanel();
   sounds_clips=new javax.swing.JPanel();
-  cbEnableSounds=new javax.swing.JCheckBox();
+  cbEnableGameSounds=new javax.swing.JCheckBox();
+  cbEnableOtherSounds=new javax.swing.JCheckBox();
   sounds_backgroundMusic=new javax.swing.JPanel();
   cbEnableBattlefieldBGM=new javax.swing.JCheckBox();
   jLabel16=new javax.swing.JLabel();
@@ -127,7 +129,7 @@
     }
   }
 );
-  main_game.add(nonLandPermanentsInOnePile,java.awt.BorderLayout.CENTER);
+  main_game.add(nonLandPermanentsInOnePile,java.awt.BorderLayout.PAGE_START);
   nonLandPermanentsInOnePile.getAccessibleContext().setAccessibleName("nonLandPermanentsInOnePile");
   showPlayerNamesPermanently.setSelected(true);
   showPlayerNamesPermanently.setText("Show player names on avatar permanently");
@@ -138,7 +140,18 @@
     }
   }
 );
-  main_game.add(showPlayerNamesPermanently,java.awt.BorderLayout.PAGE_END);
+  main_game.add(showPlayerNamesPermanently,java.awt.BorderLayout.LINE_START);
+  showAbilityPickerForSimpleAbilities.setSelected(true);
+  showAbilityPickerForSimpleAbilities.setText("Show ability picker for abilities without costs");
+  showAbilityPickerForSimpleAbilities.setToolTipText("This prevents that you accidently activate abilities without costs that e.g. tap the permanent.");
+  showAbilityPickerForSimpleAbilities.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+  showAbilityPickerForSimpleAbilities.addActionListener(new java.awt.event.ActionListener(){
+    public void actionPerformed(    java.awt.event.ActionEvent evt){
+      showAbilityPickerForSimpleAbilitiesActionPerformed(evt);
+    }
+  }
+);
+  main_game.add(showAbilityPickerForSimpleAbilities,java.awt.BorderLayout.PAGE_END);
   main_gamelog.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(),"Game log"));
   main_gamelog.setLayout(new java.awt.BorderLayout());
   cbGameLogAutoSave.setSelected(true);
@@ -152,8 +165,8 @@
   main_gamelog.add(cbGameLogAutoSave,java.awt.BorderLayout.CENTER);
   javax.swing.GroupLayout tabMainLayout=new javax.swing.GroupLayout(tabMain);
   tabMain.setLayout(tabMainLayout);
-  tabMainLayout.setHorizontalGroup(tabMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(tabMainLayout.createSequentialGroup().addContainerGap().addGroup(tabMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(main_card,javax.swing.GroupLayout.Alignment.TRAILING,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE).addComponent(main_game,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE).addComponent(main_gamelog,javax.swing.GroupLayout.Alignment.TRAILING,javax.swing.GroupLayout.DEFAULT_SIZE,533,Short.MAX_VALUE)).addContainerGap()));
-  tabMainLayout.setVerticalGroup(tabMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(tabMainLayout.createSequentialGroup().addContainerGap().addComponent(main_card,javax.swing.GroupLayout.PREFERRED_SIZE,68,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(main_game,javax.swing.GroupLayout.PREFERRED_SIZE,68,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(main_gamelog,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(188,Short.MAX_VALUE)));
+  tabMainLayout.setHorizontalGroup(tabMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(tabMainLayout.createSequentialGroup().addContainerGap().addGroup(tabMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(main_card,javax.swing.GroupLayout.Alignment.TRAILING,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE).addComponent(main_game,javax.swing.GroupLayout.DEFAULT_SIZE,533,Short.MAX_VALUE).addComponent(main_gamelog,javax.swing.GroupLayout.Alignment.TRAILING,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)).addContainerGap()));
+  tabMainLayout.setVerticalGroup(tabMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(tabMainLayout.createSequentialGroup().addContainerGap().addComponent(main_card,javax.swing.GroupLayout.PREFERRED_SIZE,68,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(main_game,javax.swing.GroupLayout.PREFERRED_SIZE,103,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(main_gamelog,javax.swing.GroupLayout.PREFERRED_SIZE,49,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(153,Short.MAX_VALUE)));
   main_card.getAccessibleContext().setAccessibleName("Game panel");
   tabsPanel.addTab("Main",tabMain);
   jLabel1.setText("Choose phases MAGE will stop on:");
@@ -266,15 +279,24 @@
   tabsPanel.addTab("Images",tabImages);
   sounds_clips.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(),"Clips"));
   sounds_clips.setLayout(new java.awt.BorderLayout());
-  cbEnableSounds.setToolTipText("Sounds that will be played for certain actions (e.g. play land, attack, etc.)");
-  cbEnableSounds.setLabel("Enable");
-  cbEnableSounds.addActionListener(new java.awt.event.ActionListener(){
+  cbEnableGameSounds.setText("Enable game sounds");
+  cbEnableGameSounds.setToolTipText("Sounds that will be played for certain actions (e.g. play land, attack, etc.) during the game.");
+  cbEnableGameSounds.addActionListener(new java.awt.event.ActionListener(){
     public void actionPerformed(    java.awt.event.ActionEvent evt){
-      cbEnableSoundsActionPerformed(evt);
+      cbEnableGameSoundsActionPerformed(evt);
     }
   }
 );
-  sounds_clips.add(cbEnableSounds,java.awt.BorderLayout.CENTER);
+  sounds_clips.add(cbEnableGameSounds,java.awt.BorderLayout.CENTER);
+  cbEnableOtherSounds.setText("Enable other sounds");
+  cbEnableOtherSounds.setToolTipText("Sounds that will be played for actions outside of games (e.g. whisper, player joins your game, player submits a deck ...).");
+  cbEnableOtherSounds.addActionListener(new java.awt.event.ActionListener(){
+    public void actionPerformed(    java.awt.event.ActionEvent evt){
+      cbEnableOtherSoundsActionPerformed(evt);
+    }
+  }
+);
+  sounds_clips.add(cbEnableOtherSounds,java.awt.BorderLayout.PAGE_END);
   sounds_backgroundMusic.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(),"Music"));
   cbEnableBattlefieldBGM.setText("Play music during match");
   cbEnableBattlefieldBGM.setToolTipText("During your matches music will be played from the seleced folder.");
@@ -306,8 +328,8 @@
   sounds_backgroundMusicLayout.setVerticalGroup(sounds_backgroundMusicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(sounds_backgroundMusicLayout.createSequentialGroup().addComponent(cbEnableBattlefieldBGM).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(sounds_backgroundMusicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(txtBattlefieldIBGMPath,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(btnBattlefieldBGMBrowse).addComponent(jLabel16))));
   javax.swing.GroupLayout tabSoundsLayout=new javax.swing.GroupLayout(tabSounds);
   tabSounds.setLayout(tabSoundsLayout);
-  tabSoundsLayout.setHorizontalGroup(tabSoundsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(tabSoundsLayout.createSequentialGroup().addContainerGap().addGroup(tabSoundsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(sounds_clips,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE).addComponent(sounds_backgroundMusic,javax.swing.GroupLayout.Alignment.TRAILING,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)).addContainerGap()));
-  tabSoundsLayout.setVerticalGroup(tabSoundsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(tabSoundsLayout.createSequentialGroup().addContainerGap().addComponent(sounds_clips,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(sounds_backgroundMusic,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(254,Short.MAX_VALUE)));
+  tabSoundsLayout.setHorizontalGroup(tabSoundsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(tabSoundsLayout.createSequentialGroup().addContainerGap().addGroup(tabSoundsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(sounds_clips,javax.swing.GroupLayout.DEFAULT_SIZE,533,Short.MAX_VALUE).addComponent(sounds_backgroundMusic,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)).addContainerGap()));
+  tabSoundsLayout.setVerticalGroup(tabSoundsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(tabSoundsLayout.createSequentialGroup().addContainerGap().addComponent(sounds_clips,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(sounds_backgroundMusic,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(229,Short.MAX_VALUE)));
   sounds_clips.getAccessibleContext().setAccessibleDescription("");
   tabsPanel.addTab("Sounds",tabSounds);
   lblProxyType.setText("Proxy:");

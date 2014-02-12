@@ -1,0 +1,20 @@
+{
+  try {
+    sourceDataLine.flush();
+    int len;
+    while ((len=audioInputStream.read(tempBuffer,0,tempBuffer.length)) != -1) {
+      if (breaked_out) {
+        break;
+      }
+      if (len > 0) {
+        sourceDataLine.write(tempBuffer,0,len);
+      }
+    }
+    sourceDataLine.flush();
+    sourceDataLine.close();
+    breaked=true;
+  }
+ catch (  Exception e) {
+    log.error("Thread error: " + e);
+  }
+}

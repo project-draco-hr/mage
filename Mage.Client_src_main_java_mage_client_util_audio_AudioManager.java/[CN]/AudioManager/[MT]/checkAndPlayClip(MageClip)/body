@@ -1,0 +1,20 @@
+{
+  try {
+    if (mageClip != null) {
+      boolean playSound=false;
+switch (mageClip.getAudioGroup()) {
+case GameSounds:
+        playSound=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_SOUNDS_GAME_ON,"true").equals("true");
+      break;
+case OtherSounds:
+    playSound=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_SOUNDS_OTHER_ON,"true").equals("true");
+}
+if (playSound) {
+  audioManager.play(mageClip.getClip());
+}
+}
+}
+ catch (Exception e) {
+Logger.getLogger(AudioManager.class).fatal("Error while playing sound clip.",e);
+}
+}
