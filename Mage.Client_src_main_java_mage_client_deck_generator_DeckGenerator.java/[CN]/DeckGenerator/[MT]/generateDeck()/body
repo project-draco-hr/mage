@@ -75,11 +75,14 @@
       tmp.createNewFile();
       deck.setName("Generated-Deck-" + UUID.randomUUID());
       Sets.saveDeck(tmp.getAbsolutePath(),deck.getDeckCardLists());
+      deck=null;
+      DeckGenerator.cleanUp(btnGenerate,btnCancel);
       return tmp.getAbsolutePath();
     }
  catch (    Exception e) {
-      JOptionPane.showMessageDialog(null,"Couldn't generate deck. Try once again.");
+      JOptionPane.showMessageDialog(null,"Couldn't generate deck. Try again.");
     }
   }
+  DeckGenerator.cleanUp(btnGenerate,btnCancel);
   return selectedColors;
 }
