@@ -1,0 +1,17 @@
+{
+  DamagePlayerEvent damageEvent=(DamagePlayerEvent)event;
+  Player damagedPlayer=game.getPlayer(damageEvent.getTargetId());
+  if (damageEvent.isCombatDamage()) {
+    Permanent p=game.getPermanent(source.getSourceId());
+    if (p != null) {
+      p.addCounters(CounterType.P1P1.createInstance(damageEvent.getAmount()),game);
+      if (damagedPlayer != null) {
+        cards=damagedPlayer.getLibrary().getTopCards(game,damageEvent.getAmount());
+      }
+      for (      Card card : cards) {
+        card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,false);
+      }
+    }
+  }
+  return true;
+}
