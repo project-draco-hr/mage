@@ -43,8 +43,13 @@
             boolean mayBlock=false;
             for (            UUID attackingCreatureId : getAttackers()) {
               if (creature.canBlock(attackingCreatureId,game)) {
-                mayBlock=true;
-                break;
+                Permanent attackingCreature=game.getPermanent(attackingCreatureId);
+                if (attackingCreature != null && attackingCreature.getMinBlockedBy() > 1) {
+                }
+ else {
+                  mayBlock=true;
+                  break;
+                }
               }
             }
             if (mayBlock) {
