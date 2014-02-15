@@ -8,10 +8,10 @@
   this.color.setGreen(true);
   this.power=new MageInt(2);
   this.toughness=new MageInt(2);
-  Effect effect=new SearchLibraryPutOnLibraryEffect(new TargetCardInLibrary(),true,true);
+  Effect effect=new SearchLibraryPutOnLibraryEffect(new TargetCardInLibrary(new FilterCreatureCard()),true,true);
   effect.setText("you may search your library for a creature card and reveal it. If you do, shuffle your library and put that card on top of it");
-  this.addAbility(new SpellCastAllTriggeredAbility(effect,filter,true));
+  this.addAbility(new SpellCastControllerTriggeredAbility(effect,filter,true));
   Effect effect2=new RevealLibraryPutIntoHandEffect(1,new FilterCreatureCard(),false);
   effect2.setText("reveal the top card of your library. If it's a creature card, put that card into your hand");
-  this.addAbility(new SpellCastAllTriggeredAbility(effect2,filter2,false));
+  this.addAbility(new SpellCastControllerTriggeredAbility(effect2,filter2,false));
 }
