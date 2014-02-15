@@ -1,11 +1,12 @@
 {
   UUID exileId=source.getSourceId();
   Permanent targetPermanent=game.getPermanent(getTargetPointer().getFirst(game,source));
-  if (exileId != null && targetPermanent != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (exileId != null && targetPermanent != null && controller != null) {
     String name=targetPermanent.getName();
     for (    Permanent permanent : game.getBattlefield().getActivePermanents(source.getControllerId(),game)) {
       if (permanent != null && permanent.getName().equals(name)) {
-        permanent.moveToExile(exileId,"Detention Sphere",source.getId(),game);
+        controller.moveCardToExileWithInfo(permanent,exileId,"Detention Sphere",source.getSourceId(),game,Zone.BATTLEFIELD);
       }
     }
     return true;
