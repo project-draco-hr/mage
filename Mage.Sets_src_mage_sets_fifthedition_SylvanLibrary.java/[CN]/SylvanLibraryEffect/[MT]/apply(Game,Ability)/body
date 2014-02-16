@@ -1,0 +1,60 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    controller.drawCards(2,game);
+    CardsDrawnThisTurnWatcher watcher=(CardsDrawnThisTurnWatcher)game.getState().getWatchers().get("CardsDrawnThisTurnWatcher",source.getControllerId());
+    if (watcher != null) {
+      Cards cards=new CardsImpl();
+      for (      UUID cardId : controller.getHand()) {
+        if (watcher.getCardsDrawnThisTurn().contains(cardId)) {
+          Card card=game.getCard(cardId);
+          if (card != null) {
+            cards.add(card);
+          }
+        }
+      }
+      int numberOfTargets=Math.min(2,cards.size());
+      if (numberOfTargets > 0) {
+        TargetCard target=new TargetCard(numberOfTargets,Zone.PICK,new FilterCard(new StringBuilder(numberOfTargets).append(" cards of cards drawn this turn").toString()));
+        target.setRequired(true);
+        controller.chooseTarget(outcome,cards,target,source,game);
+        Cards cardsPutBack=new CardsImpl();
+        for (        UUID cardId : (List<UUID>)target.getTargets()) {
+          Card card=cards.get(cardId,game);
+          if (card != null) {
+            if (controller.canPayLifeCost() && controller.getLife() >= 4 && controller.chooseUse(outcome,new StringBuilder("Pay 4 life for ").append(card.getName()).append("? (Otherwise it's put on top of your library)").toString(),game)) {
+              controller.loseLife(4,game);
+              game.informPlayers(new StringBuilder(controller.getName()).append(" pays 4 life to keep a card on hand").toString());
+            }
+ else {
+              cardsPutBack.add(card);
+            }
+          }
+        }
+        int numberOfCardsToPutBack=cardsPutBack.size();
+        if (numberOfCardsToPutBack > 1) {
+          TargetCard target2=new TargetCard(Zone.PICK,new FilterCard("card to put on the top of your library (last chosen will be on top)"));
+          target2.setRequired(true);
+          while (cardsPutBack.size() > 1) {
+            controller.choose(Outcome.Benefit,cardsPutBack,target2,game);
+            Card card=cardsPutBack.get(target2.getFirstTarget(),game);
+            if (card != null) {
+              cardsPutBack.remove(card);
+              card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
+            }
+            target2.clearChosen();
+          }
+        }
+        if (cardsPutBack.size() == 1) {
+          Card card=cardsPutBack.get(cardsPutBack.iterator().next(),game);
+          card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
+        }
+        if (numberOfCardsToPutBack > 0) {
+          game.informPlayers(new StringBuilder(controller.getName()).append(" puts ").append(numberOfCardsToPutBack).append(" card(s) back to library").toString());
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
