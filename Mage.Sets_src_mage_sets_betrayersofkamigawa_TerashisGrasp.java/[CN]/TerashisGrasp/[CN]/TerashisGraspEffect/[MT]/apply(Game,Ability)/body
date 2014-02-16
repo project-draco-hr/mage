@@ -1,7 +1,7 @@
 {
-  MageObject card=game.getLastKnownInformation(source.getFirstTarget(),Zone.BATTLEFIELD);
-  if (card != null) {
-    int cost=card.getManaCost().get(0).convertedManaCost();
+  Permanent targetPermanent=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
+  if (targetPermanent != null) {
+    int cost=targetPermanent.getManaCost().convertedManaCost();
     Player player=game.getPlayer(source.getControllerId());
     if (player != null) {
       player.gainLife(cost,game);
