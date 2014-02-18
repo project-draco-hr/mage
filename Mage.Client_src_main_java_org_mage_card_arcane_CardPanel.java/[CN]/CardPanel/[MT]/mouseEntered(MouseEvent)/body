@@ -5,8 +5,11 @@
   if (!popupShowing) {
 synchronized (this) {
       if (!popupShowing) {
-        popupShowing=true;
-        callback.mouseEntered(e,getTransferDataForMouseEntered());
+        TransferData transferData=getTransferDataForMouseEntered();
+        if (this.isShowing()) {
+          popupShowing=true;
+          callback.mouseEntered(e,transferData);
+        }
       }
     }
   }
