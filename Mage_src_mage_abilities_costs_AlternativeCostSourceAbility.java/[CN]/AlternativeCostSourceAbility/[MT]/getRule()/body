@@ -1,0 +1,30 @@
+{
+  if (rule != null) {
+    return rule;
+  }
+  StringBuilder sb=new StringBuilder();
+  if (condition != null) {
+    sb.append(condition.toString());
+    sb.append(", rather than pay {source}'s mana cost, ");
+  }
+  int numberCosts=0;
+  String remarkText="";
+  for (  AlternativeCost2 alternativeCost : alternateCosts) {
+    if (numberCosts == 0) {
+      sb.append(alternativeCost.getText(false));
+      remarkText=alternativeCost.getReminderText();
+    }
+ else {
+      sb.append(" and/or ").append(alternativeCost.getText(true));
+    }
+    ++numberCosts;
+  }
+  if (condition == null) {
+    sb.append(" rather than pay {source}'s mana cost");
+  }
+  sb.append(".");
+  if (numberCosts == 1 && remarkText != null) {
+    sb.append(" ").append(remarkText);
+  }
+  return sb.toString();
+}

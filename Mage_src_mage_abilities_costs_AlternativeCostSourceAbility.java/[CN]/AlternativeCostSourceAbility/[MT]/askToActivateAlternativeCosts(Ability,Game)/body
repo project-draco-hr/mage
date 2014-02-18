@@ -1,0 +1,24 @@
+{
+  if (ability instanceof SpellAbility) {
+    Player player=game.getPlayer(controllerId);
+    if (player != null) {
+      for (      AlternativeCost2 alternateCost : alternateCosts) {
+        if (alternateCost.canPay(sourceId,controllerId,game) && player.chooseUse(Outcome.Benefit,new StringBuilder("Pay alternative costs: ").append(alternateCost.getText()).append(" ?").toString(),game)) {
+          alternateCost.activate();
+          ability.getManaCostsToPay().clear();
+          ability.getCosts().clear();
+          for (Iterator it=((Costs)alternateCost).iterator(); it.hasNext(); ) {
+            Cost cost=(Cost)it.next();
+            if (cost instanceof ManaCostsImpl) {
+              ability.getManaCostsToPay().add((ManaCostsImpl)cost.copy());
+            }
+ else {
+              ability.getCosts().add(cost.copy());
+            }
+          }
+        }
+      }
+    }
+  }
+  return isActivated();
+}

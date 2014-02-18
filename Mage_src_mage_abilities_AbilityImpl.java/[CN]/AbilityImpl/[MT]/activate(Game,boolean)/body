@@ -19,8 +19,11 @@
   if (card != null) {
     for (    Ability ability : card.getAbilities()) {
       if (ability instanceof AlternativeSourceCosts) {
-        if (((AlternativeSourceCosts)ability).askToActivateAlternativeCosts(this,game)) {
-          break;
+        AlternativeSourceCosts alternativeSpellCosts=(AlternativeSourceCosts)ability;
+        if (alternativeSpellCosts.isAvailable(this,game)) {
+          if (alternativeSpellCosts.askToActivateAlternativeCosts(this,game)) {
+            break;
+          }
         }
       }
       if (ability instanceof OptionalAdditionalSourceCosts) {
