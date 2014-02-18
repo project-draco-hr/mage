@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(controllerId);
+  if (controller != null) {
+    TargetPlayer target=new TargetPlayer(1,1,true,filter);
+    if (controller.chooseTarget(Outcome.Detriment,target,ability,game)) {
+      Player opponent=game.getPlayer(target.getFirstTarget());
+      if (opponent != null) {
+        opponent.gainLife(amount,game);
+        paid=true;
+      }
+    }
+  }
+  return paid;
+}
