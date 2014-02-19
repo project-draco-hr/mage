@@ -1,5 +1,8 @@
 {
   Spell spell=game.getStack().getSpell(targetPointer.getFirst(game,source));
+  if (spell == null) {
+    spell=(Spell)game.getLastKnownInformation(targetPointer.getFirst(game,source),Zone.STACK);
+  }
   if (spell != null) {
     Spell copy=spell.copySpell();
     copy.setControllerId(source.getControllerId());
