@@ -1,0 +1,12 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Card card=game.getCard(source.getSourceId());
+  if (player != null && card != null) {
+    ChoiceColor colorChoice=new ChoiceColor();
+    if (player.choose(Outcome.Neutral,colorChoice,game)) {
+      game.informPlayers(new StringBuilder(card.getName()).append(": ").append(player.getName()).append(" has chosen ").append(colorChoice.getChoice()).toString());
+      game.getState().setValue(source.getSourceId() + "_color",colorChoice.getColor());
+    }
+  }
+  return false;
+}
