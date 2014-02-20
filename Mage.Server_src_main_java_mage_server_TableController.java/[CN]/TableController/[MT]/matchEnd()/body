@@ -1,29 +1,32 @@
 {
   for (  Entry<UUID,UUID> entry : userPlayerMap.entrySet()) {
     MatchPlayer matchPlayer=match.getPlayer(entry.getValue());
-    if (!matchPlayer.hasQuit()) {
-      User user=UserManager.getInstance().getUser(entry.getKey());
-      if (user != null) {
-        if (table.getState().equals(TableState.SIDEBOARDING)) {
-          StringBuilder sb=new StringBuilder();
-          if (table.isTournamentSubTable()) {
-            sb.append("Your tournament match of round ");
-            sb.append(table.getTournament().getRounds().size());
-            sb.append(" is over. ");
-          }
+    if (matchPlayer != null) {
+      if (!matchPlayer.hasQuit()) {
+        User user=UserManager.getInstance().getUser(entry.getKey());
+        if (user != null) {
+          if (table.getState().equals(TableState.SIDEBOARDING)) {
+            StringBuilder sb=new StringBuilder();
+            if (table.isTournamentSubTable()) {
+              sb.append("Your tournament match of round ");
+              sb.append(table.getTournament().getRounds().size());
+              sb.append(" is over. ");
+            }
  else {
-            sb.append("Match [").append(match.getName()).append("] is over. ");
-          }
-          if (match.getPlayers().size() > 2) {
-            sb.append("All your opponents have lost or quit the match.");
-          }
+              sb.append("Match [").append(match.getName()).append("] is over. ");
+            }
+            if (match.getPlayers().size() > 2) {
+              sb.append("All your opponents have lost or quit the match.");
+            }
  else {
-            sb.append("Your opponent has quit the match.");
+              sb.append("Your opponent has quit the match.");
+            }
+            user.showUserMessage("Match info",sb.toString());
           }
-          user.showUserMessage("Match info",sb.toString());
+          user.removeTable(entry.getValue());
         }
-        user.removeTable(entry.getValue());
       }
     }
+    match.cleanUpOnMatchEnd(ConfigSettings.getInstance().isSaveGameActivated());
   }
 }
