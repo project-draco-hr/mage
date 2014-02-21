@@ -2,11 +2,11 @@
   if (ability instanceof SpellAbility) {
     Player player=game.getPlayer(controllerId);
     if (player != null) {
-      for (      AlternativeCost2 alternateCost : alternateCosts) {
-        if (alternateCost.canPay(sourceId,controllerId,game) && player.chooseUse(Outcome.Benefit,new StringBuilder("Pay alternative costs: ").append(alternateCost.getText()).append(" ?").toString(),game)) {
+      if (player.chooseUse(Outcome.Detriment,"Pay alternative costs?",game)) {
+        ability.getManaCostsToPay().clear();
+        ability.getCosts().clear();
+        for (        AlternativeCost2 alternateCost : alternateCosts) {
           alternateCost.activate();
-          ability.getManaCostsToPay().clear();
-          ability.getCosts().clear();
           for (Iterator it=((Costs)alternateCost).iterator(); it.hasNext(); ) {
             Cost cost=(Cost)it.next();
             if (cost instanceof ManaCostsImpl) {
