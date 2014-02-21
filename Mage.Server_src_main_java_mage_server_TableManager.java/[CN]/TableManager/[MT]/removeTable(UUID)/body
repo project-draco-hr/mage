@@ -3,7 +3,9 @@
     Table table=tables.get(tableId);
     controllers.remove(tableId);
     tables.remove(tableId);
-    GamesRoomManager.getInstance().removeTable(tableId);
+    if (!table.getState().equals(TableState.FINISHED)) {
+      GamesRoomManager.getInstance().removeTable(tableId);
+    }
     if (table.getMatch() != null && table.getMatch().getGame() != null) {
       table.getMatch().getGame().end();
     }

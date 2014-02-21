@@ -1,7 +1,7 @@
 {
+  boolean matchIsOver=false;
   UUID choosingPlayerId=match.getChooser();
   match.endGame();
-  table.endGame();
   if (ConfigSettings.getInstance().isSaveGameActivated() && !match.getGame().isSimulation()) {
     if (GameManager.getInstance().saveGame(match.getGame().getId())) {
       match.setReplayAvailable(true);
@@ -18,16 +18,17 @@
         startGame(choosingPlayerId);
       }
  else {
-        this.matchEnd();
-        table.endGame();
+        matchIsOver=true;
+        closeTable();
       }
     }
  else {
-      this.matchEnd();
-      table.endGame();
+      matchIsOver=true;
+      closeTable();
     }
   }
  catch (  GameException ex) {
     logger.fatal(null,ex);
   }
+  return matchIsOver;
 }
