@@ -8,10 +8,8 @@
   this.getSpellAbility().addEffect(new AttachEffect(Outcome.Exile));
   Ability ability=new EnchantAbility(auraTarget.getTargetName());
   this.addAbility(ability);
-  Effect effect=new ExileTargetEffect(exileId,this.getName());
-  effect.setText("exile target creature an opponent controls until {this} leaves the battlefield. <i>(That creature returns under its owner's control.)</i>");
-  ability=new EntersBattlefieldTriggeredAbility(effect);
+  ability=new EntersBattlefieldTriggeredAbility(new ChainedToTheRocksEffect());
   ability.addTarget(new TargetCreaturePermanent(filterTarget));
   this.addAbility(ability);
-  this.addWatcher(new ChainedToTheRocksWatcher(exileId));
+  this.addWatcher(new ChainedToTheRocksWatcher(this.getId()));
 }
