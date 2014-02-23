@@ -6,6 +6,8 @@
   this.color.setWhite(true);
   this.power=new MageInt(2);
   this.toughness=new MageInt(2);
-  this.addAbility(new BanisherPriestTriggeredAbility(exileId));
-  this.addWatcher(new BanisherPriestWatcher(exileId));
+  Ability ability=new EntersBattlefieldTriggeredAbility(new BanisherPriestExileEffect());
+  ability.addTarget(new TargetCreaturePermanent(filter,true));
+  this.addAbility(ability);
+  this.addWatcher(new BanisherPriestWatcher());
 }
