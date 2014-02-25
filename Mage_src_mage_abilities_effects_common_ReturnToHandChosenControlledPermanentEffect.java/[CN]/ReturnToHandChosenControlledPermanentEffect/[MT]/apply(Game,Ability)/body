@@ -1,14 +1,14 @@
 {
   Player player=game.getPlayer(source.getControllerId());
   if (player != null) {
-    TargetControlledPermanent target=new TargetControlledPermanent(filter);
-    target.setNotTarget(true);
+    TargetControlledPermanent target=new TargetControlledPermanent(number,number,filter,true);
     target.setRequired(true);
     if (player.choose(this.outcome,target,source.getSourceId(),game)) {
-      Permanent permanent=game.getPermanent(target.getFirstTarget());
-      if (permanent != null) {
-        game.informPlayers(player.getName() + " returns " + permanent.getName()+ " to his or her hand.");
-        return permanent.moveToZone(Zone.HAND,source.getId(),game,false);
+      for (      UUID targetCreatureId : (List<UUID>)target.getTargets()) {
+        Permanent permanent=game.getPermanent(targetCreatureId);
+        if (permanent != null) {
+          player.moveCardToHandWithInfo(permanent,source.getSourceId(),game,Zone.BATTLEFIELD);
+        }
       }
     }
     return true;
