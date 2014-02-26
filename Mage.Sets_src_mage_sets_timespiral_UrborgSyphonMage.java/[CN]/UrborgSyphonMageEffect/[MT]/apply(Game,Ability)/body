@@ -1,10 +1,17 @@
 {
   int damage=0;
-  for (  UUID playerId : game.getPlayerList()) {
-    if (playerId != source.getControllerId()) {
-      damage+=game.getPlayer(playerId).damage(2,source.getSourceId(),game,false,true);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : controller.getInRange()) {
+      if (playerId != source.getControllerId()) {
+        Player player=game.getPlayer(playerId);
+        if (player != null) {
+          damage+=player.damage(2,source.getSourceId(),game,false,true);
+        }
+      }
     }
+    game.getPlayer(source.getControllerId()).gainLife(damage,game);
+    return true;
   }
-  game.getPlayer(source.getControllerId()).gainLife(damage,game);
-  return true;
+  return false;
 }
