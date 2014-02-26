@@ -5,7 +5,12 @@
   StringBuilder sb=new StringBuilder();
   if (condition != null) {
     sb.append(condition.toString());
-    sb.append(", rather than pay {source}'s mana cost, ");
+    if (alternateCosts.size() > 1) {
+      sb.append(", rather than pay {source}'s mana cost, ");
+    }
+ else {
+      sb.append(", you may ");
+    }
   }
  else {
     sb.append("You may ");
@@ -22,7 +27,7 @@
     }
     ++numberCosts;
   }
-  if (condition == null) {
+  if (condition == null || alternateCosts.size() == 1) {
     sb.append(" rather than pay {source}'s mana cost");
   }
   sb.append(".");
