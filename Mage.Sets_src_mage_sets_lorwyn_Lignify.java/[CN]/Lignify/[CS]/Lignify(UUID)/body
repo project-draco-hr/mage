@@ -1,0 +1,14 @@
+{
+  super(ownerId,228,"Lignify",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{1}{G}");
+  this.expansionSetCode="LRW";
+  this.supertype.add("Tribal");
+  this.subtype.add("Treefolk");
+  this.subtype.add("Aura");
+  this.color.setGreen(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.LoseAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BecomesCreatureAttachedEffect(new LignifyTreefolkToken(),"Enchanted creature is a 0/4 Treefolk with no abilities",Duration.WhileOnBattlefield,true)));
+}
