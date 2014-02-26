@@ -1,0 +1,16 @@
+{
+  if (canActivate(this.controllerId,game)) {
+    if (super.activate(game,noMana)) {
+      Integer activations=(Integer)game.getState().getValue(CardUtil.getCardZoneString("activations",sourceId,game));
+      if (activations == null) {
+        activations=new Integer(1);
+      }
+ else {
+        activations++;
+      }
+      game.getState().setValue(CardUtil.getCardZoneString("activations",sourceId,game),activations);
+      return true;
+    }
+  }
+  return false;
+}
