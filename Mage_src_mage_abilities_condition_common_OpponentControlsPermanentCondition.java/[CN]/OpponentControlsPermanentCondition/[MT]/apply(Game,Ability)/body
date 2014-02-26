@@ -1,0 +1,20 @@
+{
+  boolean conditionApplies=false;
+  FilterPermanent localFilter=filter.copy();
+  localFilter.add(new ControllerPredicate(TargetController.OPPONENT));
+switch (this.type) {
+case FEWER_THAN:
+    conditionApplies=game.getBattlefield().count(localFilter,source.getSourceId(),source.getControllerId(),game) < this.count;
+  break;
+case MORE_THAN:
+conditionApplies=game.getBattlefield().count(localFilter,source.getSourceId(),source.getControllerId(),game) > this.count;
+break;
+case EQUAL_TO:
+conditionApplies=game.getBattlefield().count(localFilter,source.getSourceId(),source.getControllerId(),game) == this.count;
+break;
+}
+if (this.condition != null) {
+conditionApplies=conditionApplies && this.condition.apply(game,source);
+}
+return conditionApplies;
+}

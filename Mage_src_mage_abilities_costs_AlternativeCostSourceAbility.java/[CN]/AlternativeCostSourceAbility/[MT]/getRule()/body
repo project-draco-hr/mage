@@ -19,16 +19,26 @@
   String remarkText="";
   for (  AlternativeCost2 alternativeCost : alternateCosts) {
     if (numberCosts == 0) {
+      if (alternativeCost instanceof ManaCostsImpl) {
+        sb.append("pay ");
+      }
       sb.append(alternativeCost.getText(false));
       remarkText=alternativeCost.getReminderText();
     }
  else {
-      sb.append(" and ").append(alternativeCost.getText(true));
+      sb.append(" and ");
+      if (alternativeCost instanceof ManaCostsImpl) {
+        sb.append("pay ");
+      }
+      sb.append(alternativeCost.getText(true));
     }
     ++numberCosts;
   }
   if (condition == null || alternateCosts.size() == 1) {
     sb.append(" rather than pay {source}'s mana cost");
+  }
+ else   if (alternateCosts.isEmpty()) {
+    sb.append("cast {this} without paying its mana cost");
   }
   sb.append(".");
   if (numberCosts == 1 && remarkText != null) {

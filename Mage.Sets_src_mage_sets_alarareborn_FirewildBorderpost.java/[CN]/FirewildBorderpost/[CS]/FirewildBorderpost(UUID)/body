@@ -3,8 +3,9 @@
   this.expansionSetCode="ARB";
   this.color.setRed(true);
   this.color.setGreen(true);
-  Cost cost=new CompositeCost(new GenericManaCost(1),new ReturnToHandTargetCost(new TargetControlledPermanent(filter)),COST_DESCRIPTION);
-  this.getSpellAbility().addAlternativeCost(new AlternativeCostImpl(ALTERNATIVE_COST_DESCRIPTION,cost));
+  Ability ability=new AlternativeCostSourceAbility(new GenericManaCost(1));
+  ability.addCost(new ReturnToHandTargetCost(new TargetControlledPermanent(filter)));
+  this.addAbility(ability);
   this.addAbility(new EntersBattlefieldTappedAbility());
   this.addAbility(new RedManaAbility());
   this.addAbility(new GreenManaAbility());
