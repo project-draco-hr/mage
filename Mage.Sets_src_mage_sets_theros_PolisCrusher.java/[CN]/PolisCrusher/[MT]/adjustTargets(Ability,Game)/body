@@ -1,0 +1,19 @@
+{
+  if (ability instanceof ConditionalTriggeredAbility) {
+    for (    Effect effect : ability.getEffects()) {
+      if (effect instanceof DestroyTargetEffect) {
+        Player attackedPlayer=game.getPlayer(effect.getTargetPointer().getFirst(game,ability));
+        if (attackedPlayer != null) {
+          ability.getTargets().clear();
+          FilterPermanent filterEnchantment=new FilterEnchantmentPermanent("enchantment attacked player controls");
+          filter.add(new ControllerIdPredicate(attackedPlayer.getId()));
+          Target target=new TargetPermanent(filterEnchantment);
+          target.setRequired(true);
+          ability.addTarget(target);
+          effect.setTargetPointer(new FirstTargetPointer());
+          break;
+        }
+      }
+    }
+  }
+}
