@@ -13,7 +13,16 @@
           if (tPlayer.getState().equals(TournamentPlayerState.DRAFTING)) {
             info="during Draft phase";
             if (!checkToReplaceDraftPlayerByAi(userId,tPlayer)) {
-              this.abortTournament();
+              this.abortDraftTournament();
+            }
+ else {
+              DraftController draftController=DraftManager.getInstance().getController(tableId);
+              if (draftController != null) {
+                DraftSession draftSession=draftController.getDraftSession(playerId);
+                if (draftSession != null) {
+                  DraftManager.getInstance().kill(draftSession.getDraftId(),userId);
+                }
+              }
             }
           }
  else           if (tPlayer.getState().equals(TournamentPlayerState.CONSTRUCTING)) {

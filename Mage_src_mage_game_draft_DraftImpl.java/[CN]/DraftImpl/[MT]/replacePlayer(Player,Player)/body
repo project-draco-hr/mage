@@ -3,7 +3,7 @@
     DraftPlayer newDraftPlayer=new DraftPlayer(newPlayer);
     DraftPlayer oldDraftPlayer=players.get(oldPlayer.getId());
     newDraftPlayer.setBooster(oldDraftPlayer.getBooster());
-    Map<UUID,DraftPlayer> newPlayers=new HashMap<UUID,DraftPlayer>();
+    Map<UUID,DraftPlayer> newPlayers=new HashMap<>();
     PlayerList newTable=new PlayerList();
 synchronized (players) {
       for (      Map.Entry<UUID,DraftPlayer> entry : players.entrySet()) {
@@ -14,7 +14,10 @@ synchronized (players) {
           newPlayers.put(entry.getKey(),entry.getValue());
         }
       }
-      players=newPlayers;
+      players.clear();
+      for (      Map.Entry<UUID,DraftPlayer> entry : newPlayers.entrySet()) {
+        players.put(entry.getKey(),entry.getValue());
+      }
     }
 synchronized (table) {
       for (      UUID playerId : table) {
@@ -25,7 +28,8 @@ synchronized (table) {
           newTable.add(playerId);
         }
       }
-      table=newTable;
+      table.clear();
+      table.addAll(newTable);
     }
     if (oldDraftPlayer.isPicking()) {
       newDraftPlayer.setPicking();

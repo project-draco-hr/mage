@@ -8,13 +8,18 @@
   if (humans > 1) {
     String replacePlayerName="Draftbot";
     User user=UserManager.getInstance().getUser(userId);
-    if (user != null) {
-      replacePlayerName="Draftbot (" + user.getName() + ")";
-    }
     TableController tableController=TableManager.getInstance().getController(tableId);
     if (tableController != null) {
+      if (user != null) {
+        replacePlayerName="Draftbot (" + user.getName() + ")";
+      }
       tableController.replaceDraftPlayer(leavingPlayer.getPlayer(),replacePlayerName,"Computer - draftbot",5);
-      ChatManager.getInstance().broadcast(chatId,"",leavingPlayer.getPlayer().getName() + " was replaced by draftbot",MessageColor.BLACK,true,null);
+      if (user != null) {
+        user.removeDraft(leavingPlayer.getPlayer().getId());
+        user.removeTable(leavingPlayer.getPlayer().getId());
+        user.removeTournament(leavingPlayer.getPlayer().getId());
+      }
+      ChatManager.getInstance().broadcast(chatId,"",leavingPlayer.getPlayer().getName() + " was replaced by draftbot",MessageColor.BLACK,true,MessageType.STATUS);
     }
     return true;
   }

@@ -1,20 +1,22 @@
 {
   tableEventSource.fireTableEvent(EventType.CONSTRUCT);
-  for (  final TournamentPlayer player : players.values()) {
-    player.setConstructing();
-    new Thread(new Runnable(){
-      @Override public void run(){
-        player.getPlayer().construct(TournamentImpl.this,player.getDeck());
+  if (!isAbort()) {
+    for (    final TournamentPlayer player : players.values()) {
+      player.setConstructing();
+      new Thread(new Runnable(){
+        @Override public void run(){
+          player.getPlayer().construct(TournamentImpl.this,player.getDeck());
+        }
       }
-    }
 ).start();
-  }
+    }
 synchronized (this) {
-    while (!isDoneConstructing()) {
-      try {
-        this.wait();
-      }
- catch (      InterruptedException ex) {
+      while (!isDoneConstructing()) {
+        try {
+          this.wait();
+        }
+ catch (        InterruptedException ex) {
+        }
       }
     }
   }
