@@ -1,7 +1,11 @@
 {
-  Permanent p=game.getPermanent(source.getSourceId());
-  if (p != null) {
-    return p.flip(game);
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    if (permanent.flip(game)) {
+      ContinuousEffect effect=new ConditionalContinousEffect(new CopyTokenEffect(flipToken),FlippedCondition.getInstance(),"");
+      game.addEffect(effect,source);
+      return true;
+    }
   }
   return false;
 }

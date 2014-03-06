@@ -11,9 +11,6 @@
   Ability ability;
   ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new SnakeToken()),new ManaCostsImpl("{2}{G}"));
   ability.addCost(new TapSourceCost());
-  ability.addEffect(new ConditionalOneShotEffect(new FlipSourceEffect(),new ControlsPermanentCondition(new FilterControlledCreaturePermanent(),ControlsPermanentCondition.CountType.MORE_THAN,9),"If you control ten or more creatures, flip {this}"));
-  this.addAbility(ability);
-  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinousEffect(new CopyTokenEffect(new ShidakoBroodmistress()),FlippedCondition.getInstance(),""));
-  ability.setRuleVisible(false);
+  ability.addEffect(new ConditionalOneShotEffect(new FlipSourceEffect(new ShidakoBroodmistress()),new ControlsPermanentCondition(new FilterControlledCreaturePermanent(),ControlsPermanentCondition.CountType.MORE_THAN,9),"If you control ten or more creatures, flip {this}"));
   this.addAbility(ability);
 }
