@@ -2,7 +2,7 @@
   ThreadUtils.threadPool2.submit(new Runnable(){
     @Override public void run(){
       ThreadUtils.sleep(300);
-      if (popupCard == null || !popupCard.equals(data.card) || session == null || !state || enlarged) {
+      if (popupCard == null || !popupCard.equals(data.card) || session == null || !popupTextWindowOpen || enlargedImageWindowOpen) {
         return;
       }
       try {
@@ -17,7 +17,7 @@
         final Component c=MageFrame.getUI().getComponent(MageComponents.DESKTOP_PANE);
         SwingUtilities.invokeLater(new Runnable(){
           @Override public void run(){
-            if (!state || enlarged) {
+            if (!popupTextWindowOpen || enlargedImageWindowOpen) {
               return;
             }
             popupContainer.setVisible(true);

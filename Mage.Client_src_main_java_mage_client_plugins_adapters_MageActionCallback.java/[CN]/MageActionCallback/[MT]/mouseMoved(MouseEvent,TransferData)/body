@@ -5,23 +5,25 @@
   if (bigCard == null) {
     return;
   }
-  MageCard card=(MageCard)data.component;
-  if (!state || card.getOriginal().getId() != bigCard.getCardId()) {
+  MageCard mageCard=(MageCard)transferData.component;
+  if (!popupTextWindowOpen || mageCard.getOriginal().getId() != bigCard.getCardId()) {
     if (bigCard.getWidth() > 0) {
 synchronized (MageActionCallback.class) {
-        if (!state || card.getOriginal().getId() != bigCard.getCardId()) {
-          if (!state) {
+        if (!popupTextWindowOpen || mageCard.getOriginal().getId() != bigCard.getCardId()) {
+          if (!popupTextWindowOpen) {
             bigCard.resetCardId();
           }
-          state=true;
-          Image image=card.getImage();
-          displayCardInfo(card,image,bigCard);
+          popupTextWindowOpen=true;
+          Image image=mageCard.getImage();
+          displayCardInfo(mageCard,image,bigCard);
         }
       }
     }
  else {
-      state=true;
+      popupTextWindowOpen=true;
     }
-    displayCard(card.getOriginal(),data);
+    if (enlargedImageWindowOpen) {
+      displayEnlargedCard(mageCard.getOriginal(),transferData);
+    }
   }
 }

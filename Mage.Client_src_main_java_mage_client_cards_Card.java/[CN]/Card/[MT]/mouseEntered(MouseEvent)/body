@@ -1,6 +1,8 @@
 {
   if (!popupShowing) {
-    if (popup != null)     popup.hide();
+    if (popup != null) {
+      popup.hide();
+    }
     PopupFactory factory=PopupFactory.getSharedInstance();
     popup=factory.getPopup(this,popupText,(int)this.getLocationOnScreen().getX() + Config.dimensions.frameWidth,(int)this.getLocationOnScreen().getY() + 40);
     popup.show();
@@ -11,9 +13,9 @@
     List<UUID> targets=card.getTargets();
     if (targets != null) {
       for (      UUID uuid : targets) {
-        PlayAreaPanel p=MageFrame.getGame(gameId).getPlayers().get(uuid);
-        if (p != null) {
-          Point target=p.getLocationOnScreen();
+        PlayAreaPanel playAreaPanel=MageFrame.getGame(gameId).getPlayers().get(uuid);
+        if (playAreaPanel != null) {
+          Point target=playAreaPanel.getLocationOnScreen();
           Point me=this.getLocationOnScreen();
           ArrowBuilder.getBuilder().addArrow(gameId,(int)me.getX() + 35,(int)me.getY(),(int)target.getX() + 40,(int)target.getY() - 40,Color.red,ArrowBuilder.Type.TARGET);
         }

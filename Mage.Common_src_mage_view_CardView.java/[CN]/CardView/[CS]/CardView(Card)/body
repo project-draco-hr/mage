@@ -54,6 +54,7 @@
   this.superTypes=card.getSupertype();
   this.color=card.getColor();
   this.canTransform=card.canTransform();
+  this.flipCard=card.isFlipCard();
   if (card instanceof PermanentToken) {
     this.isToken=true;
     this.mageObjectType=MageObjectType.TOKEN;
@@ -73,13 +74,20 @@
     this.isToken=false;
   }
   if (card.getCounters() != null && !card.getCounters().isEmpty()) {
-    counters=new ArrayList<CounterView>();
+    counters=new ArrayList<>();
     for (    Counter counter : card.getCounters().values()) {
       counters.add(new CounterView(counter));
     }
   }
   if (card.getSecondCardFace() != null) {
     this.secondCardFace=new CardView(card.getSecondCardFace());
+    this.alternateName=secondCardFace.getName();
+    this.originalName=card.getName();
+  }
+  this.flipCard=card.isFlipCard();
+  if (card.isFlipCard() && card.getFlipCardName() != null) {
+    this.alternateName=card.getFlipCardName();
+    this.originalName=card.getName();
   }
   if (card instanceof Spell) {
     this.mageObjectType=MageObjectType.SPELL;

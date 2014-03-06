@@ -1,5 +1,5 @@
 {
-  if (isPermanent) {
+  if (isPermanent && (card instanceof PermanentView)) {
     boolean needsTapping=isTapped() != ((PermanentView)card).isTapped();
     boolean needsFlipping=isFlipped() != ((PermanentView)card).isFlipped();
     if (needsTapping || needsFlipping) {
@@ -12,6 +12,9 @@
     if (needsTranforming) {
       Animation.transformCard(this,this,card.isTransformed());
     }
+  }
+  if (card.canTransform()) {
+    dayNightButton.setVisible(!isPermanent);
   }
   if (CardUtil.isCreature(card) && CardUtil.isPlaneswalker(card)) {
     ptText.setText(card.getPower() + "/" + card.getToughness()+ " ("+ card.getLoyalty()+ ")");
@@ -26,6 +29,7 @@
     ptText.setText("");
   }
   setText(card);
+  boolean updateImage=!gameCard.getName().equals(card.getName());
   this.gameCard=card;
   String cardType=getType(card);
   popupText.setText(getText(cardType,card));
@@ -34,6 +38,19 @@
   }
  else {
     overlayPanel.setVisible(false);
+  }
+  if (updateImage) {
+    updateImage();
+    if (card.canTransform()) {
+      BufferedImage transformIcon;
+      if (card.isTransformed()) {
+        transformIcon=ImageManagerImpl.getInstance().getNightImage();
+      }
+ else {
+        transformIcon=ImageManagerImpl.getInstance().getDayImage();
+      }
+      dayNightButton.setIcon(new ImageIcon(transformIcon));
+    }
   }
   repaint();
 }

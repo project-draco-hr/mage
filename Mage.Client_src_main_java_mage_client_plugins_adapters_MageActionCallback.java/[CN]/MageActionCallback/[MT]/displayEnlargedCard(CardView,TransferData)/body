@@ -1,0 +1,56 @@
+{
+  ThreadUtils.threadPool2.submit(new Runnable(){
+    @Override public void run(){
+      if (cardView == null) {
+        return;
+      }
+      try {
+        if (!enlargedImageWindowOpen) {
+          return;
+        }
+        Component parentComponent=SwingUtilities.getRoot(transferData.component);
+        Point parentPoint=parentComponent.getLocationOnScreen();
+        final Component popupContainer=MageFrame.getUI().getComponent(MageComponents.CARD_PREVIEW_CONTAINER);
+        Component cardPreviewPane=MageFrame.getUI().getComponent(MageComponents.CARD_PREVIEW_PANE);
+        if (cardPreviewPane != null) {
+          Point location=new Point((int)transferData.locationOnScreen.getX() + transferData.popupOffsetX - 40,(int)transferData.locationOnScreen.getY() + transferData.popupOffsetY - 40);
+          location=GuiDisplayUtil.keepComponentInsideParent(location,parentPoint,cardPreviewPane,parentComponent);
+          location.translate(-parentPoint.x,-parentPoint.y);
+          popupContainer.setLocation(location);
+          popupContainer.setVisible(true);
+          MageCard mageCard=(MageCard)transferData.component;
+          Image image=null;
+switch (enlargeMode) {
+case COPY:
+            if (cardView instanceof PermanentView) {
+              image=ImageCache.getImageOriginal(((PermanentView)cardView).getOriginal());
+            }
+          break;
+case ALTERNATE:
+        if (cardView.getAlternateName() != null) {
+          if (cardView instanceof PermanentView && !cardView.isFlipCard() && !cardView.canTransform()&& ((PermanentView)cardView).isCopy()) {
+            image=ImageCache.getImageOriginal(((PermanentView)cardView).getOriginal());
+          }
+ else {
+            image=ImageCache.getImageOriginalAlternateName(cardView);
+          }
+        }
+      break;
+  }
+  if (image == null) {
+    image=mageCard.getImage();
+  }
+  BigCard bigCard=(BigCard)cardPreviewPane;
+  displayCardInfo(mageCard,image,bigCard);
+}
+ else {
+  logger.warn("No Card preview Pane in Mage Frame defined. Card: " + cardView.getName());
+}
+}
+ catch (Exception e) {
+e.printStackTrace();
+}
+}
+}
+);
+}

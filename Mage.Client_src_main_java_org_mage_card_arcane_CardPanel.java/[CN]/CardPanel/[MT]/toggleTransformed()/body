@@ -2,7 +2,9 @@
   this.transformed=!this.transformed;
   if (transformed) {
     BufferedImage night=ImageManagerImpl.getInstance().getNightImage();
-    dayNightButton.setIcon(new ImageIcon(night));
+    if (dayNightButton != null) {
+      dayNightButton.setIcon(new ImageIcon(night));
+    }
     if (this.gameCard.getSecondCardFace() == null) {
       log.error("no second side for card to transform!");
       return;
@@ -11,16 +13,20 @@
       this.temporary=this.gameCard;
       update(this.gameCard.getSecondCardFace());
     }
-    updateImage();
   }
  else {
     BufferedImage day=ImageManagerImpl.getInstance().getDayImage();
-    dayNightButton.setIcon(new ImageIcon(day));
+    if (dayNightButton != null) {
+      dayNightButton.setIcon(new ImageIcon(day));
+    }
     if (!isPermanent) {
       this.gameCard=this.temporary;
       this.temporary=null;
       update(this.gameCard);
     }
-    updateImage();
   }
+  String temp=this.gameCard.getAlternateName();
+  this.gameCard.setAlternateName(this.gameCard.getOriginalName());
+  this.gameCard.setOriginalName(temp);
+  updateImage();
 }
