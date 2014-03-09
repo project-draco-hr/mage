@@ -10,8 +10,8 @@
   effect.setText("Return X target creatures from your graveyard to the battlefield");
   Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl("{3}{B}{B}"));
   ability.addCost(new TapSourceCost());
-  ability.addCost(new ChampionOfStraySoulsSacrificeCost());
-  ability.addTarget(new TargetCardInYourGraveyard(0,Integer.MAX_VALUE,new FilterCreatureCard()));
+  ability.addCost(new SacrificeXTargetCost(filter));
+  ability.addTarget(new TargetCardInYourGraveyard(0,Integer.MAX_VALUE,new FilterCreatureCard("creature cards from your graveyard")));
   this.addAbility(ability);
   this.addAbility(new SimpleActivatedAbility(Zone.GRAVEYARD,new PutOnLibrarySourceEffect(true,"Put {this} on top of your library from your graveyard"),new ManaCostsImpl("{5}{B}{B}")));
 }

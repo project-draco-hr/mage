@@ -4,5 +4,8 @@
   this.color.setBlack(true);
   this.getSpellAbility().addTarget(new TargetCreatureOrPlayer());
   this.getSpellAbility().addEffect(new ConsumeSpiritEffect());
-  this.getSpellAbility().getManaCostsToPay().getVariableCosts().get(0).setFilter(filterBlack);
+  VariableCost variableCost=this.getSpellAbility().getManaCostsToPay().getVariableCosts().get(0);
+  if (variableCost instanceof VariableManaCost) {
+    ((VariableManaCost)variableCost).setFilter(filterBlack);
+  }
 }

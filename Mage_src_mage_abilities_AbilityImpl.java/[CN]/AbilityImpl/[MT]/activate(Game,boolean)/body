@@ -31,15 +31,19 @@
       }
     }
   }
-  VariableManaCost variableManaCost=handleXCosts(game,noMana);
+  VariableManaCost variableManaCost=handleManaXCosts(game,noMana);
+  String announceString=handleOtherXCosts(game);
   for (  UUID modeId : this.getModes().getSelectedModes()) {
     this.getModes().setMode(this.getModes().get(modeId));
     if (card != null) {
       card.adjustTargets(this,game);
     }
     if (getTargets().size() > 0 && getTargets().chooseTargets(getEffects().get(0).getOutcome(),this.controllerId,this,game) == false) {
-      if (variableManaCost != null) {
-        game.informPlayers(new StringBuilder(card != null ? card.getName() : "").append(": no valid targets with this value of X").toString());
+      if (variableManaCost != null || announceString != null) {
+        Player controller=game.getPlayer(this.getControllerId());
+        if (controller != null) {
+          game.informPlayer(controller,new StringBuilder(card != null ? card.getName() : "").append(": no valid targets with this value of X").toString());
+        }
       }
  else {
         logger.debug("activate failed - target");
@@ -82,9 +86,12 @@
     logger.debug("activate failed - non mana costs");
     return false;
   }
+  if (announceString != null) {
+    game.informPlayers(announceString);
+  }
   if (variableManaCost != null) {
     int xValue=getManaCostsToPay().getX();
-    game.informPlayers(new StringBuilder(game.getPlayer(this.controllerId).getName()).append(" announced a value of ").append(xValue).append(" for ").append(variableManaCost.getText()).toString());
+    game.informPlayers(new StringBuilder(game.getPlayer(this.controllerId).getName()).append(" announces a value of ").append(xValue).append(" for ").append(variableManaCost.getText()).toString());
   }
   return true;
 }
