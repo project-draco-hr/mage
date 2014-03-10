@@ -1,5 +1,5 @@
 {
-  List<Ability> playable=new ArrayList<Ability>();
+  List<Ability> playable=new ArrayList<>();
   ManaOptions available=getManaAvailable(game);
   available.addMana(manaPool.getMana());
   if (hidden) {
@@ -17,7 +17,7 @@
         playable.add(ability);
       }
     }
-    if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,game)) {
+    if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,this.getId(),game)) {
       for (      ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
         if (ability instanceof SpellAbility || ability instanceof PlayLandAbility) {
           playable.add(ability);
@@ -27,7 +27,7 @@
   }
   for (  ExileZone exile : game.getExile().getExileZones()) {
     for (    Card card : exile.getCards(game)) {
-      if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,game)) {
+      if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,this.getId(),game)) {
         for (        Ability ability : card.getAbilities()) {
           ability.setControllerId(this.getId());
           if (ability.getZone().match(Zone.HAND) && (ability instanceof SpellAbility || ability instanceof PlayLandAbility)) {
@@ -39,7 +39,7 @@
   }
   for (  Cards cards : game.getState().getRevealed().values()) {
     for (    Card card : cards.getCards(game)) {
-      if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,game)) {
+      if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,this.getId(),game)) {
         for (        ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
           if (ability instanceof SpellAbility || ability instanceof PlayLandAbility) {
             playable.add(ability);

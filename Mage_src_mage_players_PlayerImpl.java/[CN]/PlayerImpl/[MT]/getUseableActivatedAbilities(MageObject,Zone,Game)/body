@@ -1,5 +1,5 @@
 {
-  LinkedHashMap<UUID,ActivatedAbility> useable=new LinkedHashMap<UUID,ActivatedAbility>();
+  LinkedHashMap<UUID,ActivatedAbility> useable=new LinkedHashMap<>();
   if (!(object instanceof Permanent) || ((Permanent)object).canUseActivatedAbilities(game)) {
     for (    ActivatedAbility ability : object.getAbilities().getActivatedAbilities(zone)) {
       if (ability.canActivate(playerId,game)) {
@@ -7,7 +7,7 @@
       }
     }
     if (zone != Zone.HAND) {
-      if (zone != Zone.BATTLEFIELD && game.getContinuousEffects().asThough(object.getId(),AsThoughEffectType.CAST,game)) {
+      if (zone != Zone.BATTLEFIELD && game.getContinuousEffects().asThough(object.getId(),AsThoughEffectType.CAST,this.getId(),game)) {
         for (        Ability ability : object.getAbilities()) {
           ability.setControllerId(this.getId());
           if (ability instanceof ActivatedAbility && ability.getZone().match(Zone.HAND)) {
