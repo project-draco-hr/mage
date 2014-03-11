@@ -1,9 +1,17 @@
 {
-  int count=0;
   for (  StackObject stackObject : game.getStack()) {
-    if (stackObject instanceof Spell && game.getPlayer(sourceControllerId).getInRange().contains(stackObject.getControllerId()) && filter.match((Spell)stackObject,game)&& ((Spell)stackObject).getSpellAbility().getTargets().isChosen()&& game.getPermanent(((Spell)stackObject).getSpellAbility().getTargets().getFirstTarget()) != null && game.getPermanent(((Spell)stackObject).getSpellAbility().getTargets().getFirstTarget()).getControllerId() == sourceControllerId) {
-      count++;
-      if (count >= this.minNumberOfTargets)       return true;
+    if ((stackObject instanceof Spell) || (stackObject instanceof StackAbility)) {
+      Targets targets=stackObject.getStackAbility().getTargets();
+      if (!targets.isEmpty()) {
+        for (        Target target : targets) {
+          for (          UUID targetId : target.getTargets()) {
+            Permanent targetedPermanent=game.getPermanentOrLKIBattlefield(targetId);
+            if (targetedPermanent.getControllerId().equals(sourceControllerId)) {
+              return true;
+            }
+          }
+        }
+      }
     }
   }
   return false;
