@@ -67,12 +67,7 @@
             sb.append(spellAbility.name);
           }
         }
-        if (spellAbility.getTargets().size() > 0) {
-          for (          Target target : spellAbility.getTargets()) {
-            sb.append(" targeting ");
-            sb.append(target.getTargetedName(game));
-          }
-        }
+        appendTargetDescriptionForLog(sb,spellAbility.getTargets(),game);
       }
     }
   }
@@ -84,22 +79,12 @@
       if (spellModes.getSelectedModes().contains(mode.getId())) {
         spellModes.setMode(mode);
         sb.append(" (mode ").append(item).append(")");
-        if (getTargets().size() > 0) {
-          sb.append(" targeting ");
-          for (          Target target : getTargets()) {
-            sb.append(target.getTargetedName(game));
-          }
-        }
+        appendTargetDescriptionForLog(sb,getTargets(),game);
       }
     }
   }
  else {
-    if (getTargets().size() > 0) {
-      sb.append(" targeting ");
-      for (      Target target : getTargets()) {
-        sb.append(target.getTargetedName(game));
-      }
-    }
+    appendTargetDescriptionForLog(sb,getTargets(),game);
   }
   for (  Choice choice : this.getChoices()) {
     sb.append(" - ").append(choice.getMessage()).append(": ").append(choice.getChoice());
