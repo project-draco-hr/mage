@@ -5,13 +5,31 @@
         return;
       }
       try {
-        if (!enlargedImageWindowOpen) {
+        if (enlargedWindowState.equals(EnlargedWindowState.CLOSED)) {
           return;
         }
         Component parentComponent=SwingUtilities.getRoot(transferData.component);
         Point parentPoint=parentComponent.getLocationOnScreen();
-        final Component popupContainer=MageFrame.getUI().getComponent(MageComponents.CARD_PREVIEW_CONTAINER);
-        Component cardPreviewPane=MageFrame.getUI().getComponent(MageComponents.CARD_PREVIEW_PANE);
+        MageComponents mageComponentCardPreviewContainer;
+        MageComponents mageComponentCardPreviewPane;
+        if (cardView.isToRotate()) {
+          if (enlargedWindowState.equals(EnlargedWindowState.NORMAL)) {
+            hideEnlargedCard();
+            enlargedWindowState=EnlargedWindowState.ROTATED;
+          }
+          mageComponentCardPreviewContainer=MageComponents.CARD_PREVIEW_CONTAINER_ROTATED;
+          mageComponentCardPreviewPane=MageComponents.CARD_PREVIEW_PANE_ROTATED;
+        }
+ else {
+          if (enlargedWindowState.equals(EnlargedWindowState.ROTATED)) {
+            hideEnlargedCard();
+            enlargedWindowState=EnlargedWindowState.NORMAL;
+          }
+          mageComponentCardPreviewContainer=MageComponents.CARD_PREVIEW_CONTAINER;
+          mageComponentCardPreviewPane=MageComponents.CARD_PREVIEW_PANE;
+        }
+        final Component popupContainer=MageFrame.getUI().getComponent(mageComponentCardPreviewContainer);
+        Component cardPreviewPane=MageFrame.getUI().getComponent(mageComponentCardPreviewPane);
         if (cardPreviewPane != null) {
           Point location=new Point((int)transferData.locationOnScreen.getX() + transferData.popupOffsetX - 40,(int)transferData.locationOnScreen.getY() + transferData.popupOffsetY - 40);
           location=GuiDisplayUtil.keepComponentInsideParent(location,parentPoint,cardPreviewPane,parentComponent);

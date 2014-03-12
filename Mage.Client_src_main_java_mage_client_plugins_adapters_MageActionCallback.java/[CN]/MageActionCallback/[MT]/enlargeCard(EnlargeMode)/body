@@ -1,5 +1,5 @@
 {
-  if (!enlargedImageWindowOpen) {
+  if (enlargedWindowState.equals(EnlargedWindowState.CLOSED)) {
     this.enlargeMode=showAlternative;
     CardView cardView=null;
     if (popupData != null) {
@@ -9,7 +9,12 @@
       hidePopup();
     }
     if (cardView != null) {
-      enlargedImageWindowOpen=true;
+      if (cardView.isToRotate()) {
+        enlargedWindowState=EnlargedWindowState.ROTATED;
+      }
+ else {
+        enlargedWindowState=EnlargedWindowState.NORMAL;
+      }
       displayEnlargedCard(cardView,popupData);
     }
   }

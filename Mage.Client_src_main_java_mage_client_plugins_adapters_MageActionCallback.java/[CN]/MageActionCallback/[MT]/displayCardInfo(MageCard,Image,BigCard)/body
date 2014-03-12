@@ -1,6 +1,12 @@
 {
   if (image != null && image instanceof BufferedImage) {
-    image=ImageHelper.getResizedImage((BufferedImage)image,bigCard.getWidth());
+    if (mageCard.getOriginal().isToRotate() && bigCard.getWidth() > bigCard.getHeight()) {
+      image=ImageHelper.getResizedImage((BufferedImage)image,bigCard.getHeight());
+      image=ImageHelper.rotate((BufferedImage)image,Math.toRadians(90));
+    }
+ else {
+      image=ImageHelper.getResizedImage((BufferedImage)image,bigCard.getWidth());
+    }
     bigCard.setCard(mageCard.getOriginal().getId(),enlargeMode,image,mageCard.getOriginal().getRules());
     if (mageCard.getOriginal().isAbility()) {
       bigCard.showTextComponent();
