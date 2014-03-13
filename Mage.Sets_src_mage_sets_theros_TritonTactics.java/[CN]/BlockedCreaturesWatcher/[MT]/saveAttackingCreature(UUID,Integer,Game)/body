@@ -6,15 +6,13 @@
     attackerMap=(Map<Integer,Set<String>>)object;
   }
  else {
-    attackerMap=new HashMap<Integer,Set<String>>();
+    attackerMap=new HashMap<>();
   }
   attackers=attackerMap.get(zoneChangeCounter);
   if (attackers == null) {
-    attackers=new HashSet<String>();
+    attackers=new HashSet<>();
     attackerMap.put(zoneChangeCounter,attackers);
   }
   attackers.add(CardUtil.getCardZoneString(null,attackerId,game));
-  if (object == null || !(object instanceof Map)) {
-    game.getState().setValue("blockedAttackers" + getSourceId().toString(),attackerMap);
-  }
+  game.getState().setValue("blockedAttackers" + getSourceId().toString(),attackerMap);
 }
