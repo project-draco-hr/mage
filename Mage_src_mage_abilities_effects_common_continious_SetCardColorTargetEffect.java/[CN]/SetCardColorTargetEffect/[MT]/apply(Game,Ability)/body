@@ -1,11 +1,23 @@
 {
   boolean result=false;
-  for (  UUID targetId : targetPointer.getTargets(game,source)) {
-    MageObject o=game.getObject(targetId);
-    if (o != null) {
-      if (o instanceof Permanent || o instanceof StackObject) {
-        o.getColor().setColor(setColor);
-        result=true;
+  ObjectColor objectColor=null;
+  if (setColor == null) {
+    ChoiceColor choice=(ChoiceColor)source.getChoices().get(0);
+    if (choice != null && choice.getColor() != null) {
+      objectColor=choice.getColor();
+    }
+  }
+ else {
+    objectColor=this.setColor;
+  }
+  if (objectColor != null) {
+    for (    UUID targetId : targetPointer.getTargets(game,source)) {
+      MageObject o=game.getObject(targetId);
+      if (o != null) {
+        if (o instanceof Permanent || o instanceof StackObject) {
+          o.getColor().setColor(objectColor);
+          result=true;
+        }
       }
     }
   }
