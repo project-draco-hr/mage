@@ -1,14 +1,19 @@
 {
-  Card card=game.getCard(source.getFirstTarget());
-  if (card != null) {
+  Card card=game.getCard(this.getTargetPointer().getFirst(game,source));
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && card != null) {
     card.addAbility(HasteAbility.getInstance());
-    card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),source.getControllerId());
-    ExileTargetEffect exileEffect=new ExileTargetEffect();
-    exileEffect.setTargetPointer(new FixedTarget(card.getId()));
-    DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(exileEffect);
-    delayedAbility.setSourceId(source.getSourceId());
-    delayedAbility.setControllerId(source.getControllerId());
-    game.addDelayedTriggeredAbility(delayedAbility);
+    if (controller.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId())) {
+      ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.Custom);
+      effect.setTargetPointer(new FixedTarget(card.getId()));
+      game.addEffect(effect,source);
+      ExileTargetEffect exileEffect=new ExileTargetEffect(null,null,Zone.BATTLEFIELD);
+      exileEffect.setTargetPointer(new FixedTarget(card.getId()));
+      DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(exileEffect);
+      delayedAbility.setSourceId(source.getSourceId());
+      delayedAbility.setControllerId(source.getControllerId());
+      game.addDelayedTriggeredAbility(delayedAbility);
+    }
     return true;
   }
   return false;
