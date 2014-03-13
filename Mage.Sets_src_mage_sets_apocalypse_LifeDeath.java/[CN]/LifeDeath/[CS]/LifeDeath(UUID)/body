@@ -1,0 +1,13 @@
+{
+  super(ownerId,130,"Life","Death",Rarity.UNCOMMON,new CardType[]{CardType.SORCERY},"{G}","{1}{B}",false);
+  this.expansionSetCode="APC";
+  this.color.setGreen(true);
+  this.color.setBlack(true);
+  getLeftHalfCard().getColor().setGreen(true);
+  getLeftHalfCard().getSpellAbility().addEffect(new BecomesCreatureAllEffect(new LifeLandToken(),"lands",new FilterControlledLandPermanent("lands you control"),Duration.EndOfTurn));
+  getRightHalfCard().getColor().setBlack(true);
+  Target target=new TargetCardInYourGraveyard(1,new FilterCreatureCard("creature card from your graveyard"));
+  target.setRequired(true);
+  getRightHalfCard().getSpellAbility().addTarget(target);
+  getRightHalfCard().getSpellAbility().addEffect(new DeathEffect());
+}
