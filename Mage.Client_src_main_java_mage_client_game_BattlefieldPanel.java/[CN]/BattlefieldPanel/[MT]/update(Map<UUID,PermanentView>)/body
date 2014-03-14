@@ -2,20 +2,23 @@
   boolean changed=false;
   List<PermanentView> permanentsToAdd=new ArrayList<>();
   for (  PermanentView permanent : battlefield.values()) {
-    if (!permanents.containsKey(permanent.getId())) {
+    MagePermanent oldMagePermanent=permanents.get(permanent.getId());
+    if (oldMagePermanent == null) {
       permanentsToAdd.add(permanent);
       changed=true;
     }
  else {
-      MagePermanent p=permanents.get(permanent.getId());
       if (!changed) {
-        int s1=permanent.getAttachments() == null ? 0 : permanent.getAttachments().size();
-        int s2=p.getLinks().size();
-        if (s1 != s2) {
-          changed=true;
+        changed=CardUtil.isCreature(oldMagePermanent.getOriginalPermanent()) != CardUtil.isCreature(permanent);
+        if (!changed) {
+          int s1=permanent.getAttachments() == null ? 0 : permanent.getAttachments().size();
+          int s2=oldMagePermanent.getLinks().size();
+          if (s1 != s2) {
+            changed=true;
+          }
         }
       }
-      permanents.get(permanent.getId()).update(permanent);
+      oldMagePermanent.update(permanent);
     }
   }
   addedArtifact=addedCreature=addedPermanent=false;
