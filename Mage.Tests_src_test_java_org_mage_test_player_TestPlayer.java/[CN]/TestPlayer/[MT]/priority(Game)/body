@@ -7,10 +7,13 @@
         String[] groups=command.split(";");
         for (        Ability ability : this.getPlayable(game,true)) {
           if (ability.toString().startsWith(groups[0])) {
+            Ability newAbility=ability.copy();
             if (groups.length > 1) {
-              addTargets(ability,groups,game);
+              if (!addTargets(newAbility,groups,game)) {
+                break;
+              }
             }
-            this.activateAbility((ActivatedAbility)ability,game);
+            this.activateAbility((ActivatedAbility)newAbility,game);
             actions.remove(action);
             return true;
           }
