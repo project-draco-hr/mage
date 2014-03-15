@@ -1,17 +1,16 @@
 {
-  boolean exiled=false;
-  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
-  if (sourcePermanent == null) {
-    sourcePermanent=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
-  }
-  Permanent permanent=game.getPermanent(targetPointer.getFirst(game,source));
-  if (permanent != null) {
-    permanent.moveToExile(source.getSourceId(),sourcePermanent.getName(),source.getSourceId(),game);
-    Card card=game.getCard(targetPointer.getFirst(game,source));
-    if (card != null) {
-      Zone currentZone=game.getState().getZone(card.getId());
-      return card.putOntoBattlefield(game,currentZone,source.getSourceId(),source.getControllerId());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+    Permanent permanent=game.getPermanent(targetPointer.getFirst(game,source));
+    if (permanent != null && sourcePermanent != null) {
+      controller.moveCardToExileWithInfo(permanent,source.getSourceId(),sourcePermanent.getName(),source.getSourceId(),game,Zone.BATTLEFIELD);
+      Card card=game.getCard(targetPointer.getFirst(game,source));
+      if (card != null) {
+        Zone currentZone=game.getState().getZone(card.getId());
+        return controller.putOntoBattlefieldWithInfo(card,game,currentZone,source.getSourceId());
+      }
     }
   }
-  return exiled;
+  return false;
 }
