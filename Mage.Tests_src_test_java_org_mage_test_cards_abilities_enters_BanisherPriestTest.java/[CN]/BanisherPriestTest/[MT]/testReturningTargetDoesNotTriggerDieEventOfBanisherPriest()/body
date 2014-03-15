@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",3);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",2);
+  addCard(Zone.HAND,playerA,"Banisher Priest");
+  addCard(Zone.HAND,playerB,"Incinerate");
+  addCard(Zone.BATTLEFIELD,playerB,"Rockslide Elemental");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Banisher Priest");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Incinerate","Banisher Priest");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerB,"Rockslide Elemental",1);
+  assertPermanentCount(playerA,"Banisher Priest",0);
+  assertPowerToughness(playerB,"Rockslide Elemental",1,1);
+}
