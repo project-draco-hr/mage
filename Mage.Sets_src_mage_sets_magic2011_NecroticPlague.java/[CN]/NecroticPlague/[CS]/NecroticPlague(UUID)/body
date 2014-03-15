@@ -8,5 +8,9 @@
   this.getSpellAbility().addEffect(new AttachEffect(Outcome.Detriment));
   Ability ability=new EnchantAbility(auraTarget.getTargetName());
   this.addAbility(ability);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new NecroticPlagueEffect(this.objectId)));
+  Ability gainedAbility=new BeginningOfUpkeepTriggeredAbility(new SacrificeSourceEffect(),TargetController.YOU,false);
+  Effect effect=new GainAbilityAttachedEffect(gainedAbility,AttachmentType.AURA,Duration.WhileOnBattlefield);
+  effect.setText("Enchanted creature has \"At the beginning of your upkeep, sacrifice this creature.\"");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  this.addAbility(new DiesAttachedTriggeredAbility(new NecroticPlagueEffect(),"enchanted creature",false));
 }
