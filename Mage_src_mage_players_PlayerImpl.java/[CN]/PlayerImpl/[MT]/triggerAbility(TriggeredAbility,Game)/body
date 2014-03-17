@@ -4,25 +4,23 @@
     throw new IllegalArgumentException("source TriggeredAbility  must not be null");
   }
   int bookmark=game.bookmarkState();
-  TriggeredAbility ability=null;
-  try {
-    ability=source.copy();
-  }
- catch (  NullPointerException npe) {
-    log.fatal("NPE for source=" + source);
-    log.fatal("NPE for source=" + source.getRule());
-    throw npe;
-  }
+  TriggeredAbility ability=source.copy();
   if (ability != null && ability.canChooseTarget(game)) {
     if (ability.isUsesStack()) {
       game.getStack().push(new StackAbility(ability,playerId));
       if (ability.activate(game,false)) {
+        if (ability.getRuleVisible()) {
+          game.informPlayers(ability.getGameLogMessage(game));
+        }
         game.removeBookmark(bookmark);
         return true;
       }
     }
  else {
       if (ability.activate(game,false)) {
+        if (ability.getRuleVisible()) {
+          game.informPlayers(ability.getGameLogMessage(game));
+        }
         ability.resolve(game);
         game.removeBookmark(bookmark);
         return true;

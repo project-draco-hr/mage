@@ -1,10 +1,10 @@
 {
-  HashMap<Entry<RestrictionUntapNotMoreThanEffect,HashSet<Ability>>,Integer> notMoreThanEffectsUsage=new HashMap<Entry<RestrictionUntapNotMoreThanEffect,HashSet<Ability>>,Integer>();
+  HashMap<Entry<RestrictionUntapNotMoreThanEffect,HashSet<Ability>>,Integer> notMoreThanEffectsUsage=new HashMap<>();
   for (  Entry<RestrictionUntapNotMoreThanEffect,HashSet<Ability>> restrictionEffect : game.getContinuousEffects().getApplicableRestrictionUntapNotMoreThanEffects(this,game).entrySet()) {
     notMoreThanEffectsUsage.put(restrictionEffect,new Integer(restrictionEffect.getKey().getNumber()));
   }
   if (!notMoreThanEffectsUsage.isEmpty()) {
-    List<Permanent> canBeUntapped=new ArrayList<Permanent>();
+    List<Permanent> canBeUntapped=new ArrayList<>();
     for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
       boolean untap=true;
       for (      RestrictionEffect effect : game.getContinuousEffects().getApplicableRestrictionEffects(permanent,game).keySet()) {
@@ -14,7 +14,7 @@
         canBeUntapped.add(permanent);
       }
     }
-    List<Permanent> selectedToUntap=new ArrayList<Permanent>();
+    List<Permanent> selectedToUntap=new ArrayList<>();
     boolean playerCanceledSelection;
     do {
       playerCanceledSelection=false;
