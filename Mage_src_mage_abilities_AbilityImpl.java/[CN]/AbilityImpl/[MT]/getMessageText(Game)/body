@@ -67,7 +67,7 @@
             sb.append(spellAbility.name);
           }
         }
-        appendTargetDescriptionForLog(sb,spellAbility.getTargets(),game);
+        sb.append(getTargetDescriptionForLog(spellAbility.getTargets(),game));
       }
     }
   }
@@ -79,15 +79,12 @@
       if (spellModes.getSelectedModes().contains(mode.getId())) {
         spellModes.setMode(mode);
         sb.append(" (mode ").append(item).append(")");
-        appendTargetDescriptionForLog(sb,getTargets(),game);
+        sb.append(getTargetDescriptionForLog(getTargets(),game));
       }
     }
   }
  else {
-    appendTargetDescriptionForLog(sb,getTargets(),game);
-  }
-  for (  Choice choice : this.getChoices()) {
-    sb.append(" - ").append(choice.getMessage()).append(": ").append(choice.getChoice());
+    sb.append(getTargetDescriptionForLog(getTargets(),game));
   }
   return sb.toString();
 }
