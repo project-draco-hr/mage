@@ -1,0 +1,20 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  Player you=game.getPlayer(source.getControllerId());
+  Card sourceCard=game.getCard(source.getSourceId());
+  if (player != null && you != null) {
+    player.revealCards(sourceCard != null ? sourceCard.getName() : "Discard",player.getHand(),game);
+    if (player.getHand().count(filter,source.getSourceId(),source.getControllerId(),game) > 0) {
+      TargetCard target=new TargetCard(Zone.PICK,filter);
+      target.setRequired(true);
+      if (you.choose(Outcome.Benefit,player.getHand(),target,game)) {
+        Card card=player.getHand().get(target.getFirstTarget(),game);
+        if (card != null) {
+          return player.discard(card,source,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
