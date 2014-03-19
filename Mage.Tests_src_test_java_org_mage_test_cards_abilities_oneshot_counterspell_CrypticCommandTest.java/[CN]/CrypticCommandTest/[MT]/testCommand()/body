@@ -1,0 +1,21 @@
+{
+  addCard(Zone.HAND,playerA,"Thoughtseize");
+  addCard(Zone.HAND,playerA,"Remand");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.HAND,playerB,"Cryptic Command");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",4);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Thoughtseize",playerB);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Cryptic Command","Thoughtseize");
+  setModeChoice(playerB,"0");
+  setModeChoice(playerB,"3");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Remand","Thoughtseize","Cryptic Command");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertHandCount(playerA,2);
+  assertGraveyardCount(playerA,1);
+  assertHandCount(playerB,0);
+  assertGraveyardCount(playerB,1);
+}

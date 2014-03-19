@@ -1,0 +1,22 @@
+{
+  if (spellAbility.getModes().getSelectedModes().size() > 1) {
+    boolean targetedMode=false;
+    boolean legalTargetedMode=false;
+    for (    UUID modeId : spellAbility.getModes().getSelectedModes()) {
+      spellAbility.getModes().setMode(spellAbility.getModes().get(modeId));
+      if (spellAbility.getTargets().size() > 0) {
+        targetedMode=true;
+        if (spellAbility.getTargets().stillLegal(spellAbility,game)) {
+          legalTargetedMode=true;
+        }
+      }
+    }
+    if (targetedMode) {
+      return legalTargetedMode;
+    }
+    return true;
+  }
+ else {
+    return spellAbility.getTargets().stillLegal(spellAbility,game);
+  }
+}

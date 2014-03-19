@@ -5,19 +5,23 @@
     result=false;
     boolean legalParts=false;
     for (    SpellAbility spellAbility : this.spellAbilities) {
-      for (      UUID modeId : spellAbility.getModes().getSelectedModes()) {
-        spellAbility.getModes().setMode(spellAbility.getModes().get(modeId));
-        if (spellAbility.getTargets().stillLegal(spellAbility,game)) {
-          legalParts=true;
-          if (!spellAbility.getSpellAbilityType().equals(SpellAbilityType.SPLICE)) {
-            updateOptionalCosts(index);
-          }
-          result|=spellAbility.resolve(game);
-        }
-      }
-      index++;
+      legalParts|=spellAbilityHasLegalParts(spellAbility,game);
     }
     if (legalParts) {
+      for (      SpellAbility spellAbility : this.spellAbilities) {
+        if (spellAbilityHasLegalParts(spellAbility,game)) {
+          for (          UUID modeId : spellAbility.getModes().getSelectedModes()) {
+            spellAbility.getModes().setMode(spellAbility.getModes().get(modeId));
+            if (spellAbility.getTargets().stillLegal(spellAbility,game)) {
+              if (!spellAbility.getSpellAbilityType().equals(SpellAbilityType.SPLICE)) {
+                updateOptionalCosts(index);
+              }
+              result|=spellAbility.resolve(game);
+            }
+          }
+          index++;
+        }
+      }
       if (!copiedSpell) {
         for (        Effect effect : ability.getEffects()) {
           if (effect instanceof PostResolveEffect) {
