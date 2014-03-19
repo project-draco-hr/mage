@@ -5,6 +5,9 @@
         String command=action.getAction();
         command=command.substring(command.indexOf("activate:") + 9);
         String[] groups=command.split(";");
+        if (!checkSpellOnStackCondition(groups,game)) {
+          break;
+        }
         for (        Ability ability : this.getPlayable(game,true)) {
           if (ability.toString().startsWith(groups[0])) {
             Ability newAbility=ability.copy();
