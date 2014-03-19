@@ -1,7 +1,9 @@
 {
-  MageObject before=game.getLastKnownInformation(sourceId,Zone.BATTLEFIELD);
-  if (before != null && ((Permanent)before).getCounters().getCount(CounterType.P1P1) > 0) {
-    return super.checkTrigger(event,game);
+  if (super.checkTrigger(event,game)) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getTarget().getCounters().getCount(CounterType.P1P1) > 0) {
+      return true;
+    }
   }
   return false;
 }
