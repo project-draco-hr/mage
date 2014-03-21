@@ -1,0 +1,20 @@
+{
+  Permanent creature=game.getPermanent(blockerId);
+  if (creature != null) {
+    for (    CombatGroup group : groups) {
+      if (group.equals(groupToUnblock) && group.blockers.contains(blockerId)) {
+        group.blockers.remove(blockerId);
+        group.blockerOrder.remove(blockerId);
+        if (group.blockers.isEmpty()) {
+          group.blocked=false;
+        }
+        if (creature.getBlocking() > 0) {
+          creature.setBlocking(creature.getBlocking() - 1);
+        }
+ else {
+          throw new UnsupportedOperationException("Tryinging creature to unblock, but blocking number value of creature < 1");
+        }
+      }
+    }
+  }
+}

@@ -6,6 +6,14 @@
   if (response.getBoolean() != null) {
   }
  else   if (response.getUUID() != null) {
-    declareBlocker(defenderId,blockerId,response.getUUID(),game);
+    CombatGroup group=game.getCombat().findGroup(response.getUUID());
+    if (group != null) {
+      if (!group.getBlockers().contains(blockerId)) {
+        declareBlocker(defenderId,blockerId,response.getUUID(),game);
+      }
+ else {
+        game.getCombat().removeBlockerGromGroup(blockerId,group,game);
+      }
+    }
   }
 }

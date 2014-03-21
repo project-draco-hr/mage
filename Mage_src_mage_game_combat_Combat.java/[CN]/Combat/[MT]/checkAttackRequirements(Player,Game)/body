@@ -1,12 +1,12 @@
 {
   for (  Permanent creature : player.getAvailableAttackers(game)) {
     boolean mustAttack=false;
-    Set<UUID> defendersForcedToAttack=new HashSet<UUID>();
-    for (    Map.Entry entry : game.getContinuousEffects().getApplicableRequirementEffects(creature,game).entrySet()) {
-      RequirementEffect effect=(RequirementEffect)entry.getKey();
+    Set<UUID> defendersForcedToAttack=new HashSet<>();
+    for (    Map.Entry<RequirementEffect,HashSet<Ability>> entry : game.getContinuousEffects().getApplicableRequirementEffects(creature,game).entrySet()) {
+      RequirementEffect effect=entry.getKey();
       if (effect.mustAttack(game)) {
         mustAttack=true;
-        for (        Ability ability : (HashSet<Ability>)entry.getValue()) {
+        for (        Ability ability : entry.getValue()) {
           UUID defenderId=effect.mustAttackDefender(ability,game);
           if (defenderId != null) {
             defendersForcedToAttack.add(defenderId);

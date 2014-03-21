@@ -14,10 +14,16 @@
  else     if (response.getUUID() != null) {
       Permanent blocker=game.getPermanent(response.getUUID());
       if (blocker != null) {
+        boolean removeBlocker=false;
         if (filter.match(blocker,null,playerId,game)) {
           selectCombatGroup(defendingPlayerId,blocker.getId(),game);
         }
- else         if (filterBlock.match(blocker,null,playerId,game) && game.getStack().isEmpty()) {
+ else {
+          if (filterBlock.match(blocker,null,playerId,game) && game.getStack().isEmpty()) {
+            removeBlocker=true;
+          }
+        }
+        if (removeBlocker) {
           game.getCombat().removeBlocker(blocker.getId(),game);
         }
       }

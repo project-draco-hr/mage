@@ -1,12 +1,12 @@
 {
   Set<UUID> opponents=game.getOpponents(attackerId);
-  Map<UUID,Set<UUID>> mustBeBlockedByAtLeastOne=new HashMap<UUID,Set<UUID>>();
+  Map<UUID,Set<UUID>> mustBeBlockedByAtLeastOne=new HashMap<>();
   for (  Permanent creature : game.getBattlefield().getActivePermanents(new FilterControlledCreaturePermanent(),player.getId(),game)) {
     if (opponents.contains(creature.getControllerId())) {
       if (creature.getBlocking() > 0) {
-        for (        Map.Entry entry : game.getContinuousEffects().getApplicableRequirementEffects(creature,game).entrySet()) {
-          RequirementEffect effect=(RequirementEffect)entry.getKey();
-          for (          Ability ability : (HashSet<Ability>)entry.getValue()) {
+        for (        Map.Entry<RequirementEffect,HashSet<Ability>> entry : game.getContinuousEffects().getApplicableRequirementEffects(creature,game).entrySet()) {
+          RequirementEffect effect=entry.getKey();
+          for (          Ability ability : entry.getValue()) {
             UUID toBeBlockedCreature=effect.mustBlockAttackerIfElseUnblocked(ability,game);
             if (toBeBlockedCreature != null) {
               Set<UUID> potentialBlockers;
@@ -14,7 +14,7 @@
                 potentialBlockers=mustBeBlockedByAtLeastOne.get(toBeBlockedCreature);
               }
  else {
-                potentialBlockers=new HashSet<UUID>();
+                potentialBlockers=new HashSet<>();
                 mustBeBlockedByAtLeastOne.put(toBeBlockedCreature,potentialBlockers);
               }
               potentialBlockers.add(creature.getId());
@@ -23,9 +23,9 @@
         }
       }
       if (creature.getBlocking() == 0) {
-        for (        Map.Entry entry : game.getContinuousEffects().getApplicableRequirementEffects(creature,game).entrySet()) {
-          RequirementEffect effect=(RequirementEffect)entry.getKey();
-          for (          Ability ability : (HashSet<Ability>)entry.getValue()) {
+        for (        Map.Entry<RequirementEffect,HashSet<Ability>> entry : game.getContinuousEffects().getApplicableRequirementEffects(creature,game).entrySet()) {
+          RequirementEffect effect=entry.getKey();
+          for (          Ability ability : entry.getValue()) {
             UUID toBeBlockedCreature=effect.mustBlockAttackerIfElseUnblocked(ability,game);
             if (toBeBlockedCreature != null) {
               Set<UUID> potentialBlockers;
@@ -33,7 +33,7 @@
                 potentialBlockers=mustBeBlockedByAtLeastOne.get(toBeBlockedCreature);
               }
  else {
-                potentialBlockers=new HashSet<UUID>();
+                potentialBlockers=new HashSet<>();
                 mustBeBlockedByAtLeastOne.put(toBeBlockedCreature,potentialBlockers);
               }
               potentialBlockers.add(creature.getId());
