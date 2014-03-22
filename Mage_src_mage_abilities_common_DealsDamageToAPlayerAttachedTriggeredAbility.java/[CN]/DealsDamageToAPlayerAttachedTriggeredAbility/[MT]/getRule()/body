@@ -1,9 +1,20 @@
 {
   StringBuilder sb=new StringBuilder("Whenever ").append(attachedDescription);
   sb.append(" deals");
-  if (!onlyCombat) {
+  if (onlyCombat) {
     sb.append(" combat");
   }
-  sb.append(" damage to a player, ").append(super.getRule());
-  return sb.toString();
+  sb.append(" damage to ");
+switch (targetController) {
+case OPPONENT:
+    sb.append("an opponent, ");
+  break;
+case ANY:
+sb.append("a player, ");
+break;
+default :
+throw new UnsupportedOperationException();
+}
+sb.append(super.getRule());
+return sb.toString();
 }
