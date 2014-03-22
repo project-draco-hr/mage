@@ -1,0 +1,15 @@
+{
+  Player targetPlayer=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+  if (targetPlayer != null) {
+    Target target=new TargetCardInHand(new FilterArtifactCard());
+    target.setRequired(true);
+    if (target.canChoose(source.getSourceId(),targetPlayer.getId(),game) && targetPlayer.chooseUse(outcome,"Discard an artifact?",game) && targetPlayer.chooseTarget(outcome,target,source,game)) {
+      return targetPlayer.discard(targetPlayer.getHand().get(target.getFirstTarget(),game),source,game);
+    }
+ else {
+      targetPlayer.discard(Math.min(targetPlayer.getHand().size(),2),source,game);
+    }
+    return true;
+  }
+  return false;
+}
