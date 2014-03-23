@@ -16,7 +16,7 @@
   if (target.canChoose(source.getSourceId(),player.getId(),game)) {
     if (player.chooseTarget(Outcome.PutCreatureInPlay,target,source,game)) {
       Card card=game.getCard(target.getFirstTarget());
-      if (card != null && card.putOntoBattlefield(game,Zone.EXILED,source.getSourceId(),player.getId())) {
+      if (card != null && player.putOntoBattlefieldWithInfo(card,game,Zone.EXILED,source.getSourceId())) {
         ContinuousEffectImpl effect=new AshiokNightmareWeaverAddTypeEffect();
         effect.setTargetPointer(new FixedTarget(card.getId()));
         game.addEffect(effect,source);
