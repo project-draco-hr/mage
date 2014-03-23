@@ -1,0 +1,15 @@
+{
+  if (event.getType() == GameEvent.EventType.DREW_CARD && game.getPhase() != null && game.getPhase().getStep().getType().equals(PhaseStep.DRAW)) {
+    UUID playerId=event.getPlayerId();
+    if (playerId != null) {
+      Integer amount=amountOfCardsDrawnThisTurn.get(playerId);
+      if (amount == null) {
+        amount=Integer.valueOf(1);
+      }
+ else {
+        amount=Integer.valueOf(amount + 1);
+      }
+      amountOfCardsDrawnThisTurn.put(playerId,amount);
+    }
+  }
+}
