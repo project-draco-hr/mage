@@ -1,22 +1,20 @@
 {
-  Player you=game.getPlayer(source.getControllerId());
-  if (you == null) {
-    return false;
-  }
-  Card topcard=you.getLibrary().getFromTop(game);
-  if (topcard == null) {
-    return false;
-  }
-  CardsImpl cards=new CardsImpl();
-  cards.add(topcard);
-  you.revealCards("Counterbalance",cards,game);
-  int cmc=topcard.getManaCost().convertedManaCost();
-  StackObject spell=game.getStack().getStackObject(targetPointer.getFirst(game,source));
-  if (spell == null) {
-    return false;
-  }
-  if (cmc == spell.getManaCost().convertedManaCost()) {
-    return game.getStack().counter(spell.getSourceId(),source.getSourceId(),game);
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (controller != null && sourcePermanent != null) {
+    StackObject spell=game.getStack().getStackObject(targetPointer.getFirst(game,source));
+    if (spell != null) {
+      Card topcard=controller.getLibrary().getFromTop(game);
+      if (topcard != null) {
+        CardsImpl cards=new CardsImpl();
+        cards.add(topcard);
+        controller.revealCards(sourcePermanent.getName(),cards,game);
+        if (topcard.getManaCost().convertedManaCost() == spell.getManaCost().convertedManaCost()) {
+          return game.getStack().counter(spell.getId(),source.getSourceId(),game);
+        }
+      }
+      return true;
+    }
   }
   return false;
 }
