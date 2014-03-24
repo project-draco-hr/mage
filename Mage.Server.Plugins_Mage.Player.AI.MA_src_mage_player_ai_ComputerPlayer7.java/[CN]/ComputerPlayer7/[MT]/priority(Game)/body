@@ -1,7 +1,7 @@
 {
   if (lastLoggedTurn != game.getTurnNum()) {
     lastLoggedTurn=game.getTurnNum();
-    logger.info(new StringBuilder("------------------------ ").append("Turn: ").append(game.getTurnNum()).append(" [").append(game.getPlayer(game.getActivePlayerId()).getName()).append("----------------------------------------------------").toString());
+    logger.info(new StringBuilder("============================== ").append("Turn: ").append(game.getTurnNum()).append(" [").append(game.getPlayer(game.getActivePlayerId()).getName()).append("] ====================================================").toString());
   }
   logState(game);
   logger.debug("Priority -- Step: " + (game.getTurn().getStepType() + "                       ").substring(0,25) + " ActivePlayer-"+ game.getPlayer(game.getActivePlayerId()).getName()+ " PriorityPlayer-"+ name);
@@ -16,6 +16,7 @@ case PRECOMBAT_MAIN:
 if (game.getActivePlayerId().equals(playerId)) {
   printOutState(game);
   if (actions.size() == 0) {
+    logger.info("Sim Calculate pre combat actions ----------------------------------------------------- ");
     calculatePreCombatActions(game);
   }
   act(game);
@@ -32,6 +33,7 @@ case DECLARE_ATTACKERS:
 if (!game.getActivePlayerId().equals(playerId)) {
 printOutState(game);
 if (actions.size() == 0) {
+logger.info("Sim Calculate declare attackers actions ----------------------------------------------------- ");
 calculatePreCombatActions(game);
 }
 act(game);
