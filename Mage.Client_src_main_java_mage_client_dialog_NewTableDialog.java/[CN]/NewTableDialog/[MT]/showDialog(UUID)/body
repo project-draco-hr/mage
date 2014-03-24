@@ -1,17 +1,22 @@
 {
-  session=MageFrame.getSession();
-  MageFrame.getUI().addButton(MageComponents.NEW_TABLE_OK_BUTTON,btnOK);
-  this.player1Panel.setPlayerName(session.getUserName());
-  cbGameType.setModel(new DefaultComboBoxModel(session.getGameTypes().toArray()));
-  cbDeckType.setModel(new DefaultComboBoxModel(session.getDeckTypes()));
-  selectLimitedByDefault();
-  cbTimeLimit.setModel(new DefaultComboBoxModel(MatchTimeLimit.values()));
-  cbRange.setModel(new DefaultComboBoxModel(RangeOfInfluence.values()));
-  cbAttackOption.setModel(new DefaultComboBoxModel(MultiplayerAttackOption.values()));
-  setGameSettingsFromPrefs();
   this.roomId=roomId;
-  this.setModal(true);
-  setGameOptions();
-  this.setLocation(150,100);
+  if (!lastSessionId.equals(MageFrame.getSession().getSessionId())) {
+    lastSessionId=session.getSessionId();
+    this.player1Panel.setPlayerName(session.getUserName());
+    cbGameType.setModel(new DefaultComboBoxModel(session.getGameTypes().toArray()));
+    cbDeckType.setModel(new DefaultComboBoxModel(session.getDeckTypes()));
+    selectLimitedByDefault();
+    cbTimeLimit.setModel(new DefaultComboBoxModel(MatchTimeLimit.values()));
+    cbRange.setModel(new DefaultComboBoxModel(RangeOfInfluence.values()));
+    cbAttackOption.setModel(new DefaultComboBoxModel(MultiplayerAttackOption.values()));
+    int i=2;
+    for (    TablePlayerPanel tablePlayerPanel : players) {
+      tablePlayerPanel.init(i++,tablePlayerPanel.getPlayerType());
+    }
+    setGameSettingsFromPrefs();
+    this.setModal(true);
+    setGameOptions();
+    this.setLocation(150,100);
+  }
   this.setVisible(true);
 }
