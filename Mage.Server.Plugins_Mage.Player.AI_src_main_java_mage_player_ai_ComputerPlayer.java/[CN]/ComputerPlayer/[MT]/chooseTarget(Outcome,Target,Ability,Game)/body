@@ -32,7 +32,7 @@
   }
   if (target instanceof TargetDiscard || target instanceof TargetCardInHand) {
     if (outcome.isGood()) {
-      ArrayList<Card> cardsInHand=new ArrayList<Card>(hand.getCards(game));
+      ArrayList<Card> cardsInHand=new ArrayList<>(hand.getCards(game));
       while (!target.isChosen() && !cardsInHand.isEmpty() && target.getMaxNumberOfTargets() < target.getTargets().size()) {
         Card card=pickBestCard(cardsInHand,null,target,source,game);
         if (card != null) {
@@ -161,7 +161,7 @@
     return false;
   }
   if (target instanceof TargetCardInGraveyard) {
-    List<Card> cards=new ArrayList<Card>();
+    List<Card> cards=new ArrayList<>();
     for (    Player player : game.getPlayers().values()) {
       cards.addAll(player.getGraveyard().getCards(game));
     }
@@ -173,7 +173,7 @@
     return false;
   }
   if (target instanceof TargetCardInLibrary) {
-    List<Card> cards=new ArrayList<Card>(game.getPlayer(playerId).getLibrary().getCards(game));
+    List<Card> cards=new ArrayList<>(game.getPlayer(playerId).getLibrary().getCards(game));
     Card card=pickTarget(cards,outcome,target,source,game);
     if (card != null) {
       target.addTarget(card.getId(),source,game);
@@ -182,7 +182,7 @@
     return false;
   }
   if (target instanceof TargetCardInYourGraveyard) {
-    List<Card> cards=new ArrayList<Card>(game.getPlayer(playerId).getGraveyard().getCards(game));
+    List<Card> cards=new ArrayList<>(game.getPlayer(playerId).getGraveyard().getCards(game));
     while (!target.isChosen() && !cards.isEmpty()) {
       Card card=pickTarget(cards,outcome,target,source,game);
       if (card != null) {
@@ -192,7 +192,7 @@
     return target.isChosen();
   }
   if (target instanceof TargetCardInHand) {
-    List<Card> cards=new ArrayList<Card>();
+    List<Card> cards=new ArrayList<>();
     cards.addAll(this.hand.getCards(game));
     while (!target.isChosen() && !cards.isEmpty()) {
       Card pick=pickTarget(cards,outcome,target,source,game);
@@ -216,7 +216,7 @@
     return false;
   }
   if (target instanceof TargetCardInOpponentsGraveyard) {
-    List<Card> cards=new ArrayList<Card>();
+    List<Card> cards=new ArrayList<>();
     for (    UUID uuid : game.getOpponents(playerId)) {
       Player player=game.getPlayer(uuid);
       if (player != null) {
@@ -251,7 +251,7 @@
     return target.isChosen();
   }
   if (target instanceof TargetCardInASingleGraveyard) {
-    List<Card> cards=new ArrayList<Card>();
+    List<Card> cards=new ArrayList<>();
     for (    Player player : game.getPlayers().values()) {
       cards.addAll(player.getGraveyard().getCards(game));
     }

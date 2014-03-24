@@ -1,11 +1,12 @@
 {
   Permanent artifact=game.getPermanent(source.getTargets().get(0).getFirstTarget());
   Card card=game.getCard(source.getTargets().get(1).getFirstTarget());
-  if (artifact != null && card != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (artifact != null && card != null && controller != null) {
     Zone currentZone=game.getState().getZone(card.getId());
     if (artifact.getCardType().contains(CardType.ARTIFACT) && card.getCardType().contains(CardType.ARTIFACT) && currentZone == Zone.GRAVEYARD && card.getOwnerId().equals(artifact.getControllerId())) {
-      boolean sacrifice=artifact.sacrifice(source.getId(),game);
-      boolean putOnBF=card.putOntoBattlefield(game,currentZone,source.getId(),card.getOwnerId());
+      boolean sacrifice=artifact.sacrifice(source.getSourceId(),game);
+      boolean putOnBF=controller.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId());
       if (sacrifice || putOnBF) {
         return true;
       }
