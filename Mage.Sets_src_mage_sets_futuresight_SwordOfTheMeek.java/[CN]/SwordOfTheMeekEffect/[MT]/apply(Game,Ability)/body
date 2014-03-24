@@ -1,0 +1,12 @@
+{
+  Card equipment=game.getCard(source.getSourceId());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (equipment != null && controller != null && game.getState().getZone(source.getSourceId()).equals(Zone.GRAVEYARD)) {
+    controller.putOntoBattlefieldWithInfo(equipment,game,Zone.GRAVEYARD,source.getSourceId());
+    Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (permanent != null) {
+      return permanent.addAttachment(equipment.getId(),game);
+    }
+  }
+  return false;
+}

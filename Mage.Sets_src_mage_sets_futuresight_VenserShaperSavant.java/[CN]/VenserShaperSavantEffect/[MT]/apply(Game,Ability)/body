@@ -1,0 +1,22 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Permanent permanent=game.getPermanent(this.getTargetPointer().getFirst(game,source));
+    if (permanent != null) {
+      return controller.moveCardToHandWithInfo(permanent,source.getSourceId(),game,Zone.BATTLEFIELD);
+    }
+    Spell spell=game.getStack().getSpell(this.getTargetPointer().getFirst(game,source));
+    if (spell != null) {
+      Card card=null;
+      if (!spell.isCopy()) {
+        card=spell.getCard();
+      }
+      game.getStack().remove(spell);
+      if (card != null) {
+        controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.STACK);
+      }
+      return true;
+    }
+  }
+  return false;
+}
