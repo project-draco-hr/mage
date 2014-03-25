@@ -1,7 +1,9 @@
 {
   boolean conditionApplies=false;
   FilterPermanent localFilter=filter.copy();
-  localFilter.add(new ControllerIdPredicate(source.getControllerId()));
+  if (onlyControlled) {
+    localFilter.add(new ControllerIdPredicate(source.getControllerId()));
+  }
 switch (this.type) {
 case FEWER_THAN:
     conditionApplies=game.getBattlefield().count(localFilter,source.getSourceId(),source.getControllerId(),game) < this.count;
