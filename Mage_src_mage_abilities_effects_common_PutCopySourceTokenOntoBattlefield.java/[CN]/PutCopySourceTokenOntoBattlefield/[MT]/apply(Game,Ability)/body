@@ -1,0 +1,26 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    MageObject thisCard=game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+    if (thisCard != null && thisCard instanceof Permanent) {
+      EmptyToken token=new EmptyToken();
+      CardUtil.copyTo(token).from((Permanent)thisCard);
+      if (token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId())) {
+        game.informPlayers(new StringBuilder(controller.getName()).append(" puts a ").append(token.getName()).append(" token ").append("onto the Battlefield").toString());
+        return true;
+      }
+    }
+ else {
+      Permanent permanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+      if (permanent != null) {
+        EmptyToken token=new EmptyToken();
+        CardUtil.copyTo(token).from(permanent);
+        if (token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId())) {
+          game.informPlayers(new StringBuilder(controller.getName()).append(" puts a ").append(token.getName()).append(" token ").append("onto the Battlefield").toString());
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
