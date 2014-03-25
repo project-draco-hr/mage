@@ -1,4 +1,8 @@
 {
+  Player controller=game.getPlayer(this.getControllerId());
+  if (controller == null) {
+    return false;
+  }
   if (!modes.choose(game,this)) {
     return false;
   }
@@ -17,11 +21,13 @@
     }
   }
   if (card != null) {
+    boolean alternativeCostisUsed=false;
     for (    Ability ability : card.getAbilities()) {
       if (ability instanceof AlternativeSourceCosts) {
         AlternativeSourceCosts alternativeSpellCosts=(AlternativeSourceCosts)ability;
         if (alternativeSpellCosts.isAvailable(this,game)) {
           if (alternativeSpellCosts.askToActivateAlternativeCosts(this,game)) {
+            alternativeCostisUsed=true;
             break;
           }
         }
@@ -30,9 +36,20 @@
         ((OptionalAdditionalSourceCosts)ability).addOptionalAdditionalCosts(this,game);
       }
     }
+    if (!alternativeCostisUsed) {
+      if (this.getAbilityType().equals(AbilityType.SPELL)) {
+        for (        AlternativeSourceCosts alternativeSourceCosts : controller.getAlternativeSourceCosts()) {
+          if (alternativeSourceCosts.isAvailable(this,game)) {
+            if (alternativeSourceCosts.askToActivateAlternativeCosts(this,game)) {
+              break;
+            }
+          }
+        }
+      }
+    }
   }
-  VariableManaCost variableManaCost=handleManaXCosts(game,noMana);
-  String announceString=handleOtherXCosts(game);
+  VariableManaCost variableManaCost=handleManaXCosts(game,noMana,controller);
+  String announceString=handleOtherXCosts(game,controller);
   for (  UUID modeId : this.getModes().getSelectedModes()) {
     this.getModes().setMode(this.getModes().get(modeId));
     if (card != null) {
@@ -40,10 +57,7 @@
     }
     if (getTargets().size() > 0 && getTargets().chooseTargets(getEffects().get(0).getOutcome(),this.controllerId,this,game) == false) {
       if (variableManaCost != null || announceString != null) {
-        Player controller=game.getPlayer(this.getControllerId());
-        if (controller != null) {
-          game.informPlayer(controller,new StringBuilder(card != null ? card.getName() : "").append(": no valid targets with this value of X").toString());
-        }
+        game.informPlayer(controller,new StringBuilder(card != null ? card.getName() : "").append(": no valid targets with this value of X").toString());
       }
  else {
         logger.debug("activate failed - target");
@@ -54,7 +68,7 @@
   for (  Cost cost : optionalCosts) {
     if (cost instanceof ManaCost) {
       cost.clearPaid();
-      if (game.getPlayer(this.controllerId).chooseUse(Outcome.Benefit,"Pay optional cost " + cost.getText() + "?",game)) {
+      if (controller.chooseUse(Outcome.Benefit,"Pay optional cost " + cost.getText() + "?",game)) {
         manaCostsToPay.add((ManaCost)cost);
       }
     }
@@ -91,7 +105,7 @@
   }
   if (variableManaCost != null) {
     int xValue=getManaCostsToPay().getX();
-    game.informPlayers(new StringBuilder(game.getPlayer(this.controllerId).getName()).append(" announces a value of ").append(xValue).append(" for ").append(variableManaCost.getText()).toString());
+    game.informPlayers(new StringBuilder(controller.getName()).append(" announces a value of ").append(xValue).append(" for ").append(variableManaCost.getText()).toString());
   }
   return true;
 }
