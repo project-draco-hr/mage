@@ -1,10 +1,11 @@
 {
-  String rule;
+  StringBuilder rule=new StringBuilder(this.text);
   if (cost instanceof ManaCosts) {
-    rule=this.text + " " + cost.getText()+ " <i>("+ super.getRule()+ ")</i>";
+    rule.append(" ");
   }
  else {
-    rule=this.text + "-" + cost.getText()+ " <i>("+ super.getRule()+ ")</i>";
+    rule.append(" - ");
   }
-  return rule;
+  rule.append(cost.getText()).append(" <i>(").append(super.getRule(true)).append(")</i>");
+  return rule.toString();
 }
