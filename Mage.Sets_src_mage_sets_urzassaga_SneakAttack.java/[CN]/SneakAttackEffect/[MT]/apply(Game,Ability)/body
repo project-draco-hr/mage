@@ -6,7 +6,7 @@
       if (player.choose(Outcome.PutCreatureInPlay,target,source.getSourceId(),game)) {
         Card card=game.getCard(target.getFirstTarget());
         if (card != null) {
-          if (card.putOntoBattlefield(game,Zone.HAND,source.getId(),source.getControllerId())) {
+          if (player.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId())) {
             Permanent permanent=game.getPermanent(card.getId());
             ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.Custom);
             effect.setTargetPointer(new FixedTarget(permanent.getId()));
@@ -17,9 +17,10 @@
             delayedAbility.setSourceId(source.getSourceId());
             delayedAbility.setControllerId(source.getControllerId());
             game.addDelayedTriggeredAbility(delayedAbility);
+            return true;
           }
-          return true;
         }
+        return false;
       }
     }
     return true;
