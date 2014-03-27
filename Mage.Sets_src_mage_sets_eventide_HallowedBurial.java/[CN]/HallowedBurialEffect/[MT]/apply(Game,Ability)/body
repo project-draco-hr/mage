@@ -1,6 +1,10 @@
 {
-  for (  Permanent creature : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getSourceId(),game)) {
-    creature.moveToZone(Zone.LIBRARY,source.getSourceId(),game,false);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    Permanent creature : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getSourceId(),game)) {
+      creature.moveToZone(Zone.LIBRARY,source.getSourceId(),game,false);
+    }
+    return true;
   }
   return false;
 }
