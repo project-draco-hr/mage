@@ -1,6 +1,7 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null) {
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (controller != null && sourcePermanent != null) {
     Choice cardChoice=new ChoiceImpl();
     cardChoice.setChoices(CardRepository.instance.getNames());
     cardChoice.clearChoice();
@@ -13,15 +14,12 @@
     game.informPlayers("Runed Halo, named card: [" + cardName + "]");
     FilterCard filter=new FilterCard(cardName);
     filter.add(new NamePredicate(cardName));
-    Permanent permanent=game.getPermanent(source.getSourceId());
-    if (permanent != null) {
-      for (      Ability ability : permanent.getAbilities()) {
-        if (ability instanceof ProtectionAbility) {
-          ((ProtectionAbility)ability).setFilter(filter);
-        }
+    for (    Ability ability : sourcePermanent.getAbilities()) {
+      if (ability instanceof ProtectionAbility) {
+        ((ProtectionAbility)ability).setFilter(filter);
       }
     }
-    permanent.addInfo("Named card",new StringBuilder("[Named card: ").append(cardName).append("]").toString());
+    sourcePermanent.addInfo("Named card",new StringBuilder("[Named card: ").append(cardName).append("]").toString());
   }
   return false;
 }
