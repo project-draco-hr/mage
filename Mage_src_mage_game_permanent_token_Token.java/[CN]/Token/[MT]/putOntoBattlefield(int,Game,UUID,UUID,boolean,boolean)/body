@@ -1,4 +1,8 @@
 {
+  Player controller=game.getPlayer(controllerId);
+  if (controller == null) {
+    return false;
+  }
   Card source=game.getCard(sourceId);
   String setCode;
   if (this.getOriginalExpansionSetCode() != null && !this.getOriginalExpansionSetCode().isEmpty()) {
@@ -28,6 +32,7 @@
         game.getCombat().addAttackingCreature(newToken.getId(),game);
       }
     }
+    game.informPlayers(new StringBuilder(controller.getName()).append(" puts ").append(CardUtil.numberToText(amount,"a")).append(" ").append(this.getName()).append(" token").append(amount == 1 ? "" : "s").append(" onto the battlefield").toString());
     return true;
   }
   return false;
