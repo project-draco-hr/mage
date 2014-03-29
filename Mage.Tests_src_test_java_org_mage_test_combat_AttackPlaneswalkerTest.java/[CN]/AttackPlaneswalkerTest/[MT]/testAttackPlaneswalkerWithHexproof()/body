@@ -1,0 +1,17 @@
+{
+  addCard(Zone.HAND,playerA,"Simic Charm");
+  addCard(Zone.BATTLEFIELD,playerA,"Island");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest");
+  addCard(Zone.BATTLEFIELD,playerA,"Kiora, the Crashing Wave");
+  addCard(Zone.BATTLEFIELD,playerB,"Giant Tortoise");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerA,"Simic Charm");
+  setModeChoice(playerA,"2");
+  attack(2,playerB,"Giant Tortoise","Kiora, the Crashing Wave");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Kiora, the Crashing Wave",1);
+  assertPermanentCount(playerB,"Giant Tortoise",1);
+  assertCounterCount("Kiora, the Crashing Wave",CounterType.LOYALTY,1);
+}
