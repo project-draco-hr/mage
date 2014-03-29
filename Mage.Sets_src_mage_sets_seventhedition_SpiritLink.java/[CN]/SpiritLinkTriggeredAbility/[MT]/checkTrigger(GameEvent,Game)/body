@@ -1,0 +1,16 @@
+{
+  if (event.getType().equals(GameEvent.EventType.DAMAGED_CREATURE) || event.getType().equals(GameEvent.EventType.DAMAGED_PLAYER) || event.getType().equals(GameEvent.EventType.DAMAGED_PLANESWALKER)) {
+    Permanent enchantment=game.getPermanent(this.getSourceId());
+    if (enchantment == null || enchantment.getAttachedTo() == null) {
+      return false;
+    }
+    Permanent enchanted=game.getPermanent(enchantment.getAttachedTo());
+    if (enchanted != null && event.getSourceId().equals(enchanted.getId())) {
+      for (      Effect effect : this.getEffects()) {
+        effect.setValue("damage",event.getAmount());
+      }
+      return true;
+    }
+  }
+  return false;
+}
