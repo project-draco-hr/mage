@@ -1,7 +1,12 @@
 {
   StringBuilder sb=new StringBuilder();
+  String disconnectInfo="";
+  if (!isConnected()) {
+    disconnectInfo=new StringBuilder(" (discon. ").append(getDisconnectDuration()).append(")").toString();
+  }
   int draft=0, match=0, sideboard=0, tournament=0, construct=0;
-  for (  Table table : tables.values()) {
+  for (  Map.Entry<UUID,Table> tableEntry : tables.entrySet()) {
+    Table table=tableEntry.getValue();
     if (table.isTournament()) {
 switch (table.getState()) {
 case CONSTRUCTING:
@@ -13,6 +18,12 @@ case DRAFTING:
 case DUELING:
 tournament++;
 break;
+}
+if (!isConnected()) {
+table.getTournament().getPlayer(tableEntry.getKey()).setDisconnectInfo(disconnectInfo);
+}
+ else {
+table.getTournament().getPlayer(tableEntry.getKey()).setDisconnectInfo("");
 }
 }
  else {
@@ -41,5 +52,6 @@ sb.append("TC: ").append(construct).append(" ");
 if (tournament > 0) {
 sb.append("TP: ").append(tournament).append(" ");
 }
+sb.append(disconnectInfo);
 return sb.toString();
 }

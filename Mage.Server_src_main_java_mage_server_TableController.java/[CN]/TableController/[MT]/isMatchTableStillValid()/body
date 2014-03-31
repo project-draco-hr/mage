@@ -1,0 +1,23 @@
+{
+  if (!table.isTournament() && !table.isTournamentSubTable()) {
+    int humanPlayers=0;
+    int validHumanPlayers=0;
+    if (match == null) {
+      return false;
+    }
+    for (    Map.Entry<UUID,UUID> userPlayerEntry : userPlayerMap.entrySet()) {
+      MatchPlayer matchPlayer=match.getPlayer(userPlayerEntry.getValue());
+      if (matchPlayer.getPlayer().isHuman()) {
+        humanPlayers++;
+        if (!matchPlayer.hasQuit()) {
+          User user=UserManager.getInstance().getUser(userPlayerEntry.getKey());
+          if (user != null) {
+            validHumanPlayers++;
+          }
+        }
+      }
+    }
+    return validHumanPlayers >= 2 || validHumanPlayers == humanPlayers;
+  }
+  return true;
+}

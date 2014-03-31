@@ -9,6 +9,10 @@
       if (!match.getPlayer(entry.getValue()).hasQuit()) {
         User user=UserManager.getInstance().getUser(entry.getKey());
         if (user != null) {
+          if (!user.isConnected()) {
+            user.removeConstructing(match.getPlayer(entry.getValue()).getPlayer().getId());
+            GameManager.getInstance().joinGame(match.getGame().getId(),user.getId());
+          }
           logger.info(new StringBuilder("User ").append(user.getName()).append(" game started - matchId ").append(match.getId()).append(" userId: ").append(user.getId()));
           user.gameStarted(match.getGame().getId(),entry.getValue());
           if (creator == null) {
@@ -22,10 +26,8 @@
           }
         }
  else {
-          TableManager.getInstance().removeTable(table.getId());
-          GameManager.getInstance().removeGame(match.getGame().getId());
           logger.warn("Unable to find player " + entry.getKey());
-          break;
+          match.getPlayer(entry.getValue()).setQuit(true);
         }
       }
     }

@@ -7,11 +7,17 @@
     }
     if (window instanceof DraftPane) {
       DraftPane draftPane=(DraftPane)window;
-      draftPane.hideDraft();
+      draftPane.removeDraft();
     }
     if (window instanceof TournamentPane) {
       TournamentPane tournamentPane=(TournamentPane)window;
-      tournamentPane.hideTournament();
+      tournamentPane.removeTournament();
+    }
+    if (window instanceof DeckEditorPane) {
+      DeckEditorPane deckEditorPane=(DeckEditorPane)window;
+      if (deckEditorPane.getDeckEditorMode().equals(DeckEditorMode.Limited) || deckEditorPane.getDeckEditorMode().equals(DeckEditorMode.Sideboard)) {
+        deckEditorPane.removeFrame();
+      }
     }
   }
 }
