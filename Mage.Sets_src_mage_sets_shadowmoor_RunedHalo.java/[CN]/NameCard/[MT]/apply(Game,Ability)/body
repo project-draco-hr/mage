@@ -11,15 +11,13 @@
       }
     }
     String cardName=cardChoice.getChoice();
-    game.informPlayers("Runed Halo, named card: [" + cardName + "]");
-    FilterCard filter=new FilterCard(cardName);
-    filter.add(new NamePredicate(cardName));
-    for (    Ability ability : sourcePermanent.getAbilities()) {
-      if (ability instanceof ProtectionAbility) {
-        ((ProtectionAbility)ability).setFilter(filter);
-      }
-    }
+    game.informPlayers(new StringBuilder(sourcePermanent.getName()).append(", named card: [").append(cardName).append("]").toString());
     sourcePermanent.addInfo("Named card",new StringBuilder("[Named card: ").append(cardName).append("]").toString());
+    FilterObject filter=new FilterObject("the name [" + cardName + "]");
+    filter.add(new NamePredicate(cardName));
+    ContinuousEffect effect=new GainAbilityControllerEffect(new ProtectionAbility(filter),Duration.Custom);
+    game.addEffect(effect,source);
+    return true;
   }
   return false;
 }
