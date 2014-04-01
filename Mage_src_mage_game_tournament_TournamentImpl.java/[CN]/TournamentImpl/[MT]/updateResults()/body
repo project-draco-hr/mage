@@ -20,8 +20,8 @@
             tp2.setState(TournamentPlayerState.WAITING);
           }
         }
-        tp1.setResults(addRoundResult(pair,tp1,tp2));
-        tp2.setResults(addRoundResult(pair,tp2,tp1));
+        tp1.setResults(addRoundResult(round.getRoundNumber(),pair,tp1,tp2));
+        tp2.setResults(addRoundResult(round.getRoundNumber(),pair,tp2,tp1));
         if (mp2.hasQuit() || mp1.getWins() > mp2.getWins()) {
           tp1.setPoints(tp1.getPoints() + 3);
         }
@@ -35,7 +35,7 @@
       }
     }
     for (    TournamentPlayer tp : round.getPlayerByes()) {
-      tp.setResults(new StringBuilder(tp.getResults()).append("(Round Bye) ").toString());
+      tp.setResults(new StringBuilder(tp.getResults()).append("R").append(round.getRoundNumber()).append(" ").append("Bye ").toString());
       tp.setPoints(tp.getPoints() + 3);
     }
   }
