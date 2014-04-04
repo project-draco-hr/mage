@@ -10,6 +10,28 @@ break;
 default :
 throw new UnsupportedOperationException("target controller not supported");
 }
-sb.append(" reveals his or her hand. You choose ").append(filter.getMessage()).append(" from it. That player discards that card").toString();
+if (revealAllCards) {
+sb.append(" reveals his or her hand");
+}
+ else {
+if (numberCardsToReveal instanceof StaticValue) {
+sb.append(" reveales ");
+sb.append(numberCardsToReveal.getMessage());
+sb.append(" from his or her hand");
+}
+ else {
+sb.append(" reveals a number of cards from his or her hand equal to ");
+sb.append(numberCardsToReveal.getMessage());
+}
+}
+sb.append(". You choose ");
+sb.append(filter.getMessage());
+if (revealAllCards) {
+sb.append(" from it.");
+}
+ else {
+sb.append(" of them.");
+}
+sb.append(" That player discards that card").toString();
 return sb.toString();
 }

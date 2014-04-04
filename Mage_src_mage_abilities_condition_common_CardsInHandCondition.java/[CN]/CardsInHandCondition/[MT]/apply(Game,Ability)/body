@@ -1,18 +1,66 @@
 {
   boolean conditionApplies=false;
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+switch (targetController) {
+case YOU:
 switch (this.type) {
 case FEWER_THAN:
-    conditionApplies=game.getPlayer(source.getControllerId()).getHand().size() < this.count;
-  break;
+        conditionApplies=game.getPlayer(source.getControllerId()).getHand().size() < this.count;
+      break;
 case MORE_THAN:
-conditionApplies=game.getPlayer(source.getControllerId()).getHand().size() > this.count;
-break;
+    conditionApplies=game.getPlayer(source.getControllerId()).getHand().size() > this.count;
+  break;
 case EQUAL_TO:
 conditionApplies=game.getPlayer(source.getControllerId()).getHand().size() == this.count;
 break;
 }
+break;
+case ANY:
+boolean conflict=false;
+switch (this.type) {
+case FEWER_THAN:
+for (UUID playerId : controller.getInRange()) {
+Player player=game.getPlayer(playerId);
+if (player != null) {
+if (player.getHand().size() >= this.count) {
+conflict=true;
+break;
+}
+}
+}
+break;
+case MORE_THAN:
+for (UUID playerId : controller.getInRange()) {
+Player player=game.getPlayer(playerId);
+if (player != null) {
+if (player.getHand().size() <= this.count) {
+conflict=true;
+break;
+}
+}
+}
+break;
+case EQUAL_TO:
+for (UUID playerId : controller.getInRange()) {
+Player player=game.getPlayer(playerId);
+if (player != null) {
+if (player.getHand().size() != this.count) {
+conflict=true;
+break;
+}
+}
+}
+break;
+}
+conditionApplies=!conflict;
+break;
+default :
+throw new UnsupportedOperationException("Value of TargetController not supported for this class.");
+}
 if (this.condition != null) {
 conditionApplies=conditionApplies && this.condition.apply(game,source);
+}
 }
 return conditionApplies;
 }

@@ -1,16 +1,43 @@
 {
   Player player=game.getPlayer(source.getFirstTarget());
-  Player you=game.getPlayer(source.getControllerId());
+  Player controller=game.getPlayer(source.getControllerId());
   Card sourceCard=game.getCard(source.getSourceId());
-  if (player != null && you != null) {
-    player.revealCards(sourceCard != null ? sourceCard.getName() : "Discard",player.getHand(),game);
-    if (player.getHand().count(filter,source.getSourceId(),source.getControllerId(),game) > 0) {
-      TargetCard target=new TargetCard(Zone.PICK,filter);
-      target.setRequired(true);
-      if (you.choose(Outcome.Benefit,player.getHand(),target,game)) {
-        Card card=player.getHand().get(target.getFirstTarget(),game);
-        if (card != null) {
-          return player.discard(card,source,game);
+  if (player != null && controller != null) {
+    if (revealAllCards) {
+      this.numberCardsToReveal=new StaticValue(player.getHand().size());
+    }
+    int number=this.numberCardsToReveal.calculate(game,source);
+    if (number > 0) {
+      Cards revealedCards=new CardsImpl(Zone.HAND);
+      number=Math.min(player.getHand().size(),number);
+      if (player.getHand().size() > number) {
+        TargetCardInHand chosenCards=new TargetCardInHand(number,number,new FilterCard("card in target player's hand"));
+        chosenCards.setRequired(true);
+        chosenCards.setNotTarget(true);
+        if (chosenCards.canChoose(player.getId(),game) && player.choose(Outcome.Discard,player.getHand(),chosenCards,game)) {
+          if (!chosenCards.getTargets().isEmpty()) {
+            List<UUID> targets=chosenCards.getTargets();
+            for (            UUID targetid : targets) {
+              Card card=game.getCard(targetid);
+              if (card != null) {
+                revealedCards.add(card);
+              }
+            }
+          }
+        }
+      }
+ else {
+        revealedCards.addAll(player.getHand());
+      }
+      player.revealCards(sourceCard != null ? sourceCard.getName() : "Discard",revealedCards,game);
+      if (revealedCards.count(filter,source.getSourceId(),source.getControllerId(),game) > 0) {
+        TargetCard target=new TargetCard(Zone.HAND,filter);
+        target.setRequired(true);
+        if (controller.choose(Outcome.Benefit,revealedCards,target,game)) {
+          Card card=revealedCards.get(target.getFirstTarget(),game);
+          if (card != null) {
+            return player.discard(card,source,game);
+          }
         }
       }
     }
