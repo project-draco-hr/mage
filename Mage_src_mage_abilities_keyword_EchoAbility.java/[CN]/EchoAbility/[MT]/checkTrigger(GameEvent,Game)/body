@@ -1,11 +1,8 @@
 {
-  if (event.getType() == GameEvent.EventType.ENTERS_THE_BATTLEFIELD) {
-    EntersTheBattlefieldEvent zEvent=(EntersTheBattlefieldEvent)event;
-    if (zEvent.getFromZone() == null && this.echoPaid) {
-      this.echoPaid=false;
-    }
+  if (event.getType().equals(GameEvent.EventType.ENTERS_THE_BATTLEFIELD) && event.getTargetId().equals(this.getSourceId())) {
+    this.echoPaid=false;
   }
-  if (event.getType() == GameEvent.EventType.UPKEEP_STEP_PRE) {
+  if (event.getType().equals(GameEvent.EventType.UPKEEP_STEP_PRE)) {
     if (lastController != null) {
       if (!lastController.equals(this.controllerId)) {
         this.echoPaid=false;
@@ -13,7 +10,7 @@
     }
     lastController=this.getControllerId();
   }
-  if (event.getType() == GameEvent.EventType.UPKEEP_STEP_PRE && event.getPlayerId().equals(this.controllerId) && lastController.equals(this.controllerId) && !this.echoPaid) {
+  if (event.getType().equals(GameEvent.EventType.UPKEEP_STEP_PRE) && event.getPlayerId().equals(this.controllerId) && lastController.equals(this.controllerId)&& !this.echoPaid) {
     this.echoPaid=true;
     return true;
   }
