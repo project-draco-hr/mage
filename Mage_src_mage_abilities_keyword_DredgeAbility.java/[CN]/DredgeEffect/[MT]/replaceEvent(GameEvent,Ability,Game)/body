@@ -8,12 +8,13 @@
     for (int i=0; i < amount; i++) {
       Card card=player.getLibrary().removeFromTop(game);
       if (card != null) {
-        card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,false);
+        player.moveCardToGraveyardWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
       }
     }
     Card card=game.getCard(source.getSourceId());
     if (card != null) {
-      card.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+      game.informPlayers(new StringBuilder(player.getName()).append(" dreges ").append(card.getName()).toString());
+      player.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.GRAVEYARD);
     }
     return true;
   }
