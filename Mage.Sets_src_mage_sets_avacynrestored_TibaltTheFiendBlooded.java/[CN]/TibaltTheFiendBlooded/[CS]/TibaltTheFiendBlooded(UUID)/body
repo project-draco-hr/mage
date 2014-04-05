@@ -4,9 +4,13 @@
   this.subtype.add("Tibalt");
   this.color.setRed(true);
   this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.LOYALTY.createInstance(2)),false));
-  this.addAbility(new LoyaltyAbility(new TibaltTheFiendBloodedFirstEffect(),1));
-  LoyaltyAbility ability=new LoyaltyAbility(new DamageTargetEffect(new CardsInTargetHandCount()),-4);
-  ability.addTarget(new TargetPlayer());
+  LoyaltyAbility ability=new LoyaltyAbility(new DrawCardSourceControllerEffect(1),1);
+  Effect effect=new DiscardControllerEffect(1,true);
+  effect.setText(", then discard a card at random");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new DamageTargetEffect(new CardsInTargetHandCount(),true,"that player"),-4);
+  ability.addTarget(new TargetPlayer(true));
   this.addAbility(ability);
   this.addAbility(new LoyaltyAbility(new TibaltTheFiendBloodedThirdEffect(),-6));
 }

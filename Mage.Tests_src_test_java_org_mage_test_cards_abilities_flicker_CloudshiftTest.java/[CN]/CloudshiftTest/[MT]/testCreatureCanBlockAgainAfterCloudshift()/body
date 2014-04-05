@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains");
+  addCard(Zone.BATTLEFIELD,playerA,"Timberland Guide");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",3);
+  addCard(Zone.HAND,playerA,"Cloudshift");
+  addCard(Zone.HAND,playerB,"Fervent Cathar");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Fervent Cathar");
+  addTarget(playerB,"Timberland Guide");
+  attack(2,playerB,"Fervent Cathar");
+  castSpell(2,PhaseStep.DECLARE_ATTACKERS,playerA,"Cloudshift","Timberland Guide");
+  block(2,playerA,"Timberland Guide","Fervent Cathar");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerB,"Fervent Cathar",0);
+  assertPermanentCount(playerA,"Timberland Guide",0);
+}
