@@ -1,0 +1,27 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Card sourceCard=game.getCard(source.getSourceId());
+  if (controller != null) {
+    if (controller.getHand().size() > 0) {
+      Card cardToReveal=null;
+      if (controller.getHand().size() > 1) {
+        Target target=new TargetCardInHand(new FilterCard());
+        target.setRequired(true);
+        target.setNotTarget(true);
+        if (controller.chooseTarget(outcome,target,source,game)) {
+          cardToReveal=game.getCard(target.getFirstTarget());
+        }
+      }
+ else {
+        cardToReveal=controller.getHand().getRandom(game);
+      }
+      if (cardToReveal != null) {
+        controller.revealCards(sourceCard.getName(),new CardsImpl(cardToReveal),game);
+        FilterCard filterCard=new FilterCard(new StringBuilder("card named ").append(cardToReveal.getName()).toString());
+        return new SearchLibraryPutInHandEffect(new TargetCardInLibrary(filterCard),true,true).apply(game,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}
