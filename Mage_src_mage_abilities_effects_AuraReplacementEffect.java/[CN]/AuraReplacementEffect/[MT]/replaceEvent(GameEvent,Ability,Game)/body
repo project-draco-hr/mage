@@ -9,6 +9,11 @@
   }
   UUID targetId=null;
   MageObject sourceObject=game.getObject(sourceId);
+  if (sourceObject instanceof Spell) {
+    if (fromZone.equals(Zone.EXILED)) {
+      return false;
+    }
+  }
   if (sourceObject instanceof StackAbility) {
     StackAbility stackAbility=(StackAbility)sourceObject;
     if (!stackAbility.getEffects().isEmpty()) {
