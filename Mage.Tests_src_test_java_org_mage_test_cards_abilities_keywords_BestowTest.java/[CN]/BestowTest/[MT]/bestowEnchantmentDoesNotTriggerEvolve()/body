@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",6);
+  addCard(Zone.BATTLEFIELD,playerA,"Silent Artisan");
+  addCard(Zone.HAND,playerA,"Experiment One");
+  addCard(Zone.HAND,playerA,"Boon Satyr");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Experiment One");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Boon Satyr using bestow","Silent Artisan");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Silent Artisan",1);
+  assertPowerToughness(playerA,"Silent Artisan",7,7);
+  assertPermanentCount(playerA,"Experiment One",1);
+  assertPowerToughness(playerA,"Experiment One",1,1);
+}

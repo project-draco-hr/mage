@@ -1,0 +1,19 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (player != null && permanent != null) {
+    ChoiceColor colorChoice=new ChoiceColor();
+    colorChoice.setMessage("Choose color");
+    while (!player.choose(Outcome.BoostCreature,colorChoice,game)) {
+      if (!player.isInGame()) {
+        return false;
+      }
+    }
+    if (colorChoice.getChoice() != null) {
+      game.informPlayers(permanent.getName() + ": " + player.getName()+ " has chosen "+ colorChoice.getChoice());
+      game.getState().setValue(permanent.getId() + "_color",colorChoice.getColor());
+      permanent.addInfo("chosen color","<i>Chosen color: " + colorChoice.getChoice().toString() + "</i>");
+    }
+  }
+  return false;
+}
