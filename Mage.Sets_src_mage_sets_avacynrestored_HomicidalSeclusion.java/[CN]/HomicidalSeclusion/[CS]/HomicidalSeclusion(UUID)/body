@@ -4,8 +4,10 @@
   this.color.setBlack(true);
   ContinuousEffect boostEffect=new BoostControlledEffect(3,1,Duration.WhileOnBattlefield);
   Effect effect=new ConditionalContinousEffect(boostEffect,new OneControlledCreatureCondition(),rule);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,effect);
   ContinuousEffect lifelinkEffect=new GainAbilityControlledEffect(LifelinkAbility.getInstance(),Duration.WhileOnBattlefield);
-  effect=new ConditionalContinousEffect(lifelinkEffect,new OneControlledCreatureCondition(),null);
+  effect=new ConditionalContinousEffect(lifelinkEffect,new OneControlledCreatureCondition(),"and has lifelink");
+  ability.addEffect(effect);
+  this.addAbility(ability);
   this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
 }
