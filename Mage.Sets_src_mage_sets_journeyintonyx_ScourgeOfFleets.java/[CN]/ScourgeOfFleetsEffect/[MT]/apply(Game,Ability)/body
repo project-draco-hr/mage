@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int islands=game.getBattlefield().count(filter,source.getSourceId(),source.getControllerId(),game);
+    FilterPermanent creatureFilter=new FilterCreaturePermanent();
+    creatureFilter.add(new ControllerPredicate(TargetController.OPPONENT));
+    creatureFilter.add(new PowerPredicate(Filter.ComparisonType.LessThan,islands + 1));
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(creatureFilter,source.getControllerId(),source.getSourceId(),game)) {
+      controller.moveCardToHandWithInfo(permanent,source.getSourceId(),game,Zone.BATTLEFIELD);
+    }
+    return true;
+  }
+  return false;
+}
