@@ -12,8 +12,11 @@
     for (    Permanent permanent : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game)) {
       permanent.sacrifice(source.getSourceId(),game);
     }
-    for (    Card card : game.getState().getExile().getExileZone(source.getSourceId()).getCards(game)) {
-      card.putOntoBattlefield(game,Zone.EXILED,source.getSourceId(),card.getOwnerId());
+    ExileZone exileZone=game.getState().getExile().getExileZone(source.getSourceId());
+    if (exileZone != null) {
+      for (      Card card : exileZone.getCards(game)) {
+        card.putOntoBattlefield(game,Zone.EXILED,source.getSourceId(),card.getOwnerId());
+      }
     }
     return true;
   }
