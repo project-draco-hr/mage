@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && source.getTargets().size() > 0) {
+    Target multiTarget=source.getTargets().get(0);
+    for (    UUID target : multiTarget.getTargets()) {
+      Permanent permanent=game.getPermanent(target);
+      if (permanent != null) {
+        permanent.addCounters(CounterType.P1P1.createInstance(multiTarget.getTargetAmount(target)),game);
+        game.informPlayers(new StringBuilder(controller.getName()).append(" puts ").append(multiTarget.getTargetAmount(target)).append(" ").append(CounterType.P1P1.getName().toLowerCase()).append(" counter on ").append(permanent.getName()).toString());
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,7 +1,7 @@
 {
-  Permanent land=game.getPermanent(this.targetPointer.getFirst(game,source));
-  if (land != null) {
-    Abilities<ManaAbility> mana=land.getAbilities().getManaAbilities(Zone.BATTLEFIELD);
+  Permanent permanent=game.getPermanent(this.targetPointer.getFirst(game,source));
+  if (permanent != null) {
+    Abilities<ManaAbility> mana=permanent.getAbilities().getManaAbilities(Zone.BATTLEFIELD);
     Mana types=new Mana();
     for (    ManaAbility ability : mana) {
       types.add(ability.getNetMana(game));
@@ -27,7 +27,7 @@
       choice.getChoices().add("Colorless");
     }
     if (choice.getChoices().size() > 0) {
-      Player player=game.getPlayer(land.getControllerId());
+      Player player=game.getPlayer(permanent.getControllerId());
       if (choice.getChoices().size() == 1) {
         choice.setChoice(choice.getChoices().iterator().next());
       }
