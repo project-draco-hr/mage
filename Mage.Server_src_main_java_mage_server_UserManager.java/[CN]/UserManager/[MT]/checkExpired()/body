@@ -1,7 +1,9 @@
 {
   Calendar expired=Calendar.getInstance();
   expired.add(Calendar.MINUTE,-3);
-  for (  User user : users.values()) {
+  List<User> usersToCheck=new ArrayList<>();
+  usersToCheck.addAll(users.values());
+  for (  User user : usersToCheck) {
     if (user.isExpired(expired.getTime())) {
       logger.info(new StringBuilder(user.getName()).append(" session expired userId: ").append(user.getId()).append(" sessionId: ").append(user.getSessionId()));
       user.kill(User.DisconnectReason.LostConnection);
