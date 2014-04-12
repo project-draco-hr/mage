@@ -1,10 +1,12 @@
 {
   ExileZone exile=game.getExile().getExileZone(exileId);
-  if (exile != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && exile != null) {
     exile=exile.copy();
     for (    UUID cardId : exile) {
       Card card=game.getCard(cardId);
-      card.moveToZone(zone,source.getId(),game,tapped);
+      card.moveToZone(zone,source.getSourceId(),game,tapped);
+      game.informPlayers(new StringBuilder(controller.getName()).append(" moves ").append(card.getName()).append(" to ").append(zone.toString()).toString());
     }
     game.getExile().getExileZone(exileId).clear();
     return true;

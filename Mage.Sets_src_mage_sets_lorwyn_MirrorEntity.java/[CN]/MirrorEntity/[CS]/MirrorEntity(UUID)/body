@@ -6,8 +6,12 @@
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
   this.addAbility(ChangelingAbility.getInstance());
-  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainAbilityAllEffect(ChangelingAbility.getInstance(),Duration.EndOfTurn,new FilterControlledCreaturePermanent("Creatures you control")),new VariableManaCost());
   DynamicValue variableMana=new ManacostVariableValue();
-  ability.addEffect(new SetPowerToughnessAllEffect(variableMana,variableMana,Duration.EndOfTurn,new FilterControlledCreaturePermanent("Creatures you control"),true));
+  Effect effect=new SetPowerToughnessAllEffect(variableMana,variableMana,Duration.EndOfTurn,filter,true);
+  effect.setText("Creatures you control become X/X");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new VariableManaCost());
+  effect=new GainAbilityAllEffect(ChangelingAbility.getInstance(),Duration.EndOfTurn,filter);
+  effect.setText("and gain all creature types until end of turn");
+  ability.addEffect(effect);
   this.addAbility(ability);
 }
