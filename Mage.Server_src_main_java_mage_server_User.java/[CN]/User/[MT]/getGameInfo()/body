@@ -8,15 +8,16 @@
   for (  Map.Entry<UUID,Table> tableEntry : tables.entrySet()) {
     Table table=tableEntry.getValue();
     if (table.isTournament()) {
+      if (!table.getTournament().getPlayer(tableEntry.getKey()).getEliminated()) {
 switch (table.getState()) {
 case CONSTRUCTING:
-        construct++;
-      break;
+          construct++;
+        break;
 case DRAFTING:
-    draft++;
-  break;
+      draft++;
+    break;
 case DUELING:
-tournament++;
+  tournament++;
 break;
 }
 if (!isConnected()) {
@@ -24,6 +25,7 @@ table.getTournament().getPlayer(tableEntry.getKey()).setDisconnectInfo(disconnec
 }
  else {
 table.getTournament().getPlayer(tableEntry.getKey()).setDisconnectInfo("");
+}
 }
 }
  else {
