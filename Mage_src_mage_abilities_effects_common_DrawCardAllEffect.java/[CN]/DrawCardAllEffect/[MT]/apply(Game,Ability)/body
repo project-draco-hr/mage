@@ -1,10 +1,22 @@
 {
   Player sourcePlayer=game.getPlayer(source.getControllerId());
-  for (  UUID playerId : sourcePlayer.getInRange()) {
-    Player player=game.getPlayer(playerId);
-    if (player != null) {
-      player.drawCards(amount.calculate(game,source),game);
+switch (targetController) {
+case ANY:
+    for (    UUID playerId : sourcePlayer.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        player.drawCards(amount.calculate(game,source),game);
+      }
     }
+  break;
+case OPPONENT:
+for (UUID playerId : game.getOpponents(sourcePlayer.getId())) {
+  Player player=game.getPlayer(playerId);
+  if (player != null) {
+    player.drawCards(amount.calculate(game,source),game);
   }
-  return true;
+}
+break;
+}
+return true;
 }

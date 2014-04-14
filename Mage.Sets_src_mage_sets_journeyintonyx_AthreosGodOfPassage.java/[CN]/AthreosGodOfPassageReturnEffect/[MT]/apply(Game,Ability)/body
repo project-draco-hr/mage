@@ -1,0 +1,23 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Permanent creature=game.getPermanentOrLKIBattlefield(this.getTargetPointer().getFirst(game,source));
+    if (creature != null) {
+      Player opponent=game.getPlayer(source.getFirstTarget());
+      boolean paid=false;
+      if (opponent != null) {
+        if (opponent.chooseUse(outcome,new StringBuilder("Pay 3 live or ").append(creature.getName()).append(" returns to ").append(controller.getName()).append("'s hand?").toString(),game)) {
+          Cost cost=new PayLifeCost(3);
+          if (!cost.pay(source,game,source.getSourceId(),opponent.getId(),false)) {
+            paid=true;
+          }
+        }
+      }
+      if (opponent == null || !paid) {
+        controller.moveCardToHandWithInfo(creature,source.getSourceId(),game,null);
+      }
+    }
+    return true;
+  }
+  return false;
+}

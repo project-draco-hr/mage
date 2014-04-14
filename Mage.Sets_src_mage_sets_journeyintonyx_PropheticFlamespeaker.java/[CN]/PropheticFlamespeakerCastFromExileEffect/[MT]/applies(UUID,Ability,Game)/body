@@ -1,0 +1,22 @@
+{
+  if (sourceId.equals(this.cardId)) {
+    Card card=game.getCard(this.cardId);
+    if (card != null && game.getState().getZone(this.cardId) == Zone.EXILED) {
+      Player player=game.getPlayer(source.getControllerId());
+      if (player != null) {
+        if (card.getCardType().contains(CardType.LAND)) {
+          if (player.canPlayLand() && game.getActivePlayerId().equals(player.getId()) && game.getStack().isEmpty()&& (game.getStep().getType().equals(PhaseStep.PRECOMBAT_MAIN) || game.getStep().getType().equals(PhaseStep.POSTCOMBAT_MAIN))&& player.chooseUse(Outcome.Benefit,"Play this card?",game)) {
+            return player.playLand(card,game);
+          }
+        }
+ else {
+          Ability ability=card.getSpellAbility();
+          if (ability != null && ability instanceof SpellAbility && ((SpellAbility)ability).spellCanBeActivatedRegularlyNow(player.getId(),game) && player.chooseUse(Outcome.Benefit,"Play this card?",game)) {
+            return player.cast((SpellAbility)ability,game,false);
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
