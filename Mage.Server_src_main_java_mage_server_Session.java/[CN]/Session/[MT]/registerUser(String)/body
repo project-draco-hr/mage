@@ -1,37 +1,7 @@
 {
-  this.isAdmin=false;
-  if (userName.equals("Admin")) {
-    throw new MageException("User name already in use");
+  String returnMessage=registerUserHandling(userName);
+  if (returnMessage != null) {
+    sendErrorMessageToClient(returnMessage);
   }
-  if (userName.length() > ConfigSettings.getInstance().getMaxUserNameLength()) {
-    throw new MageException(new StringBuilder("User name may not be longer than ").append(ConfigSettings.getInstance().getMaxUserNameLength()).append(" characters").toString());
-  }
-  if (userName.length() < ConfigSettings.getInstance().getMinUserNameLength()) {
-    throw new MageException(new StringBuilder("User name may not be shorter than ").append(ConfigSettings.getInstance().getMinUserNameLength()).append(" characters").toString());
-  }
-  Pattern p=Pattern.compile(ConfigSettings.getInstance().getUserNamePattern(),Pattern.CASE_INSENSITIVE);
-  Matcher m=p.matcher(userName);
-  if (m.find()) {
-    throw new MageException("User name '" + userName + "' includes not allowed characters: use a-z, A-Z and 0-9");
-  }
-  User user=UserManager.getInstance().createUser(userName,host);
-  if (user == null) {
-    user=UserManager.getInstance().findUser(userName);
-    if (user.getHost().equals(host)) {
-      if (user.getSessionId().isEmpty()) {
-        logger.info("Reconnecting session for " + userName);
-      }
- else {
-        logger.info("Disconnecting another user instance: " + userName);
-        UserManager.getInstance().disconnect(user.getId(),User.DisconnectReason.ConnectingOtherInstance);
-      }
-    }
- else {
-      throw new MageException("User name " + userName + " already in use");
-    }
-  }
-  if (!UserManager.getInstance().connectToSession(sessionId,user.getId())) {
-    throw new MageException("Error connecting " + userName);
-  }
-  this.userId=user.getId();
+  return returnMessage;
 }

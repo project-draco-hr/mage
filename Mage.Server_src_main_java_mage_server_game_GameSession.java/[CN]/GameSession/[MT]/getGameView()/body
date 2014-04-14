@@ -4,14 +4,14 @@
   GameView gameView=new GameView(game.getState(),game,this.isPlayer);
   gameView.setHand(new SimpleCardsView(player.getHand().getCards(game)));
   if (player.getPlayersUnderYourControl().size() > 0) {
-    Map<String,SimpleCardsView> handCards=new HashMap<String,SimpleCardsView>();
+    Map<String,SimpleCardsView> handCards=new HashMap<>();
     for (    UUID controlledPlayerId : player.getPlayersUnderYourControl()) {
       Player opponent=game.getPlayer(controlledPlayerId);
       handCards.put(opponent.getName(),new SimpleCardsView(opponent.getHand().getCards(game)));
     }
     gameView.setOpponentHands(handCards);
   }
-  List<LookedAtView> list=new ArrayList<LookedAtView>();
+  List<LookedAtView> list=new ArrayList<>();
   for (  Entry<String,Cards> entry : game.getState().getLookedAt(playerId).entrySet()) {
     list.add(new LookedAtView(entry.getKey(),entry.getValue(),game));
   }

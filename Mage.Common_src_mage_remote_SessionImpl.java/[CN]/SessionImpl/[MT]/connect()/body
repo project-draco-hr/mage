@@ -56,7 +56,9 @@ boolean registerResult;
 if (connection.getPassword() == null) {
 UserDataView userDataView=new UserDataView(connection.getAvatarId(),connection.isShowAbilityPickerForced());
 registerResult=server.registerClient(connection.getUsername(),sessionId,client.getVersion());
+if (registerResult) {
 server.setUserData(connection.getUsername(),sessionId,userDataView);
+}
 }
  else {
 registerResult=server.registerAdmin(connection.getPassword(),sessionId,client.getVersion());
@@ -70,7 +72,6 @@ client.connected(new StringBuilder("Connected as ").append(this.getUserName()).a
 return true;
 }
 disconnect(false);
-client.showMessage("Unable to connect to server.");
 }
  catch (MalformedURLException ex) {
 logger.fatal("",ex);
