@@ -1,0 +1,13 @@
+{
+  int creatureTargets=0;
+  for (  Target target : abilityToModify.getTargets()) {
+    for (    UUID uuid : target.getTargets()) {
+      Permanent permanent=game.getPermanent(uuid);
+      if (permanent != null && permanent.getCardType().contains(CardType.CREATURE)) {
+        creatureTargets++;
+      }
+    }
+  }
+  CardUtil.reduceCost(abilityToModify,creatureTargets);
+  return true;
+}

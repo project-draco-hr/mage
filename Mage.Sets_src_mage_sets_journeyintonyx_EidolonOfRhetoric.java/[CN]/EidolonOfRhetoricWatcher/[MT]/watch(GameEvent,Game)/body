@@ -1,0 +1,14 @@
+{
+  if (condition == true) {
+    return;
+  }
+  if (event.getType() == GameEvent.EventType.SPELL_CAST) {
+    Permanent enchantment=game.getPermanent(this.sourceId);
+    if (enchantment != null && enchantment.getAttachedTo() != null) {
+      Player player=game.getPlayer(enchantment.getAttachedTo());
+      if (player != null && event.getPlayerId().equals(player.getId())) {
+        condition=true;
+      }
+    }
+  }
+}
