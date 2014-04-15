@@ -7,5 +7,7 @@
   Effect effect=new BoostTargetEffect(1,1,Duration.EndOfTurn);
   effect.setText("Until end of turn, any number of target creatures each get +1/+1");
   this.getSpellAbility().addEffect(effect);
-  this.getSpellAbility().addEffect(new GainAbilityTargetEffect(new SimpleActivatedAbility(Zone.BATTLEFIELD,new FightTargetSourceEffect(),new TapSourceCost()),Duration.EndOfTurn,"and gain \"T: This creature fights another target creature"));
+  Ability gainedAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new FightTargetSourceEffect(),new TapSourceCost());
+  gainedAbility.addTarget(new TargetCreaturePermanent(filter,true));
+  this.getSpellAbility().addEffect(new GainAbilityTargetEffect(gainedAbility,Duration.EndOfTurn,"and gain \"T: This creature fights another target creature"));
 }
