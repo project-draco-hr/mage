@@ -1,13 +1,23 @@
 {
-  Permanent permanent=game.getPermanent(targetPointer.getFirst(game,source));
-  if (permanent != null) {
-    if (controllingPlayerId != null) {
-      return permanent.changeControllerId(controllingPlayerId,game);
-    }
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    boolean targetStillExists=false;
+    for (    UUID permanentId : this.getTargetPointer().getTargets(game,source)) {
+      Permanent permanent=game.getPermanent(permanentId);
+      if (permanent != null) {
+        targetStillExists=true;
+        if (controllingPlayerId != null) {
+          permanent.changeControllerId(controllingPlayerId,game);
+        }
  else {
-      return permanent.changeControllerId(source.getControllerId(),game);
+          permanent.changeControllerId(source.getControllerId(),game);
+        }
+      }
     }
+    if (!targetStillExists) {
+      this.discard();
+    }
+    return true;
   }
-  this.discard();
   return false;
 }
