@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    ExileZone exile=game.getExile().getExileZone(source.getSourceId());
+    Card sourceCard=game.getCard(source.getSourceId());
+    if (exile != null && sourceCard != null) {
+      LinkedList<UUID> cards=new LinkedList<>(exile);
+      for (      UUID cardId : cards) {
+        Card card=game.getCard(cardId);
+        card.moveToZone(Zone.BATTLEFIELD,source.getSourceId(),game,false);
+        game.informPlayers(new StringBuilder(sourceCard.getName()).append(": ").append(card.getName()).append(" returns to battlefield from exile").toString());
+      }
+      exile.clear();
+      return true;
+    }
+  }
+  return false;
+}

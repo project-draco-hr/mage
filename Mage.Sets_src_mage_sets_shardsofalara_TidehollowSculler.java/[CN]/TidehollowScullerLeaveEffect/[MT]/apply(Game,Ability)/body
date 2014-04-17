@@ -1,12 +1,15 @@
 {
-  ExileZone exZone=game.getExile().getExileZone(CardUtil.getCardExileZoneId(game,source));
-  if (exZone != null) {
-    for (    Card card : exZone.getCards(game)) {
-      if (card != null) {
-        card.moveToZone(Zone.HAND,source.getId(),game,false);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    ExileZone exZone=game.getExile().getExileZone(CardUtil.getCardExileZoneId(game,source));
+    if (exZone != null) {
+      for (      Card card : exZone.getCards(game)) {
+        if (card != null) {
+          controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.EXILED);
+        }
       }
+      return true;
     }
-    return true;
   }
   return false;
 }

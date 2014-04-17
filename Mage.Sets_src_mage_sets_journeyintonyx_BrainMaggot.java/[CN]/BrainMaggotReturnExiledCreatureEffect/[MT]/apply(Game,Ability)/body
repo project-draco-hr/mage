@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    ExileZone exile=game.getExile().getExileZone(CardUtil.getCardExileZoneId(game,source));
+    Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+    if (exile != null && sourcePermanent != null) {
+      LinkedList<UUID> cards=new LinkedList<>(exile);
+      for (      UUID cardId : cards) {
+        Card card=game.getCard(cardId);
+        controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.EXILED);
+      }
+      exile.clear();
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Card sourceCard=game.getCard(source.getSourceId());
+  if (controller != null && sourceCard != null) {
+    Permanent targetEnchantment=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (targetEnchantment != null) {
+      controller.moveCardToExileWithInfo(targetEnchantment,null,null,source.getSourceId(),game,Zone.BATTLEFIELD);
+      Card exiledCard=game.getCard(targetEnchantment.getId());
+      if (exiledCard.hasSubtype("God")) {
+        Player enchantmentController=game.getPlayer(targetEnchantment.getControllerId());
+        return super.applySearchAndExile(game,source,exiledCard.getName(),enchantmentController.getId());
+      }
+    }
+  }
+  return false;
+}

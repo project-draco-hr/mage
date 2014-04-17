@@ -1,14 +1,15 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  Player targetPlayer=game.getPlayer(source.getFirstTarget());
-  if (player != null && targetPlayer != null) {
-    targetPlayer.revealCards("Tidehollow Sculler",targetPlayer.getHand(),game);
+  Player controller=game.getPlayer(source.getControllerId());
+  Player opponent=game.getPlayer(source.getFirstTarget());
+  Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (controller != null && opponent != null && sourcePermanent != null) {
+    opponent.revealCards(sourcePermanent.getName(),opponent.getHand(),game);
     TargetCard target=new TargetCard(Zone.PICK,new FilterNonlandCard("nonland card to exile"));
     target.setRequired(true);
-    if (player.choose(Outcome.Exile,targetPlayer.getHand(),target,game)) {
-      Card card=targetPlayer.getHand().get(target.getFirstTarget(),game);
+    if (controller.choose(Outcome.Exile,opponent.getHand(),target,game)) {
+      Card card=opponent.getHand().get(target.getFirstTarget(),game);
       if (card != null) {
-        card.moveToExile(CardUtil.getCardExileZoneId(game,source),"Tidehollow Sculler",source.getSourceId(),game);
+        controller.moveCardToExileWithInfo(card,CardUtil.getCardExileZoneId(game,source),sourcePermanent.getName(),source.getSourceId(),game,Zone.HAND);
       }
     }
     return true;
