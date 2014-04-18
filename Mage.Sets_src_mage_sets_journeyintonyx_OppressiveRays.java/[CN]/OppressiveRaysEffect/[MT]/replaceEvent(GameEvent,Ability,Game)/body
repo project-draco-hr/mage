@@ -1,0 +1,13 @@
+{
+  Player player=game.getPlayer(event.getPlayerId());
+  if (player != null) {
+    ManaCostsImpl attackTax=new ManaCostsImpl("{3}");
+    if (attackTax.canPay(source.getSourceId(),event.getPlayerId(),game) && player.chooseUse(Outcome.Neutral,"Pay {3} to attack?",game)) {
+      if (attackTax.payOrRollback(source,game,source.getSourceId(),event.getPlayerId())) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+}

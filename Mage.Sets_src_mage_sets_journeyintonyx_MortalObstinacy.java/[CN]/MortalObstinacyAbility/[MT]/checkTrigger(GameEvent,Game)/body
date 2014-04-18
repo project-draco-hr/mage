@@ -1,0 +1,21 @@
+{
+  if (event instanceof DamagedPlayerEvent) {
+    DamagedPlayerEvent damageEvent=(DamagedPlayerEvent)event;
+    Permanent damageMakingCreature=game.getPermanent(event.getSourceId());
+    if (damageEvent.isCombatDamage() && damageMakingCreature != null && damageMakingCreature.getAttachments().contains(this.getSourceId())) {
+      Player controller=game.getPlayer(this.getControllerId());
+      Permanent sourceEnchantment=game.getPermanent(this.getSourceId());
+      if (controller != null && sourceEnchantment != null) {
+        StringBuilder sb=new StringBuilder();
+        sb.append("Do you wish to sacrifice ").append(sourceEnchantment.getName());
+        sb.append(" to destroy target enchantment?");
+        if (controller.chooseUse(Outcome.DestroyPermanent,sb.toString(),game)) {
+          this.getTargets().clear();
+          this.addTarget(new TargetEnchantmentPermanent(true));
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

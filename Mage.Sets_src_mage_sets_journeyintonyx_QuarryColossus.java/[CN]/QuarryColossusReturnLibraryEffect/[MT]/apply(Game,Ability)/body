@@ -1,0 +1,29 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(this.getTargetPointer().getFirst(game,source));
+  if (permanent != null && controller != null) {
+    Player owner=game.getPlayer(permanent.getOwnerId());
+    if (owner != null) {
+      int plains=game.getBattlefield().countAll(new FilterPermanent("Plains","Plains you control"),source.getControllerId(),game);
+      int xValue=Math.min(plains,owner.getLibrary().size());
+      Cards cards=new CardsImpl();
+      List<UUID> cardIds=new ArrayList<>();
+      for (int i=0; i < xValue; i++) {
+        Card card=owner.getLibrary().getFromTop(game);
+        cards.add(card);
+        cardIds.add(card.getId());
+      }
+      controller.moveCardToLibraryWithInfo(permanent,source.getSourceId(),game,Zone.BATTLEFIELD,true);
+      ListIterator<UUID> libraryCards=cardIds.listIterator();
+      while (libraryCards.hasPrevious()) {
+        UUID cardId=libraryCards.previous();
+        Card card=cards.get(cardId,game);
+        if (card != null) {
+          card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}
