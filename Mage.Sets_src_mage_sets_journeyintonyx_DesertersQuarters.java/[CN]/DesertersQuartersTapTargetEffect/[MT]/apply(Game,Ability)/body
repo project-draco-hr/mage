@@ -1,0 +1,16 @@
+{
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (sourcePermanent != null) {
+    sourcePermanent.clearConnectedCards("DesertersQuarters");
+  }
+  for (  UUID target : targetPointer.getTargets(game,source)) {
+    Permanent permanent=game.getPermanent(target);
+    if (sourcePermanent != null) {
+      sourcePermanent.addConnectedCard("DesertersQuarters",permanent.getId());
+    }
+    if (permanent != null) {
+      permanent.tap(game);
+    }
+  }
+  return true;
+}
