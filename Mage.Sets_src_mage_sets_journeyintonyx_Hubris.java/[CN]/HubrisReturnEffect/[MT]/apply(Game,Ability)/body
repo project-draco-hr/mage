@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID targetId : targetPointer.getTargets(game,source)) {
+      Permanent creature=game.getPermanent(targetId);
+      if (creature != null) {
+        controller.moveCardToHandWithInfo(creature,source.getSourceId(),game,Zone.BATTLEFIELD);
+        for (        UUID attachementId : creature.getAttachments()) {
+          Permanent attachment=game.getPermanent(attachementId);
+          if (attachment != null && filter.match(attachment,game)) {
+            controller.moveCardToHandWithInfo(attachment,source.getSourceId(),game,Zone.BATTLEFIELD);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
