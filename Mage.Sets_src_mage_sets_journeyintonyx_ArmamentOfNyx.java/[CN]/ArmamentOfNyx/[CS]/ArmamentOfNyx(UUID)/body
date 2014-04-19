@@ -8,6 +8,10 @@
   this.getSpellAbility().addEffect(new AttachEffect(Outcome.Detriment));
   Ability ability=new EnchantAbility(auraTarget.getTargetName());
   this.addAbility(ability);
-  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinousEffect(new GainAbilityAttachedEffect(DoubleStrikeAbility.getInstance(),AttachmentType.AURA,Duration.WhileOnBattlefield),new PreventAllDamageByAttachedEffect(Duration.WhileOnBattlefield,"enchanted creature",false),new EquippedMatchesFilterCondition(filter),"Enchanted creature has double strike as long as it's an enchantment. Otherwise, prevent all damage that would be dealt by enchanted creature"));
+  Condition condition=new EquippedMatchesFilterCondition(filter);
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinousEffect(new GainAbilityAttachedEffect(DoubleStrikeAbility.getInstance(),AttachmentType.AURA,Duration.WhileOnBattlefield),condition,"Enchanted creature has double strike as long as it's an enchantment"));
+  ReplacementEffect effect=new PreventAllDamageByAttachedEffect(Duration.WhileOnBattlefield,"enchanted creature",false);
+  effect.setText("Otherwise, prevent all damage that would be dealt by enchanted creature");
+  ability.addEffect(new ConditionalReplacementEffect(effect,new InvertCondition(condition),false));
   this.addAbility(ability);
 }
