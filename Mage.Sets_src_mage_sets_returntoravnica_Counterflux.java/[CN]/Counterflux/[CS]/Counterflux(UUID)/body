@@ -3,7 +3,11 @@
   this.expansionSetCode="RTR";
   this.color.setBlue(true);
   this.color.setRed(true);
-  this.getSpellAbility().addEffect(new CantCounterSourceEffect());
+  Effect effect=new CantCounterSourceEffect();
+  effect.setText("{this} can't be countered by spells or abilities");
+  Ability ability=new SimpleStaticAbility(Zone.STACK,effect);
+  ability.setRuleAtTheTop(true);
+  this.addAbility(ability);
   this.getSpellAbility().addTarget(new TargetSpell(filter));
   this.getSpellAbility().addEffect(new CounterTargetEffect());
   this.addAbility(new OverloadAbility(this,new CounterfluxEffect(),new ManaCostsImpl("{1}{U}{U}{R}")));
