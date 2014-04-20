@@ -3,11 +3,8 @@
   if (!hasBoosters) {
     return booster;
   }
-  CardCriteria criteria=new CardCriteria();
-  criteria.setCodes(!hasBasicLands && parentSet != null ? parentSet.code : this.code).rarities(Rarity.LAND).doubleFaced(false);
-  List<CardInfo> basicLand=CardRepository.instance.findCards(criteria);
   List<CardInfo> common=getCommon();
-  criteria=new CardCriteria();
+  CardCriteria criteria=new CardCriteria();
   criteria.setCodes(this.code).rarities(Rarity.UNCOMMON).doubleFaced(false);
   List<CardInfo> uncommon=CardRepository.instance.findCards(criteria);
   criteria=new CardCriteria();
@@ -16,8 +13,13 @@
   criteria=new CardCriteria();
   criteria.setCodes(this.code).rarities(Rarity.MYTHIC).doubleFaced(false);
   List<CardInfo> mythic=CardRepository.instance.findCards(criteria);
-  for (int i=0; i < numBoosterLands; i++) {
-    addToBooster(booster,basicLand);
+  if (numBoosterLands > 0) {
+    criteria=new CardCriteria();
+    criteria.setCodes(!hasBasicLands && parentSet != null ? parentSet.code : this.code).rarities(Rarity.LAND).doubleFaced(false);
+    List<CardInfo> basicLand=CardRepository.instance.findCards(criteria);
+    for (int i=0; i < numBoosterLands; i++) {
+      addToBooster(booster,basicLand);
+    }
   }
   for (int i=0; i < numBoosterCommon; i++) {
     addToBooster(booster,common);
