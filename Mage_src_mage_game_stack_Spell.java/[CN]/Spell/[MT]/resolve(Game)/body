@@ -42,15 +42,19 @@
  else   if (this.getCardType().contains(CardType.ENCHANTMENT) && this.getSubtype().contains("Aura")) {
     if (ability.getTargets().stillLegal(ability,game)) {
       updateOptionalCosts(0);
+      boolean bestow=this.getSpellAbility() instanceof BestowAbility;
+      if (bestow) {
+        card.getCardType().remove(CardType.CREATURE);
+      }
       if (card.putOntoBattlefield(game,fromZone,ability.getId(),controllerId)) {
-        if (this.getSpellAbility() instanceof BestowAbility) {
-          Permanent permanent=game.getPermanent(card.getId());
-          if (permanent != null) {
-            permanent.getCardType().remove(CardType.CREATURE);
-          }
+        if (bestow) {
+          card.getCardType().add(CardType.CREATURE);
         }
         game.getState().handleSimultaneousEvent(game);
         return ability.resolve(game);
+      }
+      if (bestow) {
+        card.getCardType().add(CardType.CREATURE);
       }
       return false;
     }
