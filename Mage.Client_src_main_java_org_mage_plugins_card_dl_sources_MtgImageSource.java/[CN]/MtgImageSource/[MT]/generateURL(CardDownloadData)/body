@@ -1,0 +1,26 @@
+{
+  Integer collectorId=card.getCollectorId();
+  String cardSet=card.getSet();
+  if (collectorId == null || cardSet == null) {
+    throw new Exception("Wrong parameters for image: collector id: " + collectorId + ",card set: "+ cardSet);
+  }
+  String set=CardImageUtils.updateSet(cardSet,true);
+  StringBuilder url=new StringBuilder("http://mtgimage.com/set/");
+  url.append(set.toUpperCase()).append("/").append(card.getName());
+  if (card.isTwoFacedCard()) {
+    url.append(card.isSecondSide() ? "b" : "a");
+  }
+  if (card.isSplitCard()) {
+    url.append("a");
+  }
+  if (card.isFlipCard()) {
+    if (card.isFlippedSide()) {
+      url.append("b");
+    }
+ else {
+      url.append("a");
+    }
+  }
+  url.append(".jpg");
+  return url.toString();
+}
