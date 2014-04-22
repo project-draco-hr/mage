@@ -7,6 +7,17 @@
       if (abilities.isEmpty()) {
         break;
       }
+      for (Iterator<TriggeredAbility> it=abilities.iterator(); it.hasNext(); ) {
+        TriggeredAbility triggeredAbility=it.next();
+        if (!triggeredAbility.isUsesStack()) {
+          state.removeTriggeredAbility(triggeredAbility);
+          played|=player.triggerAbility(triggeredAbility,this);
+          it.remove();
+        }
+      }
+      if (abilities.isEmpty()) {
+        break;
+      }
       if (abilities.size() == 1) {
         state.removeTriggeredAbility(abilities.get(0));
         played|=player.triggerAbility(abilities.get(0),this);
