@@ -1,11 +1,8 @@
 {
-  if (event.getType().equals(GameEvent.EventType.DAMAGE_PLAYER)) {
-    DamageEvent damageEvent=(DamageEvent)event;
-    if ((damageEvent.isCombatDamage() || !onlyCombat) && damageEvent.isPreventable()) {
-      Player controller=game.getPlayer(source.getControllerId());
-      if (controller != null && controller.getInRange().contains(event.getTargetId())) {
-        return true;
-      }
+  if (super.applies(event,source,game) && event.getType().equals(GameEvent.EventType.DAMAGE_PLAYER)) {
+    Player controller=game.getPlayer(source.getControllerId());
+    if (controller != null && controller.getInRange().contains(event.getTargetId())) {
+      return true;
     }
   }
   return false;
