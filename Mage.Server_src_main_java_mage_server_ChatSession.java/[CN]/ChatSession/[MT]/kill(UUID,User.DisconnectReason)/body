@@ -1,8 +1,10 @@
 {
   if (userId != null && clients.containsKey(userId)) {
+    logger.debug("kill user: Start kill userId " + userId);
     String userName=clients.get(userId);
     String message;
     clients.remove(userId);
+    logger.debug("kill user: After remove " + userId);
 switch (reason) {
 case Disconnected:
       message=" has left MAGE";
@@ -14,6 +16,6 @@ default :
 message=" has left chat";
 }
 broadcast(null,new StringBuilder(userName).append(message).toString(),MessageColor.BLUE,true,MessageType.STATUS);
-logger.debug(userName + message + " "+ chatId);
+logger.debug("kill user: " + userName + message+ " "+ chatId);
 }
 }
