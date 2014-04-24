@@ -1,28 +1,11 @@
 {
-  GameEvent preventEvent=new GameEvent(GameEvent.EventType.PREVENT_DAMAGE,event.getTargetId(),source.getSourceId(),source.getControllerId(),event.getAmount(),false);
-  if (!game.replaceEvent(preventEvent)) {
-    int prevented;
-    if (event.getAmount() >= this.amount) {
-      int damage=amount;
-      event.setAmount(event.getAmount() - amount);
-      this.used=true;
-      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.PREVENTED_DAMAGE,event.getTargetId(),source.getSourceId(),source.getControllerId(),damage));
-      prevented=damage;
-    }
- else {
-      int damage=event.getAmount();
-      event.setAmount(0);
-      amount-=damage;
-      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.PREVENTED_DAMAGE,event.getTargetId(),source.getSourceId(),source.getControllerId(),damage));
-      prevented=damage;
-    }
-    if (prevented > 0) {
-      UUID redirectTo=source.getControllerId();
-      Player player=game.getPlayer(redirectTo);
-      if (player != null) {
-        game.informPlayers("Dealing " + prevented + " to "+ player.getName()+ " instead");
-        player.damage(prevented,event.getSourceId(),game,true,false);
-      }
+  PreventionEffectData preventionResult=preventDamageAction(event,source,game);
+  if (preventionResult.getPreventedDamage() > 0) {
+    UUID redirectTo=source.getControllerId();
+    Player player=game.getPlayer(redirectTo);
+    if (player != null) {
+      game.informPlayers("Dealing " + preventionResult.getPreventedDamage() + " to "+ player.getName()+ " instead");
+      player.damage(preventionResult.getPreventedDamage(),event.getSourceId(),game,false,true);
     }
   }
   return false;

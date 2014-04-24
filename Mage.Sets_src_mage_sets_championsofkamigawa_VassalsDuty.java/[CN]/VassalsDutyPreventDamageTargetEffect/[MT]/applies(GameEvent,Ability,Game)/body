@@ -1,10 +1,7 @@
 {
   if (!this.used && super.applies(event,source,game)) {
-    Permanent permanent=game.getPermanent(event.getTargetId());
-    if (permanent != null) {
-      if (permanent.getId().equals(this.getTargetPointer().getFirst(game,source))) {
-        return true;
-      }
+    if (event.getTargetId().equals(getTargetPointer().getFirst(game,source))) {
+      return game.getPermanent(event.getTargetId()) != null;
     }
   }
   return false;
