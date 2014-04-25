@@ -16,6 +16,16 @@
           if (s1 != s2) {
             changed=true;
           }
+ else           if (s1 > 0) {
+            Set<UUID> attachmentIds=new HashSet<UUID>();
+            attachmentIds.addAll(permanent.getAttachments());
+            for (            MagePermanent magePermanent : oldMagePermanent.getLinks()) {
+              if (!attachmentIds.contains(magePermanent.getOriginalPermanent().getId())) {
+                changed=true;
+                break;
+              }
+            }
+          }
         }
       }
       oldMagePermanent.update(permanent);
