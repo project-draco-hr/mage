@@ -1,13 +1,16 @@
 {
-  List<Permanent> perms=game.getBattlefield().getAllActivePermanents(filter,source.getFirstTarget(),game);
-  if (perms.size() > 0) {
-    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(filter,source.getFirstTarget(),game)) {
-      permanent.moveToExile(source.getSourceId(),"Sudden Disappearance",source.getSourceId(),game);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    List<Permanent> perms=game.getBattlefield().getAllActivePermanents(filter,source.getFirstTarget(),game);
+    if (perms.size() > 0) {
+      for (      Permanent permanent : game.getBattlefield().getAllActivePermanents(filter,source.getFirstTarget(),game)) {
+        controller.moveCardToExileWithInfo(permanent,source.getSourceId(),"Sudden Disappearance",source.getSourceId(),game,Zone.BATTLEFIELD);
+      }
+      AtEndOfTurnDelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Zone.BATTLEFIELD));
+      delayedAbility.setSourceId(source.getSourceId());
+      delayedAbility.setControllerId(source.getControllerId());
+      game.addDelayedTriggeredAbility(delayedAbility);
     }
-    AtEndOfTurnDelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Zone.BATTLEFIELD));
-    delayedAbility.setSourceId(source.getSourceId());
-    delayedAbility.setControllerId(source.getControllerId());
-    game.addDelayedTriggeredAbility(delayedAbility);
     return true;
   }
   return false;
