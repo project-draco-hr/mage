@@ -1,16 +1,7 @@
 {
-  Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler(){
-    @Override public void uncaughtException(    Thread t,    Throwable e){
-      System.out.println(t.getName() + ": " + e.getMessage());
-      e.printStackTrace();
-    }
-  }
-);
   expireExecutor.scheduleAtFixedRate(new Runnable(){
     @Override public void run(){
-      logger.debug("Check expired start");
       checkExpired();
-      logger.debug("Check expired end");
     }
   }
 ,60,60,TimeUnit.SECONDS);
