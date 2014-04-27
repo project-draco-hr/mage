@@ -1,8 +1,11 @@
 {
-  StringBuilder sb=new StringBuilder(position > 0 ? " and " : "").append(" with ");
-  if (isRepeatable()) {
-    sb.append(getActivateCount()).append(getActivateCount() > 1 ? " times " : " time ");
+  StringBuilder sb=new StringBuilder();
+  if (isActivated() && (!isRepeatable() || getActivateCount() > 0)) {
+    sb.append(position > 0 ? " and " : "").append(" with ");
+    if (isRepeatable()) {
+      sb.append(getActivateCount()).append(getActivateCount() > 1 ? " times " : " time ");
+    }
+    sb.append(name);
   }
-  sb.append(name);
   return sb.toString();
 }
