@@ -1,15 +1,6 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    Target target=new TargetCardInHand(new FilterLandCard());
-    target.setRequired(true);
-    target.setNotTarget(true);
-    if (target.canChoose(source.getSourceId(),source.getControllerId(),game) && controller.chooseUse(outcome,"Put land onto the battlefield?",game) && controller.chooseTarget(outcome,target,source,game)) {
-      Card card=game.getCard(target.getFirstTarget());
-      if (card != null) {
-        controller.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId());
-      }
-    }
     if (game.getBattlefield().count(DokaiWeaverofLifeToken.filterLands,source.getSourceId(),source.getControllerId(),game) >= 10) {
       new FlipSourceEffect(new DokaiWeaverofLife()).apply(game,source);
     }
