@@ -20,10 +20,17 @@
       return false;
     }
   }
-  if (card != null) {
+  if (noMana) {
+    int xValue=this.getManaCostsToPay().getX();
+    this.getManaCostsToPay().clear();
+    VariableManaCost xCosts=new VariableManaCost();
+    xCosts.setAmount(xValue);
+    this.getManaCostsToPay().add(xCosts);
+  }
+  if (card != null && !(this instanceof FlashbackAbility)) {
     boolean alternativeCostisUsed=false;
     for (    Ability ability : card.getAbilities()) {
-      if (ability instanceof AlternativeSourceCosts) {
+      if (!noMana && ability instanceof AlternativeSourceCosts) {
         AlternativeSourceCosts alternativeSpellCosts=(AlternativeSourceCosts)ability;
         if (alternativeSpellCosts.isAvailable(this,game)) {
           if (alternativeSpellCosts.askToActivateAlternativeCosts(this,game)) {
@@ -36,7 +43,7 @@
         ((OptionalAdditionalSourceCosts)ability).addOptionalAdditionalCosts(this,game);
       }
     }
-    if (!alternativeCostisUsed) {
+    if (!noMana && !alternativeCostisUsed) {
       if (this.getAbilityType().equals(AbilityType.SPELL)) {
         for (        AlternativeSourceCosts alternativeSourceCosts : controller.getAlternativeSourceCosts()) {
           if (alternativeSourceCosts.isAvailable(this,game)) {
@@ -91,7 +98,7 @@
     activatorId=((ActivatedAbilityImpl)this).getActivatorId();
   }
   if (!useAlternativeCost(game)) {
-    if (!manaCostsToPay.pay(this,game,sourceId,activatorId,noMana)) {
+    if (!manaCostsToPay.pay(this,game,sourceId,activatorId,false)) {
       logger.debug("activate failed - mana");
       return false;
     }
