@@ -1,6 +1,6 @@
 {
   ManaCosts<ManaCost> previousCost=spellAbility.getManaCostsToPay();
-  ManaCosts<ManaCost> adjustedCost=new ManaCostsImpl<ManaCost>();
+  ManaCosts<ManaCost> adjustedCost=new ManaCostsImpl<>();
   for (  VariableCost vCost : previousCost.getVariableCosts()) {
     if (vCost instanceof VariableManaCost) {
       adjustedCost.add((VariableManaCost)vCost);
@@ -65,7 +65,12 @@
         reduceMana.setWhite(0);
       }
     }
-    if (mana.count() > 0) {
+    if (newManaCost instanceof HybridManaCost) {
+      if (mana.count() > 1) {
+        adjustedCost.add(newManaCost);
+      }
+    }
+ else     if (mana.count() > 0) {
       adjustedCost.add(newManaCost);
     }
   }
