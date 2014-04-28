@@ -1,0 +1,34 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (controller != null && sourcePermanent != null) {
+    if (controller.getLibrary().size() > 0) {
+      Card card=controller.getLibrary().getFromTop(game);
+      if (card != null) {
+        Cards cards=new CardsImpl(card);
+        controller.lookAtCards(sourcePermanent.getName(),cards,game);
+        if (CardUtil.shareSubtypes(sourcePermanent,card)) {
+          if (controller.chooseUse(outcome,new StringBuilder("Kinship - Reveal ").append(card.getName()).append("?").toString(),game)) {
+            controller.revealCards(sourcePermanent.getName(),cards,game);
+            for (            Effect effect : kinshipEffects) {
+              effect.setTargetPointer(new FixedTarget(card.getId()));
+              if (effect.getEffectType().equals(EffectType.ONESHOT)) {
+                effect.apply(game,source);
+              }
+ else {
+                if (effect instanceof ContinuousEffect) {
+                  game.addEffect((ContinuousEffect)effect,source);
+                }
+ else {
+                  throw new UnsupportedOperationException("This kind of effect is not supported");
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
