@@ -1,6 +1,11 @@
 {
   while (!isCancelled()) {
-    this.publish(session.getUsers());
+    List<UserView> users=session.getUsers();
+    if (previousUsers == null || checkUserListChanged(users)) {
+      logger.debug("Need to update the user list");
+      this.publish(users);
+      previousUsers=users;
+    }
     Thread.sleep(1000);
   }
   return null;
