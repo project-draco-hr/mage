@@ -39,6 +39,7 @@
     }
   }
 ,60,60,TimeUnit.SECONDS);
+  updateMemUsageTask=new UpdateMemUsageTask(jMemUsageLabel);
   try {
     tablesPane=new TablesPane();
     desktopPane.add(tablesPane,javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -115,6 +116,7 @@
       if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_IMAGES_CHECK,"false").equals("true")) {
         checkForNewImages();
       }
+      updateMemUsageTask.execute();
       logger.info("Client start up time: " + ((System.currentTimeMillis() - startTime) / 1000 + " seconds"));
       if (autoConnect()) {
         enableButtons();
