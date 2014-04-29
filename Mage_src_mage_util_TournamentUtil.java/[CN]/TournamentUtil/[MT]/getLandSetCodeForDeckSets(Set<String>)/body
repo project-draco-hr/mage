@@ -1,0 +1,31 @@
+{
+  Set<String> setCodesland=new HashSet<>();
+  for (  String setCode : setCodesDeck) {
+    ExpansionInfo expansionInfo=ExpansionRepository.instance.getSetByCode(setCode);
+    if (expansionInfo.hasBasicLands()) {
+      setCodesland.add(expansionInfo.getCode());
+    }
+  }
+  if (setCodesland.isEmpty()) {
+    for (    String setCode : setCodesDeck) {
+      ExpansionInfo expansionInfo=ExpansionRepository.instance.getSetByCode(setCode);
+      ExpansionInfo[] blockSets=ExpansionRepository.instance.getSetsFromBlock(expansionInfo.getBlockName());
+      for (      ExpansionInfo blockSet : blockSets) {
+        if (blockSet.hasBasicLands()) {
+          setCodesland.add(blockSet.getCode());
+        }
+      }
+    }
+  }
+  if (setCodesland.isEmpty()) {
+    Random generator=new Random();
+    List<ExpansionInfo> basicLandSets=ExpansionRepository.instance.getSetsWithBasicLandsByReleaseDate();
+    if (basicLandSets.size() > 0) {
+      setCodesland.add(basicLandSets.get(generator.nextInt(basicLandSets.size())).getCode());
+    }
+  }
+  if (setCodesland.isEmpty()) {
+    throw new IllegalArgumentException("No set with basic land was found");
+  }
+  return setCodesland;
+}
