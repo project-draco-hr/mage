@@ -1,14 +1,18 @@
 {
-  boolean applied=false;
-  if (counter != null) {
-    UUID controllerId=source.getControllerId();
-    List<Permanent> permanents=game.getBattlefield().getAllActivePermanents();
-    for (    Permanent permanent : permanents) {
-      if (filter.match(permanent,source.getSourceId(),controllerId,game)) {
-        permanent.addCounters(counter.copy(),game);
-        applied=true;
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    if (counter != null) {
+      UUID controllerId=source.getControllerId();
+      List<Permanent> permanents=game.getBattlefield().getAllActivePermanents();
+      for (      Permanent permanent : permanents) {
+        if (filter.match(permanent,source.getSourceId(),controllerId,game)) {
+          permanent.addCounters(counter.copy(),game);
+          game.informPlayers(new StringBuilder(sourceObject.getName()).append(": ").append(controller.getName()).append(" puts ").append(counter.getCount()).append(" ").append(counter.getName().toLowerCase()).append(" counter on ").append(permanent.getName()).toString());
+        }
       }
     }
+    return true;
   }
-  return applied;
+  return false;
 }
