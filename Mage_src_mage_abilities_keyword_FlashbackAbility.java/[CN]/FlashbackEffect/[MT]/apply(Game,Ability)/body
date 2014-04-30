@@ -16,7 +16,23 @@ spellAbility=card.getSpellAbility();
 }
 spellAbility.clear();
 int amount=source.getManaCostsToPay().getX();
+if (amount == 0) {
+for (Cost cost : source.getCosts()) {
+if (cost instanceof VariableCost && cost.isPaid()) {
+  amount=((VariableCost)cost).getAmount();
+  break;
+}
+}
+}
+if (amount > 0) {
+for (VariableCost variableCost : spellAbility.getManaCostsToPay().getVariableCosts()) {
+if (variableCost instanceof VariableManaCost) {
+  amount=amount * ((VariableManaCost)variableCost).getMultiplier();
+  break;
+}
+}
 spellAbility.getManaCostsToPay().setX(amount);
+}
 for (Target target : spellAbility.getTargets()) {
 target.setRequired(true);
 }
