@@ -13,26 +13,38 @@
     txtEndTime.setText("running...");
     firstInitDone=true;
   }
-  txtTournamentState.setText(tournament.getTournamentState());
-  if (txtEndTime == null) {
-    return;
-  }
-  if (txtEndTime.getText().equals("running...") && tournament.getEndTime() != null) {
-    txtEndTime.setText(df.format(tournament.getEndTime()));
-  }
-  playersModel.loadData(tournament);
-  matchesModel.loadData(tournament);
-  this.tablePlayers.repaint();
-  this.tableMatches.repaint();
-  btnQuitTournament.setVisible(false);
-  if (tournament.getEndTime() == null) {
-    for (    TournamentPlayerView player : tournament.getPlayers()) {
-      if (player.getName().equals(session.getUserName())) {
-        if (!player.hasQuit()) {
-          btnQuitTournament.setVisible(true);
-        }
-        break;
-      }
-    }
-  }
+switch (tournament.getTournamentState()) {
+case "Constructing":
+    String constructionTime=Format.getDuration(tournament.getConstructionTime() - (tournament.getServerTime().getTime() - tournament.getStepStartTime().getTime()) / 1000);
+  txtTournamentState.setText(new StringBuilder(tournament.getTournamentState()).append(" (").append(constructionTime).append(")").toString());
+break;
+case "Dueling":
+String duelingTime=Format.getDuration((tournament.getServerTime().getTime() - tournament.getStepStartTime().getTime()) / 1000);
+txtTournamentState.setText(new StringBuilder(tournament.getTournamentState()).append(" (").append(duelingTime).append(")").toString());
+break;
+default :
+txtTournamentState.setText(tournament.getTournamentState());
+break;
+}
+if (txtEndTime == null) {
+return;
+}
+if (txtEndTime.getText().equals("running...") && tournament.getEndTime() != null) {
+txtEndTime.setText(df.format(tournament.getEndTime()));
+}
+playersModel.loadData(tournament);
+matchesModel.loadData(tournament);
+this.tablePlayers.repaint();
+this.tableMatches.repaint();
+btnQuitTournament.setVisible(false);
+if (tournament.getEndTime() == null) {
+for (TournamentPlayerView player : tournament.getPlayers()) {
+if (player.getName().equals(session.getUserName())) {
+if (!player.hasQuit()) {
+btnQuitTournament.setVisible(true);
+}
+break;
+}
+}
+}
 }
