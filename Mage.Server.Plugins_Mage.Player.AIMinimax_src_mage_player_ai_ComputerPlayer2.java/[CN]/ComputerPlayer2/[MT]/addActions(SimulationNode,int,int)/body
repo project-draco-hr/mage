@@ -6,7 +6,7 @@
     return GameStateEvaluator.evaluate(playerId,game);
   }
   int val;
-  if (node.depth > maxDepth || game.isGameOver()) {
+  if (node.depth > maxDepth || game.gameOver(null)) {
     logger.debug(indent(node.depth) + "simulating -- reached end state");
     val=GameStateEvaluator.evaluate(playerId,game);
   }
@@ -25,7 +25,7 @@
         playNext(game,game.getActivePlayerId(),node);
       }
     }
-    if (game.isGameOver()) {
+    if (game.gameOver(null)) {
       val=GameStateEvaluator.evaluate(playerId,game);
     }
  else     if (node.getChildren().size() > 0) {

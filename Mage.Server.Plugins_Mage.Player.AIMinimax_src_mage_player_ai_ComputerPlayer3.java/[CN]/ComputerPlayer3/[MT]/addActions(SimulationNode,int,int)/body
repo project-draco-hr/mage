@@ -7,7 +7,7 @@
     logger.debug(indent(node.depth) + "interrupted");
     return GameStateEvaluator.evaluate(playerId,game);
   }
-  if (node.depth > maxDepth || game.isGameOver()) {
+  if (node.depth > maxDepth || game.gameOver(null)) {
     logger.debug(indent(node.depth) + "simulating -- reached end state");
     val=GameStateEvaluator.evaluate(playerId,game);
   }
@@ -25,7 +25,7 @@
         stepFinished=true;
       }
     }
-    if (game.isGameOver()) {
+    if (game.gameOver(null)) {
       val=GameStateEvaluator.evaluate(playerId,game);
     }
  else     if (stepFinished) {

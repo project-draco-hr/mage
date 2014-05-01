@@ -1,0 +1,23 @@
+{
+  int activePlayers=0;
+  MatchPlayer matchWinner=null;
+  for (  MatchPlayer matchPlayer : players) {
+    if (!matchPlayer.hasQuit()) {
+      activePlayers++;
+      matchWinner=matchPlayer;
+    }
+    if (matchPlayer.getWins() >= options.getWinsNeeded()) {
+      matchPlayer.setMatchWinner(true);
+      endTime=new Date();
+      return true;
+    }
+  }
+  if (activePlayers < 2) {
+    if (matchWinner != null) {
+      matchWinner.setMatchWinner(true);
+    }
+    endTime=new Date();
+    return true;
+  }
+  return false;
+}

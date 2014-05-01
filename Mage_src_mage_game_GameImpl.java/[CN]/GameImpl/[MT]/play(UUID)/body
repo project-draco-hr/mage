@@ -1,8 +1,8 @@
 {
-  if (!isPaused() && !isGameOver()) {
+  if (!isPaused() && !gameOver(null)) {
     PlayerList players=state.getPlayerList(nextPlayerId);
     Player player=getPlayer(players.get());
-    while (!isPaused() && !isGameOver()) {
+    while (!isPaused() && !gameOver(null)) {
       if (!playTurn(player)) {
         break;
       }
@@ -16,7 +16,7 @@
       player=players.getNext(this);
     }
   }
-  if (isGameOver()) {
+  if (gameOver(null)) {
     winnerId=findWinnersAndLosers();
     logger.info(new StringBuilder("Game with gameId ").append(this.getId()).append(" ended."));
   }

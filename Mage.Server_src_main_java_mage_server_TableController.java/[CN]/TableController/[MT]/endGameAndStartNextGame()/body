@@ -1,5 +1,4 @@
 {
-  boolean matchIsOver=false;
   UUID choosingPlayerId=match.getChooser();
   match.endGame();
   if (ConfigSettings.getInstance().isSaveGameActivated() && !match.getGame().isSimulation()) {
@@ -9,26 +8,24 @@
   }
   GameManager.getInstance().removeGame(match.getGame().getId());
   try {
-    if (!match.isMatchOver()) {
+    if (!match.hasEnded()) {
       table.sideboard();
       setupTimeout(Match.SIDEBOARD_TIME);
       match.sideboard();
       cancelTimeout();
-      if (!match.isMatchOver()) {
+      if (!match.hasEnded()) {
         startGame(choosingPlayerId);
       }
  else {
-        matchIsOver=true;
         closeTable();
       }
     }
  else {
-      matchIsOver=true;
       closeTable();
     }
   }
  catch (  GameException ex) {
     logger.fatal(null,ex);
   }
-  return matchIsOver;
+  return match.hasEnded();
 }
