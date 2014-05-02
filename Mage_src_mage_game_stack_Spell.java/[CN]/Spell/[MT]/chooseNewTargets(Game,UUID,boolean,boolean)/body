@@ -1,6 +1,7 @@
 {
   Player player=game.getPlayer(playerId);
   if (player != null) {
+    StringBuilder newTargetDescription=new StringBuilder();
     for (    SpellAbility spellAbility : spellAbilities) {
       for (      UUID modeId : spellAbility.getModes().getSelectedModes()) {
         Mode mode=spellAbility.getModes().get(modeId);
@@ -11,8 +12,10 @@
             target.addTarget(targetId,newTarget.getTargetAmount(targetId),spellAbility,game,false);
           }
         }
+        newTargetDescription.append(getSpellAbility().getTargetDescription(mode.getTargets(),game));
       }
     }
+    game.informPlayers(this.getName() + " is now " + newTargetDescription.toString());
     return true;
   }
   return false;
