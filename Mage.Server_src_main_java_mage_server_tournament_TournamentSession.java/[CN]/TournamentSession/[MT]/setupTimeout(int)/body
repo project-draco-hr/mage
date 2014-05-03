@@ -6,7 +6,12 @@
   if (seconds > 0) {
     futureTimeout=timeoutExecutor.schedule(new Runnable(){
       @Override public void run(){
-        TournamentManager.getInstance().timeout(tournament.getId(),userId);
+        try {
+          TournamentManager.getInstance().timeout(tournament.getId(),userId);
+        }
+ catch (        Exception e) {
+          logger.fatal("TournamentSession error - userId " + userId + " tId "+ tournament.getId(),e);
+        }
       }
     }
 ,seconds,TimeUnit.SECONDS);
