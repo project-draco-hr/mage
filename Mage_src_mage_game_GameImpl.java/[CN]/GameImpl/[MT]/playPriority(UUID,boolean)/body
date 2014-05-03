@@ -2,7 +2,7 @@
   int bookmark=0;
   clearAllBookmarks();
   try {
-    while (!isPaused() && !isGameOver()) {
+    while (!isPaused() && !gameOver(null)) {
       if (!resuming) {
         state.getPlayers().resetPassed();
         state.getPlayerList().setCurrent(activePlayerId);
@@ -12,18 +12,18 @@
       }
       fireUpdatePlayersEvent();
       Player player;
-      while (!isPaused() && !isGameOver()) {
+      while (!isPaused() && !gameOver(null)) {
         try {
           player=getPlayer(state.getPlayerList().get());
           state.setPriorityPlayerId(player.getId());
-          while (!player.isPassed() && player.isInGame() && !isPaused()&& !isGameOver()) {
+          while (!player.isPassed() && player.isInGame() && !isPaused()&& !gameOver(null)) {
             if (!resuming) {
               if (checkStateAndTriggered()) {
                 applyEffects();
               }
               applyEffects();
               saveState(false);
-              if (isPaused() || isGameOver()) {
+              if (isPaused() || gameOver(null)) {
                 return;
               }
               if (player.priority(this)) {
@@ -37,7 +37,7 @@
           }
           resetShortLivingLKI();
           resuming=false;
-          if (isPaused() || isGameOver()) {
+          if (isPaused() || gameOver(null)) {
             return;
           }
           if (allPassed()) {

@@ -10,7 +10,7 @@
     logger.debug("interrupted");
     return GameStateEvaluator2.evaluate(playerId,game);
   }
-  if (depth <= 0 || SimulationNode2.nodeCount > maxNodes || game.isGameOver()) {
+  if (depth <= 0 || SimulationNode2.nodeCount > maxNodes || game.gameOver(null)) {
     val=GameStateEvaluator2.evaluate(playerId,game);
     if (logger.isTraceEnabled()) {
       StringBuilder sb=new StringBuilder("Add Actions -- reached end state  <").append(val).append(">");
@@ -44,7 +44,7 @@
         stepFinished=true;
       }
     }
-    if (game.isGameOver()) {
+    if (game.gameOver(null)) {
       val=GameStateEvaluator2.evaluate(playerId,game);
     }
  else     if (stepFinished) {

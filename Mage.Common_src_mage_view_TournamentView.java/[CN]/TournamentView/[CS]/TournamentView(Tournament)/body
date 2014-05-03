@@ -1,9 +1,17 @@
 {
   tournamentName=tournament.getOptions().getName();
-  tournamentType=tournament.getOptions().getTournamentType();
+  if (tournament.getNumberRounds() > 0) {
+    tournamentType=tournament.getOptions().getTournamentType() + " " + tournament.getNumberRounds()+ " rounds";
+  }
+ else {
+    tournamentType=tournament.getOptions().getTournamentType();
+  }
   startTime=tournament.getStartTime();
   endTime=tournament.getEndTime();
+  stepStartTime=tournament.getStepStartTime();
+  constructionTime=tournament.getOptions().getLimitedOptions().getConstructionTime();
   watchingAllowed=tournament.getOptions().isWatchingAllowed();
+  serverTime=new Date();
   tournamentState=tournament.getTournamentState();
   for (  TournamentPlayer player : tournament.getPlayers()) {
     players.add(new TournamentPlayerView(player));
