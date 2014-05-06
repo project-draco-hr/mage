@@ -19,7 +19,11 @@
           while (!player.isPassed() && player.isInGame() && !isPaused()&& !gameOver(null)) {
             if (!resuming) {
               if (checkStateAndTriggered()) {
-                applyEffects();
+                do {
+                  state.handleSimultaneousEvent(this);
+                  applyEffects();
+                }
+ while (state.hasSimultaneousEvents());
               }
               applyEffects();
               saveState(false);

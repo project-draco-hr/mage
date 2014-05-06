@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Battering Krasis",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Crocanura",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",6);
+  addCard(Zone.HAND,playerB,"Sudden Disappearance",2);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Sudden Disappearance",playerA);
+  setStopAt(3,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerB,1);
+  assertGraveyardCount(playerA,0);
+  assertPermanentCount(playerA,"Battering Krasis",1);
+  assertPermanentCount(playerA,"Crocanura",1);
+  assertPowerToughness(playerA,"Battering Krasis",3,2);
+  assertPowerToughness(playerA,"Crocanura",2,4);
+}

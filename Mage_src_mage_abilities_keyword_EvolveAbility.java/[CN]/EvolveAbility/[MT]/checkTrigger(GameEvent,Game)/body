@@ -1,11 +1,13 @@
 {
-  if (event.getType() == GameEvent.EventType.ENTERS_THE_BATTLEFIELD && !event.getTargetId().equals(this.getSourceId())) {
-    Permanent triggeringCreature=game.getPermanent(event.getTargetId());
-    if (triggeringCreature != null && triggeringCreature.getCardType().contains(CardType.CREATURE) && triggeringCreature.getControllerId().equals(this.controllerId)) {
-      Permanent sourceCreature=game.getPermanent(sourceId);
-      if (sourceCreature != null && isPowerOrThoughnessGreater(sourceCreature,triggeringCreature)) {
-        this.getEffects().get(0).setValue("triggeringCreature",event.getTargetId());
-        return true;
+  if (event.getType() == GameEvent.EventType.ENTERS_THE_BATTLEFIELD) {
+    if (!event.getTargetId().equals(this.getSourceId())) {
+      Permanent triggeringCreature=game.getPermanent(event.getTargetId());
+      if (triggeringCreature != null && triggeringCreature.getCardType().contains(CardType.CREATURE) && triggeringCreature.getControllerId().equals(this.controllerId)) {
+        Permanent sourceCreature=game.getPermanent(sourceId);
+        if (sourceCreature != null && isPowerOrThoughnessGreater(sourceCreature,triggeringCreature)) {
+          this.getEffects().get(0).setTargetPointer(new FixedTarget(event.getTargetId()));
+          return true;
+        }
       }
     }
   }

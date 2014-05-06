@@ -1,9 +1,5 @@
 {
-  UUID triggeringCreatureId=(UUID)getValue("triggeringCreature");
-  Permanent triggeringCreature=game.getPermanent(triggeringCreatureId);
-  if (triggeringCreature == null) {
-    triggeringCreature=(Permanent)game.getLastKnownInformation(triggeringCreatureId,Zone.BATTLEFIELD);
-  }
+  Permanent triggeringCreature=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
   if (triggeringCreature != null) {
     Permanent sourceCreature=game.getPermanent(source.getSourceId());
     if (sourceCreature != null && EvolveAbility.isPowerOrThoughnessGreater(sourceCreature,triggeringCreature)) {

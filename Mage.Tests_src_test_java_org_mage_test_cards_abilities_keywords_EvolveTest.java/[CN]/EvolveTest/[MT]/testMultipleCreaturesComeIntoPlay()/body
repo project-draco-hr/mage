@@ -1,0 +1,23 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",6);
+  addCard(Zone.BATTLEFIELD,playerA,"Judge's Familiar",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Cloudfin Raptor",1);
+  addCard(Zone.HAND,playerA,"Mizzium Mortars",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",6);
+  addCard(Zone.HAND,playerB,"Banisher Priest",2);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Banisher Priest");
+  addTarget(playerB,"Cloudfin Raptor");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Banisher Priest");
+  addTarget(playerB,"Judge's Familiar");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Mizzium Mortars with overload");
+  setStopAt(3,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerB,"Banisher Priest",0);
+  assertGraveyardCount(playerB,2);
+  assertGraveyardCount(playerA,1);
+  assertPermanentCount(playerA,"Cloudfin Raptor",1);
+  assertPermanentCount(playerA,"Judge's Familiar",1);
+  assertPowerToughness(playerA,"Cloudfin Raptor",1,2);
+}
