@@ -1,27 +1,44 @@
 {
-  jScrollPane1=new javax.swing.JScrollPane();
-  cardArea=new javax.swing.JLayeredPane();
-  jPanel1=new javax.swing.JPanel();
-  cbSortBy=new javax.swing.JComboBox();
+  panelControl=new javax.swing.JPanel();
   lblCount=new javax.swing.JLabel();
   lblCreatureCount=new javax.swing.JLabel();
   lblLandCount=new javax.swing.JLabel();
+  chkPiles=new javax.swing.JCheckBox();
+  cbSortBy=new javax.swing.JComboBox<SortBy>();
   jToggleListView=new javax.swing.JToggleButton();
   jToggleCardView=new javax.swing.JToggleButton();
-  chkPiles=new javax.swing.JCheckBox();
+  panelCardArea=new javax.swing.JScrollPane();
+  cardArea=new javax.swing.JLayeredPane();
   setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0,0,0)));
+  setMinimumSize(new java.awt.Dimension(30,30));
   setPreferredSize((!Beans.isDesignTime()) ? (new Dimension(Config.dimensions.frameWidth,Config.dimensions.frameHeight)) : (new Dimension(100,100)));
-  jScrollPane1.setViewportView(cardArea);
-  cbSortBy.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Item 1","Item 2","Item 3","Item 4"}));
+  panelControl.setMaximumSize(new java.awt.Dimension(32767,23));
+  panelControl.setMinimumSize(new java.awt.Dimension(616,23));
+  panelControl.setName("");
+  panelControl.setPreferredSize(new java.awt.Dimension(616,23));
+  panelControl.setRequestFocusEnabled(false);
+  lblCount.setText("Card Count");
+  lblCreatureCount.setText("Creature Count");
+  lblLandCount.setText("Land Count");
+  chkPiles.setText("Piles");
+  chkPiles.addActionListener(new java.awt.event.ActionListener(){
+    public void actionPerformed(    java.awt.event.ActionEvent evt){
+      chkPilesActionPerformed(evt);
+    }
+  }
+);
+  cbSortBy.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"SortBy"}));
+  cbSortBy.setToolTipText("Sort the cards if card view is active.");
+  cbSortBy.setMaximumSize(new java.awt.Dimension(80,20));
+  cbSortBy.setMinimumSize(new java.awt.Dimension(80,20));
+  cbSortBy.setName("SortBy");
+  cbSortBy.setPreferredSize(new java.awt.Dimension(80,20));
   cbSortBy.addActionListener(new java.awt.event.ActionListener(){
     public void actionPerformed(    java.awt.event.ActionEvent evt){
       cbSortByActionPerformed(evt);
     }
   }
 );
-  lblCount.setText("Card Count");
-  lblCreatureCount.setText("Creature Count");
-  lblLandCount.setText("Land Count");
   jToggleListView.setSelected(true);
   jToggleListView.setText("ListView");
   jToggleListView.setFocusable(false);
@@ -37,7 +54,6 @@
   jToggleCardView.setText("CardView");
   jToggleCardView.setMaximumSize(new java.awt.Dimension(77,21));
   jToggleCardView.setMinimumSize(new java.awt.Dimension(77,21));
-  jToggleCardView.setOpaque(true);
   jToggleCardView.setPreferredSize(new java.awt.Dimension(77,21));
   jToggleCardView.addActionListener(new java.awt.event.ActionListener(){
     public void actionPerformed(    java.awt.event.ActionEvent evt){
@@ -45,19 +61,14 @@
     }
   }
 );
-  chkPiles.setText("Piles");
-  chkPiles.addActionListener(new java.awt.event.ActionListener(){
-    public void actionPerformed(    java.awt.event.ActionEvent evt){
-      chkPilesActionPerformed(evt);
-    }
-  }
-);
-  javax.swing.GroupLayout jPanel1Layout=new javax.swing.GroupLayout(jPanel1);
-  jPanel1.setLayout(jPanel1Layout);
-  jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING,jPanel1Layout.createSequentialGroup().addComponent(lblCount,javax.swing.GroupLayout.PREFERRED_SIZE,81,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(lblCreatureCount,javax.swing.GroupLayout.PREFERRED_SIZE,100,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(lblLandCount,javax.swing.GroupLayout.PREFERRED_SIZE,75,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(chkPiles).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(cbSortBy,0,1,Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(jToggleListView,javax.swing.GroupLayout.PREFERRED_SIZE,76,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jToggleCardView,javax.swing.GroupLayout.PREFERRED_SIZE,85,javax.swing.GroupLayout.PREFERRED_SIZE)));
-  jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cbSortBy,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(lblCount).addComponent(lblCreatureCount).addComponent(lblLandCount).addComponent(jToggleCardView,javax.swing.GroupLayout.PREFERRED_SIZE,21,javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(chkPiles).addComponent(jToggleListView,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE)));
+  javax.swing.GroupLayout panelControlLayout=new javax.swing.GroupLayout(panelControl);
+  panelControl.setLayout(panelControlLayout);
+  panelControlLayout.setHorizontalGroup(panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING,panelControlLayout.createSequentialGroup().addContainerGap().addComponent(lblCount,javax.swing.GroupLayout.PREFERRED_SIZE,75,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(lblCreatureCount,javax.swing.GroupLayout.PREFERRED_SIZE,100,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(lblLandCount,javax.swing.GroupLayout.PREFERRED_SIZE,75,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(chkPiles).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(cbSortBy,javax.swing.GroupLayout.PREFERRED_SIZE,120,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jToggleListView,javax.swing.GroupLayout.PREFERRED_SIZE,76,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jToggleCardView,javax.swing.GroupLayout.PREFERRED_SIZE,85,javax.swing.GroupLayout.PREFERRED_SIZE).addGap(92,92,92)));
+  panelControlLayout.setVerticalGroup(panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(panelControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cbSortBy,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(lblCount).addComponent(lblCreatureCount).addComponent(lblLandCount).addComponent(jToggleCardView,javax.swing.GroupLayout.PREFERRED_SIZE,21,javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(chkPiles).addComponent(jToggleListView,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE)));
+  panelCardArea.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+  panelCardArea.setViewportView(cardArea);
   javax.swing.GroupLayout layout=new javax.swing.GroupLayout(this);
   this.setLayout(layout);
-  layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(jPanel1,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE).addComponent(jScrollPane1,javax.swing.GroupLayout.DEFAULT_SIZE,959,Short.MAX_VALUE));
-  layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(jPanel1,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jScrollPane1,javax.swing.GroupLayout.DEFAULT_SIZE,233,Short.MAX_VALUE)));
+  layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(panelCardArea).addComponent(panelControl,javax.swing.GroupLayout.DEFAULT_SIZE,910,Short.MAX_VALUE));
+  layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(panelControl,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addGap(0,0,0).addComponent(panelCardArea,javax.swing.GroupLayout.DEFAULT_SIZE,50,Short.MAX_VALUE)));
 }
