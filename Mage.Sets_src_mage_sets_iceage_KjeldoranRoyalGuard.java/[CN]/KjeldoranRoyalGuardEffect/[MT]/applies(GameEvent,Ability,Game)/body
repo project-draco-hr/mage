@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.DAMAGE_PLAYER && event.getPlayerId().equals(source.getControllerId()) && ((DamageEvent)event).isCombatDamage()) {
+    Permanent p=game.getPermanent(source.getSourceId());
+    if (p != null) {
+      for (      Permanent permanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getId(),game)) {
+        if (event.getSourceId().equals(permanent.getId())) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
