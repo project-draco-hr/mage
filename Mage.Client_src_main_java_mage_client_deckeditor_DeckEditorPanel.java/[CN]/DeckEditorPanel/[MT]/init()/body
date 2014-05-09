@@ -10,7 +10,7 @@ case "double-click":
           moveSelectorCardToDeck(event);
         break;
 case "shift-double-click":
-      if (mode == DeckEditorMode.Constructed) {
+      if (mode == DeckEditorMode.FREE_BUILDING) {
         moveSelectorCardToSideboard(event);
       }
  else {
@@ -32,7 +32,7 @@ refreshDeck();
 this.deckArea.clearDeckEventListeners();
 this.deckArea.addDeckEventListener(new Listener<Event>(){
 @Override public void event(Event event){
-if (mode.equals(DeckEditorMode.Constructed)) {
+if (mode.equals(DeckEditorMode.FREE_BUILDING)) {
 switch (event.getEventName()) {
 case "double-click":
 {
@@ -60,6 +60,10 @@ break;
 hidePopup();
 refreshDeck();
 break;
+}
+case "set-number":
+{
+setCardNumberToCardsList(event,deck.getCards());
 }
 }
 }
@@ -88,7 +92,7 @@ break;
 );
 this.deckArea.addSideboardEventListener(new Listener<Event>(){
 @Override public void event(Event event){
-if (mode.equals(DeckEditorMode.Constructed)) {
+if (mode.equals(DeckEditorMode.FREE_BUILDING)) {
 switch (event.getEventName()) {
 case "double-click":
 SimpleCardView cardView=(SimpleCardView)event.getSource();
@@ -113,6 +117,10 @@ break;
 hidePopup();
 refreshDeck();
 break;
+case "set-number":
+{
+setCardNumberToCardsList(event,deck.getSideboard());
+}
 }
 }
  else {

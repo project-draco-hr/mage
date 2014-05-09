@@ -1,0 +1,27 @@
+{
+  CardView cardView=(CardView)event.getSource();
+  int numberToSet=event.getNumber();
+  int cardsFound=0;
+  List<Card> toDelete=new ArrayList<>();
+  for (  Card card : cards) {
+    if (card.getName().equals(cardView.getName()) && card.getCardNumber() == cardView.getCardNumber() && card.getExpansionSetCode().equals(cardView.getExpansionSetCode())) {
+      cardsFound++;
+      if (cardsFound > numberToSet) {
+        toDelete.add(card);
+      }
+    }
+  }
+  if (toDelete.isEmpty()) {
+    CardInfo cardInfo=CardRepository.instance.findCard(cardView.getExpansionSetCode(),cardView.getCardNumber());
+    for (int i=cardsFound; i < numberToSet; i++) {
+      cards.add(cardInfo.getMockCard());
+    }
+  }
+ else {
+    for (    Card card : toDelete) {
+      cards.remove(card);
+    }
+  }
+  hidePopup();
+  refreshDeck();
+}
