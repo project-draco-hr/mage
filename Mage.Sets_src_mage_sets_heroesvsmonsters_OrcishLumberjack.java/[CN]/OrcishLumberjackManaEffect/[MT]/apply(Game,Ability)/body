@@ -2,7 +2,7 @@
   Player player=game.getPlayer(source.getControllerId());
   if (player != null) {
     Choice manaChoice=new ChoiceImpl();
-    Set<String> choices=new LinkedHashSet<String>();
+    Set<String> choices=new LinkedHashSet<>();
     choices.add("Red");
     choices.add("Green");
     manaChoice.setChoices(choices);
@@ -14,15 +14,17 @@
           return false;
         }
       }
-      if (manaChoice.getChoice().equals("Green")) {
+switch (manaChoice.getChoice()) {
+case "Green":
         mana.addGreen();
-      }
- else       if (manaChoice.getChoice().equals("Red")) {
-        mana.addRed();
-      }
-      player.getManaPool().addMana(mana,game,source);
-    }
-    return true;
-  }
-  return false;
+      break;
+case "Red":
+    mana.addRed();
+  break;
+}
+player.getManaPool().addMana(mana,game,source);
+}
+return true;
+}
+return false;
 }
