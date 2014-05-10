@@ -9,6 +9,13 @@
   textField.setHorizontalAlignment(JTextField.LEFT);
   textField.addFocusListener(new FocusListener(){
     @Override public void focusGained(    FocusEvent fe){
+      lastOriginalHeigh=currentOriginalHeigh;
+      currentOriginalHeigh=0;
+      lastRow=currentRow;
+      currentRow=-1;
+      if (lastOriginalHeigh < NEEDED_HIGH) {
+        table.setRowHeight(lastRow,NEEDED_HIGH);
+      }
       SwingUtilities.invokeLater(new Runnable(){
         @Override public void run(){
           if (valueSet) {
@@ -19,6 +26,7 @@
 );
     }
     @Override public void focusLost(    FocusEvent fe){
+      resetRow();
       if (currentRow < 0) {
         stopCellEditing();
       }

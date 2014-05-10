@@ -1,8 +1,18 @@
 {
+  int selectedRow=-1;
+  if (currentView.equals(mainModel)) {
+    selectedRow=mainTable.getSelectedRow();
+  }
   this.cards=showCards;
   this.bigCard=bigCard;
   this.gameId=gameId;
   cbSortBy.setSelectedItem(sortSetting.getSortBy());
   chkPiles.setSelected(sortSetting.isPilesToggle());
   currentView.loadCards(showCards,sortSetting,bigCard,gameId);
+  if (selectedRow >= 0) {
+    selectedRow=Math.min(selectedRow,mainTable.getRowCount() - 1);
+    if (selectedRow >= 0) {
+      mainTable.setRowSelectionInterval(selectedRow,selectedRow);
+    }
+  }
 }

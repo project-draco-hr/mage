@@ -6,6 +6,9 @@
   this.gameId=gameId;
   int landCount=0;
   int creatureCount=0;
+  int instantCount=0;
+  int sorceryCount=0;
+  int enchantmentCount=0;
   if (!merge) {
     this.clearCards();
     for (    CardView card : showCards.values()) {
@@ -23,6 +26,15 @@
         }
         if (card.getCardTypes().contains(CardType.CREATURE)) {
           creatureCount++;
+        }
+        if (card.getCardTypes().contains(CardType.INSTANT)) {
+          instantCount++;
+        }
+        if (card.getCardTypes().contains(CardType.SORCERY)) {
+          sorceryCount++;
+        }
+        if (card.getCardTypes().contains(CardType.ENCHANTMENT)) {
+          enchantmentCount++;
         }
       }
     }
@@ -73,7 +85,7 @@
       }
     }
     if (updateCountsCallback != null) {
-      updateCountsCallback.update(cards.size(),creatureCount,landCount);
+      updateCountsCallback.update(cards.size(),creatureCount,landCount,sorceryCount,instantCount,enchantmentCount);
     }
   }
   sort(this.sortSetting.getSortIndex(),this.sortSetting.isAscending());
