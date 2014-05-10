@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",5);
+  addCard(Zone.HAND,playerA,"Shriekmaw");
+  addCard(Zone.HAND,playerA,"Exhume");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Shriekmaw");
+  setChoice(playerA,"Yes");
+  addTarget(playerA,"Silvercoat Lion");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Exhume");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Exhume",1);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+  assertPermanentCount(playerA,"Shriekmaw",1);
+}
