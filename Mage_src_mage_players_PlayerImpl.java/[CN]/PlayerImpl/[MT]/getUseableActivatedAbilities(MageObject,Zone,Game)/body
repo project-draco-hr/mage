@@ -16,40 +16,7 @@
         }
       }
     }
-    Abilities<ActivatedAbility> otherAbilities=game.getState().getOtherAbilities(object.getId(),zone);
-    if (otherAbilities != null) {
-      for (      ActivatedAbility ability : otherAbilities) {
-        Card card=game.getCard(ability.getSourceId());
-        if (card.isSplitCard() && ability instanceof FlashbackAbility) {
-          FlashbackAbility flashbackAbility;
-          if (card.getCardType().contains(CardType.INSTANT)) {
-            flashbackAbility=new FlashbackAbility(((SplitCard)card).getLeftHalfCard().getManaCost(),TimingRule.INSTANT);
-          }
- else {
-            flashbackAbility=new FlashbackAbility(((SplitCard)card).getLeftHalfCard().getManaCost(),TimingRule.SORCERY);
-          }
-          flashbackAbility.setSourceId(card.getId());
-          flashbackAbility.setControllerId(card.getOwnerId());
-          flashbackAbility.setSpellAbilityType(SpellAbilityType.SPLIT_LEFT);
-          flashbackAbility.setAbilityName(((SplitCard)card).getLeftHalfCard().getName());
-          useable.put(flashbackAbility.getId(),flashbackAbility);
-          if (card.getCardType().contains(CardType.INSTANT)) {
-            flashbackAbility=new FlashbackAbility(((SplitCard)card).getRightHalfCard().getManaCost(),TimingRule.INSTANT);
-          }
- else {
-            flashbackAbility=new FlashbackAbility(((SplitCard)card).getRightHalfCard().getManaCost(),TimingRule.SORCERY);
-          }
-          flashbackAbility.setSourceId(card.getId());
-          flashbackAbility.setControllerId(card.getOwnerId());
-          flashbackAbility.setSpellAbilityType(SpellAbilityType.SPLIT_RIGHT);
-          flashbackAbility.setAbilityName(((SplitCard)card).getRightHalfCard().getName());
-          useable.put(flashbackAbility.getId(),flashbackAbility);
-        }
- else {
-          useable.put(ability.getId(),ability);
-        }
-      }
-    }
+    getOtherUseableActivatedAbilities(object,zone,game,useable);
   }
   return useable;
 }
