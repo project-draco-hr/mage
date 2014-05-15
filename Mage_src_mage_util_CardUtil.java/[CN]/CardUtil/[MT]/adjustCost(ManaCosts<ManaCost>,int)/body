@@ -1,0 +1,26 @@
+{
+  int restToReduce=reduceCount;
+  ManaCosts<ManaCost> adjustedCost=new ManaCostsImpl<>();
+  boolean updated=false;
+  for (  ManaCost manaCost : manaCosts) {
+    Mana mana=manaCost.getOptions().get(0);
+    int colorless=mana != null ? mana.getColorless() : 0;
+    if (!updated && colorless > 0) {
+      if ((colorless - restToReduce) > 0) {
+        int newColorless=colorless - restToReduce;
+        adjustedCost.add(new GenericManaCost(newColorless));
+      }
+ else {
+        restToReduce=-colorless;
+      }
+      updated=true;
+    }
+ else {
+      adjustedCost.add(manaCost);
+    }
+  }
+  if (!updated && reduceCount < 0) {
+    adjustedCost.add(new GenericManaCost(-reduceCount));
+  }
+  return adjustedCost;
+}
