@@ -1,0 +1,19 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    ChoiceImpl choices=new ChoiceImpl(true);
+    choices.setMessage("Choose basic land type");
+    choices.isRequired();
+    choices.getChoices().add("Forest");
+    choices.getChoices().add("Plains");
+    choices.getChoices().add("Mountain");
+    choices.getChoices().add("Island");
+    choices.getChoices().add("Swamp");
+    if (player.choose(Outcome.Neutral,choices,game)) {
+      game.informPlayers(new StringBuilder("Phantasmal Terrain: ").append(" chosen basic land type is ").append(choices.getChoice()).toString());
+      game.getState().setValue(source.getSourceId().toString() + "_PhantasmalTerrain",choices.getChoice());
+      return true;
+    }
+  }
+  return false;
+}

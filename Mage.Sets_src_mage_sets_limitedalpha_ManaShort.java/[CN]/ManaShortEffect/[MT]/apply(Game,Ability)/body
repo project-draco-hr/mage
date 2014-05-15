@@ -1,0 +1,13 @@
+{
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (targetPlayer != null) {
+    FilterLandPermanent filter=new FilterLandPermanent();
+    filter.add(new ControllerIdPredicate(targetPlayer.getId()));
+    List<Permanent> lands=game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game);
+    for (    Permanent land : lands) {
+      land.tap(game);
+    }
+    targetPlayer.getManaPool().emptyPool();
+  }
+  return false;
+}
