@@ -1,15 +1,3 @@
 {
-  super(Zone.BATTLEFIELD,null);
-  addCost(new TapSourceCost());
-  addCost(new PayLifeCost(1));
-  addCost(new SacrificeSourceCost());
-  FilterCard filter=new FilterCard(subTypeNames(subtypes));
-  filter.add(new CardTypePredicate(CardType.LAND));
-  ArrayList<Predicate<MageObject>> subtypePredicates=new ArrayList<>();
-  for (int i=0; i < subtypes.length; i++) {
-    subtypePredicates.add(new SubtypePredicate(subtypes[i]));
-  }
-  filter.add(Predicates.or(subtypePredicates));
-  TargetCardInLibrary target=new TargetCardInLibrary(filter);
-  addEffect(new SearchLibraryPutInPlayEffect(target,false,true,Outcome.PutLandInPlay));
+  this(true,subtypes);
 }
