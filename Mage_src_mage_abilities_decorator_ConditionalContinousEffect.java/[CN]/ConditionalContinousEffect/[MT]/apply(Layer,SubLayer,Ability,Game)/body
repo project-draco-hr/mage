@@ -2,16 +2,17 @@
   if (!initDone) {
     init(source,game);
   }
-  if (condition.apply(game,source)) {
+  boolean conditionState=condition.apply(game,source);
+  if (conditionState) {
     return effect.apply(layer,sublayer,source,game);
   }
  else   if (otherwiseEffect != null) {
     return otherwiseEffect.apply(layer,sublayer,source,game);
   }
-  if (!condition.apply(game,source) && effect.getDuration() == Duration.OneUse) {
+  if (!conditionState && effect.getDuration() == Duration.OneUse) {
     used=true;
   }
-  if (!condition.apply(game,source) && effect.getDuration() == Duration.Custom) {
+  if (!conditionState && effect.getDuration() == Duration.Custom) {
     this.discard();
   }
   return false;

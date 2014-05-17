@@ -1,5 +1,6 @@
 {
-  if (condition.apply(game,source)) {
+  boolean conditionState=condition.apply(game,source);
+  if (conditionState) {
     effect.setTargetPointer(this.targetPointer);
     return effect.apply(game,source);
   }
@@ -7,10 +8,10 @@
     otherwiseEffect.setTargetPointer(this.targetPointer);
     return otherwiseEffect.apply(game,source);
   }
-  if (!condition.apply(game,source) && effect.getDuration() == Duration.OneUse) {
+  if (!conditionState && effect.getDuration() == Duration.OneUse) {
     used=true;
   }
-  if (!condition.apply(game,source) && effect.getDuration() == Duration.Custom) {
+  if (!conditionState && effect.getDuration() == Duration.Custom) {
     this.discard();
   }
   return false;
