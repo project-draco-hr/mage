@@ -2,10 +2,10 @@
   StringBuilder sb=new StringBuilder("Target ");
 switch (targetController) {
 case OPPONENT:
-    sb.append("Opponent");
+    sb.append("opponent");
   break;
 case ANY:
-sb.append("Player");
+sb.append("player");
 break;
 default :
 throw new UnsupportedOperationException("target controller not supported");
@@ -25,6 +25,15 @@ sb.append(numberCardsToReveal.getMessage());
 }
 }
 sb.append(". You choose ");
+boolean discardMultipleCards=!numberCardsToDiscard.toString().equals("1");
+if (discardMultipleCards) {
+sb.append(numberCardsToDiscard).append(" ");
+}
+ else {
+if (!filter.getMessage().startsWith("a ") && !filter.getMessage().startsWith("an ")) {
+sb.append("a ");
+}
+}
 sb.append(filter.getMessage());
 if (revealAllCards) {
 sb.append(" from it.");
@@ -32,6 +41,6 @@ sb.append(" from it.");
  else {
 sb.append(" of them.");
 }
-sb.append(" That player discards that card").toString();
+sb.append(" That player discards ").append(discardMultipleCards ? "those cards" : "that card").toString();
 return sb.toString();
 }
