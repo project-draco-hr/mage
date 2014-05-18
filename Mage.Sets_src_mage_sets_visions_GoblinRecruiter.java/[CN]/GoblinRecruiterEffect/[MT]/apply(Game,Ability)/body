@@ -1,0 +1,42 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    TargetCardInLibrary targetGoblins=new TargetCardInLibrary(0,Integer.MAX_VALUE,goblinFilter);
+    Cards cards=new CardsImpl();
+    if (player.searchLibrary(targetGoblins,game)) {
+      for (      UUID targetId : targetGoblins.getTargets()) {
+        Card card=player.getLibrary().remove(targetId,game);
+        if (card != null) {
+          cards.add(card);
+        }
+      }
+    }
+    player.shuffleLibrary(game);
+    int numberOfGoblins=cards.size();
+    if (numberOfGoblins > 0) {
+      if (cards.size() > 1) {
+        TargetCard targetCard=new TargetCard(Zone.LIBRARY,putOnTopOfLibraryFilter);
+        targetCard.setRequired(true);
+        while (cards.size() > 1) {
+          player.choose(Outcome.Benefit,cards,targetCard,game);
+          Card card=cards.get(targetCard.getFirstTarget(),game);
+          if (card != null) {
+            cards.remove(card);
+            card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
+          }
+          targetCard.clearChosen();
+        }
+      }
+      if (cards.size() == 1) {
+        Card card=cards.get(cards.iterator().next(),game);
+        if (card != null) {
+          cards.remove(card);
+          card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
+        }
+      }
+    }
+    game.informPlayers(new StringBuilder(player.getName()).append(" puts ").append(numberOfGoblins).append(" Goblin").append(numberOfGoblins == 1 ? " card" : " cards").append(" on top of his library").toString());
+    return true;
+  }
+  return false;
+}
