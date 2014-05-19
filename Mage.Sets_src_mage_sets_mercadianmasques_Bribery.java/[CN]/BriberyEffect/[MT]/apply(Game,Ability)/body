@@ -1,0 +1,19 @@
+{
+  Player opponent=game.getPlayer(getTargetPointer().getFirst(game,source));
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && opponent != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(0,1,new FilterCreatureCard("creature card"));
+    if (controller.searchLibrary(target,game,opponent.getId())) {
+      List<UUID> targets=target.getTargets();
+      for (      UUID targetId : targets) {
+        Card card=opponent.getLibrary().remove(targetId,game);
+        if (card != null) {
+          controller.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+        }
+      }
+    }
+    opponent.shuffleLibrary(game);
+    return true;
+  }
+  return false;
+}
