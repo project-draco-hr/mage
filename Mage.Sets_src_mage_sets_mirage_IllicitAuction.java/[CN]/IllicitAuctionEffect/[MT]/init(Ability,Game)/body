@@ -1,0 +1,27 @@
+{
+  Permanent targetCreature=game.getPermanent(source.getFirstTarget());
+  if (targetCreature != null) {
+    PlayerList playerList=game.getPlayerList().copy();
+    playerList.setCurrent(game.getActivePlayerId());
+    Player winner=game.getPlayer(game.getActivePlayerId());
+    int highBid=0;
+    game.informPlayers(new StringBuilder(winner.getName()).append(" bet 0 lifes").toString());
+    Player currentPlayer=playerList.getNext(game);
+    while (currentPlayer != winner) {
+      String text=new StringBuilder(winner.getName()).append(" bet ").append(highBid).append(" life").append(highBid > 1 ? "s" : "").append(". Top the bid?").toString();
+      if (currentPlayer.chooseUse(Outcome.GainControl,text,game)) {
+        int newBid=currentPlayer.getAmount(highBid + 1,Integer.MAX_VALUE,"Choose bid",game);
+        if (newBid > highBid) {
+          highBid=newBid;
+          winner=currentPlayer;
+          game.informPlayers(new StringBuilder(currentPlayer.getName()).append(" bet ").append(newBid).append(" life").append(newBid > 1 ? "s" : "").toString());
+        }
+      }
+      currentPlayer=playerList.getNext(game);
+    }
+    game.informPlayers(new StringBuilder(winner.getName()).append(" won auction with a bid of ").append(highBid).append(" life").append(highBid > 1 ? "s" : "").toString());
+    winner.loseLife(highBid,game);
+    super.controllingPlayerId=winner.getId();
+  }
+  super.init(source,game);
+}
