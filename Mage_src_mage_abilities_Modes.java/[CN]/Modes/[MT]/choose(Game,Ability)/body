@@ -17,7 +17,17 @@
       }
       return selectedModes.size() > 0;
     }
-    Player player=game.getPlayer(source.getControllerId());
+    UUID playerId=null;
+    if (modeChooser == TargetController.OPPONENT) {
+      TargetOpponent targetOpponent=new TargetOpponent(true);
+      if (targetOpponent.choose(Outcome.Benefit,source.getControllerId(),source.getSourceId(),game)) {
+        playerId=targetOpponent.getFirstTarget();
+      }
+    }
+    if (playerId == null) {
+      playerId=source.getControllerId();
+    }
+    Player player=game.getPlayer(playerId);
     while (this.selectedModes.size() < this.getMaxModes()) {
       Mode choice=player.chooseMode(this,source,game);
       if (choice == null) {
