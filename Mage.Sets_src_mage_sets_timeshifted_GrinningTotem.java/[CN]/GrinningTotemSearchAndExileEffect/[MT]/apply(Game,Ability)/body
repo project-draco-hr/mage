@@ -1,0 +1,20 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  Player targetOpponent=game.getPlayer(source.getFirstTarget());
+  MageObject sourcObject=game.getObject(source.getSourceId());
+  if (you != null && targetOpponent != null) {
+    if (targetOpponent.getLibrary().size() > 0) {
+      TargetCardInLibrary targetCard=new TargetCardInLibrary();
+      targetCard.setRequired(true);
+      if (you.searchLibrary(targetCard,game,targetOpponent.getId())) {
+        Card card=targetOpponent.getLibrary().remove(targetCard.getFirstTarget(),game);
+        if (card != null) {
+          you.moveCardToExileWithInfo(card,CardUtil.getCardExileZoneId(game,source),sourcObject != null ? sourcObject.getName() : "",source.getSourceId(),game,Zone.LIBRARY);
+        }
+      }
+    }
+    targetOpponent.shuffleLibrary(game);
+    return true;
+  }
+  return false;
+}
