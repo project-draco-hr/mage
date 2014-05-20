@@ -1,6 +1,8 @@
 {
 synchronized (job) {
-    if (job.getState() != State.NEW)     return;
+    if (job.getState() != State.NEW) {
+      return;
+    }
     job.setState(State.WORKING);
   }
   try {
@@ -20,7 +22,9 @@ synchronized (job) {
           byte[] buf=new byte[8 * 1024];
           int total=0;
           for (int len; (len=is.read(buf)) != -1; ) {
-            if (job.getState() == State.ABORTED)             throw new IOException("Job was aborted");
+            if (job.getState() == State.ABORTED) {
+              throw new IOException("Job was aborted");
+            }
             progress.setValue(total+=len);
             os.write(buf,0,len);
           }
@@ -30,7 +34,7 @@ synchronized (job) {
             dst.delete();
           }
  catch (          IOException ex1) {
-            log.warn("While deleting",ex1);
+            logger.warn("While deleting",ex1);
           }
           throw ex;
         }
@@ -39,7 +43,7 @@ synchronized (job) {
             os.close();
           }
  catch (          IOException ex) {
-            log.warn("While closing",ex);
+            logger.warn("While closing",ex);
           }
         }
       }
@@ -48,7 +52,7 @@ synchronized (job) {
           is.close();
         }
  catch (        IOException ex) {
-          log.warn("While closing",ex);
+          logger.warn("While closing",ex);
         }
       }
     }

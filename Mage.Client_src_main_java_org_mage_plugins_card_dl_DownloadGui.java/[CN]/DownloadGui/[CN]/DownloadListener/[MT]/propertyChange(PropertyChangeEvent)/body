@@ -2,35 +2,41 @@
   String name=evt.getPropertyName();
   if (evt.getSource() instanceof DownloadJob) {
     DownloadPanel p=progresses.get(evt.getSource());
-    if ("state".equals(name)) {
+switch (name) {
+case "state":
       if (evt.getOldValue() == State.FINISHED || evt.getOldValue() == State.ABORTED) {
         changeProgress(-1,0);
       }
-      if (evt.getNewValue() == State.FINISHED || evt.getOldValue() == State.ABORTED) {
-        changeProgress(+1,0);
-      }
-      if (p != null) {
-        p.setVisible(p.getJob().getState() != State.FINISHED);
-        p.revalidate();
-      }
+    if (evt.getNewValue() == State.FINISHED || evt.getOldValue() == State.ABORTED) {
+      changeProgress(+1,0);
     }
- else     if ("message".equals(name)) {
-      if (p != null) {
-        JProgressBar bar=p.getBar();
-        String message=p.getJob().getMessage();
-        bar.setStringPainted(message != null);
-        bar.setString(message);
-      }
-    }
+  if (p != null) {
+    p.setVisible(p.getJob().getState() != State.FINISHED);
+    p.revalidate();
   }
- else   if (evt.getSource() == d) {
-    if ("jobs".equals(name)) {
-      IndexedPropertyChangeEvent ev=(IndexedPropertyChangeEvent)evt;
-      int index=ev.getIndex();
-      DownloadJob oldValue=(DownloadJob)ev.getOldValue();
-      if (oldValue != null)       removeJob(index,oldValue);
-      DownloadJob newValue=(DownloadJob)ev.getNewValue();
-      if (newValue != null)       addJob(index,newValue);
-    }
-  }
+break;
+case "message":
+if (p != null) {
+JProgressBar bar=p.getBar();
+String message=p.getJob().getMessage();
+bar.setStringPainted(message != null);
+bar.setString(message);
+}
+break;
+}
+}
+ else if (evt.getSource() == d) {
+if ("jobs".equals(name)) {
+IndexedPropertyChangeEvent ev=(IndexedPropertyChangeEvent)evt;
+int index=ev.getIndex();
+DownloadJob oldValue=(DownloadJob)ev.getOldValue();
+if (oldValue != null) {
+removeJob(index,oldValue);
+}
+DownloadJob newValue=(DownloadJob)ev.getNewValue();
+if (newValue != null) {
+addJob(index,newValue);
+}
+}
+}
 }
