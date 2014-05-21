@@ -1,37 +1,20 @@
 {
-  Card targetCard=game.getCard(source.getSourceId());
-  Permanent targetPermanent=game.getPermanent(source.getSourceId());
-  if (targetCard == null && targetPermanent == null) {
+  MageObject mageObject=game.getObject(source.getSourceId());
+  if (mageObject == null) {
     return false;
   }
   if (amount != null) {
     int value=amount.calculate(game,source);
-    if (targetPermanent != null) {
-      targetPermanent.getPower().setValue(value);
-      targetPermanent.getToughness().setValue(value);
-    }
- else     if (targetCard != null) {
-      targetCard.getPower().setValue(value);
-      targetCard.getToughness().setValue(value);
-    }
+    mageObject.getPower().setValue(value);
+    mageObject.getToughness().setValue(value);
     return true;
   }
  else {
     if (power != Integer.MIN_VALUE) {
-      if (targetCard != null) {
-        targetCard.getPower().setValue(power);
-      }
-      if (targetPermanent != null) {
-        targetPermanent.getPower().setValue(power);
-      }
+      mageObject.getPower().setValue(power);
     }
     if (toughness != Integer.MIN_VALUE) {
-      if (targetCard != null) {
-        targetCard.getToughness().setValue(toughness);
-      }
-      if (targetPermanent != null) {
-        targetPermanent.getToughness().setValue(toughness);
-      }
+      mageObject.getToughness().setValue(toughness);
     }
   }
   return true;
