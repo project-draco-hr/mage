@@ -6,8 +6,13 @@
   this.color.setBlack(true);
   this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.LOYALTY.createInstance(3)),false));
   this.addAbility(new LoyaltyAbility(new LookLibraryAndPickControllerEffect(5,1,filter,true),1));
-  LoyaltyAbility ability1=new LoyaltyAbility(new BecomesCreatureTargetEffect(new ArtifactCreatureToken(),"",Duration.EndOfGame),-1);
-  ability1.addTarget(new TargetArtifactPermanent());
+  Effect effect=new AddCardTypeTargetEffect(CardType.CREATURE,Duration.EndOfGame);
+  effect.setText("");
+  LoyaltyAbility ability1=new LoyaltyAbility(effect,-1);
+  effect=new SetPowerToughnessTargetEffect(5,5,Duration.EndOfGame);
+  effect.setText("Target artifact becomes a 5/5 artifact creature");
+  ability1.addEffect(effect);
+  ability1.addTarget(new TargetArtifactPermanent(true));
   this.addAbility(ability1);
   LoyaltyAbility ability2=new LoyaltyAbility(new TezzeretAgentOfBolasEffect2(),-4);
   ability2.addTarget(new TargetPlayer());
