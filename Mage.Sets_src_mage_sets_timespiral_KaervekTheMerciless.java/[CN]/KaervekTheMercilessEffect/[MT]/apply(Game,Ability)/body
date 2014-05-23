@@ -1,0 +1,17 @@
+{
+  MageObject spellCast=game.getObject(targetPointer.getFirst(game,source));
+  if (spellCast != null) {
+    int cost=spellCast.getManaCost().convertedManaCost();
+    Player target=game.getPlayer(source.getFirstTarget());
+    if (target != null) {
+      target.damage(cost,source.getSourceId(),game,false,true);
+      return true;
+    }
+    Permanent targetCreature=game.getPermanent(source.getFirstTarget());
+    if (targetCreature != null) {
+      targetCreature.damage(cost,source.getSourceId(),game,false,true);
+      return true;
+    }
+  }
+  return false;
+}
