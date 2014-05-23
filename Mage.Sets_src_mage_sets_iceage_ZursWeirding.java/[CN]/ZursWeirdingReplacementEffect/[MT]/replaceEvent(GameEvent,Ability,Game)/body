@@ -1,0 +1,25 @@
+{
+  Player player=game.getPlayer(event.getTargetId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (player != null) {
+    Card card=player.getLibrary().getFromTop(game);
+    if (card != null) {
+      player.revealCards(sourceObject != null ? sourceObject.getName() : null,new CardsImpl(card),game);
+      PlayerList playerList=game.getPlayerList().copy();
+      playerList.setCurrent(player.getId());
+      Player currentPlayer=playerList.getNext(game);
+      String message=new StringBuilder("Pay 2 life to put ").append(card.getName()).append(" into graveyard?").toString();
+      while (!currentPlayer.getId().equals(player.getId())) {
+        if (currentPlayer.canPayLifeCost() && currentPlayer.getLife() >= 2 && currentPlayer.chooseUse(Outcome.Benefit,message,game)) {
+          currentPlayer.loseLife(2,game);
+          player.moveCardToGraveyardWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
+          game.getState().getRevealed().reset();
+          return true;
+        }
+        currentPlayer=playerList.getNext(game);
+      }
+      game.getState().getRevealed().reset();
+    }
+  }
+  return false;
+}

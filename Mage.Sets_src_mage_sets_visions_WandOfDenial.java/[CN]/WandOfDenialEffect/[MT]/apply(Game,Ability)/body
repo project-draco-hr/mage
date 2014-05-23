@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (controller != null && targetPlayer != null) {
+    Card card=targetPlayer.getLibrary().getFromTop(game);
+    if (card != null) {
+      MageObject sourceObject=game.getObject(source.getSourceId());
+      controller.lookAtCards(sourceObject != null ? sourceObject.getName() : "",new CardsImpl(card),game);
+      if (!card.getCardType().contains(CardType.LAND) && controller.canPayLifeCost() && controller.getLife() >= 2 && controller.chooseUse(Outcome.Neutral,"Pay 2 life to put " + card.getName() + " into graveyard?",game)) {
+        controller.loseLife(2,game);
+        controller.moveCardToGraveyardWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
+      }
+      return true;
+    }
+  }
+  return false;
+}
