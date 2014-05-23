@@ -1,0 +1,25 @@
+{
+  boolean result=false;
+  Card card=game.getCard(source.getFirstTarget());
+  if (card != null) {
+    Player you=game.getPlayer(source.getControllerId());
+    if (you != null) {
+      if (you.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId())) {
+        Permanent permanent=game.getPermanent(card.getId());
+        if (permanent != null) {
+          ContinuousEffect hasteEffect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.Custom);
+          hasteEffect.setTargetPointer(new FixedTarget(permanent.getId()));
+          game.addEffect(hasteEffect,source);
+          ExileTargetEffect exileEffect=new ExileTargetEffect(new StringBuilder("exile ").append(permanent.getName()).toString());
+          exileEffect.setTargetPointer(new FixedTarget(card.getId()));
+          DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(exileEffect,TargetController.YOU);
+          delayedAbility.setSourceId(source.getSourceId());
+          delayedAbility.setControllerId(source.getControllerId());
+          game.addDelayedTriggeredAbility(delayedAbility);
+          result=true;
+        }
+      }
+    }
+  }
+  return result;
+}
