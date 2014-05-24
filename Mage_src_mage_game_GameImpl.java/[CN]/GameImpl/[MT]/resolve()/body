@@ -7,7 +7,9 @@
   finally {
     if (top != null) {
       state.getStack().remove(top);
-      state.handleSimultaneousEvent(this);
+      while (state.hasSimultaneousEvents()) {
+        state.handleSimultaneousEvent(this);
+      }
     }
   }
 }
