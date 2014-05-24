@@ -12,11 +12,7 @@
         game.getExile().createZone(exileId,name).add(card);
       }
       game.setZone(objectId,event.getToZone());
-      game.fireEvent(event);
-      if (event.getFromZone().equals(Zone.BATTLEFIELD)) {
-        game.resetForSourceId(getId());
-        game.applyEffects();
-      }
+      game.addSimultaneousEvent(event);
       return true;
     }
   }
