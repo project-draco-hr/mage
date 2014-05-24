@@ -1,12 +1,6 @@
 {
   if (!this.used && super.applies(event,source,game)) {
-    for (    Target target : source.getTargets()) {
-      for (      UUID chosen : target.getTargets()) {
-        if (event.getSourceId().equals(chosen)) {
-          return true;
-        }
-      }
-    }
+    return this.getTargetPointer().getTargets(game,source).contains(event.getSourceId());
   }
   return false;
 }

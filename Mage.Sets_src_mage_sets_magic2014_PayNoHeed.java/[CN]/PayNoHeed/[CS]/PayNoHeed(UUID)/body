@@ -2,6 +2,10 @@
   super(ownerId,27,"Pay No Heed",Rarity.COMMON,new CardType[]{CardType.INSTANT},"{W}");
   this.expansionSetCode="M14";
   this.color.setWhite(true);
-  this.getSpellAbility().addEffect(new PayNoHeedEffect());
-  this.getSpellAbility().addTarget(new TargetSource());
+  Effect effect=new PreventDamageByTargetEffect(Duration.EndOfTurn,Integer.MAX_VALUE,false);
+  effect.setText("Prevent all damage a source of your choice would deal this turn");
+  this.getSpellAbility().addEffect(effect);
+  TargetSource targetSource=new TargetSource();
+  targetSource.setRequired(true);
+  this.getSpellAbility().addTarget(targetSource);
 }
