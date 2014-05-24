@@ -1,0 +1,17 @@
+{
+  super(ownerId,7,"Burrenton Forge-Tender",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{W}");
+  this.expansionSetCode="LRW";
+  this.subtype.add("Kithkin");
+  this.subtype.add("Wizard");
+  this.color.setWhite(true);
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.addAbility(new ProtectionAbility(filter));
+  Effect effect=new PreventDamageByTargetEffect(Duration.EndOfTurn,Integer.MAX_VALUE,false);
+  effect.setText("Prevent all damage a red source of your choice would deal this turn");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new SacrificeSourceCost());
+  TargetSource targetSource=new TargetSource(filterObject);
+  targetSource.setRequired(true);
+  ability.addTarget(targetSource);
+  this.addAbility(ability);
+}
