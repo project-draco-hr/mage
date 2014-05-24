@@ -1,0 +1,14 @@
+{
+  execute("sendPlayerManaType",sessionId,new Action(){
+    @Override public void execute(){
+      User user=SessionManager.getInstance().getUser(sessionId);
+      if (user != null) {
+        user.sendPlayerManaType(gameId,data);
+      }
+ else {
+        logger.warn("Your session expired: gameId=" + gameId + ", sessionId="+ sessionId);
+      }
+    }
+  }
+);
+}

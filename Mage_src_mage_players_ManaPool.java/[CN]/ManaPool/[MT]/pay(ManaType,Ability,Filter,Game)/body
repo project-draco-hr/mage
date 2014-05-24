@@ -1,6 +1,10 @@
 {
+  if (!autoPayment && !manaType.equals(unlockedManaType)) {
+    return false;
+  }
   if (getConditional(manaType,ability,filter,game) > 0) {
     removeConditional(manaType,ability,game);
+    lockManaType();
     return true;
   }
   for (  ManaPoolItem mana : manaItems) {
@@ -14,6 +18,7 @@
  else {
           mana.remove(manaType);
         }
+        lockManaType();
         return true;
       }
     }

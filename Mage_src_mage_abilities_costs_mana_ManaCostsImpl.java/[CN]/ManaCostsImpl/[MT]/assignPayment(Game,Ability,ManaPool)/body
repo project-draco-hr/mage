@@ -1,4 +1,7 @@
 {
+  if (!pool.isAutoPayment() && pool.getUnlockedManaType() == null) {
+    return;
+  }
   for (  ManaCost cost : this) {
     if (!cost.isPaid() && cost instanceof ColoredManaCost) {
       cost.assignPayment(game,ability,pool);
@@ -24,4 +27,5 @@
       cost.assignPayment(game,ability,pool);
     }
   }
+  pool.lockManaType();
 }
