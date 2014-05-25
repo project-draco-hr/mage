@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Safehold Elite");
+  addCard(Zone.HAND,playerB,"Virulent Wound",1);
+  addCard(Zone.HAND,playerB,"Lightning Bolt",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Virulent Wound","Safehold Elite");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Lightning Bolt","Safehold Elite");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Safehold Elite",0);
+  assertGraveyardCount(playerA,"Safehold Elite",1);
+  Assert.assertEquals(1,playerA.getCounters().getCount(CounterType.POISON));
+}

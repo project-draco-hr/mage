@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Safehold Elite");
+  addCard(Zone.HAND,playerB,"Lightning Bolt",1);
+  addCard(Zone.HAND,playerB,"Shadowfeed",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Bolt","Safehold Elite");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Shadowfeed","Safehold Elite","Persist <i>(When this creature dies, if it had no -1/-1 counters on it, return it to the battlefield under its owner's control with a -1/-1 counter on it.)</i>");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerB,23);
+  assertPermanentCount(playerA,"Safehold Elite",0);
+  assertGraveyardCount(playerA,"Safehold Elite",0);
+}
