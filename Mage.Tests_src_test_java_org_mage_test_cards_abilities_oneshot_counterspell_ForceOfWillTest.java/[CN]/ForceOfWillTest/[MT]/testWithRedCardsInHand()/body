@@ -1,0 +1,18 @@
+{
+  addCard(Zone.HAND,playerA,"Thoughtseize");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",1);
+  addCard(Zone.HAND,playerB,"Force of Will");
+  addCard(Zone.HAND,playerB,"Fireball",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Thoughtseize",playerB);
+  playerB.addChoice("Fireball");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Force of Will","Thoughtseize");
+  setStopAt(1,PhaseStep.CLEANUP);
+  execute();
+  assertLife(playerA,18);
+  assertLife(playerB,20);
+  assertHandCount(playerA,0);
+  assertGraveyardCount(playerA,1);
+  assertHandCount(playerB,2);
+  assertGraveyardCount(playerB,1);
+}
