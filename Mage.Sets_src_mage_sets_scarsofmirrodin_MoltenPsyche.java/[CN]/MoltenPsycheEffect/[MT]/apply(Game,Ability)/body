@@ -4,9 +4,15 @@
     Player player=game.getPlayer(playerId);
     if (player != null) {
       int count=player.getHand().size();
-      player.getLibrary().addAll(player.getHand().getCards(game),game);
+      for (      UUID cardId : player.getHand()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          player.removeFromHand(card,game);
+          card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
+        }
+      }
+      game.informPlayers(player.getName() + " shuffles the cards from his or her hand into his or her library");
       player.shuffleLibrary(game);
-      player.getHand().clear();
       player.drawCards(count,game);
       if (MetalcraftCondition.getInstance().apply(game,source) && !playerId.equals(source.getControllerId())) {
         MoltenPsycheWatcher watcher=(MoltenPsycheWatcher)game.getState().getWatchers().get("CardsDrawn");
