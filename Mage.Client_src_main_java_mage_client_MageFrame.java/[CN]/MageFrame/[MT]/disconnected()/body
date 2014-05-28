@@ -8,10 +8,19 @@
  else {
     SwingUtilities.invokeLater(new Runnable(){
       @Override public void run(){
-        setStatusText("Not connected");
         disableButtons();
-        hideGames();
-        hideTables();
+        if (JOptionPane.showConfirmDialog(null,"The connection to server was lost. Reconnect?","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+          session.disconnect(false);
+          tablesPane.clearChat();
+          if (performConnect()) {
+            enableButtons();
+          }
+        }
+ else {
+          setStatusText("Not connected");
+          hideGames();
+          hideTables();
+        }
       }
     }
 );
