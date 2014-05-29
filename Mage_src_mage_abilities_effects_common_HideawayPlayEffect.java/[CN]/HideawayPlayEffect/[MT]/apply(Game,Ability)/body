@@ -9,6 +9,7 @@
     if (card.getCardType().contains(CardType.LAND)) {
       if (game.getActivePlayerId().equals(source.getControllerId()) && controller.canPlayLand()) {
         if (controller.chooseUse(Outcome.Benefit,new StringBuilder("Play ").append(card.getName()).append(" from Exile?").toString(),game)) {
+          card.setFaceDown(false);
           return controller.playLand(card,game);
         }
       }
@@ -18,6 +19,7 @@
     }
  else {
       if (controller.chooseUse(Outcome.Benefit,new StringBuilder("Cast ").append(card.getName()).append(" without paying it's mana cost?").toString(),game)) {
+        card.setFaceDown(false);
         return controller.cast(card.getSpellAbility(),game,true);
       }
     }
