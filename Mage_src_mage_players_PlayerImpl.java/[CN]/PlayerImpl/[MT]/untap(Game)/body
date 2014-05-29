@@ -27,7 +27,7 @@
           for (          Permanent permanent : selectedToUntap) {
             filter.add(Predicates.not(new PermanentIdPredicate(permanent.getId())));
           }
-          while (leftForUntap.size() > 0 && numberToUntap > 0) {
+          while (isInGame() && leftForUntap.size() > 0 && numberToUntap > 0) {
             Ability ability=handledEntry.getKey().getValue().iterator().next();
             if (ability != null) {
               StringBuilder sb=new StringBuilder(message).append(" to untap").append(" (").append(Math.min(leftForUntap.size(),numberToUntap)).append(" in total");
@@ -70,7 +70,7 @@
         }
       }
     }
- while (playerCanceledSelection);
+ while (isInGame() && playerCanceledSelection);
     for (    Permanent permanent : selectedToUntap) {
       game.informPlayers(new StringBuilder(this.getName()).append(" untapped ").append(permanent.getName()).toString());
     }
