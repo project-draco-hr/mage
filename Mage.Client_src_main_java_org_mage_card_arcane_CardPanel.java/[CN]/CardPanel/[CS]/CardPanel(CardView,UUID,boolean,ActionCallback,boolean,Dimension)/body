@@ -102,10 +102,17 @@
       try {
         tappedAngle=isTapped() ? CardPanel.TAPPED_ANGLE : 0;
         flippedAngle=isFlipped() ? CardPanel.FLIPPED_ANGLE : 0;
-        if (!loadImage || gameCard.isFaceDown()) {
+        if (!loadImage) {
           return;
         }
-        BufferedImage srcImage=ImageCache.getImage(gameCard,getCardWidth(),getCardHeight());
+        BufferedImage srcImage;
+        if (gameCard.isFaceDown()) {
+          TFile file=new TFile(DirectLinksForDownload.outDir + File.separator + DirectLinksForDownload.cardbackFilename);
+          srcImage=ImageCache.loadImage(file);
+        }
+ else {
+          srcImage=ImageCache.getImage(gameCard,getCardWidth(),getCardHeight());
+        }
         if (srcImage != null) {
           hasImage=true;
           setText(gameCard);
