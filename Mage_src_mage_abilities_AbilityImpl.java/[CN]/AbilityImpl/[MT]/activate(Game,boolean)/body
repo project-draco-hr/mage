@@ -21,11 +21,16 @@
     }
   }
   if (noMana) {
-    int xValue=this.getManaCostsToPay().getX();
-    this.getManaCostsToPay().clear();
-    VariableManaCost xCosts=new VariableManaCost();
-    xCosts.setAmount(xValue);
-    this.getManaCostsToPay().add(xCosts);
+    if (this.getManaCostsToPay().getVariableCosts().size() > 0) {
+      int xValue=this.getManaCostsToPay().getX();
+      this.getManaCostsToPay().clear();
+      VariableManaCost xCosts=new VariableManaCost();
+      xCosts.setAmount(xValue);
+      this.getManaCostsToPay().add(xCosts);
+    }
+ else {
+      this.getManaCostsToPay().clear();
+    }
   }
   if (card != null && !(this instanceof FlashbackAbility)) {
     boolean alternativeCostisUsed=false;
@@ -92,7 +97,12 @@
     logger.debug("activate mana ability failed - non mana costs");
     return false;
   }
-  game.getContinuousEffects().costModification(this,game);
+  if (costModificationActive) {
+    game.getContinuousEffects().costModification(this,game);
+  }
+ else {
+    costModificationActive=true;
+  }
   UUID activatorId=controllerId;
   if ((this instanceof ActivatedAbilityImpl) && ((ActivatedAbilityImpl)this).getActivatorId() != null) {
     activatorId=((ActivatedAbilityImpl)this).getActivatorId();
