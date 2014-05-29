@@ -9,5 +9,7 @@
   Ability ability=new EnchantAbility(auraTarget.getTargetName());
   this.addAbility(ability);
   this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(1,1,Duration.WhileOnBattlefield)));
-  this.addAbility(new FlamespeakersWillAbility());
+  ability=new DealsDamageToAPlayerAttachedTriggeredAbility(new DoIfCostPaid(new DestroyTargetEffect(),new SacrificeSourceCost()),"enchanted creature",false,false,true,TargetController.ANY);
+  ability.addTarget(new TargetArtifactPermanent(true));
+  this.addAbility(ability);
 }
