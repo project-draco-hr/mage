@@ -1,16 +1,10 @@
 {
-  int height=Plugins.getInstance().sortPermanents(uiComponentsList,permanents.values());
-  BattlefieldPanel.this.jPanel.setPreferredSize(new Dimension(width - 30,height));
-  this.jScrollPane.repaint();
-  this.jScrollPane.revalidate();
   if (battlefield == null) {
     return;
   }
-  for (  PermanentView permanent : battlefield.values()) {
-    if (permanent.getAttachments() != null) {
-      groupAttachments(permanent);
-    }
-  }
+  layoutStrategy.doLayout(this,width);
+  this.jScrollPane.repaint();
+  this.jScrollPane.revalidate();
   invalidate();
   repaint();
 }
