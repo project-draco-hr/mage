@@ -1,13 +1,17 @@
 {
-  for (  TournamentPlayer winner : this.getActivePlayers()) {
-    winner.setState(TournamentPlayerState.FINISHED);
-    if (options.getNumberRounds() == 0) {
-      if (isAbort()) {
-        winner.setStateInfo("Tournament canceled");
-      }
- else {
-        winner.setStateInfo("Winner");
-      }
+  List<TournamentPlayer> winners=new ArrayList<>();
+  int pointsWinner=Integer.MIN_VALUE;
+  for (  TournamentPlayer tournamentPlayer : this.getPlayers()) {
+    if (pointsWinner < tournamentPlayer.getPoints()) {
+      winners.clear();
+      winners.add(tournamentPlayer);
+      pointsWinner=tournamentPlayer.getPoints();
     }
+ else     if (pointsWinner == tournamentPlayer.getPoints()) {
+      winners.add(tournamentPlayer);
+    }
+  }
+  for (  TournamentPlayer tournamentPlayer : winners) {
+    tournamentPlayer.setStateInfo("Winner");
   }
 }
