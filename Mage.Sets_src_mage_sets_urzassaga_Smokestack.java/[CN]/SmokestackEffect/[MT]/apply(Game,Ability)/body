@@ -2,7 +2,7 @@
   Player activePlayer=game.getPlayer(getTargetPointer().getFirst(game,source));
   Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
   if (activePlayer != null && sourcePermanent != null) {
-    int count=sourcePermanent.getCounters().getCount("soot");
+    int count=sourcePermanent.getCounters().getCount("Soot");
     if (count > 0) {
       int amount=Math.min(count,game.getBattlefield().countAll(new FilterControlledPermanent(),activePlayer.getId(),game));
       Target target=new TargetControlledPermanent(amount,amount,new FilterControlledPermanent(),false);
@@ -12,7 +12,7 @@
           activePlayer.choose(Outcome.Sacrifice,target,source.getSourceId(),game);
         }
         for (int idx=0; idx < target.getTargets().size(); idx++) {
-          Permanent permanent=game.getPermanent((UUID)target.getTargets().get(idx));
+          Permanent permanent=game.getPermanent(target.getTargets().get(idx));
           if (permanent != null) {
             permanent.sacrifice(source.getSourceId(),game);
           }
