@@ -1,15 +1,20 @@
 {
   if (event.getType() == GameEvent.EventType.CAST_SPELL) {
 switch (targetController) {
-case NOT_YOU:
-      if (event.getPlayerId().equals(source.getControllerId())) {
+case YOU:
+      if (!event.getPlayerId().equals(source.getControllerId())) {
         return false;
       }
     break;
-case OPPONENT:
-  if (!game.getOpponents(source.getControllerId()).contains(event.getPlayerId())) {
+case NOT_YOU:
+  if (event.getPlayerId().equals(source.getControllerId())) {
     return false;
   }
+break;
+case OPPONENT:
+if (!game.getOpponents(source.getControllerId()).contains(event.getPlayerId())) {
+return false;
+}
 break;
 case CONTROLLER_ATTACHED_TO:
 Permanent attachment=game.getPermanent(source.getSourceId());
