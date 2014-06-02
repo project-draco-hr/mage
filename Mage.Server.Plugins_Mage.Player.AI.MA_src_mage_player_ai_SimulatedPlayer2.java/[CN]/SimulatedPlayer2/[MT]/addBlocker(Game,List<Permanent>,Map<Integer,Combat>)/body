@@ -1,5 +1,7 @@
 {
-  if (blockers.isEmpty())   return;
+  if (blockers.isEmpty()) {
+    return;
+  }
   int numGroups=game.getCombat().getGroups().size();
   Permanent blocker=blockers.get(0);
   logger.debug("simulating -- block:" + blocker);
@@ -8,7 +10,9 @@
     if (game.getCombat().getGroups().get(i).canBlock(blocker,game)) {
       Game sim=game.copy();
       sim.getCombat().getGroups().get(i).addBlocker(blocker.getId(),playerId,sim);
-      if (engagements.put(sim.getCombat().getValue().hashCode(),sim.getCombat()) != null)       logger.debug("simulating -- found redundant block combination");
+      if (engagements.put(sim.getCombat().getValue().hashCode(),sim.getCombat()) != null) {
+        logger.debug("simulating -- found redundant block combination");
+      }
       addBlocker(sim,remaining,engagements);
     }
   }

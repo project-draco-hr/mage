@@ -1,11 +1,13 @@
 {
-  Map<Integer,Combat> engagements=new HashMap<Integer,Combat>();
+  Map<Integer,Combat> engagements=new HashMap<>();
   int numGroups=game.getCombat().getGroups().size();
-  if (numGroups == 0)   return new ArrayList<Combat>();
+  if (numGroups == 0) {
+    return new ArrayList<>();
+  }
   Game sim=game.copy();
   engagements.put(sim.getCombat().getValue().hashCode(),sim.getCombat());
   sim.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,playerId,playerId));
   List<Permanent> blockers=getAvailableBlockers(game);
   addBlocker(game,blockers,engagements);
-  return new ArrayList<Combat>(engagements.values());
+  return new ArrayList<>(engagements.values());
 }

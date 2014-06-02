@@ -1,5 +1,5 @@
 {
-  Map<Integer,Combat> engagements=new HashMap<Integer,Combat>();
+  Map<Integer,Combat> engagements=new HashMap<>();
   UUID defenderId=game.getOpponents(playerId).iterator().next();
   List<Permanent> attackersList=super.getAvailableAttackers(game);
   int powerElements=(int)Math.pow(2,attackersList.size());
@@ -12,7 +12,9 @@
       binary.insert(0,"0");
     }
     for (int j=0; j < attackersList.size(); j++) {
-      if (binary.charAt(j) == '1')       sim.getCombat().declareAttacker(attackersList.get(j).getId(),defenderId,sim);
+      if (binary.charAt(j) == '1') {
+        sim.getCombat().declareAttacker(attackersList.get(j).getId(),defenderId,sim);
+      }
     }
     if (engagements.put(sim.getCombat().getValue().hashCode(),sim.getCombat()) != null) {
       logger.debug("simulating -- found redundant attack combination");
@@ -21,7 +23,7 @@
       logger.debug("simulating -- attack:" + sim.getCombat().getGroups().size());
     }
   }
-  List list=new ArrayList<Combat>(engagements.values());
+  List list=new ArrayList<>(engagements.values());
   Collections.sort(list,new Comparator<Combat>(){
     @Override public int compare(    Combat o1,    Combat o2){
       return Integer.valueOf(o2.getGroups().size()).compareTo(Integer.valueOf(o1.getGroups().size()));
