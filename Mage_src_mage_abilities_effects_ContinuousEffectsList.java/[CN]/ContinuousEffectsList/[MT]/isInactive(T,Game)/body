@@ -1,8 +1,8 @@
 {
   HashSet<Ability> set=effectAbilityMap.get(effect.getId());
-  Iterator it=set.iterator();
+  Iterator<Ability> it=set.iterator();
   while (it.hasNext()) {
-    Ability ability=(Ability)it.next();
+    Ability ability=it.next();
     if (ability == null) {
       it.remove();
     }
@@ -15,14 +15,16 @@ case WhileOnBattlefield:
         if (game.getObject(ability.getSourceId()) == null) {
           it.remove();
         }
+      break;
 case OneUse:
-      if (effect.isUsed()) {
-        it.remove();
-      }
-case Custom:
-    if (effect.isInactive(ability,game)) {
+    if (effect.isUsed()) {
       it.remove();
     }
+  break;
+case Custom:
+if (effect.isInactive(ability,game)) {
+  it.remove();
+}
 }
 }
 }
