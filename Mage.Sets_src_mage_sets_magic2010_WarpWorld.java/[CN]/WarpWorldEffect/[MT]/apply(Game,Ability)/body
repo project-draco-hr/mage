@@ -1,15 +1,15 @@
 {
-  Map<UUID,List<Permanent>> permanentsOwned=new HashMap<UUID,List<Permanent>>();
+  Map<UUID,List<Permanent>> permanentsOwned=new HashMap<>();
   Collection<Permanent> permanents=game.getBattlefield().getAllPermanents();
   for (  Permanent permanent : permanents) {
     List<Permanent> list=permanentsOwned.get(permanent.getOwnerId());
     if (list == null) {
-      list=new ArrayList<Permanent>();
+      list=new ArrayList<>();
     }
     list.add(permanent);
     permanentsOwned.put(permanent.getOwnerId(),list);
   }
-  Map<UUID,Integer> permanentsCount=new HashMap<UUID,Integer>();
+  Map<UUID,Integer> permanentsCount=new HashMap<>();
   PlayerList playerList=game.getPlayerList();
   playerList.setCurrent(game.getActivePlayerId());
   Player player=game.getPlayer(game.getActivePlayerId());
@@ -29,7 +29,7 @@
     player=playerList.getNext(game);
   }
  while (!player.getId().equals(game.getActivePlayerId()));
-  Map<UUID,CardsImpl> cardsRevealed=new HashMap<UUID,CardsImpl>();
+  Map<UUID,CardsImpl> cardsRevealed=new HashMap<>();
   playerList.setCurrent(game.getActivePlayerId());
   player=game.getPlayer(game.getActivePlayerId());
   do {
@@ -51,7 +51,7 @@
   do {
     CardsImpl cards=cardsRevealed.get(player.getId());
     for (    Card card : cards.getCards(game)) {
-      if (card != null && card.getCardType().contains(CardType.ARTIFACT) || card.getCardType().contains(CardType.CREATURE) || card.getCardType().contains(CardType.LAND)) {
+      if (card != null && (card.getCardType().contains(CardType.ARTIFACT) || card.getCardType().contains(CardType.CREATURE) || card.getCardType().contains(CardType.LAND))) {
         card.putOntoBattlefield(game,Zone.HAND,source.getSourceId(),player.getId());
         cards.remove(card);
       }
@@ -78,7 +78,7 @@
     CardsImpl cards=cardsRevealed.get(player.getId());
     for (    Card card : cards.getCards(game)) {
       if (card != null) {
-        card.moveToZone(Zone.GRAVEYARD,source.getId(),game,false);
+        card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,false);
       }
     }
     player=playerList.getNext(game);

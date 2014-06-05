@@ -1,13 +1,12 @@
 {
-  List<Card> chosen=new ArrayList<Card>();
+  List<Card> chosen=new ArrayList<>();
   Player you=game.getPlayer(source.getControllerId());
   Permanent sourceCreature=game.getPermanent(source.getSourceId());
   if (you != null && sourceCreature != null) {
     Choice choiceImpl=new ChoiceImpl();
     choiceImpl.setChoices(choice);
-    while (!you.choose(Outcome.Neutral,choiceImpl,game)) {
+    while (you.isInGame() && !you.choose(Outcome.Neutral,choiceImpl,game)) {
     }
-    ;
     CardType type=null;
     String choosenType=choiceImpl.getChoice();
     if (choosenType.equals(CardType.ARTIFACT.toString())) {
@@ -34,42 +33,44 @@
  else     if (choosenType.equals(CardType.TRIBAL.toString())) {
       type=CardType.TRIBAL;
     }
-    FilterPermanent filter=new FilterControlledPermanent(new StringBuilder("permanent you control of type ").append(type.toString()).toString());
-    filter.add(new CardTypePredicate(type));
-    TargetPermanent target=new TargetControlledPermanent(1,1,filter,false);
-    target.setRequired(true);
-    target.setNotTarget(true);
-    if (target.canChoose(you.getId(),game)) {
-      while (!target.isChosen() && target.canChoose(you.getId(),game)) {
-        you.choose(Outcome.Sacrifice,target,source.getId(),game);
-      }
-      Permanent permanent=game.getPermanent(target.getFirstTarget());
-      if (permanent != null) {
-        chosen.add(permanent);
-      }
-    }
-    target.clearChosen();
-    for (    UUID playerId : game.getPlayerList()) {
-      if (playerId != you.getId()) {
-        Player player=game.getPlayer(playerId);
-        if (target.canChoose(playerId,game)) {
-          while (!target.isChosen() && target.canChoose(playerId,game)) {
-            player.choose(Outcome.Sacrifice,target,source.getId(),game);
-          }
-          Permanent permanent=game.getPermanent(target.getFirstTarget());
-          if (permanent != null) {
-            chosen.add(permanent);
-          }
-          target.clearChosen();
+    if (type != null) {
+      FilterPermanent filter=new FilterControlledPermanent(new StringBuilder("permanent you control of type ").append(type.toString()).toString());
+      filter.add(new CardTypePredicate(type));
+      TargetPermanent target=new TargetControlledPermanent(1,1,filter,false);
+      target.setRequired(true);
+      target.setNotTarget(true);
+      if (target.canChoose(you.getId(),game)) {
+        while (you.isInGame() && !target.isChosen() && target.canChoose(you.getId(),game)) {
+          you.choose(Outcome.Sacrifice,target,source.getId(),game);
+        }
+        Permanent permanent=game.getPermanent(target.getFirstTarget());
+        if (permanent != null) {
+          chosen.add(permanent);
         }
       }
-    }
-    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents()) {
-      if (chosen.contains(permanent)) {
-        permanent.sacrifice(source.getId(),game);
+      target.clearChosen();
+      for (      UUID playerId : game.getPlayerList()) {
+        if (playerId != you.getId()) {
+          Player player=game.getPlayer(playerId);
+          if (target.canChoose(playerId,game)) {
+            while (!target.isChosen() && target.canChoose(playerId,game)) {
+              player.choose(Outcome.Sacrifice,target,source.getId(),game);
+            }
+            Permanent permanent=game.getPermanent(target.getFirstTarget());
+            if (permanent != null) {
+              chosen.add(permanent);
+            }
+            target.clearChosen();
+          }
+        }
       }
+      for (      Permanent permanent : game.getBattlefield().getAllActivePermanents()) {
+        if (chosen.contains(permanent)) {
+          permanent.sacrifice(source.getId(),game);
+        }
+      }
+      return true;
     }
-    return true;
   }
   return false;
 }
