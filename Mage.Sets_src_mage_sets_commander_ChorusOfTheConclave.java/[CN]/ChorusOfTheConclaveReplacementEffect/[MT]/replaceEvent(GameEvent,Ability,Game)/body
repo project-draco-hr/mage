@@ -1,0 +1,20 @@
+{
+  int xCost=0;
+  Player you=game.getPlayer(source.getControllerId());
+  MageObject object=game.getObject(event.getSourceId());
+  if (you != null && object != null) {
+    if (you.chooseUse(Outcome.Benefit,"Do you wish to pay the additonal cost to add +1/+1 counters to the creature you cast?",game)) {
+      Card card=(Card)object;
+      xCost+=playerPaysXGenericMana(you,source,game);
+      if (xCost > 0) {
+        Ability ability=new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(xCost)));
+        ability.setRuleVisible(false);
+        card.addAbility(ability);
+        ability.setControllerId(source.getControllerId());
+        ability.setSourceId(card.getId());
+        game.getState().addAbility(ability,source.getSourceId(),card);
+      }
+    }
+  }
+  return false;
+}
