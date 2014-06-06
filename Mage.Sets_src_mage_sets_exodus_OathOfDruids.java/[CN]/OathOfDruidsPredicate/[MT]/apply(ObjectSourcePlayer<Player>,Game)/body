@@ -1,0 +1,13 @@
+{
+  Player targetPlayer=input.getObject();
+  UUID activePlayer=game.getActivePlayerId();
+  if (targetPlayer == null || activePlayer == null) {
+    return false;
+  }
+  if (targetPlayer.getId().equals(activePlayer)) {
+    return false;
+  }
+  int countTarget=game.getBattlefield().count(new FilterControlledCreaturePermanent(),null,targetPlayer.getId(),game);
+  int countController=game.getBattlefield().count(new FilterControlledCreaturePermanent(),null,activePlayer,game);
+  return countTarget > countController;
+}

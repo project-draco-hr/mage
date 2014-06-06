@@ -1,0 +1,30 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  Cards revealed=new CardsImpl();
+  Card creatureCard=null;
+  Cards nonCreatureCards=new CardsImpl();
+  while (creatureCard == null && player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().removeFromTop(game);
+    revealed.add(card);
+    if (card.getCardType().contains(CardType.CREATURE)) {
+      creatureCard=card;
+    }
+ else {
+      nonCreatureCards.add(card);
+    }
+  }
+  player.revealCards("Oath of Druids",revealed,game);
+  if (creatureCard != null) {
+    creatureCard.putOntoBattlefield(game,Zone.LIBRARY,source.getId(),player.getId());
+  }
+  for (  UUID uuid : nonCreatureCards) {
+    Card card=game.getCard(uuid);
+    if (card != null) {
+      card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,true);
+    }
+  }
+  return true;
+}
