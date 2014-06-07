@@ -1,6 +1,7 @@
 {
+  MageObject sourceObject=game.getObject(source.getSourceId());
   Player player=game.getPlayer(source.getControllerId());
-  if (player == null) {
+  if (player == null || sourceObject == null) {
     return false;
   }
   Cards revealed=new CardsImpl();
@@ -16,14 +17,14 @@
       nonCreatureCards.add(card);
     }
   }
-  player.revealCards("Oath of Druids",revealed,game);
+  player.revealCards(sourceObject.getName(),revealed,game);
   if (creatureCard != null) {
-    creatureCard.putOntoBattlefield(game,Zone.LIBRARY,source.getId(),player.getId());
+    player.putOntoBattlefieldWithInfo(creatureCard,game,Zone.LIBRARY,source.getSourceId());
   }
   for (  UUID uuid : nonCreatureCards) {
     Card card=game.getCard(uuid);
     if (card != null) {
-      card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,true);
+      player.moveCardToGraveyardWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
     }
   }
   return true;
