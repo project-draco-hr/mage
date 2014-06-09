@@ -1,0 +1,10 @@
+{
+  GameEvent event=GameEvent.getEvent(GameEvent.EventType.TURNFACEDOWN,getId(),playerId);
+  if (!game.replaceEvent(event)) {
+    setFaceDown(true);
+    game.getCard(objectId).setFaceDown(true);
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.TURNEDFACEDOWN,getId(),playerId));
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,53 @@
+{
+  this.playerId=player.getId();
+  this.name=player.getName();
+  this.life=player.getLife();
+  this.poison=player.getCounters().getCount(CounterType.POISON);
+  this.libraryCount=player.getLibrary().size();
+  this.handCount=player.getHand().size();
+  this.manaPool=new ManaPoolView(player.getManaPool());
+  this.isActive=(player.getId().equals(state.getActivePlayerId()));
+  this.hasPriority=player.getId().equals(state.getPriorityPlayerId());
+  this.hasLeft=player.hasLeft();
+  for (  Card card : player.getGraveyard().getCards(game)) {
+    graveyard.put(card.getId(),new SimpleCardView(card.getId(),card.getExpansionSetCode(),card.getCardNumber(),card.getUsesVariousArt(),card.isFaceDown(),card.getTokenSetCode()));
+  }
+  for (  Permanent permanent : state.getBattlefield().getAllPermanents()) {
+    if (showInBattlefield(permanent,state)) {
+      PermanentView view=new PermanentView(permanent,game.getCard(permanent.getId()),createdForPlayerId,game);
+      battlefield.put(view.getId(),view);
+    }
+  }
+  this.topCard=player.isTopCardRevealed() && player.getLibrary().size() > 0 ? new CardView(player.getLibrary().getFromTop(game)) : null;
+  if (player.getUserData() != null) {
+    this.userDataView=new UserDataView(player.getUserData());
+  }
+ else {
+    this.userDataView=new UserDataView(0,false);
+  }
+  for (  CommandObject commandObject : game.getState().getCommand()) {
+    if (commandObject instanceof Emblem) {
+      Emblem emblem=(Emblem)commandObject;
+      if (emblem.getControllerId().equals(this.playerId)) {
+        Card sourceCard=game.getCard(((CommandObject)emblem).getSourceId());
+        if (sourceCard != null) {
+          commandList.add(new EmblemView(emblem,sourceCard));
+        }
+      }
+    }
+ else     if (commandObject instanceof Commander) {
+      Commander commander=(Commander)commandObject;
+      if (commander.getControllerId().equals(this.playerId)) {
+        Card sourceCard=game.getCard(commander.getSourceId());
+        if (sourceCard != null) {
+          commandList.add(new CommanderView(commander,sourceCard));
+        }
+      }
+    }
+  }
+  if (player.getAttachments() != null) {
+    attachments.addAll(player.getAttachments());
+  }
+  this.statesSavedSize=player.getStoredBookmark();
+  this.priorityTimeLeft=player.getPriorityTimeLeft();
+}

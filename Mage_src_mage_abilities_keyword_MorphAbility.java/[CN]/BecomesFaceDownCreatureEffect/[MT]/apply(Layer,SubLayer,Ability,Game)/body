@@ -1,0 +1,40 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null && permanent.isFaceDown()) {
+switch (layer) {
+case TypeChangingEffects_4:
+      permanent.setName("");
+    permanent.getSubtype().clear();
+  permanent.getManaCost().clear();
+break;
+case ColorChangingEffects_5:
+permanent.getColor().setColor(new ObjectColor());
+break;
+case AbilityAddingRemovingEffects_6:
+List<Ability> abilities=new ArrayList<>();
+for (Ability ability : permanent.getAbilities()) {
+if (ability instanceof TurnedFaceUpTriggeredAbility) {
+ability.setRuleVisible(false);
+continue;
+}
+if (!ability.getRuleVisible() && !ability.getEffects().isEmpty()) {
+if (ability.getEffects().get(0) instanceof BecomesFaceDownCreatureEffect) {
+continue;
+}
+}
+abilities.add(ability);
+}
+permanent.getAbilities().removeAll(abilities);
+if (turnFaceUpAbility != null) {
+permanent.addAbility(turnFaceUpAbility,game);
+}
+break;
+case PTChangingEffects_7:
+if (sublayer == SubLayer.SetPT_7b) {
+permanent.getPower().setValue(2);
+permanent.getToughness().setValue(2);
+}
+}
+}
+return true;
+}

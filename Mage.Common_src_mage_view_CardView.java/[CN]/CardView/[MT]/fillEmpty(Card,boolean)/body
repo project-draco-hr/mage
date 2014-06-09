@@ -1,0 +1,41 @@
+{
+  this.name="Face Down";
+  this.displayName=name;
+  this.rules=new ArrayList<>();
+  this.power="";
+  this.toughness="";
+  this.loyalty="";
+  this.cardTypes=new ArrayList<>();
+  this.subTypes=new ArrayList<>();
+  this.superTypes=new ArrayList<>();
+  this.color=new ObjectColor();
+  this.manaCost=new ArrayList<>();
+  this.convertedManaCost=0;
+  if (!controlled) {
+    this.rarity=Rarity.COMMON;
+    this.expansionSetCode="";
+    this.cardNumber=0;
+  }
+ else {
+    this.rarity=card.getRarity();
+  }
+  if (card != null) {
+    if (card instanceof Permanent) {
+      this.mageObjectType=MageObjectType.PERMANENT;
+    }
+ else {
+      if (card.isCopy()) {
+        this.mageObjectType=MageObjectType.COPY_CARD;
+      }
+ else {
+        this.mageObjectType=MageObjectType.CARD;
+      }
+    }
+    if (card instanceof PermanentToken) {
+      this.mageObjectType=MageObjectType.TOKEN;
+    }
+    if (card instanceof Spell) {
+      this.mageObjectType=MageObjectType.SPELL;
+    }
+  }
+}
