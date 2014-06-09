@@ -10,8 +10,7 @@
         for (        User user : usersToCheck) {
           if (user.isExpired(expired.getTime())) {
             logger.info(new StringBuilder(user.getName()).append(": session expired userId: ").append(user.getId()).append(" Host: ").append(user.getHost()));
-            user.kill(User.DisconnectReason.LostConnection);
-            users.remove(user.getId());
+            SessionManager.getInstance().getSession(user.getSessionId()).kill(DisconnectReason.SessionExpired);
           }
         }
         logger.debug("checkExpired - end");
