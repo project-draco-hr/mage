@@ -3,17 +3,19 @@
   if (targets.size() > 0) {
     String usedVerb=null;
     for (    Target target : targets) {
-      if (!target.isNotTarget()) {
-        if (usedVerb == null || usedVerb.equals(" choosing ")) {
-          usedVerb=" targeting ";
+      if (!target.getTargets().isEmpty()) {
+        if (!target.isNotTarget()) {
+          if (usedVerb == null || usedVerb.equals(" choosing ")) {
+            usedVerb=" targeting ";
+            sb.append(usedVerb);
+          }
+        }
+ else         if (target.isNotTarget() && (usedVerb == null || usedVerb.equals(" targeting "))) {
+          usedVerb=" choosing ";
           sb.append(usedVerb);
         }
+        sb.append(target.getTargetedName(game));
       }
- else       if (target.isNotTarget() && (usedVerb == null || usedVerb.equals(" targeting "))) {
-        usedVerb=" choosing ";
-        sb.append(usedVerb);
-      }
-      sb.append(target.getTargetedName(game));
     }
   }
   for (  Choice choice : this.getChoices()) {
