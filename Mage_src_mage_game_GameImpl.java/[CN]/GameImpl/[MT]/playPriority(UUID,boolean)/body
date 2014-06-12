@@ -18,13 +18,7 @@
           state.setPriorityPlayerId(player.getId());
           while (!player.isPassed() && player.isInGame() && !isPaused()&& !gameOver(null)) {
             if (!resuming) {
-              if (checkStateAndTriggered()) {
-                do {
-                  state.handleSimultaneousEvent(this);
-                  applyEffects();
-                }
- while (state.hasSimultaneousEvents());
-              }
+              checkStateAndTriggered();
               applyEffects();
               saveState(false);
               if (isPaused() || gameOver(null)) {
