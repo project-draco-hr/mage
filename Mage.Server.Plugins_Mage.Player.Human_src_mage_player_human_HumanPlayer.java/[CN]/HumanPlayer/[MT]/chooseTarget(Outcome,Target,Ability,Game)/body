@@ -2,7 +2,7 @@
   updateGameStatePriority("chooseTarget",game);
   while (!abort) {
     Set<UUID> possibleTargets=target.possibleTargets(source == null ? null : source.getSourceId(),playerId,game);
-    boolean required=possibleTargets.isEmpty() ? false : target.isRequired();
+    boolean required=possibleTargets.isEmpty() ? false : target.isRequired(source);
     game.fireSelectTargetEvent(playerId,target.getMessage(),possibleTargets,required,getOptions(target));
     waitForResponse(game);
     if (response.getUUID() != null) {

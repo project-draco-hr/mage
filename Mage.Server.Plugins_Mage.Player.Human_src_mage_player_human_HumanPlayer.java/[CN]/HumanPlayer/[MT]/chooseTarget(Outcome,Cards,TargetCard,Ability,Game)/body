@@ -1,7 +1,7 @@
 {
   updateGameStatePriority("chooseTarget(5)",game);
   while (!abort) {
-    boolean required=target.isRequired();
+    boolean required=target.isRequired(source);
     if (cards == null) {
       required=false;
     }
@@ -11,7 +11,7 @@
         required=false;
       }
     }
-    game.fireSelectTargetEvent(playerId,target.getMessage(),cards,target.isRequired(),null);
+    game.fireSelectTargetEvent(playerId,target.getMessage(),cards,target.isRequired(source),null);
     waitForResponse(game);
     if (response.getUUID() != null) {
       if (target.canTarget(response.getUUID(),cards,game)) {
