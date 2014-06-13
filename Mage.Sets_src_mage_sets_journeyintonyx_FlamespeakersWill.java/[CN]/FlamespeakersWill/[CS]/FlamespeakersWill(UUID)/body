@@ -3,13 +3,13 @@
   this.expansionSetCode="JOU";
   this.subtype.add("Aura");
   this.color.setRed(true);
-  TargetPermanent auraTarget=new TargetControlledCreaturePermanent(true);
+  TargetPermanent auraTarget=new TargetControlledCreaturePermanent();
   this.getSpellAbility().addTarget(auraTarget);
   this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
   Ability ability=new EnchantAbility(auraTarget.getTargetName());
   this.addAbility(ability);
   this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(1,1,Duration.WhileOnBattlefield)));
   ability=new DealsDamageToAPlayerAttachedTriggeredAbility(new DoIfCostPaid(new DestroyTargetEffect(),new SacrificeSourceCost()),"enchanted creature",false,false,true,TargetController.ANY);
-  ability.addTarget(new TargetArtifactPermanent(true));
+  ability.addTarget(new TargetArtifactPermanent());
   this.addAbility(ability);
 }
