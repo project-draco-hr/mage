@@ -9,7 +9,7 @@
       Permanent blocker=game.getPermanent(blockerId);
       if (blocker != null && blocker.getAbilities().containsKey(CantBlockAloneAbility.getInstance().getId())) {
         blockWasLegal=false;
-        game.informPlayers(blocker.getName() + " can't block alone. Removing it from combat.");
+        game.informPlayers(blocker.getLogName() + " can't block alone. Removing it from combat.");
         toBeRemoved.add(blockerId);
       }
     }
@@ -32,7 +32,7 @@
       blockers.clear();
       blockerOrder.clear();
       this.blocked=false;
-      game.informPlayers(attacker.getName() + " can't be blocked except by " + attacker.getMinBlockedBy()+ " or more creatures. Blockers discarded.");
+      game.informPlayers(attacker.getLogName() + " can't be blocked except by " + attacker.getMinBlockedBy()+ " or more creatures. Blockers discarded.");
       blockWasLegal=false;
     }
     if (attacker != null && this.blocked && attacker.getMaxBlockedBy() > 0 && attacker.getMaxBlockedBy() < blockers.size()) {
@@ -45,7 +45,7 @@
       blockers.clear();
       blockerOrder.clear();
       this.blocked=false;
-      game.informPlayers(new StringBuilder(attacker.getName()).append(" can't be blocked by more than ").append(attacker.getMaxBlockedBy()).append(attacker.getMaxBlockedBy() == 1 ? " creature." : " creatures.").append(" Blockers discarded.").toString());
+      game.informPlayers(new StringBuilder(attacker.getLogName()).append(" can't be blocked by more than ").append(attacker.getMaxBlockedBy()).append(attacker.getMaxBlockedBy() == 1 ? " creature." : " creatures.").append(" Blockers discarded.").toString());
       blockWasLegal=false;
     }
   }
