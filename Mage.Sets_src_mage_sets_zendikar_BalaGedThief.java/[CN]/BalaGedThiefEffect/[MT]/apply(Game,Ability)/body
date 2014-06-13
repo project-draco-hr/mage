@@ -11,7 +11,6 @@
   cardsInHand.addAll(targetPlayer.getHand());
   int count=Math.min(cardsInHand.size(),numberOfAllies);
   TargetCard target=new TargetCard(count,Zone.PICK,new FilterCard());
-  target.setRequired(true);
   Cards revealedCards=new CardsImpl();
   if (targetPlayer.choose(Outcome.DrawCard,cardsInHand,target,game)) {
     List<UUID> targets=target.getTargets();
@@ -23,7 +22,6 @@
     }
   }
   TargetCard targetInHand=new TargetCard(Zone.PICK,new FilterCard("card to discard"));
-  targetInHand.setRequired(true);
   if (!revealedCards.isEmpty()) {
     targetPlayer.revealCards("Bala Ged Thief",revealedCards,game);
     you.choose(Outcome.Neutral,revealedCards,targetInHand,game);

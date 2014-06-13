@@ -2,21 +2,20 @@
 switch (targetZoneLookedCards) {
 case LIBRARY:
     TargetCard target=new TargetCard(Zone.PICK,new FilterCard(this.getPutBackText()));
-  target.setRequired(true);
-while (player.isInGame() && cards.size() > 1) {
-  player.choose(Outcome.Neutral,cards,target,game);
-  Card card=cards.get(target.getFirstTarget(),game);
-  if (card != null) {
-    cards.remove(card);
-    card.moveToZone(targetZoneLookedCards,source.getId(),game,putOnTop);
-    game.informPlayers(player.getName() + " moves a card to " + targetZoneLookedCards.toString());
+  while (player.isInGame() && cards.size() > 1) {
+    player.choose(Outcome.Neutral,cards,target,game);
+    Card card=cards.get(target.getFirstTarget(),game);
+    if (card != null) {
+      cards.remove(card);
+      card.moveToZone(targetZoneLookedCards,source.getId(),game,putOnTop);
+      game.informPlayers(player.getName() + " moves a card to " + targetZoneLookedCards.toString());
+    }
+    target.clearChosen();
   }
-  target.clearChosen();
-}
 if (cards.size() == 1) {
-Card card=cards.get(cards.iterator().next(),game);
-card.moveToZone(targetZoneLookedCards,source.getId(),game,putOnTop);
-game.informPlayers(player.getName() + " moves a card to " + targetZoneLookedCards.toString());
+  Card card=cards.get(cards.iterator().next(),game);
+  card.moveToZone(targetZoneLookedCards,source.getId(),game,putOnTop);
+  game.informPlayers(player.getName() + " moves a card to " + targetZoneLookedCards.toString());
 }
 break;
 case GRAVEYARD:
