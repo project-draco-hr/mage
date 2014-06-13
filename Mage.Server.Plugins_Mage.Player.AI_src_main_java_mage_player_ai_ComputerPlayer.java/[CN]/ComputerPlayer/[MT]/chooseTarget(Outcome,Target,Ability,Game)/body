@@ -9,7 +9,7 @@
         target.addTarget(playerId,source,game);
         return true;
       }
-      if (target.isRequired()) {
+      if (target.isRequired(source)) {
         if (target.canTarget(opponentId,source,game)) {
           target.addTarget(opponentId,source,game);
           return true;
@@ -21,7 +21,7 @@
         target.addTarget(opponentId,source,game);
         return true;
       }
-      if (target.isRequired()) {
+      if (target.isRequired(source)) {
         if (target.canTarget(playerId,source,game)) {
           target.addTarget(playerId,source,game);
           return true;
@@ -96,7 +96,7 @@
  else {
       targets=threats(opponentId,source == null ? null : source.getSourceId(),((TargetPermanent)target).getFilter(),game,target.getTargets());
     }
-    if (targets.isEmpty() && target.isRequired()) {
+    if (targets.isEmpty() && target.isRequired(source)) {
       targets=threats(null,source == null ? null : source.getSourceId(),((TargetPermanent)target).getFilter(),game,target.getTargets());
       Collections.reverse(targets);
       outcomeTargets=false;
@@ -134,7 +134,7 @@
         }
       }
     }
-    if (targets.isEmpty() && target.isRequired()) {
+    if (targets.isEmpty() && target.isRequired(source)) {
       targets=game.getBattlefield().getActivePermanents(((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),playerId,game);
     }
     for (    Permanent permanent : targets) {
@@ -224,7 +224,7 @@
  else {
       targets=threats(opponentId,source == null ? null : source.getSourceId(),((TargetPermanent)target).getFilter(),game,target.getTargets());
     }
-    if (targets.isEmpty() && target.isRequired()) {
+    if (targets.isEmpty() && target.isRequired(source)) {
       targets=threats(null,source == null ? null : source.getSourceId(),((TargetPermanent)target).getFilter(),game,target.getTargets());
       Collections.reverse(targets);
       outcomeTargets=false;
