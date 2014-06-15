@@ -1,26 +1,51 @@
 {
+  int possibleTargets=0;
   for (  UUID playerId : game.getPlayer(sourceControllerId).getInRange()) {
     Player player=game.getPlayer(playerId);
     if (player != null) {
 switch (zone) {
 case HAND:
-        if (player.getHand().count(filter,sourceId,sourceControllerId,game) >= this.minNumberOfTargets) {
-          return true;
+        for (        Card card : player.getHand().getCards(filter,game)) {
+          if (sourceId == null || isNotTarget() || !game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.TARGET,card.getId(),sourceId,sourceControllerId))) {
+            possibleTargets++;
+            if (possibleTargets >= this.minNumberOfTargets) {
+              return true;
+            }
+          }
         }
       break;
 case GRAVEYARD:
-    if (player.getGraveyard().count(filter,sourceId,sourceControllerId,game) >= this.minNumberOfTargets) {
-      return true;
+    for (    Card card : player.getGraveyard().getCards(filter,game)) {
+      if (sourceId == null || isNotTarget() || !game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.TARGET,card.getId(),sourceId,sourceControllerId))) {
+        possibleTargets++;
+        if (possibleTargets >= this.minNumberOfTargets) {
+          return true;
+        }
+      }
     }
   break;
 case LIBRARY:
-if (player.getLibrary().count(filter,game) >= this.minNumberOfTargets) {
-  return true;
+for (Card card : player.getLibrary().getUniqueCards(game)) {
+  if (sourceId == null || isNotTarget() || !game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.TARGET,card.getId(),sourceId,sourceControllerId))) {
+    if (filter.match(card,game)) {
+      possibleTargets++;
+      if (possibleTargets >= this.minNumberOfTargets) {
+        return true;
+      }
+    }
+  }
 }
 break;
 case EXILED:
-if (game.getExile().getPermanentExile().count(filter,sourceId,sourceControllerId,game) >= this.minNumberOfTargets) {
-return true;
+for (Card card : game.getExile().getPermanentExile().getCards(game)) {
+if (sourceId == null || isNotTarget() || !game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.TARGET,card.getId(),sourceId,sourceControllerId))) {
+if (filter.match(card,player.getId(),game)) {
+  possibleTargets++;
+  if (possibleTargets >= this.minNumberOfTargets) {
+    return true;
+  }
+}
+}
 }
 break;
 }
