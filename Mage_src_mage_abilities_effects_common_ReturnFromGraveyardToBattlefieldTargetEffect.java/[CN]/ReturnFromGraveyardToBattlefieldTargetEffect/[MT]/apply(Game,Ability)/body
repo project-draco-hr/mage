@@ -6,7 +6,11 @@
       Player player=game.getPlayer(source.getControllerId());
       if (player != null) {
         if (player.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId(),tapped)) {
-          result=true;
+          Permanent permanent=game.getPermanent(source.getSourceId());
+          if (permanent != null) {
+            permanent.changeControllerId(source.getControllerId(),game);
+            result=true;
+          }
         }
       }
     }
