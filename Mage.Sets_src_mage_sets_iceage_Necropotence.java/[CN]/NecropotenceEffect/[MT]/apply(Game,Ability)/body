@@ -1,0 +1,21 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    if (controller.getLibrary().size() > 0) {
+      Card card=controller.getLibrary().removeFromTop(game);
+      card.setFaceDown(true);
+      if (controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.LIBRARY)) {
+        Effect returnToHandeffect=new ReturnToHandTargetEffect();
+        returnToHandeffect.setTargetPointer(new FixedTarget(card.getId()));
+        DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(returnToHandeffect,TargetController.YOU);
+        delayedAbility.setSourceId(source.getSourceId());
+        delayedAbility.setControllerId(source.getControllerId());
+        game.addDelayedTriggeredAbility(delayedAbility);
+        return true;
+      }
+      return false;
+    }
+    return true;
+  }
+  return false;
+}
