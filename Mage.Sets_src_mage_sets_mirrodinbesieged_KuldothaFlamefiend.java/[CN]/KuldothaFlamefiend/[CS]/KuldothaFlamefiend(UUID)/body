@@ -5,9 +5,7 @@
   this.color.setRed(true);
   this.power=new MageInt(4);
   this.toughness=new MageInt(4);
-  EntersBattlefieldTriggeredAbility ability=new EntersBattlefieldTriggeredAbility(new SacrificeArtifactEffect(),true);
-  ability.addEffect(new DamageMultiEffect(4));
+  EntersBattlefieldTriggeredAbility ability=new EntersBattlefieldTriggeredAbility(new DoIfCostPaid(new DamageMultiEffect(4),new SacrificeTargetCost(new TargetControlledPermanent(new FilterControlledArtifactPermanent("an artifact")))),false);
   ability.addTarget(new TargetCreatureOrPlayerAmount(4));
-  ability.addTarget(new TargetArtifactPermanent());
   this.addAbility(ability);
 }

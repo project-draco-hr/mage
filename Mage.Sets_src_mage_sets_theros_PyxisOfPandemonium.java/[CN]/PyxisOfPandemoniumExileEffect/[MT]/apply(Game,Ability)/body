@@ -8,7 +8,7 @@
       exileIds=(Map<String,UUID>)object;
     }
  else {
-      exileIds=new HashMap<String,UUID>();
+      exileIds=new HashMap<>();
       game.getState().setValue(valueKey,exileIds);
     }
     for (    UUID playerId : controller.getInRange()) {
@@ -16,14 +16,14 @@
       if (player != null) {
         if (player.getLibrary().size() > 0) {
           Card card=player.getLibrary().removeFromTop(game);
-          String exileKey=new StringBuilder(playerId.toString()).append(source.getSourceId().toString()).toString();
+          String exileKey=new StringBuilder(playerId.toString()).append(CardUtil.getCardExileZoneId(game,source)).toString();
           UUID exileId=exileIds.get(exileKey);
           if (exileId == null) {
             exileId=UUID.randomUUID();
             exileIds.put(exileKey,exileId);
           }
           card.setFaceDown(true);
-          card.moveToExile(exileId,new StringBuilder("Pyxis of Pandemonium (").append(player.getName()).append(")").toString(),source.getSourceId(),game);
+          player.moveCardToExileWithInfo(card,exileId,new StringBuilder("Pyxis of Pandemonium (").append(player.getName()).append(")").toString(),source.getSourceId(),game,Zone.LIBRARY);
         }
       }
     }
