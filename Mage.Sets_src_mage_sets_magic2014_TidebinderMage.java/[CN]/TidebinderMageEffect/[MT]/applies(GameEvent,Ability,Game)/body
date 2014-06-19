@@ -19,7 +19,10 @@
   }
   if (game.getTurn().getStepType() == PhaseStep.UNTAP && event.getType() == GameEvent.EventType.UNTAP) {
     if (event.getTargetId().equals(targetPointer.getFirst(game,source))) {
-      return true;
+      Permanent permanent=game.getPermanent(event.getTargetId());
+      if (permanent != null && game.getActivePlayerId().equals(permanent.getControllerId())) {
+        return true;
+      }
     }
   }
   return false;
