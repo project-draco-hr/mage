@@ -25,12 +25,12 @@ this.put(ability.getId(),new AbilityView(ability,"Emblem",new CardView("Emblem")
 break;
 }
 if (sourceCard != null) {
-AbilityView abilityView=new AbilityView(ability,sourceCard.getName(),new CardView(sourceCard));
+AbilityView abilityView=new AbilityView(ability,sourceCard.getLogName(),new CardView(sourceCard));
 if (ability.getTargets().size() > 0) {
 abilityView.setTargets(ability.getTargets());
 }
  else {
-List<UUID> abilityTargets=new ArrayList<UUID>();
+List<UUID> abilityTargets=new ArrayList<>();
 for (Effect effect : ability.getEffects()) {
 TargetPointer targetPointer=effect.getTargetPointer();
 if (targetPointer != null) {
@@ -40,11 +40,11 @@ abilityTargets.addAll(targetList);
 }
 if (!abilityTargets.isEmpty()) {
 abilityView.overrideTargets(abilityTargets);
-List<String> names=new ArrayList<String>();
+List<String> names=new ArrayList<>();
 for (UUID uuid : abilityTargets) {
 MageObject mageObject=game.getObject(uuid);
 if (mageObject != null) {
-names.add(mageObject.getName());
+names.add(mageObject.getLogName());
 }
 }
 if (!names.isEmpty()) {
