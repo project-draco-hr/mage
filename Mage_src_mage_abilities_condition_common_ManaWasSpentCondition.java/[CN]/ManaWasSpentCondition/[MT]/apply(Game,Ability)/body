@@ -1,3 +1,13 @@
 {
-  return (source.getManaCostsToPay().getPayment().getColor(coloredManaSymbol) > 0);
+  if (source.getAbilityType().equals(AbilityType.SPELL)) {
+    return (source.getManaCostsToPay().getPayment().getColor(coloredManaSymbol) > 0);
+  }
+  ManaSpentToCastWatcher watcher=(ManaSpentToCastWatcher)game.getState().getWatchers().get("ManaSpentToCast",source.getSourceId());
+  if (watcher != null) {
+    Mana payment=watcher.getAndResetLastPayment();
+    if (payment != null) {
+      return payment.getColor(coloredManaSymbol) > 0;
+    }
+  }
+  return false;
 }

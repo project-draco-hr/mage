@@ -1,9 +1,16 @@
 {
-  for (  Player player : game.getPlayers().values()) {
-    if (player != null) {
-      final int amount=game.getBattlefield().getAllActivePermanents(new FilterAttackingCreature(),player.getId(),game).size();
-      player.loseLife(amount,game);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : controller.getInRange()) {
+      final int amount=game.getBattlefield().getAllActivePermanents(new FilterAttackingCreature(),playerId,game).size();
+      if (amount > 0) {
+        Player player=game.getPlayer(playerId);
+        if (player != null) {
+          player.loseLife(amount,game);
+        }
+      }
     }
+    return true;
   }
-  return true;
+  return false;
 }
