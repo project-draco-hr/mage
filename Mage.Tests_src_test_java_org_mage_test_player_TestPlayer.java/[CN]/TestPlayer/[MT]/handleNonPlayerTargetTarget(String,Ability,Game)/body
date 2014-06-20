@@ -1,0 +1,52 @@
+{
+  boolean result=true;
+  String[] targetList=target.split("\\^");
+  int index=0;
+  int targetsSet=0;
+  for (  String targetName : targetList) {
+    if (targetName.startsWith("targetPlayer=")) {
+      target=targetName.substring(targetName.indexOf("targetPlayer=") + 13);
+      for (      Player player : game.getPlayers().values()) {
+        if (player.getName().equals(target)) {
+          ability.getTargets().get(index).addTarget(player.getId(),ability,game);
+          index++;
+          targetsSet++;
+          break;
+        }
+      }
+    }
+ else {
+      if (ability.getTargets().size() == 0) {
+        throw new AssertionError("Ability has no targets. " + ability.toString());
+      }
+      for (      UUID id : ability.getTargets().get(0).possibleTargets(ability.getSourceId(),ability.getControllerId(),game)) {
+        MageObject object=game.getObject(id);
+        if (object != null && object.getName().equals(targetName)) {
+          if (index >= ability.getTargets().size()) {
+            index--;
+          }
+          if (ability.getTargets().get(index).getNumberOfTargets() == 1) {
+            ability.getTargets().get(index).clearChosen();
+          }
+          if (ability.getTargets().get(index) instanceof TargetCreaturePermanentAmount) {
+            TargetCreaturePermanentAmount targetAmount=(TargetCreaturePermanentAmount)ability.getTargets().get(index);
+            targetAmount.setAmount(ability,game);
+            int amount=targetAmount.getAmountRemaining();
+            targetAmount.addTarget(id,amount,ability,game);
+            targetsSet++;
+          }
+ else {
+            ability.getTargets().get(index).addTarget(id,ability,game);
+            targetsSet++;
+          }
+          index++;
+          break;
+        }
+      }
+    }
+  }
+  if (targetsSet != targetList.length) {
+    result=false;
+  }
+  return result;
+}
