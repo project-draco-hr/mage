@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Cyclops of One-Eyed Pass");
+  addCard(Zone.HAND,playerA,"Nyxborn Rollicker");
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",3);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.HAND,playerB,"Far // Away");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Nyxborn Rollicker using bestow","Cyclops of One-Eyed Pass");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"fused Far // Away","Cyclops of One-Eyed Pass^targetPlayer=PlayerA");
+  playerA.addTarget("Nyxborn Rollicker");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertHandCount(playerA,0);
+  assertHandCount(playerB,0);
+  assertGraveyardCount(playerB,"Far // Away",1);
+  assertPermanentCount(playerA,"Nyxborn Rollicker",0);
+  assertGraveyardCount(playerA,"Nyxborn Rollicker",1);
+}
