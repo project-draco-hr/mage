@@ -1,12 +1,16 @@
 {
-  if (logger.isDebugEnabled() && (combat == null || combat.getGroups().isEmpty()))   logger.debug("not attacking");
+  if (logger.isDebugEnabled() && (combat == null || combat.getGroups().isEmpty())) {
+    logger.debug("not attacking");
+  }
   if (combat != null) {
     UUID opponentId=game.getCombat().getDefenders().iterator().next();
     for (    UUID attackerId : combat.getAttackers()) {
-      this.declareAttacker(attackerId,opponentId,game);
+      this.declareAttacker(attackerId,opponentId,game,false);
       if (logger.isDebugEnabled()) {
         Permanent p=game.getPermanent(attackerId);
-        if (p != null)         logger.debug("attacking with:" + p.getName());
+        if (p != null) {
+          logger.debug("attacking with:" + p.getName());
+        }
       }
     }
   }
