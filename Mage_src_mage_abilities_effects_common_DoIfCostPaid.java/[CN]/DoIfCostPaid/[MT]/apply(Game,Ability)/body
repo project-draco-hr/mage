@@ -14,7 +14,14 @@
       cost.clearPaid();
       if (cost.pay(source,game,source.getSourceId(),source.getControllerId(),false)) {
         executingEffect.setTargetPointer(this.targetPointer);
-        return executingEffect.apply(game,source);
+        if (executingEffect instanceof OneShotEffect) {
+          if (!(executingEffect instanceof PostResolveEffect)) {
+            return executingEffect.apply(game,source);
+          }
+        }
+ else {
+          game.addEffect((ContinuousEffect)executingEffect,source);
+        }
       }
     }
     return true;

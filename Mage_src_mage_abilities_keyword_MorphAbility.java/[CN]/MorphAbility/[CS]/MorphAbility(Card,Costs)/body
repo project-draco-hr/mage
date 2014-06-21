@@ -2,7 +2,14 @@
   super(Zone.HAND,null);
   card.setMorphCard(true);
   name=ABILITY_KEYWORD;
-  morphCostsText=morphCosts.getText();
+  StringBuilder sb=new StringBuilder();
+  sb.append(ABILITY_KEYWORD).append(" ");
+  if (!(morphCosts instanceof ManaCosts)) {
+    sb.append("- ");
+  }
+  sb.append(morphCosts.getText()).append(" ");
+  sb.append(REMINDER_TEXT);
+  ruleText=sb.toString();
   alternateCosts.add(new AlternativeCost2Impl(ABILITY_KEYWORD,REMINDER_TEXT,new GenericManaCost(3)));
   Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BecomesFaceDownCreatureEffect(morphCosts));
   ability.setRuleVisible(false);
