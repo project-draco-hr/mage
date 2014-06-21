@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : controller.getInRange()) {
+      int amount=game.getBattlefield().countAll(filter,playerId,game);
+      if (amount > 0) {
+        Player player=game.getPlayer(playerId);
+        if (player != null) {
+          player.damage(amount * 2,source.getSourceId(),game,false,true);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

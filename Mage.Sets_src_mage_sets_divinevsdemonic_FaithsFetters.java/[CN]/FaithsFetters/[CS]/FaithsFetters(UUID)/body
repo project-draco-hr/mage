@@ -1,0 +1,15 @@
+{
+  super(ownerId,20,"Faith's Fetters",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{3}{W}");
+  this.expansionSetCode="DDC";
+  this.subtype.add("Aura");
+  this.color.setWhite(true);
+  TargetPermanent auraTarget=new TargetPermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.GainControl));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new GainLifeEffect(4)));
+  Effect effect=new CantBlockAttackActivateAttachedEffect();
+  effect.setText("Enchanted permanent's activated abilities can't be activated unless they're mana abilities. If enchanted permanent is a creature, it can't attack or block");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+}

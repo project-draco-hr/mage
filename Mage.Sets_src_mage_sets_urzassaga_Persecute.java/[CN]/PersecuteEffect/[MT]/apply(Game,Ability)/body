@@ -1,0 +1,19 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player != null) {
+    ChoiceColor choice=(ChoiceColor)source.getChoices().get(0);
+    if (choice == null || choice.getColor() == null) {
+      return false;
+    }
+    Cards hand=player.getHand();
+    player.revealCards("Persecute",hand,game);
+    Set<Card> cards=hand.getCards(game);
+    for (    Card card : cards) {
+      if (card != null && card.getColor().shares(choice.getColor())) {
+        player.discard(card,source,game);
+      }
+    }
+    return true;
+  }
+  return false;
+}
