@@ -3,8 +3,23 @@
   int numColumns=maxWidth / Config.dimensions.frameWidth;
   int curColumn=0;
   int curRow=0;
+  int maxRow=0;
+  int maxColumn=0;
   Comparator<CardView> comparator=null;
-  cardArea.removeAll();
+  Map<UUID,MageCard> oldMageCards=mageCards;
+  mageCards=new LinkedHashMap<>();
+  for (  UUID uuid : cards.keySet()) {
+    if (oldMageCards.containsKey(uuid)) {
+      mageCards.put(uuid,oldMageCards.get(uuid));
+      oldMageCards.remove(uuid);
+    }
+ else {
+      mageCards.put(uuid,addCard(cards.get(uuid),bigCard,gameId));
+    }
+  }
+  for (  MageCard card : oldMageCards.values()) {
+    cardArea.remove(card);
+  }
   if (cards != null && cards.size() > 0) {
     Rectangle rectangle=new Rectangle(Config.dimensions.frameWidth,Config.dimensions.frameHeight);
     List<CardView> sortedCards=new ArrayList<>(cards.values());
@@ -38,27 +53,31 @@ lastCard=card;
 if (comparator != null) {
 if (comparator.compare(card,lastCard) > 0) {
 curColumn++;
+maxRow=Math.max(maxRow,curRow);
 curRow=0;
 }
 }
 rectangle.setLocation(curColumn * Config.dimensions.frameWidth,curRow * 20);
-addCard(card,bigCard,gameId,rectangle);
+setCardBounds(mageCards.get(card.getId()),rectangle);
 curRow++;
 lastCard=card;
 }
  else {
 rectangle.setLocation(curColumn * Config.dimensions.frameWidth,curRow * 20);
-addCard(card,bigCard,gameId,rectangle);
+setCardBounds(mageCards.get(card.getId()),rectangle);
 curColumn++;
 if (curColumn == numColumns) {
+maxColumn=Math.max(maxColumn,curColumn);
 curColumn=0;
 curRow++;
 }
 }
 }
 }
+maxRow=Math.max(maxRow,curRow);
+maxColumn=Math.max(maxColumn,curColumn);
 updateCounts();
-cardArea.setPreferredSize(new Dimension(Config.dimensions.frameWidth,Config.dimensions.frameHeight + 200));
+cardArea.setPreferredSize(new Dimension((maxColumn + 1) * Config.dimensions.frameWidth,Config.dimensions.frameHeight + maxRow * 20));
 cardArea.revalidate();
 this.revalidate();
 this.repaint();
