@@ -3,31 +3,46 @@
   int numColumns=maxWidth / Config.dimensions.frameWidth;
   int curColumn=0;
   int curRow=0;
-  int landCount=0;
-  int creatureCount=0;
-  int sorceryCount=0;
-  int instantCount=0;
-  int enchantmentCount=0;
-  cardArea.removeAll();
+  int maxRow=0;
+  int maxColumn=0;
+  Comparator<CardView> comparator=null;
+  Map<UUID,MageCard> oldMageCards=mageCards;
+  mageCards=new LinkedHashMap<>();
+  for (  UUID uuid : cards.keySet()) {
+    if (oldMageCards.containsKey(uuid)) {
+      mageCards.put(uuid,oldMageCards.get(uuid));
+      oldMageCards.remove(uuid);
+    }
+ else {
+      mageCards.put(uuid,addCard(cards.get(uuid),bigCard,gameId));
+    }
+  }
+  for (  MageCard card : oldMageCards.values()) {
+    cardArea.remove(card);
+  }
   if (cards != null && cards.size() > 0) {
     Rectangle rectangle=new Rectangle(Config.dimensions.frameWidth,Config.dimensions.frameHeight);
     List<CardView> sortedCards=new ArrayList<>(cards.values());
 switch (sortSetting.getSortBy()) {
 case NAME:
-      Collections.sort(sortedCards,new CardViewNameComparator());
+      comparator=new CardViewNameComparator();
     break;
 case RARITY:
-  Collections.sort(sortedCards,new CardViewRarityComparator());
+  comparator=new CardViewRarityComparator();
 break;
 case COLOR:
-Collections.sort(sortedCards,new CardViewColorComparator());
+comparator=new CardViewColorComparator();
 break;
 case COLOR_DETAILED:
-Collections.sort(sortedCards,new CardViewColorDetailedComparator());
+comparator=new CardViewColorDetailedComparator();
 break;
 case CASTING_COST:
-Collections.sort(sortedCards,new CardViewCostComparator());
+comparator=new CardViewCostComparator();
 break;
+}
+if (comparator != null) {
+Collections.sort(sortedCards,new CardViewNameComparator());
+Collections.sort(sortedCards,comparator);
 }
 CardView lastCard=null;
 for (CardView card : sortedCards) {
@@ -35,77 +50,34 @@ if (sortSetting.isPilesToggle()) {
 if (lastCard == null) {
 lastCard=card;
 }
-switch (sortSetting.getSortBy()) {
-case NAME:
-if (!card.getName().equals(lastCard.getName())) {
+if (comparator != null) {
+if (comparator.compare(card,lastCard) > 0) {
 curColumn++;
+maxRow=Math.max(maxRow,curRow);
 curRow=0;
 }
-break;
-case RARITY:
-if (!card.getRarity().equals(lastCard.getRarity())) {
-curColumn++;
-curRow=0;
-}
-break;
-case COLOR:
-if (card.getColor().compareTo(lastCard.getColor()) != 0) {
-curColumn++;
-curRow=0;
-}
-break;
-case COLOR_DETAILED:
-if (card.getColor().hashCode() != lastCard.getColor().hashCode()) {
-curColumn++;
-curRow=0;
-}
-break;
-case CASTING_COST:
-if (card.getConvertedManaCost() != lastCard.getConvertedManaCost()) {
-curColumn++;
-curRow=0;
-}
-break;
 }
 rectangle.setLocation(curColumn * Config.dimensions.frameWidth,curRow * 20);
-addCard(card,bigCard,gameId,rectangle);
+setCardBounds(mageCards.get(card.getId()),rectangle);
 curRow++;
 lastCard=card;
 }
  else {
 rectangle.setLocation(curColumn * Config.dimensions.frameWidth,curRow * 20);
-addCard(card,bigCard,gameId,rectangle);
+setCardBounds(mageCards.get(card.getId()),rectangle);
 curColumn++;
 if (curColumn == numColumns) {
+maxColumn=Math.max(maxColumn,curColumn);
 curColumn=0;
 curRow++;
 }
 }
-if (card.getCardTypes().contains(CardType.LAND)) {
-landCount++;
-}
-if (card.getCardTypes().contains(CardType.CREATURE)) {
-creatureCount++;
-}
-if (card.getCardTypes().contains(CardType.SORCERY)) {
-sorceryCount++;
-}
-if (card.getCardTypes().contains(CardType.INSTANT)) {
-instantCount++;
-}
-if (card.getCardTypes().contains(CardType.ENCHANTMENT)) {
-enchantmentCount++;
 }
 }
-}
-int count=cards != null ? cards.size() : 0;
-this.lblCount.setText(Integer.toString(count));
-this.lblCreatureCount.setText(Integer.toString(creatureCount));
-this.lblLandCount.setText(Integer.toString(landCount));
-this.lblSorceryCount.setText(Integer.toString(sorceryCount));
-this.lblInstantCount.setText(Integer.toString(instantCount));
-this.lblEnchantmentCount.setText(Integer.toString(enchantmentCount));
-cardArea.setPreferredSize(new Dimension(Config.dimensions.frameWidth,Config.dimensions.frameHeight + 200));
+maxRow=Math.max(maxRow,curRow);
+maxColumn=Math.max(maxColumn,curColumn);
+updateCounts();
+cardArea.setPreferredSize(new Dimension((maxColumn + 1) * Config.dimensions.frameWidth,Config.dimensions.frameHeight + maxRow * 20));
 cardArea.revalidate();
 this.revalidate();
 this.repaint();
