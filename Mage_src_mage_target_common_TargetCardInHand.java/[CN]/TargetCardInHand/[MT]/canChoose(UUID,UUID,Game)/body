@@ -1,0 +1,15 @@
+{
+  int possibleTargets=0;
+  Player player=game.getPlayer(sourceControllerId);
+  if (player != null) {
+    for (    Card card : player.getHand().getCards(filter,game)) {
+      if (sourceId == null || isNotTarget() || !game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.TARGET,card.getId(),sourceId,sourceControllerId))) {
+        possibleTargets++;
+        if (possibleTargets >= this.minNumberOfTargets) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

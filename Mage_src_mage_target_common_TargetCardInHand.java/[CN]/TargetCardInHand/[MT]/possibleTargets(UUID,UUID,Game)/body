@@ -1,0 +1,12 @@
+{
+  Set<UUID> possibleTargets=new HashSet<>();
+  Player player=game.getPlayer(playerId);
+  if (player != null) {
+    for (    Card card : player.getHand().getCards(filter,game)) {
+      if (sourceId == null || isNotTarget() || !game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.TARGET,card.getId(),sourceId,playerId))) {
+        possibleTargets.add(card.getId());
+      }
+    }
+  }
+  return possibleTargets;
+}
