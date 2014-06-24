@@ -1,9 +1,11 @@
 {
+  log.debug("player won -> start: " + this.getName());
   if (!game.replaceEvent(new GameEvent(GameEvent.EventType.WINS,null,null,playerId))) {
     if (!this.loses) {
       for (      UUID opponentId : game.getOpponents(playerId)) {
         Player opponent=game.getPlayer(opponentId);
         if (opponent != null && !opponent.hasLost()) {
+          log.debug("player won -> calling opponent lost: " + this.getName() + "  opponent: "+ opponent.getName());
           opponent.lost(game);
         }
       }
@@ -15,10 +17,14 @@
         }
       }
       if (opponentsAlive == 0 && !hasWon()) {
+        log.debug("player won -> No more oppononets alive game won: " + this.getName());
         game.informPlayers(new StringBuilder(this.getName()).append(" has won the game").toString());
         this.wins=true;
         game.end();
       }
+    }
+ else {
+      log.debug("player won -> but already lost before: " + this.getName());
     }
   }
 }

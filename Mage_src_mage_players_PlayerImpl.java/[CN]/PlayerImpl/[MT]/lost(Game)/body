@@ -1,12 +1,13 @@
 {
+  log.debug("player lost -> start: " + this.getName());
   if (canLose(game)) {
     this.loses=true;
     if (!this.wins) {
       game.fireEvent(GameEvent.getEvent(GameEvent.EventType.LOST,null,null,playerId));
       game.informPlayers(new StringBuilder(this.getName()).append(" has lost the game.").toString());
     }
-    if (!hasLeft()) {
-      game.leave(playerId);
+ else {
+      log.debug("player.lost -> stop setting lost because he already has won!: " + this.getName());
     }
   }
 }

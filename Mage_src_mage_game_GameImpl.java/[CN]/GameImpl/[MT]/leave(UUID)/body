@@ -1,10 +1,12 @@
 {
   Player player=getPlayer(playerId);
   if (player == null || player.hasLeft()) {
+    logger.debug("game.leave -> player already left " + (player != null ? player.getName() : playerId));
     return;
   }
+  logger.debug("game.leave -> start  player: " + player.getName());
   player.leave();
-  if (gameOver(null)) {
+  if (checkIfGameIsOver()) {
     return;
   }
   for (Iterator<Permanent> it=getBattlefield().getAllPermanents().iterator(); it.hasNext(); ) {
