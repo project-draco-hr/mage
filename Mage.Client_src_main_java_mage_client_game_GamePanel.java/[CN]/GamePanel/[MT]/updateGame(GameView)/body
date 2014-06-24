@@ -56,6 +56,17 @@
       }
     }
   }
+  if (!menuNameSet) {
+    StringBuilder sb=new StringBuilder();
+    for (    PlayerView player : game.getPlayers()) {
+      if (sb.length() > 0) {
+        sb.append(" vs. ");
+      }
+      sb.append(player.getName());
+    }
+    menuNameSet=true;
+    gamePane.setTitle("Game: " + sb.toString());
+  }
   GameManager.getInstance().setStackSize(game.getStack().size());
   displayStack(game,bigCard,feedbackPanel,gameId);
   for (  ExileView exile : game.getExile()) {
