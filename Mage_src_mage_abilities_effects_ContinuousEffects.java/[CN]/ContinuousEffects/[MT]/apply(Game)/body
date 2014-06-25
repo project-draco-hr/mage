@@ -12,11 +12,17 @@
     layerEffects=getLayeredEffects(game);
   }
   layer=filterLayeredEffects(layerEffects,Layer.ControlChangingEffects_2);
-  for (  ContinuousEffect effect : layer) {
-    HashSet<Ability> abilities=layeredEffects.getAbility(effect.getId());
-    for (    Ability ability : abilities) {
-      effect.apply(Layer.ControlChangingEffects_2,SubLayer.NA,ability,game);
+  while (true) {
+    for (    ContinuousEffect effect : layer) {
+      HashSet<Ability> abilities=layeredEffects.getAbility(effect.getId());
+      for (      Ability ability : abilities) {
+        effect.apply(Layer.ControlChangingEffects_2,SubLayer.NA,ability,game);
+      }
     }
+    if (!game.getBattlefield().fireControlChangeEvents(game)) {
+      break;
+    }
+    game.getBattlefield().resetPermanentsControl();
   }
   layer=filterLayeredEffects(layerEffects,Layer.TextChangingEffects_3);
   for (  ContinuousEffect effect : layer) {

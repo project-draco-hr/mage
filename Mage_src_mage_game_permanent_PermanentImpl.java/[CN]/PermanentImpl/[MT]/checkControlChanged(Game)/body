@@ -1,10 +1,12 @@
 {
-  if (this.controllerChanged) {
+  if (!controllerId.equals(beforeResetControllerId)) {
+    this.removeFromCombat(game);
+    this.controlledFromStartOfControllerTurn=false;
+    this.abilities.setControllerId(controllerId);
+    game.getContinuousEffects().setController(objectId,controllerId);
     game.fireEvent(new GameEvent(EventType.LOST_CONTROL,objectId,objectId,beforeResetControllerId));
-    if (controllerId.equals(originalControllerId)) {
-      this.abilities.setControllerId(controllerId);
-      game.getContinuousEffects().setController(this.objectId,controllerId);
-    }
     game.fireEvent(new GameEvent(EventType.GAINED_CONTROL,objectId,objectId,controllerId));
+    return true;
   }
+  return false;
 }
