@@ -58,14 +58,24 @@
   }
   if (!menuNameSet) {
     StringBuilder sb=new StringBuilder();
+    if (playerId == null) {
+      sb.append("Watching: ");
+    }
+ else {
+      sb.append("Playing: ");
+    }
+    boolean first=true;
     for (    PlayerView player : game.getPlayers()) {
-      if (sb.length() > 0) {
-        sb.append(" vs. ");
+      if (first) {
+        first=false;
+      }
+ else {
+        sb.append(" - ");
       }
       sb.append(player.getName());
     }
     menuNameSet=true;
-    gamePane.setTitle("Game: " + sb.toString());
+    gamePane.setTitle(sb.toString());
   }
   GameManager.getInstance().setStackSize(game.getStack().size());
   displayStack(game,bigCard,feedbackPanel,gameId);
