@@ -40,6 +40,10 @@
   }
   if (numBoosterSpecial > 0) {
     int specialCards=0;
+    List<CardInfo> specialBonus=getSpecialBonus();
+    if (specialBonus != null) {
+      specialCards+=specialBonus.size();
+    }
     List<CardInfo> specialMythic=getSpecialMythic();
     if (specialMythic != null) {
       specialCards+=specialMythic.size();
@@ -67,7 +71,7 @@
           }
           continue;
         }
-        if (rnd.nextInt(5) < 4) {
+        if (rnd.nextInt(4) < 3) {
           if (specialUncommon != null) {
             addToBooster(booster,specialUncommon);
           }
@@ -86,10 +90,22 @@
           continue;
         }
         if (specialMythic != null) {
-          addToBooster(booster,specialMythic);
+          if (specialBonus != null) {
+            if (rnd.nextInt(3) < 2) {
+              addToBooster(booster,specialMythic);
+              continue;
+            }
+          }
+ else {
+            addToBooster(booster,specialMythic);
+            continue;
+          }
         }
  else {
           i--;
+        }
+        if (specialBonus != null) {
+          addToBooster(booster,specialBonus);
         }
       }
     }
