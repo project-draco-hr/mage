@@ -1,0 +1,36 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (player != null) {
+    Library library=player.getLibrary();
+    if (library.size() < 1) {
+      return true;
+    }
+    CardsImpl cards=new CardsImpl();
+    Card card;
+    Filter filter=new FilterBasicLandCard();
+    do {
+      card=library.removeFromTop(game);
+      if (card != null) {
+        if (filter.match(card,game)) {
+          player.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
+        }
+ else {
+          cards.add(card);
+        }
+      }
+    }
+ while (library.size() > 0 && card != null && !filter.match(card,game));
+    if (!cards.isEmpty()) {
+      for (      Card cardToGrave : cards.getCards(game)) {
+        player.moveCardToGraveyardWithInfo(cardToGrave,source.getSourceId(),game,Zone.LIBRARY);
+      }
+      if (card != null) {
+        cards.add(card);
+      }
+      player.revealCards(sourceObject.getLogName(),cards,game);
+    }
+    return true;
+  }
+  return false;
+}

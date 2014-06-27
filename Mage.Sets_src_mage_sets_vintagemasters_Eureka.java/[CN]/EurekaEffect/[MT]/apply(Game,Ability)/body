@@ -1,0 +1,36 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    PlayerList playerList=game.getState().getPlayerList();
+    while (!playerList.get().equals(source.getControllerId()) && controller.isInGame()) {
+      playerList.getNext();
+    }
+    Player currentPlayer=game.getPlayer(playerList.get());
+    UUID firstInactivePlayer=null;
+    Target target=new TargetCardInHand(new FilterPermanentCard());
+    while (controller.isInGame()) {
+      if (currentPlayer != null && controller.getInRange().contains(currentPlayer.getId())) {
+        if (firstInactivePlayer == null) {
+          firstInactivePlayer=currentPlayer.getId();
+        }
+        target.clearChosen();
+        if (target.canChoose(source.getSourceId(),currentPlayer.getId(),game) && currentPlayer.chooseUse(outcome,"Put permanent from your hand to play?",game)) {
+          if (target.chooseTarget(outcome,currentPlayer.getId(),source,game)) {
+            Card card=game.getCard(target.getFirstTarget());
+            if (card != null) {
+              currentPlayer.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId());
+              firstInactivePlayer=null;
+            }
+          }
+        }
+      }
+      playerList.getNext();
+      currentPlayer=game.getPlayer(playerList.get());
+      if (currentPlayer.getId().equals(firstInactivePlayer)) {
+        break;
+      }
+    }
+    return true;
+  }
+  return false;
+}
