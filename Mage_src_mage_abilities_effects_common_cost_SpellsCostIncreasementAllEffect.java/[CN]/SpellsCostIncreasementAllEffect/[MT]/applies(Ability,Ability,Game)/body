@@ -1,7 +1,13 @@
 {
-  if ((abilityToModify instanceof SpellAbility || abilityToModify instanceof FlashbackAbility)) {
-    Card sourceCard=game.getCard(abilityToModify.getSourceId());
-    return sourceCard != null && this.filter.match(sourceCard,game);
+  if (abilityToModify instanceof SpellAbility) {
+    Spell spell=(Spell)game.getStack().getStackObject(abilityToModify.getId());
+    if (spell != null) {
+      return this.filter.match(spell,game);
+    }
+ else {
+      Card sourceCard=game.getCard(abilityToModify.getSourceId());
+      return sourceCard != null && this.filter.match(sourceCard,game);
+    }
   }
   return false;
 }
