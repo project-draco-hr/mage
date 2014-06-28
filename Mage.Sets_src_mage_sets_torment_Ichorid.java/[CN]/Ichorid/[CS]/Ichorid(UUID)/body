@@ -7,12 +7,9 @@
   this.toughness=new MageInt(1);
   this.addAbility(HasteAbility.getInstance());
   this.addAbility(new BeginningOfYourEndStepTriggeredAbility(new SacrificeSourceEffect(),false));
-  Ability ability=new IchoridTriggerdAbility();
-  FilterCard filter=new FilterCreatureCard("an other black creature card from your graveyard");
+  FilterCard filter=new FilterCreatureCard("a black creature card other than Ichorid from your graveyard");
   filter.add(Predicates.not(new CardIdPredicate(this.getId())));
   filter.add(new ColorPredicate(ObjectColor.BLACK));
-  TargetCardInYourGraveyard target=new TargetCardInYourGraveyard(filter);
-  target.setRequired(false);
-  ability.addCost(new ExileFromGraveCost(target));
+  Ability ability=new IchoridTriggerdAbility(filter);
   this.addAbility(ability);
 }

@@ -1,21 +1,24 @@
 {
-  Player damagedPlayer=game.getPlayer(this.getTargetPointer().getFirst(game,source));
-  if (damagedPlayer != null) {
-    Player controller=game.getPlayer(source.getControllerId());
-    UUID exileId=CardUtil.getCardExileZoneId(game,source);
-    Card card=damagedPlayer.getLibrary().getFromTop(game);
-    if (card != null && controller != null) {
-      card.moveToExile(exileId,"Daxos of Meletis",source.getSourceId(),game);
-      int cmc=card.getManaCost().convertedManaCost();
-      if (cmc > 0) {
-        controller.gainLife(cmc,game);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Player damagedPlayer=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+    if (damagedPlayer != null) {
+      MageObject sourceObject=game.getObject(source.getSourceId());
+      UUID exileId=CardUtil.getCardExileZoneId(game,source);
+      Card card=damagedPlayer.getLibrary().getFromTop(game);
+      if (card != null) {
+        controller.moveCardToExileWithInfo(card,exileId,sourceObject.getLogName(),source.getSourceId(),game,Zone.LIBRARY);
+        int cmc=card.getManaCost().convertedManaCost();
+        if (cmc > 0) {
+          controller.gainLife(cmc,game);
+        }
+        if (card.getSpellAbility() != null) {
+          game.addEffect(new DaxosOfMeletisCastFromExileEffect(card.getId(),exileId),source);
+          game.addEffect(new DaxosOfMeletisSpendAnyManaEffect(card.getId()),source);
+        }
       }
-      if (card.getSpellAbility() != null) {
-        game.addEffect(new DaxosOfMeletisCastFromExileEffect(card.getId(),exileId),source);
-        game.addEffect(new DaxosOfMeletisSpendAnyManaEffect(card.getId()),source);
-      }
+      return true;
     }
-    return true;
   }
   return false;
 }
