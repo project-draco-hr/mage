@@ -1,0 +1,13 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Effect effect=new BerserkDelayedDestroyEffect();
+    effect.setTargetPointer(new FixedTarget(this.getTargetPointer().getFirst(game,source)));
+    AtEndOfTurnDelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(effect);
+    delayedAbility.setSourceId(source.getSourceId());
+    delayedAbility.setControllerId(source.getControllerId());
+    game.addDelayedTriggeredAbility(delayedAbility);
+    return true;
+  }
+  return false;
+}
