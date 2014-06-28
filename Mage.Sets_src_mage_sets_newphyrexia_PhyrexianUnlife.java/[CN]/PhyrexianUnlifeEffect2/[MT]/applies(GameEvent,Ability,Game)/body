@@ -1,8 +1,19 @@
 {
   if (event.getType() == EventType.DAMAGE_PLAYER && event.getPlayerId().equals(source.getControllerId())) {
-    Player player=game.getPlayer(event.getPlayerId());
-    if (player.getLife() <= 0) {
-      return true;
+    Player player=game.getPlayer(source.getControllerId());
+    if (player != null) {
+      if (((DamagePlayerEvent)event).isCombatDamage()) {
+        if (lastCheckedDamageStepNum != game.getState().getStepNum()) {
+          lastCheckedDamageStepNum=game.getState().getStepNum();
+          startedWithLifeAboveZero=player.getLife() > 0;
+        }
+        if (startedWithLifeAboveZero) {
+          return false;
+        }
+      }
+      if (player.getLife() <= 0) {
+        return true;
+      }
     }
   }
   return false;
