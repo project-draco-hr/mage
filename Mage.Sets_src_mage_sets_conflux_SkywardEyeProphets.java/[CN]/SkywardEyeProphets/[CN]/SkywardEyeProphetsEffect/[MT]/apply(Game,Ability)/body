@@ -1,19 +1,23 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null && player.getLibrary().size() > 0) {
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (sourceObject == null || controller == null) {
+    return false;
+  }
+  if (controller.getLibrary().size() > 0) {
     CardsImpl cards=new CardsImpl();
-    Card card=player.getLibrary().removeFromTop(game);
-    if (card != null) {
-      cards.add(card);
-      player.revealCards("Skyward Eye Prophets",cards,game);
-      if (card.getCardType().contains(CardType.LAND)) {
-        card.putOntoBattlefield(game,Zone.HAND,source.getId(),source.getControllerId());
-      }
+    Card card=controller.getLibrary().getFromTop(game);
+    if (card == null) {
+      return false;
+    }
+    cards.add(card);
+    controller.revealCards(sourceObject.getLogName(),cards,game);
+    if (card.getCardType().contains(CardType.LAND)) {
+      return controller.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+    }
  else {
-        card.moveToZone(Zone.HAND,source.getId(),game,true);
-      }
-      return true;
+      return controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
     }
   }
-  return false;
+  return true;
 }

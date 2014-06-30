@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  if (!controller.getLibrary().isEmptyDraw()) {
+    Card card=controller.getLibrary().getFromTop(game);
+    if (card == null) {
+      return false;
+    }
+    boolean toBottom=controller.chooseUse(outcome,"Put card on the bottom of your library?",game);
+    return controller.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.LIBRARY,!toBottom,false);
+  }
+  return true;
+}
