@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  TargetCardInLibrary target=new TargetCardInLibrary(0,Integer.MAX_VALUE,new FilterBasicLandCard());
+  if (player.searchLibrary(target,game)) {
+    if (target.getTargets().size() > 0) {
+      for (      UUID cardId : target.getTargets()) {
+        Card card=player.getLibrary().getCard(cardId,game);
+        if (card != null) {
+          player.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+        }
+      }
+    }
+  }
+  player.shuffleLibrary(game);
+  ContinuousEffect effect=new BecomesCreatureTargetEffect(new NissaWorldwakerToken(),"land",Duration.EndOfGame);
+  game.addEffect(effect,source);
+  return true;
+}
