@@ -1,0 +1,10 @@
+{
+  if (event.getType() == GameEvent.EventType.ATTACKER_DECLARED && event.getSourceId().equals(this.getSourceId())) {
+    FilterCreaturePermanent filter=new FilterCreaturePermanent();
+    filter.add(new ControllerIdPredicate(event.getTargetId()));
+    filter.add(new SubtypePredicate("Wall"));
+    List<Permanent> permanents=game.getBattlefield().getActivePermanents(filter,this.getControllerId(),this.getSourceId(),game);
+    return permanents.isEmpty();
+  }
+  return false;
+}
