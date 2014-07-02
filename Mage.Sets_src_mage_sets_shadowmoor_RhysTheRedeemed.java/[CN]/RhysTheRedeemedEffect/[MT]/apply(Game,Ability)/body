@@ -1,0 +1,14 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  if (you != null) {
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(filter,game)) {
+      if (permanent.getControllerId().equals(source.getControllerId())) {
+        EmptyToken token=new EmptyToken();
+        CardUtil.copyTo(token).from(permanent);
+        token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
+      }
+    }
+    return true;
+  }
+  return false;
+}

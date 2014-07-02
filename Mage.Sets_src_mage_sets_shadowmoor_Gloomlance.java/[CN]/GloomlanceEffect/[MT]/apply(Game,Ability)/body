@@ -1,0 +1,13 @@
+{
+  Permanent targetCreature=game.getPermanent(source.getFirstTarget());
+  if (targetCreature != null) {
+    Player targetController=game.getPlayer(targetCreature.getControllerId());
+    targetCreature.destroy(source.getSourceId(),game,false);
+    Permanent destroyedCreature=game.getPermanentOrLKIBattlefield(source.getFirstTarget());
+    if (destroyedCreature.getColor().isGreen() || destroyedCreature.getColor().isWhite()) {
+      targetController.discard(1,source,game);
+      return true;
+    }
+  }
+  return false;
+}

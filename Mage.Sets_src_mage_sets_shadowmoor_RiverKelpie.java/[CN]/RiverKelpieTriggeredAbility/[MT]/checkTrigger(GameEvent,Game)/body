@@ -1,0 +1,10 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getFromZone() == Zone.GRAVEYARD && zEvent.getToZone() == Zone.BATTLEFIELD) {
+      Permanent permanent=(Permanent)game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
+      return permanent != null;
+    }
+  }
+  return false;
+}
