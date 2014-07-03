@@ -1,0 +1,20 @@
+{
+  if (affectedObjectsSet) {
+    for (    UUID permanentId : objects) {
+      Permanent permanent=game.getPermanent(permanentId);
+      if (permanent != null) {
+        if (!permanent.getSupertype().contains("Legendary")) {
+          permanent.getSupertype().add("Legendary");
+        }
+      }
+    }
+  }
+ else {
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
+      if (!permanent.getSupertype().contains("Legendary")) {
+        permanent.getSupertype().add("Legendary");
+      }
+    }
+  }
+  return true;
+}
