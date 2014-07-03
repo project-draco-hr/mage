@@ -1,0 +1,19 @@
+{
+  Card card=game.getCard(sourceId);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && card != null && game.getState().getZone(sourceId) == Zone.EXILED) {
+    if (cards.contains(sourceId)) {
+      if (card.getCardType().contains(CardType.LAND)) {
+        if (game.getActivePlayerId().equals(source.getControllerId()) && controller.canPlayLand()) {
+          return true;
+        }
+      }
+ else {
+        if (card.getSpellAbility().spellCanBeActivatedRegularlyNow(source.getControllerId(),game)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

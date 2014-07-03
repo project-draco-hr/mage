@@ -1,0 +1,12 @@
+{
+  GeneratorServantWatcher watcher=(GeneratorServantWatcher)game.getState().getWatchers().get("GeneratorServantWatcher",source.getSourceId());
+  if (watcher != null) {
+    for (    Permanent perm : game.getBattlefield().getAllActivePermanents()) {
+      if (watcher.creatures.contains(perm.getId())) {
+        perm.addAbility(HasteAbility.getInstance(),source.getSourceId(),game);
+      }
+    }
+    return true;
+  }
+  return false;
+}

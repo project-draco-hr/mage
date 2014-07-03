@@ -1,0 +1,16 @@
+{
+  boolean applied=false;
+  int damage=1;
+  for (  UUID targetId : targetPointer.getTargets(game,source)) {
+    Permanent permanent=game.getPermanent(targetId);
+    if (permanent != null) {
+      applied|=(permanent.damage(damage,source.getSourceId(),game,true,false) > 0);
+    }
+    Player player=game.getPlayer(targetId);
+    if (player != null) {
+      applied|=(player.damage(damage,source.getSourceId(),game,true,false) > 0);
+    }
+    damage++;
+  }
+  return applied;
+}
