@@ -1,0 +1,18 @@
+{
+  Permanent creatureAttached=game.getPermanent(source.getSourceId());
+  if (creatureAttached != null) {
+    int power=creatureAttached.getPower().getValue();
+    for (int i=0; i < power; i++) {
+      ElementalToken token=new ElementalToken();
+      token.putOntoBattlefield(1,game,creatureAttached.getId(),creatureAttached.getControllerId());
+      ExileTargetEffect exileEffect=new ExileTargetEffect("exile the token");
+      exileEffect.setTargetPointer(new FixedTarget(token.getLastAddedToken()));
+      DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(exileEffect);
+      delayedAbility.setSourceId(creatureAttached.getId());
+      delayedAbility.setControllerId(creatureAttached.getControllerId());
+      game.addDelayedTriggeredAbility(delayedAbility);
+    }
+    return true;
+  }
+  return false;
+}
