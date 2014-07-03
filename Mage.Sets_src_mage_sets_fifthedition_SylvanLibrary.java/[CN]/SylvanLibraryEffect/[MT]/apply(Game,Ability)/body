@@ -15,10 +15,10 @@
       }
       int numberOfTargets=Math.min(2,cards.size());
       if (numberOfTargets > 0) {
-        TargetCard target=new TargetCard(numberOfTargets,Zone.PICK,new FilterCard(new StringBuilder(numberOfTargets).append(" cards of cards drawn this turn").toString()));
+        TargetCardInHand target=new TargetCardInHand(numberOfTargets,new FilterCard(new StringBuilder(numberOfTargets).append(" cards of cards drawn this turn").toString()));
         controller.chooseTarget(outcome,cards,target,source,game);
         Cards cardsPutBack=new CardsImpl();
-        for (        UUID cardId : (List<UUID>)target.getTargets()) {
+        for (        UUID cardId : target.getTargets()) {
           Card card=cards.get(cardId,game);
           if (card != null) {
             if (controller.canPayLifeCost() && controller.getLife() >= 4 && controller.chooseUse(outcome,new StringBuilder("Pay 4 life for ").append(card.getName()).append("? (Otherwise it's put on top of your library)").toString(),game)) {
