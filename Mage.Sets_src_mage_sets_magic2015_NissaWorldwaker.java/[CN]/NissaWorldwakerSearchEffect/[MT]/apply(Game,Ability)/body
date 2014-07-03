@@ -9,13 +9,15 @@
       for (      UUID cardId : target.getTargets()) {
         Card card=player.getLibrary().getCard(cardId,game);
         if (card != null) {
-          player.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+          if (player.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId())) {
+            ContinuousEffect effect=new BecomesCreatureTargetEffect(new NissaWorldwakerToken(),"land",Duration.Custom);
+            effect.setTargetPointer(new FixedTarget(card.getId()));
+            game.addEffect(effect,source);
+          }
         }
       }
     }
   }
   player.shuffleLibrary(game);
-  ContinuousEffect effect=new BecomesCreatureTargetEffect(new NissaWorldwakerToken(),"land",Duration.EndOfGame);
-  game.addEffect(effect,source);
   return true;
 }

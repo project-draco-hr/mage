@@ -1,10 +1,20 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  Card card=player.getGraveyard().get(source.getSourceId(),game);
-  if (card != null) {
-    if (card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getId(),source.getControllerId(),tapped)) {
-      return true;
-    }
+  if (!game.getState().getZone(source.getSourceId()).equals(Zone.GRAVEYARD)) {
+    return false;
   }
-  return false;
+  Card card=game.getCard(source.getSourceId());
+  if (card == null) {
+    return false;
+  }
+  Player player;
+  if (ownerControl) {
+    player=game.getPlayer(card.getOwnerId());
+  }
+ else {
+    player=game.getPlayer(source.getControllerId());
+  }
+  if (player == null) {
+    return false;
+  }
+  return player.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId(),tapped);
 }

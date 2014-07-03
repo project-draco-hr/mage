@@ -1,0 +1,22 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (sourcePermanent != null && player != null) {
+    int newConvertedCost=sourcePermanent.getCounters().getCount("verse");
+    FilterCard filter=new FilterCard("creature card with converted mana cost " + newConvertedCost);
+    filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,newConvertedCost));
+    filter.add(new CardTypePredicate(CardType.CREATURE));
+    TargetCardInLibrary target=new TargetCardInLibrary(filter);
+    if (player.searchLibrary(target,game)) {
+      for (      UUID cardId : target.getTargets()) {
+        Card card=player.getLibrary().getCard(cardId,game);
+        if (card != null) {
+          player.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+        }
+      }
+    }
+    player.shuffleLibrary(game);
+    return true;
+  }
+  return false;
+}
