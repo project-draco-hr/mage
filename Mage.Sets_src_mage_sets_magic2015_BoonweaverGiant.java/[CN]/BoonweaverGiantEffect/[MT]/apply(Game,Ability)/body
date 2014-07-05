@@ -1,0 +1,51 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  FilterCard filter=new FilterCard("Aura card");
+  filter.add(new CardTypePredicate(CardType.ENCHANTMENT));
+  filter.add(new SubtypePredicate("Aura"));
+  Card card=null;
+  Zone zone=null;
+  if (player.chooseUse(Outcome.Neutral,"Search your graveyard for an Aura card?",game)) {
+    TargetCardInYourGraveyard target=new TargetCardInYourGraveyard(filter);
+    if (player.choose(Outcome.PutCardInPlay,player.getGraveyard(),target,game)) {
+      card=game.getCard(target.getFirstTarget());
+      if (card != null) {
+        zone=Zone.GRAVEYARD;
+      }
+    }
+  }
+  if (player.chooseUse(Outcome.Neutral,"Search your Hand for an Aura card?",game)) {
+    TargetCardInHand target=new TargetCardInHand(filter);
+    if (player.choose(Outcome.PutCardInPlay,player.getHand(),target,game)) {
+      card=game.getCard(target.getFirstTarget());
+      if (card != null) {
+        zone=Zone.HAND;
+      }
+    }
+  }
+  if (card == null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(filter);
+    if (player.searchLibrary(target,game)) {
+      card=game.getCard(target.getFirstTarget());
+      if (card != null) {
+        zone=Zone.LIBRARY;
+      }
+    }
+    player.shuffleLibrary(game);
+  }
+  if (card != null) {
+    Permanent permanent=game.getPermanent(source.getSourceId());
+    if (permanent != null) {
+      game.getState().setValue("attachTo:" + card.getId(),permanent.getId());
+    }
+    card.putOntoBattlefield(game,zone,source.getSourceId(),source.getControllerId());
+    if (permanent != null) {
+      return permanent.addAttachment(card.getId(),game);
+    }
+    return true;
+  }
+  return false;
+}

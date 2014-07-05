@@ -7,8 +7,10 @@
   this.toughness=new MageInt(2);
   this.addAbility(new BestowAbility(this,"{4}{W}"));
   this.addAbility(VigilanceAbility.getInstance());
-  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(2,2));
-  Effect effect=new GainAbilityAttachedEffect(VigilanceAbility.getInstance(),AttachmentType.AURA);
+  Effect effect=new BoostEnchantedEffect(2,2,Duration.WhileOnBattlefield);
+  effect.setText("Enchanted creature gets +2/+2");
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,effect);
+  effect=new GainAbilityAttachedEffect(VigilanceAbility.getInstance(),AttachmentType.AURA);
   effect.setText("and has vigilance");
   ability.addEffect(effect);
   this.addAbility(ability);
