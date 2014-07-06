@@ -1,7 +1,12 @@
 {
   for (  TableController controller : controllers.values()) {
-    if (controller.getTable().isTournamentSubTable()) {
-      controller.leaveTable(userId);
+    if (controller.getTable() != null) {
+      if (controller.getTable().isTournamentSubTable()) {
+        controller.leaveTable(userId);
+      }
+    }
+ else {
+      logger.error("TableManager.userQuitTournamentSubTables table == null - userId " + userId);
     }
   }
 }
