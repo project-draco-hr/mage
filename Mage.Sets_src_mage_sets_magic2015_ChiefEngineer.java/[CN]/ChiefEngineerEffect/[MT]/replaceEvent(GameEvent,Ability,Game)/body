@@ -1,0 +1,12 @@
+{
+  MageObject object=game.getObject(event.getSourceId());
+  if (object != null) {
+    Card card=(Card)object;
+    Ability ability=new ConvokeAbility();
+    card.addAbility(ability);
+    ability.setControllerId(source.getControllerId());
+    ability.setSourceId(card.getId());
+    game.getState().addAbility(ability,source.getSourceId(),card);
+  }
+  return false;
+}
