@@ -1,0 +1,17 @@
+{
+  boolean result=true;
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    Permanent permanent : game.getState().getBattlefield().getActivePermanents(new FilterAttackingCreature(),source.getControllerId(),source.getSourceId(),game)) {
+      Player owner=game.getPlayer(permanent.getOwnerId());
+      if (owner != null) {
+        owner.moveCardToLibraryWithInfo(permanent,source.getSourceId(),game,Zone.BATTLEFIELD,owner.chooseUse(Outcome.ReturnToHand,"Put " + permanent.getLogName() + " to the top? (else it goes to bottom)",game),true);
+      }
+ else {
+        result=false;
+      }
+    }
+    return result;
+  }
+  return false;
+}
