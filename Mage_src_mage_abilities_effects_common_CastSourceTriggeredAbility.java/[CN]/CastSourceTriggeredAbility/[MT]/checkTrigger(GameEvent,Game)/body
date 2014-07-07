@@ -1,5 +1,13 @@
 {
   if (event.getType().equals(GameEvent.EventType.SPELL_CAST) && event.getSourceId().equals(this.getSourceId())) {
+    if (getSourceObject() != null && getSourceObject() instanceof Spell) {
+      Spell spell=(Spell)getSourceObject();
+      if (spell.getSpellAbility() != null) {
+        for (        Effect effect : getEffects()) {
+          effect.setValue(SOURCE_CAST_SPELL_ABILITY,spell.getSpellAbility());
+        }
+      }
+    }
     return true;
   }
   return false;
