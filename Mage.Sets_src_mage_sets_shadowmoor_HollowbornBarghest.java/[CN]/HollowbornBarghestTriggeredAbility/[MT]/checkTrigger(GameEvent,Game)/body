@@ -1,0 +1,10 @@
+{
+  if (event.getType() == GameEvent.EventType.UPKEEP_STEP_PRE && game.getOpponents(controllerId).contains(event.getPlayerId())) {
+    Player opponent=game.getPlayer(event.getPlayerId());
+    if (opponent != null && opponent.getHand().size() == 0) {
+      opponent.loseLife(2,game);
+      return true;
+    }
+  }
+  return false;
+}
