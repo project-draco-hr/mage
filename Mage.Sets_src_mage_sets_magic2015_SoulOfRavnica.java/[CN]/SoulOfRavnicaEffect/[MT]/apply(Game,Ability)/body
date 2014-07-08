@@ -1,0 +1,26 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    HashSet<ObjectColor> colors=new HashSet<>();
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(controller.getId())) {
+      if (permanent.getColor().isBlack()) {
+        colors.add(ObjectColor.BLACK);
+      }
+      if (permanent.getColor().isBlue()) {
+        colors.add(ObjectColor.BLUE);
+      }
+      if (permanent.getColor().isRed()) {
+        colors.add(ObjectColor.RED);
+      }
+      if (permanent.getColor().isGreen()) {
+        colors.add(ObjectColor.GREEN);
+      }
+      if (permanent.getColor().isWhite()) {
+        colors.add(ObjectColor.WHITE);
+      }
+    }
+    controller.drawCards(colors.size(),game);
+    return true;
+  }
+  return false;
+}

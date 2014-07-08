@@ -4,7 +4,9 @@
   this.subtype.add("Jace");
   this.color.setBlue(true);
   this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.LOYALTY.createInstance(5)),false));
-  this.addAbility(new LoyaltyAbility(new LookLibraryAndPickControllerEffect(new StaticValue(2),false,new StaticValue(1),new FilterCard(),Zone.LIBRARY,true,false,false,Zone.GRAVEYARD,false),1));
+  Effect effect=new LookLibraryAndPickControllerEffect(new StaticValue(2),false,new StaticValue(1),new FilterCard(),Zone.LIBRARY,true,false,false,Zone.GRAVEYARD,false);
+  effect.setText("Look at the top two cards of your library. Put one of them into your graveyard");
+  this.addAbility(new LoyaltyAbility(effect,1));
   LoyaltyAbility ability=new LoyaltyAbility(new ReturnToHandTargetEffect(),-3);
   ability.addTarget(new TargetPermanent(filter));
   this.addAbility(ability);

@@ -1,0 +1,24 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (player != null && sourcePermanent != null) {
+    Target target=new TargetPermanent(new FilterControlledCreaturePermanent());
+    target.setNotTarget(true);
+    if (target.canChoose(source.getSourceId(),source.getControllerId(),game)) {
+      player.choose(Outcome.Copy,target,source.getSourceId(),game);
+      Permanent copyFromPermanent=game.getPermanent(target.getFirstTarget());
+      if (copyFromPermanent != null) {
+        game.copyPermanent(copyFromPermanent,sourcePermanent,source,new ApplyToPermanent(){
+          @Override public Boolean apply(          Game game,          Permanent permanent){
+            Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ReturnToHandSourceEffect(true),new ManaCostsImpl("{2}{U}{U}"));
+            permanent.addAbility(ability,game);
+            return true;
+          }
+        }
+);
+        return true;
+      }
+    }
+  }
+  return false;
+}

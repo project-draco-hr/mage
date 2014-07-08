@@ -1,0 +1,43 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    if (controller.getHand().size() > 0) {
+      Card cardFromHand=null;
+      if (controller.getHand().size() > 1) {
+        TargetCard target=new TargetCardInHand(new FilterCard());
+        if (controller.choose(outcome,controller.getHand(),target,game)) {
+          cardFromHand=game.getCard(target.getFirstTarget());
+        }
+      }
+ else {
+        cardFromHand=controller.getHand().getRandom(game);
+      }
+      if (cardFromHand == null) {
+        return false;
+      }
+      Player attackedPlayer=game.getPlayer(getTargetPointer().getFirst(game,source));
+      if (attackedPlayer == null) {
+        return false;
+      }
+      boolean guessWrong;
+      if (attackedPlayer.chooseUse(Outcome.Detriment,"Is the choosen card's converted mana cost greater than 4?",game)) {
+        guessWrong=cardFromHand.getManaCost().convertedManaCost() <= 4;
+      }
+ else {
+        guessWrong=cardFromHand.getManaCost().convertedManaCost() > 4;
+      }
+      if (guessWrong) {
+        game.informPlayers(attackedPlayer.getName() + " guessed " + (guessWrong ? "wrong" : "right"));
+        if (cardFromHand.getCardType().contains(CardType.LAND)) {
+        }
+ else {
+          if (controller.chooseUse(outcome,"Cast " + cardFromHand.getName() + " without paying its mana cost?",game)) {
+            controller.cast(cardFromHand.getSpellAbility(),game,true);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
