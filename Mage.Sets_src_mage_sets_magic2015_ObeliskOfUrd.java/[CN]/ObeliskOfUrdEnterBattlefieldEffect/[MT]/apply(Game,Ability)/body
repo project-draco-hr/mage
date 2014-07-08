@@ -1,0 +1,18 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (player != null && permanent != null) {
+    Choice typeChoice=new ChoiceImpl(true);
+    typeChoice.setMessage("Choose a creature type:");
+    typeChoice.setChoices(CardRepository.instance.getCreatureTypes());
+    while (!player.choose(Outcome.BoostCreature,typeChoice,game)) {
+      if (!player.isInGame()) {
+        return false;
+      }
+    }
+    game.informPlayers(permanent.getName() + ": " + player.getName()+ " has chosen "+ typeChoice.getChoice());
+    game.getState().setValue(permanent.getId() + "_type",typeChoice.getChoice());
+    permanent.addInfo("chosen type","<i>Chosen type: " + typeChoice.getChoice() + "</i>");
+  }
+  return false;
+}
