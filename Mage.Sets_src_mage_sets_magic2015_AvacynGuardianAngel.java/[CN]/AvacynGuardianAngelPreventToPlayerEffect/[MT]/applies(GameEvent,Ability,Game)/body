@@ -1,0 +1,12 @@
+{
+  if (super.applies(event,source,game)) {
+    if (event.getType().equals(GameEvent.EventType.DAMAGE_PLAYER) && event.getTargetId().equals(getTargetPointer().getFirst(game,source))) {
+      ChoiceColor choice=(ChoiceColor)source.getChoices().get(0);
+      MageObject sourceObject=game.getObject(event.getSourceId());
+      if (sourceObject != null && choice != null && sourceObject.getColor().shares(choice.getColor())) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
