@@ -1,0 +1,14 @@
+{
+  super(ownerId,133,"Burning Anger",Rarity.RARE,new CardType[]{CardType.ENCHANTMENT},"{4}{R}");
+  this.expansionSetCode="M15";
+  this.subtype.add("Aura");
+  this.color.setRed(true);
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  Ability gainedAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(new SourcePermanentPowerCount()),new TapSourceCost());
+  ability.addTarget(new TargetCreatureOrPlayer());
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(gainedAbility,AttachmentType.AURA,Duration.WhileOnBattlefield,"Enchanted creature has \"{T}: This creature deals damage equal to its power to target creature or player.\"")));
+}
