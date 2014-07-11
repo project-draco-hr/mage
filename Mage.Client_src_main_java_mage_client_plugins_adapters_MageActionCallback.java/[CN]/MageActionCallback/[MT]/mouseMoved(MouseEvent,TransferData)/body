@@ -1,29 +1,3 @@
 {
-  if (!Plugins.getInstance().isCardPluginLoaded()) {
-    return;
-  }
-  if (bigCard == null) {
-    return;
-  }
-  MageCard mageCard=(MageCard)transferData.component;
-  if (!popupTextWindowOpen || mageCard.getOriginal().getId() != bigCard.getCardId()) {
-    if (bigCard.getWidth() > 0) {
-synchronized (MageActionCallback.class) {
-        if (!popupTextWindowOpen || mageCard.getOriginal().getId() != bigCard.getCardId()) {
-          if (!popupTextWindowOpen) {
-            bigCard.resetCardId();
-          }
-          popupTextWindowOpen=true;
-          Image image=mageCard.getImage();
-          displayCardInfo(mageCard,image,bigCard);
-        }
-      }
-    }
- else {
-      popupTextWindowOpen=true;
-    }
-    if (!enlargedWindowState.equals(EnlargedWindowState.CLOSED)) {
-      displayEnlargedCard(mageCard.getOriginal(),transferData);
-    }
-  }
+  handlePopup(transferData);
 }

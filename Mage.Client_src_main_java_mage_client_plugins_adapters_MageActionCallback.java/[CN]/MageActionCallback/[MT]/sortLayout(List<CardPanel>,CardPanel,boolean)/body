@@ -1,0 +1,27 @@
+{
+  source.getLocation().x-=COMPARE_GAP_X;
+  Collections.sort(cards,new Comparator<CardPanel>(){
+    @Override public int compare(    CardPanel cp1,    CardPanel cp2){
+      return Integer.valueOf(cp1.getLocation().x).compareTo(cp2.getLocation().x);
+    }
+  }
+);
+  int dx=0;
+  boolean createdGapForSource=false;
+  for (  Component component : cards) {
+    if (!includeSource) {
+      if (!component.equals(source)) {
+        component.setLocation(dx,component.getLocation().y);
+        dx+=((CardPanel)component).getCardWidth() + GAP_X;
+        if (!createdGapForSource && (dx + COMPARE_GAP_X) > source.getLocation().x) {
+          createdGapForSource=true;
+          dx+=((CardPanel)component).getCardWidth() + GAP_X;
+        }
+      }
+    }
+ else {
+      component.setLocation(dx,component.getLocation().y);
+      dx+=((CardPanel)component).getCardWidth() + GAP_X;
+    }
+  }
+}
