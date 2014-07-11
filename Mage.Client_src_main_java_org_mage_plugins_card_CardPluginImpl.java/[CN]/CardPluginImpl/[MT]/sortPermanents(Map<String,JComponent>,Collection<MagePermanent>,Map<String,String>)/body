@@ -39,6 +39,7 @@
   }
   Row allCreatures=new Row(permanents,RowType.creature);
   Row allOthers=new Row(permanents,RowType.other);
+  Row allAttached=new Row(permanents,RowType.attached);
   boolean othersOnTheRight=true;
   if (options != null && options.containsKey("nonLandPermanentsInOnePile")) {
     if (options.get("nonLandPermanentsInOnePile").equals("true")) {
@@ -132,6 +133,11 @@
       x+=stack.getWidth();
     }
     y=rowBottom;
+  }
+  for (  Stack stack : allAttached) {
+    for (    MagePermanent panel : stack) {
+      panel.setCardBounds(0,0,cardWidth,cardHeight);
+    }
   }
   return y;
 }
