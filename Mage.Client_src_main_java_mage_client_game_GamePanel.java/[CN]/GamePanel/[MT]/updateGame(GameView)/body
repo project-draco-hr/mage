@@ -5,6 +5,13 @@
  else {
     handCards.clear();
     handCards.put(YOUR_HAND,CardsViewUtil.convertSimple(game.getHand(),loadedCards));
+    if (game.getCanPlayInHand() != null) {
+      for (      CardView card : handCards.get(YOUR_HAND).values()) {
+        if (game.getCanPlayInHand().contains(card.getId())) {
+          card.setPlayable(true);
+        }
+      }
+    }
     if (game.getOpponentHands() != null) {
       for (      Map.Entry<String,SimpleCardsView> hand : game.getOpponentHands().entrySet()) {
         handCards.put(hand.getKey(),CardsViewUtil.convertSimple(hand.getValue(),loadedCards));
