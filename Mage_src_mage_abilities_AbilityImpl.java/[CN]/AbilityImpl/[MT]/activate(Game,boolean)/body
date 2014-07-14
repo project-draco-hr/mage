@@ -9,9 +9,9 @@
   if (this.abilityType.equals(AbilityType.SPELL)) {
     game.getContinuousEffects().applySpliceEffects(this,game);
   }
-  Card card=game.getCard(sourceId);
-  if (card != null) {
-    card.adjustChoices(this,game);
+  MageObject sourceObject=game.getObject(sourceId);
+  if (sourceObject != null) {
+    sourceObject.adjustChoices(this,game);
   }
   for (  UUID modeId : this.getModes().getSelectedModes()) {
     this.getModes().setMode(this.getModes().get(modeId));
@@ -32,9 +32,9 @@
       this.getManaCostsToPay().clear();
     }
   }
-  if (card != null && !(this instanceof FlashbackAbility)) {
+  if (sourceObject != null && !(this instanceof FlashbackAbility)) {
     boolean alternativeCostisUsed=false;
-    for (    Ability ability : card.getAbilities()) {
+    for (    Ability ability : sourceObject.getAbilities()) {
       if (!noMana && ability instanceof AlternativeSourceCosts) {
         AlternativeSourceCosts alternativeSpellCosts=(AlternativeSourceCosts)ability;
         if (alternativeSpellCosts.isAvailable(this,game)) {
@@ -64,12 +64,12 @@
   String announceString=handleOtherXCosts(game,controller);
   for (  UUID modeId : this.getModes().getSelectedModes()) {
     this.getModes().setMode(this.getModes().get(modeId));
-    if (card != null) {
-      card.adjustTargets(this,game);
+    if (sourceObject != null) {
+      sourceObject.adjustTargets(this,game);
     }
     if (getTargets().size() > 0 && getTargets().chooseTargets(getEffects().get(0).getOutcome(),this.controllerId,this,game) == false) {
       if (variableManaCost != null || announceString != null) {
-        game.informPlayer(controller,new StringBuilder(card != null ? card.getName() : "").append(": no valid targets with this value of X").toString());
+        game.informPlayer(controller,new StringBuilder(sourceObject != null ? sourceObject.getLogName() : "").append(": no valid targets with this value of X").toString());
       }
  else {
         logger.debug("activate failed - target");
@@ -85,9 +85,9 @@
       }
     }
   }
-  if (card != null) {
-    card.adjustCosts(this,game);
-    for (    Ability ability : card.getAbilities()) {
+  if (sourceObject != null) {
+    sourceObject.adjustCosts(this,game);
+    for (    Ability ability : sourceObject.getAbilities()) {
       if (ability instanceof AdjustingSourceCosts) {
         ((AdjustingSourceCosts)ability).adjustCosts(this,game);
       }

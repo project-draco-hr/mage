@@ -1,20 +1,23 @@
 {
-  UUID winner=null;
+  logger.debug(new StringBuilder("GameImpl.findWinnersAndLosers start gameId ").append(this.getId()));
+  UUID winnerIdFound=null;
   for (  Player player : state.getPlayers().values()) {
     if (player.hasWon()) {
-      winner=player.getId();
+      logger.debug(new StringBuilder("GameImpl.findWinnersAndLosers playerHasWon ").append(player.getId()));
+      winnerIdFound=player.getId();
       break;
     }
     if (!player.hasLost() && !player.hasLeft()) {
+      logger.debug(new StringBuilder("GameImpl.findWinnersAndLosers player ").append(player.getId()));
       player.won(this);
-      winner=player.getId();
+      winnerIdFound=player.getId();
       break;
     }
   }
   for (  Player player : state.getPlayers().values()) {
-    if (winner != null && !player.getId().equals(winner) && !player.hasLost()) {
+    if (winnerIdFound != null && !player.getId().equals(winnerIdFound) && !player.hasLost()) {
       player.lost(this);
     }
   }
-  return winner;
+  return winnerIdFound;
 }
