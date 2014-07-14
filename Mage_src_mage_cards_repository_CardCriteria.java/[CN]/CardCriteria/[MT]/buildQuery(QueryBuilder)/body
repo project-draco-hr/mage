@@ -29,7 +29,7 @@
     where.or(setCodes.size());
     clausesCount++;
   }
-  if (types.size() != 7) {
+  if (types.size() != 9) {
     for (    CardType type : types) {
       where.like("types",new SelectArg('%' + type.name() + '%'));
     }
@@ -85,6 +85,10 @@
       where.or(colorClauses);
       clausesCount++;
     }
+  }
+  if (maxCardNumber != Integer.MAX_VALUE) {
+    where.le("cardNumber",maxCardNumber);
+    clausesCount++;
   }
   if (clausesCount > 0) {
     where.and(clausesCount);
