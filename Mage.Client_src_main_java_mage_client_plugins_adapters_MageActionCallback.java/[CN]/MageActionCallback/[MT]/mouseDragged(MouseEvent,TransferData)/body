@@ -3,7 +3,6 @@
   if (card.getZone() == null || !card.getZone().equalsIgnoreCase("hand")) {
     return;
   }
-  currentCard=null;
   isDragging=true;
   Point p=card.getCardLocation();
   Point mouse=new Point(e.getX(),e.getY());
@@ -13,4 +12,7 @@
   card.setCardBounds(newX,p.y,card.getCardWidth(),card.getCardHeight());
   card.getCardArea().setComponentZOrder(card,0);
   sort(card,card.getCardArea(),false);
+  if (!this.startedDragging) {
+    this.startedDragging=true;
+  }
 }
