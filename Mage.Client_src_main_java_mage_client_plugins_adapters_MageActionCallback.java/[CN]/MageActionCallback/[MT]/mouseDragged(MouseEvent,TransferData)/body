@@ -1,0 +1,16 @@
+{
+  CardPanel card=((CardPanel)transferData.component);
+  if (card.getZone() == null || !card.getZone().equalsIgnoreCase("hand")) {
+    return;
+  }
+  currentCard=null;
+  isDragging=true;
+  Point p=card.getCardLocation();
+  Point mouse=new Point(e.getX(),e.getY());
+  SwingUtilities.convertPointToScreen(mouse,transferData.component);
+  int xOffset=card.getXOffset(card.getCardWidth());
+  int newX=Math.max(initialCardPos.x + (int)(mouse.getX() - initialMousePos.x) - xOffset,0);
+  card.setCardBounds(newX,p.y,card.getCardWidth(),card.getCardHeight());
+  card.getCardArea().setComponentZOrder(card,0);
+  sort(card,card.getCardArea(),false);
+}

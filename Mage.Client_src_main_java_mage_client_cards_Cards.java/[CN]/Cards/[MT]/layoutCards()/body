@@ -1,0 +1,19 @@
+{
+  java.util.List<CardPanel> cards=new ArrayList();
+  for (  Component component : cardArea.getComponents()) {
+    if (component instanceof CardPanel) {
+      cards.add((CardPanel)component);
+    }
+  }
+  Collections.sort(cards,new Comparator<CardPanel>(){
+    @Override public int compare(    CardPanel cp1,    CardPanel cp2){
+      return Integer.valueOf(cp1.getLocation().x).compareTo(cp2.getLocation().x);
+    }
+  }
+);
+  int dx=0;
+  for (  Component component : cards) {
+    component.setLocation(dx,component.getLocation().y);
+    dx+=((CardPanel)component).getCardWidth() + GAP_X;
+  }
+}
