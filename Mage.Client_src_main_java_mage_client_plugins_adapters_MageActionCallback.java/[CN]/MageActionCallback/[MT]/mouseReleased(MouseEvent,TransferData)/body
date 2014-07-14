@@ -7,19 +7,17 @@
     int xOffset=card.getXOffset(card.getCardWidth());
     maxXOffset=Math.abs((int)(mouse.getX() - initialMousePos.x) - xOffset);
   }
-  if (maxXOffset > MIN_X_OFFSET_REQUIRED) {
-    CardPanel card=((CardPanel)transferData.component);
-    for (    Component component : card.getCardArea().getComponents()) {
-      if (component instanceof CardPanel) {
-        if (cardPanels.contains(component)) {
-          component.setLocation(component.getLocation().x,component.getLocation().y - GO_DOWN_ON_DRAG_Y_OFFSET);
-        }
+  CardPanel card=((CardPanel)transferData.component);
+  for (  Component component : card.getCardArea().getComponents()) {
+    if (component instanceof CardPanel) {
+      if (cardPanels.contains(component)) {
+        component.setLocation(component.getLocation().x,component.getLocation().y - GO_DOWN_ON_DRAG_Y_OFFSET);
       }
     }
-    sort(card,card.getCardArea(),true);
-    cardPanels.clear();
   }
- else {
+  sort(card,card.getCardArea(),true);
+  cardPanels.clear();
+  if (maxXOffset < MIN_X_OFFSET_REQUIRED) {
     transferData.component.requestFocusInWindow();
     defaultCallback.mouseClicked(e,transferData.gameId,session,transferData.card);
     hidePopup();
