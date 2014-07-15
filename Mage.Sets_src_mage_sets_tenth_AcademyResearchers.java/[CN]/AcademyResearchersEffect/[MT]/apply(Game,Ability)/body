@@ -1,0 +1,16 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (player != null && permanent != null) {
+    filter.add(new AuraCardCanAttachToPermanentId(permanent.getId()));
+    TargetCardInHand target=new TargetCardInHand(0,1,filter);
+    if (player.choose(Outcome.PutCardInPlay,target,source.getSourceId(),game)) {
+      Card auraInHand=game.getCard(target.getFirstTarget());
+      if (auraInHand != null) {
+        player.putOntoBattlefieldWithInfo(auraInHand,game,Zone.HAND,source.getSourceId());
+        permanent.addAttachment(auraInHand.getId(),game);
+      }
+    }
+  }
+  return false;
+}
