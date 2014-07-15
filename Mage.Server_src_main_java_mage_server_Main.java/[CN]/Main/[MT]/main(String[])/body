@@ -1,8 +1,26 @@
 {
   logger.info("Starting MAGE server version " + version);
   logger.info("Logging level: " + logger.getEffectiveLevel());
+  String adminPassword="";
+  for (  String arg : args) {
+    if (arg.startsWith(testModeArg)) {
+      testMode=Boolean.valueOf(arg.replace(testModeArg,""));
+    }
+ else     if (arg.startsWith(adminPasswordArg)) {
+      adminPassword=arg.replace(adminPasswordArg,"");
+      adminPassword=SystemUtil.sanitize(adminPassword);
+    }
+ else     if (arg.startsWith(fastDBModeArg)) {
+      fastDbMode=Boolean.valueOf(arg.replace(fastDBModeArg,""));
+    }
+  }
   logger.info("Loading cards...");
-  CardScanner.scan();
+  if (fastDbMode) {
+    CardScanner.scanned=true;
+  }
+ else {
+    CardScanner.scan();
+  }
   logger.info("Done.");
   deleteSavedGames();
   ConfigSettings config=ConfigSettings.getInstance();
@@ -20,16 +38,6 @@
   }
   for (  Plugin plugin : config.getDeckTypes()) {
     DeckValidatorFactory.getInstance().addDeckType(plugin.getName(),loadPlugin(plugin));
-  }
-  String adminPassword="";
-  for (  String arg : args) {
-    if (arg.startsWith(testModeArg)) {
-      testMode=Boolean.valueOf(arg.replace(testModeArg,""));
-    }
- else     if (arg.startsWith(adminPasswordArg)) {
-      adminPassword=arg.replace(adminPasswordArg,"");
-      adminPassword=SystemUtil.sanitize(adminPassword);
-    }
   }
   logger.info("Config - max seconds idle: " + config.getMaxSecondsIdle());
   logger.info("Config - max game threads: " + config.getMaxGameThreads());
