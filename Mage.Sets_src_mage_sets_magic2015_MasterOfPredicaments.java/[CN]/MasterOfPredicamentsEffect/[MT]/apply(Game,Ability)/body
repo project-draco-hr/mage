@@ -20,14 +20,16 @@
         return false;
       }
       boolean guessWrong;
-      if (attackedPlayer.chooseUse(Outcome.Detriment,"Is the choosen card's converted mana cost greater than 4?",game)) {
+      if (attackedPlayer.chooseUse(Outcome.Detriment,"Is the chosen card's converted mana cost greater than 4?",game)) {
+        game.informPlayers(attackedPlayer.getName() + " guessed that the chosen card's converted mana cost is greater than 4");
         guessWrong=cardFromHand.getManaCost().convertedManaCost() <= 4;
       }
  else {
+        game.informPlayers(attackedPlayer.getName() + " guessed that the chosen card's converted mana cost is not greater than 4");
         guessWrong=cardFromHand.getManaCost().convertedManaCost() > 4;
       }
+      game.informPlayers(attackedPlayer.getName() + " guessed " + (guessWrong ? "wrong" : "right"));
       if (guessWrong) {
-        game.informPlayers(attackedPlayer.getName() + " guessed " + (guessWrong ? "wrong" : "right"));
         if (cardFromHand.getCardType().contains(CardType.LAND)) {
         }
  else {
