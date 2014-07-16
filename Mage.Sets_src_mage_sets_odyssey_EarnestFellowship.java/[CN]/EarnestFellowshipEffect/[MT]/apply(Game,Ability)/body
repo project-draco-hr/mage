@@ -1,24 +1,13 @@
 {
   for (  Permanent permanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
     if (permanent.getColor().hasColor()) {
-      ObjectColor color=permanent.getColor();
-      FilterCard filterColor=new FilterCard("its own Colors");
-      if (color.contains(ObjectColor.BLACK)) {
-        filterColor.add(new ColorPredicate(ObjectColor.BLACK));
+      List<ColorPredicate> colorPredicates=new ArrayList<>();
+      for (      ObjectColor color : permanent.getColor().getColors()) {
+        colorPredicates.add(new ColorPredicate(color));
       }
-      if (color.contains(ObjectColor.BLUE)) {
-        filterColor.add(new ColorPredicate(ObjectColor.BLUE));
-      }
-      if (color.contains(ObjectColor.WHITE)) {
-        filterColor.add(new ColorPredicate(ObjectColor.WHITE));
-      }
-      if (color.contains(ObjectColor.RED)) {
-        filterColor.add(new ColorPredicate(ObjectColor.RED));
-      }
-      if (color.contains(ObjectColor.GREEN)) {
-        filterColor.add(new ColorPredicate(ObjectColor.GREEN));
-      }
-      Ability ability=new ProtectionAbility(filterColor);
+      FilterCard filterColors=new FilterCard("its colors");
+      filterColors.add(Predicates.or(colorPredicates));
+      Ability ability=new ProtectionAbility(filterColors);
       permanent.addAbility(ability,source.getSourceId(),game);
     }
   }
