@@ -1,0 +1,12 @@
+{
+  PreventionEffectData preventionResult=preventDamageAction(event,source,game);
+  if (preventionResult.getPreventedDamage() > 0) {
+    Permanent redirectTo=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (redirectTo != null) {
+      game.informPlayers("Dealing " + preventionResult.getPreventedDamage() + " to "+ redirectTo.getName()+ " instead.");
+      DamageEvent damageEvent=(DamageEvent)event;
+      redirectTo.damage(preventionResult.getPreventedDamage(),event.getSourceId(),game,damageEvent.isPreventable(),damageEvent.isCombatDamage(),event.getAppliedEffects());
+    }
+  }
+  return false;
+}
