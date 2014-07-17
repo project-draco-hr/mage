@@ -44,7 +44,14 @@
   }
  catch (  Exception ex) {
     logger.fatal("Error starting game",ex);
-    TableManager.getInstance().removeTable(table.getId());
-    GameManager.getInstance().removeGame(match.getGame().getId());
+    if (table != null) {
+      TableManager.getInstance().removeTable(table.getId());
+    }
+    if (match != null) {
+      Game game=match.getGame();
+      if (game != null) {
+        GameManager.getInstance().removeGame(game.getId());
+      }
+    }
   }
 }
