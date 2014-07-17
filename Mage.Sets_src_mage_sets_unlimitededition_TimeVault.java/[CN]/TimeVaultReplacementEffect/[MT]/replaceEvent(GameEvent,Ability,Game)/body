@@ -1,0 +1,13 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (player != null && permanent != null) {
+    if (player.chooseUse(Outcome.Untap,"Skip your turn to untap " + permanent.getName() + "?",game)) {
+      permanent.untap(game);
+      game.endTurn(source.getControllerId());
+      ;
+      return true;
+    }
+  }
+  return false;
+}
