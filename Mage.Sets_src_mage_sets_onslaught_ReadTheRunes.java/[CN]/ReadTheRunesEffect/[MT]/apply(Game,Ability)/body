@@ -1,0 +1,20 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    int drawnCards=player.drawCards(source.getManaCostsToPay().getX(),game);
+    Target target=new TargetControlledPermanent(0,drawnCards,new FilterPermanent(),true);
+    target.choose(Outcome.Sacrifice,player.getId(),source.getSourceId(),game);
+    int sacrificedPermanents=0;
+    for (    UUID permanentId : target.getTargets()) {
+      Permanent permanent=game.getPermanent(permanentId);
+      if (permanent != null) {
+        if (permanent.sacrifice(source.getSourceId(),game)) {
+          sacrificedPermanents++;
+        }
+      }
+    }
+    player.discard(drawnCards - sacrificedPermanents,source,game);
+    return true;
+  }
+  return false;
+}
