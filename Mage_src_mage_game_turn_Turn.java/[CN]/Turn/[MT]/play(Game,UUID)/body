@@ -14,12 +14,15 @@
     if (game.isPaused() || game.gameOver(null)) {
       return;
     }
-    currentPhase=phase;
-    game.fireEvent(new GameEvent(GameEvent.EventType.PHASE_CHANGED,activePlayerId,null,activePlayerId));
-    if (!game.getState().getTurnMods().skipPhase(activePlayerId,currentPhase.getType())) {
-      if (phase.play(game,activePlayerId)) {
-        game.emptyManaPools();
-        while (playExtraPhases(game,phase.getType())) {
+    if (!isEndTurnRequested() || phase.getType().equals(TurnPhase.END)) {
+      currentPhase=phase;
+      game.fireEvent(new GameEvent(GameEvent.EventType.PHASE_CHANGED,activePlayerId,null,activePlayerId));
+      if (!game.getState().getTurnMods().skipPhase(activePlayerId,currentPhase.getType())) {
+        if (phase.play(game,activePlayerId)) {
+          game.emptyManaPools();
+          game.saveState(false);
+          while (playExtraPhases(game,phase.getType())) {
+          }
         }
       }
     }

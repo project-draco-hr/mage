@@ -7,9 +7,11 @@
   finally {
     if (top != null) {
       state.getStack().remove(top);
-      while (state.hasSimultaneousEvents()) {
-        state.handleSimultaneousEvent(this);
-        checkTriggered();
+      if (!getTurn().isEndTurnRequested()) {
+        while (state.hasSimultaneousEvents()) {
+          state.handleSimultaneousEvent(this);
+          checkTriggered();
+        }
       }
     }
   }

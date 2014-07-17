@@ -1,15 +1,23 @@
 {
-  game.getStack().clear();
-  Player activePlayer=game.getPlayer(activePlayerId);
-  game.getState().setPriorityPlayerId(activePlayer.getId());
-  if (!activePlayer.hasLeft() && !activePlayer.hasLost()) {
-    activePlayer.discardToMax(game);
-    activePlayer.setGameUnderYourControl(true);
+  setEndTurnRequested(true);
+  while (!game.getStack().isEmpty()) {
+    StackObject stackObject=game.getStack().removeLast();
+    if (stackObject instanceof Spell) {
+      ((Spell)stackObject).moveToExile(null,"",null,game);
+    }
   }
-  game.getBattlefield().endOfTurn(activePlayerId,game);
-  game.getState().removeEotEffects(game);
-  Phase phase=new EndPhase();
-  phase.setStep(new CleanupStep());
-  currentPhase=phase;
-  game.fireEvent(new GameEvent(GameEvent.EventType.PHASE_CHANGED,activePlayerId,null,activePlayerId));
+  for (  UUID attackerId : game.getCombat().getAttackers()) {
+    Permanent permanent=game.getPermanent(attackerId);
+    if (permanent != null) {
+      permanent.removeFromCombat(game);
+    }
+    game.getCombat().removeAttacker(attackerId,game);
+  }
+  for (  UUID blockerId : game.getCombat().getBlockers()) {
+    Permanent permanent=game.getPermanent(blockerId);
+    if (permanent != null) {
+      permanent.removeFromCombat(game);
+    }
+  }
+  game.checkStateAndTriggered();
 }
