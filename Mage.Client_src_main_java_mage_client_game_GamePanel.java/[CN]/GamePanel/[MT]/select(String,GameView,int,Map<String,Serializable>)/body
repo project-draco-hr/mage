@@ -1,12 +1,12 @@
 {
-  updateGame(gameView);
+  updateGame(gameView,options);
   String messageToDisplay=message;
-  Map<String,Serializable> options=null;
+  Map<String,Serializable> panelOptions=null;
   for (  PlayerView playerView : gameView.getPlayers()) {
     if (playerView.getPlayerId().equals(playerId)) {
       if (playerView.isActive()) {
-        options=new HashMap<>();
-        options.put("your_turn",true);
+        panelOptions=new HashMap<>();
+        panelOptions.put("your_turn",true);
         messageToDisplay=message + " <div style='font-size:11pt'>Your turn</div>";
       }
       if (playerView.getStatesSavedSize() > 0 && gameView.getStack().size() == 0) {
@@ -15,7 +15,7 @@
       break;
     }
   }
-  this.feedbackPanel.getFeedback(FeedbackMode.SELECT,messageToDisplay,gameView.getSpecial(),options,messageId);
+  this.feedbackPanel.getFeedback(FeedbackMode.SELECT,messageToDisplay,gameView.getSpecial(),panelOptions,messageId);
   if (PhaseManager.getInstance().isSkip(gameView,message)) {
     this.feedbackPanel.doClick();
     logger.debug(new StringBuilder("Phase skipped: ").append(message).append(" id: ").append(messageId));

@@ -1,0 +1,122 @@
+{
+  if (playerId == null || game.getHand() == null) {
+    this.handContainer.setVisible(false);
+  }
+ else {
+    handCards.clear();
+    handCards.put(YOUR_HAND,CardsViewUtil.convertSimple(game.getHand(),loadedCards));
+    if (game.getCanPlayInHand() != null) {
+      for (      CardView card : handCards.get(YOUR_HAND).values()) {
+        if (game.getCanPlayInHand().contains(card.getId())) {
+          card.setPlayable(true);
+        }
+      }
+    }
+    if (game.getOpponentHands() != null) {
+      for (      Map.Entry<String,SimpleCardsView> hand : game.getOpponentHands().entrySet()) {
+        handCards.put(hand.getKey(),CardsViewUtil.convertSimple(hand.getValue(),loadedCards));
+      }
+    }
+    if (!handCards.containsKey(chosenHandKey)) {
+      chosenHandKey=YOUR_HAND;
+    }
+    handContainer.loadCards(handCards.get(chosenHandKey),bigCard,gameId);
+    hideAll();
+    boolean previous=btnSwitchHands.isVisible();
+    boolean visible=handCards.size() > 1;
+    if (previous != visible) {
+      btnSwitchHands.setVisible(visible);
+      if (visible) {
+        JOptionPane.showMessageDialog(null,"You control other player's turn. \nUse \"Switch Hand\" on the bottom to switch between cards in different hands.");
+      }
+ else {
+        JOptionPane.showMessageDialog(null,"You lost control on other player's turn.");
+      }
+    }
+  }
+  if (game.getPhase() != null) {
+    this.txtPhase.setText(game.getPhase().toString());
+  }
+ else {
+    this.txtPhase.setText("");
+  }
+  if (game.getStep() != null) {
+    updatePhases(game.getStep());
+    this.txtStep.setText(game.getStep().toString());
+  }
+ else {
+    this.txtStep.setText("");
+  }
+  this.txtActivePlayer.setText(game.getActivePlayerName());
+  this.txtPriority.setText(game.getPriorityPlayerName());
+  this.txtTurn.setText(Integer.toString(game.getTurn()));
+  List<UUID> possibleAttackers=new ArrayList<>();
+  if (options != null && options.containsKey(Constants.Option.POSSIBLE_ATTACKERS)) {
+    if (options.get(Constants.Option.POSSIBLE_ATTACKERS) instanceof List) {
+      possibleAttackers.addAll((List)options.get(Constants.Option.POSSIBLE_ATTACKERS));
+    }
+  }
+  for (  PlayerView player : game.getPlayers()) {
+    if (players.containsKey(player.getPlayerId())) {
+      if (!possibleAttackers.isEmpty()) {
+        for (        UUID permanentId : possibleAttackers) {
+          if (player.getBattlefield().containsKey(permanentId)) {
+            player.getBattlefield().get(permanentId).setCanAttack(true);
+          }
+        }
+      }
+      players.get(player.getPlayerId()).update(player);
+    }
+ else {
+      logger.warn("Couldn't find player.");
+      logger.warn("   uuid:" + player.getPlayerId());
+      logger.warn("   players:");
+      for (      PlayAreaPanel p : players.values()) {
+        logger.warn("" + p);
+      }
+    }
+  }
+  if (!menuNameSet) {
+    StringBuilder sb=new StringBuilder();
+    if (playerId == null) {
+      sb.append("Watching: ");
+    }
+ else {
+      sb.append("Playing: ");
+    }
+    boolean first=true;
+    for (    PlayerView player : game.getPlayers()) {
+      if (first) {
+        first=false;
+      }
+ else {
+        sb.append(" - ");
+      }
+      sb.append(player.getName());
+    }
+    menuNameSet=true;
+    gamePane.setTitle(sb.toString());
+  }
+  GameManager.getInstance().setStackSize(game.getStack().size());
+  displayStack(game,bigCard,feedbackPanel,gameId);
+  for (  ExileView exile : game.getExile()) {
+    if (!exiles.containsKey(exile.getId())) {
+      ExileZoneDialog newExile=new ExileZoneDialog();
+      exiles.put(exile.getId(),newExile);
+      MageFrame.getDesktop().add(newExile,JLayeredPane.MODAL_LAYER);
+      newExile.show();
+    }
+    exiles.get(exile.getId()).loadCards(exile,bigCard,gameId);
+  }
+  showRevealed(game);
+  showLookedAt(game);
+  if (game.getCombat().size() > 0) {
+    CombatManager.getInstance().showCombat(game.getCombat(),gameId);
+  }
+ else {
+    CombatManager.getInstance().hideCombat(gameId);
+  }
+  feedbackPanel.disableUndo();
+  this.revalidate();
+  this.repaint();
+}

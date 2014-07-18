@@ -6,7 +6,15 @@
     if (passedAllTurns) {
       return;
     }
-    game.fireSelectEvent(playerId,"Select attackers");
+    Map<String,Serializable> options=new HashMap<>();
+    List<UUID> possibleAttackers=new ArrayList<>();
+    for (    Permanent possibleAttacker : game.getBattlefield().getActivePermanents(filter,attackingPlayerId,game)) {
+      if (possibleAttacker.canAttack(game)) {
+        possibleAttackers.add(possibleAttacker.getId());
+      }
+    }
+    options.put(Constants.Option.POSSIBLE_ATTACKERS,(Serializable)possibleAttackers);
+    game.fireSelectEvent(playerId,"Select attackers",options);
     waitForResponse(game);
     if (response.getBoolean() != null) {
       if (!game.getCombat().getCreaturesForcedToAttack().isEmpty()) {
