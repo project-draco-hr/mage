@@ -1,44 +1,23 @@
 {
   List<Ability> playable=new ArrayList<>();
-  ManaOptions available=getManaAvailable(game);
-  available.addMana(manaPool.getMana());
-  if (hidden) {
-    for (    Card card : hand.getUniqueCards(game)) {
-      for (      ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
-        if (canPlay(ability,available,game)) {
-          playable.add(ability);
-        }
-      }
-    }
-  }
-  for (  Card card : graveyard.getUniqueCards(game)) {
-    for (    ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.GRAVEYARD)) {
-      if (canPlay(ability,available,game)) {
-        playable.add(ability);
-      }
-    }
-    if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,this.getId(),game)) {
-      for (      ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
-        if (ability instanceof SpellAbility || ability instanceof PlayLandAbility) {
-          playable.add(ability);
-        }
-      }
-    }
-  }
-  for (  ExileZone exile : game.getExile().getExileZones()) {
-    for (    Card card : exile.getCards(game)) {
-      if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,this.getId(),game)) {
-        for (        Ability ability : card.getAbilities()) {
-          ability.setControllerId(this.getId());
-          if (ability.getZone().match(Zone.HAND) && (ability instanceof SpellAbility || ability instanceof PlayLandAbility)) {
+  if (!shouldSkipGettingPlayable(game)) {
+    ManaOptions available=getManaAvailable(game);
+    available.addMana(manaPool.getMana());
+    if (hidden) {
+      for (      Card card : hand.getUniqueCards(game)) {
+        for (        ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
+          if (canPlay(ability,available,game)) {
             playable.add(ability);
           }
         }
       }
     }
-  }
-  for (  Cards cards : game.getState().getRevealed().values()) {
-    for (    Card card : cards.getCards(game)) {
+    for (    Card card : graveyard.getUniqueCards(game)) {
+      for (      ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.GRAVEYARD)) {
+        if (canPlay(ability,available,game)) {
+          playable.add(ability);
+        }
+      }
       if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,this.getId(),game)) {
         for (        ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
           if (ability instanceof SpellAbility || ability instanceof PlayLandAbility) {
@@ -47,30 +26,53 @@
         }
       }
     }
-  }
-  Map<String,Ability> playableActivated=new HashMap<>();
-  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
-    for (    ActivatedAbility ability : permanent.getAbilities().getActivatedAbilities(Zone.BATTLEFIELD)) {
-      if (!playableActivated.containsKey(ability.toString())) {
-        if (canPlay(ability,available,game)) {
-          playableActivated.put(ability.toString(),ability);
+    for (    ExileZone exile : game.getExile().getExileZones()) {
+      for (      Card card : exile.getCards(game)) {
+        if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,this.getId(),game)) {
+          for (          Ability ability : card.getAbilities()) {
+            ability.setControllerId(this.getId());
+            if (ability.getZone().match(Zone.HAND) && (ability instanceof SpellAbility || ability instanceof PlayLandAbility)) {
+              playable.add(ability);
+            }
+          }
         }
       }
     }
-  }
-  if (!(this.getCommanderId() == null)) {
-    Zone zone=game.getState().getZone(this.getCommanderId());
-    if (zone != null && zone.equals(Zone.COMMAND)) {
-      MageObject object=game.getObject(this.getCommanderId());
-      if (object != null) {
-        for (        ActivatedAbility ability : ((Commander)object).getAbilities().getActivatedAbilities(Zone.COMMAND)) {
+    for (    Cards cards : game.getState().getRevealed().values()) {
+      for (      Card card : cards.getCards(game)) {
+        if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,this.getId(),game)) {
+          for (          ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
+            if (ability instanceof SpellAbility || ability instanceof PlayLandAbility) {
+              playable.add(ability);
+            }
+          }
+        }
+      }
+    }
+    Map<String,Ability> playableActivated=new HashMap<>();
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
+      for (      ActivatedAbility ability : permanent.getAbilities().getActivatedAbilities(Zone.BATTLEFIELD)) {
+        if (!playableActivated.containsKey(ability.toString())) {
           if (canPlay(ability,available,game)) {
             playableActivated.put(ability.toString(),ability);
           }
         }
       }
     }
+    if (!(this.getCommanderId() == null)) {
+      Zone zone=game.getState().getZone(this.getCommanderId());
+      if (zone != null && zone.equals(Zone.COMMAND)) {
+        MageObject object=game.getObject(this.getCommanderId());
+        if (object != null) {
+          for (          ActivatedAbility ability : ((Commander)object).getAbilities().getActivatedAbilities(Zone.COMMAND)) {
+            if (canPlay(ability,available,game)) {
+              playableActivated.put(ability.toString(),ability);
+            }
+          }
+        }
+      }
+    }
+    playable.addAll(playableActivated.values());
   }
-  playable.addAll(playableActivated.values());
   return playable;
 }
