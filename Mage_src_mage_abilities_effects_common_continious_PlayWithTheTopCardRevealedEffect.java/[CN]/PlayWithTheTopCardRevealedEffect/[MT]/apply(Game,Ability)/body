@@ -1,7 +1,17 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
-    player.setTopCardRevealed(true);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    if (allPlayers) {
+      for (      UUID playerId : controller.getInRange()) {
+        Player player=game.getPlayer(playerId);
+        if (player != null) {
+          player.setTopCardRevealed(true);
+        }
+      }
+    }
+ else {
+      controller.setTopCardRevealed(true);
+    }
     return true;
   }
   return false;
