@@ -1,0 +1,16 @@
+{
+  int maxCMC=Integer.MIN_VALUE;
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game)) {
+    if (permanent != null && permanent.getManaCost().convertedManaCost() > maxCMC) {
+      maxCMC=permanent.getManaCost().convertedManaCost();
+    }
+  }
+  FilterPermanent filterMaxCMC=new FilterCreaturePermanent();
+  filterMaxCMC.add(new ConvertedManaCostPredicate(ComparisonType.Equal,maxCMC));
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(filterMaxCMC,source.getControllerId(),game)) {
+    if (permanent != null) {
+      permanent.addAbility(new ProtectionAbility(filter),source.getSourceId(),game);
+    }
+  }
+  return true;
+}
