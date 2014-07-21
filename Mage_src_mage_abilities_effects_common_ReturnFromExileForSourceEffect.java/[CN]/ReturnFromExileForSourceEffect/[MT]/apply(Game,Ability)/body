@@ -1,13 +1,20 @@
 {
-  UUID exileId=source.getSourceId();
-  ExileZone exile=game.getExile().getExileZone(exileId);
-  if (exile != null) {
-    LinkedList<UUID> cards=new LinkedList<UUID>(exile);
-    for (    UUID cardId : cards) {
-      Card card=game.getCard(cardId);
-      card.moveToZone(zone,source.getId(),game,tapped);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    UUID exileId=source.getSourceId();
+    ExileZone exile=game.getExile().getExileZone(exileId);
+    if (exile != null) {
+      LinkedList<UUID> cards=new LinkedList<>(exile);
+      for (      UUID cardId : cards) {
+        Card card=game.getCard(cardId);
+        if (card == null) {
+          return false;
+        }
+        game.informPlayers(controller.getName() + " moves " + card.getLogName()+ " to "+ zone.toString().toLowerCase());
+        card.moveToZone(zone,source.getId(),game,tapped);
+      }
+      exile.clear();
     }
-    exile.clear();
     return true;
   }
   return false;
