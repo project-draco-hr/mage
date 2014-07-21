@@ -8,7 +8,7 @@
         if (sourceCard != null && sourceCard.getOwnerId().equals(source.getControllerId()) && !sourceCard.getCardType().contains(CardType.LAND)) {
           Player player=game.getPlayer(source.getControllerId());
           String message="Cast " + sourceCard.getName() + " without paying its mana costs?";
-          if (player != null && player.chooseUse(outcome,message,game)) {
+          if (player != null && (CardUtil.isCheckPlayableMode(abilityToModify) || player.chooseUse(outcome,message,game))) {
             return true;
           }
         }

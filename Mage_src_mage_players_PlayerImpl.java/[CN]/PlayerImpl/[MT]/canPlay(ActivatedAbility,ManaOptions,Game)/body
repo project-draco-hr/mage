@@ -1,6 +1,10 @@
 {
-  if (!(ability instanceof ManaAbility) && ability.canActivate(playerId,game)) {
-    Ability copy=ability.copy();
+  if (!(ability instanceof ManaAbility)) {
+    ActivatedAbility copy=ability.copy();
+    copy.setCheckPlayableMode();
+    if (!copy.canActivate(playerId,game)) {
+      return false;
+    }
     game.getContinuousEffects().costModification(copy,game);
     Card card=game.getCard(ability.getSourceId());
     if (card != null) {
