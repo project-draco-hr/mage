@@ -7,11 +7,11 @@
       ReplacementEffect entry=it1.next();
       if (consumed.containsKey(entry.getId())) {
         HashSet<UUID> consumedAbilitiesIds=consumed.get(entry.getId());
-        if (rEffects.get(entry) == null || consumedAbilitiesIds.size() == ((HashSet<Ability>)rEffects.get(entry)).size()) {
+        if (rEffects.get(entry) == null || consumedAbilitiesIds.size() == rEffects.get(entry).size()) {
           it1.remove();
         }
  else {
-          Iterator it=((HashSet<Ability>)rEffects.get(entry)).iterator();
+          Iterator it=rEffects.get(entry).iterator();
           while (it.hasNext()) {
             Ability ability=(Ability)it.next();
             if (consumedAbilitiesIds.contains(ability.getId())) {
@@ -27,7 +27,7 @@
     int index;
     boolean onlyOne=false;
     if (rEffects.size() == 1) {
-      ReplacementEffect effect=(ReplacementEffect)rEffects.keySet().iterator().next();
+      ReplacementEffect effect=rEffects.keySet().iterator().next();
       HashSet<Ability> abilities=replacementEffects.getAbility(effect.getId());
       if (abilities == null || abilities.size() == 1) {
         onlyOne=true;
@@ -43,10 +43,10 @@
     int checked=0;
     ReplacementEffect rEffect=null;
     Ability rAbility=null;
-    for (    Map.Entry entry : rEffects.entrySet()) {
+    for (    Map.Entry<ReplacementEffect,HashSet<Ability>> entry : rEffects.entrySet()) {
       if (entry.getValue() == null) {
         if (checked == index) {
-          rEffect=(ReplacementEffect)entry.getKey();
+          rEffect=entry.getKey();
           break;
         }
  else {
@@ -54,13 +54,13 @@
         }
       }
  else {
-        HashSet<Ability> abilities=(HashSet<Ability>)entry.getValue();
+        HashSet<Ability> abilities=entry.getValue();
         int size=abilities.size();
         if (index > (checked + size - 1)) {
           checked+=size;
         }
  else {
-          rEffect=(ReplacementEffect)entry.getKey();
+          rEffect=entry.getKey();
           Iterator it=abilities.iterator();
           while (it.hasNext() && rAbility == null) {
             if (checked == index) {
