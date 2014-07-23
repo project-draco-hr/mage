@@ -25,7 +25,7 @@
       cardArea.remove(comp);
     }
   }
-  java.util.List<CardView> orderedList=new ArrayList<CardView>();
+  java.util.List<CardView> orderedList=new ArrayList<>();
   for (  CardView card : cardsView.values()) {
     orderedList.add(0,card);
   }
@@ -41,7 +41,11 @@
       tmp.setIsAbility(true);
       tmp.overrideTargets(card.getTargets());
       tmp.overrideId(card.getId());
+      tmp.setAbilityType(((StackAbilityView)card).getAbilityType());
       card=tmp;
+    }
+ else {
+      card.setAbilityType(null);
     }
     if (!cards.containsKey(card.getId())) {
       addCard(card,bigCard,gameId);
