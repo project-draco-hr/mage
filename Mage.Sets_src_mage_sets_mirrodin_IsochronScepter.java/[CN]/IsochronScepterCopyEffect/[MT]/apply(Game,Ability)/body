@@ -1,23 +1,23 @@
 {
-  Permanent scepter=game.getPermanent(source.getSourceId());
-  if (scepter == null) {
-    scepter=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
-  }
-  if (scepter != null && scepter.getImprinted() != null && !scepter.getImprinted().isEmpty()) {
-    Card imprintedInstant=game.getCard(scepter.getImprinted().get(0));
-    if (imprintedInstant != null && game.getState().getZone(imprintedInstant.getId()).equals(Zone.EXILED)) {
-      Player controller=game.getPlayer(source.getControllerId());
-      if (controller != null && controller.chooseUse(outcome,new StringBuilder("Create a copy of ").append(imprintedInstant.getName()).append("?").toString(),game)) {
-        Card copiedCard=game.copyCard(imprintedInstant,source,source.getControllerId());
-        if (copiedCard != null) {
-          game.getExile().add(source.getSourceId(),"",copiedCard);
-          game.getState().setZone(copiedCard.getId(),Zone.EXILED);
-          if (controller.chooseUse(outcome,"Cast the copied card without paying mana cost?",game)) {
-            return controller.cast(copiedCard.getSpellAbility(),game,true);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Permanent scepter=game.getPermanentOrLKIBattlefield(source.getSourceId());
+    if (scepter != null && scepter.getImprinted() != null && !scepter.getImprinted().isEmpty()) {
+      Card imprintedInstant=game.getCard(scepter.getImprinted().get(0));
+      if (imprintedInstant != null && game.getState().getZone(imprintedInstant.getId()).equals(Zone.EXILED)) {
+        if (controller.chooseUse(outcome,new StringBuilder("Create a copy of ").append(imprintedInstant.getName()).append("?").toString(),game)) {
+          Card copiedCard=game.copyCard(imprintedInstant,source,source.getControllerId());
+          if (copiedCard != null) {
+            game.getExile().add(source.getSourceId(),"",copiedCard);
+            game.getState().setZone(copiedCard.getId(),Zone.EXILED);
+            if (controller.chooseUse(outcome,"Cast the copied card without paying mana cost?",game)) {
+              controller.cast(copiedCard.getSpellAbility(),game,true);
+            }
           }
         }
       }
     }
+    return true;
   }
   return false;
 }
