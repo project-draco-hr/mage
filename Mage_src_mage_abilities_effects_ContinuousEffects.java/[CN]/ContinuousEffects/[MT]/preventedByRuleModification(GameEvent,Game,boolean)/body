@@ -1,0 +1,23 @@
+{
+  for (  ContinuousRuleModifiyingEffect effect : continuousRuleModifyingEffects) {
+    for (    Ability ability : continuousRuleModifyingEffects.getAbility(effect.getId())) {
+      if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,null,false)) {
+        if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
+          if (effect.applies(event,ability,checkPlayableMode,game)) {
+            if (!checkPlayableMode) {
+              String message=effect.getInfoMessage(ability,game);
+              if (message != null && !message.isEmpty()) {
+                Player player=game.getPlayer(event.getPlayerId());
+                if (player != null) {
+                  game.informPlayer(player,message);
+                }
+              }
+            }
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
