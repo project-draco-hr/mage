@@ -1,6 +1,7 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null) {
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (controller != null && permanent != null) {
     Choice cardChoice=new ChoiceImpl();
     cardChoice.setChoices(CardRepository.instance.getNonLandAndNonCreatureNames());
     cardChoice.clearChoice();
@@ -10,8 +11,10 @@
       }
     }
     String cardName=cardChoice.getChoice();
-    game.informPlayers("Council of the Absolute, named card: [" + cardName + "]");
+    game.informPlayers(permanent.getLogName() + ", named card: [" + cardName+ "]");
     game.getState().setValue(source.getSourceId().toString(),cardName);
+    permanent.addInfo("named card",CardUtil.addToolTipMarkTags("Named card: [" + cardName + "]"));
+    return true;
   }
   return false;
 }
