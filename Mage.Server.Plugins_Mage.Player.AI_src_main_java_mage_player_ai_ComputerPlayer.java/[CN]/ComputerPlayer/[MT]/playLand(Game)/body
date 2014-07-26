@@ -1,7 +1,13 @@
 {
   log.debug("playLand");
-  Set<Card> lands=hand.getCards(new FilterLandCard(),game);
-  while (lands.size() > 0 && this.landsPlayed < this.landsPerTurn) {
+  Set<Card> lands=new LinkedHashSet<>();
+  for (  Card landCard : hand.getCards(new FilterLandCard(),game)) {
+    if (game.getContinuousEffects().preventedByRuleModification(GameEvent.getEvent(GameEvent.EventType.PLAY_LAND,landCard.getId(),landCard.getId(),playerId),game,true)) {
+      break;
+    }
+    lands.add(landCard);
+  }
+  while (lands.size() > 0 && this.canPlayLand()) {
     if (lands.size() == 1) {
       this.playLand(lands.iterator().next(),game);
     }
