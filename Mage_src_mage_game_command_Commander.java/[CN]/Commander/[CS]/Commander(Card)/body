@@ -3,9 +3,11 @@
   abilites.add(new CastCommanderAbility(card));
   for (  Ability ability : card.getAbilities()) {
     if (!(ability instanceof SpellAbility)) {
-      Ability newAbility=ability.copy();
-      newAbility.setRuleVisible(false);
-      abilites.add(newAbility);
+      if (ability.getZone().match(Zone.COMMAND)) {
+        Ability newAbility=ability.copy();
+        newAbility.setRuleVisible(false);
+        abilites.add(newAbility);
+      }
     }
   }
 }
