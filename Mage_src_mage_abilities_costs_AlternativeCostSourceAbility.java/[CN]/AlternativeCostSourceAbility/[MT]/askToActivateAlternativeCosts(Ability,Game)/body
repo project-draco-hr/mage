@@ -2,7 +2,7 @@
   if (ability instanceof SpellAbility) {
     Player player=game.getPlayer(ability.getControllerId());
     if (player != null) {
-      if (alternateCosts.canPay(ability.getSourceId(),ability.getControllerId(),game) && player.chooseUse(Outcome.Detriment,alternateCosts.isEmpty() ? "Cast without paying its mana cost?" : "Pay alternative costs?",game)) {
+      if (alternateCosts.canPay(ability.getSourceId(),ability.getControllerId(),game) && player.chooseUse(Outcome.Detriment,alternateCosts.isEmpty() ? "Cast without paying its mana cost?" : "Pay alternative costs? (" + alternateCosts.getText() + ")",game)) {
         ability.getManaCostsToPay().clear();
         ability.getCosts().clear();
         for (        Cost cost : alternateCosts) {
@@ -19,6 +19,12 @@
           }
         }
       }
+ else {
+        return false;
+      }
+    }
+ else {
+      return false;
     }
   }
   return isActivated(ability,game);
