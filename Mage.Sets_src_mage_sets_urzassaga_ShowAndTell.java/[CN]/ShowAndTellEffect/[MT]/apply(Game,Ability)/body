@@ -6,11 +6,13 @@
   for (  UUID playerId : controller.getInRange()) {
     Player player=game.getPlayer(playerId);
     if (player != null) {
-      TargetCardInHand target=new TargetCardInHand(filter);
-      if (player.choose(Outcome.PutCreatureInPlay,target,source.getSourceId(),game)) {
-        Card card=game.getCard(target.getFirstTarget());
-        if (card != null) {
-          player.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId());
+      if (player.chooseUse(outcome,"Put an artifact, creature, enchantment, or land card from hand onto the battlefield?",game)) {
+        TargetCardInHand target=new TargetCardInHand(filter);
+        if (player.choose(outcome,target,source.getSourceId(),game)) {
+          Card card=game.getCard(target.getFirstTarget());
+          if (card != null) {
+            player.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId());
+          }
         }
       }
     }
