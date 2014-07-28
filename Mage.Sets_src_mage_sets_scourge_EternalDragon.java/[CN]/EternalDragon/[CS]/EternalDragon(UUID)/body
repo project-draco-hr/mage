@@ -7,8 +7,7 @@
   this.power=new MageInt(5);
   this.toughness=new MageInt(5);
   this.addAbility(FlyingAbility.getInstance());
-  Ability ability=new SimpleActivatedAbility(Zone.GRAVEYARD,new ReturnToHandSourceEffect(),new ManaCostsImpl("{3}{W}{W}"));
-  ability.addCost(new OnlyDuringUpkeepCost());
+  Ability ability=new ConditionalActivatedAbility(Zone.GRAVEYARD,new ReturnToHandSourceEffect(),new ManaCostsImpl("{3}{W}{W}"),new IsStepCondition(PhaseStep.UPKEEP),null);
   this.addAbility(ability);
   this.addAbility(new PlainscyclingAbility(new ManaCostsImpl("{2}")));
 }

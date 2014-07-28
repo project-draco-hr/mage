@@ -4,7 +4,5 @@
   this.color.setRed(true);
   this.getSpellAbility().addEffect(new DamageTargetEffect(3));
   this.getSpellAbility().addTarget(new TargetCreatureOrPlayer());
-  Ability ability=new SimpleActivatedAbility(Zone.GRAVEYARD,new ReturnSourceFromGraveyardToHandEffect(),new ManaCostsImpl("{2}{R}{R}{R}"));
-  ability.addCost(new OnlyDuringUpkeepCost());
-  this.addAbility(ability);
+  this.addAbility(new ConditionalActivatedAbility(Zone.GRAVEYARD,new ReturnSourceFromGraveyardToHandEffect(),new ManaCostsImpl("{2}{R}{R}{R}"),new IsStepCondition(PhaseStep.END_COMBAT),null));
 }
