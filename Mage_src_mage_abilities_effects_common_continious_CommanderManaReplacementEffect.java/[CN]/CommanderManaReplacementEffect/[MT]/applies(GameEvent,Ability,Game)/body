@@ -1,5 +1,15 @@
 {
   if (event.getType() == GameEvent.EventType.ADD_MANA && event.getPlayerId().equals(playerId)) {
+    if (logger.isDebugEnabled()) {
+      if (!game.getGameType().toString().startsWith("Commander")) {
+        logger.debug("Non Commander game has active CommanderManaReplacementEffect");
+        Iterator it=game.getState().getCommand().iterator();
+        while (it.hasNext()) {
+          Object object=it.next();
+          logger.debug("Class: " + object.getClass() + " - "+ object.toString());
+        }
+      }
+    }
     return true;
   }
   return false;
