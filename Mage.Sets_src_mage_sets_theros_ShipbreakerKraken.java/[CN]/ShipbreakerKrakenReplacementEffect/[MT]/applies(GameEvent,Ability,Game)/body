@@ -1,19 +1,19 @@
 {
   Permanent sourcePermanent=game.getPermanent(source.getSourceId());
   if (sourcePermanent == null || !sourcePermanent.getControllerId().equals(source.getControllerId())) {
-    this.used=true;
+    discard();
     return false;
   }
   if (event.getType() == GameEvent.EventType.LOST_CONTROL) {
     if (event.getTargetId().equals(source.getSourceId())) {
-      this.used=true;
+      discard();
       return false;
     }
   }
   if (event.getType() == GameEvent.EventType.ZONE_CHANGE && event.getTargetId().equals(source.getSourceId())) {
     ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
     if (zEvent.getFromZone() == Zone.BATTLEFIELD) {
-      this.used=true;
+      discard();
       return false;
     }
   }

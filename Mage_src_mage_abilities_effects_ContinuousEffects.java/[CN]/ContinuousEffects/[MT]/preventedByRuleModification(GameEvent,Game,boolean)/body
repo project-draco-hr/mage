@@ -3,13 +3,18 @@
     for (    Ability ability : continuousRuleModifyingEffects.getAbility(effect.getId())) {
       if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,null,false)) {
         if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
-          if (effect.applies(event,ability,checkPlayableMode,game)) {
+          if (effect.applies(event,ability,game)) {
             if (!checkPlayableMode) {
-              String message=effect.getInfoMessage(ability,game);
+              String message=effect.getInfoMessage(ability,event,game);
               if (message != null && !message.isEmpty()) {
-                Player player=game.getPlayer(event.getPlayerId());
-                if (player != null) {
-                  game.informPlayer(player,message);
+                if (effect.sendMessageToUser()) {
+                  Player player=game.getPlayer(event.getPlayerId());
+                  if (player != null) {
+                    game.informPlayer(player,message);
+                  }
+                }
+                if (effect.sendMessageToGameLog()) {
+                  game.informPlayers(message);
                 }
               }
             }

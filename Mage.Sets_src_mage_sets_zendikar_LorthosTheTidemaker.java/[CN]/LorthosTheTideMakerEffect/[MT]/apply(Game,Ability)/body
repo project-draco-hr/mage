@@ -9,7 +9,9 @@
           Permanent permanent=game.getPermanent(target);
           if (permanent != null) {
             permanent.tap(game);
-            game.addEffect(new LorthosTheTideMakerEffect2(permanent.getId()),source);
+            ContinuousEffect effect=new SkipNextUntapTargetEffect();
+            effect.setTargetPointer(new FixedTarget(permanent.getId()));
+            game.addEffect(effect,source);
           }
         }
         return false;
