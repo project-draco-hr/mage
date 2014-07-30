@@ -1,0 +1,26 @@
+{
+  ManaSymbols manaSymbols=new ManaSymbols();
+  if (manaCost instanceof ManaCostsImpl) {
+    ManaCostsImpl manaCosts=(ManaCostsImpl)manaCost;
+    for (int i=0; i < manaCosts.size(); i++) {
+      ManaCost mc=(ManaCost)manaCosts.get(i);
+      if (mc instanceof ColoredManaCost) {
+        for (        Map.Entry<ColoredManaSymbol,ManaSymbol> entry : coloredManaMap.entrySet()) {
+          if (mc.containsColor(entry.getKey())) {
+            manaSymbols.add(entry.getValue());
+            break;
+          }
+        }
+      }
+ else       if (mc instanceof HybridManaCost) {
+        for (        Map.Entry<ManaSymbol,HybridManaCost> entry : hybridManaMap.entrySet()) {
+          if (compareHybridCosts((HybridManaCost)mc,entry.getValue())) {
+            manaSymbols.add(entry.getKey());
+            break;
+          }
+        }
+      }
+    }
+  }
+  return manaSymbols;
+}
