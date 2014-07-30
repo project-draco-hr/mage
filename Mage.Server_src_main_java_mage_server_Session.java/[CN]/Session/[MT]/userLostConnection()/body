@@ -1,5 +1,13 @@
 {
   User user=UserManager.getInstance().getUser(userId);
+  if (user == null) {
+    logger.error("Session.userLostConnection  user for session not found  sessionId: " + sessionId + "  userId: "+ userId);
+    return;
+  }
+  if (user.getSessionId().isEmpty()) {
+    logger.debug("Session.userLostConnection  user was already disconnected  sessionId: " + sessionId + "  userId: "+ userId);
+    return;
+  }
   if (logger.isInfoEnabled()) {
     StringBuilder sb=new StringBuilder("user ");
     if (user == null) {
