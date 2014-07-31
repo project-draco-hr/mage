@@ -1,7 +1,7 @@
 {
   if (super.canActivate(playerId,game)) {
-    Integer activations=(Integer)game.getState().getValue(CardUtil.getCardZoneString("activations",sourceId,game));
-    return activations == null || activations < maxActivationsPerTurn;
+    ActivationInfo activationInfo=(ActivationInfo)game.getState().getValue(CardUtil.getCardZoneString("activations",sourceId,game));
+    return activationInfo == null || activationInfo.turnNum != game.getTurnNum() || activationInfo.activationCounter < maxActivationsPerTurn;
   }
   return false;
 }
