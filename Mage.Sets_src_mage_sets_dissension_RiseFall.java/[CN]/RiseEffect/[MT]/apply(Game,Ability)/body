@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Card cardInGraveyard=game.getCard(getTargetPointer().getFirst(game,source));
+    if (cardInGraveyard != null) {
+      controller.moveCardToHandWithInfo(cardInGraveyard,source.getSourceId(),game,Zone.GRAVEYARD);
+    }
+    Permanent permanent=game.getPermanent(source.getTargets().get(1).getFirstTarget());
+    if (permanent != null) {
+      controller.moveCardToHandWithInfo(permanent,source.getSourceId(),game,Zone.BATTLEFIELD);
+    }
+    return true;
+  }
+  return false;
+}
