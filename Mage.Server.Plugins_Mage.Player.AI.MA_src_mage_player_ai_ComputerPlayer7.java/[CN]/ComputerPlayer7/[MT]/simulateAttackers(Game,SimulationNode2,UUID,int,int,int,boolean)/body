@@ -7,8 +7,9 @@
   Integer val=null;
   SimulationNode2 bestNode=null;
   SimulatedPlayer2 attacker=(SimulatedPlayer2)game.getPlayer(attackerId);
+  UUID defenderId=game.getOpponents(attackerId).iterator().next();
   if (logger.isDebugEnabled()) {
-    logger.debug(attacker.getName() + "'s possible attackers: " + attacker.getAvailableAttackers(game));
+    logger.debug(attacker.getName() + "'s possible attackers: " + attacker.getAvailableAttackers(defenderId,game));
   }
   for (  Combat engagement : attacker.addAttackers(game)) {
     if (logger.isDebugEnabled()) {
@@ -19,7 +20,6 @@
       break;
     }
     Game sim=game.copy();
-    UUID defenderId=game.getOpponents(attackerId).iterator().next();
     for (    CombatGroup group : engagement.getGroups()) {
       for (      UUID attackId : group.getAttackers()) {
         sim.getPlayer(attackerId).declareAttacker(attackId,defenderId,sim,false);

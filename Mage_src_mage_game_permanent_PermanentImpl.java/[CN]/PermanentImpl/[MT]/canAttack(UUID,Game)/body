@@ -1,0 +1,21 @@
+{
+  if (tapped) {
+    return false;
+  }
+  if (hasSummoningSickness()) {
+    return false;
+  }
+  for (  Map.Entry<RestrictionEffect,HashSet<Ability>> effectEntry : game.getContinuousEffects().getApplicableRestrictionEffects(this,game).entrySet()) {
+    if (!effectEntry.getKey().canAttack(game)) {
+      return false;
+    }
+    if (defenderId != null) {
+      for (      Ability ability : effectEntry.getValue()) {
+        if (!effectEntry.getKey().canAttack(defenderId,ability,game)) {
+          return false;
+        }
+      }
+    }
+  }
+  return !abilities.containsKey(DefenderAbility.getInstance().getId()) || game.getContinuousEffects().asThough(this.objectId,AsThoughEffectType.ATTACK,this.getControllerId(),game);
+}
