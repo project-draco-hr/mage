@@ -1,0 +1,13 @@
+{
+  for (  Map.Entry<RestrictionEffect,HashSet<Ability>> effectEntry : game.getContinuousEffects().getApplicableRestrictionEffects(this,game).entrySet()) {
+    if (!effectEntry.getKey().canAttack(game)) {
+      return false;
+    }
+    for (    Ability ability : effectEntry.getValue()) {
+      if (!effectEntry.getKey().canAttack(defenderId,ability,game)) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
