@@ -1,9 +1,11 @@
 {
-  for (  UUID target : this.targetPointer.getTargets(game,source)) {
-    Permanent creature=game.getPermanent(target);
+  for (  UUID targetId : this.targetPointer.getTargets(game,source)) {
+    Permanent creature=game.getPermanent(targetId);
     if (creature != null) {
       creature.tap(game);
-      game.addEffect(new PermafrostEffect2(creature.getId()),source);
+      SkipNextUntapTargetEffect effect=new SkipNextUntapTargetEffect();
+      effect.setTargetPointer(new FixedTarget(targetId));
+      game.addEffect(effect,source);
     }
   }
   return false;

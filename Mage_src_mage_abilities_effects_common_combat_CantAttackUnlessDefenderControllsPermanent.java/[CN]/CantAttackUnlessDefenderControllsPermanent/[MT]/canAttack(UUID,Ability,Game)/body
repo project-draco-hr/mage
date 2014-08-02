@@ -1,0 +1,17 @@
+{
+  UUID defendingPlayerId=null;
+  Player player=game.getPlayer(defenderId);
+  if (player == null) {
+    Permanent permanent=game.getPermanent(defenderId);
+    if (permanent != null) {
+      defendingPlayerId=permanent.getControllerId();
+    }
+  }
+ else {
+    defendingPlayerId=defenderId;
+  }
+  if (defendingPlayerId != null && game.getBattlefield().countAll(filter,defendingPlayerId,game) == 0) {
+    return true;
+  }
+  return true;
+}
