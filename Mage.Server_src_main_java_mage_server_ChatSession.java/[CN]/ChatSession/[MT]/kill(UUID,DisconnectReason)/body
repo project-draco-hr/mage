@@ -1,9 +1,9 @@
 {
   try {
     if (userId != null && clients.containsKey(userId)) {
+      String userName=clients.get(userId);
       clients.remove(userId);
       logger.debug("ChatSession.kill  chatSession: " + chatId + "  userId: "+ userId+ "  reason: "+ (reason == null ? "null" : reason.toString())+ "  clients.size "+ clients.size());
-      String userName=clients.get(userId);
       String message=null;
 switch (reason) {
 case Disconnected:
@@ -22,6 +22,6 @@ logger.debug(userName + " left chat with reason: " + message+ " "+ chatId);
 }
 }
  catch (Exception ex) {
-logger.fatal(ex);
+logger.fatal("ChatSession.kill exception: " + ex.toString());
 }
 }
