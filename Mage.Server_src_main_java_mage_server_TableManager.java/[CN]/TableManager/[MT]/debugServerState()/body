@@ -1,0 +1,18 @@
+{
+  logger.debug("--- Server state ----------------------------------------------");
+  Collection<User> users=UserManager.getInstance().getUsers();
+  logger.debug("--------User: " + users.size() + " [userId | since | name -----------------------");
+  for (  User user : users) {
+    logger.debug(user.getId() + " | " + formatter.format(user.getConnectionTime())+ " | "+ user.getName()+ " ("+ user.getUserState().toString()+ ")");
+  }
+  ArrayList<ChatSession> chatSessions=ChatManager.getInstance().getChatSessions();
+  logger.debug("------- ChatSessions: " + chatSessions.size() + " ----------------------------------");
+  for (  ChatSession chatSession : chatSessions) {
+    logger.debug(chatSession.getChatId() + " " + chatSession.getClients().values().toString());
+  }
+  logger.debug("------- Tables: " + tables.size() + " --------------------------------------------");
+  for (  Table table : tables.values()) {
+    logger.debug(table.getId() + " [" + table.getName()+ "] "+ formatter.format(table.getStartTime())+ " ("+ table.getState().toString()+ ")");
+  }
+  logger.debug("--- Server state END ------------------------------------------");
+}

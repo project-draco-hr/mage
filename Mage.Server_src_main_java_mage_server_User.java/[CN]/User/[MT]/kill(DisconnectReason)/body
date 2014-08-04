@@ -1,20 +1,20 @@
 {
-  logger.debug("user.kill before game session " + gameSessions.size());
+  logger.debug("game sessions: " + gameSessions.size());
   for (  GameSession gameSession : gameSessions.values()) {
     gameSession.kill();
   }
-  logger.debug("user.kill before draft session " + draftSessions.size());
+  logger.debug("draft sessions " + draftSessions.size());
   for (  DraftSession draftSession : draftSessions.values()) {
     draftSession.setKilled();
   }
-  logger.debug("user.kill before tournament session " + tournamentSessions.size());
+  logger.debug("tournament sessions " + tournamentSessions.size());
   for (  TournamentSession tournamentSession : tournamentSessions.values()) {
     tournamentSession.setKilled();
   }
-  logger.debug("user.kill before tables " + tables.size());
+  logger.debug("tables " + tables.size());
   for (  Entry<UUID,Table> entry : tables.entrySet()) {
     TableManager.getInstance().leaveTable(userId,entry.getValue().getId());
   }
-  logger.debug("user.kill before chat remove user");
+  logger.debug("chat remove user");
   ChatManager.getInstance().removeUser(userId,reason);
 }

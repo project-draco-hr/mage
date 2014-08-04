@@ -8,7 +8,7 @@
   }
   User user=UserManager.getInstance().getUser(userId);
   if (user == null) {
-    logger.fatal(new StringBuilder("couldn't get user ").append(name).append(" for join tornament userId = ").append(userId).toString());
+    logger.fatal(new StringBuilder("couldn't get user ").append(name).append(" for join tournament userId = ").append(userId).toString());
     return false;
   }
   if (userPlayerMap.containsKey(userId) && playerType.equals("Human")) {
@@ -23,7 +23,7 @@
     }
     tournament.addPlayer(player,seat.getPlayerType());
     table.joinTable(player,seat);
-    logger.debug("player joined " + player.getId());
+    logger.trace("player " + player.getName() + " joined tableId: "+ table.getId());
     if (seat.getPlayer().isHuman()) {
       user.addTable(player.getId(),table);
       user.joinedTable(table.getRoomId(),table.getId(),true);

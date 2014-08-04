@@ -1,15 +1,13 @@
 {
   if (table.getState() == TableState.STARTING) {
     try {
-      String tableInfo;
       if (table.isTournamentSubTable()) {
-        tableInfo="Tournament tournamentId: " + table.getTournament().getId() + " - sub";
+        logger.info("Tourn. match started id:" + match.getId() + " tournId: "+ table.getTournament().getId());
       }
  else {
         User user=UserManager.getInstance().getUser(userId);
-        tableInfo="User (table controller) " + user.getName();
+        logger.info("MATCH started [" + match.getName() + "] "+ match.getId()+ "("+ user.getName()+ ")");
       }
-      logger.info(new StringBuilder(tableInfo).append(" match started match Id: ").append(match.getId()));
       match.startMatch();
       startGame(null);
     }

@@ -2,8 +2,12 @@
   return executeWithResult("joinTable",sessionId,new ActionWithBooleanResult(){
     @Override public Boolean execute() throws MageException {
       UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
+      logger.debug(name + " joins tableId: " + tableId);
+      if (userId == null) {
+        logger.fatal("Got no userId from sessionId" + sessionId + " tableId"+ tableId);
+        return false;
+      }
       boolean ret=GamesRoomManager.getInstance().getRoom(roomId).joinTable(userId,tableId,name,playerType,skill,deckList);
-      logger.debug("Session " + sessionId + " joined table "+ tableId);
       return ret;
     }
   }
