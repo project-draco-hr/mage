@@ -1,7 +1,11 @@
 {
   if (tables.containsKey(tableId)) {
+    TableController tableController=controllers.get(tableId);
+    if (tableController != null) {
+      controllers.remove(tableId);
+      tableController.cleanUp();
+    }
     Table table=tables.get(tableId);
-    controllers.remove(tableId);
     tables.remove(tableId);
     if (!table.getState().equals(TableState.FINISHED)) {
       GamesRoomManager.getInstance().removeTable(tableId);
