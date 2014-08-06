@@ -23,7 +23,18 @@
   if (targetId == null) {
     Target target=card.getSpellAbility().getTargets().get(0);
     Player player=game.getPlayer(card.getOwnerId());
-    if (player != null && player.choose(Outcome.BoostCreature,target,card.getId(),game)) {
+    Outcome auraOutcome=Outcome.BoostCreature;
+    Ability:     for (    Ability ability : card.getAbilities()) {
+      if (ability instanceof SpellAbility) {
+        for (        Effect effect : ability.getEffects()) {
+          if (effect instanceof AttachEffect) {
+            auraOutcome=effect.getOutcome();
+            break Ability;
+          }
+        }
+      }
+    }
+    if (player != null && player.choose(auraOutcome,target,card.getId(),game)) {
       targetId=target.getFirstTarget();
     }
   }
