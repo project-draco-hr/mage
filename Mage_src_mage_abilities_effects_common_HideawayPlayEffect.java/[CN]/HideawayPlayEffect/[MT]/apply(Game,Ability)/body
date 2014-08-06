@@ -18,9 +18,15 @@
       }
     }
  else {
-      if (controller.chooseUse(Outcome.Benefit,new StringBuilder("Cast ").append(card.getName()).append(" without paying it's mana cost?").toString(),game)) {
-        card.setFaceDown(false);
-        return controller.cast(card.getSpellAbility(),game,true);
+      if (card.getSpellAbility() != null) {
+        if (controller.chooseUse(Outcome.Benefit,new StringBuilder("Cast ").append(card.getName()).append(" without paying it's mana cost?").toString(),game)) {
+          card.setFaceDown(false);
+          return controller.cast(card.getSpellAbility(),game,true);
+        }
+      }
+ else {
+        Logger.getLogger(HideawayPlayEffect.class).error("Non land card had no spell ability: " + card.getName());
+        return false;
       }
     }
     return true;
