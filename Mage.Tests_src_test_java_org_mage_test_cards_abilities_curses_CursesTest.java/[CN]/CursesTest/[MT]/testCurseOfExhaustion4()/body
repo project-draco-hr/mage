@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",3);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",2);
+  addCard(Zone.HAND,playerA,"Lightning Bolt",2);
+  addCard(Zone.GRAVEYARD,playerB,"Curse of Exhaustion",1);
+  addCard(Zone.HAND,playerB,"Obzedat's Aid",1);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Obzedat's Aid","Curse of Exhaustion");
+  setChoice(playerB,"PlayerA");
+  castSpell(2,PhaseStep.POSTCOMBAT_MAIN,playerA,"Lightning Bolt",playerB);
+  castSpell(2,PhaseStep.POSTCOMBAT_MAIN,playerA,"Lightning Bolt",playerB);
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertHandCount(playerB,"Obzedat's Aid",0);
+  assertGraveyardCount(playerB,"Obzedat's Aid",1);
+  assertGraveyardCount(playerB,"Curse of Exhaustion",0);
+  assertPermanentCount(playerB,"Curse of Exhaustion",1);
+  assertLife(playerA,20);
+  assertLife(playerB,17);
+}
