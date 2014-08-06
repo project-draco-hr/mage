@@ -1,13 +1,17 @@
 {
-  if (getTargetPointer().getFirst(game,source) != null) {
-    Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
-    if (permanent != null) {
-      if (permanent.moveToExile(source.getSourceId(),"Venser, the Sojourner",source.getSourceId(),game)) {
-        AtEndOfTurnDelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Zone.BATTLEFIELD));
-        delayedAbility.setSourceId(source.getSourceId());
-        delayedAbility.setControllerId(source.getControllerId());
-        game.addDelayedTriggeredAbility(delayedAbility);
-        return true;
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    if (getTargetPointer().getFirst(game,source) != null) {
+      Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+      if (permanent != null) {
+        if (controller.moveCardToExileWithInfo(permanent,source.getSourceId(),sourceObject.getLogName(),source.getSourceId(),game,Zone.BATTLEFIELD)) {
+          AtEndOfTurnDelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Zone.BATTLEFIELD));
+          delayedAbility.setSourceId(source.getSourceId());
+          delayedAbility.setControllerId(source.getControllerId());
+          game.addDelayedTriggeredAbility(delayedAbility);
+          return true;
+        }
       }
     }
   }
