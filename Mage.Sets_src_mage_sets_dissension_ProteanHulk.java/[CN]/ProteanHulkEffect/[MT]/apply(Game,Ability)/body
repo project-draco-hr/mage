@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Cards cardsPicked=this.ProteanHulkSearch(game,source);
+    for (    UUID cardId : cardsPicked) {
+      Card card=game.getCard(cardId);
+      if (card != null) {
+        player.putOntoBattlefieldWithInfo(card,game,Zone.PICK,source.getSourceId());
+      }
+    }
+    player.shuffleLibrary(game);
+    return true;
+  }
+  return false;
+}
