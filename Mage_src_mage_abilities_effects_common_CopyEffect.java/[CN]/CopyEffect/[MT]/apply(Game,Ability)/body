@@ -21,7 +21,7 @@
   }
   permanent.removeAllAbilities(source.getSourceId(),game);
   for (  Ability ability : target.getAbilities()) {
-    permanent.addAbility(ability,game);
+    permanent.addAbility(ability,source.getSourceId(),game);
   }
   permanent.getPower().setValue(target.getPower().getValue());
   permanent.getToughness().setValue(target.getToughness().getValue());
@@ -36,9 +36,9 @@
     permanent.setCardNumber(((PermanentCard)target).getCard().getCardNumber());
     permanent.setExpansionSetCode(((PermanentCard)target).getCard().getExpansionSetCode());
   }
- else   if (target instanceof PermanentToken) {
-    permanent.setCardNumber(((PermanentToken)target).getCardNumber());
-    permanent.setExpansionSetCode(((PermanentToken)target).getExpansionSetCode());
+ else   if (target instanceof PermanentToken || target instanceof Card) {
+    permanent.setCardNumber(((Card)target).getCardNumber());
+    permanent.setExpansionSetCode(((Card)target).getExpansionSetCode());
   }
   permanent.setCopy(true);
   return true;

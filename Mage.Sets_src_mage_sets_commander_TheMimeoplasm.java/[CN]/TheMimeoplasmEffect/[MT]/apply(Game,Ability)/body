@@ -2,63 +2,27 @@
   Player player=game.getPlayer(source.getControllerId());
   Permanent permanent=game.getPermanent(source.getSourceId());
   if (player != null && permanent != null) {
-    if (firstApply) {
-      this.firstApply=false;
-      if (new CardsInAllGraveyardsCount(new FilterCreatureCard()).calculate(game,source) >= 2) {
-        if (player.chooseUse(Outcome.Benefit,"Do you want to exile two creature cards from graveyards?",game)) {
-          TargetCardInGraveyard targetCopy=new TargetCardInGraveyard(new FilterCreatureCard("creature card to become a copy of"));
-          TargetCardInGraveyard targetCounters=new TargetCardInGraveyard(new FilterCreatureCard("creature card for additional +1/+1 counters"));
-          if (player.choose(Outcome.Copy,targetCopy,source.getSourceId(),game)) {
-            this.cardToCopy=game.getCard(targetCopy.getFirstTarget());
-            if (cardToCopy != null) {
-              player.moveCardToExileWithInfo(cardToCopy,null,"",source.getSourceId(),game,Zone.GRAVEYARD);
-              if (player.choose(Outcome.Copy,targetCounters,source.getSourceId(),game)) {
-                Card cardForCounters=game.getCard(targetCounters.getFirstTarget());
-                if (cardForCounters != null) {
-                  player.moveCardToExileWithInfo(cardForCounters,null,"",source.getSourceId(),game,Zone.GRAVEYARD);
-                  permanent.addCounters(CounterType.P1P1.createInstance(cardForCounters.getPower().getValue()),game);
-                }
+    if (new CardsInAllGraveyardsCount(new FilterCreatureCard()).calculate(game,source) >= 2) {
+      if (player.chooseUse(Outcome.Benefit,"Do you want to exile two creature cards from graveyards?",game)) {
+        TargetCardInGraveyard targetCopy=new TargetCardInGraveyard(new FilterCreatureCard("creature card to become a copy of"));
+        TargetCardInGraveyard targetCounters=new TargetCardInGraveyard(new FilterCreatureCard("creature card for additional +1/+1 counters"));
+        if (player.choose(Outcome.Copy,targetCopy,source.getSourceId(),game)) {
+          Card cardToCopy=game.getCard(targetCopy.getFirstTarget());
+          if (cardToCopy != null) {
+            player.moveCardToExileWithInfo(cardToCopy,null,"",source.getSourceId(),game,Zone.GRAVEYARD);
+            if (player.choose(Outcome.Copy,targetCounters,source.getSourceId(),game)) {
+              Card cardForCounters=game.getCard(targetCounters.getFirstTarget());
+              if (cardForCounters != null) {
+                player.moveCardToExileWithInfo(cardForCounters,null,"",source.getSourceId(),game,Zone.GRAVEYARD);
+                CopyEffect copyEffect=new CopyEffect(Duration.Custom,cardToCopy,source.getSourceId());
+                game.addEffect(copyEffect,source);
+                permanent.addCounters(CounterType.P1P1.createInstance(cardForCounters.getPower().getValue()),game);
+                return true;
               }
             }
           }
         }
       }
-    }
-    if (cardToCopy != null) {
-      permanent.setName(cardToCopy.getName());
-      permanent.getPower().setValue(cardToCopy.getPower().getValue());
-      permanent.getToughness().setValue(cardToCopy.getToughness().getValue());
-      permanent.getColor().setColor(cardToCopy.getColor());
-      permanent.getManaCost().clear();
-      permanent.getManaCost().add(cardToCopy.getManaCost());
-      permanent.getCardType().clear();
-      for (      CardType type : cardToCopy.getCardType()) {
-        if (!permanent.getCardType().contains(type)) {
-          permanent.getCardType().add(type);
-        }
-      }
-      permanent.getSubtype().clear();
-      for (      String type : cardToCopy.getSubtype()) {
-        if (!permanent.getSubtype().contains(type)) {
-          permanent.getSubtype().add(type);
-        }
-      }
-      permanent.getSupertype().clear();
-      for (      String type : cardToCopy.getSupertype()) {
-        if (!permanent.getSupertype().contains(type)) {
-          permanent.getSupertype().add(type);
-        }
-      }
-      permanent.removeAllAbilities(source.getSourceId(),game);
-      for (      Ability ability : cardToCopy.getAbilities()) {
-        if (!permanent.getAbilities().contains(ability)) {
-          permanent.addAbility(ability,source.getSourceId(),game);
-        }
-      }
-      permanent.setCardNumber(cardToCopy.getCardNumber());
-      permanent.setExpansionSetCode(cardToCopy.getExpansionSetCode());
-      permanent.setCopy(true);
-      return true;
     }
   }
   return false;
