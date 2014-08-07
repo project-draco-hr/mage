@@ -32,10 +32,12 @@
   libraryLabel.setText(Integer.toString(libraryCards));
   int graveCards=player.getGraveyard().size();
   if (graveCards > 99) {
-    Font font=graveLabel.getFont();
-    font=font.deriveFont(9f);
-    graveLabel.setFont(font);
-    changedFontGrave=true;
+    if (!changedFontGrave) {
+      Font font=graveLabel.getFont();
+      font=font.deriveFont(9f);
+      graveLabel.setFont(font);
+      changedFontGrave=true;
+    }
   }
  else   if (changedFontGrave) {
     Font font=lifeLabel.getFont();
@@ -44,6 +46,22 @@
     changedFontGrave=false;
   }
   graveLabel.setText(Integer.toString(graveCards));
+  int exileCards=player.getExile().size();
+  if (exileCards > 99) {
+    if (!changedFontExile) {
+      Font font=exileLabel.getFont();
+      font=font.deriveFont(9f);
+      exileLabel.setFont(font);
+      changedFontExile=true;
+    }
+  }
+ else   if (changedFontExile) {
+    Font font=lifeLabel.getFont();
+    font=font.deriveFont(12f);
+    exileLabel.setFont(font);
+    changedFontExile=false;
+  }
+  exileLabel.setText(Integer.toString(exileCards));
   if (!MageFrame.isLite()) {
     int id=player.getUserData().getAvatarId();
     if (id <= 0) {
