@@ -1,7 +1,14 @@
 {
   boolean result=false;
   if (card.moveToZone(Zone.GRAVEYARD,sourceId,game,fromZone != null ? fromZone.equals(Zone.BATTLEFIELD) : false)) {
-    game.informPlayers(new StringBuilder(this.getName()).append(" puts ").append(card.getLogName()).append(" ").append(fromZone != null ? new StringBuilder("from ").append(fromZone.toString().toLowerCase(Locale.ENGLISH)).append(" ") : "").append("into his or her graveyard").toString());
+    StringBuilder sb=new StringBuilder(this.getName()).append(" puts ").append(card.getLogName()).append(" ").append(fromZone != null ? new StringBuilder("from ").append(fromZone.toString().toLowerCase(Locale.ENGLISH)).append(" ") : "");
+    if (card.getOwnerId().equals(getId())) {
+      sb.append("into his or her graveyard");
+    }
+ else {
+      sb.append("it into its owner's graveyard");
+    }
+    game.informPlayers(sb.toString());
     result=true;
   }
   return result;

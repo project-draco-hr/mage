@@ -9,6 +9,9 @@
         Card card=targetOpponent.getLibrary().remove(targetCard.getFirstTarget(),game);
         if (card != null) {
           you.moveCardToExileWithInfo(card,CardUtil.getCardExileZoneId(game,source),sourcObject != null ? sourcObject.getName() : "",source.getSourceId(),game,Zone.LIBRARY);
+          ContinuousEffect effect=new GrinningTotemMayPlayEffect();
+          effect.setTargetPointer(new FixedTarget(card.getId()));
+          game.addEffect(effect,source);
         }
       }
     }

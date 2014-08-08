@@ -23,7 +23,7 @@
           playable.add(ability);
         }
       }
-      if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,this.getId(),game)) {
+      if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST_FROM_NON_HAND_ZONE,this.getId(),game)) {
         for (        ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
           if (ability instanceof SpellAbility || ability instanceof PlayLandAbility) {
             playable.add(ability);
@@ -33,11 +33,15 @@
     }
     for (    ExileZone exile : game.getExile().getExileZones()) {
       for (      Card card : exile.getCards(game)) {
-        if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,this.getId(),game)) {
+        if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST_FROM_NON_HAND_ZONE,this.getId(),game)) {
           for (          Ability ability : card.getAbilities()) {
-            ability.setControllerId(this.getId());
-            if (ability.getZone().match(Zone.HAND) && (ability instanceof SpellAbility || ability instanceof PlayLandAbility)) {
-              playable.add(ability);
+            if (ability.getZone().match(Zone.HAND)) {
+              ability.setControllerId(this.getId());
+              if (ability instanceof ActivatedAbility) {
+                if (((ActivatedAbility)ability).canActivate(playerId,game)) {
+                  playable.add(ability);
+                }
+              }
             }
           }
         }
@@ -45,7 +49,7 @@
     }
     for (    Cards cards : game.getState().getRevealed().values()) {
       for (      Card card : cards.getCards(game)) {
-        if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST,this.getId(),game)) {
+        if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.CAST_FROM_NON_HAND_ZONE,this.getId(),game)) {
           for (          ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
             if (ability instanceof SpellAbility || ability instanceof PlayLandAbility) {
               playable.add(ability);

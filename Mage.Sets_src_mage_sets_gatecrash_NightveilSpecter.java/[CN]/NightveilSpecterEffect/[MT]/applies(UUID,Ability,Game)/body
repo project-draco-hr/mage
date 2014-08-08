@@ -3,18 +3,7 @@
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null && card != null && game.getState().getZone(card.getId()) == Zone.EXILED) {
     ExileZone zone=game.getExile().getExileZone(CardUtil.getCardExileZoneId(game,source));
-    if (zone != null && zone.contains(card.getId())) {
-      if (card.getCardType().contains(CardType.LAND)) {
-        if (game.getActivePlayerId().equals(source.getControllerId()) && controller.canPlayLand()) {
-          return true;
-        }
-      }
- else {
-        if (card.getSpellAbility().spellCanBeActivatedRegularlyNow(source.getControllerId(),game)) {
-          return true;
-        }
-      }
-    }
+    return zone != null && zone.contains(card.getId());
   }
   return false;
 }
