@@ -1,11 +1,13 @@
 {
-  Player you=game.getPlayer(source.getControllerId());
-  if (you != null && you.getLibrary().size() > 0) {
-    Library library=you.getLibrary();
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && controller.getLibrary().size() > 0) {
+    Library library=controller.getLibrary();
     Card card=library.removeFromTop(game);
     if (card != null) {
-      card.moveToExile(source.getSourceId(),"Chandra Pyromaster <this card may be played the turn it was exiled>",source.getSourceId(),game);
-      game.addEffect(new ChandraPyromasterCastFromExileEffect(card.getId()),source);
+      controller.moveCardToExileWithInfo(card,source.getSourceId(),"Chandra Pyromaster <this card may be played the turn it was exiled>",source.getSourceId(),game,Zone.LIBRARY);
+      ContinuousEffect effect=new ChandraPyromasterCastFromExileEffect();
+      effect.setTargetPointer(new FixedTarget(card.getId()));
+      game.addEffect(effect,source);
     }
     return true;
   }

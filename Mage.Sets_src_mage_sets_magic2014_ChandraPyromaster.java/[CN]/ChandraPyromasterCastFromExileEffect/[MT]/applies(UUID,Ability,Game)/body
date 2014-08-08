@@ -1,22 +1,6 @@
 {
-  if (sourceId.equals(this.cardId)) {
-    Card card=game.getCard(this.cardId);
-    if (card != null && game.getState().getZone(this.cardId) == Zone.EXILED) {
-      Player player=game.getPlayer(source.getControllerId());
-      if (player != null && player.chooseUse(Outcome.Benefit,"Play this card?",game)) {
-        if (card.getCardType().contains(CardType.LAND)) {
-          if (game.getActivePlayerId().equals(player.getId()) && player.getLandsPlayed() < player.getLandsPerTurn()) {
-            return player.playLand(card,game);
-          }
-        }
- else {
-          Ability ability=card.getSpellAbility();
-          if (ability != null && ability instanceof SpellAbility) {
-            return player.cast((SpellAbility)ability,game,false);
-          }
-        }
-      }
-    }
+  if (targetPointer.getTargets(game,source).contains(sourceId)) {
+    return game.getState().getZone(sourceId).equals(Zone.EXILED);
   }
   return false;
 }
