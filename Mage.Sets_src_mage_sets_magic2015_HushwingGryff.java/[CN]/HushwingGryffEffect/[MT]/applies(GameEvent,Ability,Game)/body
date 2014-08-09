@@ -1,7 +1,8 @@
 {
   if (event.getType() == GameEvent.EventType.ENTERS_THE_BATTLEFIELD) {
-    Permanent p=game.getPermanent(event.getTargetId());
-    if (p != null && p.getCardType().contains(CardType.CREATURE)) {
+    Permanent permanent=((EntersTheBattlefieldEvent)event).getTarget();
+    if (permanent != null && permanent.getCardType().contains(CardType.CREATURE)) {
+      game.getContinuousEffects().replaceEvent(event,game);
       return true;
     }
   }
