@@ -1,3 +1,15 @@
 {
-  return canChoose(sourceControllerId,game);
+  int count=0;
+  for (  StackObject stackObject : game.getStack()) {
+    if (sourceId != null && sourceId.equals(stackObject.getSourceId())) {
+      continue;
+    }
+    if (canBeChosen(stackObject,sourceControllerId,game)) {
+      count++;
+      if (count >= this.minNumberOfTargets) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
