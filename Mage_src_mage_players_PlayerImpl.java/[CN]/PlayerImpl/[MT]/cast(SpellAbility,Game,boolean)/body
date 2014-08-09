@@ -12,6 +12,10 @@
       Zone fromZone=game.getState().getZone(card.getId());
       card.cast(game,fromZone,ability,playerId);
       Spell spell=game.getStack().getSpell(ability.getId());
+      if (ability.getSourceId().equals(getCastSourceIdWithoutMana())) {
+        noMana=true;
+      }
+      setCastSourceIdWithoutMana(null);
       if (spell.activate(game,noMana)) {
         GameEvent event=GameEvent.getEvent(GameEvent.EventType.SPELL_CAST,spell.getSpellAbility().getId(),spell.getSpellAbility().getSourceId(),playerId);
         event.setZone(fromZone);

@@ -14,7 +14,9 @@
         }
         if (card.getSpellAbility() != null) {
           game.addEffect(new DaxosOfMeletisCastFromExileEffect(card.getId(),exileId),source);
-          game.addEffect(new DaxosOfMeletisSpendAnyManaEffect(card.getId()),source);
+          ContinuousEffect effect=new DaxosOfMeletisSpendAnyManaEffect();
+          effect.setTargetPointer(new FixedTarget(card.getId()));
+          game.addEffect(effect,source);
         }
       }
       return true;

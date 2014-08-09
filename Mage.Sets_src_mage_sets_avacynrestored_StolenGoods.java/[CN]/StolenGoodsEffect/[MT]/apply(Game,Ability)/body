@@ -1,18 +1,20 @@
 {
-  Player player=game.getPlayer(targetPointer.getFirst(game,source));
-  if (player != null && player.getLibrary().size() > 0) {
-    Library library=player.getLibrary();
+  Player opponent=game.getPlayer(targetPointer.getFirst(game,source));
+  if (opponent != null && opponent.getLibrary().size() > 0) {
+    Library library=opponent.getLibrary();
     Card card;
     do {
       card=library.removeFromTop(game);
       if (card != null) {
-        card.moveToExile(source.getId(),"Stolen Goods",source.getSourceId(),game);
+        opponent.moveCardToExileWithInfo(card,source.getId(),"Stolen Goods",source.getSourceId(),game,Zone.LIBRARY);
       }
     }
  while (library.size() > 0 && card != null && card.getCardType().contains(CardType.LAND));
     if (card != null) {
-      player.revealCards("Card to cast",new CardsImpl(card),game);
-      game.addEffect(new StolenGoodsCastFromExileEffect(card.getId()),source);
+      opponent.revealCards("Card to cast",new CardsImpl(card),game);
+      ContinuousEffect effect=new StolenGoodsCastFromExileEffect();
+      effect.setTargetPointer(new FixedTarget(card.getId()));
+      game.addEffect(effect,source);
     }
     return true;
   }

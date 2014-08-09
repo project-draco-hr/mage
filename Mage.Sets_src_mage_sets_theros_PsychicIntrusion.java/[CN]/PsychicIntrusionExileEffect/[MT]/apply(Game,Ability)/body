@@ -2,13 +2,13 @@
   Player opponent=game.getPlayer(targetPointer.getFirst(game,source));
   if (opponent != null) {
     opponent.revealCards("Psychic Intrusion",opponent.getHand(),game);
-    Player you=game.getPlayer(source.getControllerId());
-    if (you != null) {
+    Player controller=game.getPlayer(source.getControllerId());
+    if (controller != null) {
       int cardsGraveyard=opponent.getGraveyard().count(filter,game);
       int cardsHand=opponent.getHand().count(filter,game);
       boolean fromHand=false;
       if (cardsGraveyard > 0 && cardsHand > 0) {
-        if (you.chooseUse(Outcome.Detriment,"Exile card from opponents Hand?",game)) {
+        if (controller.chooseUse(Outcome.Detriment,"Exile card from opponents Hand?",game)) {
           fromHand=true;
         }
       }
@@ -19,23 +19,26 @@
       }
       Card card=null;
       if (cardsHand > 0 && fromHand) {
-        TargetCard target=new TargetCard(Zone.PICK,filter);
-        if (you.choose(Outcome.Benefit,opponent.getHand(),target,game)) {
+        TargetCard target=new TargetCard(Zone.HAND,filter);
+        if (controller.choose(Outcome.Benefit,opponent.getHand(),target,game)) {
           card=opponent.getHand().get(target.getFirstTarget(),game);
         }
       }
       if (cardsGraveyard > 0 && !fromHand) {
-        TargetCard target=new TargetCard(Zone.PICK,filter);
-        if (you.choose(Outcome.Benefit,opponent.getGraveyard(),target,game)) {
+        TargetCard target=new TargetCard(Zone.GRAVEYARD,filter);
+        if (controller.choose(Outcome.Benefit,opponent.getGraveyard(),target,game)) {
           card=opponent.getGraveyard().get(target.getFirstTarget(),game);
         }
       }
       if (card != null) {
         UUID exileId=CardUtil.getCardExileZoneId(game,source);
-        card.moveToExile(exileId,"Psychic Intrusion",source.getSourceId(),game);
-        game.addEffect(new PsychicIntrusionCastFromExileEffect(card.getId(),exileId),source);
-        game.addEffect(new PsychicIntrusionSpendAnyManaEffect(card.getId()),source);
-        game.informPlayers(new StringBuilder("Psychic Intrusion: ").append(you.getName()).append(" exiles ").append(card.getName()).append(" from").append(fromHand ? " hand" : " graveyard").toString());
+        controller.moveCardToExileWithInfo(card,exileId,"Psychic Intrusion",source.getSourceId(),game,fromHand ? Zone.HAND : Zone.GRAVEYARD);
+        ContinuousEffect effect=new PsychicIntrusionCastFromExileEffect();
+        effect.setTargetPointer(new FixedTarget(card.getId()));
+        game.addEffect(effect,source);
+        effect=new PsychicIntrusionSpendAnyManaEffect();
+        effect.setTargetPointer(new FixedTarget(card.getId()));
+        game.addEffect(effect,source);
       }
       return true;
     }
