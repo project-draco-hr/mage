@@ -1,8 +1,13 @@
 {
   execute("quitTournament",sessionId,new Action(){
     @Override public void execute(){
-      UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
-      TournamentManager.getInstance().quit(tournamentId,userId);
+      Session session=SessionManager.getInstance().getSession(sessionId);
+      if (session != null) {
+        TournamentManager.getInstance().quit(tournamentId,session.getUserId());
+      }
+ else {
+        logger.error("Session not found sessionId: " + sessionId + "  tournamentId:"+ tournamentId);
+      }
     }
   }
 );

@@ -1,8 +1,13 @@
 {
   execute("quitMatch",sessionId,new Action(){
     @Override public void execute(){
-      UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
-      GameManager.getInstance().quitMatch(gameId,userId);
+      Session session=SessionManager.getInstance().getSession(sessionId);
+      if (session != null) {
+        GameManager.getInstance().quitMatch(gameId,session.getUserId());
+      }
+ else {
+        logger.error("Session not found sessionId: " + sessionId + "  gameId:"+ gameId);
+      }
     }
   }
 );

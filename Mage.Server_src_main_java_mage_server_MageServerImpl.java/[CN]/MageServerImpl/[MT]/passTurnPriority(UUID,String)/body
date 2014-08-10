@@ -1,8 +1,12 @@
 {
   execute("passTurnPriority",sessionId,new Action(){
     @Override public void execute(){
-      UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
-      GameManager.getInstance().passTurnPriority(gameId,userId);
+      Session session=SessionManager.getInstance().getSession(sessionId);
+      if (session == null) {
+        logger.error("Session not found sessionId: " + sessionId + "  gameId:"+ gameId);
+        return;
+      }
+      GameManager.getInstance().passTurnPriority(gameId,session.getUserId());
     }
   }
 );

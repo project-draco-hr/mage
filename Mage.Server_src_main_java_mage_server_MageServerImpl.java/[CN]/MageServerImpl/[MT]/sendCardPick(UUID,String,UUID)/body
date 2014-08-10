@@ -1,8 +1,14 @@
 {
   return executeWithResult("sendCardPick",sessionId,new ActionWithNullNegativeResult<DraftPickView>(){
     @Override public DraftPickView execute(){
-      UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
-      return DraftManager.getInstance().sendCardPick(draftId,userId,cardPick);
+      Session session=SessionManager.getInstance().getSession(sessionId);
+      if (session != null) {
+        return DraftManager.getInstance().sendCardPick(draftId,session.getUserId(),cardPick);
+      }
+ else {
+        logger.error("Session not found sessionId: " + sessionId + "  draftId:"+ draftId);
+      }
+      return null;
     }
   }
 );
