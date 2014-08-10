@@ -1,0 +1,11 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Blood Moon");
+  addCard(Zone.HAND,playerA,"Kabira Crossroads");
+  playLand(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Kabira Crossroads");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  Permanent grassland=getPermanent("Kabira Crossroads",playerA.getId());
+  Assert.assertEquals("Kabira Crossroads is not tapped but is has to be from ETB replacement effect",true,grassland.isTapped());
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+}
