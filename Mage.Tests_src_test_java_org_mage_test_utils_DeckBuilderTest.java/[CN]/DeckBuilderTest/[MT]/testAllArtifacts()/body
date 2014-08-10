@@ -1,0 +1,22 @@
+{
+  final List<Card> spellCardPool=new ArrayList<>();
+  final UUID owner=UUID.randomUUID();
+  final List<ColoredManaSymbol> allowedColors=Arrays.asList(ColoredManaSymbol.U);
+  final List<String> setsToUse=new ArrayList<>();
+  final List<Card> landCardPool=null;
+  final RateCallback rateCallback=new RateCallback(){
+    @Override public int rateCard(    Card card){
+      return 6;
+    }
+    @Override public Card getBestBasicLand(    ColoredManaSymbol color,    List<String> setsToUse){
+      Assert.assertNotNull(color);
+      return new Island(owner);
+    }
+  }
+;
+  for (int i=0; i < 24; i++) {
+    Card c=new RandomArtifactCreature(owner,i,"Random Artifact " + i);
+    spellCardPool.add(c);
+  }
+  DeckBuilder.buildDeck(spellCardPool,allowedColors,setsToUse,landCardPool,40,rateCallback);
+}
