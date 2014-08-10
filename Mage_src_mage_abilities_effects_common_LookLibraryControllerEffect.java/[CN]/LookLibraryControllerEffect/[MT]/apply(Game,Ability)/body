@@ -16,6 +16,8 @@
   if (player == null) {
     return false;
   }
+  boolean topCardRevealed=player.isTopCardRevealed();
+  player.setTopCardRevealed(false);
   Cards cards=new CardsImpl(Zone.PICK);
   int count=Math.min(player.getLibrary().size(),this.numberOfCards.calculate(game,source));
   for (int i=0; i < count; i++) {
@@ -29,6 +31,7 @@
   player.lookAtCards(windowName,cards,game);
   this.actionWithSelectedCards(cards,game,source,windowName);
   this.putCardsBack(source,player,cards,game);
+  player.setTopCardRevealed(topCardRevealed);
   this.mayShuffle(player,game);
   return true;
 }
