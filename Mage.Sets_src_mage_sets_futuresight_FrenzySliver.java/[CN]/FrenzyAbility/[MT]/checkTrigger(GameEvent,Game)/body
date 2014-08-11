@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.DECLARED_BLOCKERS) {
+    Permanent sourcePermanent=game.getPermanent(getSourceId());
+    if (sourcePermanent.isAttacking()) {
+      for (      CombatGroup combatGroup : game.getCombat().getGroups()) {
+        if (combatGroup.getBlockers().isEmpty() && combatGroup.getAttackers().contains(getSourceId())) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
