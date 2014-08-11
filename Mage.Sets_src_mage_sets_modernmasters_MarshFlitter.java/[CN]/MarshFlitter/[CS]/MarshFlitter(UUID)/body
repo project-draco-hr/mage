@@ -8,6 +8,8 @@
   this.toughness=new MageInt(1);
   this.addAbility(FlyingAbility.getInstance());
   this.addAbility(new EntersBattlefieldTriggeredAbility(new CreateTokenEffect(new BlackGoblinRogueToken(),2),false));
-  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new SetPowerToughnessSourceEffect(3,3,Duration.EndOfTurn),new SacrificeTargetCost(new TargetControlledPermanent(filter)));
+  Effect effect=new SetPowerToughnessSourceEffect(3,3,Duration.EndOfTurn);
+  effect.setText("{this} has base power and toughness 3/3 until end of turn");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new SacrificeTargetCost(new TargetControlledPermanent(filter)));
   this.addAbility(ability);
 }

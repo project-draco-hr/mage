@@ -3,10 +3,14 @@
   this.expansionSetCode="EVE";
   this.color.setBlue(true);
   this.color.setGreen(true);
-  this.getSpellAbility().addEffect(new LoseAllAbilitiesTargetEffect(Duration.EndOfTurn));
-  this.getSpellAbility().addEffect(new BecomesCreatureTargetEffect(new SnakeToken(),null,Duration.EndOfTurn));
+  Effect effect=new LoseAllAbilitiesTargetEffect(Duration.EndOfTurn);
+  effect.setText("Until end of turn, target creature loses all abilities");
+  this.getSpellAbility().addEffect(effect);
+  effect=new BecomesCreatureTargetEffect(new SnakeToken(),null,Duration.EndOfTurn);
+  effect.setText("and becomes a green Snake with base power and toughness 1/1");
+  this.getSpellAbility().addEffect(effect);
   this.getSpellAbility().addTarget(new TargetCreaturePermanent());
-  Effect effect=new DrawCardSourceControllerEffect(1);
-  effect.setText("Draw a card.");
+  effect=new DrawCardSourceControllerEffect(1);
+  effect.setText("<br>Draw a card.");
   this.getSpellAbility().addEffect(effect);
 }
