@@ -2,16 +2,16 @@
   Player controller=game.getPlayer(source.getControllerId());
   Player player=game.getPlayer(source.getFirstTarget());
   if (controller != null && player != null) {
-    Card c=player.getLibrary().getFromTop(game);
-    if (c != null) {
+    Card card=player.getLibrary().getFromTop(game);
+    if (card != null) {
       Cards cards=new CardsImpl();
-      cards.add(c);
+      cards.add(card);
       controller.lookAtCards("Jace, the Mind Sculptor",cards,game);
       if (controller.chooseUse(outcome,"Do you wish to put card on the bottom of player's library?",game)) {
-        Card card=player.getLibrary().removeFromTop(game);
-        if (card != null) {
-          controller.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.LIBRARY,false,false);
-        }
+        controller.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.LIBRARY,false,false);
+      }
+ else {
+        game.informPlayers(controller.getName() + " puts the card back on top of the library.");
       }
       return true;
     }
