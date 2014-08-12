@@ -10,8 +10,15 @@
  else {
         costToPay=new GenericManaCost(genericMana.calculate(game,source));
       }
+      String message;
+      if (costToPay instanceof ManaCost) {
+        message="Would you like to pay " + costToPay.getText() + " to prevent counter effect?";
+      }
+ else {
+        message=costToPay.getText() + " to prevent counter effect?";
+      }
       costToPay.clearPaid();
-      if (!costToPay.pay(source,game,spell.getSourceId(),spell.getControllerId(),false)) {
+      if (!(player.chooseUse(Outcome.Benefit,message,game) && costToPay.pay(source,game,spell.getSourceId(),spell.getControllerId(),false))) {
         return game.getStack().counter(spell.getId(),source.getSourceId(),game);
       }
       return true;
