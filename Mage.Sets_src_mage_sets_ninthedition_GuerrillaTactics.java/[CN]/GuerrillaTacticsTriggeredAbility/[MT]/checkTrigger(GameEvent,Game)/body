@@ -1,9 +1,3 @@
 {
-  if (GameEvent.EventType.DISCARDED_CARD.equals(event.getType()) && event.getSourceId() != null && event.getTargetId().equals(getSourceId()) && event.getPlayerId().equals(getControllerId())) {
-    MageObject mageObject=game.getObject(event.getSourceId());
-    if (mageObject != null && (mageObject instanceof StackObject)) {
-      return game.getOpponents(this.getControllerId()).contains(((StackObject)mageObject).getControllerId());
-    }
-  }
-  return false;
+  return GameEvent.EventType.DISCARDED_CARD.equals(event.getType()) && game.getOpponents(this.getControllerId()).contains(game.getControllerId(event.getSourceId())) && getSourceId().equals(event.getTargetId());
 }
