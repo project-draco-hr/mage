@@ -1,0 +1,17 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    List<Card> cards=new ArrayList<>(0);
+    for (    UUID cardId : player.getGraveyard()) {
+      Card card=game.getCard(cardId);
+      if (card != null && card.getCardType().contains(CardType.ENCHANTMENT)) {
+        cards.add(card);
+      }
+    }
+    for (    Card card : cards) {
+      player.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId());
+    }
+    return true;
+  }
+  return false;
+}
