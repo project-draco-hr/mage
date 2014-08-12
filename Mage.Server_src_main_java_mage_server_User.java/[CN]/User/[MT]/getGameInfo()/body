@@ -10,24 +10,34 @@
       Table table=tableEntry.getValue();
       if (table != null) {
         if (table.isTournament()) {
-          if (!table.getTournament().getPlayer(tableEntry.getKey()).isEliminated()) {
+          if (tableEntry.getKey() != null) {
+            TournamentPlayer tournamentPlayer=table.getTournament().getPlayer(tableEntry.getKey());
+            if (tournamentPlayer != null && !tournamentPlayer.isEliminated()) {
 switch (table.getState()) {
 case CONSTRUCTING:
-              construct++;
-            break;
+                construct++;
+              break;
 case DRAFTING:
-          draft++;
-        break;
+            draft++;
+          break;
 case DUELING:
-      tournament++;
-    break;
-}
-if (!isConnected()) {
-  table.getTournament().getPlayer(tableEntry.getKey()).setDisconnectInfo(disconnectInfo);
+        tournament++;
+      break;
+  }
+  if (!isConnected()) {
+    table.getTournament().getPlayer(tableEntry.getKey()).setDisconnectInfo(disconnectInfo);
+  }
+ else {
+    table.getTournament().getPlayer(tableEntry.getKey()).setDisconnectInfo("");
+  }
 }
  else {
-  table.getTournament().getPlayer(tableEntry.getKey()).setDisconnectInfo("");
+  tablesToRemove.add(tableEntry.getKey());
+  logger.error(getName() + " tournament player missing - tournamentId:" + table.getId(),null);
 }
+}
+ else {
+logger.error(getName() + " tournament key missing - tournamentId: " + table.getId(),null);
 }
 }
  else {
@@ -42,6 +52,12 @@ break;
 }
 }
 }
+}
+if (!tablesToRemove.isEmpty()) {
+for (UUID tableKey : tablesToRemove) {
+tables.remove(tableKey);
+}
+tablesToRemove.clear();
 }
 if (match > 0) {
 sb.append("Match: ").append(match).append(" ");
