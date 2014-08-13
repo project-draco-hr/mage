@@ -9,7 +9,11 @@
   this.addAbility(ability1);
   this.addAbility(new LoyaltyAbility(new CreateTokenEffect(beastToken),-1));
   Effects effects1=new Effects();
-  effects1.add(new BoostControlledEffect(3,3,Duration.EndOfTurn));
-  effects1.add(new GainAbilityControlledEffect(TrampleAbility.getInstance(),Duration.EndOfTurn,new FilterCreaturePermanent()));
+  Effect effect=new BoostControlledEffect(3,3,Duration.EndOfTurn);
+  effect.setText("Creatures you control get +3/+3");
+  effects1.add(effect);
+  effect=new GainAbilityControlledEffect(TrampleAbility.getInstance(),Duration.EndOfTurn,new FilterCreaturePermanent());
+  effect.setText("and gain trample until end of turn");
+  effects1.add(effect);
   this.addAbility(new LoyaltyAbility(effects1,-4));
 }
