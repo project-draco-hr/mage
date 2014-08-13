@@ -1,14 +1,13 @@
 {
-  logger.debug(new StringBuilder("GameImpl.findWinnersAndLosers start gameId ").append(this.getId()));
   UUID winnerIdFound=null;
   for (  Player player : state.getPlayers().values()) {
     if (player.hasWon()) {
-      logger.debug(new StringBuilder("GameImpl.findWinnersAndLosers playerHasWon ").append(player.getId()));
+      logger.debug(player.getName() + " has won gameId: " + getId());
       winnerIdFound=player.getId();
       break;
     }
     if (!player.hasLost() && !player.hasLeft()) {
-      logger.debug(new StringBuilder("GameImpl.findWinnersAndLosers player ").append(player.getId()));
+      logger.debug(player.getName() + " has not lost so he won gameId: " + this.getId());
       player.won(this);
       winnerIdFound=player.getId();
       break;
