@@ -1,15 +1,7 @@
 {
-  Card card=game.getCard(sourceId);
-  if (card != null && filter.match(card,game) && card.getSpellAbility().isInUseableZone(game,card,false)) {
-    if (anyPlayer) {
-      Player controller=game.getPlayer(source.getControllerId());
-      if (controller != null) {
-        return controller.getInRange().contains(card.getOwnerId());
-      }
-    }
- else {
-      return card.getOwnerId().equals(source.getControllerId());
-    }
+  if (anyPlayer || source.getControllerId().equals(affectedControllerId)) {
+    Card card=game.getCard(affectedSpellId);
+    return card != null && filter.match(card,game);
   }
   return false;
 }
