@@ -11,12 +11,12 @@
     }
     sessionInfo.append(" at ").append(session.getHost()).append(" sessionId: ").append(session.getId());
     if (throwable instanceof ClientDisconnectedException) {
-      SessionManager.getInstance().disconnect(client.getSessionId(),DisconnectReason.Disconnected);
-      logger.debug("Client disconnected - " + sessionInfo);
+      SessionManager.getInstance().disconnect(client.getSessionId(),DisconnectReason.LostConnection);
+      logger.debug("Client disconnected - " + sessionInfo + " throwable: "+ throwable == null ? "null" : throwable.getMessage());
     }
  else {
       SessionManager.getInstance().disconnect(client.getSessionId(),DisconnectReason.LostConnection);
-      logger.info("Connection to client lost - " + sessionInfo);
+      logger.info("Connection to client lost - " + sessionInfo + " throwable: "+ (throwable == null ? "null" : throwable.getMessage()));
     }
   }
 }
