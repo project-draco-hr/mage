@@ -9,5 +9,14 @@
     }
     return false;
   }
+ else   if (groups.length > 2 && groups[2].startsWith("!spellOnStack=")) {
+    String spellNotOnStack=groups[2].substring(14);
+    for (    StackObject stackObject : game.getStack()) {
+      if (stackObject.getStackAbility().toString().equals(spellNotOnStack)) {
+        return false;
+      }
+    }
+    return true;
+  }
   return true;
 }
