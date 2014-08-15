@@ -1,0 +1,25 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Black Knight",1);
+  addCard(Zone.HAND,playerA,"Ephemeral Shields");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Ephemeral Shields","Silvercoat Lion");
+  setChoice(playerA,"Yes");
+  addTarget(playerA,"Silvercoat Lion^Black Knight");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Lightning Bolt","Silvercoat Lion");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertGraveyardCount(playerA,"Ephemeral Shields",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertPermanentCount(playerA,"Black Knight",1);
+  assertTapped("Silvercoat Lion",true);
+  assertTapped("Black Knight",true);
+  for (  Permanent permanent : currentGame.getBattlefield().getAllActivePermanents(new FilterLandPermanent(),playerA.getId(),currentGame)) {
+    Assert.assertTrue(permanent.getName() + " may not be tapped",!permanent.isTapped());
+  }
+}
