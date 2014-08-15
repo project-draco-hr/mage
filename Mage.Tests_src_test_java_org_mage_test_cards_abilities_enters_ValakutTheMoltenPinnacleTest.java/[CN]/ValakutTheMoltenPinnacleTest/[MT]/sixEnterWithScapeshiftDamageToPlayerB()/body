@@ -1,0 +1,15 @@
+{
+  addCard(Zone.LIBRARY,playerA,"Mountain",6);
+  addCard(Zone.BATTLEFIELD,playerA,"Valakut, the Molten Pinnacle");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",6);
+  addCard(Zone.HAND,playerA,"Scapeshift");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Scapeshift");
+  addTarget(playerA,"Forest^Forest^Forest^Forest^Forest^Forest");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Valakut, the Molten Pinnacle",1);
+  assertGraveyardCount(playerA,"Forest",6);
+  assertPermanentCount(playerA,"Mountain",6);
+  assertLife(playerA,20);
+  assertLife(playerB,2);
+}
