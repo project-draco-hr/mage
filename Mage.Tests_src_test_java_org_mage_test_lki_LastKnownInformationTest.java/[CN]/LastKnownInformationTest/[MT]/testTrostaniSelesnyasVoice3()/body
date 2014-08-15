@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Trostani, Selesnya's Voice");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.HAND,playerA,"Giant Growth",1);
+  addCard(Zone.HAND,playerA,"Cloudshift",1);
+  addCard(Zone.HAND,playerA,"Grizzly Bears",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Grizzly Bears");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Giant Growth","Grizzly Bears");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Cloudshift","Grizzly Bears","Giant Growth",StackClause.WHILE_NOT_ON_STACK);
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Grizzly Bears",1);
+  assertLife(playerA,27);
+}
