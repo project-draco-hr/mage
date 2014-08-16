@@ -1,0 +1,11 @@
+{
+  if (GameEvent.EventType.ZONE_CHANGE.equals(event.getType()) && game.getObject(event.getSourceId()) instanceof StackObject && game.getOpponents(this.getControllerId()).contains(game.getControllerId(event.getSourceId()))) {
+    ZoneChangeEvent zce=(ZoneChangeEvent)event;
+    if (Zone.BATTLEFIELD.equals(zce.getFromZone()) && Zone.GRAVEYARD.equals(zce.getToZone())) {
+      Permanent targetCard=zce.getTarget();
+      getEffects().get(0).setTargetPointer(new FixedTarget(targetCard.getId()));
+      return targetCard.getCardType().contains(CardType.LAND) && targetCard.getControllerId().equals(getControllerId());
+    }
+  }
+  return false;
+}
