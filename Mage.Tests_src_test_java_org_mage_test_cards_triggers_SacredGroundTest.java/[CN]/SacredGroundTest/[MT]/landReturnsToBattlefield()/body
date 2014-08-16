@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
+  addCard(Zone.HAND,playerA,"Molten Rain");
+  addCard(Zone.HAND,playerB,"Kabira Crossroads");
+  addCard(Zone.BATTLEFIELD,playerB,"Sacred Ground");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains");
+  playLand(2,PhaseStep.POSTCOMBAT_MAIN,playerB,"Kabira Crossroads");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Molten Rain","Kabira Crossroads");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Molten Rain",1);
+  assertPermanentCount(playerB,"Kabira Crossroads",1);
+  assertLife(playerA,20);
+  assertLife(playerB,22);
+}
