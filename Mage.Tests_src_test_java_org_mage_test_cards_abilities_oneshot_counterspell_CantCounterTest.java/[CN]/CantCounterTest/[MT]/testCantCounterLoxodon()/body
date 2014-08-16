@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.HAND,playerA,"Loxodon Smiter",1);
+  addCard(Zone.HAND,playerB,"Counterspell");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Loxodon Smiter");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Counterspell","Loxodon Smiter","Loxodon Smiter");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Loxodon Smiter",1);
+  assertGraveyardCount(playerB,"Counterspell",1);
+}
