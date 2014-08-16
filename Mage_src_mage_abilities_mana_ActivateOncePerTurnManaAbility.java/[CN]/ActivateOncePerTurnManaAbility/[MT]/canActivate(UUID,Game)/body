@@ -1,11 +1,8 @@
 {
   if (super.canActivate(playerId,game)) {
-    Boolean activated=(Boolean)game.getState().getValue(this.sourceId.toString() + "activated");
-    if (activated == null) {
+    ActivationInfo activationInfo=(ActivationInfo)game.getState().getValue(CardUtil.getCardZoneString("activations",sourceId,game));
+    if (activationInfo == null || activationInfo.turnNum != game.getTurnNum() || activationInfo.activationCounter < 1) {
       return true;
-    }
- else {
-      return !activated;
     }
   }
   return false;

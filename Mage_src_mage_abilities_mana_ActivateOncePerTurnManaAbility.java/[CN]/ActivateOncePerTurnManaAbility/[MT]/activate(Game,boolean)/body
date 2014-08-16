@@ -1,7 +1,20 @@
 {
   if (canActivate(this.controllerId,game)) {
     if (super.activate(game,noMana)) {
-      game.getState().setValue(this.sourceId.toString() + "activated",Boolean.TRUE);
+      ActivationInfo activationInfo=(ActivationInfo)game.getState().getValue(CardUtil.getCardZoneString("activations",sourceId,game));
+      if (activationInfo == null) {
+        activationInfo=new ActivationInfo(game.getTurnNum(),1);
+      }
+ else {
+        if (activationInfo.turnNum != game.getTurnNum()) {
+          activationInfo.turnNum=game.getTurnNum();
+          activationInfo.activationCounter=1;
+        }
+ else {
+          activationInfo.activationCounter++;
+        }
+      }
+      game.getState().setValue(CardUtil.getCardZoneString("activations",sourceId,game),activationInfo);
       return true;
     }
   }

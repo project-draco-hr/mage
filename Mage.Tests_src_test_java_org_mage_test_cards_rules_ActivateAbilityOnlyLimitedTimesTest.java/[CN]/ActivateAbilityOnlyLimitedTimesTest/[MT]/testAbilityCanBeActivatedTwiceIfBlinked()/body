@@ -1,0 +1,16 @@
+{
+  addCard(Zone.HAND,playerA,"Wall of Wood",2);
+  addCard(Zone.HAND,playerA,"Momentary Blink");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Wall of Roots");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Wall of Wood");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Momentary Blink","Wall of Roots","Cast Wall of Wood");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Wall of Wood");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPowerToughness(playerA,"Wall of Roots",0,4);
+  assertHandCount(playerA,"Momentary Blink",0);
+  assertPermanentCount(playerA,"Wall of Wood",2);
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+}
