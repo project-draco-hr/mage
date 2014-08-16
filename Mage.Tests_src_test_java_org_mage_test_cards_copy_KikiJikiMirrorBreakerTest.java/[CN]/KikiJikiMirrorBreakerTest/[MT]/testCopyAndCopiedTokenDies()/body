@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",5);
+  addCard(Zone.BATTLEFIELD,playerA,"Kiki-Jiki, Mirror Breaker",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Voice of Resurgence",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",3);
+  addCard(Zone.HAND,playerB,"Flamebreak");
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Put a token that's a copy of target nonlegendary creature you control onto the battlefield. That token has haste. Sacrifice it at the beginning of the next end step.");
+  castSpell(2,PhaseStep.POSTCOMBAT_MAIN,playerB,"Flamebreak");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,17);
+  assertLife(playerB,17);
+  assertGraveyardCount(playerB,"Flamebreak",1);
+  assertPermanentCount(playerA,"Voice of Resurgence",0);
+  assertGraveyardCount(playerA,"Voice of Resurgence",1);
+  assertPermanentCount(playerA,"Elemental",2);
+}

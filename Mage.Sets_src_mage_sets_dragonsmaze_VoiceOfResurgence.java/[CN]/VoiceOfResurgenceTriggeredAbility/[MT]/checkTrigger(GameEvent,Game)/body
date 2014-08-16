@@ -5,12 +5,9 @@
       return true;
     }
   }
-  if (event.getType() == GameEvent.EventType.ZONE_CHANGE) {
-    if (super.getSourceId().equals(event.getTargetId())) {
-      MageObject before=game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
-      Zone after=game.getState().getZone(event.getTargetId());
-      return before != null && after != null && Zone.GRAVEYARD.match(after);
-    }
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && getSourceId().equals(event.getTargetId())) {
+    ZoneChangeEvent zce=(ZoneChangeEvent)event;
+    return zce.getFromZone().equals(Zone.BATTLEFIELD) && zce.getToZone().equals(Zone.GRAVEYARD);
   }
   return false;
 }
