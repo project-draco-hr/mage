@@ -1,0 +1,19 @@
+{
+  if (player.chooseUse(Outcome.PutCardInPlay,"Search your library for up " + xValue + " creature cards and put them into your hand?",game)) {
+    usingPlayers.add(player);
+    TargetCardInLibrary target=new TargetCardInLibrary(0,xValue,new FilterCreatureCard());
+    if (player.searchLibrary(target,game)) {
+      if (target.getTargets().size() > 0) {
+        Cards cards=new CardsImpl();
+        for (        UUID cardId : (List<UUID>)target.getTargets()) {
+          Card card=player.getLibrary().getCard(cardId,game);
+          if (card != null) {
+            cards.add(card);
+            player.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
+          }
+        }
+        player.revealCards("Weird Harvest",cards,game);
+      }
+    }
+  }
+}
