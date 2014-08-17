@@ -3,7 +3,7 @@
   if (player != null) {
     int x=game.getBattlefield().count(new FilterControlledCreaturePermanent(),source.getSourceId(),source.getControllerId(),game);
     Choice manaChoice=new ChoiceImpl();
-    Set<String> choices=new LinkedHashSet<String>();
+    Set<String> choices=new LinkedHashSet<>();
     choices.add("Red");
     choices.add("Green");
     manaChoice.setChoices(choices);
@@ -15,15 +15,20 @@
           return false;
         }
       }
-      if (manaChoice.getChoice().equals("Green")) {
+      if (manaChoice.getChoice() == null) {
+        return false;
+      }
+switch (manaChoice.getChoice()) {
+case "Green":
         mana.addGreen();
-      }
- else       if (manaChoice.getChoice().equals("Red")) {
-        mana.addRed();
-      }
-      player.getManaPool().addMana(mana,game,source);
-    }
-    return true;
-  }
-  return false;
+      break;
+case "Red":
+    mana.addRed();
+  break;
+}
+player.getManaPool().addMana(mana,game,source);
+}
+return true;
+}
+return false;
 }
