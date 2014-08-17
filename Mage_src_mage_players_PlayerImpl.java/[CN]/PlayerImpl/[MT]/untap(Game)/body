@@ -1,7 +1,7 @@
 {
   HashMap<Entry<RestrictionUntapNotMoreThanEffect,HashSet<Ability>>,Integer> notMoreThanEffectsUsage=new HashMap<>();
   for (  Entry<RestrictionUntapNotMoreThanEffect,HashSet<Ability>> restrictionEffect : game.getContinuousEffects().getApplicableRestrictionUntapNotMoreThanEffects(this,game).entrySet()) {
-    notMoreThanEffectsUsage.put(restrictionEffect,new Integer(restrictionEffect.getKey().getNumber()));
+    notMoreThanEffectsUsage.put(restrictionEffect,restrictionEffect.getKey().getNumber());
   }
   if (!notMoreThanEffectsUsage.isEmpty()) {
     List<Permanent> canBeUntapped=new ArrayList<>();
@@ -19,7 +19,7 @@
     do {
       playerCanceledSelection=false;
       for (      Map.Entry<Entry<RestrictionUntapNotMoreThanEffect,HashSet<Ability>>,Integer> handledEntry : notMoreThanEffectsUsage.entrySet()) {
-        int numberToUntap=handledEntry.getValue().intValue();
+        int numberToUntap=handledEntry.getValue();
         if (numberToUntap > 0) {
           List<Permanent> leftForUntap=getPermanentsThatCanBeUntapped(game,canBeUntapped,handledEntry.getKey().getKey(),notMoreThanEffectsUsage);
           FilterControlledPermanent filter=handledEntry.getKey().getKey().getFilter().copy();
@@ -48,8 +48,8 @@
                 numberToUntap--;
                 filter.add(Predicates.not(new PermanentIdPredicate(selectedPermanent.getId())));
                 for (                Entry<Entry<RestrictionUntapNotMoreThanEffect,HashSet<Ability>>,Integer> notMoreThanEffect : notMoreThanEffectsUsage.entrySet()) {
-                  if (notMoreThanEffect.getValue().intValue() > 0 && notMoreThanEffect.getKey().getKey().getFilter().match(selectedPermanent,game)) {
-                    notMoreThanEffect.setValue(new Integer(notMoreThanEffect.getValue().intValue() - 1));
+                  if (notMoreThanEffect.getValue() > 0 && notMoreThanEffect.getKey().getKey().getFilter().match(selectedPermanent,game)) {
+                    notMoreThanEffect.setValue(notMoreThanEffect.getValue() - 1);
                   }
                 }
                 leftForUntap=getPermanentsThatCanBeUntapped(game,canBeUntapped,handledEntry.getKey().getKey(),notMoreThanEffectsUsage);

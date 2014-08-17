@@ -7,15 +7,15 @@
   int deduction=1;
   if (freeMulligans > 0) {
     if (usedFreeMulligans != null && usedFreeMulligans.containsKey(player.getId())) {
-      int used=usedFreeMulligans.get(player.getId()).intValue();
+      int used=usedFreeMulligans.get(player.getId());
       if (used < freeMulligans) {
         deduction=0;
-        usedFreeMulligans.put(player.getId(),new Integer(used + 1));
+        usedFreeMulligans.put(player.getId(),used + 1);
       }
     }
  else {
       deduction=0;
-      usedFreeMulligans.put(player.getId(),new Integer(1));
+      usedFreeMulligans.put(player.getId(),1);
     }
   }
   fireInformEvent(new StringBuilder(player.getName()).append(" mulligans").append(deduction == 0 ? " for free and draws " : " down to ").append(Integer.toString(numCards - deduction)).append(numCards - deduction == 1 ? " card" : " cards").toString());

@@ -1,13 +1,17 @@
 {
-  log.debug("player lost -> start: " + this.getName());
+  log.debug(this.getName() + " has lost gameId: " + game.getId());
   if (canLose(game)) {
-    this.loses=true;
     if (!this.wins) {
+      this.loses=true;
       game.fireEvent(GameEvent.getEvent(GameEvent.EventType.LOST,null,null,playerId));
       game.informPlayers(new StringBuilder(this.getName()).append(" has lost the game.").toString());
     }
  else {
-      log.debug("player.lost -> stop setting lost because he already has won!: " + this.getName());
+      log.debug(this.getName() + " has already won - stop lost");
+    }
+    if (!hasLeft()) {
+      log.debug("Game over playerId: " + playerId);
+      game.gameOver(playerId);
     }
   }
 }
