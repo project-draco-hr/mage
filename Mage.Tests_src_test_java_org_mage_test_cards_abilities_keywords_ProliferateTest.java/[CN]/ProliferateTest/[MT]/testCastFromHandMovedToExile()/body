@@ -1,0 +1,12 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Chandra, Pyromaster");
+  addCard(Zone.HAND,playerA,"Volt Charge");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Volt Charge",playerB);
+  addTarget(playerA,"Chandra, Pyromaster");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerB,17);
+  assertGraveyardCount(playerA,"Volt Charge",1);
+  assertCounterCount("Chandra, Pyromaster",CounterType.LOYALTY,5);
+}
