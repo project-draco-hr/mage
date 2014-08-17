@@ -1,7 +1,8 @@
 {
   int damage=0;
   for (  UUID opponentId : game.getOpponents(source.getControllerId())) {
-    damage+=game.getPlayer(opponentId).damage(4,source.getSourceId(),game,false,true);
+    Player opponent=game.getPlayer(opponentId);
+    damage+=opponent.loseLife(4,game);
   }
   game.getPlayer(source.getControllerId()).gainLife(damage,game);
   return true;
