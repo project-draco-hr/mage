@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Ashiok, Nightmare Weaver");
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain");
+  addCard(Zone.HAND,playerA,"Lightning Bolt");
+  addCard(Zone.LIBRARY,playerB,"Prophet of Kruphix");
+  skipInitShuffling();
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"+2: Exile the top three cards of target opponent's library.",playerB);
+  activateAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"-X: Put a creature card with converted mana cost X exiled with {this} onto the battlefield under your control. That creature is a Nightmare in addition to its other types.");
+  setChoice(playerA,"X=5");
+  addTarget(playerA,"Prophet of Kruphix");
+  castSpell(3,PhaseStep.POSTCOMBAT_MAIN,playerA,"Lightning Bolt",playerB);
+  setStopAt(4,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,17);
+  assertExileCount(playerB,2);
+  assertPermanentCount(playerA,"Prophet of Kruphix",1);
+  assertGraveyardCount(playerA,"Ashiok, Nightmare Weaver",1);
+  assertTapped("Mountain",false);
+}
