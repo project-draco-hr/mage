@@ -1,0 +1,23 @@
+{
+  if (combatGroup.getAttackers().size() == 1) {
+    Permanent attacker=game.getPermanent(combatGroup.getAttackers().get(0));
+    boolean attackerDeathtouch=attacker.getAbilities().containsKey(DeathtouchAbility.getInstance().getId());
+    List<Permanent> blockerAlreadySet=getAlreadyBlockingPermanents(blockerOrder,game);
+    int powerAlreadyNeeded=getPowerAlreadyNeeded(blockerAlreadySet,attackerDeathtouch);
+    int powerLeftToKill=attacker.getPower().getValue() - powerAlreadyNeeded;
+    if (powerLeftToKill <= 0) {
+      return blockers.iterator().next().getId();
+    }
+    for (    Permanent blocker : blockers) {
+      if (attackerDeathtouch || powerLeftToKill >= blocker.getToughness().getValue()) {
+        if (!blocker.getAbilities().containsKey(IndestructibleAbility.getInstance().getId())) {
+          return blocker.getId();
+        }
+      }
+    }
+    return blockers.iterator().next().getId();
+  }
+ else {
+    return blockers.iterator().next().getId();
+  }
+}
