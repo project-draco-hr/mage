@@ -1,20 +1,23 @@
 {
   Permanent permanent=(Permanent)game.getLastKnownInformation(targetPointer.getFirst(game,source),Zone.BATTLEFIELD);
+  if (permanent == null) {
+    return false;
+  }
   Player owner=game.getPlayer(permanent.getOwnerId());
-  if (owner == null) {
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (owner == null || sourceObject == null) {
     return false;
   }
   if (owner.getLibrary().size() > 0) {
     Card card=owner.getLibrary().getFromTop(game);
-    Cards cards=new CardsImpl();
-    cards.add(card);
-    owner.revealCards(card.getName(),cards,game);
     if (card != null) {
+      Cards cards=new CardsImpl();
+      cards.add(card);
+      owner.revealCards(sourceObject.getLogName(),cards,game);
       if (new FilterPermanentCard().match(card,game)) {
-        card=owner.getLibrary().removeFromTop(game);
-        card.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),owner.getId());
+        owner.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
       }
     }
   }
-  return false;
+  return true;
 }

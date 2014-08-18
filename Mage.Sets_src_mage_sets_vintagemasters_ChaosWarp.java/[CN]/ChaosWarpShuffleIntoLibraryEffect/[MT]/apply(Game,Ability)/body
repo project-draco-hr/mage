@@ -1,8 +1,9 @@
 {
   Permanent permanent=game.getPermanent(targetPointer.getFirst(game,source));
-  Player owner=game.getPlayer(permanent.getOwnerId());
-  if (permanent != null && owner != null) {
-    if (owner.moveCardToLibraryWithInfo(permanent,source.getSourceId(),game,Zone.BATTLEFIELD,true,true)) {
+  if (permanent != null) {
+    Player owner=game.getPlayer(permanent.getOwnerId());
+    if (owner != null) {
+      owner.moveCardToLibraryWithInfo(permanent,source.getSourceId(),game,Zone.BATTLEFIELD,true,true);
       owner.shuffleLibrary(game);
       return true;
     }
