@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Omniscience");
+  addCard(Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.HAND,playerA,"Fire // Ice");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Fire",playerB);
+  setChoice(playerA,"Yes");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Fire // Ice",1);
+  assertLife(playerA,20);
+  assertLife(playerB,18);
+  assertTapped("Island",false);
+  assertTapped("Mountain",false);
+}

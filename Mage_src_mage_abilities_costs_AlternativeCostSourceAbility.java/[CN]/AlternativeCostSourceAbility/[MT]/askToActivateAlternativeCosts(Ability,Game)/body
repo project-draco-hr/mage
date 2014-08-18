@@ -1,5 +1,11 @@
 {
-  if (ability instanceof SpellAbility) {
+  if (ability != null && AbilityType.SPELL.equals(ability.getAbilityType())) {
+    if (filter != null) {
+      Card card=game.getCard(ability.getSourceId());
+      if (!filter.match(card,ability.getSourceId(),ability.getControllerId(),game)) {
+        return false;
+      }
+    }
     Player player=game.getPlayer(ability.getControllerId());
     if (player != null) {
       if (alternateCosts.canPay(ability,ability.getSourceId(),ability.getControllerId(),game) && player.chooseUse(Outcome.Detriment,alternateCosts.isEmpty() ? "Cast without paying its mana cost?" : "Pay alternative costs? (" + alternateCosts.getText() + ")",game)) {
