@@ -3,13 +3,13 @@
   try {
     URL serverListURL=new URL("http://download.magefree.com/files/server-list.txt");
     in=new BufferedReader(new InputStreamReader(serverListURL.openStream()));
-    List<String> servers=new ArrayList<String>();
+    List<String> servers=new ArrayList<>();
     String inputLine;
     while ((inputLine=in.readLine()) != null) {
       System.out.println("Found server: " + inputLine);
       servers.add(inputLine);
     }
-    if (servers.size() == 0) {
+    if (servers.isEmpty()) {
       JOptionPane.showMessageDialog(null,"Couldn't find any server.");
       return;
     }
@@ -30,10 +30,12 @@
     logger.error(ex,ex);
   }
  finally {
-    if (in != null)     try {
-      in.close();
-    }
- catch (    Exception e) {
+    if (in != null) {
+      try {
+        in.close();
+      }
+ catch (      Exception e) {
+      }
     }
   }
 }
