@@ -14,6 +14,9 @@
       Player player;
       while (!isPaused() && !gameOver(null)) {
         try {
+          if (bookmark == 0) {
+            bookmark=bookmarkState();
+          }
           player=getPlayer(state.getPlayerList().get());
           state.setPriorityPlayerId(player.getId());
           while (!player.isPassed() && player.isInGame() && !isPaused()&& !gameOver(null)) {
@@ -58,12 +61,12 @@
           logger.fatal("Game exception ",ex);
           ex.printStackTrace();
           this.fireErrorEvent("Game exception occurred: ",ex);
+          restoreState(bookmark);
           bookmark=0;
           continue;
         }
         state.getPlayerList().getNext();
       }
-      bookmark=0;
     }
   }
  catch (  Exception ex) {
@@ -72,5 +75,6 @@
   }
  finally {
     resetLKI();
+    clearAllBookmarks();
   }
 }
