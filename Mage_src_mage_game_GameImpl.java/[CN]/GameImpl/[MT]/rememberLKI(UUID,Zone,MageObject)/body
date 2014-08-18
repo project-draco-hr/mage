@@ -19,5 +19,16 @@
       newMap.put(objectId,copy);
       shortLivingLKI.put(zone,newMap);
     }
+    if (object instanceof Permanent) {
+      Map<Integer,MageObject> lkiExtendedMap=lkiExtended.get(objectId);
+      if (lkiExtendedMap != null) {
+        lkiExtendedMap.put(((Permanent)object).getZoneChangeCounter(),copy);
+      }
+ else {
+        lkiExtendedMap=new HashMap<>();
+        lkiExtendedMap.put(((Permanent)object).getZoneChangeCounter(),copy);
+        lkiExtended.put(objectId,lkiExtendedMap);
+      }
+    }
   }
 }
