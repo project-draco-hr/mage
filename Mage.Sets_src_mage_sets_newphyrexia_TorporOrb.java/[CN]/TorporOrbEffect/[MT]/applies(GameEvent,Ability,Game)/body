@@ -1,8 +1,11 @@
 {
   if (event.getType() == GameEvent.EventType.ENTERS_THE_BATTLEFIELD) {
-    Permanent p=game.getPermanent(event.getTargetId());
-    if (p != null && p.getCardType().contains(CardType.CREATURE)) {
-      return true;
+    Ability ability=(Ability)getValue("targetAbility");
+    if (ability != null && ability instanceof TriggeredAbility) {
+      Permanent p=game.getPermanent(event.getTargetId());
+      if (p != null && p.getCardType().contains(CardType.CREATURE)) {
+        return true;
+      }
     }
   }
   return false;
