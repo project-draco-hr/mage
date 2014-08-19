@@ -1,0 +1,18 @@
+{
+  boolean applies=false;
+  if (EventType.SEARCH_LIBRARY.equals(event.getType())) {
+    applies=true;
+    Permanent permanent=game.getPermanent(source.getSourceId());
+    String key=permanent.getId() + keyString;
+    Map.Entry<Long,Set<UUID>> turnIgnoringPlayersPair=(Map.Entry<Long,Set<UUID>>)game.getState().getValue(key);
+    if (turnIgnoringPlayersPair != null) {
+      long zoneChangeCount=permanent.getZoneChangeCounter();
+      long turnNum=game.getTurnNum();
+      Long activationState=zoneChangeCount << 32 | turnNum & 0xFFFFFFFFL;
+      if (activationState.equals(turnIgnoringPlayersPair.getKey())) {
+        applies=!turnIgnoringPlayersPair.getValue().contains(event.getPlayerId());
+      }
+    }
+  }
+  return applies;
+}
