@@ -10,7 +10,9 @@
     if (player != null) {
       if (alternateCosts.canPay(ability,ability.getSourceId(),ability.getControllerId(),game) && player.chooseUse(Outcome.Detriment,alternateCosts.isEmpty() ? "Cast without paying its mana cost?" : "Pay alternative costs? (" + alternateCosts.getText() + ")",game)) {
         ability.getManaCostsToPay().clear();
-        ability.getCosts().clear();
+        if (!onlyMana) {
+          ability.getCosts().clear();
+        }
         for (        Cost cost : alternateCosts) {
           AlternativeCost2 alternateCost=(AlternativeCost2)cost;
           alternateCost.activate();
