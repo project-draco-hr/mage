@@ -25,19 +25,18 @@ case DUELING:
       break;
   }
   if (!isConnected()) {
-    table.getTournament().getPlayer(tableEntry.getKey()).setDisconnectInfo(disconnectInfo);
+    tournamentPlayer.setDisconnectInfo(disconnectInfo);
   }
  else {
-    table.getTournament().getPlayer(tableEntry.getKey()).setDisconnectInfo("");
+    tournamentPlayer.setDisconnectInfo("");
   }
 }
  else {
-  tablesToRemove.add(tableEntry.getKey());
-  logger.error(getName() + " tournament player missing - tournamentId:" + table.getId(),null);
+  logger.debug(getName() + " tournament player missing - tableId:" + table.getId(),null);
 }
 }
  else {
-logger.error(getName() + " tournament key missing - tournamentId: " + table.getId(),null);
+logger.error(getName() + " tournament key missing - tableId: " + table.getId(),null);
 }
 }
  else {
@@ -52,12 +51,6 @@ break;
 }
 }
 }
-}
-if (!tablesToRemove.isEmpty()) {
-for (UUID tableKey : tablesToRemove) {
-tables.remove(tableKey);
-}
-tablesToRemove.clear();
 }
 if (match > 0) {
 sb.append("Match: ").append(match).append(" ");
