@@ -1,6 +1,6 @@
 {
   try {
-    get();
+    get(CONNECTION_TIMEOUT_MS,TimeUnit.MILLISECONDS);
     setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     if (result) {
       lblStatus.setText("");
@@ -20,9 +20,12 @@ catch (  ExecutionException ex) {
 catch (  CancellationException ex) {
     logger.info("Connect was canceled");
     lblStatus.setText("Connect was canceled");
-    MageFrame.stopConnecting();
+  }
+catch (  TimeoutException ex) {
+    logger.fatal("Connection timeout: ",ex);
   }
  finally {
+    MageFrame.stopConnecting();
     btnConnect.setEnabled(true);
   }
 }
