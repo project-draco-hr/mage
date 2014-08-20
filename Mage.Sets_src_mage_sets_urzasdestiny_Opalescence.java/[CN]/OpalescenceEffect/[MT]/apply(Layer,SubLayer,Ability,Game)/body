@@ -3,9 +3,9 @@ switch (layer) {
 case TypeChangingEffects_4:
     if (sublayer == SubLayer.NA) {
       objects.clear();
-      for (      Permanent permanent : game.getBattlefield().getAllActivePermanents(filter,game)) {
-        if (permanent != null && !permanent.getId().equals(source.getSourceId())) {
-          objects.add(permanent.getId());
+      for (      Permanent permanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
+        objects.add(permanent.getId());
+        if (!permanent.getCardType().contains(CardType.CREATURE)) {
           permanent.getCardType().add(CardType.CREATURE);
         }
       }
