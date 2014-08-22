@@ -1,0 +1,14 @@
+{
+  UUID targetId=getTargetPointer().getFirst(game,source);
+  if (targetId != null) {
+    Permanent permanent=game.getPermanentOrLKIBattlefield(targetId);
+    if (permanent != null) {
+      Player controller=game.getPlayer(permanent.getControllerId());
+      if (controller != null) {
+        controller.damage(3,source.getSourceId(),game,false,false);
+        return true;
+      }
+    }
+  }
+  return false;
+}
