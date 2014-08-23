@@ -1,7 +1,8 @@
 {
-  if (event.getType() == EventType.DAMAGED_CREATURE) {
-    if (sourceId.equals(event.getSourceId()) && !damagedCreatures.contains(event.getTargetId())) {
-      damagedCreatures.add(event.getTargetId());
+  if (event.getType() == EventType.DAMAGED_CREATURE && sourceId.equals(event.getSourceId())) {
+    MageObjectReference mor=new MageObjectReference(event.getTargetId(),game);
+    if (!damagedCreatures.contains(mor)) {
+      damagedCreatures.add(mor);
     }
   }
 }

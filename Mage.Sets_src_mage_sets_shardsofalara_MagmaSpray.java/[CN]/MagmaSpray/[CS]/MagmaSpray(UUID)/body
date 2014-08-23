@@ -4,6 +4,7 @@
   this.color.setRed(true);
   this.getSpellAbility().addEffect(new DamageTargetEffect(2));
   this.getSpellAbility().addTarget(new TargetCreaturePermanent());
-  this.getSpellAbility().addEffect(new MagmaSprayEffect());
-  this.addWatcher(new DamagedByWatcher());
+  Effect effect=new DealtDamageToCreatureBySourceDies(this,Duration.EndOfTurn);
+  effect.setText("If that creature would die this turn, exile it instead");
+  this.getSpellAbility().addEffect(effect);
 }

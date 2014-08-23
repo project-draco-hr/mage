@@ -3,7 +3,8 @@
   this.expansionSetCode="CHK";
   Ability ability=new ActivateAsSorceryActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new TapSourceCost());
   ability.addTarget(new TargetCreaturePermanent(filter));
-  ability.addEffect(new NineRingedBoEffect());
+  Effect effect=new DealtDamageToCreatureBySourceDies(this,Duration.EndOfTurn);
+  effect.setText("If that creature would die this turn, exile it instead");
+  ability.addEffect(effect);
   this.addAbility(ability);
-  this.addWatcher(new DamagedByWatcher());
 }

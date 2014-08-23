@@ -1,8 +1,11 @@
 {
-  if (event.getType() == EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).isDiesEvent()) {
-    DamagedByEnchantedWatcher watcher=(DamagedByEnchantedWatcher)game.getState().getWatchers().get("DamagedByEnchantedWatcher",source.getSourceId());
-    if (watcher != null) {
-      return watcher.damagedCreatures.contains(event.getTargetId());
+  if (event.getType() == EventType.ZONE_CHANGE) {
+    ZoneChangeEvent zce=(ZoneChangeEvent)event;
+    if (zce.isDiesEvent()) {
+      DamagedByEnchantedWatcher watcher=(DamagedByEnchantedWatcher)game.getState().getWatchers().get("DamagedByEnchantedWatcher",source.getSourceId());
+      if (watcher != null) {
+        return watcher.wasDamaged(zce.getTarget());
+      }
     }
   }
   return false;
