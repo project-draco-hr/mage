@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.HAND,playerA,"Smallpox");
+  addCard(Zone.HAND,playerB,"Kabira Crossroads");
+  addCard(Zone.BATTLEFIELD,playerB,"Sacred Ground");
+  playLand(2,PhaseStep.POSTCOMBAT_MAIN,playerB,"Kabira Crossroads");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Smallpox");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Smallpox",1);
+  assertPermanentCount(playerB,"Kabira Crossroads",1);
+  assertLife(playerA,19);
+  assertLife(playerB,23);
+}
