@@ -30,9 +30,20 @@
     @Override public void actionPerformed(    java.awt.event.ActionEvent evt){
       if (linkLeft != null) {
 {
-          setState("",false,"",false);
-          setSpecial("",false);
-          linkLeft.doClick();
+          Thread worker=new Thread(){
+            @Override public void run(){
+              SwingUtilities.invokeLater(new Runnable(){
+                @Override public void run(){
+                  setState("",false,"",false);
+                  setSpecial("",false);
+                  linkLeft.doClick();
+                }
+              }
+);
+            }
+          }
+;
+          worker.start();
         }
       }
     }
@@ -41,11 +52,20 @@
   btnRight.addActionListener(new java.awt.event.ActionListener(){
     @Override public void actionPerformed(    java.awt.event.ActionEvent evt){
       if (linkRight != null) {
-{
-          setState("",false,"",false);
-          setSpecial("",false);
-          linkRight.doClick();
+        Thread worker=new Thread(){
+          @Override public void run(){
+            SwingUtilities.invokeLater(new Runnable(){
+              @Override public void run(){
+                setState("",false,"",false);
+                setSpecial("",false);
+                linkRight.doClick();
+              }
+            }
+);
+          }
         }
+;
+        worker.start();
       }
     }
   }
@@ -54,9 +74,20 @@
     @Override public void actionPerformed(    java.awt.event.ActionEvent evt){
       if (linkSpecial != null) {
 {
-          setState("",false,"",false);
-          setSpecial("",false);
-          linkSpecial.doClick();
+          Thread worker=new Thread(){
+            @Override public void run(){
+              SwingUtilities.invokeLater(new Runnable(){
+                @Override public void run(){
+                  setState("",false,"",false);
+                  setSpecial("",false);
+                  linkSpecial.doClick();
+                }
+              }
+);
+            }
+          }
+;
+          worker.start();
         }
       }
     }
@@ -66,7 +97,18 @@
     @Override public void actionPerformed(    java.awt.event.ActionEvent evt){
       if (linkUndo != null) {
 {
-          linkUndo.doClick();
+          Thread worker=new Thread(){
+            @Override public void run(){
+              SwingUtilities.invokeLater(new Runnable(){
+                @Override public void run(){
+                  linkUndo.doClick();
+                }
+              }
+);
+            }
+          }
+;
+          worker.start();
         }
       }
     }
