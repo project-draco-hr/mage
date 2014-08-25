@@ -1,0 +1,11 @@
+{
+  Player player=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (player != null) {
+    for (    Permanent creature : game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),player.getId(),game)) {
+      creature.tap(game);
+      game.addEffect(new PollenLullabyEffect2(creature.getId()),source);
+    }
+    return true;
+  }
+  return false;
+}
