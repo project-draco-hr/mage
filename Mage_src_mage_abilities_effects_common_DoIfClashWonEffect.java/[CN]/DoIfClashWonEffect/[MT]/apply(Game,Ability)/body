@@ -1,0 +1,34 @@
+{
+  Player player=getPayingPlayer(game,source);
+  MageObject mageObject=game.getObject(source.getSourceId());
+  if (player != null && mageObject != null) {
+    String message=null;
+    if (chooseUseText == null) {
+      message=chooseUseText;
+      message=CardUtil.replaceSourceName(message,mageObject.getName());
+    }
+    if (chooseUseText == null || player.chooseUse(executingEffect.getOutcome(),message,game)) {
+      if (ClashEffect.getInstance().apply(game,source)) {
+        if (setTargetPointerToClashedOpponent) {
+          Object opponent=getValue("clashOpponent");
+          if (opponent instanceof Player) {
+            executingEffect.setTargetPointer(new FixedTarget(((Player)opponent).getId()));
+          }
+        }
+ else {
+          executingEffect.setTargetPointer(this.targetPointer);
+        }
+        if (executingEffect instanceof OneShotEffect) {
+          if (!(executingEffect instanceof PostResolveEffect)) {
+            return executingEffect.apply(game,source);
+          }
+        }
+ else {
+          game.addEffect((ContinuousEffect)executingEffect,source);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
