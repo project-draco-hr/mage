@@ -3,7 +3,9 @@
   if (player != null) {
     for (    Permanent creature : game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),player.getId(),game)) {
       creature.tap(game);
-      game.addEffect(new PollenLullabyEffect2(creature.getId()),source);
+      ContinuousEffect effect=new SkipNextUntapTargetEffect("This creature");
+      effect.setTargetPointer(new FixedTarget(creature.getId()));
+      game.addEffect(effect,source);
     }
     return true;
   }
