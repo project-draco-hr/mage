@@ -1,13 +1,13 @@
 {
-  boolean result=false;
   Spell spell=game.getStack().getSpell(getTargetPointer().getFirst(game,source));
   if (spell != null) {
-    result=game.getStack().counter(getTargetPointer().getFirst(game,source),source.getSourceId(),game);
+    game.getStack().counter(getTargetPointer().getFirst(game,source),source.getSourceId(),game);
     int mana=spell.getConvertedManaCost();
-    AtTheBeginOfPreCombatMainDelayedTriggeredAbility delayedAbility=new AtTheBeginOfPreCombatMainDelayedTriggeredAbility(new PlasmCaptureManaEffect(mana),TargetController.YOU);
+    AtTheBeginOMainPhaseDelayedTriggeredAbility delayedAbility=new AtTheBeginOMainPhaseDelayedTriggeredAbility(new PlasmCaptureManaEffect(mana),TargetController.YOU,PhaseSelection.NEXT_PRECOMBAT_MAIN);
     delayedAbility.setSourceId(source.getSourceId());
     delayedAbility.setControllerId(source.getControllerId());
     game.addDelayedTriggeredAbility(delayedAbility);
+    return true;
   }
-  return result;
+  return false;
 }

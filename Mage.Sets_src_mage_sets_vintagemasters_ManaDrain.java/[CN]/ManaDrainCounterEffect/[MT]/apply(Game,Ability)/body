@@ -1,0 +1,15 @@
+{
+  Spell spell=game.getStack().getSpell(getTargetPointer().getFirst(game,source));
+  if (spell != null) {
+    game.getStack().counter(getTargetPointer().getFirst(game,source),source.getSourceId(),game);
+    int cmc=spell.getConvertedManaCost();
+    Effect effect=new AddManaToManaPoolEffect(new Mana(0,0,0,0,0,cmc,0),"your");
+    effect.setTargetPointer(new FixedTarget(source.getControllerId()));
+    AtTheBeginOMainPhaseDelayedTriggeredAbility delayedAbility=new AtTheBeginOMainPhaseDelayedTriggeredAbility(effect,TargetController.YOU,PhaseSelection.NEXT_MAIN);
+    delayedAbility.setSourceId(source.getSourceId());
+    delayedAbility.setControllerId(source.getControllerId());
+    game.addDelayedTriggeredAbility(delayedAbility);
+    return true;
+  }
+  return false;
+}

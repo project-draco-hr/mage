@@ -1,0 +1,25 @@
+{
+  UUID objectId=source.getFirstTarget();
+  UUID sourceId=source.getSourceId();
+  StackObject stackObject=game.getStack().getStackObject(objectId);
+  MageObject sourceObject=game.getObject(sourceId);
+  if (stackObject != null && sourceObject != null) {
+    if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.COUNTER,objectId,sourceId,stackObject.getControllerId()))) {
+      if (stackObject instanceof Spell) {
+        game.rememberLKI(objectId,Zone.STACK,(Spell)stackObject);
+      }
+      ReplacementEffectImpl effect=new SpellCrumpleReplacementEffect();
+      effect.setTargetPointer(new FixedTarget(stackObject.getId()));
+      game.addEffect(effect,source);
+      game.informPlayers(new StringBuilder(stackObject.getName()).append(" is countered by ").append(sourceObject.getLogName()).toString());
+      game.getStack().remove(stackObject);
+      stackObject.counter(sourceId,game);
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.COUNTERED,objectId,sourceId,stackObject.getControllerId()));
+    }
+ else {
+      game.informPlayers(new StringBuilder(stackObject.getName()).append(" could not be countered by ").append(sourceObject.getLogName()).toString());
+    }
+    return true;
+  }
+  return false;
+}

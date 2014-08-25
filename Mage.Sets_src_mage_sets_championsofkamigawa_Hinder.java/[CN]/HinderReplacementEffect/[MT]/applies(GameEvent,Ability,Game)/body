@@ -1,0 +1,9 @@
+{
+  if (event.getType() == EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).getToZone().equals(Zone.GRAVEYARD)) {
+    MageObject mageObject=game.getLastKnownInformation(getTargetPointer().getFirst(game,source),Zone.STACK);
+    if (mageObject instanceof Spell) {
+      return ((Spell)mageObject).getSourceId().equals(event.getTargetId());
+    }
+  }
+  return false;
+}

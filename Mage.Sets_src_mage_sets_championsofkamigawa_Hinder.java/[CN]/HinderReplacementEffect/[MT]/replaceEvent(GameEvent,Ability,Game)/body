@@ -1,0 +1,15 @@
+{
+  MageObject targetObject=game.getObject(event.getTargetId());
+  if (targetObject instanceof Card) {
+    Card card=(Card)targetObject;
+    Player player=game.getPlayer(source.getControllerId());
+    if (player != null) {
+      boolean top=player.chooseUse(Outcome.Neutral,"Put " + card.getName() + " on top of the library? Otherwise it will be put on the bottom.",game);
+      if (card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,top,event.getAppliedEffects())) {
+        game.informPlayers(player.getName() + " has put " + card.getName()+ " on "+ (top ? "top" : "the bottom")+ " of the library.");
+      }
+      return true;
+    }
+  }
+  return false;
+}
