@@ -1,0 +1,40 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  Permanent target=game.getPermanent(source.getFirstTarget());
+  List<ObjectColor> chosenColors=new ArrayList<>();
+  if (you != null && target != null) {
+    for (int i=0; i < 5; i++) {
+      if (!you.chooseUse(Outcome.Neutral,"Do you wish to choose another color?",game)) {
+        break;
+      }
+      ChoiceColor choiceColor=new ChoiceColor();
+      you.choose(Outcome.Benefit,choiceColor,game);
+      if (!you.isInGame()) {
+        return false;
+      }
+      game.informPlayers(target.getName() + ": " + you.getName()+ " has chosen "+ choiceColor.getChoice());
+      if (choiceColor.getColor().isBlack()) {
+        chosenColors.add(ObjectColor.BLACK);
+      }
+ else       if (choiceColor.getColor().isBlue()) {
+        chosenColors.add(ObjectColor.BLUE);
+      }
+ else       if (choiceColor.getColor().isRed()) {
+        chosenColors.add(ObjectColor.RED);
+      }
+ else       if (choiceColor.getColor().isGreen()) {
+        chosenColors.add(ObjectColor.GREEN);
+      }
+ else       if (choiceColor.getColor().isWhite()) {
+        chosenColors.add(ObjectColor.WHITE);
+      }
+    }
+    for (    ObjectColor color : chosenColors) {
+      ContinuousEffect effect=new SetCardColorTargetEffect(color,Duration.EndOfTurn,"is " + color);
+      effect.setTargetPointer(new FixedTarget(source.getFirstTarget()));
+      game.addEffect(effect,source);
+    }
+    return true;
+  }
+  return false;
+}
