@@ -1,0 +1,11 @@
+{
+  if (resource.getError() != DomainErrors.Errors.STATUS_OK.getCode()) {
+    JSONObject response=ResponseBuilder.build(resource.getError());
+    response.put("message",resource.getErrorMessage());
+    return response;
+  }
+ else {
+    JSONObject json=resource.getJSONBody();
+    return ResponseBuilder.build(DomainErrors.Errors.STATUS_OK.getCode(),resource.getName(),json);
+  }
+}

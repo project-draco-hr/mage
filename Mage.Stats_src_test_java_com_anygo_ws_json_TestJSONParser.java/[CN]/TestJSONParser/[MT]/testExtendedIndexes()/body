@@ -1,0 +1,19 @@
+{
+  JSONParser parser=new JSONParser();
+  parser.parseJSON("{\"test\" : [1,2,3,4,5]}");
+  Assert.assertEquals(1,parser.getInt("test[].$first"));
+  Assert.assertEquals(2,parser.getInt("test[].$second"));
+  Assert.assertEquals(3,parser.getInt("test[].$third"));
+  Assert.assertEquals(4,parser.getInt("test[].$fourth"));
+  Assert.assertEquals(5,parser.getInt("test[].$fifth"));
+  parser=new JSONParser();
+  parser.parseJSON("{\"test\" : [{1:1},{2:2},{3:3},{4:4},{5:5}]}");
+  Assert.assertEquals(1,parser.getInt("test[].$first.1"));
+  Assert.assertEquals(2,parser.getInt("test[].$second.2"));
+  Assert.assertEquals(3,parser.getInt("test[].$third.3"));
+  Assert.assertEquals(4,parser.getInt("test[].$fourth.4"));
+  Assert.assertEquals(5,parser.getInt("test[].$fifth.5"));
+  parser=new JSONParser();
+  parser.parseJSON("{\"contacts\": {\"phones\": [\n" + "   {\"phone\": \"100000\"},\n" + "   {\"phone\": \"+7 999 1234567\"}\n"+ "  ]}}");
+  Assert.assertEquals("100000",parser.getString("contacts.phones[].$first.phone"));
+}

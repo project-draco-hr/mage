@@ -1,0 +1,8 @@
+{
+  XMageStatsService xMageStatsService=new XMageStatsService();
+  Response response=xMageStatsService.getAllStats();
+  JSONParser parser=new JSONParser();
+  parser.parseJSON((String)response.getEntity());
+  Assert.assertEquals(DomainErrors.Errors.STATUS_OK.getCode(),parser.getInt("code"));
+  System.out.println("response = " + response.getEntity().toString());
+}

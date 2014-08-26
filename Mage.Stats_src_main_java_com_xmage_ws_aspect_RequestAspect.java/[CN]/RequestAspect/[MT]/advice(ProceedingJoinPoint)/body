@@ -1,0 +1,14 @@
+{
+  try {
+    String ip=IPHolderUtil.getRememberedIP();
+    String userAgent=IPHolderUtil.getRememberedUserAgent();
+    logger.info("ip: " + ip + ", user-agent: "+ userAgent);
+    return pjp.proceed();
+  }
+ catch (  Exception e) {
+    logger.error("Error: ",e);
+  }
+  Resource resource=new ErrorResource(DomainErrors.Errors.STATUS_SERVER_ERROR,"server_error");
+  JSONObject serverError=ResponseBuilder.build(resource);
+  return Response.status(200).entity(serverError.toJSONString()).build();
+}

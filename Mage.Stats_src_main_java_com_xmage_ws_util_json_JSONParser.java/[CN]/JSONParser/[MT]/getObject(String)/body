@@ -1,0 +1,76 @@
+{
+  this.hitCache=false;
+  if (cache.containsKey(path)) {
+    this.hitCache=true;
+    return cache.get(path);
+  }
+  String[] params=path.split("\\.");
+  JSONObject json=this.root;
+  JSONArray jsonArray=null;
+  String currentPath="";
+  for (int i=0; i < params.length - 1; i++) {
+    String param=params[i];
+    if (cachePolicy.equals(CachePolicy.CACHE_ALL_LEVELS)) {
+      if (!currentPath.isEmpty()) {
+        currentPath+=".";
+      }
+      currentPath+=param;
+    }
+    if (param.startsWith("$")) {
+      if (jsonArray == null) {
+        throw new JSONOperationErrorException("Not illegal syntax at this place: " + param);
+      }
+      int index=getIndex(param);
+      json=(JSONObject)jsonArray.get(index);
+      jsonArray=null;
+    }
+ else     if (param.contains("[")) {
+      int find=param.indexOf("[");
+      String newParam=param.substring(0,find);
+      String s=param.substring(find + 1,param.indexOf("]"));
+      if (s.isEmpty()) {
+        jsonArray=(JSONArray)json.get(newParam);
+        json=null;
+      }
+ else {
+        int index=Integer.parseInt(s);
+        json=(JSONObject)((JSONArray)json.get(newParam)).get(index);
+        jsonArray=null;
+      }
+    }
+ else {
+      Object obj=json.get(param);
+      if (obj instanceof JSONObject) {
+        json=(JSONObject)obj;
+        jsonArray=null;
+      }
+ else       if (obj instanceof JSONArray) {
+        jsonArray=(JSONArray)obj;
+        json=null;
+      }
+ else       if (obj == null) {
+        throw new IllegalStateException("json object is null");
+      }
+ else {
+        throw new IllegalStateException("json object ('" + param + "') has wrong type: "+ obj.getClass());
+      }
+    }
+    if (cachePolicy.equals(CachePolicy.CACHE_ALL_LEVELS)) {
+      saveToCache(currentPath,json);
+    }
+  }
+  String name=params[params.length - 1];
+  Object value;
+  if (name.startsWith("$")) {
+    if (jsonArray == null) {
+      throw new JSONOperationErrorException("Not illegal syntax at this place: " + name);
+    }
+    int index=getIndex(name);
+    value=jsonArray.get(index);
+  }
+ else {
+    value=json.get(name);
+  }
+  saveToCache(path,value);
+  return value;
+}

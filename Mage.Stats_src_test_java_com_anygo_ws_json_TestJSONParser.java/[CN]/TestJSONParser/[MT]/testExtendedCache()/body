@@ -1,0 +1,19 @@
+{
+  JSONParser parser=new JSONParser();
+  parser.parseJSON("{test : { internal : {level : 2}}}");
+  Assert.assertEquals(2,parser.getInt("test.internal.level"));
+  Assert.assertFalse("No cache should have been used",parser.isHitCache());
+  Assert.assertTrue(parser.getJSON("test") instanceof JSONObject);
+  Assert.assertFalse("No cache should have been used",parser.isHitCache());
+  Assert.assertTrue(parser.getJSON("test.internal") instanceof JSONObject);
+  Assert.assertFalse("No cache should have been used",parser.isHitCache());
+  parser=new JSONParser();
+  parser.parseJSON("{test : { internal : {level : 2}}}");
+  parser.setCachePolicy(JSONParser.CachePolicy.CACHE_ALL_LEVELS);
+  Assert.assertEquals(2,parser.getInt("test.internal.level"));
+  Assert.assertFalse("No cache should have been used",parser.isHitCache());
+  Assert.assertTrue(parser.getJSON("test") instanceof JSONObject);
+  Assert.assertTrue("Cache should have been used this time!",parser.isHitCache());
+  Assert.assertTrue(parser.getJSON("test.internal") instanceof JSONObject);
+  Assert.assertTrue("Cache should have been used this time!",parser.isHitCache());
+}
