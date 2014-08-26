@@ -3,7 +3,9 @@
   if (player != null) {
     for (    Permanent creature : game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),player.getId(),game)) {
       creature.tap(game);
-      game.addEffect(new SleepEffect2(creature.getId()),source);
+      ContinuousEffect effect=new SkipNextUntapTargetEffect();
+      effect.setTargetPointer(new FixedTarget(creature.getId()));
+      game.addEffect(effect,source);
     }
     return true;
   }
