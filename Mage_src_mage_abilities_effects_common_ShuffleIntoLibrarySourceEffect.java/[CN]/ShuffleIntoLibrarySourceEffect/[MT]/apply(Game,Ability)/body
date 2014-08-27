@@ -1,0 +1,13 @@
+{
+  Card card=game.getCard(source.getSourceId());
+  if (card != null) {
+    Player player=game.getPlayer(card.getOwnerId());
+    if (player != null) {
+      Zone fromZone=game.getState().getZone(card.getId());
+      player.moveCardToLibraryWithInfo(card,source.getSourceId(),game,fromZone,true,true);
+      player.shuffleLibrary(game);
+      return true;
+    }
+  }
+  return false;
+}
