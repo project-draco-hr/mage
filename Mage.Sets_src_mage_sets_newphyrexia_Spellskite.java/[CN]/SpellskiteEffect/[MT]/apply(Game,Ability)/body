@@ -18,6 +18,7 @@
  else {
       return false;
     }
+    boolean twoTimesTarget=false;
     if (targets.size() == 1 && targets.get(0).getTargets().size() == 1) {
       Target target=targets.get(0);
       if (target.canTarget(stackObject.getControllerId(),source.getSourceId(),sourceAbility,game)) {
@@ -39,6 +40,10 @@
  else {
             name=object.getName();
           }
+          if (!targetId.equals(source.getSourceId()) && target.getTargets().contains(source.getSourceId())) {
+            twoTimesTarget=true;
+            continue;
+          }
           if (name != null && player.chooseUse(Outcome.Neutral,new StringBuilder("Change target from ").append(name).append(" to ").append(sourceObject.getName()).append("?").toString(),game)) {
             if (target.canTarget(stackObject.getControllerId(),source.getSourceId(),sourceAbility,game)) {
               oldTarget=game.getObject(targets.getFirstTarget());
@@ -54,7 +59,12 @@
       game.informPlayers(new StringBuilder(sourceObject.getName()).append(": Changed target of ").append(stackObject.getName()).append(" from ").append(oldTarget.getName()).append(" to ").append(sourceObject.getName()).toString());
     }
  else {
-      game.informPlayers(sourceObject.getLogName() + ": Target not changed to " + sourceObject.getLogName()+ " because its no valid target for "+ stackObject.getName());
+      if (twoTimesTarget) {
+        game.informPlayers(sourceObject.getLogName() + ": Target not changed to " + sourceObject.getLogName()+ " because its not valid to target it twice for "+ stackObject.getName());
+      }
+ else {
+        game.informPlayers(sourceObject.getLogName() + ": Target not changed to " + sourceObject.getLogName()+ " because its no valid target for "+ stackObject.getName());
+      }
     }
     return true;
   }
