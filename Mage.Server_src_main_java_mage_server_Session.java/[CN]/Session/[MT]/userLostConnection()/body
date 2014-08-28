@@ -3,6 +3,10 @@
   if (user == null || !user.isConnected()) {
     return;
   }
+  if (!user.getSessionId().equals(sessionId)) {
+    logger.info("OLD SESSION IGNORED - " + user.getName());
+    return;
+  }
   logger.info("LOST CONNECTION - " + user.getName());
   UserManager.getInstance().disconnect(userId,DisconnectReason.LostConnection);
 }
