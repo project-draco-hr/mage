@@ -19,7 +19,9 @@
     user=UserManager.getInstance().findUser(userName);
     if (user.getHost().equals(host)) {
       user.updateLastActivity();
+      this.userId=user.getId();
       if (user.getSessionId().isEmpty()) {
+        ChatManager.getInstance().sendReconnectMessage(user.getId());
         logger.info("Reconnecting session for " + userName);
       }
  else {

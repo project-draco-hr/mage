@@ -1,18 +1,8 @@
 {
   User user=UserManager.getInstance().getUser(userId);
-  if (user == null) {
-    logger.error("User for session not found  sessionId: " + sessionId + "  userId: "+ userId);
+  if (user == null || !user.isConnected()) {
     return;
   }
-  if (user.getSessionId().isEmpty()) {
-    logger.debug("User was already disconnected  sessionId: " + sessionId + "  userId: "+ userId);
-    return;
-  }
-  if (logger.isInfoEnabled()) {
-    StringBuilder sb=new StringBuilder(user.getName());
-    sb.append(" lost connection - userId: ").append(userId);
-    sb.append(" sessionId: ").append(sessionId);
-    logger.info(sb);
-  }
+  logger.info("LOST CONNECTION - " + user.getName());
   UserManager.getInstance().disconnect(userId,DisconnectReason.LostConnection);
 }

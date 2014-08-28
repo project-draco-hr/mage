@@ -4,7 +4,10 @@
     callbackHandler.handleCallbackOneway(new Callback(call));
   }
  catch (  HandleCallbackException ex) {
-    logger.info(new StringBuilder("Session of userId ").append(userId).append(" callback exception: ").append(ex.getMessage()).toString());
+    logger.info("CALLBACK EXCEPTION - userId " + userId,ex);
+    if (logger.isDebugEnabled()) {
+      ex.printStackTrace();
+    }
     userLostConnection();
   }
 }

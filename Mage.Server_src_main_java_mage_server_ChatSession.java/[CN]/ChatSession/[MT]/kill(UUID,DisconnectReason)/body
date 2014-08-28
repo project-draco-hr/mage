@@ -6,8 +6,10 @@
     }
     if (reason != null && userId != null && clients.containsKey(userId)) {
       String userName=clients.get(userId);
-      clients.remove(userId);
-      logger.debug(userName + "(" + reason.toString()+ ")"+ " removed from chatId "+ chatId);
+      if (!reason.equals(DisconnectReason.LostConnection)) {
+        clients.remove(userId);
+        logger.debug(userName + "(" + reason.toString()+ ")"+ " removed from chatId "+ chatId);
+      }
       String message;
 switch (reason) {
 case Disconnected:

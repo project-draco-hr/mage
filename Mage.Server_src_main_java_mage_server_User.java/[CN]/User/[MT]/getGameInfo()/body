@@ -12,23 +12,25 @@
         if (table.isTournament()) {
           if (tableEntry.getKey() != null) {
             TournamentPlayer tournamentPlayer=table.getTournament().getPlayer(tableEntry.getKey());
-            if (tournamentPlayer != null && !tournamentPlayer.isEliminated()) {
+            if (tournamentPlayer != null) {
+              if (!tournamentPlayer.isEliminated()) {
 switch (table.getState()) {
 case CONSTRUCTING:
-                construct++;
-              break;
+                  construct++;
+                break;
 case DRAFTING:
-            draft++;
-          break;
+              draft++;
+            break;
 case DUELING:
-        tournament++;
-      break;
-  }
-  if (!isConnected()) {
-    tournamentPlayer.setDisconnectInfo(disconnectInfo);
-  }
+          tournament++;
+        break;
+    }
+    if (!isConnected()) {
+      tournamentPlayer.setDisconnectInfo(disconnectInfo);
+    }
  else {
-    tournamentPlayer.setDisconnectInfo("");
+      tournamentPlayer.setDisconnectInfo("");
+    }
   }
 }
  else {

@@ -12,11 +12,17 @@
     sessionInfo.append(" at ").append(session.getHost()).append(" sessionId: ").append(session.getId());
     if (throwable instanceof ClientDisconnectedException) {
       SessionManager.getInstance().disconnect(client.getSessionId(),DisconnectReason.LostConnection);
-      logger.debug("Client disconnected - " + sessionInfo + " throwable: "+ throwable == null ? "null" : throwable.getMessage());
+      logger.info("CLIENT DISCONNECTED - " + sessionInfo,throwable);
+      if (logger.isDebugEnabled()) {
+        throwable.printStackTrace();
+      }
     }
  else {
       SessionManager.getInstance().disconnect(client.getSessionId(),DisconnectReason.LostConnection);
-      logger.info("Connection to client lost - " + sessionInfo + " throwable: "+ (throwable == null ? "null" : throwable.getMessage()));
+      logger.info("CONNECTION LOST - " + sessionInfo,throwable);
+      if (logger.isDebugEnabled()) {
+        throwable.printStackTrace();
+      }
     }
   }
 }
