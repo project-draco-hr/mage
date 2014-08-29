@@ -1,0 +1,16 @@
+{
+  super.init(source,game);
+  if (baseCondition instanceof LockedInCondition) {
+    condition=new FixedCondition(((LockedInCondition)baseCondition).getBaseCondition().apply(game,source));
+  }
+ else {
+    condition=baseCondition;
+  }
+  effect.setTargetPointer(this.targetPointer);
+  effect.init(source,game);
+  if (otherwiseEffect != null) {
+    otherwiseEffect.setTargetPointer(this.targetPointer);
+    otherwiseEffect.init(source,game);
+  }
+  initDone=true;
+}

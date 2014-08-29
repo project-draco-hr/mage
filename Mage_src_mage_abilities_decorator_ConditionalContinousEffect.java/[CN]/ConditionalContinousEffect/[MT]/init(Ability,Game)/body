@@ -1,6 +1,9 @@
 {
-  if (lockedInCondition) {
-    condition=new FixedCondition(condition.apply(game,source));
+  if (baseCondition instanceof LockedInCondition) {
+    condition=new FixedCondition(((LockedInCondition)baseCondition).getBaseCondition().apply(game,source));
+  }
+ else {
+    condition=baseCondition;
   }
   effect.setTargetPointer(this.targetPointer);
   effect.init(source,game);

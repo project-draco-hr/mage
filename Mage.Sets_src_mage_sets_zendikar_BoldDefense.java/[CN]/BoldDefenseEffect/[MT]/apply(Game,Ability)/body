@@ -1,0 +1,13 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    if (KickedCondition.getInstance().apply(game,source)) {
+      game.addEffect(new BoostControlledEffect(2,2,Duration.EndOfTurn),source);
+      game.addEffect(new GainAbilityControlledEffect(FirstStrikeAbility.getInstance(),Duration.EndOfTurn,new FilterCreaturePermanent(),false),source);
+    }
+ else {
+      game.addEffect(new BoostControlledEffect(1,1,Duration.EndOfTurn),source);
+    }
+  }
+  return false;
+}

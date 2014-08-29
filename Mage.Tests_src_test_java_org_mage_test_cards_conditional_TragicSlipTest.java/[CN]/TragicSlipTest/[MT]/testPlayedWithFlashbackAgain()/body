@@ -1,0 +1,25 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",2);
+  addCard(Zone.HAND,playerA,"Tragic Slip");
+  addCard(Zone.HAND,playerA,"Snapcaster Mage");
+  addCard(Zone.HAND,playerA,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Tarmogoyf");
+  addCard(Zone.GRAVEYARD,playerB,"Mountain");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Tragic Slip","Silvercoat Lion");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Snapcaster Mage");
+  setChoice(playerA,"Tragic Slip");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Lightning Bolt","Snapcaster Mage");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Flashback {B}");
+  addTarget(playerA,"Tarmogoyf");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertHandCount(playerA,"Tragic Slip",0);
+  assertPermanentCount(playerA,"Snapcaster Mage",0);
+  assertExileCount("Tragic Slip",1);
+  assertPermanentCount(playerB,"Silvercoat Lion",1);
+  assertPowerToughness(playerB,"Silvercoat Lion",1,1);
+  assertGraveyardCount(playerB,"Tarmogoyf",1);
+}
