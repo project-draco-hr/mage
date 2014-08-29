@@ -1,0 +1,56 @@
+{
+  this.computedMana.clear();
+  int count=amount.calculate(game,source,this);
+  if (mana.getBlack() > 0) {
+    computedMana.setBlack(count);
+  }
+ else   if (mana.getBlue() > 0) {
+    computedMana.setBlue(count);
+  }
+ else   if (mana.getGreen() > 0) {
+    computedMana.setGreen(count);
+  }
+ else   if (mana.getRed() > 0) {
+    computedMana.setRed(count);
+  }
+ else   if (mana.getWhite() > 0) {
+    computedMana.setWhite(count);
+  }
+ else   if (mana.getAny() > 0) {
+    if (netMana) {
+      computedMana.setAny(count);
+    }
+ else {
+      Player controller=game.getPlayer(source.getControllerId());
+      if (controller != null) {
+        for (int i=0; i < count; i++) {
+          ChoiceColor choiceColor=new ChoiceColor();
+          while (!controller.choose(Outcome.Benefit,choiceColor,game)) {
+            if (!controller.isInGame()) {
+              return computedMana;
+            }
+          }
+          if (choiceColor.getColor().isBlack()) {
+            computedMana.addBlack();
+          }
+ else           if (choiceColor.getColor().isBlue()) {
+            computedMana.addBlue();
+          }
+ else           if (choiceColor.getColor().isRed()) {
+            computedMana.addRed();
+          }
+ else           if (choiceColor.getColor().isGreen()) {
+            computedMana.addGreen();
+          }
+ else           if (choiceColor.getColor().isWhite()) {
+            computedMana.addWhite();
+          }
+        }
+      }
+    }
+  }
+ else {
+    computedMana.setColorless(count);
+  }
+  return computedMana;
+}
