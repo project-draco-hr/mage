@@ -1,0 +1,14 @@
+{
+  if (!game.getState().getZone(source.getSourceId()).equals(Zone.GRAVEYARD)) {
+    return false;
+  }
+  Card card=game.getCard(source.getSourceId());
+  if (card == null) {
+    return false;
+  }
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player == null) {
+    return false;
+  }
+  return player.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId(),false);
+}
