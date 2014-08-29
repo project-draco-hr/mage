@@ -1,0 +1,21 @@
+{
+  addCard(Zone.HAND,playerA,"Cavern of Souls");
+  addCard(Zone.HAND,playerA,"Gladecover Scout");
+  addCard(Zone.HAND,playerB,"Boomerang");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  playLand(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Cavern of Souls");
+  setChoice(playerA,"Elf");
+  activateManaAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Add 1 mana of any one color to your mana pool. Spend this mana only to cast a creature spell of the chosen type, and that spell can't be countered.");
+  setChoice(playerA,"Green");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerB,"Boomerang","Cavern of Souls");
+  playLand(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Cavern of Souls");
+  setChoice(playerA,"Horror");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Gladecover Scout");
+  activateManaAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Add 1 mana of any one color to your mana pool. Spend this mana only to cast a creature spell of the chosen type, and that spell can't be countered.");
+  setChoice(playerA,"Black");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Boomerang",1);
+  assertPermanentCount(playerA,"Cavern of Souls",1);
+  assertPermanentCount(playerA,"Gladecover Scout",1);
+}

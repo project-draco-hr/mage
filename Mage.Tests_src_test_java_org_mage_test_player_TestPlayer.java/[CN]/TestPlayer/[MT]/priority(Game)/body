@@ -22,7 +22,23 @@
           }
         }
       }
-      if (action.getAction().startsWith("addCounters:")) {
+ else       if (action.getAction().startsWith("manaActivate:")) {
+        String command=action.getAction();
+        command=command.substring(command.indexOf("manaActivate:") + 13);
+        String[] groups=command.split(";");
+        List<Permanent> manaPerms=this.getAvailableManaProducers(game);
+        for (        Permanent perm : manaPerms) {
+          for (          Ability manaAbility : perm.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
+            if (manaAbility.toString().startsWith(groups[0])) {
+              Ability newManaAbility=manaAbility.copy();
+              this.activateAbility((ActivatedAbility)newManaAbility,game);
+              actions.remove(action);
+              return true;
+            }
+          }
+        }
+      }
+ else       if (action.getAction().startsWith("addCounters:")) {
         String command=action.getAction();
         command=command.substring(command.indexOf("addCounters:") + 12);
         String[] groups=command.split(";");
