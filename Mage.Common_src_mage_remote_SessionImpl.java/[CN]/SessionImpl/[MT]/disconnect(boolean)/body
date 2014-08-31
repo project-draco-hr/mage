@@ -2,7 +2,7 @@
   if (isConnected()) {
     sessionState=SessionState.DISCONNECTING;
   }
-  if (connection == null) {
+  if (connection == null || sessionState == SessionState.DISCONNECTED) {
     return;
   }
   try {
@@ -16,9 +16,10 @@
   if (sessionState == SessionState.DISCONNECTING || sessionState == SessionState.CONNECTING) {
     sessionState=SessionState.DISCONNECTED;
     logger.info("Disconnected ... ");
-  }
-  client.disconnected();
-  if (showMessage) {
-    client.showError("Network error.  You have been disconnected");
+    client.disconnected();
+    if (errorCall) {
+      client.showError("Network error.  You have been disconnected");
+    }
+    pingTime.clear();
   }
 }

@@ -1,9 +1,23 @@
 {
   try {
     if (isConnected()) {
-      if (!server.ping(sessionId)) {
+      long startTime=System.nanoTime();
+      if (!server.ping(sessionId,pingInfo)) {
         logger.error(new StringBuilder("Ping failed: ").append(this.getUserName()).append(" Session: ").append(sessionId).append(" to MAGE server at ").append(connection.getHost()).append(":").append(connection.getPort()).toString());
+        throw new MageException("Ping failed");
       }
+      pingTime.add(System.nanoTime() - startTime);
+      long milliSeconds=TimeUnit.MILLISECONDS.convert(pingTime.getLast(),TimeUnit.NANOSECONDS);
+      String lastPing=milliSeconds > 0 ? milliSeconds + "ms" : "<1ms";
+      if (pingTime.size() > PING_CYCLES) {
+        pingTime.poll();
+      }
+      long sum=0;
+      for (      Long time : pingTime) {
+        sum+=time;
+      }
+      milliSeconds=TimeUnit.MILLISECONDS.convert(sum / pingTime.size(),TimeUnit.NANOSECONDS);
+      pingInfo=lastPing + " (Av: " + (milliSeconds > 0 ? milliSeconds + "ms" : "<1ms")+ ")";
     }
     return true;
   }
