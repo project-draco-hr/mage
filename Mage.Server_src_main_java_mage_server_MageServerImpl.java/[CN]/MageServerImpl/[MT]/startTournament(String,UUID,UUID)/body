@@ -1,4 +1,7 @@
 {
+  if (!TableManager.getInstance().getController(tableId).changeTableState(TableState.STARTING)) {
+    return false;
+  }
   execute("startTournament",sessionId,new Action(){
     @Override public void execute(){
       UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
@@ -6,4 +9,5 @@
     }
   }
 );
+  return true;
 }

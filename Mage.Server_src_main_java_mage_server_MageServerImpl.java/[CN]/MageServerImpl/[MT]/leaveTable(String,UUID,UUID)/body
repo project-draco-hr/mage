@@ -1,4 +1,8 @@
 {
+  TableState tableState=TableManager.getInstance().getController(tableId).getTableState();
+  if (!tableState.equals(TableState.WAITING) && !tableState.equals(TableState.READY_TO_START)) {
+    return false;
+  }
   execute("leaveTable",sessionId,new Action(){
     @Override public void execute(){
       UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
@@ -6,4 +10,5 @@
     }
   }
 );
+  return true;
 }

@@ -7,46 +7,51 @@
     logger.error("No tournament object - userId: " + userId + "  table: "+ table.getId());
     return;
   }
-  UUID playerId=userPlayerMap.get(userId);
-  if (playerId != null) {
-    if (table.getState() == TableState.WAITING || table.getState() == TableState.STARTING) {
-      table.leaveNotStartedTable(playerId);
-      if (table.isTournament()) {
-        tournament.removePlayer(playerId);
-      }
- else {
-        match.leave(playerId);
-      }
-      User user=UserManager.getInstance().getUser(userId);
-      if (user != null) {
-        ChatManager.getInstance().broadcast(chatId,user.getName(),"has left the table",ChatMessage.MessageColor.BLUE,true,ChatMessage.MessageType.STATUS,ChatMessage.SoundToPlay.PlayerLeft);
-        user.removeTable(playerId);
-      }
- else {
-        logger.debug("User not found - userId: " + userId + " tableId:"+ table.getId());
-      }
-      userPlayerMap.remove(userId);
-    }
- else     if (!table.getState().equals(TableState.FINISHED)) {
-      if (table.isTournament()) {
-        logger.debug("Quit tournament sub tables for userId: " + userId);
-        TableManager.getInstance().userQuitTournamentSubTables(userId);
-        logger.debug("Quit tournament  Id: " + table.getTournament().getId());
-        TournamentManager.getInstance().quit(tournament.getId(),userId);
-      }
- else {
-        MatchPlayer matchPlayer=match.getPlayer(playerId);
-        if (matchPlayer != null) {
-          if (table.getState().equals(TableState.SIDEBOARDING)) {
-            matchPlayer.submitDeck(matchPlayer.getDeck());
-          }
-          matchPlayer.setQuit(true);
-        }
-        match.leave(playerId);
-      }
-    }
+  if (table != null && this.userId.equals(userId) && (table.getState().equals(TableState.WAITING) || table.getState().equals(TableState.READY_TO_START))) {
+    TableManager.getInstance().removeTable(table.getId());
   }
  else {
-    logger.error("No playerId found for userId: " + userId);
+    UUID playerId=userPlayerMap.get(userId);
+    if (playerId != null) {
+      if (table.getState() == TableState.WAITING || table.getState() == TableState.READY_TO_START) {
+        table.leaveNotStartedTable(playerId);
+        if (table.isTournament()) {
+          tournament.removePlayer(playerId);
+        }
+ else {
+          match.leave(playerId);
+        }
+        User user=UserManager.getInstance().getUser(userId);
+        if (user != null) {
+          ChatManager.getInstance().broadcast(chatId,user.getName(),"has left the table",ChatMessage.MessageColor.BLUE,true,ChatMessage.MessageType.STATUS,ChatMessage.SoundToPlay.PlayerLeft);
+          user.removeTable(playerId);
+        }
+ else {
+          logger.debug("User not found - userId: " + userId + " tableId:"+ table.getId());
+        }
+        userPlayerMap.remove(userId);
+      }
+ else       if (!table.getState().equals(TableState.FINISHED)) {
+        if (table.isTournament()) {
+          logger.debug("Quit tournament sub tables for userId: " + userId);
+          TableManager.getInstance().userQuitTournamentSubTables(userId);
+          logger.debug("Quit tournament  Id: " + table.getTournament().getId());
+          TournamentManager.getInstance().quit(tournament.getId(),userId);
+        }
+ else {
+          MatchPlayer matchPlayer=match.getPlayer(playerId);
+          if (matchPlayer != null) {
+            if (table.getState().equals(TableState.SIDEBOARDING)) {
+              matchPlayer.submitDeck(matchPlayer.getDeck());
+            }
+            matchPlayer.setQuit(true);
+          }
+          match.leave(playerId);
+        }
+      }
+    }
+ else {
+      logger.error("No playerId found for userId: " + userId);
+    }
   }
 }
