@@ -1,23 +1,46 @@
 {
-  if (!table.isTournament() && !table.isTournamentSubTable()) {
+  if (!table.isTournament()) {
     int humanPlayers=0;
+    int aiPlayers=0;
     int validHumanPlayers=0;
-    if (match == null) {
-      return false;
+    if (match == null && !(table.getState().equals(TableState.WAITING) || table.getState().equals(TableState.STARTING) || table.getState().equals(TableState.READY_TO_START))) {
+      logger.debug("- Match table with no match:");
+      logger.debug("-- matchId:" + match.getId() + " ["+ match.getName()+ "]");
+    }
+    if (match.isDoneSideboarding()) {
+      if (match.getGame() == null) {
+        logger.debug("- Match with no active game and not in sideboard state:");
+        logger.debug("-- matchId:" + match.getId() + " ["+ match.getName()+ "]");
+      }
     }
     for (    Map.Entry<UUID,UUID> userPlayerEntry : userPlayerMap.entrySet()) {
       MatchPlayer matchPlayer=match.getPlayer(userPlayerEntry.getValue());
+      if (matchPlayer == null) {
+        logger.debug("- Match player not found:");
+        logger.debug("-- matchId:" + match.getId());
+        logger.debug("-- userId:" + userPlayerEntry.getKey());
+        logger.debug("-- playerId:" + userPlayerEntry.getValue());
+        continue;
+      }
       if (matchPlayer.getPlayer().isHuman()) {
         humanPlayers++;
+        User user=UserManager.getInstance().getUser(userPlayerEntry.getKey());
         if (!matchPlayer.hasQuit()) {
-          User user=UserManager.getInstance().getUser(userPlayerEntry.getKey());
-          if (user != null && user.isExpired(null)) {
-            validHumanPlayers++;
+          if (user == null) {
+            logger.debug("- Active user of match is missing:");
+            logger.debug("-- matchId:" + match.getId());
+            logger.debug("-- userId:" + userPlayerEntry.getKey());
+            logger.debug("-- playerId:" + userPlayerEntry.getValue());
+            return false;
           }
+          validHumanPlayers++;
         }
       }
+ else {
+        aiPlayers++;
+      }
     }
-    return validHumanPlayers >= 2 || validHumanPlayers == humanPlayers;
+    return validHumanPlayers >= 2 || validHumanPlayers == humanPlayers || aiPlayers > 1;
   }
   return true;
 }

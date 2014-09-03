@@ -18,11 +18,17 @@
   }
 switch (tournament.getTournamentState()) {
 case "Constructing":
-    String constructionTime=Format.getDuration(tournament.getConstructionTime() - (tournament.getServerTime().getTime() - tournament.getStepStartTime().getTime()) / 1000);
-  txtTournamentState.setText(new StringBuilder(tournament.getTournamentState()).append(" (").append(constructionTime).append(")").toString());
+    String constructionTime="";
+  if (tournament.getStepStartTime() != null) {
+    constructionTime=Format.getDuration(tournament.getConstructionTime() - (tournament.getServerTime().getTime() - tournament.getStepStartTime().getTime()) / 1000);
+  }
+txtTournamentState.setText(new StringBuilder(tournament.getTournamentState()).append(" (").append(constructionTime).append(")").toString());
 break;
 case "Dueling":
-String duelingTime=Format.getDuration((tournament.getServerTime().getTime() - tournament.getStepStartTime().getTime()) / 1000);
+String duelingTime="";
+if (tournament.getStepStartTime() != null) {
+duelingTime=Format.getDuration((tournament.getServerTime().getTime() - tournament.getStepStartTime().getTime()) / 1000);
+}
 txtTournamentState.setText(new StringBuilder(tournament.getTournamentState()).append(" (").append(duelingTime).append(")").toString());
 break;
 default :
