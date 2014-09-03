@@ -1,0 +1,66 @@
+{
+  if (lastLoggedTurn != game.getTurnNum()) {
+    lastLoggedTurn=game.getTurnNum();
+    logger.info("======================= Turn: " + game.getTurnNum() + " ["+ game.getPlayer(game.getActivePlayerId()).getName()+ "] =========================================");
+  }
+  logState(game);
+  logger.debug("Priority -- Step: " + (game.getTurn().getStepType() + "                       ").substring(0,25) + " ActivePlayer-"+ game.getPlayer(game.getActivePlayerId()).getName()+ " PriorityPlayer-"+ name);
+  game.getState().setPriorityPlayerId(playerId);
+  game.firePriorityEvent(playerId);
+switch (game.getTurn().getStepType()) {
+case UPKEEP:
+case DRAW:
+    pass(game);
+  return false;
+case PRECOMBAT_MAIN:
+if (game.getActivePlayerId().equals(playerId)) {
+  printOutState(game);
+  if (actions.size() == 0) {
+    logger.info("Sim Calculate pre combat actions ----------------------------------------------------- ");
+    calculatePreCombatActions(game);
+  }
+  act(game);
+  return true;
+}
+ else {
+  pass(game);
+}
+return false;
+case BEGIN_COMBAT:
+pass(game);
+return false;
+case DECLARE_ATTACKERS:
+if (!game.getActivePlayerId().equals(playerId)) {
+printOutState(game);
+if (actions.size() == 0) {
+logger.info("Sim Calculate declare attackers actions ----------------------------------------------------- ");
+calculatePreCombatActions(game);
+}
+act(game);
+return true;
+}
+ else {
+pass(game);
+}
+return false;
+case DECLARE_BLOCKERS:
+case FIRST_COMBAT_DAMAGE:
+case COMBAT_DAMAGE:
+case END_COMBAT:
+pass(game);
+return false;
+case POSTCOMBAT_MAIN:
+printOutState(game);
+if (actions.size() == 0) {
+calculatePostCombatActions(game);
+}
+act(game);
+return true;
+case END_TURN:
+case CLEANUP:
+actionCache.clear();
+pass(game);
+return false;
+}
+return false;
+}
