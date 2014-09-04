@@ -1,29 +1,10 @@
 {
   this.tableId=table.getId();
-  this.isTournament=true;
-  this.matchId=table.getTournament().getId();
-  this.matchName=table.getName();
-  this.gameType=table.getGameType();
-  if (table.getTournament().getOptions().getNumberRounds() > 0) {
-    this.gameType=new StringBuilder(this.gameType).append(" ").append(table.getTournament().getOptions().getNumberRounds()).append(" Rounds").toString();
-  }
-  this.deckType=new StringBuilder(table.getDeckType()).append(" ").append(table.getTournament().getBoosterInfo()).toString();
-  StringBuilder sb1=new StringBuilder();
-  for (  TournamentPlayer tPlayer : table.getTournament().getPlayers()) {
-    sb1.append(tPlayer.getPlayer().getName()).append(" (").append(tPlayer.getPoints()).append(" P.) ");
-  }
-  this.players=sb1.toString();
-  StringBuilder sb2=new StringBuilder();
-  if (table.getTournament().getRounds().size() > 0) {
-    for (    TournamentPlayer tPlayer : table.getTournament().getPlayers()) {
-      sb2.append(tPlayer.getPlayer().getName()).append(": ").append(tPlayer.getResults()).append(" ");
-    }
+  this.isTournament=table.isTournament();
+  if (table.isTournament()) {
+    initTournamentTable(table);
   }
  else {
-    sb2.append("Canceled");
+    initMatchTable(table);
   }
-  this.result=sb2.toString();
-  this.startTime=table.getTournament().getStartTime();
-  this.endTime=table.getTournament().getEndTime();
-  this.replayAvailable=false;
 }
