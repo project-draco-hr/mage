@@ -1,5 +1,5 @@
 {
-  UUID defenderId=game.getCombat().getDefenderId(source.getSourceId());
+  UUID defenderId=game.getCombat().getDefendingPlayerId(source.getSourceId(),game);
   Player defender=game.getPlayer(defenderId);
   if (defender != null) {
     Cards cards=new CardsImpl();
@@ -8,7 +8,6 @@
       cards.add(card);
       defender.revealCards("Goblin Guide",cards,game);
       if (card.getCardType().contains(CardType.LAND)) {
-        defender.getLibrary().removeFromTop(game);
         defender.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
       }
     }
