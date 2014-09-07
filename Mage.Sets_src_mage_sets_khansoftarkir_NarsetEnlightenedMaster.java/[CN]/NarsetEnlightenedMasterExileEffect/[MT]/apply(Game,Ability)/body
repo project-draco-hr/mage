@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    for (int i=0; i < 4; i++) {
+      if (player.getLibrary().size() > 0) {
+        Card card=player.getLibrary().removeFromTop(game);
+        MageObject sourceObject=game.getObject(source.getSourceId());
+        if (card != null && sourceObject != null) {
+          player.moveCardToExileWithInfo(card,CardUtil.getCardExileZoneId(game,source),sourceObject.getLogName(),source.getSourceId(),game,Zone.LIBRARY);
+          if (!card.getCardType().contains(CardType.CREATURE)) {
+            ContinuousEffect effect=new NarsetEnlightenedMasterCastFromExileEffect();
+            effect.setTargetPointer(new FixedTarget(card.getId()));
+            game.addEffect(effect,source);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
