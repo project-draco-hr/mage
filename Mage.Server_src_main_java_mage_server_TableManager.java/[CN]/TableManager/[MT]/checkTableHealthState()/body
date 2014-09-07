@@ -4,22 +4,30 @@
   }
   logger.debug("TABLE HEALTH CHECK");
   List<UUID> toRemove=new ArrayList<>();
-  for (  Table table : tables.values()) {
-    if (!table.getState().equals(TableState.FINISHED)) {
-      logger.debug(table.getId() + " [" + table.getName()+ "] "+ formatter.format(table.getStartTime())+ " ("+ table.getState().toString()+ ") "+ (table.isTournament() ? "- Tournament" : ""));
-      TableController tableController=getController(table.getId());
-      if (tableController != null) {
-        if (table.isTournament()) {
-          if (!tableController.isTournamentStillValid()) {
-            toRemove.add(table.getId());
+  ArrayList<Table> tableCopy=new ArrayList<>();
+  tableCopy.addAll(tables.values());
+  for (  Table table : tableCopy) {
+    try {
+      if (!table.getState().equals(TableState.FINISHED)) {
+        logger.debug(table.getId() + " [" + table.getName()+ "] "+ formatter.format(table.getStartTime())+ " ("+ table.getState().toString()+ ") "+ (table.isTournament() ? "- Tournament" : ""));
+        TableController tableController=getController(table.getId());
+        if (tableController != null) {
+          if (table.isTournament()) {
+            if (!tableController.isTournamentStillValid()) {
+              toRemove.add(table.getId());
+            }
           }
-        }
  else {
-          if (!tableController.isMatchTableStillValid()) {
-            toRemove.add(table.getId());
+            if (!tableController.isMatchTableStillValid()) {
+              toRemove.add(table.getId());
+            }
           }
         }
       }
+    }
+ catch (    Exception ex) {
+      logger.debug("Table Health check error tableId: " + table.getId());
+      logger.debug(Arrays.toString(ex.getStackTrace()));
     }
   }
   for (  UUID tableId : toRemove) {

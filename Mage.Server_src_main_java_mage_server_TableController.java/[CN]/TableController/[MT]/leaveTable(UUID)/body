@@ -40,13 +40,23 @@
         }
  else {
           MatchPlayer matchPlayer=match.getPlayer(playerId);
-          if (matchPlayer != null) {
-            if (table.getState().equals(TableState.SIDEBOARDING)) {
-              matchPlayer.submitDeck(matchPlayer.getDeck());
+          if (matchPlayer != null && !match.hasEnded() && !matchPlayer.hasQuit()) {
+            Game game=match.getGame();
+            if (game != null && !game.hasEnded()) {
+              Player player=match.getPlayer(playerId).getPlayer();
+              if (player != null && player.isInGame()) {
+                GameManager.getInstance().quitMatch(game.getId(),userId);
+              }
             }
-            matchPlayer.setQuit(true);
+ else {
+              if (table.getState().equals(TableState.SIDEBOARDING)) {
+                if (!matchPlayer.isDoneSideboarding()) {
+                  matchPlayer.submitDeck(matchPlayer.getDeck());
+                }
+              }
+              match.leave(playerId);
+            }
           }
-          match.leave(playerId);
         }
       }
     }

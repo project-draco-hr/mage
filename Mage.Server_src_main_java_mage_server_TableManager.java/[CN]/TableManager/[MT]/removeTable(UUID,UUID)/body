@@ -1,8 +1,9 @@
 {
-  if (isTableOwner(tableId,userId) || UserManager.getInstance().isAdmin(userId)) {
-    leaveTable(userId,tableId);
+  if (UserManager.getInstance().isAdmin(userId)) {
+    logger.debug("Table remove request - userId: " + userId + " tableId: "+ tableId);
     TableController tableController=controllers.get(tableId);
     if (tableController != null) {
+      tableController.leaveTableAll();
       ChatManager.getInstance().destroyChatSession(tableController.getChatId());
       removeTable(tableId);
     }

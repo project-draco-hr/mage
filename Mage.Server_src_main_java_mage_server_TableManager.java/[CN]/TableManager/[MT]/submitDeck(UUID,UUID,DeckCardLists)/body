@@ -2,5 +2,10 @@
   if (controllers.containsKey(tableId)) {
     return controllers.get(tableId).submitDeck(userId,deckList);
   }
-  return false;
+  User user=UserManager.getInstance().getUser(userId);
+  if (user != null) {
+    user.removeSideboarding(tableId);
+    user.showUserMessage("Submit deck","Table no longer active");
+  }
+  return true;
 }

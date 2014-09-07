@@ -9,6 +9,10 @@ case STARTING:
 if (!getTable().getState().equals(TableState.READY_TO_START)) {
   return false;
 }
+if (!table.allSeatsAreOccupied()) {
+logger.debug("Not alle Seats are occupied: stop start tableId:" + table.getId());
+return false;
+}
 break;
 }
 getTable().setState(newTableState);

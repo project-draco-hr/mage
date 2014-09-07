@@ -1,5 +1,6 @@
 {
   if (!message.isEmpty()) {
+    boolean remove=false;
     final String msg=message;
     final String time=(withTime ? timeFormatter.format(new Date()) : "");
     final String username=userName;
@@ -11,7 +12,15 @@
       }
  else {
         logger.error("User not found but connected to chat - userId: " + userId + "  chatId: "+ chatId);
+        clientsToRemove.add(userId);
+        remove=true;
       }
+    }
+    if (remove) {
+      for (      UUID userIdToRemove : clientsToRemove) {
+        clients.remove(userIdToRemove);
+      }
+      clientsToRemove.clear();
     }
   }
 }

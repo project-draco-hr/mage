@@ -1,9 +1,12 @@
 {
-  if (message.startsWith("\\")) {
-    User user=UserManager.getInstance().findUser(userName);
-    if (user != null && performUserCommand(user,message,chatId)) {
-      return;
+  ChatSession chatSession=chatSessions.get(chatId);
+  if (chatSession != null) {
+    if (message.startsWith("\\") || message.startsWith("/")) {
+      User user=UserManager.getInstance().findUser(userName);
+      if (user != null && performUserCommand(user,message,chatId)) {
+        return;
+      }
     }
+    chatSession.broadcast(userName,message,color,withTime,messageType,soundToPlay);
   }
-  chatSessions.get(chatId).broadcast(userName,message,color,withTime,messageType,soundToPlay);
 }

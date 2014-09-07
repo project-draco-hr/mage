@@ -1,17 +1,17 @@
 {
-  String command=message.trim().toUpperCase(Locale.ENGLISH);
-  if (command.equals("\\I") || command.equals("\\INFO")) {
+  String command=message.substring(1).trim().toUpperCase(Locale.ENGLISH);
+  if (command.equals("I") || command.equals("INFO")) {
     user.setInfo("");
     chatSessions.get(chatId).broadcastInfoToUser(user,message);
     return true;
   }
-  if (command.startsWith("\\I ") || command.startsWith("\\INFO ")) {
-    user.setInfo(message.substring(command.startsWith("\\I ") ? 3 : 6));
+  if (command.startsWith("I ") || command.startsWith("INFO ")) {
+    user.setInfo(message.substring(command.startsWith("I ") ? 3 : 6));
     chatSessions.get(chatId).broadcastInfoToUser(user,message);
     return true;
   }
-  if (command.startsWith("\\W ") || command.startsWith("\\WHISPER ") || command.startsWith("/W ")|| command.startsWith("/WHISPER ")) {
-    String rest=message.substring(command.startsWith("\\W ") || command.startsWith("/W ") ? 3 : 9);
+  if (command.startsWith("W ") || command.startsWith("WHISPER ")) {
+    String rest=message.substring(command.startsWith("W ") ? 3 : 9);
     int first=rest.indexOf(" ");
     if (first > 1) {
       String userToName=rest.substring(0,first);
@@ -30,7 +30,7 @@
       return true;
     }
   }
-  if (command.equals("\\L") || command.equals("\\LIST")) {
+  if (command.equals("L") || command.equals("LIST")) {
     message+=new StringBuilder("\nList of commands:").append("\n\\info <text> - set a info text to your player").append("\n\\list - Show a list of commands").append("\n\\whisper <player name> <text> - whisper to the player with the given name").toString();
     chatSessions.get(chatId).broadcastInfoToUser(user,message);
     return true;
