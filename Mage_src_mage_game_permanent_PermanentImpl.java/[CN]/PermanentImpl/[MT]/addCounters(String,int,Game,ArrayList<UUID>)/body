@@ -1,10 +1,14 @@
 {
-  for (int i=0; i < amount; i++) {
-    GameEvent event=GameEvent.getEvent(GameEvent.EventType.ADD_COUNTER,objectId,controllerId,name,1);
-    event.setAppliedEffects(appliedEffects);
-    if (!game.replaceEvent(event)) {
-      counters.addCounter(name,1);
-      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.COUNTER_ADDED,objectId,controllerId,name,1));
+  GameEvent countersEvent=GameEvent.getEvent(GameEvent.EventType.ADD_COUNTERS,objectId,controllerId,name,amount);
+  countersEvent.setAppliedEffects(appliedEffects);
+  if (!game.replaceEvent(countersEvent)) {
+    for (int i=0; i < countersEvent.getAmount(); i++) {
+      GameEvent event=GameEvent.getEvent(GameEvent.EventType.ADD_COUNTER,objectId,controllerId,name,1);
+      event.setAppliedEffects(appliedEffects);
+      if (!game.replaceEvent(event)) {
+        counters.addCounter(name,1);
+        game.fireEvent(GameEvent.getEvent(GameEvent.EventType.COUNTER_ADDED,objectId,controllerId,name,1));
+      }
     }
   }
 }
