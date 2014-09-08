@@ -1,0 +1,16 @@
+{
+  if (getTargetPointer().getFirst(game,source).equals(sourceId) && affectedControllerId.equals(source.getControllerId())) {
+    Card card=game.getCard(sourceId);
+    if (card != null) {
+      if (game.getState().getZone(sourceId) == Zone.EXILED) {
+        Player player=game.getPlayer(affectedControllerId);
+        player.setCastSourceIdWithoutMana(sourceId);
+        return true;
+      }
+ else {
+        this.discard();
+      }
+    }
+  }
+  return false;
+}
