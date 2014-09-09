@@ -3,6 +3,11 @@
   if (!game.replaceEvent(event)) {
     setFaceDown(false);
     game.getCard(objectId).setFaceDown(false);
+    for (    Ability ability : abilities) {
+      if (ability.getWorksFaceDown() && !ability.getRuleVisible()) {
+        ability.setRuleVisible(true);
+      }
+    }
     game.fireEvent(GameEvent.getEvent(GameEvent.EventType.TURNEDFACEUP,getId(),playerId));
     return true;
   }
