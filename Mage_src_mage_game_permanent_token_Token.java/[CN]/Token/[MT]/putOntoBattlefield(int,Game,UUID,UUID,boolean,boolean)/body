@@ -3,6 +3,7 @@
   if (controller == null) {
     return false;
   }
+  lastAddedTokenIds.clear();
   Card source=game.getCard(sourceId);
   String setCode;
   if (this.getOriginalExpansionSetCode() != null && !this.getOriginalExpansionSetCode().isEmpty()) {
@@ -21,6 +22,7 @@
       if (tapped) {
         newToken.setTapped(true);
       }
+      this.lastAddedTokenIds.add(newToken.getId());
       this.lastAddedTokenId=newToken.getId();
       game.setScopeRelevant(true);
       game.applyEffects();
