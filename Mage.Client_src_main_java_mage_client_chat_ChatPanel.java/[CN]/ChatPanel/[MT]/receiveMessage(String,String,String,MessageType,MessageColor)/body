@@ -1,9 +1,10 @@
 {
+  StringBuilder text=new StringBuilder();
   if (time != null) {
-    this.txtConversation.append(TIMESTAMP_COLOR,time + " ");
+    text.append(getColoredText(TIMESTAMP_COLOR,time + ": "));
   }
-  Color userColor;
-  Color textColor;
+  String userColor;
+  String textColor;
   String userSeparator=" ";
 switch (messageType) {
 case STATUS:
@@ -25,14 +26,14 @@ textColor=MESSAGE_COLOR;
 userSeparator=": ";
 }
 if (color.equals(MessageColor.ORANGE)) {
-textColor=Color.ORANGE;
+textColor="Orange";
 }
 if (color.equals(MessageColor.YELLOW)) {
-textColor=Color.YELLOW;
+textColor="Yellow";
 }
 if (username != null && !username.isEmpty()) {
-this.txtConversation.append(userColor,username);
-this.txtConversation.append(userColor,userSeparator);
+text.append(getColoredText(userColor,username + userSeparator));
 }
-this.txtConversation.append(textColor,message + "\n");
+text.append(getColoredText(textColor,ManaSymbols.replaceSymbolsWithHTML(message,ManaSymbols.Type.PAY) + "\n"));
+this.txtConversation.append(text.toString());
 }
