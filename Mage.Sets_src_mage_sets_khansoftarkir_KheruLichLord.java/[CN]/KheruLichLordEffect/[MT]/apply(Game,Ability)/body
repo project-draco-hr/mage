@@ -1,0 +1,36 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards cards=new CardsImpl();
+    for (    Card card : controller.getGraveyard().getCards(new FilterCreatureCard(),source.getSourceId(),source.getControllerId(),game)) {
+      cards.add(card.getId());
+    }
+    if (cards.size() > 0) {
+      Card card=cards.getRandom(game);
+      controller.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId());
+      Permanent permanent=game.getPermanent(card.getId());
+      if (permanent != null) {
+        ContinuousEffect effect=new GainAbilityTargetEffect(FlyingAbility.getInstance(),Duration.EndOfTurn);
+        effect.setTargetPointer(new FixedTarget(permanent.getId()));
+        game.addEffect(effect,source);
+        effect=new GainAbilityTargetEffect(TrampleAbility.getInstance(),Duration.EndOfTurn);
+        effect.setTargetPointer(new FixedTarget(permanent.getId()));
+        game.addEffect(effect,source);
+        effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn);
+        effect.setTargetPointer(new FixedTarget(permanent.getId()));
+        game.addEffect(effect,source);
+        ExileTargetEffect exileEffect=new ExileTargetEffect();
+        exileEffect.setTargetPointer(new FixedTarget(permanent.getId()));
+        DelayedTriggeredAbility delayedAbility=new AtEndOfTurnDelayedTriggeredAbility(exileEffect);
+        delayedAbility.setSourceId(source.getSourceId());
+        delayedAbility.setControllerId(source.getControllerId());
+        game.addDelayedTriggeredAbility(delayedAbility);
+        KheruLichLordReplacementEffect replacementEffect=new KheruLichLordReplacementEffect();
+        replacementEffect.setTargetPointer(new FixedTarget(permanent.getId()));
+        game.addEffect(replacementEffect,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,35 @@
+{
+  Player playerControls=game.getPlayer(source.getControllerId());
+  if (playerControls != null) {
+    Choice abilityChoice=new ChoiceImpl();
+    abilityChoice.setMessage("Choose an ability to add");
+    Set<String> abilities=new HashSet<>();
+    abilities.add(VigilanceAbility.getInstance().getRule());
+    abilities.add(LifelinkAbility.getInstance().getRule());
+    abilities.add(HasteAbility.getInstance().getRule());
+    abilityChoice.setChoices(abilities);
+    while (!abilityChoice.isChosen()) {
+      playerControls.choose(Outcome.AddAbility,abilityChoice,game);
+      if (!playerControls.isInGame()) {
+        return false;
+      }
+    }
+    String chosen=abilityChoice.getChoice();
+    Ability ability=null;
+    if (VigilanceAbility.getInstance().getRule().equals(chosen)) {
+      ability=VigilanceAbility.getInstance();
+    }
+ else     if (LifelinkAbility.getInstance().getRule().equals(chosen)) {
+      ability=LifelinkAbility.getInstance();
+    }
+ else     if (HasteAbility.getInstance().getRule().equals(chosen)) {
+      ability=HasteAbility.getInstance();
+    }
+    if (ability != null) {
+      ContinuousEffect effect=new GainAbilitySourceEffect(ability,Duration.EndOfTurn);
+      game.addEffect(effect,source);
+      return true;
+    }
+  }
+  return false;
+}
