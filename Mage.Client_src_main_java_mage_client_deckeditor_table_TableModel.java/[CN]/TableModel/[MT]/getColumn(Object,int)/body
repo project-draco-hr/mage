@@ -11,15 +11,13 @@ case 0:
 case 1:
 return c.getName();
 case 2:
-StringBuilder s=new StringBuilder();
-for (String cost : c.getManaCost()) {
-s.append(cost);
+String manaCost="";
+for (String m : c.getManaCost()) {
+manaCost+=m;
 }
-String cost=s.toString();
-if (cost.isEmpty()) {
-return "0";
-}
-return cost;
+String castingCost=UI.getDisplayManaCost(manaCost);
+castingCost=ManaSymbols.replaceSymbolsWithHTML(castingCost,ManaSymbols.Type.PAY);
+return "<html>" + castingCost + "</html>";
 case 3:
 return CardHelper.getColor(c);
 case 4:
