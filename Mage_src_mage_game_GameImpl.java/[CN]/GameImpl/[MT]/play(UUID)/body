@@ -3,17 +3,23 @@
     PlayerList players=state.getPlayerList(nextPlayerId);
     Player player=getPlayer(players.get());
     while (!isPaused() && !gameOver(null)) {
-      if (!playTurn(player)) {
-        break;
-      }
-      state.setTurnNum(state.getTurnNum() + 1);
-      UUID extraTurnId=getState().getTurnMods().getExtraTurn(player.getId());
-      while (extraTurnId != null) {
-        state.setExtraTurn(true);
-        state.setTurnId(extraTurnId);
-        playTurn(player);
+      GameEvent event=new GameEvent(GameEvent.EventType.PLAY_TURN,null,null,player.getId());
+      if (!replaceEvent(event)) {
+        if (!playTurn(player)) {
+          break;
+        }
         state.setTurnNum(state.getTurnNum() + 1);
-        extraTurnId=getState().getTurnMods().getExtraTurn(player.getId());
+      }
+      UUID extraTurnId=getNextExtraTurn(player.getId());
+      while (extraTurnId != null) {
+        event=new GameEvent(GameEvent.EventType.PLAY_TURN,null,null,player.getId());
+        if (!replaceEvent(event)) {
+          state.setExtraTurn(true);
+          state.setTurnId(extraTurnId);
+          playTurn(player);
+          state.setTurnNum(state.getTurnNum() + 1);
+        }
+        extraTurnId=getNextExtraTurn(player.getId());
       }
       state.setTurnId(null);
       state.setExtraTurn(false);
