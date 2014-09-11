@@ -1,13 +1,12 @@
 {
   Player player=game.getPlayer(source.getControllerId());
   if (player != null) {
-    Cards cards=new CardsImpl(Zone.PICK);
+    Cards cards=new CardsImpl(Zone.LIBRARY);
     int cardsCount=Math.min(4,player.getLibrary().size());
     for (int i=0; i < cardsCount; i++) {
       Card card=player.getLibrary().removeFromTop(game);
       if (card != null) {
         cards.add(card);
-        game.setZone(card.getId(),Zone.PICK);
       }
     }
     if (cards.size() > 0) {
@@ -17,13 +16,13 @@
         for (        UUID targetId : target.getTargets()) {
           Card card=cards.get(targetId,game);
           if (card != null) {
-            card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+            player.putInHand(card,game);
             cards.remove(card);
           }
         }
       }
       for (      Card card : cards.getCards(game)) {
-        card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,true);
+        player.moveCardToGraveyardWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
       }
     }
     return true;

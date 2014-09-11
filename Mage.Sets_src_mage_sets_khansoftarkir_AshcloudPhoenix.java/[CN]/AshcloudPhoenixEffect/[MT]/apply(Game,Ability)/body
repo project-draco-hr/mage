@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Card card=game.getCard(source.getSourceId());
+    if (card != null) {
+      Player owner=game.getPlayer(card.getOwnerId());
+      if (owner != null && owner.getGraveyard().contains(card.getId())) {
+        card.setFaceDown(true);
+        player.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId());
+      }
+    }
+    return true;
+  }
+  return false;
+}
