@@ -1,0 +1,17 @@
+{
+  if (super.checkTrigger(event,game)) {
+    Permanent equipment=game.getPermanent(getSourceId());
+    if (equipment != null && equipment.getAttachedTo() != null) {
+      FilterCreaturePermanent filter=new FilterCreaturePermanent("creature defending player controls");
+      UUID defenderId=game.getCombat().getDefendingPlayerId(equipment.getAttachedTo(),game);
+      if (defenderId != null) {
+        filter.add(new ControllerIdPredicate(defenderId));
+        this.getTargets().clear();
+        TargetCreaturePermanent target=new TargetCreaturePermanent(filter);
+        this.addTarget(target);
+        return true;
+      }
+    }
+  }
+  return false;
+}
