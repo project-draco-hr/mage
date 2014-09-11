@@ -1,10 +1,11 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
-    for (    UUID opponentId : game.getOpponents(player.getId())) {
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null) {
+    for (    UUID opponentId : game.getOpponents(controller.getId())) {
       Player opponent=game.getPlayer(opponentId);
       if (opponent != null) {
-        opponent.setTopCardRevealed(true);
+        controller.revealCards(sourceObject.getName() + " " + opponent.getName(),opponent.getHand(),game,false);
       }
     }
     return true;
