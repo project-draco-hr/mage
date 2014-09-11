@@ -5,6 +5,8 @@
     cards.addAll(exile);
     for (    Card card : cards.getCards(game)) {
       card.putOntoBattlefield(game,Zone.EXILED,source.getSourceId(),source.getControllerId());
+      Permanent permanent=game.getPermanent(card.getId());
+      ((PermanentImpl)permanent).removeSummoningSickness();
     }
     return true;
   }
