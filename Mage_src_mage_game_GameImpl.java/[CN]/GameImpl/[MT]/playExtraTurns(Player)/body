@@ -1,0 +1,16 @@
+{
+  UUID extraTurnId=getNextExtraTurn(player.getId());
+  while (extraTurnId != null) {
+    GameEvent event=new GameEvent(GameEvent.EventType.PLAY_TURN,null,null,player.getId());
+    if (!replaceEvent(event)) {
+      state.setExtraTurn(true);
+      state.setTurnId(extraTurnId);
+      informPlayers(player.getName() + " takes an extra turn");
+      playTurn(player);
+      state.setTurnNum(state.getTurnNum() + 1);
+    }
+    extraTurnId=getNextExtraTurn(player.getId());
+  }
+  state.setTurnId(null);
+  state.setExtraTurn(false);
+}
