@@ -1,0 +1,17 @@
+{
+  super(ownerId,161,"Abzan Charm",Rarity.UNCOMMON,new CardType[]{CardType.INSTANT},"{W}{B}{G}");
+  this.expansionSetCode="KTK";
+  this.color.setGreen(true);
+  this.color.setBlack(true);
+  this.color.setWhite(true);
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent(filter));
+  this.getSpellAbility().addEffect(new ExileTargetEffect());
+  Mode mode=new Mode();
+  mode.getEffects().add(new DrawCardSourceControllerEffect(2));
+  mode.getEffects().add(new LoseLifeSourceControllerEffect(2));
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new AbzanCharmDistributeEffect());
+  mode.getTargets().add(new TargetCreaturePermanentAmount(2));
+  this.getSpellAbility().addMode(mode);
+}
