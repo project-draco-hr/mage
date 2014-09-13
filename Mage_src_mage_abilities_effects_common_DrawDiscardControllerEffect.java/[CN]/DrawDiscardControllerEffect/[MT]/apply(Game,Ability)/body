@@ -1,8 +1,10 @@
 {
   Player player=game.getPlayer(source.getControllerId());
   if (player != null) {
-    player.drawCards(cardsToDraw,game);
-    player.discard(cardsToDiscard,source,game);
+    if (!optional || player.chooseUse(outcome,"User draw, then discard effect?",game)) {
+      player.drawCards(cardsToDraw,game);
+      player.discard(cardsToDiscard,source,game);
+    }
     return true;
   }
   return false;
