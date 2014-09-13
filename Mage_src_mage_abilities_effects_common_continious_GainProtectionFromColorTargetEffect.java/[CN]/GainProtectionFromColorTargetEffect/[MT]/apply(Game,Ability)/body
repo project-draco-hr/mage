@@ -1,7 +1,10 @@
 {
   Permanent creature=game.getPermanent(source.getFirstTarget());
-  if (creature != null) {
-    ChoiceColor choice=(ChoiceColor)source.getChoices().get(0);
+  Player player=game.getPlayer(source.getControllerId());
+  if (creature != null && player != null) {
+    while (!choice.isChosen()) {
+      player.choose(Outcome.Protect,choice,game);
+    }
     FilterCard protectionFilter=(FilterCard)((ProtectionAbility)ability).getFilter();
     protectionFilter.add(new ColorPredicate(choice.getColor()));
     protectionFilter.setMessage(choice.getChoice());
