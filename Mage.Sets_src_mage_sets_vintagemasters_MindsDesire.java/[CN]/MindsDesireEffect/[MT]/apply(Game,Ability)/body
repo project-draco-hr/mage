@@ -1,0 +1,17 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    player.shuffleLibrary(game);
+    if (player.getLibrary().size() > 0) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        player.moveCardToExileWithInfo(card,source.getSourceId(),"Mind's Desire",source.getSourceId(),game,Zone.LIBRARY);
+        ContinuousEffect effect=new MindsDesireCastFromExileEffect();
+        effect.setTargetPointer(new FixedTarget(card.getId()));
+        game.addEffect(effect,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

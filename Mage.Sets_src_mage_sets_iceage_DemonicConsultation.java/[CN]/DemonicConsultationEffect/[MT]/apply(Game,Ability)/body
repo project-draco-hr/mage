@@ -1,0 +1,38 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Choice choice=new ChoiceImpl();
+    choice.setChoices(CardRepository.instance.getNames());
+    while (!player.choose(Outcome.Benefit,choice,game)) {
+      if (!player.isInGame()) {
+        return false;
+      }
+    }
+    String name=choice.getChoice();
+    game.informPlayers("Card named: " + name);
+    int num=Math.min(6,player.getLibrary().size());
+    for (int i=0; i < num; i++) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        player.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.LIBRARY);
+      }
+    }
+    Cards cards=new CardsImpl(Zone.LIBRARY);
+    while (player.getLibrary().size() > 0) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        cards.add(card);
+        if (card.getName().equals(name)) {
+          player.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
+          break;
+        }
+ else {
+          player.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.LIBRARY);
+        }
+      }
+    }
+    player.revealCards("Demonic Consultation",cards,game);
+    return true;
+  }
+  return false;
+}
