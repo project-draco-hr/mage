@@ -1,7 +1,7 @@
 {
   if (event.getType() == GameEvent.EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).isDiesEvent()) {
-    MageObject object=game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
-    if (object instanceof Permanent && ((Permanent)object).getDealtDamageByThisTurn().contains(this.sourceId)) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getTarget().getCardType().contains(CardType.CREATURE) && zEvent.getTarget().getDealtDamageByThisTurn().contains(this.sourceId)) {
       for (      Effect effect : getEffects()) {
         effect.setTargetPointer(new FixedTarget(event.getTargetId()));
       }
