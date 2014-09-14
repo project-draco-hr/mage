@@ -1,12 +1,7 @@
 {
   if (!this.used && super.applies(event,source,game)) {
-    MageObject object=game.getObject(event.getSourceId());
-    if (object == null) {
-      game.informPlayers("Couldn't find source of damage");
-      return false;
-    }
-    if (!object.getId().equals(source.getFirstTarget())) {
-      return false;
+    if (amountToPrevent == Integer.MIN_VALUE) {
+      amountToPrevent=source.getManaCostsToPay().getX();
     }
     Permanent permanent=game.getPermanent(event.getTargetId());
     if (permanent != null) {

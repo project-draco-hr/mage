@@ -1,18 +1,7 @@
 {
-  if (!this.used && super.applies(event,source,game)) {
-    MageObject object=game.getObject(event.getSourceId());
-    if (object == null) {
-      game.informPlayers("Couldn't find source of damage");
-      return false;
-    }
-    if (!object.getId().equals(source.getFirstTarget())) {
-      return false;
-    }
-    Player player=game.getPlayer(event.getTargetId());
-    if (player != null) {
-      if (player.getId().equals(source.getControllerId())) {
-        return true;
-      }
+  if (!this.used && super.applies(event,source,game) && event.getTargetId().equals(source.getControllerId())) {
+    if (event.getSourceId().equals(getTargetPointer().getFirst(game,source))) {
+      return true;
     }
   }
   return false;
