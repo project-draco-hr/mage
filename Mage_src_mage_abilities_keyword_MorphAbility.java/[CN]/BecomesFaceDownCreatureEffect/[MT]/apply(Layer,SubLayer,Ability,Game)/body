@@ -11,8 +11,12 @@ case ColorChangingEffects_5:
 permanent.getColor().setColor(new ObjectColor());
 break;
 case AbilityAddingRemovingEffects_6:
+Card card=game.getCard(permanent.getId());
 List<Ability> abilities=new ArrayList<>();
 for (Ability ability : permanent.getAbilities()) {
+if (card != null && !card.getAbilities().contains(ability)) {
+continue;
+}
 if (ability.getWorksFaceDown()) {
 ability.setRuleVisible(false);
 continue;
