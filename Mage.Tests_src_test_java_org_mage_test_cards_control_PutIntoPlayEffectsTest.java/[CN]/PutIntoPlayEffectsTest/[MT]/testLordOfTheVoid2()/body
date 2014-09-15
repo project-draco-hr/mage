@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Oracle of Mul Daya");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Lord of the Void");
+  addCard(Zone.HAND,playerB,"Griptide");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Griptide","Oracle of Mul Daya");
+  attack(2,playerB,"Lord of the Void");
+  setChoice(playerB,"Oracle of Mul Daya");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertLife(playerA,13);
+  assertPermanentCount(playerB,"Oracle of Mul Daya",1);
+  Assert.assertTrue("Top card of the library of player B should be reveled.",playerB.isTopCardRevealed());
+  Assert.assertFalse("Top card of the library of player A should not be reveled.",playerA.isTopCardRevealed());
+}

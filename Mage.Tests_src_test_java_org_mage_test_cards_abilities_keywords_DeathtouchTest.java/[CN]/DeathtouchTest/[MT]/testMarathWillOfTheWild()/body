@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",10);
+  addCard(Zone.BATTLEFIELD,playerA,"Basilisk Collar");
+  addCard(Zone.HAND,playerA,"Marath, Will of the Wild",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Archangel of Thune");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Marath, Will of the Wild");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Equip {2}","Marath, Will of the Wild");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"{X},Remove X +1/+1 counters from Marath: Choose one - Put X +1/+1 counters on target creature; or {source} deals X damage to target creature or player; or put an X/X green Elemental creature token onto the battlefield.");
+  setChoice(playerA,"X=3");
+  setModeChoice(playerA,"1");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  Permanent equipment=getPermanent("Basilisk Collar",playerA);
+  Assert.assertTrue("Equipment is attached to Marath",equipment.getAttachedTo() != null);
+}
