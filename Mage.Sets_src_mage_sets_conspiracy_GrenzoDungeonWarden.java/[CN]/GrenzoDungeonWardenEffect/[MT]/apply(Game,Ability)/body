@@ -1,0 +1,19 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    if (player.getLibrary().size() > 0) {
+      Card card=player.getLibrary().removeFromBottom(game);
+      if (card != null) {
+        player.moveCardToGraveyardWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
+        if (card.getCardType().contains(CardType.CREATURE)) {
+          Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+          if (sourcePermanent != null && card.getPower().getValue() <= sourcePermanent.getPower().getValue()) {
+            player.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId());
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
