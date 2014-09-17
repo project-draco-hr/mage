@@ -5,15 +5,10 @@
     Target target=new TargetCardInHand(new FilterCard("card to exile"));
     if (player.chooseTarget(outcome,target,source,game)) {
       Card card=game.getCard(target.getFirstTarget());
-      Card sourceCard=game.getCard(source.getSourceId());
-      if (card != null && sourceCard != null) {
+      MageObject sourceObject=game.getObject(source.getSourceId());
+      if (card != null && sourceObject != null) {
         card.setFaceDown(true);
-        UUID exileId=(UUID)game.getState().getValue(new StringBuilder("exileZone").append(source.getSourceId()).append(sourceCard.getZoneChangeCounter()).toString());
-        if (exileId == null) {
-          exileId=UUID.randomUUID();
-          game.getState().setValue(new StringBuilder("exileZone").append(source.getSourceId()).append(sourceCard.getZoneChangeCounter()).toString(),exileId);
-        }
-        return card.moveToExile(exileId,new StringBuilder(sourceCard.getName()).append("(").append(sourceCard.getZoneChangeCounter()).append(")").toString(),source.getSourceId(),game);
+        return card.moveToExile(CardUtil.getCardExileZoneId(game,source),new StringBuilder(sourceObject.getLogName()).toString(),source.getSourceId(),game);
       }
     }
   }
