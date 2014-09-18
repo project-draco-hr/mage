@@ -1,15 +1,16 @@
 {
-  if (match.getGame() == null) {
+  Game game=match.getGame();
+  if (game == null) {
     return true;
   }
   UUID choosingPlayerId=match.getChooser();
   match.endGame();
-  if (ConfigSettings.getInstance().isSaveGameActivated() && !match.getGame().isSimulation()) {
-    if (GameManager.getInstance().saveGame(match.getGame().getId())) {
+  if (ConfigSettings.getInstance().isSaveGameActivated() && !game.isSimulation()) {
+    if (GameManager.getInstance().saveGame(game.getId())) {
       match.setReplayAvailable(true);
     }
   }
-  GameManager.getInstance().removeGame(match.getGame().getId());
+  GameManager.getInstance().removeGame(game.getId());
   try {
     if (!match.hasEnded()) {
       table.sideboard();
