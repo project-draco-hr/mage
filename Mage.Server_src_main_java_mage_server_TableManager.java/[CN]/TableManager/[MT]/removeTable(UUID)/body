@@ -5,11 +5,19 @@
     tableController.cleanUp();
     Table table=tables.get(tableId);
     tables.remove(tableId);
-    if (!table.getState().equals(TableState.FINISHED)) {
-      GamesRoomManager.getInstance().removeTable(tableId);
+    Match match=table.getMatch();
+    Game game=null;
+    if (match != null) {
+      game=match.getGame();
+      if (game != null && !game.hasEnded()) {
+        game.end();
+      }
     }
-    if (table.getMatch() != null && table.getMatch().getGame() != null) {
-      table.getMatch().getGame().end();
+    if (!table.getState().equals(TableState.FINISHED)) {
+      if (game != null) {
+        GameManager.getInstance().removeGame(game.getId());
+      }
+      GamesRoomManager.getInstance().removeTable(tableId);
     }
   }
 }

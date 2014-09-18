@@ -12,8 +12,11 @@
           if (!user.isConnected()) {
             user.removeConstructing(match.getPlayer(entry.getValue()).getPlayer().getId());
             GameManager.getInstance().joinGame(match.getGame().getId(),user.getId());
+            logger.debug("Joined currently not connected user " + user.getName() + "  matchId: "+ match.getId());
           }
-          user.gameStarted(match.getGame().getId(),entry.getValue());
+ else {
+            user.gameStarted(match.getGame().getId(),entry.getValue());
+          }
           if (creator == null) {
             creator=user.getName();
           }
@@ -31,6 +34,9 @@
             matchPlayer.setQuit(true);
           }
         }
+      }
+ else {
+        throw new MageException("Can't start game - user already quit userId " + entry.getKey());
       }
     }
     for (    MatchPlayer mPlayer : match.getPlayers()) {

@@ -1,3 +1,15 @@
 {
+  if (getGame() == null && isDoneSideboarding()) {
+    checkIfMatchEnds();
+  }
+  if (getGame() != null && getGame().hasEnded()) {
+    for (    MatchPlayer matchPlayer : players) {
+      if (matchPlayer.getPlayer().hasQuit() && !matchPlayer.hasQuit()) {
+        logger.warn("MatchPlayer was not set to quit matchId " + this.getId() + " - "+ matchPlayer.getName());
+        matchPlayer.setQuit(true);
+      }
+    }
+    checkIfMatchEnds();
+  }
   return endTime != null;
 }

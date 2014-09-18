@@ -1,18 +1,20 @@
 {
   boolean roundIsOver=true;
   for (  TournamentPairing pair : pairs) {
-    if (pair.getMatch() != null && !pair.getMatch().hasEnded()) {
-      roundIsOver=false;
-    }
+    if (pair.getMatch() != null) {
+      if (!pair.getMatch().hasEnded()) {
+        roundIsOver=false;
+      }
  else {
-      if (!pair.isAlreadyPublished()) {
-        tournament.updateResults();
-        pair.setAlreadyPublished(true);
-        if (tournament instanceof TournamentSingleElimination) {
-          pair.eliminatePlayers();
-        }
-        if (getRoundNumber() == tournament.getNumberRounds()) {
-          pair.finishPlayersThatPlayedLastRound();
+        if (!pair.isAlreadyPublished()) {
+          tournament.updateResults();
+          pair.setAlreadyPublished(true);
+          if (tournament instanceof TournamentSingleElimination) {
+            pair.eliminatePlayers();
+          }
+          if (getRoundNumber() == tournament.getNumberRounds()) {
+            pair.finishPlayersThatPlayedLastRound();
+          }
         }
       }
     }
