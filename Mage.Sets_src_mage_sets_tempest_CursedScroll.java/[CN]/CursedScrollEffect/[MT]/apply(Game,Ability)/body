@@ -1,21 +1,13 @@
 {
   Player you=game.getPlayer(source.getControllerId());
-  if (you != null) {
-    Choice cardChoice=new ChoiceImpl();
-    cardChoice.setChoices(CardRepository.instance.getNames());
-    cardChoice.clearChoice();
-    while (!you.choose(Outcome.Damage,cardChoice,game)) {
-      if (!you.isInGame()) {
-        return false;
-      }
-    }
-    String cardName=cardChoice.getChoice();
-    game.informPlayers("Cursed Scroll, named card: [" + cardName + "]");
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  String cardName=(String)game.getState().getValue(source.getSourceId().toString() + NameACardEffect.INFO_KEY);
+  if (sourceObject != null && you != null && cardName != null && !cardName.isEmpty()) {
     if (you.getHand().size() > 0) {
       Cards revealed=new CardsImpl();
       Card card=you.getHand().getRandom(game);
       revealed.add(card);
-      you.revealCards("Cursed Scroll",revealed,game);
+      you.revealCards(sourceObject.getLogName(),revealed,game);
       if (card.getName().equals(cardName)) {
         Permanent creature=game.getPermanent(targetPointer.getFirst(game,source));
         if (creature != null) {

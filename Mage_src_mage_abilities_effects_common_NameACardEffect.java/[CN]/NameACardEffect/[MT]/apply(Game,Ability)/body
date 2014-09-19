@@ -1,0 +1,32 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    Choice cardChoice=new ChoiceImpl();
+switch (typeOfName) {
+case ALL:
+      cardChoice.setChoices(CardRepository.instance.getNames());
+    break;
+case NON_LAND_AND_NON_CREATURE_NAME:
+  cardChoice.setChoices(CardRepository.instance.getNonLandAndNonCreatureNames());
+break;
+case NON_LAND_NAME:
+cardChoice.setChoices(CardRepository.instance.getNonLandNames());
+break;
+}
+cardChoice.clearChoice();
+while (!controller.choose(Outcome.Detriment,cardChoice,game)) {
+if (!controller.isInGame()) {
+return false;
+}
+}
+String cardName=cardChoice.getChoice();
+game.informPlayers(sourceObject.getLogName() + ", named card: [" + cardName+ "]");
+game.getState().setValue(source.getSourceId().toString() + INFO_KEY,cardName);
+if (sourceObject instanceof Permanent) {
+((Permanent)sourceObject).addInfo(INFO_KEY,CardUtil.addToolTipMarkTags("Named card: " + cardName));
+}
+return true;
+}
+return false;
+}

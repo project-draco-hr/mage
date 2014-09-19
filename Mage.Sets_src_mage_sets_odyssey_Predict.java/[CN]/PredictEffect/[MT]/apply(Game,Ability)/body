@@ -1,21 +1,12 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  Player target=game.getPlayer(source.getFirstTarget());
-  if (controller != null && target != null) {
-    Choice cardChoice=new ChoiceImpl();
-    cardChoice.setChoices(CardRepository.instance.getNames());
-    cardChoice.clearChoice();
-    while (!controller.choose(Outcome.Detriment,cardChoice,game)) {
-      if (!controller.isInGame()) {
-        return false;
-      }
-    }
-    String cardName=cardChoice.getChoice();
-    game.informPlayers("Predict, named card: [" + cardName + "]");
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  String cardName=(String)game.getState().getValue(source.getSourceId().toString() + NameACardEffect.INFO_KEY);
+  if (controller != null && targetPlayer != null && cardName != null && !cardName.isEmpty()) {
     int amount=1;
-    Card card=target.getLibrary().removeFromTop(game);
+    Card card=targetPlayer.getLibrary().getFromTop(game);
     if (card != null) {
-      if (target.moveCardToGraveyardWithInfo(card,source.getSourceId(),game,Zone.LIBRARY)) {
+      if (targetPlayer.moveCardToGraveyardWithInfo(card,source.getSourceId(),game,Zone.LIBRARY)) {
         if (card.getName().equals(cardName)) {
           amount=2;
         }
