@@ -2,7 +2,9 @@
   if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_ATTACKERS,attackerId,attackerId))) {
     Player player=game.getPlayer(attackerId);
     checkAttackRequirements(player,game);
-    player.selectAttackers(game,attackerId);
+    if (!game.getPlayer(game.getActivePlayerId()).getAvailableAttackers(game).isEmpty()) {
+      player.selectAttackers(game,attackerId);
+    }
     if (game.isPaused() || game.gameOver(null)) {
       return;
     }
