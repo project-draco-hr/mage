@@ -2,9 +2,11 @@
   List<UUID> attachments=new LinkedList();
   attachments.addAll(input.getAttachments());
   for (  UUID uuid : attachments) {
-    Permanent attachment=game.getPermanent(uuid);
-    if (attachment != null && attachment.getSubtype().contains("Aura")) {
-      return true;
+    if (!uuid.equals(ownId)) {
+      Permanent attachment=game.getPermanent(uuid);
+      if (attachment != null && attachment.getSubtype().contains("Aura")) {
+        return true;
+      }
     }
   }
   return false;

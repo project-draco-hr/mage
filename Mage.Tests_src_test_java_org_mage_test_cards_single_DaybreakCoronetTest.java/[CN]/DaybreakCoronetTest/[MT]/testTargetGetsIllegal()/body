@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.HAND,playerA,"Holy Strength");
+  addCard(Zone.HAND,playerA,"Daybreak Coronet");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",1);
+  addCard(Zone.HAND,playerB,"Demystify");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Holy Strength","Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Daybreak Coronet","Silvercoat Lion");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Demystify","Holy Strength");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Holy Strength",1);
+  assertGraveyardCount(playerB,"Demystify",1);
+  assertPermanentCount(playerA,"Daybreak Coronet",0);
+  assertGraveyardCount(playerA,"Daybreak Coronet",1);
+}
