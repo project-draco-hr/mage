@@ -1,13 +1,17 @@
 {
-  int affectedTargets=0;
-  if (targetPointer.getTargets(game,source).size() > 0) {
-    for (    UUID spellId : targetPointer.getTargets(game,source)) {
-      Spell spell=game.getStack().getSpell(spellId);
-      if (spell != null) {
-        spell.moveToExile(null,null,source.getSourceId(),game);
-        affectedTargets++;
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int affectedTargets=0;
+    if (targetPointer.getTargets(game,source).size() > 0) {
+      for (      UUID spellId : targetPointer.getTargets(game,source)) {
+        Spell spell=game.getStack().getSpell(spellId);
+        if (spell != null) {
+          controller.moveCardToExileWithInfo(spell,null,"",source.getSourceId(),game,Zone.STACK);
+          affectedTargets++;
+        }
       }
     }
+    return affectedTargets > 0;
   }
-  return affectedTargets > 0;
+  return false;
 }
