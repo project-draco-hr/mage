@@ -1,10 +1,12 @@
 {
-  Set<UUID> possibleTargets=new HashSet<UUID>();
+  Set<UUID> possibleTargets=new HashSet<>();
   MageObject targetSource=game.getObject(sourceId);
   for (  UUID playerId : game.getPlayer(sourceControllerId).getInRange()) {
     Player player=game.getPlayer(playerId);
     if (player != null && !player.hasLeft() && filter.match(player,sourceId,sourceControllerId,game)) {
-      if (player.canBeTargetedBy(targetSource,game))       possibleTargets.add(playerId);
+      if (isNotTarget() || player.canBeTargetedBy(targetSource,game)) {
+        possibleTargets.add(playerId);
+      }
     }
   }
   return possibleTargets;
