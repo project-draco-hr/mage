@@ -4,7 +4,7 @@
     if (permanent == null) {
       permanent=(Permanent)game.getLastKnownInformation(event.getSourceId(),Zone.BATTLEFIELD);
     }
-    if (permanent != null && permanent.getCardType().contains(CardType.LAND)) {
+    if (permanent != null && permanent.getCardType().contains(CardType.LAND) && !permanent.getControllerId().equals(game.getActivePlayerId())) {
       getEffects().get(0).setTargetPointer(new FixedTarget(permanent.getId()));
       return true;
     }
