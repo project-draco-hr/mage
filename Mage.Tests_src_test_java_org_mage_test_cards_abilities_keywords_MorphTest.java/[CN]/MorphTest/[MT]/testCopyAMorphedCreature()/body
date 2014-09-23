@@ -1,0 +1,18 @@
+{
+  addCard(Zone.HAND,playerA,"Pine Walker");
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
+  addCard(Zone.HAND,playerB,"Clever Impersonator",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",4);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Pine Walker");
+  setChoice(playerA,"Yes");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Clever Impersonator");
+  setChoice(playerB,"Yes");
+  addTarget(playerB,"");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"",1);
+  assertPowerToughness(playerA,"",2,2);
+  assertPermanentCount(playerB,"",1);
+  assertPowerToughness(playerB,"",2,2);
+}

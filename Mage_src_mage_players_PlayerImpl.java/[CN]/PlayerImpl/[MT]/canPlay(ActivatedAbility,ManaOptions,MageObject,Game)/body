@@ -42,6 +42,17 @@
         return true;
       }
     }
+    if (!(sourceObject instanceof Permanent)) {
+      for (      Ability alternateSourceCostsAbility : sourceObject.getAbilities()) {
+        if (alternateSourceCostsAbility instanceof AlternativeSourceCosts) {
+          if (((AlternativeSourceCosts)alternateSourceCostsAbility).isAvailable(ability,game)) {
+            if (alternateSourceCostsAbility.getCosts().canPay(ability,playerId,playerId,game)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
   }
   return false;
 }

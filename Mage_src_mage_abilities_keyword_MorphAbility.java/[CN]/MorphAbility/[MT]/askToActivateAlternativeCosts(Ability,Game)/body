@@ -5,20 +5,26 @@
     if (player != null && spell != null) {
       this.resetMorph();
       spell.setFaceDown(true);
-      for (      AlternativeCost2 alternateCastingCost : alternateCosts) {
-        if (alternateCastingCost.canPay(ability,sourceId,controllerId,game) && player.chooseUse(Outcome.Benefit,new StringBuilder("Cast this card as a 2/2 face-down creature for ").append(alternateCastingCost.getText(true)).append(" ?").toString(),game)) {
-          activateMorph(alternateCastingCost,game);
+      if (alternateCosts.canPay(ability,sourceId,controllerId,game)) {
+        if (player.chooseUse(Outcome.Benefit,new StringBuilder("Cast this card as a 2/2 face-down creature for ").append(getCosts().getText()).append(" ?").toString(),game)) {
+          activateMorph(game);
           ability.getManaCostsToPay().clear();
           ability.getCosts().clear();
-          for (Iterator it=((Costs)alternateCastingCost).iterator(); it.hasNext(); ) {
+          for (Iterator it=this.alternateCosts.iterator(); it.hasNext(); ) {
             Cost cost=(Cost)it.next();
-            if (cost instanceof ManaCosts) {
-              ability.getManaCostsToPay().add((ManaCostsImpl)cost.copy());
+            if (cost instanceof ManaCost) {
+              ability.getManaCostsToPay().add((ManaCost)cost.copy());
             }
  else {
               ability.getCosts().add(cost.copy());
             }
           }
+          ObjectColor spellColor=spell.getColor();
+          spellColor.setBlack(false);
+          spellColor.setRed(false);
+          spellColor.setGreen(false);
+          spellColor.setWhite(false);
+          spellColor.setBlue(false);
         }
  else {
           spell.setFaceDown(false);

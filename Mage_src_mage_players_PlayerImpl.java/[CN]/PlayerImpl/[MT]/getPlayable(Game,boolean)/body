@@ -5,14 +5,18 @@
     availableMana.addMana(manaPool.getMana());
     if (hidden) {
       for (      Card card : hand.getUniqueCards(game)) {
-        for (        ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
-          if (ability instanceof PlayLandAbility) {
-            if (game.getContinuousEffects().preventedByRuleModification(GameEvent.getEvent(GameEvent.EventType.PLAY_LAND,ability.getSourceId(),ability.getSourceId(),playerId),ability,game,true)) {
-              break;
+        for (        Ability ability : card.getAbilities()) {
+          if (ability instanceof ActivatedAbility) {
+            if (ability instanceof PlayLandAbility) {
+              if (game.getContinuousEffects().preventedByRuleModification(GameEvent.getEvent(GameEvent.EventType.PLAY_LAND,ability.getSourceId(),ability.getSourceId(),playerId),ability,game,true)) {
+                break;
+              }
+            }
+            if (canPlay((ActivatedAbility)ability,availableMana,card,game)) {
+              playable.add(ability);
             }
           }
-          if (canPlay(ability,availableMana,game)) {
-            playable.add(ability);
+          if (ability instanceof AlternativeSourceCosts) {
           }
         }
       }
@@ -29,7 +33,7 @@
             possible=true;
           }
         }
-        if (possible && canPlay(ability,availableMana,game)) {
+        if (possible && canPlay(ability,availableMana,card,game)) {
           playable.add(ability);
         }
       }
@@ -70,7 +74,7 @@
     for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
       for (      ActivatedAbility ability : permanent.getAbilities().getActivatedAbilities(Zone.BATTLEFIELD)) {
         if (!playableActivated.containsKey(ability.toString())) {
-          if (canPlay(ability,availableMana,game)) {
+          if (canPlay(ability,availableMana,permanent,game)) {
             playableActivated.put(ability.toString(),ability);
           }
         }
@@ -82,7 +86,7 @@
         MageObject object=game.getObject(this.getCommanderId());
         if (object != null) {
           for (          ActivatedAbility ability : ((Commander)object).getAbilities().getActivatedAbilities(Zone.COMMAND)) {
-            if (canPlay(ability,availableMana,game)) {
+            if (canPlay(ability,availableMana,object,game)) {
               playableActivated.put(ability.toString(),ability);
             }
           }
