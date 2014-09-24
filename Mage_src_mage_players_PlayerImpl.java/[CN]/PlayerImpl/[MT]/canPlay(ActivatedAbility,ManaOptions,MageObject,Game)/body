@@ -47,7 +47,24 @@
         if (alternateSourceCostsAbility instanceof AlternativeSourceCosts) {
           if (((AlternativeSourceCosts)alternateSourceCostsAbility).isAvailable(ability,game)) {
             if (alternateSourceCostsAbility.getCosts().canPay(ability,playerId,playerId,game)) {
-              return true;
+              ManaCostsImpl manaCosts=new ManaCostsImpl();
+              for (              Cost cost : alternateSourceCostsAbility.getCosts()) {
+                if (cost instanceof ManaCost) {
+                  manaCosts.add(cost);
+                }
+              }
+              if (manaCosts.size() == 0) {
+                return true;
+              }
+ else {
+                for (                Mana mana : manaCosts.getOptions()) {
+                  for (                  Mana avail : available) {
+                    if (mana.enough(avail)) {
+                      return true;
+                    }
+                  }
+                }
+              }
             }
           }
         }
