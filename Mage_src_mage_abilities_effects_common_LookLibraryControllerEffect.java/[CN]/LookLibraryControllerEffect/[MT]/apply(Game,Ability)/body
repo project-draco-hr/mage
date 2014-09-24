@@ -18,14 +18,13 @@
   }
   boolean topCardRevealed=player.isTopCardRevealed();
   player.setTopCardRevealed(false);
-  Cards cards=new CardsImpl(Zone.PICK);
+  Cards cards=new CardsImpl();
   int count=Math.min(player.getLibrary().size(),this.numberOfCards.calculate(game,source,this));
   for (int i=0; i < count; i++) {
     Card card=player.getLibrary().removeFromTop(game);
     if (card != null) {
       cards.add(card);
       this.cardLooked(card,game,source);
-      game.setZone(card.getId(),Zone.PICK);
     }
   }
   player.lookAtCards(windowName,cards,game);
