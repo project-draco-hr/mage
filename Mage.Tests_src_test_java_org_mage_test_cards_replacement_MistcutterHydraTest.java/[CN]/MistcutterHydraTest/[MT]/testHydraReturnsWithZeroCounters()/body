@@ -1,0 +1,21 @@
+{
+  addCard(Zone.HAND,playerA,"Banishing Light");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",3);
+  addCard(Zone.HAND,playerB,"Mistcutter Hydra");
+  addCard(Zone.BATTLEFIELD,playerB,"Forest",2);
+  addCard(Zone.HAND,playerB,"Disenchant");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",2);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Mistcutter Hydra");
+  setChoice(playerB,"X=3");
+  castSpell(3,PhaseStep.POSTCOMBAT_MAIN,playerA,"Banishing Light");
+  setChoice(playerA,"Mistcutter Hydra");
+  castSpell(4,PhaseStep.PRECOMBAT_MAIN,playerB,"Disenchant","Banishing Light");
+  setStopAt(4,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Banishing Light",1);
+  assertGraveyardCount(playerB,"Disenchant",1);
+  assertGraveyardCount(playerB,"Mistcutter Hydra",1);
+  assertPermanentCount(playerB,"Mistcutter Hydra",0);
+}
