@@ -1,0 +1,23 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"First Response",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Karmic Justice");
+  addCard(Zone.HAND,playerB,"Planar Cleansing");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",1);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Planar Cleansing");
+  setChoice(playerA,"Yes");
+  addTarget(playerA,"Plains");
+  setChoice(playerA,"Yes");
+  addTarget(playerA,"Swamp");
+  setChoice(playerA,"Yes");
+  addTarget(playerA,"Mountain");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Planar Cleansing",1);
+  assertGraveyardCount(playerA,"Karmic Justice",1);
+  assertGraveyardCount(playerA,"First Response",2);
+  assertGraveyardCount(playerB,"Mountain",1);
+  assertGraveyardCount(playerB,"Swamp",1);
+  assertGraveyardCount(playerB,"Plains",1);
+}

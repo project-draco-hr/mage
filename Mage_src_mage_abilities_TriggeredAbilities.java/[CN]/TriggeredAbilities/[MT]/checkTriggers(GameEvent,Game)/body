@@ -1,7 +1,7 @@
 {
   for (Iterator<TriggeredAbility> it=this.values().iterator(); it.hasNext(); ) {
     TriggeredAbility ability=it.next();
-    if (ability.isInUseableZone(game,null,event.getType().equals(GameEvent.EventType.ZONE_CHANGE))) {
+    if (ability.isInUseableZone(game,null,event.getType().equals(EventType.ZONE_CHANGE) || event.getType().equals(EventType.DESTROYED_PERMANENT))) {
       if (!game.getContinuousEffects().preventedByRuleModification(event,ability,game,false)) {
         MageObject object=null;
         if (!ability.getZone().equals(Zone.COMMAND) && !game.getState().getZone(ability.getSourceId()).equals(ability.getZone())) {
