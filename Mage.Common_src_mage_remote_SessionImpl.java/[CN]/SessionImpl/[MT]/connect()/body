@@ -94,7 +94,12 @@ catch (Throwable t) {
 logger.fatal("Unable to connect to server - ",t);
 if (!canceled) {
 disconnect(false);
-client.showMessage("Unable to connect to server.  " + t.getMessage());
+StringBuilder sb=new StringBuilder();
+sb.append("Unable to connect to server.\n");
+for (StackTraceElement element : t.getStackTrace()) {
+sb.append(element.toString()).append("\n");
+}
+client.showMessage(sb.toString());
 }
 }
 return false;
