@@ -1,6 +1,9 @@
 {
   boolean result=false;
   if (card.moveToZone(Zone.LIBRARY,sourceId,game,toTop)) {
+    if (card instanceof Permanent) {
+      card=game.getCard(card.getId());
+    }
     StringBuilder sb=new StringBuilder(this.getName()).append(" puts ").append(withName ? card.getLogName() : "a card").append(" ");
     if (fromZone != null) {
       if (fromZone.equals(Zone.PICK)) {

@@ -121,18 +121,11 @@
         }
         BufferedImage srcImage;
         if (gameCard.isFaceDown()) {
-          boolean morphedCard=false;
-          for (          String rule : gameCard.getRules()) {
-            if (rule.startsWith("Morph ") || rule.equals("You may cast this card as a 2/2 face-down creature, with no text, no name, no subtypes, and no mana cost by paying {3} rather than paying its mana cost.")) {
-              morphedCard=true;
-            }
-          }
-          if (morphedCard) {
+          if (gameCard.isMorphCard()) {
             srcImage=ImageCache.getMorphImage();
           }
  else {
-            TFile file=new TFile(DirectLinksForDownload.outDir + File.separator + DirectLinksForDownload.cardbackFilename);
-            srcImage=ImageCache.loadImage(file);
+            srcImage=ImageCache.loadImage(new TFile(DirectLinksForDownload.outDir + File.separator + DirectLinksForDownload.cardbackFilename));
           }
         }
  else {

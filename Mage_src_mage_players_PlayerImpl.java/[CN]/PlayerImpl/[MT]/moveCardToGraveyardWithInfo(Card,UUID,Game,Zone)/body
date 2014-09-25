@@ -1,6 +1,9 @@
 {
   boolean result=false;
   if (card.moveToZone(Zone.GRAVEYARD,sourceId,game,fromZone != null ? fromZone.equals(Zone.BATTLEFIELD) : false)) {
+    if (card instanceof Permanent) {
+      card=game.getCard(card.getId());
+    }
     StringBuilder sb=new StringBuilder(this.getName()).append(" puts ").append(card.getLogName()).append(" ").append(fromZone != null ? new StringBuilder("from ").append(fromZone.toString().toLowerCase(Locale.ENGLISH)).append(" ") : "");
     if (card.getOwnerId().equals(getId())) {
       sb.append("into his or her graveyard");

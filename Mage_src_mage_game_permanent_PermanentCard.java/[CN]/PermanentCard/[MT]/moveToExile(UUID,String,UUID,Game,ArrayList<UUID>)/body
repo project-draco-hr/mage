@@ -1,5 +1,9 @@
 {
   Zone fromZone=game.getState().getZone(objectId);
+  if (isMorphCard() && isFaceDown()) {
+    setFaceDown(false);
+    game.getCard(this.getId()).setFaceDown(false);
+  }
   Player controller=game.getPlayer(controllerId);
   if (controller != null && controller.removeFromBattlefield(this,game)) {
     ZoneChangeEvent event=new ZoneChangeEvent(this,sourceId,ownerId,fromZone,Zone.EXILED,appliedEffects);

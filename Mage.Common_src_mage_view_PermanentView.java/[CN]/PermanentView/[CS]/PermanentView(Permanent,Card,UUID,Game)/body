@@ -33,8 +33,10 @@
       this.originalName=this.getName();
     }
  else {
-      this.alternateName=original.getName();
-      this.originalName=this.getName();
+      if (!this.isMorphCard() || controlled) {
+        this.alternateName=original.getName();
+        this.originalName=this.getName();
+      }
     }
   }
   if (!permanent.getOwnerId().equals(permanent.getControllerId())) {
@@ -66,7 +68,6 @@
       }
  else {
         this.rules.add("If the controller has priority, he or she may turn this permanent face up." + " This is a special action; it doesn??t use the stack. To do this he or she pays the morph costs," + " then turns this permanent face up.");
-        this.rarity=Rarity.COMMON;
       }
     }
   }
