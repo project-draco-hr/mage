@@ -1,0 +1,19 @@
+{
+  addCard(Zone.HAND,playerA,"Apocalypse Hydra");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.HAND,playerA,"Beacon of Unrest");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.HAND,playerB,"Counterspell");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Apocalypse Hydra");
+  setChoice(playerA,"X=3");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Counterspell","Apocalypse Hydra");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Beacon of Unrest","Apocalypse Hydra");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Counterspell",1);
+  assertHandCount(playerA,"Beacon of Unrest",0);
+  assertPermanentCount(playerA,"Apocalypse Hydra",0);
+  assertGraveyardCount(playerA,"Apocalypse Hydra",1);
+}
