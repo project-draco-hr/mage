@@ -1,0 +1,27 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Choice choice=new ChoiceImpl(true);
+    choice.setMessage("Choose a creature type:");
+    choice.setChoices(CardRepository.instance.getCreatureTypes());
+    while (!player.choose(Outcome.BoostCreature,choice,game)) {
+      if (!player.isInGame()) {
+        return false;
+      }
+    }
+    Cards revealedCards=new CardsImpl();
+    while (player.getLibrary().size() > 0) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card.getCardType().contains(CardType.CREATURE) && card.getSubtype().contains(choice.getChoice())) {
+        player.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+        break;
+      }
+      revealedCards.add(card);
+    }
+    player.revealCards("Riptide Shapeshifter",revealedCards,game);
+    player.getLibrary().addAll(revealedCards.getCards(game),game);
+    player.shuffleLibrary(game);
+    return true;
+  }
+  return false;
+}
