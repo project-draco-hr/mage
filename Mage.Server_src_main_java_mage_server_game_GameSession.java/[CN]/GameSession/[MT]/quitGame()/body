@@ -1,0 +1,30 @@
+{
+  if (game != null) {
+    final Player player=game.getPlayer(playerId);
+    if (player != null && player.isInGame()) {
+      callExecutor.execute(new Runnable(){
+        @Override public void run(){
+          try {
+            player.quit(game);
+          }
+ catch (          Exception ex) {
+            if (ex != null) {
+              logger.fatal("Game session game quit exception " + (ex.getMessage() == null ? "null" : ex.getMessage()));
+              if (ex.getCause() != null) {
+                logger.debug("- Cause: " + (ex.getCause().getMessage() == null ? "null" : ex.getCause().getMessage()));
+              }
+              ex.printStackTrace();
+            }
+ else {
+              logger.fatal("Game session game quit exception - null");
+            }
+          }
+        }
+      }
+);
+    }
+  }
+ else {
+    logger.error("game object missing   playerId: " + (playerId == null ? "[null]" : playerId));
+  }
+}
