@@ -37,6 +37,17 @@
             }
           }
         }
+        List<Permanent> manaPermsWithCost=this.getAvailableManaProducersWithCost(game);
+        for (        Permanent perm : manaPermsWithCost) {
+          for (          ManaAbility manaAbility : perm.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
+            if (manaAbility.toString().startsWith(groups[0]) && manaAbility.canActivate(playerId,game)) {
+              Ability newManaAbility=manaAbility.copy();
+              this.activateAbility((ActivatedAbility)newManaAbility,game);
+              actions.remove(action);
+              return true;
+            }
+          }
+        }
       }
  else       if (action.getAction().startsWith("addCounters:")) {
         String command=action.getAction();

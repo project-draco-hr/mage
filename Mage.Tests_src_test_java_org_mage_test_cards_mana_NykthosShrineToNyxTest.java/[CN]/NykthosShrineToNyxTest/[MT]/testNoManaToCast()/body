@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Nykthos, Shrine to Nyx",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Kiora's Follower");
+  addCard(Zone.BATTLEFIELD,playerA,"Kalonian Tusker",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Omnath, Locus of Mana",1);
+  activateManaAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{2},{T}: Choose a color. Add to your mana pool an amount of mana of that color equal to your devotion to that color. <i>(Your devotion to a color is the number of mana symbols of that color in the mana costs of permanents you control.)</i>.");
+  setChoice(playerA,"Green");
+  setStopAt(1,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  Assert.assertEquals("message",6,playerA.getManaPool().getGreen());
+  assertPowerToughness(playerA,"Omnath, Locus of Mana",7,7);
+}
