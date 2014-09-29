@@ -4,8 +4,8 @@
   List<User> usersToCheck=new ArrayList<>();
   usersToCheck.addAll(users.values());
   for (  User user : usersToCheck) {
-    if (user.isExpired(calendar.getTime())) {
-      logger.info(new StringBuilder(user.getName()).append(": session expired userId: ").append(user.getId()).append(" Host: ").append(user.getHost()));
+    if (!user.getUserState().equals(UserState.Expired) && user.isExpired(calendar.getTime())) {
+      logger.info(user.getName() + ": session expired userId: " + user.getId()+ " Host: "+ user.getHost());
       removeUser(user.getId(),DisconnectReason.SessionExpired);
     }
   }
