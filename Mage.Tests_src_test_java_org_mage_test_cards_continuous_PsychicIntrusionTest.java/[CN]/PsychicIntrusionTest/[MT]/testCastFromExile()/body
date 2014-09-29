@@ -1,0 +1,14 @@
+{
+  addCard(Zone.HAND,playerA,"Psychic Intrusion",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",3);
+  addCard(Zone.HAND,playerB,"Elspeth, Sun's Champion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Psychic Intrusion",playerB);
+  addTarget(playerA,"Elspeth, Sun's Champion");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Elspeth, Sun's Champion");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Psychic Intrusion",1);
+  assertHandCount(playerB,"Elspeth, Sun's Champion",0);
+  assertPermanentCount(playerA,"Elspeth, Sun's Champion",1);
+}
