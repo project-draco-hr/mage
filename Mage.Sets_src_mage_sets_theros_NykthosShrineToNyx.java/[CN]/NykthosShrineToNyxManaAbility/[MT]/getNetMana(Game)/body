@@ -2,5 +2,13 @@
   if (game == null) {
     return new Mana();
   }
-  return new Mana(((NykthosDynamicManaEffect)this.getEffects().get(0)).computeMana("Green",game,this));
+  int amount=0;
+  for (  String colorChoice : ChoiceColor.colorChoices) {
+    Mana newMana=((NykthosDynamicManaEffect)this.getEffects().get(0)).computeMana(colorChoice,game,this);
+    if (newMana.count() > amount) {
+      netMana=newMana;
+      amount=newMana.count();
+    }
+  }
+  return netMana;
 }
