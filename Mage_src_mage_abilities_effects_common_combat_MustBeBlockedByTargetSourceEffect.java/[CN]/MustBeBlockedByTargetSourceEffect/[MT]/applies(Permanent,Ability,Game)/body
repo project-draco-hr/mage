@@ -2,7 +2,14 @@
   if (permanent.getId().equals(source.getFirstTarget())) {
     Permanent blocker=game.getPermanent(source.getFirstTarget());
     if (blocker != null && blocker.canBlock(source.getSourceId(),game)) {
-      return true;
+      Permanent attacker=game.getPermanent(source.getSourceId());
+      if (attacker != null) {
+        BlockedAttackerWatcher blockedAttackerWatcher=(BlockedAttackerWatcher)game.getState().getWatchers().get("BlockedAttackerWatcher");
+        if (blockedAttackerWatcher != null && blockedAttackerWatcher.creatureHasBlockedAttacker(attacker,blocker)) {
+          return false;
+        }
+        return true;
+      }
     }
   }
   return false;

@@ -1,0 +1,14 @@
+{
+  if (event.getType() == EventType.BLOCKER_DECLARED) {
+    MageObjectReference blocker=new MageObjectReference(event.getSourceId(),game);
+    Set<MageObjectReference> blockedAttackers=blockData.get(blocker);
+    if (blockedAttackers != null) {
+      blockedAttackers.add(new MageObjectReference(event.getTargetId(),game));
+    }
+ else {
+      blockedAttackers=new HashSet<>();
+      blockedAttackers.add(new MageObjectReference(event.getTargetId(),game));
+      blockData.put(blocker,blockedAttackers);
+    }
+  }
+}

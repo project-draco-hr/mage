@@ -1,6 +1,12 @@
 {
-  Permanent sourceCreature=game.getPermanent(this.getTargetPointer().getFirst(game,source));
-  if (sourceCreature != null && sourceCreature.isAttacking()) {
+  Permanent attackingCreature=game.getPermanent(this.getTargetPointer().getFirst(game,source));
+  if (attackingCreature != null && attackingCreature.isAttacking()) {
+    if (!source.getAbilityType().equals(AbilityType.STATIC)) {
+      BlockedAttackerWatcher blockedAttackerWatcher=(BlockedAttackerWatcher)game.getState().getWatchers().get("BlockedAttackerWatcher");
+      if (blockedAttackerWatcher != null && blockedAttackerWatcher.creatureHasBlockedAttacker(attackingCreature,permanent)) {
+        return false;
+      }
+    }
     return permanent.canBlock(this.getTargetPointer().getFirst(game,source),game);
   }
   return false;
