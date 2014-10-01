@@ -45,7 +45,12 @@
   logger.info("Config - min user name l.: " + config.getMinUserNameLength());
   logger.info("Config - max user name l.: " + config.getMaxUserNameLength());
   logger.info("Config - save game active: " + (config.isSaveGameActivated() ? "True" : "false"));
-  Connection connection=new Connection();
+  logger.info("Config - backlog size    : " + config.getBacklogSize());
+  logger.info("Config - lease period    : " + config.getLeasePeriod());
+  logger.info("Config - max pool size   : " + config.getMaxPoolSize());
+  logger.info("Config - num accp.threads: " + config.getNumAcceptThreads());
+  logger.info("Config - second.bind port: " + config.getSecondaryBindPort());
+  Connection connection=new Connection("&maxPoolSize=" + config.getMaxPoolSize());
   connection.setHost(config.getServerAddress());
   connection.setPort(config.getPort());
   try {
