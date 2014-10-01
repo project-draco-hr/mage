@@ -1,0 +1,29 @@
+{
+  StringBuilder playersInfo=new StringBuilder();
+  int counter=0;
+  for (  MatchPlayer matchPlayer : players) {
+    if (counter > 0) {
+      playersInfo.append(" - ");
+    }
+    playersInfo.append(matchPlayer.getName());
+    counter++;
+  }
+  String state;
+  String result;
+  String duelingTime="";
+  if (game.hasEnded()) {
+    if (game.getEndTime() != null) {
+      duelingTime=" (" + DateFormat.getDuration((game.getEndTime().getTime() - game.getStartTime().getTime()) / 1000) + ")";
+    }
+    state="Finished" + duelingTime;
+    result=game.getWinner();
+  }
+ else {
+    if (game.getStartTime() != null) {
+      duelingTime=" (" + DateFormat.getDuration((new Date().getTime() - game.getStartTime().getTime()) / 1000) + ")";
+    }
+    state="Dueling" + duelingTime;
+    result="";
+  }
+  return new GameInfo(0,this.getId(),game.getId(),state,result,playersInfo.toString(),tableId);
+}
