@@ -1,7 +1,14 @@
 {
+  GregorianCalendar cutoff;
+  if (calendar.get(Calendar.MONTH) > 8) {
+    cutoff=new GregorianCalendar(calendar.get(Calendar.YEAR) - 1,Calendar.SEPTEMBER,1);
+  }
+ else {
+    cutoff=new GregorianCalendar(calendar.get(Calendar.YEAR) - 2,Calendar.SEPTEMBER,1);
+  }
   for (  ExpansionInfo set : ExpansionRepository.instance.getAll()) {
     if (!set.getType().equals(SetType.REPRINT) && !set.getType().equals(SetType.JOKESET)) {
-      if (set.getReleaseDate().after(standardDate)) {
+      if (set.getReleaseDate().after(cutoff.getTime())) {
         standard.add(set.getCode());
       }
       if (set.getReleaseDate().after(extendedDate)) {
