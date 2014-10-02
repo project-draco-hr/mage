@@ -1,5 +1,5 @@
 {
-  Permanent permanent=(Permanent)game.getLastKnownInformation(source.getFirstTarget(),Zone.BATTLEFIELD);
+  Permanent permanent=(Permanent)game.getPermanentOrLKIBattlefield(source.getFirstTarget());
   if (permanent != null) {
     Player player=game.getPlayer(permanent.getControllerId());
     if (player.chooseUse(Outcome.PutLandInPlay,"Do you wish to search for a basic land, put it onto the battlefield and then shuffle your library?",game)) {
@@ -7,7 +7,7 @@
       if (player.searchLibrary(target,game)) {
         Card card=player.getLibrary().getCard(target.getFirstTarget(),game);
         if (card != null) {
-          card.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),player.getId());
+          player.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
         }
       }
       player.shuffleLibrary(game);
