@@ -1,0 +1,23 @@
+{
+  addCard(Zone.HAND,playerA,"Ponyback Brigade");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",6);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",6);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",6);
+  addCard(Zone.HAND,playerB,"Doomwake Giant",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",5);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Ponyback Brigade");
+  setChoice(playerA,"Yes");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Doomwake Giant");
+  activateAbility(2,PhaseStep.POSTCOMBAT_MAIN,playerA,"{2}{R}{W}{B}: Turn this face-down permanent face up.");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerB,20);
+  assertHandCount(playerA,"Ponyback Brigade",0);
+  assertHandCount(playerB,"Doomwake Giant",0);
+  assertPermanentCount(playerA,"",0);
+  assertPermanentCount(playerA,"Goblin",3);
+  assertPowerToughness(playerA,"Goblin",1,1,Filter.ComparisonScope.Any);
+  assertPermanentCount(playerB,"Doomwake Giant",1);
+  assertPermanentCount(playerA,"Ponyback Brigade",1);
+  assertPowerToughness(playerA,"Ponyback Brigade",1,1);
+}

@@ -1,0 +1,19 @@
+{
+  addCard(Zone.HAND,playerA,"Pine Walker");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",8);
+  addCard(Zone.HAND,playerB,"Doomwake Giant",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",5);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Pine Walker");
+  setChoice(playerA,"Yes");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Doomwake Giant");
+  activateAbility(2,PhaseStep.POSTCOMBAT_MAIN,playerA,"{4}{G}: Turn this face-down permanent face up.");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerB,20);
+  assertHandCount(playerA,"Pine Walker",0);
+  assertHandCount(playerB,"Doomwake Giant",0);
+  assertPermanentCount(playerA,"",0);
+  assertPermanentCount(playerB,"Doomwake Giant",1);
+  assertPermanentCount(playerA,"Pine Walker",1);
+  assertPowerToughness(playerA,"Pine Walker",4,4);
+}
