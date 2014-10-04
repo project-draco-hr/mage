@@ -16,7 +16,7 @@
       String actionText=(String)tableMatches.getValueAt(modelRow,TournamentMatchesTableModel.ACTION_COLUMN);
       UUID tableId=UUID.fromString((String)matchesModel.getValueAt(modelRow,TournamentMatchesTableModel.ACTION_COLUMN + 1));
       UUID gameId=UUID.fromString((String)matchesModel.getValueAt(modelRow,TournamentMatchesTableModel.ACTION_COLUMN + 3));
-      if (state.equals("Dueling") && actionText.equals("Watch")) {
+      if (state.startsWith("Dueling") && actionText.equals("Watch")) {
         logger.info("Watching game " + gameId);
         session.watchTournamentTable(tableId);
       }
