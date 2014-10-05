@@ -36,16 +36,17 @@
         }
       }
     }
-    if (activePlayers < 2) {
-      throw new MageException("Can't start game - Less than two players active - " + activePlayers);
-    }
     for (    MatchPlayer mPlayer : match.getPlayers()) {
       if (!mPlayer.getPlayer().isHuman()) {
+        activePlayers++;
         if (opponent.length() > 0) {
           opponent.append(" - ");
         }
         opponent.append(mPlayer.getName());
       }
+    }
+    if (activePlayers < 2) {
+      throw new MageException("Can't start game - Less than two players active - " + activePlayers);
     }
     ServerMessagesUtil.getInstance().incGamesStarted();
     logger.info("GAME started [" + match.getName() + "] "+ creator+ " - "+ opponent.toString());

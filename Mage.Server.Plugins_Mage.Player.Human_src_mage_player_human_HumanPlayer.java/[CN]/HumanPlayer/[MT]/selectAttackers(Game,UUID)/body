@@ -3,7 +3,7 @@
   FilterCreatureForCombat filter=filterCreatureForCombat.copy();
   filter.add(new ControllerIdPredicate(attackingPlayerId));
   while (!abort) {
-    if (passedAllTurns) {
+    if (passedAllTurns || (!getUserData().getUserSkipPrioritySteps().isStopOnDeclareAttackersDuringSkipAction() && (passedTurn || passedUntilEndOfTurn || passedUntilNextMain))) {
       return;
     }
     Map<String,Serializable> options=new HashMap<>();

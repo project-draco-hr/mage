@@ -1,23 +1,40 @@
 {
 switch (passPriorityAction) {
 case PASS_PRIORITY_UNTIL_MY_NEXT_TURN:
-    passedTurn=true;
-  passedAllTurns=true;
+    passedUntilNextMain=false;
+  passedUntilEndOfTurn=false;
+passedTurn=false;
+passedAllTurns=true;
 this.skip();
 break;
-case PASS_PRIORITY_UNTIL_OPPONENTS_TURN_END_STEP:
+case PASS_PRIORITY_UNTIL_TURN_END_STEP:
+passedUntilNextMain=false;
+passedTurn=false;
+passedAllTurns=false;
 passedUntilEndOfTurn=true;
+skippedAtLeastOnce=!game.getTurn().getStepType().equals(PhaseStep.END_TURN);
 this.skip();
 break;
 case PASS_PRIORITY_UNTIL_NEXT_TURN:
+passedUntilNextMain=false;
+passedAllTurns=false;
+passedUntilEndOfTurn=false;
 passedTurn=true;
+this.skip();
+break;
+case PASS_PRIORITY_UNTIL_NEXT_MAIN_PHASE:
+passedAllTurns=false;
+passedTurn=false;
+passedUntilEndOfTurn=false;
+passedUntilNextMain=true;
+skippedAtLeastOnce=!(game.getTurn().getStepType().equals(PhaseStep.POSTCOMBAT_MAIN) || game.getTurn().getStepType().equals(PhaseStep.PRECOMBAT_MAIN));
 this.skip();
 break;
 case PASS_PRIORITY_CANCEL_ALL_ACTIONS:
 passedAllTurns=false;
 passedTurn=false;
 passedUntilEndOfTurn=false;
-break;
+passedUntilNextMain=false;
 }
 logger.trace("PASS Priority: " + passPriorityAction.toString());
 }

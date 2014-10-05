@@ -2,6 +2,9 @@
   updateGameStatePriority("selectBlockers",game);
   FilterCreatureForCombatBlock filter=filterCreatureForCombatBlock.copy();
   filter.add(new ControllerIdPredicate(defendingPlayerId));
+  if (game.getBattlefield().count(filter,null,playerId,game) == 0 && !getUserData().getUserSkipPrioritySteps().isStopOnDeclareBlockerIfNoneAvailable()) {
+    return;
+  }
   while (!abort) {
     game.fireSelectEvent(playerId,"Select blockers");
     waitForResponse(game);

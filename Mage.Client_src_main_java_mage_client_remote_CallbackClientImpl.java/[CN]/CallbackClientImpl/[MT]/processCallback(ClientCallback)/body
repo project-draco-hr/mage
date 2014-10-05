@@ -225,17 +225,13 @@ JOptionPane.showMessageDialog(null,messageData.get(1),messageData.get(0),JOption
 }
 break;
 case "gameInform":
-if (callback.getMessageId() > gameInformMessageId) {
+{
 GameClientMessage message=(GameClientMessage)callback.getData();
 GamePanel panel=MageFrame.getGame(callback.getObjectId());
 if (panel != null) {
 panel.inform(message.getMessage(),message.getGameView(),callback.getMessageId());
 }
 }
- else {
-logger.warn(new StringBuilder("message out of sequence - ignoring").append("MessageId = ").append(callback.getMessageId()).append(" method = ").append(callback.getMethod()));
-}
-gameInformMessageId=messageId;
 break;
 case "gameInformPersonal":
 {
@@ -288,13 +284,9 @@ panel.updateDraft((DraftView)callback.getData());
 break;
 }
 case "draftInform":
-if (callback.getMessageId() > messageId) {
+{
 DraftClientMessage message=(DraftClientMessage)callback.getData();
 }
- else {
-logger.warn("message out of sequence - ignoring");
-}
-break;
 case "draftInit":
 {
 DraftClientMessage message=(DraftClientMessage)callback.getData();

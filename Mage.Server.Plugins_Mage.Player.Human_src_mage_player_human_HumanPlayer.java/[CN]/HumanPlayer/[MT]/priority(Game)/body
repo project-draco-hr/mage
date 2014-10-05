@@ -1,19 +1,54 @@
 {
   passed=false;
   if (!abort) {
+    boolean dontCheckPassStep=false;
     if (passedAllTurns) {
       pass(game);
       return false;
     }
-    if (passedTurn && game.getStack().isEmpty()) {
-      pass(game);
-      return false;
+    if (game.getStack().isEmpty()) {
+      if (passedTurn) {
+        pass(game);
+        return false;
+      }
+      if (passedUntilNextMain) {
+        if (game.getTurn().getStepType().equals(PhaseStep.POSTCOMBAT_MAIN) || game.getTurn().getStepType().equals(PhaseStep.PRECOMBAT_MAIN)) {
+          if (!skippedAtLeastOnce || (!playerId.equals(game.getActivePlayerId()) && !this.getUserData().getUserSkipPrioritySteps().isStopOnAllMainPhases())) {
+            skippedAtLeastOnce=true;
+            pass(game);
+            return false;
+          }
+ else {
+            dontCheckPassStep=true;
+            passedUntilNextMain=false;
+          }
+        }
+ else {
+          skippedAtLeastOnce=true;
+          pass(game);
+          return false;
+        }
+      }
+      if (passedUntilEndOfTurn) {
+        if (game.getTurn().getStepType().equals(PhaseStep.END_TURN)) {
+          if (!skippedAtLeastOnce || (playerId.equals(game.getActivePlayerId()) && !this.getUserData().getUserSkipPrioritySteps().isStopOnAllEndPhases())) {
+            skippedAtLeastOnce=true;
+            pass(game);
+            return false;
+          }
+ else {
+            dontCheckPassStep=true;
+            passedUntilEndOfTurn=false;
+          }
+        }
+ else {
+          skippedAtLeastOnce=true;
+          pass(game);
+          return false;
+        }
+      }
     }
-    if (passedUntilEndOfTurn && game.getStack().isEmpty() && (!game.getTurn().getStepType().equals(PhaseStep.END_TURN) || playerId.equals(game.getActivePlayerId()))) {
-      pass(game);
-      return false;
-    }
-    if (checkPassStep(game) && game.getStack().isEmpty()) {
+    if (!dontCheckPassStep && checkPassStep(game)) {
       pass(game);
       return false;
     }

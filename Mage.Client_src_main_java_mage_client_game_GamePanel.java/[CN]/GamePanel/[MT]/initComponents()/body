@@ -104,7 +104,7 @@
   this.getInputMap(c).put(ks,"F4_PRESS");
   this.getActionMap().put("F4_PRESS",new AbstractAction(){
     @Override public void actionPerformed(    ActionEvent actionEvent){
-      btnEndTurnActionPerformed(null);
+      btnEndTurnActionPerformed(actionEvent);
     }
   }
 );
@@ -112,7 +112,15 @@
   this.getInputMap(c).put(ks,"F5_PRESS");
   this.getActionMap().put("F5_PRESS",new AbstractAction(){
     @Override public void actionPerformed(    ActionEvent actionEvent){
-      btnUntilEndOfTurnActionPerformed(null);
+      btnUntilEndOfTurnActionPerformed(actionEvent);
+    }
+  }
+);
+  ks=KeyStroke.getKeyStroke(KeyEvent.VK_F7,0);
+  this.getInputMap(c).put(ks,"F7_PRESS");
+  this.getActionMap().put("F7_PRESS",new AbstractAction(){
+    @Override public void actionPerformed(    ActionEvent actionEvent){
+      btnUntilNextMainPhaseActionPerformed(actionEvent);
     }
   }
 );
@@ -266,9 +274,15 @@
   jPhases.setBackground(new Color(0,0,0,0));
   jPhases.setLayout(null);
   jPhases.setPreferredSize(new Dimension(X_PHASE_WIDTH,450));
+  MouseAdapter phasesMouseAdapter=new MouseAdapter(){
+    @Override public void mouseClicked(    MouseEvent evt){
+      mouseClickPhaseBar(evt);
+    }
+  }
+;
   String[] phases={"Untap","Upkeep","Draw","Main1","Combat_Start","Combat_Attack","Combat_Block","Combat_Damage","Combat_End","Main2","Cleanup","Next_Turn"};
   for (  String name : phases) {
-    createPhaseButton(name);
+    createPhaseButton(name,phasesMouseAdapter);
   }
   int i=0;
   for (  String name : hoverButtons.keySet()) {
@@ -278,6 +292,7 @@
     jPhases.add(hoverButton);
     i++;
   }
+  jPhases.addMouseListener(phasesMouseAdapter);
   pnlReplay.setOpaque(false);
   HelperPanel helper=new HelperPanel();
   helper.setPreferredSize(new Dimension(100,90));
@@ -289,7 +304,7 @@
   phasesContainer=new JPanel();
   phasesContainer.setLayout(new RelativeLayout(RelativeLayout.Y_AXIS));
   phasesContainer.setBackground(new Color(0,0,0,0));
-  Float ratio=new Float(1);
+  Float ratio=(float)1;
   JPanel empty1=new JPanel();
   empty1.setBackground(new Color(0,0,0,0));
   phasesContainer.add(empty1,ratio);
