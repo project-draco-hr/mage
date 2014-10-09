@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",11);
+  addCard(Zone.HAND,playerA,"Ulamog, the Infinite Gyre");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.HAND,playerB,"Counterspell",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Ulamog, the Infinite Gyre");
+  addTarget(playerA,"Island");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Counterspell","Ulamog, the Infinite Gyre","Ulamog, the Infinite Gyre");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertHandCount(playerA,"Ulamog, the Infinite Gyre",0);
+  assertPermanentCount(playerA,"Ulamog, the Infinite Gyre",0);
+  assertGraveyardCount(playerB,"Counterspell",1);
+  assertPermanentCount(playerB,"Island",1);
+}
