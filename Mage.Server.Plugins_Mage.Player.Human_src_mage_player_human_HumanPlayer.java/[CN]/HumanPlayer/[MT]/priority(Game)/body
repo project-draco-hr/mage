@@ -1,12 +1,12 @@
 {
   passed=false;
   if (!abort) {
-    boolean dontCheckPassStep=false;
     if (passedAllTurns) {
       pass(game);
       return false;
     }
     if (game.getStack().isEmpty()) {
+      boolean dontCheckPassStep=false;
       if (passedTurn) {
         pass(game);
         return false;
@@ -47,10 +47,10 @@
           return false;
         }
       }
-    }
-    if (!dontCheckPassStep && checkPassStep(game)) {
-      pass(game);
-      return false;
+      if (!dontCheckPassStep && checkPassStep(game)) {
+        pass(game);
+        return false;
+      }
     }
     updateGameStatePriority("priority",game);
     game.firePriorityEvent(playerId);
