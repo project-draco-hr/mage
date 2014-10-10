@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",2);
+  addCard(Zone.HAND,playerA,"Chalice of the Void",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",1);
+  addCard(Zone.HAND,playerB,"Mental Misstep",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Chalice of the Void");
+  setChoice(playerA,"X=1");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Mental Misstep","Chalice of the Void","Chalice of the Void");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertHandCount(playerB,"Mental Misstep",1);
+  assertPermanentCount(playerA,"Chalice of the Void",1);
+}
