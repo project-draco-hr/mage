@@ -7,6 +7,12 @@
     user.showUserMessage("Join Table","No available seats.");
     return false;
   }
+  if (!table.getMatch().getOptions().getPassword().isEmpty()) {
+    if (!table.getMatch().getOptions().getPassword().equals(password)) {
+      user.showUserMessage("Join Table","Wrong password.");
+      return false;
+    }
+  }
   Seat seat=table.getNextAvailableSeat(playerType);
   if (seat == null) {
     user.showUserMessage("Join Table","No available seats.");
@@ -28,7 +34,7 @@
   }
   Player player=createPlayer(name,seat.getPlayerType(),skill);
   if (player == null) {
-    String message=new StringBuilder("Could not create player ").append(name).append(" of type ").append(seat.getPlayerType().toString()).toString();
+    String message=new StringBuilder("Could not create player ").append(name).append(" of type ").append(seat.getPlayerType()).toString();
     logger.warn(new StringBuilder("User: ").append(user.getName()).append(" => ").append(message).toString());
     user.showUserMessage("Join Table",message);
     return false;

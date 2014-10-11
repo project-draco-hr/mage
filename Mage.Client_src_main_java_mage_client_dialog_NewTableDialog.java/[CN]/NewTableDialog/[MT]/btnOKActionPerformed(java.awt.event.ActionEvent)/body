@@ -12,6 +12,7 @@
   options.setRange((RangeOfInfluence)this.cbRange.getSelectedItem());
   options.setWinsNeeded((Integer)this.spnNumWins.getValue());
   options.setFreeMulligans((Integer)this.spnFreeMulligans.getValue());
+  options.setPassword(this.txtPassword.getText());
   saveGameSettingsToPrefs(options,this.player1Panel.getDeckFile());
   table=session.createTable(roomId,options);
   if (table == null) {
@@ -19,7 +20,7 @@
     return;
   }
   try {
-    if (session.joinTable(roomId,table.getTableId(),this.player1Panel.getPlayerName(),"Human",1,DeckImporterUtil.importDeck(this.player1Panel.getDeckFile()))) {
+    if (session.joinTable(roomId,table.getTableId(),this.player1Panel.getPlayerName(),"Human",1,DeckImporterUtil.importDeck(this.player1Panel.getDeckFile()),this.txtPassword.getText())) {
       for (      TablePlayerPanel player : players) {
         if (!player.getPlayerType().equals("Human")) {
           if (!player.joinTable(roomId,table.getTableId())) {
