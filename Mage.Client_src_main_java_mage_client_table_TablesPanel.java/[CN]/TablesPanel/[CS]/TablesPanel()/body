@@ -22,6 +22,8 @@
       UUID tableId=(UUID)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN + 3);
       UUID gameId=(UUID)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN + 2);
       String action=(String)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN);
+      String deckType=(String)tableModel.getValueAt(modelRow,TableTableModel.COLUMN_DECK_TYPE);
+      String info=(String)tableModel.getValueAt(modelRow,TableTableModel.COLUMN_INFO);
       boolean isTournament=(Boolean)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN + 1);
       String owner=(String)tableModel.getValueAt(modelRow,1);
 switch (action) {
@@ -50,11 +52,21 @@ case "Join":
         }
       if (isTournament) {
         logger.info("Joining tournament " + tableId);
-        session.joinTournamentTable(roomId,tableId,session.getUserName(),"Human",1);
+        if (deckType.startsWith("Limited")) {
+          if (!info.startsWith("PW")) {
+            session.joinTournamentTable(roomId,tableId,session.getUserName(),"Human",1,null,"");
+          }
+ else {
+            joinTableDialog.showDialog(roomId,tableId,true,deckType.startsWith("Limited"));
+          }
+        }
+ else {
+          joinTableDialog.showDialog(roomId,tableId,true,deckType.startsWith("Limited"));
+        }
       }
  else {
         logger.info("Joining table " + tableId);
-        joinTableDialog.showDialog(roomId,tableId);
+        joinTableDialog.showDialog(roomId,tableId,false,false);
       }
     break;
 case "Remove":

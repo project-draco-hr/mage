@@ -1,11 +1,13 @@
 {
   tournamentName=tournament.getOptions().getName();
+  StringBuilder typeText=new StringBuilder(tournament.getOptions().getTournamentType());
+  if (!tournament.getTournamentType().isLimited()) {
+    typeText.append(" / ").append(tournament.getOptions().getMatchOptions().getDeckType());
+  }
   if (tournament.getNumberRounds() > 0) {
-    tournamentType=tournament.getOptions().getTournamentType() + " " + tournament.getNumberRounds()+ " rounds";
+    typeText.append(" ").append(tournament.getNumberRounds()).append(" rounds");
   }
- else {
-    tournamentType=tournament.getOptions().getTournamentType();
-  }
+  tournamentType=typeText.toString();
   startTime=tournament.getStartTime();
   endTime=tournament.getEndTime();
   stepStartTime=tournament.getStepStartTime();

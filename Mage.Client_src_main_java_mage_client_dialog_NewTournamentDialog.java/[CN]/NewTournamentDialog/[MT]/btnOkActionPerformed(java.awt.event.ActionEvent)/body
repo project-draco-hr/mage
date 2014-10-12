@@ -2,6 +2,7 @@
   TournamentTypeView tournamentType=(TournamentTypeView)cbTournamentType.getSelectedItem();
   TournamentOptions tOptions=new TournamentOptions(this.txtName.getText());
   tOptions.setTournamentType(tournamentType.getName());
+  tOptions.setPassword(txtPassword.getText());
   tOptions.getPlayerTypes().add("Human");
   tOptions.setWatchingAllowed(cbAllowSpectators.isSelected());
   for (  TournamentPlayerPanel player : players) {
@@ -16,10 +17,10 @@
     options.setTiming((TimingOption)this.cbDraftTiming.getSelectedItem());
     tOptions.setLimitedOptions(options);
   }
+  if (tOptions.getLimitedOptions() == null) {
+    tOptions.setLimitedOptions(new LimitedOptions());
+  }
   if (tournamentType.isLimited()) {
-    if (tOptions.getLimitedOptions() == null) {
-      tOptions.setLimitedOptions(new LimitedOptions());
-    }
     tOptions.getLimitedOptions().setConstructionTime((Integer)this.spnConstructTime.getValue() * 60);
     if (tournamentType.isCubeBooster()) {
       tOptions.getLimitedOptions().setDraftCubeName(this.cbDraftCube.getSelectedItem().toString());
@@ -29,23 +30,33 @@
         tOptions.getLimitedOptions().getSetCodes().add(((ExpansionInfo)pack.getSelectedItem()).getCode());
       }
     }
+    tOptions.getMatchOptions().setDeckType("Limited");
+    tOptions.getMatchOptions().setGameType("Two Player Duel");
+    tOptions.getMatchOptions().setLimited(true);
+  }
+ else {
+    tOptions.getLimitedOptions().setConstructionTime(0);
+    tOptions.getLimitedOptions().setNumberBoosters(0);
+    tOptions.getLimitedOptions().setDraftCube(null);
+    tOptions.getLimitedOptions().setDraftCubeName("");
+    tOptions.getMatchOptions().setDeckType((String)this.cbDeckType.getSelectedItem());
+    tOptions.getMatchOptions().setGameType(((GameTypeView)this.cbGameType.getSelectedItem()).getName());
+    tOptions.getMatchOptions().setLimited(false);
   }
   tOptions.getMatchOptions().setMatchTimeLimit((MatchTimeLimit)this.cbTimeLimit.getSelectedItem());
-  tOptions.getMatchOptions().setDeckType("Limited");
   tOptions.getMatchOptions().setWinsNeeded((Integer)this.spnNumWins.getValue());
   tOptions.getMatchOptions().setFreeMulligans((Integer)this.spnFreeMulligans.getValue());
   tOptions.getMatchOptions().setAttackOption(MultiplayerAttackOption.LEFT);
   tOptions.getMatchOptions().setRange(RangeOfInfluence.ALL);
-  tOptions.getMatchOptions().setLimited(true);
   saveTournamentSettingsToPrefs(tOptions);
   table=session.createTournamentTable(roomId,tOptions);
   if (table == null) {
     return;
   }
-  if (session.joinTournamentTable(roomId,table.getTableId(),this.txtPlayer1Name.getText(),"Human",1)) {
+  if (session.joinTournamentTable(roomId,table.getTableId(),this.player1Panel.getPlayerName(),"Human",1,DeckImporterUtil.importDeck(this.player1Panel.getDeckFile()),tOptions.getPassword())) {
     for (    TournamentPlayerPanel player : players) {
       if (!player.getPlayerType().toString().equals("Human")) {
-        if (!player.joinTournamentTable(roomId,table.getTableId())) {
+        if (!player.joinTournamentTable(roomId,table.getTableId(),DeckImporterUtil.importDeck(this.player1Panel.getDeckFile()))) {
           session.removeTable(roomId,table.getTableId());
           table=null;
           return;
