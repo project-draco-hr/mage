@@ -15,6 +15,12 @@
   watchingAllowed=tournament.getOptions().isWatchingAllowed();
   serverTime=new Date();
   tournamentState=tournament.getTournamentState();
+  if (tournament.getTournamentState().equals("Drafting") && tournament.getDraft() != null) {
+    runningInfo="booster/card: " + tournament.getDraft().getBoosterNum() + "/"+ (tournament.getDraft().getCardNum() - 1);
+  }
+ else {
+    runningInfo="";
+  }
   for (  TournamentPlayer player : tournament.getPlayers()) {
     players.add(new TournamentPlayerView(player));
   }
