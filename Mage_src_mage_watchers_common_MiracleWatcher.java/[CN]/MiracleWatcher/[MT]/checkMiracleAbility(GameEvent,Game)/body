@@ -5,23 +5,12 @@
       if (ability instanceof MiracleAbility) {
         Player controller=game.getPlayer(ability.getControllerId());
         if (controller != null) {
-          game.getContinuousEffects().costModification(ability,game);
-          ManaCosts<ManaCost> manaCostsToPay=ability.getManaCostsToPay();
-          Cards cards=new CardsImpl(Zone.PICK);
+          Cards cards=new CardsImpl();
           cards.add(card);
           controller.lookAtCards("Miracle",cards,game);
-          if (controller.chooseUse(Outcome.Benefit,"Use Miracle " + manaCostsToPay.getText() + "?",game)) {
+          if (controller.chooseUse(Outcome.Benefit,"Reveal card to be able to use Miracle?",game)) {
             controller.revealCards("Miracle",cards,game);
-            ManaCosts costRef=card.getSpellAbility().getManaCostsToPay();
-            costRef.clear();
-            for (            ManaCost manaCost : manaCostsToPay) {
-              costRef.add(manaCost);
-            }
-            controller.cast(card.getSpellAbility(),game,false);
-            costRef.clear();
-            for (            ManaCost manaCost : card.getSpellAbility().getManaCosts()) {
-              costRef.add(manaCost);
-            }
+            game.fireEvent(GameEvent.getEvent(GameEvent.EventType.MIRACLE_CARD_REVEALED,card.getId(),card.getId(),controller.getId()));
             break;
           }
         }

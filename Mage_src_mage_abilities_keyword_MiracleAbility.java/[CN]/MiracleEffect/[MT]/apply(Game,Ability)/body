@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Card card=game.getCard(getTargetPointer().getFirst(game,source));
+  if (controller != null && card != null) {
+    ManaCosts costRef=card.getSpellAbility().getManaCostsToPay();
+    costRef.clear();
+    costRef.add(miracleCosts);
+    controller.cast(card.getSpellAbility(),game,false);
+    costRef.clear();
+    for (    ManaCost manaCost : card.getSpellAbility().getManaCosts()) {
+      costRef.add(manaCost);
+    }
+    return true;
+  }
+  return false;
+}
