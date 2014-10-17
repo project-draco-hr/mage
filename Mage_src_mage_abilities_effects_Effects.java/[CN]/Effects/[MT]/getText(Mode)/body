@@ -1,23 +1,27 @@
 {
   StringBuilder sbText=new StringBuilder();
-  String rule=null;
+  String lastRule=null;
   for (  Effect effect : this) {
     String endString="";
-    if (rule != null && rule.length() > 3 && !rule.endsWith(".")) {
-      endString=". ";
-    }
-    rule=effect.getText(mode);
-    if (rule != null) {
-      if (rule.startsWith("and ") || rule.startsWith("with ")) {
+    String nextRule=effect.getText(mode);
+    if (nextRule != null) {
+      if (nextRule.startsWith("and ") || nextRule.startsWith("with ")) {
         endString=" ";
       }
- else       if (rule.startsWith(",")) {
+ else       if (nextRule.startsWith(",")) {
         endString="";
       }
-      sbText.append(endString).append(rule);
+ else       if (lastRule != null && lastRule.length() > 3 && !lastRule.endsWith(".")) {
+        endString=". ";
+        if (nextRule.length() > 3) {
+          nextRule=Character.toUpperCase(nextRule.charAt(0)) + nextRule.substring(1);
+        }
+      }
+      sbText.append(endString).append(nextRule);
     }
+    lastRule=nextRule;
   }
-  if (rule != null && rule.length() > 3 && !rule.endsWith(".") && !rule.endsWith("\"") && !rule.startsWith("<b>Level ")) {
+  if (lastRule != null && lastRule.length() > 3 && !lastRule.endsWith(".") && !lastRule.endsWith("\"") && !lastRule.startsWith("<b>Level ")) {
     sbText.append(".");
   }
   return sbText.toString();
