@@ -1,0 +1,12 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    if (FerociousCondition.getInstance().apply(game,source)) {
+      ContinuousEffect effect=new GainAbilityTargetEffect(IndestructibleAbility.getInstance(),Duration.EndOfTurn);
+      effect.setTargetPointer(getTargetPointer());
+      game.addEffect(effect,source);
+    }
+    return true;
+  }
+  return false;
+}
