@@ -4,7 +4,7 @@
   jSplitPane0=new javax.swing.JSplitPane();
   jPanel2=new javax.swing.JPanel();
   jPanel3=new javax.swing.JPanel();
-  pnlGameInfo=new javax.swing.JPanel();
+  pnlShortCuts=new javax.swing.JPanel();
   lblPhase=new javax.swing.JLabel();
   txtPhase=new javax.swing.JLabel();
   lblStep=new javax.swing.JLabel();
@@ -16,10 +16,12 @@
   txtPriority=new javax.swing.JLabel();
   lblPriority=new javax.swing.JLabel();
   feedbackPanel=new mage.client.game.FeedbackPanel();
-  btnConcede=new javax.swing.JButton();
-  btnEndTurn=new javax.swing.JButton();
   btnCancelSkip=new javax.swing.JButton();
+  btnSkipToNextTurn=new javax.swing.JButton();
+  btnSkipToEndTurn=new javax.swing.JButton();
+  btnSkipToNextMain=new javax.swing.JButton();
   btnSkipToYourTurn=new javax.swing.JButton();
+  btnConcede=new javax.swing.JButton();
   btnSwitchHands=new javax.swing.JButton();
   btnStopWatching=new javax.swing.JButton();
   bigCard=new mage.client.cards.BigCard();
@@ -53,8 +55,8 @@
   jSplitPane0.setResizeWeight(1.0);
   jSplitPane0.setOneTouchExpandable(true);
   restoreDividerLocations();
-  pnlGameInfo.setOpaque(false);
-  pnlGameInfo.setPreferredSize(new Dimension(400,60));
+  pnlShortCuts.setOpaque(false);
+  pnlShortCuts.setPreferredSize(new Dimension(400,60));
   lblPhase.setLabelFor(txtPhase);
   lblPhase.setText("Phase:");
   txtPhase.setText("Phase");
@@ -93,47 +95,29 @@
     }
   }
 );
-  btnCancelSkip.setText("F3");
-  btnCancelSkip.setToolTipText("Cancel all skip actions (F3)");
-  btnCancelSkip.setFocusable(true);
+  btnCancelSkip.setContentAreaFilled(false);
+  btnCancelSkip.setBorder(new EmptyBorder(0,0,0,0));
+  btnCancelSkip.setIcon(new ImageIcon(ImageManagerImpl.getInstance().getCancelSkipButtonImage()));
+  btnCancelSkip.setToolTipText("Cancel all skip actions (F3).");
+  btnCancelSkip.setFocusable(false);
   btnCancelSkip.addMouseListener(new MouseAdapter(){
     @Override public void mouseClicked(    MouseEvent evt){
-      restorePriorityActionPerformed(null);
+      if (evt.getButton() == MouseEvent.BUTTON1) {
+        restorePriorityActionPerformed(null);
+      }
     }
   }
 );
-  KeyStroke ks9=KeyStroke.getKeyStroke(KeyEvent.VK_F9,0);
-  this.getInputMap(c).put(ks9,"F9_PRESS");
-  this.getActionMap().put("F9_PRESS",new AbstractAction(){
-    @Override public void actionPerformed(    ActionEvent actionEvent){
-      btnPassPriorityUntilNextYourTurnActionPerformed(actionEvent);
-    }
-  }
-);
-  btnSkipToYourTurn.setText("F9");
-  btnSkipToYourTurn.setToolTipText("Skip to your next turn (F9)");
-  btnSkipToYourTurn.setFocusable(true);
-  btnSkipToYourTurn.addMouseListener(new MouseAdapter(){
+  btnSkipToNextTurn.setContentAreaFilled(false);
+  btnSkipToNextTurn.setBorder(new EmptyBorder(0,0,0,0));
+  btnSkipToNextTurn.setIcon(new ImageIcon(ImageManagerImpl.getInstance().getSkipNextTurnButtonImage()));
+  btnSkipToNextTurn.setToolTipText("Skip to next turn (F4).");
+  btnSkipToNextTurn.setFocusable(false);
+  btnSkipToNextTurn.addMouseListener(new MouseAdapter(){
     @Override public void mouseClicked(    MouseEvent evt){
-      btnPassPriorityUntilNextYourTurnActionPerformed(null);
-    }
-  }
-);
-  btnConcede.setText("Concede");
-  btnConcede.setToolTipText("Concede the current game");
-  btnConcede.setFocusable(false);
-  btnConcede.addMouseListener(new MouseAdapter(){
-    @Override public void mouseClicked(    MouseEvent evt){
-      btnConcedeActionPerformed(null);
-    }
-  }
-);
-  btnEndTurn.setText("F4");
-  btnEndTurn.setToolTipText("End This Turn (F4)");
-  btnEndTurn.setFocusable(false);
-  btnEndTurn.addMouseListener(new MouseAdapter(){
-    @Override public void mouseClicked(    MouseEvent evt){
-      btnEndTurnActionPerformed(null);
+      if (evt.getButton() == MouseEvent.BUTTON1) {
+        btnEndTurnActionPerformed(null);
+      }
     }
   }
 );
@@ -145,6 +129,19 @@
     }
   }
 );
+  btnSkipToEndTurn.setContentAreaFilled(false);
+  btnSkipToEndTurn.setBorder(new EmptyBorder(0,0,0,0));
+  btnSkipToEndTurn.setIcon(new ImageIcon(ImageManagerImpl.getInstance().getSkipEndTurnButtonImage()));
+  btnSkipToEndTurn.setToolTipText("Skip to (opponents/next) end of turn step (F5) - adjust using preferences.");
+  btnSkipToEndTurn.setFocusable(false);
+  btnSkipToEndTurn.addMouseListener(new MouseAdapter(){
+    @Override public void mouseClicked(    MouseEvent evt){
+      if (evt.getButton() == MouseEvent.BUTTON1) {
+        btnUntilEndOfTurnActionPerformed(null);
+      }
+    }
+  }
+);
   ks=KeyStroke.getKeyStroke(KeyEvent.VK_F5,0);
   this.getInputMap(c).put(ks,"F5_PRESS");
   this.getActionMap().put("F5_PRESS",new AbstractAction(){
@@ -153,11 +150,58 @@
     }
   }
 );
+  btnSkipToNextMain.setContentAreaFilled(false);
+  btnSkipToNextMain.setBorder(new EmptyBorder(0,0,0,0));
+  btnSkipToNextMain.setIcon(new ImageIcon(ImageManagerImpl.getInstance().getSkipMainButtonImage()));
+  btnSkipToNextMain.setToolTipText("Skip to (your) next main phase (F7) - adjust using preferences.");
+  btnSkipToNextMain.setFocusable(false);
+  btnSkipToNextMain.addMouseListener(new MouseAdapter(){
+    @Override public void mouseClicked(    MouseEvent evt){
+      if (evt.getButton() == MouseEvent.BUTTON1) {
+        btnUntilNextMainPhaseActionPerformed(null);
+      }
+    }
+  }
+);
   ks=KeyStroke.getKeyStroke(KeyEvent.VK_F7,0);
   this.getInputMap(c).put(ks,"F7_PRESS");
   this.getActionMap().put("F7_PRESS",new AbstractAction(){
     @Override public void actionPerformed(    ActionEvent actionEvent){
       btnUntilNextMainPhaseActionPerformed(actionEvent);
+    }
+  }
+);
+  btnSkipToYourTurn.setContentAreaFilled(false);
+  btnSkipToYourTurn.setBorder(new EmptyBorder(0,0,0,0));
+  btnSkipToYourTurn.setIcon(new ImageIcon(ImageManagerImpl.getInstance().getSkipYourNextTurnButtonImage()));
+  btnSkipToYourTurn.setToolTipText("Skip to your next turn (F9).");
+  btnSkipToYourTurn.setFocusable(false);
+  btnSkipToYourTurn.addMouseListener(new MouseAdapter(){
+    @Override public void mouseClicked(    MouseEvent evt){
+      if (evt.getButton() == MouseEvent.BUTTON1) {
+        btnPassPriorityUntilNextYourTurnActionPerformed(null);
+      }
+    }
+  }
+);
+  KeyStroke ks9=KeyStroke.getKeyStroke(KeyEvent.VK_F9,0);
+  this.getInputMap(c).put(ks9,"F9_PRESS");
+  this.getActionMap().put("F9_PRESS",new AbstractAction(){
+    @Override public void actionPerformed(    ActionEvent actionEvent){
+      btnPassPriorityUntilNextYourTurnActionPerformed(actionEvent);
+    }
+  }
+);
+  btnConcede.setContentAreaFilled(false);
+  btnConcede.setBorder(new EmptyBorder(0,0,0,0));
+  btnConcede.setIcon(new ImageIcon(ImageManagerImpl.getInstance().getConcedeButtonImage()));
+  btnConcede.setToolTipText("Concede the current game.");
+  btnConcede.setFocusable(false);
+  btnConcede.addMouseListener(new MouseAdapter(){
+    @Override public void mouseClicked(    MouseEvent evt){
+      if (evt.getButton() == MouseEvent.BUTTON1) {
+        btnConcedeActionPerformed(null);
+      }
     }
   }
 );
@@ -231,17 +275,29 @@
     }
   }
 );
-  btnSwitchHands.setText("Switch Hands");
+  btnSwitchHands.setContentAreaFilled(false);
+  btnSwitchHands.setBorder(new EmptyBorder(0,0,0,0));
+  btnSwitchHands.setIcon(new ImageIcon(ImageManagerImpl.getInstance().getSwitchHandsButtonImage()));
+  btnSwitchHands.setFocusable(false);
+  btnSwitchHands.setToolTipText("Switch between your hand cards and hand cards of controlled players.");
   btnSwitchHands.addMouseListener(new MouseAdapter(){
     @Override public void mouseClicked(    MouseEvent evt){
-      btnSwitchHandActionPerformed(null);
+      if (evt.getButton() == MouseEvent.BUTTON1) {
+        btnSwitchHandActionPerformed(null);
+      }
     }
   }
 );
-  btnStopWatching.setText("Stop Watching");
-  btnStopWatching.addActionListener(new java.awt.event.ActionListener(){
-    @Override public void actionPerformed(    java.awt.event.ActionEvent evt){
-      btnStopWatchingActionPerformed(evt);
+  btnStopWatching.setContentAreaFilled(false);
+  btnStopWatching.setBorder(new EmptyBorder(0,0,0,0));
+  btnStopWatching.setIcon(new ImageIcon(ImageManagerImpl.getInstance().getStopWatchButtonImage()));
+  btnStopWatching.setFocusable(false);
+  btnSwitchHands.setToolTipText("Stop watching this game.");
+  btnStopWatching.addMouseListener(new MouseAdapter(){
+    @Override public void mouseClicked(    MouseEvent evt){
+      if (evt.getButton() == MouseEvent.BUTTON1) {
+        btnStopWatchingActionPerformed(null);
+      }
     }
   }
 );
@@ -286,10 +342,10 @@
   pnlReplay.setLayout(gl_pnlReplay);
   gl_pnlReplay.setHorizontalGroup(gl_pnlReplay.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(gl_pnlReplay.createSequentialGroup().addComponent(btnPreviousPlay,javax.swing.GroupLayout.PREFERRED_SIZE,41,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnPlay,javax.swing.GroupLayout.PREFERRED_SIZE,35,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE).addComponent(btnStopReplay,javax.swing.GroupLayout.PREFERRED_SIZE,38,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnNextPlay,javax.swing.GroupLayout.PREFERRED_SIZE,36,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnSkipForward,javax.swing.GroupLayout.PREFERRED_SIZE,39,javax.swing.GroupLayout.PREFERRED_SIZE)));
   gl_pnlReplay.setVerticalGroup(gl_pnlReplay.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(btnSkipForward,0,0,Short.MAX_VALUE).addComponent(btnNextPlay,0,0,Short.MAX_VALUE).addComponent(btnStopReplay,0,0,Short.MAX_VALUE).addComponent(btnPlay,0,0,Short.MAX_VALUE).addComponent(btnPreviousPlay,javax.swing.GroupLayout.PREFERRED_SIZE,31,Short.MAX_VALUE));
-  javax.swing.GroupLayout gl_pnlGameInfo=new javax.swing.GroupLayout(pnlGameInfo);
-  pnlGameInfo.setLayout(gl_pnlGameInfo);
-  gl_pnlGameInfo.setHorizontalGroup(gl_pnlGameInfo.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(gl_pnlGameInfo.createSequentialGroup().addGap(10,10,10).addComponent(btnConcede).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnCancelSkip).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnEndTurn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnSkipToYourTurn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnSwitchHands).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnStopWatching).addContainerGap(62,Short.MAX_VALUE)).addGroup(gl_pnlGameInfo.createSequentialGroup().addContainerGap().addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(51,Short.MAX_VALUE)));
-  gl_pnlGameInfo.setVerticalGroup(gl_pnlGameInfo.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(gl_pnlGameInfo.createSequentialGroup().addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,164,Short.MAX_VALUE).addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(gl_pnlGameInfo.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(btnConcede).addComponent(btnCancelSkip).addComponent(btnEndTurn).addComponent(btnSkipToYourTurn).addComponent(btnSwitchHands).addComponent(btnStopWatching))));
+  javax.swing.GroupLayout gl_pnlShortCuts=new javax.swing.GroupLayout(pnlShortCuts);
+  pnlShortCuts.setLayout(gl_pnlShortCuts);
+  gl_pnlShortCuts.setHorizontalGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addGroup(gl_pnlShortCuts.createSequentialGroup().addComponent(btnSkipToNextTurn).addComponent(btnSkipToEndTurn).addComponent(btnSkipToNextMain).addComponent(btnSkipToYourTurn)).addGroup(gl_pnlShortCuts.createSequentialGroup().addComponent(btnSwitchHands).addComponent(btnCancelSkip).addComponent(btnConcede).addComponent(btnStopWatching)).addGroup(gl_pnlShortCuts.createSequentialGroup().addContainerGap().addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(51,Short.MAX_VALUE)));
+  gl_pnlShortCuts.setVerticalGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(gl_pnlShortCuts.createSequentialGroup().addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,164,Short.MAX_VALUE).addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(btnSkipToNextTurn).addComponent(btnSkipToEndTurn).addComponent(btnSkipToNextMain).addComponent(btnSkipToYourTurn)).addGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(btnSwitchHands).addComponent(btnCancelSkip).addComponent(btnConcede).addComponent(btnStopWatching))));
   pnlBattlefield.setLayout(new java.awt.GridBagLayout());
   jPhases=new JPanel();
   jPhases.setBackground(new Color(0,0,0,0));
@@ -334,8 +390,8 @@
   empty2.setBackground(new Color(0,0,0,0));
   phasesContainer.add(empty2,ratio);
   javax.swing.GroupLayout gl_jPanel3=new javax.swing.GroupLayout(jPanel3);
-  gl_jPanel3.setHorizontalGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel3.createSequentialGroup().addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel3.createSequentialGroup().addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addComponent(helper,GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE).addComponent(handContainer,GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)).addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addComponent(pnlGameInfo,400,400,400).addComponent(stack,400,400,400))).addGap(0).addGroup(gl_jPanel3.createSequentialGroup().addComponent(pnlBattlefield,GroupLayout.DEFAULT_SIZE,200,Short.MAX_VALUE).addComponent(phasesContainer,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)))));
-  gl_jPanel3.setVerticalGroup(gl_jPanel3.createParallelGroup(Alignment.TRAILING).addGroup(gl_jPanel3.createSequentialGroup().addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addComponent(pnlBattlefield,GroupLayout.DEFAULT_SIZE,200,Short.MAX_VALUE).addComponent(phasesContainer,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)).addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel3.createSequentialGroup().addComponent(pnlGameInfo,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).addGap(0).addComponent(stack,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)).addGroup(gl_jPanel3.createSequentialGroup().addComponent(helper,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).addComponent(handContainer,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)))));
+  gl_jPanel3.setHorizontalGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel3.createSequentialGroup().addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel3.createSequentialGroup().addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addComponent(helper,GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE).addComponent(handContainer,GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)).addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addComponent(pnlShortCuts,400,400,400).addComponent(stack,400,400,400))).addGap(0).addGroup(gl_jPanel3.createSequentialGroup().addComponent(pnlBattlefield,GroupLayout.DEFAULT_SIZE,200,Short.MAX_VALUE).addComponent(phasesContainer,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)))));
+  gl_jPanel3.setVerticalGroup(gl_jPanel3.createParallelGroup(Alignment.TRAILING).addGroup(gl_jPanel3.createSequentialGroup().addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addComponent(pnlBattlefield,GroupLayout.DEFAULT_SIZE,200,Short.MAX_VALUE).addComponent(phasesContainer,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)).addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel3.createSequentialGroup().addComponent(pnlShortCuts,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).addGap(0).addComponent(stack,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)).addGroup(gl_jPanel3.createSequentialGroup().addComponent(helper,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).addComponent(handContainer,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)))));
   jPanel3.setLayout(gl_jPanel3);
   jSplitPane1.setLeftComponent(jPanel3);
   jSplitPane1.setRightComponent(jSplitPane2);
