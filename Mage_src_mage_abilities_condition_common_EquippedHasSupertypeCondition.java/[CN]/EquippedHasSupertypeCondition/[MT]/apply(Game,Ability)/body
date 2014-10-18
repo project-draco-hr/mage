@@ -1,0 +1,24 @@
+{
+  Permanent permanent=game.getBattlefield().getPermanent(source.getSourceId());
+  if (permanent != null && permanent.getAttachedTo() != null) {
+    Permanent attachedTo=game.getBattlefield().getPermanent(permanent.getAttachedTo());
+    if (attachedTo == null) {
+      attachedTo=(Permanent)game.getLastKnownInformation(permanent.getAttachedTo(),Zone.BATTLEFIELD);
+    }
+    if (attachedTo != null) {
+      if (superType != null) {
+        if (attachedTo.getSupertype().contains(this.superType)) {
+          return true;
+        }
+      }
+ else {
+        for (        String s : superTypes) {
+          if (attachedTo.getSupertype().contains(s)) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

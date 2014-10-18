@@ -1,0 +1,13 @@
+{
+  if (!super.resolve(game)) {
+    Card card=game.getCard(getSourceId());
+    if (card != null) {
+      Player owner=game.getPlayer(card.getOwnerId());
+      if (owner != null) {
+        owner.moveCardToGraveyardWithInfo(card,getSourceId(),game,Zone.EXILED);
+      }
+    }
+    return false;
+  }
+  return true;
+}

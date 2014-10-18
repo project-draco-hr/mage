@@ -34,6 +34,27 @@
         }
       }
     }
+    if (target instanceof TargetCardInHand) {
+      for (      String targetDefinition : targets) {
+        String[] targetList=targetDefinition.split("\\^");
+        boolean targetFound=false;
+        for (        String targetName : targetList) {
+          for (          Card card : this.getHand().getCards(((TargetCardInHand)target).getFilter(),game)) {
+            if (card.getName().equals(targetName) || (card.getName() + "-" + card.getExpansionSetCode()).equals(targetName)) {
+              if (((TargetCardInHand)target).canTarget(source.getControllerId(),card.getId(),source,game) && !target.getTargets().contains(card.getId())) {
+                target.add(card.getId(),game);
+                targetFound=true;
+                break;
+              }
+            }
+          }
+        }
+        if (targetFound) {
+          targets.remove(targetDefinition);
+          return true;
+        }
+      }
+    }
   }
   return super.chooseTarget(outcome,target,source,game);
 }

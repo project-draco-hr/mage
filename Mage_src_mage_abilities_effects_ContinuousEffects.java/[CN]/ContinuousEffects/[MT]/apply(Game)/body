@@ -72,6 +72,10 @@
   layer=filterLayeredEffects(layerEffects,Layer.PTChangingEffects_7);
   for (  ContinuousEffect effect : layer) {
     HashSet<Ability> abilities=layeredEffects.getAbility(effect.getId());
+    if (abilities == null) {
+      logger.error("Effect not connected to an ability: " + effect.toString());
+      continue;
+    }
     for (    Ability ability : abilities) {
       effect.apply(Layer.PTChangingEffects_7,SubLayer.SetPT_7b,ability,game);
     }

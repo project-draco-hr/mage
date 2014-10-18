@@ -1,0 +1,19 @@
+{
+  Player owner=null;
+  Card card=game.getCard(source.getSourceId());
+  if (card != null) {
+    owner=game.getPlayer(card.getOwnerId());
+  }
+  if (owner != null && card != null) {
+    ManaCosts<ManaCost> costRef=card.getSpellAbility().getManaCostsToPay();
+    costRef.clear();
+    costRef.add(madnessCost);
+    boolean result=owner.cast(card.getSpellAbility(),game,false);
+    costRef.clear();
+    for (    ManaCost manaCost : card.getSpellAbility().getManaCosts()) {
+      costRef.add(manaCost);
+    }
+    return result;
+  }
+  return false;
+}
