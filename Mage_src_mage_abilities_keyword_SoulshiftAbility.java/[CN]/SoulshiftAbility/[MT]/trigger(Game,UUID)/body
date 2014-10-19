@@ -1,0 +1,9 @@
+{
+  this.getTargets().clear();
+  int intValue=amount.calculate(game,this,null);
+  FilterCard filter=new FilterCard("Spirit card with converted mana cost " + intValue + " or less from your graveyard");
+  filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.LessThan,intValue + 1));
+  filter.add(new SubtypePredicate("Spirit"));
+  this.addTarget(new TargetCardInYourGraveyard(filter));
+  super.trigger(game,controllerId);
+}
