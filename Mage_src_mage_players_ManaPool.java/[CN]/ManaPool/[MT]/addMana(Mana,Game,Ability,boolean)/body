@@ -1,0 +1,22 @@
+{
+  Mana mana=manaToAdd.copy();
+  if (!game.replaceEvent(new ManaEvent(EventType.ADD_MANA,source.getId(),source.getSourceId(),source.getControllerId(),mana))) {
+    if (mana instanceof ConditionalMana) {
+      ManaPoolItem item=new ManaPoolItem((ConditionalMana)mana,source.getSourceId());
+      if (emptyOnTurnsEnd) {
+        item.setDuration(Duration.EndOfTurn);
+      }
+      this.manaItems.add(item);
+    }
+ else {
+      ManaPoolItem item=new ManaPoolItem(mana.getRed(),mana.getGreen(),mana.getBlue(),mana.getWhite(),mana.getBlack(),mana.getColorless(),source.getSourceId(),mana.getFlag());
+      if (emptyOnTurnsEnd) {
+        item.setDuration(Duration.EndOfTurn);
+      }
+      this.manaItems.add(item);
+    }
+    GameEvent event=GameEvent.getEvent(GameEvent.EventType.MANA_ADDED,source.getId(),source.getSourceId(),source.getControllerId());
+    event.setData(mana.toString());
+    game.fireEvent(event);
+  }
+}

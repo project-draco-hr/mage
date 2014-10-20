@@ -1,0 +1,23 @@
+{
+  int total=0;
+  Iterator<ManaPoolItem> it=manaItems.iterator();
+  while (it.hasNext()) {
+    ManaPoolItem item=it.next();
+    for (    ManaType manaType : ManaType.values()) {
+      if (item.get(manaType) > 0 && !doNotEmptyManaTypes.contains(manaType)) {
+        if (!item.getDuration().equals(Duration.EndOfTurn) || game.getPhase().getType().equals(TurnPhase.END)) {
+          if (game.replaceEvent(new GameEvent(GameEvent.EventType.EMPTY_MANA_POOL,null,null,null))) {
+            int amount=item.get(manaType);
+            item.clear(manaType);
+            item.add(ManaType.COLORLESS,amount);
+          }
+ else {
+            total+=item.get(manaType);
+            item.clear(manaType);
+          }
+        }
+      }
+    }
+  }
+  return total;
+}
