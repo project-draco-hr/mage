@@ -6,7 +6,7 @@
     for (    ManaType manaType : ManaType.values()) {
       if (item.get(manaType) > 0 && !doNotEmptyManaTypes.contains(manaType)) {
         if (!item.getDuration().equals(Duration.EndOfTurn) || game.getPhase().getType().equals(TurnPhase.END)) {
-          if (game.replaceEvent(new GameEvent(GameEvent.EventType.EMPTY_MANA_POOL,null,null,null))) {
+          if (game.replaceEvent(new GameEvent(GameEvent.EventType.EMPTY_MANA_POOL,playerId,null,playerId))) {
             int amount=item.get(manaType);
             item.clear(manaType);
             item.add(ManaType.COLORLESS,amount);
@@ -17,6 +17,9 @@
           }
         }
       }
+    }
+    if (item.count() == 0) {
+      it.remove();
     }
   }
   return total;
