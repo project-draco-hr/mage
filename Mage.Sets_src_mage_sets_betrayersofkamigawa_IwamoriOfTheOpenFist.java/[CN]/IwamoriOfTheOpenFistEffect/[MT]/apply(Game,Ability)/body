@@ -1,0 +1,30 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards cards=new CardsImpl();
+    for (    UUID playerId : game.getOpponents(controller.getId())) {
+      Player opponent=game.getPlayer(playerId);
+      Target target=new TargetCardInHand(filter);
+      if (opponent != null && target.canChoose(opponent.getId(),source.getSourceId(),game)) {
+        if (opponent.chooseUse(Outcome.PutCreatureInPlay,"Put a legendary creature card from your hand onto the battlefield?",game)) {
+          if (target.chooseTarget(Outcome.PutCreatureInPlay,opponent.getId(),source,game)) {
+            Card card=game.getCard(target.getFirstTarget());
+            if (card != null) {
+              cards.add(card);
+            }
+          }
+        }
+      }
+    }
+    if (cards.size() > 0) {
+      for (      Card card : cards.getCards(game)) {
+        Player player=game.getPlayer(card.getOwnerId());
+        if (player != null) {
+          player.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId());
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
