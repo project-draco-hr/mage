@@ -1,12 +1,9 @@
 {
-  Permanent permanent=game.getPermanent(this.getTargetPointer().getFirst(game,source));
-  if (permanent == null) {
-    permanent=(Permanent)game.getLastKnownInformation(source.getFirstTarget(),Zone.BATTLEFIELD);
-  }
+  Permanent permanent=game.getPermanentOrLKIBattlefield(this.getTargetPointer().getFirst(game,source));
   if (permanent != null) {
-    EmptyToken token=new EmptyToken();
-    CardUtil.copyTo(token).from(permanent);
-    token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
+    Effect effect=new PutTokenOntoBattlefieldCopyTargetEffect();
+    effect.setTargetPointer(getTargetPointer());
+    effect.apply(game,source);
     Set<UUID> playersSaidYes=new HashSet<>();
     PlayerList playerList=game.getPlayerList().copy();
     playerList.setCurrent(game.getActivePlayerId());
@@ -27,14 +24,14 @@
     }
  while (!player.getId().equals(game.getActivePlayerId()));
     for (    UUID playerId : playersSaidYes) {
-      token=new EmptyToken();
-      CardUtil.copyTo(token).from(permanent);
-      token.putOntoBattlefield(1,game,source.getSourceId(),playerId);
+      effect=new PutTokenOntoBattlefieldCopyTargetEffect(playerId);
+      effect.setTargetPointer(getTargetPointer());
+      effect.apply(game,source);
     }
     if (playersSaidYes.size() > 0) {
-      token=new EmptyToken();
-      CardUtil.copyTo(token).from(permanent);
-      token.putOntoBattlefield(playersSaidYes.size(),game,source.getSourceId(),source.getControllerId());
+      effect=new PutTokenOntoBattlefieldCopyTargetEffect();
+      effect.setTargetPointer(getTargetPointer());
+      effect.apply(game,source);
     }
     return true;
   }

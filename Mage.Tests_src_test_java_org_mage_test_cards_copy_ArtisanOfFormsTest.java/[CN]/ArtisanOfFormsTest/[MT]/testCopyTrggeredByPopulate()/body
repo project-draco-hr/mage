@@ -1,0 +1,26 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Artisan of Forms");
+  addCard(Zone.HAND,playerA,"Cackling Counterpart");
+  addCard(Zone.BATTLEFIELD,playerA,"Island",3);
+  addCard(Zone.HAND,playerA,"Eyes in the Skies");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Cackling Counterpart","Artisan of Forms");
+  setChoice(playerA,"Silvercoat Lion");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Eyes in the Skies");
+  setChoice(playerA,"Silvercoat Lion");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Cackling Counterpart",1);
+  assertPermanentCount(playerA,"Artisan of Forms",0);
+  assertPermanentCount(playerB,"Silvercoat Lion",1);
+  assertPermanentCount(playerA,"Bird",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",3);
+  for (  Permanent permanent : currentGame.getBattlefield().getAllActivePermanents(playerA.getId())) {
+    if (permanent.getName().equals("Silvercoat Lion")) {
+      Assert.assertEquals("Creature has to have Cast + Heroic ability",2,permanent.getAbilities().size());
+    }
+  }
+}

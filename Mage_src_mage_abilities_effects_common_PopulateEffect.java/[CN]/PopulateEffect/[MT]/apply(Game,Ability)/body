@@ -5,13 +5,11 @@
     if (target.canChoose(source.getControllerId(),game)) {
       player.choose(Outcome.Copy,target,source.getSourceId(),game);
       Permanent tokenToCopy=game.getPermanent(target.getFirstTarget());
-      if (tokenToCopy != null && tokenToCopy instanceof PermanentToken) {
-        Token newToken=new Token("","");
-        CardUtil.copyTo(newToken).from(tokenToCopy);
-        if (newToken != null) {
-          game.informPlayers("Token selected for populate: " + newToken.getName());
-          return newToken.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
-        }
+      if (tokenToCopy != null) {
+        game.informPlayers("Token selected for populate: " + tokenToCopy.getLogName());
+        Effect effect=new PutTokenOntoBattlefieldCopyTargetEffect();
+        effect.setTargetPointer(new FixedTarget(target.getFirstTarget()));
+        return effect.apply(game,source);
       }
     }
   }
