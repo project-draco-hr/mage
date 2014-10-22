@@ -1,0 +1,16 @@
+{
+  PreventionEffectData preventionData=preventDamageAction(event,source,game);
+  if (preventionData.getPreventedDamage() > 0) {
+    Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (permanent != null) {
+      game.informPlayers("Dealing " + preventionData.getPreventedDamage() + " damage to "+ permanent.getLogName()+ " instead");
+      permanent.damage(preventionData.getPreventedDamage(),event.getSourceId(),game,false,true);
+    }
+    Player player=game.getPlayer(getTargetPointer().getFirst(game,source));
+    if (player != null) {
+      game.informPlayers("Dealing " + preventionData.getPreventedDamage() + " damage to "+ player.getName()+ " instead");
+      player.damage(preventionData.getPreventedDamage(),event.getSourceId(),game,false,true);
+    }
+  }
+  return false;
+}
