@@ -1,10 +1,10 @@
 {
   Card card=game.getCard(source.getSourceId());
   if (card != null) {
-    Player player=game.getPlayer(card.getOwnerId());
-    if (player != null) {
-      if (card.putOntoBattlefield(game,Zone.HAND,source.getSourceId(),player.getId())) {
-        game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DISCARDED_CARD,card.getId(),source.getSourceId(),player.getId()));
+    Player owner=game.getPlayer(card.getOwnerId());
+    if (owner != null) {
+      if (owner.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId())) {
+        game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DISCARDED_CARD,card.getId(),source.getSourceId(),owner.getId()));
         return true;
       }
     }
