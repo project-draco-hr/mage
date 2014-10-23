@@ -1,40 +1,49 @@
 {
-  Player damagedPlayer=game.getPlayer(targetPointer.getFirst(game,source));
-  Player you=game.getPlayer(source.getControllerId());
-  if (damagedPlayer != null && you != null) {
-    damagedPlayer.revealCards("Shimian Specter",damagedPlayer.getHand(),game);
-    TargetCard target=new TargetCard(Zone.PICK,filter);
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (targetPlayer != null && sourceObject != null && controller != null) {
+    targetPlayer.revealCards(sourceObject.getLogName(),targetPlayer.getHand(),game);
+    TargetCardInHand target=new TargetCardInHand(new FilterNonlandCard());
     target.setNotTarget(true);
-    if (you.choose(Outcome.Benefit,damagedPlayer.getHand(),target,game)) {
-      Card chosenCard=damagedPlayer.getHand().get(target.getFirstTarget(),game);
-      if (chosenCard != null && damagedPlayer != null) {
-        Cards cardsInLibrary=new CardsImpl(Zone.LIBRARY);
-        cardsInLibrary.addAll(damagedPlayer.getLibrary().getCards(game));
-        you.lookAtCards(damagedPlayer.getName() + ": cards in library",cardsInLibrary,game);
-        Cards cardsInGraveyard=new CardsImpl(Zone.GRAVEYARD);
-        cardsInGraveyard.addAll(damagedPlayer.getGraveyard());
-        Cards cardsInHand=new CardsImpl(Zone.HAND);
-        cardsInHand.addAll(damagedPlayer.getHand());
-        you.lookAtCards(damagedPlayer.getName() + ": cards in hand",cardsInHand,game);
-        for (        Card checkCard : cardsInLibrary.getCards(game)) {
-          if (checkCard.getName().equals(chosenCard.getName())) {
-            checkCard.moveToExile(id,"Library",id,game);
-          }
+    Card chosenCard=null;
+    if (controller.choose(Outcome.Benefit,targetPlayer.getHand(),target,game)) {
+      chosenCard=game.getCard(target.getFirstTarget());
+    }
+    FilterCard filterNamedCards=new FilterCard();
+    if (chosenCard != null) {
+      filterNamedCards.add(new NamePredicate(chosenCard.getName()));
+    }
+ else {
+      filterNamedCards.add(new NamePredicate("----"));
+    }
+    if (chosenCard != null) {
+      for (      Card checkCard : targetPlayer.getGraveyard().getCards(game)) {
+        if (checkCard.getName().equals(chosenCard.getName())) {
+          controller.moveCardToExileWithInfo(checkCard,null,"",source.getSourceId(),game,Zone.GRAVEYARD);
         }
-        for (        Card checkCard : cardsInGraveyard.getCards(game)) {
-          if (checkCard.getName().equals(chosenCard.getName())) {
-            checkCard.moveToExile(id,"Graveyard",id,game);
-          }
+      }
+      TargetCardInHand targetCardsHand=new TargetCardInHand(0,Integer.MAX_VALUE,filterNamedCards);
+      controller.chooseTarget(outcome,targetPlayer.getGraveyard(),targetCardsHand,source,game);
+      for (      UUID cardId : targetCardsHand.getTargets()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.HAND);
         }
-        for (        Card checkCard : cardsInHand.getCards(game)) {
-          if (checkCard.getName().equals(chosenCard.getName())) {
-            checkCard.moveToExile(id,"Hand",id,game);
-          }
-        }
-        damagedPlayer.shuffleLibrary(game);
-        return true;
       }
     }
+    if (chosenCard != null || controller.chooseUse(outcome,"Search library anyway?",game)) {
+      TargetCardInLibrary targetCardsLibrary=new TargetCardInLibrary(0,Integer.MAX_VALUE,filterNamedCards);
+      controller.searchLibrary(targetCardsLibrary,game,targetPlayer.getId());
+      for (      UUID cardId : targetCardsLibrary.getTargets()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.LIBRARY);
+        }
+      }
+      targetPlayer.shuffleLibrary(game);
+    }
+    return true;
   }
   return false;
 }

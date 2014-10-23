@@ -1,44 +1,49 @@
 {
   Player targetPlayer=game.getPlayer(source.getFirstTarget());
-  Player you=game.getPlayer(source.getControllerId());
-  if (targetPlayer != null) {
-    targetPlayer.revealCards("Lobotomy",targetPlayer.getHand(),game);
-    if (you != null) {
-      TargetCard target=new TargetCard(Zone.PICK,filter);
-      target.setNotTarget(true);
-      if (you.choose(Outcome.Benefit,targetPlayer.getHand(),target,game)) {
-        Card chosenCard=targetPlayer.getHand().get(target.getFirstTarget(),game);
-        if (chosenCard != null) {
-          if (targetPlayer != null) {
-            Cards cardsInLibrary=new CardsImpl(Zone.LIBRARY);
-            cardsInLibrary.addAll(targetPlayer.getLibrary().getCards(game));
-            you.lookAtCards("Lobotomy search of Library",cardsInLibrary,game);
-            Cards cardsInGraveyard=new CardsImpl(Zone.GRAVEYARD);
-            cardsInGraveyard.addAll(targetPlayer.getGraveyard());
-            Cards cardsInHand=new CardsImpl(Zone.HAND);
-            cardsInHand.addAll(targetPlayer.getHand());
-            you.lookAtCards("Lobotomy search of Hand",cardsInHand,game);
-            for (            Card checkCard : cardsInLibrary.getCards(game)) {
-              if (checkCard.getName().equals(chosenCard.getName())) {
-                checkCard.moveToExile(id,"Library",id,game);
-              }
-            }
-            for (            Card checkCard : cardsInGraveyard.getCards(game)) {
-              if (checkCard.getName().equals(chosenCard.getName())) {
-                checkCard.moveToExile(id,"Graveyard",id,game);
-              }
-            }
-            for (            Card checkCard : cardsInHand.getCards(game)) {
-              if (checkCard.getName().equals(chosenCard.getName())) {
-                checkCard.moveToExile(id,"Hand",id,game);
-              }
-            }
-            targetPlayer.shuffleLibrary(game);
-            return true;
-          }
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (targetPlayer != null && sourceObject != null && controller != null) {
+    targetPlayer.revealCards(sourceObject.getLogName(),targetPlayer.getHand(),game);
+    TargetCardInHand target=new TargetCardInHand(new FilterNonlandCard());
+    target.setNotTarget(true);
+    Card chosenCard=null;
+    if (controller.choose(Outcome.Benefit,targetPlayer.getHand(),target,game)) {
+      chosenCard=game.getCard(target.getFirstTarget());
+    }
+    FilterCard filterNamedCards=new FilterCard();
+    if (chosenCard != null) {
+      filterNamedCards.add(new NamePredicate(chosenCard.getName()));
+    }
+ else {
+      filterNamedCards.add(new NamePredicate("----"));
+    }
+    if (chosenCard != null) {
+      for (      Card checkCard : targetPlayer.getGraveyard().getCards(game)) {
+        if (checkCard.getName().equals(chosenCard.getName())) {
+          controller.moveCardToExileWithInfo(checkCard,null,"",source.getSourceId(),game,Zone.GRAVEYARD);
+        }
+      }
+      TargetCardInHand targetCardsHand=new TargetCardInHand(0,Integer.MAX_VALUE,filterNamedCards);
+      controller.chooseTarget(outcome,targetPlayer.getGraveyard(),targetCardsHand,source,game);
+      for (      UUID cardId : targetCardsHand.getTargets()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.HAND);
         }
       }
     }
+    if (chosenCard != null || controller.chooseUse(outcome,"Search library anyway?",game)) {
+      TargetCardInLibrary targetCardsLibrary=new TargetCardInLibrary(0,Integer.MAX_VALUE,filterNamedCards);
+      controller.searchLibrary(targetCardsLibrary,game,targetPlayer.getId());
+      for (      UUID cardId : targetCardsLibrary.getTargets()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.LIBRARY);
+        }
+      }
+      targetPlayer.shuffleLibrary(game);
+    }
+    return true;
   }
   return false;
 }
