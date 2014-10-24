@@ -14,6 +14,12 @@
         return false;
       }
     }
+    if (getSpellAbilityType().equals(SpellAbilityType.BASE_ALTERNATE)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null && getSourceId().equals(player.getCastSourceIdWithoutMana())) {
+        return false;
+      }
+    }
     if (costs.canPay(this,sourceId,controllerId,game)) {
       if (getSpellAbilityType().equals(SpellAbilityType.SPLIT_FUSED)) {
         SplitCard splitCard=(SplitCard)game.getCard(getSourceId());
