@@ -1,10 +1,13 @@
 {
-  if (!game.getStack().isEmpty()) {
-    for (    StackObject stackObject : game.getStack()) {
-      if (stackObject instanceof Spell && ((Spell)stackObject).getSourceId().equals(source.getSourceId())) {
-        return ((Spell)stackObject).getConvertedManaCost();
-      }
+  Spell spell=game.getStack().getSpell(source.getSourceId());
+  if (spell == null) {
+    MageObject mageObject=game.getLastKnownInformation(source.getSourceId(),Zone.STACK);
+    if (mageObject instanceof Spell) {
+      spell=(Spell)mageObject;
     }
+  }
+  if (spell != null) {
+    return spell.getSpellAbility().getManaCostsToPay().convertedManaCost() + spell.getSpellAbility().getManaCostsToPay().getX();
   }
   return 0;
 }
