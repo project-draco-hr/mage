@@ -1,0 +1,24 @@
+{
+  table.sideboard();
+  setupTimeout(Match.SIDEBOARD_TIME);
+  if (table.isTournamentSubTable()) {
+    for (    MatchPlayer matchPlayer : match.getPlayers()) {
+      if (!matchPlayer.hasQuit()) {
+        TournamentPlayer tournamentPlayer=table.getTournament().getPlayer(matchPlayer.getPlayer().getId());
+        if (tournamentPlayer != null) {
+          tournamentPlayer.setStateInfo("sideboarding");
+        }
+      }
+    }
+  }
+  match.sideboard();
+  cancelTimeout();
+  if (table.isTournamentSubTable()) {
+    for (    MatchPlayer matchPlayer : match.getPlayers()) {
+      TournamentPlayer tournamentPlayer=table.getTournament().getPlayer(matchPlayer.getPlayer().getId());
+      if (tournamentPlayer != null && tournamentPlayer.getStateInfo().equals("sideboarding")) {
+        tournamentPlayer.setStateInfo("");
+      }
+    }
+  }
+}

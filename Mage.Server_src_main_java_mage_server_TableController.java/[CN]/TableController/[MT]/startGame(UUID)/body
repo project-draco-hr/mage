@@ -8,9 +8,9 @@
     int activePlayers=0;
     for (    Entry<UUID,UUID> entry : userPlayerMap.entrySet()) {
       if (!match.getPlayer(entry.getValue()).hasQuit()) {
-        activePlayers++;
         User user=UserManager.getInstance().getUser(entry.getKey());
         if (user != null) {
+          activePlayers++;
           if (!user.isConnected()) {
             user.removeConstructing(match.getPlayer(entry.getValue()).getPlayer().getId());
             GameManager.getInstance().joinGame(match.getGame().getId(),user.getId());
