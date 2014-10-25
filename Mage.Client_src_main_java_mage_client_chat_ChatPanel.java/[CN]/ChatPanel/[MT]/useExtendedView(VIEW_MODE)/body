@@ -1,7 +1,14 @@
 {
   this.extendedViewMode=extendedViewMode;
-  this.txtConversation.setExtBackgroundColor(new Color(0,0,0,255));
-  this.txtConversation.setSelectionColor(Color.LIGHT_GRAY);
-  this.jScrollPaneTxt.setOpaque(!chatType.equals(ChatType.TABLES));
-  this.jScrollPaneTxt.getViewport().setOpaque(!chatType.equals(ChatType.TABLES));
+  int alpha=255;
+switch (chatType) {
+case GAME:
+case TABLES:
+case DEFAULT:
+    alpha=ALPHA;
+}
+this.txtConversation.setExtBackgroundColor(new Color(0,0,0,alpha));
+this.txtConversation.setSelectionColor(Color.LIGHT_GRAY);
+this.jScrollPaneTxt.setOpaque(alpha == 255);
+this.jScrollPaneTxt.getViewport().setOpaque(!chatType.equals(ChatType.TABLES));
 }
