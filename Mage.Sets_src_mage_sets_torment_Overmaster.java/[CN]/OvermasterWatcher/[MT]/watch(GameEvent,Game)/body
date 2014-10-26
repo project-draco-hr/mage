@@ -1,0 +1,14 @@
+{
+  if (event.getType() == GameEvent.EventType.SPELL_CAST && ready) {
+    game.informPlayers("A");
+    if (uncounterableSpell == null && event.getPlayerId().equals(this.getControllerId())) {
+      game.informPlayers("B");
+      Spell spell=game.getStack().getSpell(event.getTargetId());
+      if (spell != null && (spell.getCardType().contains(CardType.SORCERY) || spell.getCardType().contains(CardType.INSTANT))) {
+        game.informPlayers("C");
+        uncounterableSpell=spell.getId();
+        ready=false;
+      }
+    }
+  }
+}

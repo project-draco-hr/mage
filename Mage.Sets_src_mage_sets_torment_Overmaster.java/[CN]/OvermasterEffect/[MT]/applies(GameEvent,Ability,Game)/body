@@ -1,0 +1,12 @@
+{
+  if (event.getType() == GameEvent.EventType.COUNTER) {
+    game.informPlayers("D");
+    Spell spell=game.getStack().getSpell(event.getTargetId());
+    OvermasterWatcher watcher=(OvermasterWatcher)game.getState().getWatchers().get("overmasterWatcher",source.getControllerId());
+    if (spell != null && watcher != null && watcher.isUncounterable(spell.getId())) {
+      game.informPlayers("E");
+      return true;
+    }
+  }
+  return false;
+}
