@@ -1,0 +1,14 @@
+{
+  super(ownerId,67,"Savage Beating",Rarity.RARE,new CardType[]{CardType.INSTANT},"{3}{R}{R}");
+  this.expansionSetCode="DST";
+  this.color.setRed(true);
+  Ability ability=new SimpleStaticAbility(Zone.ALL,new SavageBeatingTimingEffect());
+  ability.setRuleAtTheTop(true);
+  this.addAbility(ability);
+  this.getSpellAbility().addEffect(new GainAbilityControlledEffect(DoubleStrikeAbility.getInstance(),Duration.EndOfTurn,new FilterCreaturePermanent(),false));
+  Mode mode=new Mode();
+  mode.getEffects().add(new UntapAllControllerEffect(new FilterControlledCreaturePermanent(),"untap all creatures you control"));
+  mode.getEffects().add(new AdditionalCombatPhaseEffect());
+  this.getSpellAbility().getModes().addMode(mode);
+  this.addAbility(new EntwineAbility("{1}{R}"));
+}
