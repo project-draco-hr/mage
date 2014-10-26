@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerA,"Copy Enchantment",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Furnace Whelp",3);
+  addCard(Zone.BATTLEFIELD,playerB,"Crucible of Fire",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Copy Enchantment");
+  setChoice(playerA,"Crucible of Fire");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Copy Enchantment",0);
+  assertPermanentCount(playerA,"Crucible of Fire",1);
+  assertPowerToughness(playerA,"Furnace Whelp",5,5);
+}
