@@ -1,7 +1,7 @@
 {
   if (game.getActivePlayerId().equals(permanent.getControllerId()) && game.getOpponents(source.getControllerId()).contains(permanent.getControllerId())) {
-    Watcher watcher=game.getState().getWatchers().get("OpponentCastSpell",source.getControllerId());
-    if (watcher != null && watcher.conditionMet()) {
+    CastSpellLastTurnWatcher watcher=(CastSpellLastTurnWatcher)game.getState().getWatchers().get("CastSpellLastTurnWatcher");
+    if (watcher != null && watcher.getAmountOfSpellsPlayerCastOnCurrentTurn(permanent.getControllerId()) > 0) {
       return true;
     }
   }

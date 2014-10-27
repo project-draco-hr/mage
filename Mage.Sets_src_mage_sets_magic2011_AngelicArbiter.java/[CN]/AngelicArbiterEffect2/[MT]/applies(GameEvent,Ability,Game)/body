@@ -1,7 +1,7 @@
 {
   if (event.getType() == EventType.CAST_SPELL && game.getActivePlayerId().equals(event.getPlayerId()) && game.getOpponents(source.getControllerId()).contains(event.getPlayerId())) {
-    Watcher watcher=game.getState().getWatchers().get("OpponentAttacked",source.getControllerId());
-    if (watcher != null && watcher.conditionMet()) {
+    AngelicArbiterWatcher2 watcher=(AngelicArbiterWatcher2)game.getState().getWatchers().get("PlayerAttacked");
+    if (watcher != null && watcher.hasPlayerAttackedThisTurn(event.getPlayerId())) {
       return true;
     }
   }
