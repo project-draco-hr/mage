@@ -1,0 +1,27 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    String subtype=(String)game.getState().getValue(permanent.getId() + "_type");
+    if (subtype != null) {
+      Player player=game.getPlayer(source.getControllerId());
+      String choiceText="Put a " + subtype.toLowerCase() + " creature card from your hand onto the battlefield?";
+      if (player == null || !player.chooseUse(Outcome.PutCreatureInPlay,choiceText,game)) {
+        return false;
+      }
+      FilterCreatureCard creatureTypeFilter=new FilterCreatureCard();
+      creatureTypeFilter.add(new SubtypePredicate(subtype));
+      TargetCardInHand target=new TargetCardInHand(creatureTypeFilter);
+      if (player.choose(Outcome.PutCreatureInPlay,target,source.getSourceId(),game)) {
+        Card card=game.getCard(target.getFirstTarget());
+        if (card != null) {
+          player.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId());
+          return true;
+        }
+      }
+ else {
+        return false;
+      }
+    }
+  }
+  return true;
+}
