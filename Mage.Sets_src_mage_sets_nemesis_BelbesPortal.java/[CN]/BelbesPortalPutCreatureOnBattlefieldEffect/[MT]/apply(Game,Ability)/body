@@ -5,23 +5,21 @@
     if (subtype != null) {
       Player player=game.getPlayer(source.getControllerId());
       String choiceText="Put a " + subtype.toLowerCase() + " creature card from your hand onto the battlefield?";
-      if (player == null || !player.chooseUse(Outcome.PutCreatureInPlay,choiceText,game)) {
-        return false;
-      }
-      FilterCreatureCard creatureTypeFilter=new FilterCreatureCard();
-      creatureTypeFilter.add(new SubtypePredicate(subtype));
-      TargetCardInHand target=new TargetCardInHand(creatureTypeFilter);
-      if (player.choose(Outcome.PutCreatureInPlay,target,source.getSourceId(),game)) {
-        Card card=game.getCard(target.getFirstTarget());
-        if (card != null) {
-          player.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId());
-          return true;
+      if (player != null) {
+        if (player.chooseUse(Outcome.PutCreatureInPlay,choiceText,game)) {
+          FilterCreatureCard creatureTypeFilter=new FilterCreatureCard();
+          creatureTypeFilter.add(new SubtypePredicate(subtype));
+          TargetCardInHand target=new TargetCardInHand(creatureTypeFilter);
+          if (player.choose(Outcome.PutCreatureInPlay,target,source.getSourceId(),game)) {
+            Card card=game.getCard(target.getFirstTarget());
+            if (card != null) {
+              player.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId());
+            }
+          }
         }
-      }
- else {
-        return false;
+        return true;
       }
     }
   }
-  return true;
+  return false;
 }
