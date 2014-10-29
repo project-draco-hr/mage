@@ -1,6 +1,7 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  if (controller == null) {
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (sourceObject == null || controller == null) {
     return false;
   }
   if (!controller.getLibrary().isEmptyDraw()) {
@@ -8,6 +9,7 @@
     if (card == null) {
       return false;
     }
+    controller.lookAtCards(sourceObject.getLogName(),new CardsImpl(card),game);
     boolean toBottom=controller.chooseUse(outcome,"Put card on the bottom of your library?",game);
     return controller.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.LIBRARY,!toBottom,false);
   }
