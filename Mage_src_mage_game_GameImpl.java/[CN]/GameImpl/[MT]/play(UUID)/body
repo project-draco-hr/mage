@@ -1,18 +1,18 @@
 {
   if (!isPaused() && !gameOver(null)) {
     PlayerList players=state.getPlayerList(nextPlayerId);
-    Player player=getPlayer(players.get());
+    Player playerByOrder=getPlayer(players.get());
     while (!isPaused() && !gameOver(null)) {
-      playExtraTurns(player);
-      GameEvent event=new GameEvent(GameEvent.EventType.PLAY_TURN,null,null,player.getId());
+      playExtraTurns();
+      GameEvent event=new GameEvent(GameEvent.EventType.PLAY_TURN,null,null,playerByOrder.getId());
       if (!replaceEvent(event)) {
-        if (!playTurn(player)) {
+        if (!playTurn(playerByOrder)) {
           break;
         }
         state.setTurnNum(state.getTurnNum() + 1);
       }
-      playExtraTurns(player);
-      player=players.getNext(this);
+      playExtraTurns();
+      playerByOrder=players.getNext(this);
     }
   }
   if (gameOver(null)) {

@@ -1,0 +1,19 @@
+{
+  TurnMod extraTurn=getNextExtraTurn();
+  while (extraTurn != null) {
+    GameEvent event=new GameEvent(GameEvent.EventType.PLAY_TURN,null,null,extraTurn.getPlayerId());
+    if (!replaceEvent(event)) {
+      Player extraPlayer=this.getPlayer(extraTurn.getPlayerId());
+      if (extraPlayer != null && extraPlayer.isInGame()) {
+        state.setExtraTurn(true);
+        state.setTurnId(extraTurn.getId());
+        informPlayers(extraPlayer.getName() + " takes an extra turn");
+        playTurn(extraPlayer);
+        state.setTurnNum(state.getTurnNum() + 1);
+      }
+    }
+    extraTurn=getNextExtraTurn();
+  }
+  state.setTurnId(null);
+  state.setExtraTurn(false);
+}
