@@ -1,0 +1,23 @@
+{
+  this.lblMessage.setText("<html>" + choice.getMessage());
+  this.choice=choice;
+  this.autoSelect=false;
+  btnAutoSelect.setVisible(choice.isKeyChoice());
+  if (choice.isKeyChoice()) {
+    ComboItem[] comboItems=new ComboItem[choice.getKeyChoices().size()];
+    int count=0;
+    for (    Map.Entry<String,String> entry : choice.getKeyChoices().entrySet()) {
+      comboItems[count]=new ComboItem(entry.getKey(),entry.getValue());
+      count++;
+    }
+    this.lstChoices.setListData(comboItems);
+  }
+ else {
+    this.lstChoices.setListData(choice.getChoices().toArray());
+  }
+  MageFrame.getDesktop().add(this,JLayeredPane.PALETTE_LAYER);
+  Point centered=SettingsManager.getInstance().getComponentPosition(getWidth(),getHeight());
+  this.setLocation(centered.x,centered.y);
+  GuiDisplayUtil.keepComponentInsideScreen(centered.x,centered.y,this);
+  this.setVisible(true);
+}

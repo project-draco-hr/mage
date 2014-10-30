@@ -1,14 +1,14 @@
 {
-  List<String> texts=new ArrayList<>();
+  Map<String,String> texts=new LinkedHashMap<>();
   for (  Map.Entry<ReplacementEffect,HashSet<Ability>> entry : rEffects.entrySet()) {
     if (entry.getValue() != null) {
       for (      Ability ability : entry.getValue()) {
         MageObject object=game.getObject(ability.getSourceId());
         if (object != null) {
-          texts.add(ability.getRule(object.getLogName()));
+          texts.put(ability.getId().toString() + "_" + entry.getKey().getId().toString(),ability.getRule(object.getLogName()));
         }
  else {
-          texts.add(entry.getKey().getText(null));
+          texts.put(ability.getId().toString() + "_" + entry.getKey().getId().toString(),entry.getKey().getText(null));
         }
       }
     }

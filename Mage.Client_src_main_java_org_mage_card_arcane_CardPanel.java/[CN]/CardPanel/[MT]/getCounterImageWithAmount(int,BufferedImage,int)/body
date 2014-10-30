@@ -1,7 +1,7 @@
 {
   int factor=cardWidth > WIDTH_LIMIT ? 2 : 1;
   int xOffset=amount > 9 ? 2 : 5;
-  int fontSize=amount < 10 ? 9 : amount < 100 ? 9 : 8;
+  int fontSize=factor == 1 ? amount < 10 ? 12 : amount < 100 ? 10 : amount < 1000 ? 7 : 6 : amount < 10 ? 19 : amount < 100 ? 15 : amount < 1000 ? 12 : amount < 10000 ? 9 : 8;
   BufferedImage newImage;
   if (cardWidth > WIDTH_LIMIT) {
     newImage=ImageManagerImpl.deepCopy(image);
@@ -11,7 +11,7 @@
   }
   Graphics graphics=newImage.getGraphics();
   graphics.setColor(Color.BLACK);
-  graphics.setFont(new Font("Arial Black",Font.BOLD,factor * fontSize));
+  graphics.setFont(new Font("Arial Black",amount > 100 ? Font.PLAIN : Font.BOLD,fontSize));
   graphics.drawString(Integer.toString(amount),xOffset * factor,11 * factor);
   return new ImageIcon(newImage);
 }

@@ -1,0 +1,16 @@
+{
+  super.init(source,game);
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (sourceObject != null && controller != null) {
+    while (!choice.isChosen()) {
+      controller.choose(Outcome.Protect,choice,game);
+      if (!controller.isInGame()) {
+        return;
+      }
+    }
+    if (choice.isChosen()) {
+      game.informPlayers(sourceObject.getLogName() + ": " + controller.getName()+ " has chosen protection from "+ choice.getChoice());
+    }
+  }
+}
