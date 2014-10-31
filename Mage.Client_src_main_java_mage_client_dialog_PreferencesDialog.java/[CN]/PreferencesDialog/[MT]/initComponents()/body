@@ -63,6 +63,8 @@
   tabSounds=new javax.swing.JPanel();
   sounds_clips=new javax.swing.JPanel();
   cbEnableGameSounds=new javax.swing.JCheckBox();
+  cbEnableDraftSounds=new javax.swing.JCheckBox();
+  cbEnableSkipButtonsSounds=new javax.swing.JCheckBox();
   cbEnableOtherSounds=new javax.swing.JCheckBox();
   sounds_backgroundMusic=new javax.swing.JPanel();
   cbEnableBattlefieldBGM=new javax.swing.JCheckBox();
@@ -351,7 +353,7 @@
   tabImagesLayout.setVerticalGroup(tabImagesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(tabImagesLayout.createSequentialGroup().addContainerGap().addComponent(panelCardImages,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(panelBackgroundImages,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)));
   tabsPanel.addTab("Images",tabImages);
   sounds_clips.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(),"Clips"));
-  sounds_clips.setLayout(new java.awt.BorderLayout());
+  sounds_clips.setLayout(new java.awt.GridLayout(4,0));
   cbEnableGameSounds.setText("Enable game sounds");
   cbEnableGameSounds.setToolTipText("Sounds that will be played for certain actions (e.g. play land, attack, etc.) during the game.");
   cbEnableGameSounds.addActionListener(new java.awt.event.ActionListener(){
@@ -360,7 +362,25 @@
     }
   }
 );
-  sounds_clips.add(cbEnableGameSounds,java.awt.BorderLayout.PAGE_START);
+  sounds_clips.add(cbEnableGameSounds);
+  cbEnableDraftSounds.setText("Enable draft sounds");
+  cbEnableDraftSounds.setToolTipText("Sounds that will be played during drafting for card picking or warining if time runs out.");
+  cbEnableDraftSounds.addActionListener(new java.awt.event.ActionListener(){
+    public void actionPerformed(    java.awt.event.ActionEvent evt){
+      cbEnableDraftSoundsActionPerformed(evt);
+    }
+  }
+);
+  sounds_clips.add(cbEnableDraftSounds);
+  cbEnableSkipButtonsSounds.setText("Enable skip button sounds");
+  cbEnableSkipButtonsSounds.setToolTipText("Sounds that will be played if a priority skip action (F4/F5/F7/F9) or cancel skip action (F3) is used.");
+  cbEnableSkipButtonsSounds.addActionListener(new java.awt.event.ActionListener(){
+    public void actionPerformed(    java.awt.event.ActionEvent evt){
+      cbEnableSkipButtonsSoundsActionPerformed(evt);
+    }
+  }
+);
+  sounds_clips.add(cbEnableSkipButtonsSounds);
   cbEnableOtherSounds.setText("Enable other sounds");
   cbEnableOtherSounds.setToolTipText("Sounds that will be played for actions outside of games (e.g. whisper, player joins your game, player submits a deck ...).");
   cbEnableOtherSounds.addActionListener(new java.awt.event.ActionListener(){
@@ -369,7 +389,7 @@
     }
   }
 );
-  sounds_clips.add(cbEnableOtherSounds,java.awt.BorderLayout.PAGE_END);
+  sounds_clips.add(cbEnableOtherSounds);
   sounds_backgroundMusic.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(),"Music"));
   cbEnableBattlefieldBGM.setText("Play music during match");
   cbEnableBattlefieldBGM.setToolTipText("During your matches music will be played from the seleced folder.");
@@ -397,12 +417,12 @@
 );
   javax.swing.GroupLayout sounds_backgroundMusicLayout=new javax.swing.GroupLayout(sounds_backgroundMusic);
   sounds_backgroundMusic.setLayout(sounds_backgroundMusicLayout);
-  sounds_backgroundMusicLayout.setHorizontalGroup(sounds_backgroundMusicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(sounds_backgroundMusicLayout.createSequentialGroup().addContainerGap().addComponent(jLabel16).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(txtBattlefieldIBGMPath,javax.swing.GroupLayout.DEFAULT_SIZE,301,Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnBattlefieldBGMBrowse)).addGroup(sounds_backgroundMusicLayout.createSequentialGroup().addComponent(cbEnableBattlefieldBGM).addGap(0,0,Short.MAX_VALUE)));
+  sounds_backgroundMusicLayout.setHorizontalGroup(sounds_backgroundMusicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(sounds_backgroundMusicLayout.createSequentialGroup().addContainerGap().addComponent(jLabel16).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(txtBattlefieldIBGMPath).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(btnBattlefieldBGMBrowse)).addGroup(sounds_backgroundMusicLayout.createSequentialGroup().addComponent(cbEnableBattlefieldBGM).addGap(0,0,Short.MAX_VALUE)));
   sounds_backgroundMusicLayout.setVerticalGroup(sounds_backgroundMusicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(sounds_backgroundMusicLayout.createSequentialGroup().addComponent(cbEnableBattlefieldBGM).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(sounds_backgroundMusicLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(txtBattlefieldIBGMPath,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(btnBattlefieldBGMBrowse).addComponent(jLabel16))));
   javax.swing.GroupLayout tabSoundsLayout=new javax.swing.GroupLayout(tabSounds);
   tabSounds.setLayout(tabSoundsLayout);
-  tabSoundsLayout.setHorizontalGroup(tabSoundsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(tabSoundsLayout.createSequentialGroup().addContainerGap().addGroup(tabSoundsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(sounds_clips,javax.swing.GroupLayout.DEFAULT_SIZE,537,Short.MAX_VALUE).addComponent(sounds_backgroundMusic,javax.swing.GroupLayout.Alignment.TRAILING,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)).addContainerGap()));
-  tabSoundsLayout.setVerticalGroup(tabSoundsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(tabSoundsLayout.createSequentialGroup().addContainerGap().addComponent(sounds_clips,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(sounds_backgroundMusic,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(235,Short.MAX_VALUE)));
+  tabSoundsLayout.setHorizontalGroup(tabSoundsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(tabSoundsLayout.createSequentialGroup().addContainerGap().addGroup(tabSoundsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(sounds_clips,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE).addComponent(sounds_backgroundMusic,javax.swing.GroupLayout.Alignment.TRAILING,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)).addContainerGap()));
+  tabSoundsLayout.setVerticalGroup(tabSoundsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(tabSoundsLayout.createSequentialGroup().addContainerGap().addComponent(sounds_clips,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(sounds_backgroundMusic,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)));
   sounds_clips.getAccessibleContext().setAccessibleDescription("");
   tabsPanel.addTab("Sounds",tabSounds);
   lblProxyType.setText("Proxy:");
@@ -544,7 +564,7 @@
 );
   javax.swing.GroupLayout layout=new javax.swing.GroupLayout(getContentPane());
   getContentPane().setLayout(layout);
-  layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(tabsPanel).addGroup(javax.swing.GroupLayout.Alignment.TRAILING,layout.createSequentialGroup().addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE).addComponent(saveButton).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(exitButton,javax.swing.GroupLayout.PREFERRED_SIZE,55,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap()));
+  layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(tabsPanel,javax.swing.GroupLayout.DEFAULT_SIZE,566,Short.MAX_VALUE).addGroup(javax.swing.GroupLayout.Alignment.TRAILING,layout.createSequentialGroup().addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE).addComponent(saveButton).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(exitButton,javax.swing.GroupLayout.PREFERRED_SIZE,55,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap()));
   layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(tabsPanel).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(exitButton).addComponent(saveButton)).addContainerGap()));
   pack();
 }

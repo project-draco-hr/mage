@@ -1,3 +1,8 @@
 {
-  return draftSessions.get(userPlayerMap.get(userId)).sendCardPick(cardId);
+  DraftSession draftSession=draftSessions.get(userPlayerMap.get(userId));
+  if (draftSession != null) {
+    draftSession.setMarkedCard(null);
+    return draftSession.sendCardPick(cardId);
+  }
+  return null;
 }

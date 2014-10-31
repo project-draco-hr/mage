@@ -1,4 +1,13 @@
 {
+  if (booster instanceof CardsView && booster.size() == 0) {
+    noSound=true;
+  }
+ else {
+    if (!noSound) {
+      AudioManager.playOnDraftSelect();
+    }
+    noSound=false;
+  }
   this.bigCard=bigCard;
   this.removeAll();
   int maxRows=4;
@@ -25,7 +34,7 @@
   if (cardDimension != null) {
     Rectangle rectangle=new Rectangle(cardDimension.frameWidth,cardDimension.frameHeight);
     Dimension dimension=new Dimension(cardDimension.frameWidth,cardDimension.frameHeight);
-    List<CardView> sortedCards=new ArrayList<CardView>(booster.values());
+    List<CardView> sortedCards=new ArrayList<>(booster.values());
     Collections.sort(sortedCards,new CardViewRarityComparator());
     for (    CardView card : sortedCards) {
       MageCard cardImg=Plugins.getInstance().getMageCard(card,bigCard,dimension,null,true);

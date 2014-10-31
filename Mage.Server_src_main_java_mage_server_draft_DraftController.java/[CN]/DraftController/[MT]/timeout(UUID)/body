@@ -1,5 +1,13 @@
 {
   if (userPlayerMap.containsKey(userId)) {
+    DraftSession draftSession=draftSessions.get(userPlayerMap.get(userId));
+    if (draftSession != null) {
+      UUID cardId=draftSession.getMarkedCard();
+      if (cardId != null) {
+        sendCardPick(userId,cardId);
+        return;
+      }
+    }
     draft.autoPick(userPlayerMap.get(userId));
     logger.debug("Draft pick timeout - autopick for player: " + userPlayerMap.get(userId));
   }

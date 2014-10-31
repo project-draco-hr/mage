@@ -1,0 +1,14 @@
+{
+  execute("sendCardMark",sessionId,new Action(){
+    @Override public void execute(){
+      Session session=SessionManager.getInstance().getSession(sessionId);
+      if (session != null) {
+        DraftManager.getInstance().sendCardMark(draftId,session.getUserId(),cardPick);
+      }
+ else {
+        logger.error("Session not found sessionId: " + sessionId + "  draftId:"+ draftId);
+      }
+    }
+  }
+);
+}

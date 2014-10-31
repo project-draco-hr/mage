@@ -1,7 +1,22 @@
 {
-  Object obj=e.getSource();
-  if (obj instanceof MageCard) {
-    this.cardEventSource.doubleClick(((MageCard)obj).getOriginal(),"pick-a-card");
-    this.hidePopup();
+  if (e.getButton() == MouseEvent.BUTTON1) {
+    Object obj=e.getSource();
+    if (obj instanceof MageCard) {
+      this.cardEventSource.doubleClick(((MageCard)obj).getOriginal(),"pick-a-card");
+      this.hidePopup();
+      AudioManager.playOnDraftSelect();
+    }
+  }
+  if (e.getButton() == MouseEvent.BUTTON3) {
+    Object obj=e.getSource();
+    if (obj instanceof MageCard) {
+      if (this.markedCard != null) {
+        markedCard.setSelected(false);
+      }
+      this.cardEventSource.doubleClick(((MageCard)obj).getOriginal(),"mark-a-card");
+      markedCard=((MageCard)obj);
+      markedCard.setSelected(true);
+      repaint();
+    }
   }
 }
