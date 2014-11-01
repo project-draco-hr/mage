@@ -1,6 +1,6 @@
 {
   StringBuilder sb=new StringBuilder();
-  int draft=0, match=0, sideboard=0, tournament=0, construct=0;
+  int draft=0, match=0, sideboard=0, tournament=0, construct=0, waiting=0;
   for (  Map.Entry<UUID,Table> tableEntry : tables.entrySet()) {
     if (tableEntry != null) {
       Table table=tableEntry.getValue();
@@ -11,26 +11,31 @@
             if (tournamentPlayer != null) {
               if (!tournamentPlayer.isEliminated()) {
 switch (table.getState()) {
-case CONSTRUCTING:
-                  construct++;
+case WAITING:
+case STARTING:
+case READY_TO_START:
+                  waiting++;
                 break;
-case DRAFTING:
-              draft++;
+case CONSTRUCTING:
+              construct++;
             break;
-case DUELING:
-          tournament++;
+case DRAFTING:
+          draft++;
         break;
-    }
-    if (!isConnected()) {
-      tournamentPlayer.setDisconnectInfo(" (discon. " + getDisconnectDuration() + ")");
-    }
- else {
-      tournamentPlayer.setDisconnectInfo("");
-    }
-  }
+case DUELING:
+      tournament++;
+    break;
+}
+if (!isConnected()) {
+  tournamentPlayer.setDisconnectInfo(" (discon. " + getDisconnectDuration() + ")");
 }
  else {
-  logger.debug(getName() + " tournament player missing - tableId:" + table.getId(),null);
+  tournamentPlayer.setDisconnectInfo("");
+}
+}
+}
+ else {
+logger.debug(getName() + " tournament player missing - tableId:" + table.getId(),null);
 }
 }
  else {
@@ -39,6 +44,11 @@ logger.error(getName() + " tournament key missing - tableId: " + table.getId(),n
 }
  else {
 switch (table.getState()) {
+case WAITING:
+case STARTING:
+case READY_TO_START:
+waiting++;
+break;
 case SIDEBOARDING:
 sideboard++;
 break;
@@ -49,6 +59,9 @@ break;
 }
 }
 }
+}
+if (waiting > 0) {
+sb.append("Wait: ").append(waiting).append(" ");
 }
 if (match > 0) {
 sb.append("Match: ").append(match).append(" ");

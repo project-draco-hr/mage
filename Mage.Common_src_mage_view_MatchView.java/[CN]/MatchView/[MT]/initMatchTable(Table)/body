@@ -3,7 +3,12 @@
   this.matchId=match.getId();
   this.matchName=match.getName();
   this.gameType=match.getOptions().getGameType();
-  this.deckType=match.getOptions().getDeckType();
+  if (table.getName() != null && !table.getName().isEmpty()) {
+    this.deckType=match.getOptions().getDeckType() + " [" + table.getName()+ "]";
+  }
+ else {
+    this.deckType=match.getOptions().getDeckType();
+  }
   for (  Game game : match.getGames()) {
     games.add(game.getId());
   }
