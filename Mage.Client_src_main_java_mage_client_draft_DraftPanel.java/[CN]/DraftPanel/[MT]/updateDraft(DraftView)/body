@@ -6,4 +6,17 @@
   this.chkPack2.setSelected(draftView.getBoosterNum() > 1);
   this.chkPack3.setSelected(draftView.getBoosterNum() > 2);
   this.txtCardNo.setText(Integer.toString(draftView.getCardNum()));
+  int right=draftView.getPlayers().size() / 2;
+  int left=draftView.getPlayers().size() - right;
+  int height=left * 18;
+  lblTableImage.setSize(new Dimension(lblTableImage.getWidth(),height));
+  Image tableImage=ImageHelper.getImageFromResources(draftView.getBoosterNum() == 2 ? "/draft/table_right.png" : "/draft/table_left.png");
+  BufferedImage resizedTable=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(tableImage,BufferedImage.TYPE_INT_ARGB),lblTableImage.getWidth());
+  lblTableImage.setIcon(new ImageIcon(resizedTable));
+  int count=0;
+  int numberPlayers=draftView.getPlayers().size();
+  for (  String playerName : draftView.getPlayers()) {
+    count++;
+    setPlayerNameToLabel(playerName,count,numberPlayers);
+  }
 }
