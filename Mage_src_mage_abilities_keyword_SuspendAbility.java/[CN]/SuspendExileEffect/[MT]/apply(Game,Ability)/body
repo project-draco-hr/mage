@@ -13,6 +13,9 @@
       game.getState().setValue("SuspendExileId" + source.getControllerId().toString(),exileId);
     }
     if (card.moveToExile(exileId,new StringBuilder("Suspended cards of ").append(controller.getName()).toString(),source.getSourceId(),game)) {
+      if (suspend == Integer.MAX_VALUE) {
+        suspend=source.getManaCostsToPay().getX();
+      }
       card.addCounters(CounterType.TIME.createInstance(suspend),game);
       game.informPlayers(new StringBuilder(controller.getName()).append(" suspends (").append(suspend).append(") ").append(card.getName()).toString());
       return true;
