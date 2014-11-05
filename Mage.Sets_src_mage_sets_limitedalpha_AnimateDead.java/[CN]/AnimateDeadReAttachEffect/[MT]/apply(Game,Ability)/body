@@ -1,0 +1,31 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (controller != null && enchantment != null) {
+    Card cardInGraveyard=game.getCard(enchantment.getAttachedTo());
+    if (cardInGraveyard == null) {
+      return true;
+    }
+    controller.putOntoBattlefieldWithInfo(cardInGraveyard,game,Zone.GRAVEYARD,source.getSourceId());
+    Ability abilityToLose=null;
+    for (    Ability ability : enchantment.getAbilities()) {
+      if (ability instanceof EnchantAbility) {
+        abilityToLose=ability;
+        break;
+      }
+    }
+    if (abilityToLose == null) {
+      return false;
+    }
+    Filter filter=new FilterCreaturePermanent();
+    filter.add(new AuraPermanentCanAttachToPermanentId(cardInGraveyard.getId()));
+    Ability newEnchantAbility=new EnchantAbility("enchant creature put onto the battlefield with Animate Dead");
+    GainAbilitySourceEffect gainAbilitySourceEffect=new GainAbilitySourceEffect(newEnchantAbility,Duration.WhileOnBattlefield);
+    game.addEffect(gainAbilitySourceEffect,source);
+    enchantment.attachTo(cardInGraveyard.getId(),game);
+    LoseAbilitySourceEffect loseAbilitySourceEffect=new LoseAbilitySourceEffect(abilityToLose,Duration.WhileOnBattlefield);
+    game.addEffect(loseAbilitySourceEffect,source);
+    return true;
+  }
+  return false;
+}
