@@ -1,0 +1,23 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+switch (layer) {
+case TypeChangingEffects_4:
+      if (sublayer == SubLayer.NA) {
+        if (!permanent.getSubtype().contains("Aura")) {
+          permanent.getSubtype().add("Aura");
+        }
+      }
+    break;
+case AbilityAddingRemovingEffects_6:
+  if (sublayer == SubLayer.NA) {
+    permanent.addAbility(newAbility,source.getSourceId(),game);
+    permanent.getSpellAbility().getTargets().clear();
+    permanent.getSpellAbility().getTargets().add(target);
+  }
+}
+return true;
+}
+this.discard();
+return false;
+}
