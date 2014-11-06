@@ -8,20 +8,9 @@
     }
     controller.putOntoBattlefieldWithInfo(cardInGraveyard,game,Zone.GRAVEYARD,source.getSourceId());
     Permanent enchantedCreature=game.getPermanent(cardInGraveyard.getId());
-    AnimateDeadEnchantAbility enchantAbility=null;
-    for (    Ability ability : enchantment.getAbilities()) {
-      if (ability instanceof AnimateDeadEnchantAbility) {
-        enchantAbility=(AnimateDeadEnchantAbility)ability;
-        break;
-      }
-    }
-    if (enchantAbility == null) {
-      return false;
-    }
     FilterCreaturePermanent filter=new FilterCreaturePermanent("enchant creature put onto the battlefield with Animate Dead");
     filter.add(new PermanentIdPredicate(cardInGraveyard.getId()));
     Target target=new TargetCreaturePermanent(filter);
-    enchantAbility.setTargetName(target.getTargetName());
     if (enchantedCreature != null) {
       target.addTarget(enchantedCreature.getId(),source,game);
       enchantment.getSpellAbility().getTargets().clear();
