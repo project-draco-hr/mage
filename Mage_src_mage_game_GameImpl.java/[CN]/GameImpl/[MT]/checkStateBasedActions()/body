@@ -5,6 +5,20 @@
       player.lost(this);
     }
   }
+  for (  Player player : getPlayers().values()) {
+    for (    Card card : player.getHand().getCards(this)) {
+      if (card.isCopy()) {
+        player.getHand().remove(card);
+        this.unloadCard(card);
+      }
+    }
+  }
+  for (  Card card : this.getState().getExile().getAllCards(this)) {
+    if (card.isCopy()) {
+      this.getState().getExile().removeCard(card,this);
+      this.unloadCard(card);
+    }
+  }
   List<Permanent> planeswalkers=new ArrayList<>();
   List<Permanent> legendary=new ArrayList<>();
   for (  Permanent perm : getBattlefield().getAllActivePermanents()) {
@@ -212,12 +226,6 @@
         }
         return true;
       }
-    }
-  }
-  for (  Card card : this.getState().getExile().getAllCards(this)) {
-    if (card.isCopy()) {
-      this.getState().getExile().removeCard(card,this);
-      this.removeCard(card.getId());
     }
   }
   return somethingHappened;
