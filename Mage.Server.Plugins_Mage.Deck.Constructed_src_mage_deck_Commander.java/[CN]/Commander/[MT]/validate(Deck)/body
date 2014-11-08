@@ -25,12 +25,18 @@
   if (deck.getSideboard().size() == 1) {
     Card commander=(Card)deck.getSideboard().toArray()[0];
     if (commander != null && commander.getCardType().contains(CardType.CREATURE) && commander.getSupertype().contains("Legendary")) {
-      FilterMana color=getColorIdentity(commander);
-      for (      Card card : deck.getCards()) {
-        if (!cardHasValideColor(color,card)) {
-          invalid.put(card.getName(),"Invalid color");
-          valid=false;
+      if (!bannedCommander.contains(commander.getName())) {
+        FilterMana color=getColorIdentity(commander);
+        for (        Card card : deck.getCards()) {
+          if (!cardHasValideColor(color,card)) {
+            invalid.put(card.getName(),"Invalid color");
+            valid=false;
+          }
         }
+      }
+ else {
+        invalid.put("Commander","Commander banned");
+        valid=false;
       }
     }
  else {

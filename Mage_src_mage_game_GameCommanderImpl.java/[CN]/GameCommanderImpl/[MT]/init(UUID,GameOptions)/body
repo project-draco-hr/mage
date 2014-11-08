@@ -9,10 +9,10 @@
         if (commander != null) {
           player.setCommanderId(commander.getId());
           commander.moveToZone(Zone.COMMAND,null,this,true);
-          ability.addEffect(new CommanderReplacementEffect(commander.getId()));
+          ability.addEffect(new CommanderReplacementEffect(commander.getId(),alsoLibrary));
           ability.addEffect(new CommanderCostModification(commander.getId()));
           ability.addEffect(new CommanderManaReplacementEffect(player.getId(),commander.getSpellAbility().getManaCosts().getMana()));
-          getState().setValue(commander.getId() + "_castCount",new Integer(0));
+          getState().setValue(commander.getId() + "_castCount",0);
           CommanderCombatDamageWatcher watcher=new CommanderCombatDamageWatcher(commander.getId());
           getState().getWatchers().add(watcher);
           this.commanderCombatWatcher.add(watcher);
