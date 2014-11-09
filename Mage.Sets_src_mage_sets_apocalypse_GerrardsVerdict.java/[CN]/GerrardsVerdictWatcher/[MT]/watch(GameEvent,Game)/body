@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.DISCARDED_CARD) {
+    Card card=game.getCard(event.getTargetId());
+    if (card != null) {
+      Cards cards=cardsDiscardedBySource.get(event.getSourceId());
+      if (cards == null) {
+        cards=new CardsImpl();
+        cardsDiscardedBySource.put(event.getSourceId(),cards);
+      }
+      cards.add(card);
+    }
+  }
+}

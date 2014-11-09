@@ -1,0 +1,13 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    GerrardsVerdictWatcher watcher=(GerrardsVerdictWatcher)game.getState().getWatchers().get("GerrardsVerdictWatcher");
+    if (watcher != null) {
+      Cards cards=watcher.getCardsDiscardedBySource(source.getSourceId());
+      int life=cards.count(new FilterLandCard(),game) * 3;
+      controller.gainLife(life,game);
+      return true;
+    }
+  }
+  return false;
+}

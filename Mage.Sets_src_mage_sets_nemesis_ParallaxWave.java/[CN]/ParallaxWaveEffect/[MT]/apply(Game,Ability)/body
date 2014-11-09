@@ -1,0 +1,14 @@
+{
+  ExileZone exileZone=game.getExile().getExileZone(source.getSourceId());
+  if (exileZone != null) {
+    for (    Card card : exileZone.getCards(game)) {
+      Player player=game.getPlayer(card.getOwnerId());
+      if (player != null) {
+        player.putOntoBattlefieldWithInfo(card,game,Zone.EXILED,source.getSourceId());
+      }
+    }
+    exileZone.clear();
+    return true;
+  }
+  return false;
+}
