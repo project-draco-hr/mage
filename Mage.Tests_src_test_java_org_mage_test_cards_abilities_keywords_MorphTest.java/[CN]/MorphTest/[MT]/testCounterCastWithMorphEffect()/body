@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerA,"Sagu Mauler");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",3);
+  addCard(Zone.HAND,playerB,"Disdainful Stroke");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Sagu Mauler");
+  setChoice(playerA,"Yes");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Disdainful Stroke","Sagu Mauler");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerB,20);
+  assertHandCount(playerA,"Sagu Mauler",0);
+  assertHandCount(playerB,"Disdainful Stroke",1);
+  assertPermanentCount(playerA,"face down creature",1);
+}
