@@ -1,0 +1,23 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    if (player.chooseUse(Outcome.PutCardInPlay,"Put an Equipment from hand? (No = from graveyard)",game)) {
+      Target target=new TargetCardInHand(0,1,filter);
+      target.choose(Outcome.PutCardInPlay,source.getControllerId(),source.getSourceId(),game);
+      Card card=player.getHand().get(target.getFirstTarget(),game);
+      if (card != null) {
+        player.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId());
+      }
+    }
+ else {
+      Target target=new TargetCardInYourGraveyard(0,1,filter);
+      target.choose(Outcome.PutCardInPlay,source.getControllerId(),source.getSourceId(),game);
+      Card card=player.getGraveyard().get(target.getFirstTarget(),game);
+      if (card != null) {
+        player.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId());
+      }
+    }
+    return true;
+  }
+  return false;
+}
