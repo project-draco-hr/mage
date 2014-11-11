@@ -1,0 +1,12 @@
+{
+  if (ability instanceof SimpleActivatedAbility) {
+    Permanent sourcePermanent=game.getPermanent(ability.getSourceId());
+    if (sourcePermanent != null) {
+      int numbCounters=sourcePermanent.getCounters().getCount("treasure");
+      FilterCreaturePermanent filter=new FilterCreaturePermanent("creature with power less than or equal to the number of treasure counters on Legacy's Allure");
+      filter.add(new PowerPredicate(Filter.ComparisonType.LessThan,numbCounters + 1));
+      ability.getTargets().clear();
+      ability.getTargets().add(new TargetCreaturePermanent(filter));
+    }
+  }
+}
