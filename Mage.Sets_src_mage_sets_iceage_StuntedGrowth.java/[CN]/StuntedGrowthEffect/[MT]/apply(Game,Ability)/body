@@ -1,0 +1,20 @@
+{
+  Player targetPlayer=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (targetPlayer != null) {
+    int possibleNumber=Math.min(3,targetPlayer.getHand().size());
+    if (possibleNumber > 0) {
+      Target target=new TargetCardInHand(possibleNumber,new FilterCard("cards from your hand"));
+      targetPlayer.choose(outcome,target,source.getSourceId(),game);
+      Cards cards=new CardsImpl();
+      for (      UUID cardId : target.getTargets()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          cards.add(card);
+        }
+      }
+      targetPlayer.putCardsOnTopOfLibrary(cards,game,source,true);
+    }
+    return true;
+  }
+  return false;
+}
