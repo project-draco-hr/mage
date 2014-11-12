@@ -8,4 +8,10 @@
   this.power=new MageInt(2);
   this.toughness=new MageInt(4);
   this.addAbility(FlyingAbility.getInstance());
+  Effect effect=new ExileTargetEffect(this.getId(),this.getName(),Zone.BATTLEFIELD);
+  effect.setText("exile any number of target nonland permanents you control");
+  Ability ability=new DealsCombatDamageToAPlayerTriggeredAbility(effect,false);
+  ability.addTarget(new TargetControlledPermanent(0,Integer.MAX_VALUE,new FilterNonlandPermanent(),false));
+  ability.addEffect(new ReturnFromExileEffect(this.getId(),Zone.BATTLEFIELD,", then return those cards to the battlefield under their owner's control"));
+  this.addAbility(ability);
 }
