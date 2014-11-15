@@ -1,0 +1,43 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    String message;
+    if (chooseUseText == null) {
+      String effectText=executingEffects.getText(source.getModes().getMode());
+      message="Pay " + cost.getText() + " to prevent ("+ effectText.substring(0,effectText.length() - 1)+ ")?";
+    }
+ else {
+      message=chooseUseText;
+    }
+    message=CardUtil.replaceSourceName(message,sourceObject.getLogName());
+    boolean result=true;
+    boolean doEffect=true;
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null && cost.canPay(source,source.getSourceId(),player.getId(),game) && player.chooseUse(Outcome.Detriment,message,game)) {
+        cost.clearPaid();
+        if (cost.pay(source,game,source.getSourceId(),player.getId(),false)) {
+          game.informPlayers(player.getName() + " pays the cost to prevent the effect");
+          doEffect=false;
+          break;
+        }
+      }
+    }
+    if (doEffect) {
+      for (      Effect effect : executingEffects) {
+        effect.setTargetPointer(this.targetPointer);
+        if (effect instanceof OneShotEffect) {
+          if (!(effect instanceof PostResolveEffect)) {
+            result&=effect.apply(game,source);
+          }
+        }
+ else {
+          game.addEffect((ContinuousEffect)effect,source);
+        }
+      }
+    }
+    return result;
+  }
+  return false;
+}
