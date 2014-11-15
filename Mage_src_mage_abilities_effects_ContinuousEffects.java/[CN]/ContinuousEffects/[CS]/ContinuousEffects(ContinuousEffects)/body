@@ -10,13 +10,11 @@
   restrictionEffects=effect.restrictionEffects.copy();
   restrictionUntapNotMoreThanEffects=effect.restrictionUntapNotMoreThanEffects.copy();
   for (  Map.Entry<AsThoughEffectType,ContinuousEffectsList<AsThoughEffect>> entry : effect.asThoughEffectsMap.entrySet()) {
-    asThoughEffectsMap.put(entry.getKey(),entry.getValue());
+    asThoughEffectsMap.put(entry.getKey(),entry.getValue().copy());
   }
   costModificationEffects=effect.costModificationEffects.copy();
   spliceCardEffects=effect.spliceCardEffects.copy();
-  for (  Map.Entry<UUID,UUID> entry : effect.sources.entrySet()) {
-    sources.put(entry.getKey(),entry.getValue());
-  }
+  sources.putAll(effect.sources);
   collectAllEffects();
-  lastSetTimestamp=effect.lastSetTimestamp;
+  order=effect.order;
 }
