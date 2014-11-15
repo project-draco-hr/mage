@@ -1,0 +1,31 @@
+{
+  Cards discardedCards=new CardsImpl();
+  if (amount >= this.getHand().size()) {
+    discardedCards.addAll(this.getHand());
+    while (this.getHand().size() > 0) {
+      discard(this.getHand().get(this.getHand().iterator().next(),game),source,game);
+    }
+    return discardedCards;
+  }
+  int numDiscarded=0;
+  while (isInGame() && numDiscarded < amount) {
+    if (this.getHand().size() == 0) {
+      break;
+    }
+    Card card;
+    if (random) {
+      card=this.getHand().getRandom(game);
+    }
+ else {
+      TargetDiscard target=new TargetDiscard(playerId);
+      choose(Outcome.Discard,target,source.getSourceId(),game);
+      card=this.getHand().get(target.getFirstTarget(),game);
+    }
+    if (card != null) {
+      numDiscarded++;
+      discardedCards.add(card);
+      discard(card,source,game);
+    }
+  }
+  return discardedCards;
+}

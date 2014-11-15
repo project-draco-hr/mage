@@ -1,21 +1,3 @@
 {
-  if (amount >= hand.size()) {
-    while (hand.size() > 0) {
-      discard(hand.get(hand.iterator().next(),game),source,game);
-    }
-    return;
-  }
-  int numDiscarded=0;
-  while (isInGame() && numDiscarded < amount) {
-    if (hand.size() == 0) {
-      break;
-    }
-    TargetDiscard target=new TargetDiscard(playerId);
-    choose(Outcome.Discard,target,source.getSourceId(),game);
-    Card card=hand.get(target.getFirstTarget(),game);
-    if (card != null) {
-      numDiscarded++;
-      discard(card,source,game);
-    }
-  }
+  discard(amount,false,source,game);
 }
