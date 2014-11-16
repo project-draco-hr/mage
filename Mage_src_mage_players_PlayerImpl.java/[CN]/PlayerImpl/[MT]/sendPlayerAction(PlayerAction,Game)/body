@@ -5,6 +5,7 @@ case PASS_PRIORITY_UNTIL_MY_NEXT_TURN:
   passedUntilEndOfTurn=false;
 passedTurn=false;
 passedAllTurns=true;
+passedUntilStackResolved=false;
 this.skip();
 break;
 case PASS_PRIORITY_UNTIL_TURN_END_STEP:
@@ -12,6 +13,7 @@ passedUntilNextMain=false;
 passedTurn=false;
 passedAllTurns=false;
 passedUntilEndOfTurn=true;
+passedUntilStackResolved=false;
 skippedAtLeastOnce=!game.getTurn().getStepType().equals(PhaseStep.END_TURN);
 this.skip();
 break;
@@ -19,6 +21,7 @@ case PASS_PRIORITY_UNTIL_NEXT_TURN:
 passedUntilNextMain=false;
 passedAllTurns=false;
 passedUntilEndOfTurn=false;
+passedUntilStackResolved=false;
 passedTurn=true;
 this.skip();
 break;
@@ -27,7 +30,17 @@ passedAllTurns=false;
 passedTurn=false;
 passedUntilEndOfTurn=false;
 passedUntilNextMain=true;
+passedUntilStackResolved=false;
 skippedAtLeastOnce=!(game.getTurn().getStepType().equals(PhaseStep.POSTCOMBAT_MAIN) || game.getTurn().getStepType().equals(PhaseStep.PRECOMBAT_MAIN));
+this.skip();
+break;
+case PASS_PRIORITY_UNTIL_STACK_RESOLVED:
+passedAllTurns=false;
+passedTurn=false;
+passedUntilEndOfTurn=false;
+passedUntilNextMain=false;
+passedUntilStackResolved=true;
+dateLastAddedToStack=game.getStack().getDateLastAdded();
 this.skip();
 break;
 case PASS_PRIORITY_CANCEL_ALL_ACTIONS:
@@ -35,6 +48,7 @@ passedAllTurns=false;
 passedTurn=false;
 passedUntilEndOfTurn=false;
 passedUntilNextMain=false;
+passedUntilStackResolved=false;
 }
 logger.trace("PASS Priority: " + playerAction.toString());
 }
