@@ -1,0 +1,13 @@
+{
+  super(ownerId,19,"Teferi, Temporal Archmage",Rarity.MYTHIC,new CardType[]{CardType.PLANESWALKER},"{4}{U}{U}");
+  this.expansionSetCode="C14";
+  this.subtype.add("Teferi");
+  this.color.setBlue(true);
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.LOYALTY.createInstance(5)),false));
+  this.addAbility(new LoyaltyAbility(new LookLibraryAndPickControllerEffect(new StaticValue(2),false,new StaticValue(1),new FilterCard(),Zone.LIBRARY,false,false),1));
+  LoyaltyAbility loyaltyAbility=new LoyaltyAbility(new UntapTargetEffect(),-1);
+  loyaltyAbility.addTarget(new TargetCreaturePermanent(0,4,new FilterCreaturePermanent(),false));
+  this.addAbility(loyaltyAbility);
+  this.addAbility(new LoyaltyAbility(new GetEmblemEffect(new TeferiTemporalArchmageEmblem()),-10));
+  this.addAbility(CanBeYourCommanderAbility.getInstance());
+}

@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int highCMC=0;
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(controller.getId())) {
+      if (permanent.getSpellAbility() != null) {
+        int cmc=permanent.getSpellAbility().getManaCosts().convertedManaCost();
+        if (cmc > highCMC) {
+          highCMC=cmc;
+        }
+      }
+    }
+    if (highCMC > 0) {
+      controller.drawCards(highCMC,game);
+    }
+    return true;
+  }
+  return false;
+}

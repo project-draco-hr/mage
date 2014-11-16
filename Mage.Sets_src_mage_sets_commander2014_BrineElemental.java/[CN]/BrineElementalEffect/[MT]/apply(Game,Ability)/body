@@ -1,0 +1,12 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : controller.getInRange()) {
+      if (controller.hasOpponent(playerId,game)) {
+        game.getState().getTurnMods().add(new TurnMod(playerId,PhaseStep.UNTAP));
+      }
+    }
+    return true;
+  }
+  return false;
+}
