@@ -20,6 +20,7 @@
   btnSkipToNextTurn=new javax.swing.JButton();
   btnSkipToEndTurn=new javax.swing.JButton();
   btnSkipToNextMain=new javax.swing.JButton();
+  btnSkipStack=new javax.swing.JButton();
   btnSkipToYourTurn=new javax.swing.JButton();
   btnConcede=new javax.swing.JButton();
   btnSwitchHands=new javax.swing.JButton();
@@ -192,6 +193,27 @@
     }
   }
 );
+  btnSkipStack.setContentAreaFilled(false);
+  btnSkipStack.setBorder(new EmptyBorder(BORDER_SIZE,BORDER_SIZE,BORDER_SIZE,BORDER_SIZE));
+  btnSkipStack.setIcon(new ImageIcon(ImageManagerImpl.getInstance().getSkipStackButtonImage()));
+  btnSkipStack.setToolTipText("Skip until stack is resolved (F10).");
+  btnSkipStack.setFocusable(false);
+  btnSkipStack.addMouseListener(new MouseAdapter(){
+    @Override public void mouseClicked(    MouseEvent evt){
+      if (evt.getButton() == MouseEvent.BUTTON1) {
+        btnPassPriorityUntilStackResolvedActionPerformed(null);
+      }
+    }
+  }
+);
+  ks=KeyStroke.getKeyStroke(KeyEvent.VK_F10,0);
+  this.getInputMap(c).put(ks,"F10_PRESS");
+  this.getActionMap().put("F10_PRESS",new AbstractAction(){
+    @Override public void actionPerformed(    ActionEvent actionEvent){
+      btnPassPriorityUntilStackResolvedActionPerformed(actionEvent);
+    }
+  }
+);
   btnConcede.setContentAreaFilled(false);
   btnConcede.setBorder(new EmptyBorder(BORDER_SIZE,BORDER_SIZE,BORDER_SIZE,BORDER_SIZE));
   btnConcede.setIcon(new ImageIcon(ImageManagerImpl.getInstance().getConcedeButtonImage()));
@@ -344,8 +366,8 @@
   gl_pnlReplay.setVerticalGroup(gl_pnlReplay.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(btnSkipForward,0,0,Short.MAX_VALUE).addComponent(btnNextPlay,0,0,Short.MAX_VALUE).addComponent(btnStopReplay,0,0,Short.MAX_VALUE).addComponent(btnPlay,0,0,Short.MAX_VALUE).addComponent(btnPreviousPlay,javax.swing.GroupLayout.PREFERRED_SIZE,31,Short.MAX_VALUE));
   javax.swing.GroupLayout gl_pnlShortCuts=new javax.swing.GroupLayout(pnlShortCuts);
   pnlShortCuts.setLayout(gl_pnlShortCuts);
-  gl_pnlShortCuts.setHorizontalGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addGroup(gl_pnlShortCuts.createSequentialGroup().addComponent(btnSkipToNextTurn).addComponent(btnSkipToEndTurn).addComponent(btnSkipToNextMain).addComponent(btnSkipToYourTurn)).addGroup(gl_pnlShortCuts.createSequentialGroup().addComponent(btnSwitchHands).addComponent(btnCancelSkip).addComponent(btnConcede).addComponent(btnStopWatching)).addGroup(gl_pnlShortCuts.createSequentialGroup().addContainerGap().addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(51,Short.MAX_VALUE)));
-  gl_pnlShortCuts.setVerticalGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(gl_pnlShortCuts.createSequentialGroup().addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,164,Short.MAX_VALUE).addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(btnSkipToNextTurn).addComponent(btnSkipToEndTurn).addComponent(btnSkipToNextMain).addComponent(btnSkipToYourTurn)).addGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(btnSwitchHands).addComponent(btnCancelSkip).addComponent(btnConcede).addComponent(btnStopWatching))));
+  gl_pnlShortCuts.setHorizontalGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addGroup(gl_pnlShortCuts.createSequentialGroup().addComponent(btnSkipToNextTurn).addComponent(btnSkipToEndTurn).addComponent(btnSkipToNextMain).addComponent(btnSkipToYourTurn).addComponent(btnSkipStack)).addGroup(gl_pnlShortCuts.createSequentialGroup().addComponent(btnSwitchHands).addComponent(btnCancelSkip).addComponent(btnConcede).addComponent(btnStopWatching)).addGroup(gl_pnlShortCuts.createSequentialGroup().addContainerGap().addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(51,Short.MAX_VALUE)));
+  gl_pnlShortCuts.setVerticalGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(gl_pnlShortCuts.createSequentialGroup().addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,164,Short.MAX_VALUE).addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(btnSkipToNextTurn).addComponent(btnSkipToEndTurn).addComponent(btnSkipToNextMain).addComponent(btnSkipToYourTurn).addComponent(btnSkipStack)).addGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(btnSwitchHands).addComponent(btnCancelSkip).addComponent(btnConcede).addComponent(btnStopWatching))));
   pnlBattlefield.setLayout(new java.awt.GridBagLayout());
   jPhases=new JPanel();
   jPhases.setBackground(new Color(0,0,0,0));

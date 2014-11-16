@@ -6,6 +6,7 @@
       return false;
     }
     if (game.getStack().isEmpty()) {
+      passedUntilStackResolved=false;
       boolean dontCheckPassStep=false;
       if (passedTurn) {
         pass(game);
@@ -50,6 +51,16 @@
       if (!dontCheckPassStep && checkPassStep(game)) {
         pass(game);
         return false;
+      }
+    }
+ else     if (passedUntilStackResolved) {
+      if (dateLastAddedToStack == game.getStack().getDateLastAdded()) {
+        dateLastAddedToStack=game.getStack().getDateLastAdded();
+        pass(game);
+        return false;
+      }
+ else {
+        passedUntilStackResolved=false;
       }
     }
     updateGameStatePriority("priority",game);
