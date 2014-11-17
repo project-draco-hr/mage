@@ -1,7 +1,11 @@
 {
-  List<Mana> newNetMana=new ArrayList<>();
-  if (game != null) {
-    newNetMana.add(new Mana(((AstralCornucopiaManaEffect)this.getEffects().get(0)).computeMana(game,this)));
+  netMana.clear();
+  Permanent sourcePermanent=game.getPermanent(getSourceId());
+  if (sourcePermanent != null) {
+    int counters=sourcePermanent.getCounters().getCount(CounterType.CHARGE.getName());
+    if (counters > 0) {
+      netMana.add(new Mana(0,0,0,0,0,0,counters));
+    }
   }
-  return newNetMana;
+  return netMana;
 }

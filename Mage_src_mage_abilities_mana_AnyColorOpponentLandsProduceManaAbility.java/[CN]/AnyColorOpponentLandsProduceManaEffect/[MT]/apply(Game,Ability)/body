@@ -1,6 +1,6 @@
 {
   Mana types=getManaTypes(game,source);
-  Choice choice=new ChoiceImpl(false);
+  Choice choice=new ChoiceImpl(true);
   choice.setMessage("Pick a mana color");
   if (types.getBlack() > 0) {
     choice.getChoices().add("Black");
@@ -17,16 +17,12 @@
   if (types.getWhite() > 0) {
     choice.getChoices().add("White");
   }
-  if (types.getColorless() > 0) {
-    choice.getChoices().add("Colorless");
-  }
   if (types.getAny() > 0) {
     choice.getChoices().add("Black");
     choice.getChoices().add("Red");
     choice.getChoices().add("Blue");
     choice.getChoices().add("Green");
     choice.getChoices().add("White");
-    choice.getChoices().add("Colorless");
   }
   if (choice.getChoices().size() > 0) {
     Player player=game.getPlayer(source.getControllerId());
@@ -36,14 +32,13 @@
  else {
       player.choose(outcome,choice,game);
     }
-    if (choice.getChoice() != null) {
 switch (choice.getChoice()) {
 case "Black":
-        player.getManaPool().addMana(Mana.BlackMana,game,source);
-      break;
+      player.getManaPool().addMana(Mana.BlackMana,game,source);
+    break;
 case "Blue":
-    player.getManaPool().addMana(Mana.BlueMana,game,source);
-  break;
+  player.getManaPool().addMana(Mana.BlueMana,game,source);
+break;
 case "Red":
 player.getManaPool().addMana(Mana.RedMana,game,source);
 break;
@@ -53,13 +48,7 @@ break;
 case "White":
 player.getManaPool().addMana(Mana.WhiteMana,game,source);
 break;
-case "Colorless":
-player.getManaPool().addMana(Mana.ColorlessMana,game,source);
-break;
 }
-return true;
-}
-return false;
 }
 return true;
 }
