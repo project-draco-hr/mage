@@ -1,14 +1,16 @@
 {
   List<Permanent> unsorted=this.getAvailableManaProducers(game);
   unsorted.addAll(this.getAvailableManaProducersWithCost(game));
-  Map<Permanent,Integer> scored=new HashMap<Permanent,Integer>();
+  Map<Permanent,Integer> scored=new HashMap<>();
   for (  Permanent permanent : unsorted) {
     int score=0;
     for (    ManaCost cost : unpaid) {
-      for (      ManaAbility ability : permanent.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
-        if (cost.testPay(ability.getNetMana(game))) {
-          score++;
-          break;
+      Abilities:       for (      ManaAbility ability : permanent.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
+        for (        Mana netMana : ability.getNetMana(game)) {
+          if (cost.testPay(netMana)) {
+            score++;
+            break Abilities;
+          }
         }
       }
     }
