@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Card card=controller.getLibrary().getFromTop(game);
+    if (card != null) {
+      Cards cards=new CardsImpl();
+      cards.add(card);
+      controller.lookAtCards("Puresight Merrow",cards,game);
+      if (controller.chooseUse(Outcome.Removal,"Do you wish to exile the card from the top of your library?",game)) {
+        controller.moveCardToExileWithInfo(card,source.getSourceId(),"Puresight Merrow",source.getSourceId(),game,Zone.LIBRARY);
+      }
+ else {
+        game.informPlayers(controller.getName() + " puts the card back on top of their library.");
+      }
+      return true;
+    }
+  }
+  return false;
+}
