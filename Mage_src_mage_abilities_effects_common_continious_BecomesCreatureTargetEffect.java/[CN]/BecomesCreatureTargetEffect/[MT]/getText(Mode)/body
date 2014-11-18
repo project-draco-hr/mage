@@ -6,21 +6,29 @@
   Target target=mode.getTargets().get(0);
   if (target.getMaxNumberOfTargets() > 1) {
     if (target.getNumberOfTargets() < target.getMaxNumberOfTargets()) {
-      sb.append("Up to ");
+      sb.append("up to ");
     }
-    sb.append(CardUtil.numberToText(target.getMaxNumberOfTargets())).append(" target ").append(target.getTargetName()).append("  each become ");
+    sb.append(CardUtil.numberToText(target.getMaxNumberOfTargets())).append(" target ").append(target.getTargetName());
+    if (loseAllAbilities) {
+      sb.append(" lose all their abilities and ");
+    }
+    sb.append("  each become ");
   }
  else {
-    sb.append("Target ").append(target.getTargetName()).append(" becomes a ");
+    sb.append("target ").append(target.getTargetName());
+    if (loseAllAbilities) {
+      sb.append(" loses all abilities and ");
+    }
+    sb.append(" becomes a ");
   }
   sb.append(token.getDescription());
   sb.append(" ").append(duration.toString());
-  if (type != null && type.length() > 0) {
+  if (addStillALandText) {
     if (target.getMaxNumberOfTargets() > 1) {
-      sb.append(". They're still ").append(type);
+      sb.append(". They're still lands");
     }
  else {
-      sb.append(". It's still a ").append(type);
+      sb.append(". It's still a land");
     }
   }
   return sb.toString();

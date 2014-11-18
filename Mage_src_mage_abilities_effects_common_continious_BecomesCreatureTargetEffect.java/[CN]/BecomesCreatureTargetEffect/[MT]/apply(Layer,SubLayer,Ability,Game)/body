@@ -6,10 +6,9 @@
 switch (layer) {
 case TypeChangingEffects_4:
         if (sublayer == SubLayer.NA) {
-          if (type == null) {
+          if (loseAllAbilities) {
             permanent.getSubtype().clear();
             permanent.getSubtype().addAll(token.getSubtype());
-            permanent.getCardType().clear();
           }
  else {
             if (token.getSubtype().size() > 0) {
@@ -31,18 +30,28 @@ case TypeChangingEffects_4:
       break;
 case ColorChangingEffects_5:
     if (sublayer == SubLayer.NA) {
+      if (loseAllAbilities) {
+        permanent.getColor().setBlack(false);
+        permanent.getColor().setGreen(false);
+        permanent.getColor().setBlue(false);
+        permanent.getColor().setWhite(false);
+        permanent.getColor().setBlack(false);
+      }
       if (token.getColor().hasColor()) {
         permanent.getColor().setColor(token.getColor());
       }
     }
   break;
 case AbilityAddingRemovingEffects_6:
+if (loseAllAbilities) {
+  permanent.removeAllAbilities(source.getSourceId(),game);
+}
 if (sublayer == SubLayer.NA) {
-  if (token.getAbilities().size() > 0) {
-    for (    Ability ability : token.getAbilities()) {
-      permanent.addAbility(ability,game);
-    }
+if (token.getAbilities().size() > 0) {
+  for (  Ability ability : token.getAbilities()) {
+    permanent.addAbility(ability,game);
   }
+}
 }
 break;
 case PTChangingEffects_7:
