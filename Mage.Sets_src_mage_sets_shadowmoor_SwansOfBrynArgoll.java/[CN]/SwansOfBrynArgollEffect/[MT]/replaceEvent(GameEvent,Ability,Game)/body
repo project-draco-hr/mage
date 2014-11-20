@@ -1,0 +1,26 @@
+{
+  Boolean passed=false;
+  DamageEvent damageEvent=(DamageEvent)event;
+  Card sourceOfDamage=game.getCard(event.getSourceId());
+  if (sourceOfDamage != null) {
+    Spell spell=game.getStack().getSpell(sourceOfDamage.getId());
+    Permanent permanent=game.getPermanentOrLKIBattlefield(sourceOfDamage.getId());
+    if (spell != null) {
+      Player controllerOfSpell=game.getPlayer(spell.getControllerId());
+      controllerOfSpell.drawCards(damageEvent.getAmount(),game);
+      passed=true;
+    }
+    if (permanent != null) {
+      Player controllerOfPermanent=game.getPlayer(permanent.getControllerId());
+      controllerOfPermanent.drawCards(damageEvent.getAmount(),game);
+      passed=true;
+    }
+    if (!passed) {
+      Player owner=game.getPlayer(sourceOfDamage.getOwnerId());
+      if (owner != null) {
+        owner.drawCards(damageEvent.getAmount(),game);
+      }
+    }
+  }
+  return true;
+}
