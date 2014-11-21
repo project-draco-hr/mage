@@ -1,15 +1,12 @@
 {
   Card card=game.getCard(getTargetPointer().getFirst(game,source));
-  if (card != null) {
-    card.moveToExile(null,null,source.getSourceId(),game);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && card != null) {
+    controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.GRAVEYARD);
     if (card.getCardType().contains(CardType.CREATURE)) {
       Permanent sourcePermanent=game.getPermanent(source.getSourceId());
       if (sourcePermanent != null) {
         sourcePermanent.addCounters(CounterType.P1P1.createInstance(),game);
-        Player controller=game.getPlayer(source.getControllerId());
-        if (controller != null) {
-          controller.gainLife(1,game);
-        }
       }
     }
     return true;
