@@ -1,7 +1,7 @@
 {
   BufferedReader in=null;
   try {
-    URL serverListURL=new URL("http://176.31.186.181/files/server-list.txt");
+    URL serverListURL=new URL(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CONNECTION_URL_SERVER_LIST,"http://176.31.186.181/files/server-list.txt"));
     Connection.ProxyType configProxyType=Connection.ProxyType.valueByText(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_TYPE,"None"));
     Proxy p=null;
     Proxy.Type type=Proxy.Type.DIRECT;
@@ -31,14 +31,43 @@ if (p == null) {
 JOptionPane.showMessageDialog(null,"Couldn't configure Proxy object!","Error",JOptionPane.ERROR_MESSAGE);
 return;
 }
+boolean URLNotFound=false;
+try {
 in=new BufferedReader(new InputStreamReader(serverListURL.openConnection(p).getInputStream()));
-List<String> servers=new ArrayList<String>();
+}
+ catch (FileNotFoundException|UnknownHostException ex) {
+logger.info("Could not read serverlist from: " + serverListURL.toString());
+File f=new File("serverlist.txt");
+if (f.exists() && !f.isDirectory()) {
+logger.info("Using buffered serverlist: serverlist.txt");
+URLNotFound=true;
+in=new BufferedReader(new FileReader("serverlist.txt"));
+}
+}
+List<String> servers=new ArrayList<>();
+if (in != null) {
+Writer output=null;
+if (!URLNotFound) {
+File file=new File("serverlist.txt");
+if (file.exists() && !file.isDirectory()) {
+file.delete();
+}
+output=new BufferedWriter(new FileWriter(file));
+}
 String inputLine;
 while ((inputLine=in.readLine()) != null) {
 logger.info("Found server: " + inputLine);
 servers.add(inputLine);
+if (output != null) {
+output.append(inputLine).append('\n');
 }
-if (servers.size() == 0) {
+}
+if (output != null) {
+output.close();
+}
+in.close();
+}
+if (servers.isEmpty()) {
 JOptionPane.showMessageDialog(null,"Couldn't find any server.");
 return;
 }
@@ -53,16 +82,17 @@ this.txtPort.setText(params[2]);
 JOptionPane.showMessageDialog(null,"Wrong server data format.");
 }
 }
-in.close();
 }
  catch (Exception ex) {
 logger.error(ex,ex);
 }
  finally {
-if (in != null) try {
+if (in != null) {
+try {
 in.close();
 }
  catch (Exception e) {
+}
 }
 }
 }
