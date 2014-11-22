@@ -1,6 +1,21 @@
 {
+  loadCardsToPickedCardsArea(draftPickView.getPicks());
+  this.draftPicks.clearCardEventListeners();
+  this.draftPicks.addCardEventListener(new Listener<Event>(){
+    @Override public void event(    Event event){
+      if (event.getEventName().equals("show-popup-menu")) {
+        if (event.getSource() != null) {
+          cardIdPopupMenu=((SimpleCardView)event.getSource()).getId();
+          popupMenuCardPanel.show(event.getComponent(),event.getxPos(),event.getyPos());
+        }
+ else {
+          popupMenuPickedArea.show(event.getComponent(),event.getxPos(),event.getyPos());
+        }
+      }
+    }
+  }
+);
   draftBooster.loadBooster(CardsViewUtil.convertSimple(draftPickView.getBooster()),bigCard);
-  draftPicks.loadCards(CardsViewUtil.convertSimple(draftPickView.getPicks()),bigCard,null);
   this.draftBooster.clearCardEventListeners();
   this.draftBooster.addCardEventListener(new Listener<Event>(){
     @Override public void event(    Event event){
@@ -8,8 +23,8 @@
         SimpleCardView source=(SimpleCardView)event.getSource();
         DraftPickView view=session.sendCardPick(draftId,source.getId());
         if (view != null) {
+          loadCardsToPickedCardsArea(view.getPicks());
           draftBooster.loadBooster(emptyView,bigCard);
-          draftPicks.loadCards(CardsViewUtil.convertSimple(view.getPicks()),bigCard,null);
           Plugins.getInstance().getActionCallback().hidePopup();
           setMessage("Waiting for other players");
         }

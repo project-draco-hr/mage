@@ -1,22 +1,30 @@
 {
-  if (e.getClickCount() == 2 && !e.isConsumed()) {
-    e.consume();
+  if (e.getClickCount() >= 1 && !e.isConsumed()) {
     Object obj=e.getSource();
-    if (obj instanceof Card) {
-      if (e.isAltDown()) {
-        cardEventSource.altDoubleClick(((Card)obj).getOriginal(),"alt-double-click");
-      }
+    if (e.getClickCount() == 2) {
+      e.consume();
+      if (obj instanceof Card) {
+        if (e.isAltDown()) {
+          cardEventSource.altDoubleClick(((Card)obj).getOriginal(),"alt-double-click");
+        }
  else {
-        cardEventSource.doubleClick(((Card)obj).getOriginal(),"double-click");
+          cardEventSource.doubleClick(((Card)obj).getOriginal(),"double-click");
+        }
+      }
+ else       if (obj instanceof MageCard) {
+        if (e.isAltDown()) {
+          cardEventSource.altDoubleClick(((MageCard)obj).getOriginal(),"alt-double-click");
+        }
+ else {
+          cardEventSource.doubleClick(((MageCard)obj).getOriginal(),"double-click");
+        }
       }
     }
- else     if (obj instanceof MageCard) {
-      if (e.isAltDown()) {
-        cardEventSource.altDoubleClick(((MageCard)obj).getOriginal(),"alt-double-click");
-      }
+    if (obj instanceof MageCard) {
+      checkMenu(e,((MageCard)obj).getOriginal());
+    }
  else {
-        cardEventSource.doubleClick(((MageCard)obj).getOriginal(),"double-click");
-      }
+      checkMenu(e,null);
     }
   }
 }
