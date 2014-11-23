@@ -1,0 +1,20 @@
+{
+  FilterPermanent filter=new FilterControlledPermanent();
+  filter.add(new CardTypePredicate(cardType));
+  int numberController=game.getBattlefield().count(filter,source.getSourceId(),controller.getId(),game);
+  int numberTargetPlayer=game.getBattlefield().count(filter,source.getSourceId(),targetPlayer.getId(),game);
+  int excess=numberTargetPlayer - numberController;
+  if (excess > 0) {
+    FilterPermanent filterChoose=new FilterPermanent(cardType.toString().toLowerCase() + (excess > 1 ? "s" : "") + " of target player");
+    filterChoose.add(new ControllerIdPredicate(targetPlayer.getId()));
+    filterChoose.add(new CardTypePredicate(cardType));
+    Target target=new TargetPermanent(excess,excess,filterChoose,true);
+    controller.chooseTarget(outcome,target,source,game);
+    for (    UUID permanentId : target.getTargets()) {
+      Permanent permanent=game.getPermanent(permanentId);
+      if (permanent != null) {
+        permanent.phaseOut(game);
+      }
+    }
+  }
+}
