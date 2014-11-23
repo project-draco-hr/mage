@@ -1,12 +1,25 @@
 {
-  User user=UserManager.getInstance().getUser(userId);
-  if (user == null || !user.isConnected()) {
-    return;
+  try {
+    if (lock.tryLock(5,TimeUnit.SECONDS)) {
+      User user=UserManager.getInstance().getUser(userId);
+      if (user == null || !user.isConnected()) {
+        return;
+      }
+      if (!user.getSessionId().equals(sessionId)) {
+        logger.info("OLD SESSION IGNORED - " + user.getName());
+        return;
+      }
+      logger.info("LOST CONNECTION - " + user.getName());
+      UserManager.getInstance().disconnect(userId,DisconnectReason.LostConnection);
+    }
+ else {
+      logger.error("SESSION LOCK - userId " + userId);
+    }
   }
-  if (!user.getSessionId().equals(sessionId)) {
-    logger.info("OLD SESSION IGNORED - " + user.getName());
-    return;
+ catch (  InterruptedException ex) {
+    logger.error("SESSION LOCK - userId " + userId,ex);
   }
-  logger.info("LOST CONNECTION - " + user.getName());
-  UserManager.getInstance().disconnect(userId,DisconnectReason.LostConnection);
+ finally {
+    lock.unlock();
+  }
 }

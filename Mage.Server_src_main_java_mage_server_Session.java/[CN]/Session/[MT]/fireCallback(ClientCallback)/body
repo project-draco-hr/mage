@@ -1,7 +1,14 @@
 {
   try {
-    call.setMessageId(messageId++);
-    callbackHandler.handleCallbackOneway(new Callback(call));
+    boolean tryLock;
+    if (lock.tryLock(5,TimeUnit.SECONDS)) {
+      call.setMessageId(messageId++);
+      callbackHandler.handleCallbackOneway(new Callback(call));
+    }
+ else {
+      logger.error("CALLBACK LOCK - userId " + userId);
+      logger.error(" - method: " + call.getMethod());
+    }
   }
  catch (  HandleCallbackException ex) {
     logger.info("CALLBACK EXCEPTION - userId " + userId,ex);
@@ -9,5 +16,12 @@
       ex.printStackTrace();
     }
     userLostConnection();
+  }
+catch (  InterruptedException ex) {
+    logger.error("CALLBACK LOCK EXCEPTION - userId " + userId,ex);
+    logger.error(" - method: " + call.getMethod());
+  }
+ finally {
+    lock.unlock();
   }
 }
