@@ -1,0 +1,41 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Target target=new TargetOpponent(true);
+    if (controller.choose(outcome,target,source.getSourceId(),game)) {
+      Player opponent=game.getPlayer(target.getFirstTarget());
+      if (opponent == null) {
+        return false;
+      }
+      boolean revealed=opponent.isTopCardRevealed();
+      opponent.setTopCardRevealed(false);
+      Cards cards=new CardsImpl();
+      int count=Math.min(fatesealNumber,opponent.getLibrary().size());
+      if (count == 0) {
+        return true;
+      }
+      for (int i=0; i < count; i++) {
+        Card card=opponent.getLibrary().removeFromTop(game);
+        cards.add(card);
+      }
+      TargetCard target1=new TargetCard(Zone.LIBRARY,filter1);
+      target1.setRequired(false);
+      while (cards.size() > 0 && controller.choose(Outcome.Detriment,cards,target1,game)) {
+        if (!controller.isInGame() || !opponent.isInGame()) {
+          return false;
+        }
+        Card card=cards.get(target1.getFirstTarget(),game);
+        if (card != null) {
+          cards.remove(card);
+          controller.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.LIBRARY,false,false);
+        }
+        target1.clearChosen();
+      }
+      controller.putCardsOnTopOfLibrary(cards,game,source,true);
+      game.fireEvent(new GameEvent(GameEvent.EventType.FATESEAL,opponent.getId(),source.getSourceId(),source.getControllerId()));
+      controller.setTopCardRevealed(revealed);
+      return true;
+    }
+  }
+  return false;
+}
