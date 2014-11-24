@@ -1,0 +1,43 @@
+{
+switch (playerAction) {
+case UNDO:
+    game.undo(getPlayerId(userId));
+  break;
+case CONCEDE:
+game.concede(getPlayerId(userId));
+break;
+case MANA_AUTO_PAYMENT_OFF:
+game.setManaPoolMode(getPlayerId(userId),false);
+break;
+case MANA_AUTO_PAYMENT_ON:
+game.setManaPoolMode(getPlayerId(userId),true);
+break;
+case ADD_PERMISSION_TO_SEE_HAND_CARDS:
+if (data instanceof UUID) {
+UUID playerId=getPlayerId(userId);
+if (playerId != null) {
+Player player=game.getPlayer(playerId);
+if (player != null) {
+player.addPermissionToShowHandCards((UUID)data);
+}
+}
+}
+break;
+case REVOKE_PERMISSIONS_TO_SEE_HAND_CARDS:
+UUID playerId=getPlayerId(userId);
+if (playerId != null) {
+Player player=game.getPlayer(playerId);
+if (player != null) {
+player.revokePermissionToSeeHandCards();
+}
+}
+break;
+case REQUEST_PERMISSION_TO_SEE_HAND_CARDS:
+if (data instanceof UUID) {
+requestPermissionToSeeHandCards(userId,(UUID)data);
+}
+break;
+default :
+game.sendPlayerAction(playerAction,getPlayerId(userId));
+}
+}

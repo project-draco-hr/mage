@@ -1,10 +1,11 @@
 {
   Player player=game.getPlayer(playerId);
   player.setUserData(this.userData);
-  GameView gameView=new GameView(game.getState(),game,playerId);
+  GameView gameView=new GameView(game.getState(),game,playerId,null);
   gameView.setHand(new CardsView(player.getHand().getCards(game)));
   gameView.setCanPlayInHand(player.getPlayableInHand(game));
   processControlledPlayers(player,gameView);
+  processWatchedHands(userId,gameView);
   List<LookedAtView> list=new ArrayList<>();
   for (  Entry<String,Cards> entry : game.getState().getLookedAt(playerId).entrySet()) {
     list.add(new LookedAtView(entry.getKey(),entry.getValue(),game));

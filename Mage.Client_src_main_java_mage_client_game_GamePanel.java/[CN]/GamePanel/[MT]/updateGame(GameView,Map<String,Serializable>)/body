@@ -1,37 +1,55 @@
 {
-  if (playerId == null || game.getHand() == null) {
+  if (playerId == null && game.getWatchedHands() == null) {
     this.handContainer.setVisible(false);
   }
  else {
+    this.handContainer.setVisible(true);
     handCards.clear();
-    handCards.put(YOUR_HAND,game.getHand());
-    if (game.getCanPlayInHand() != null) {
-      for (      CardView card : handCards.get(YOUR_HAND).values()) {
-        if (game.getCanPlayInHand().contains(card.getId())) {
-          card.setPlayable(true);
-        }
-      }
-    }
-    if (game.getOpponentHands() != null) {
-      for (      Map.Entry<String,SimpleCardsView> hand : game.getOpponentHands().entrySet()) {
+    if (game.getWatchedHands() != null) {
+      for (      Map.Entry<String,SimpleCardsView> hand : game.getWatchedHands().entrySet()) {
         handCards.put(hand.getKey(),CardsViewUtil.convertSimple(hand.getValue(),loadedCards));
       }
     }
-    if (!handCards.containsKey(chosenHandKey)) {
-      chosenHandKey=YOUR_HAND;
+    if (playerId != null) {
+      handCards.put(YOUR_HAND,game.getHand());
+      if (game.getCanPlayInHand() != null) {
+        for (        CardView card : handCards.get(YOUR_HAND).values()) {
+          if (game.getCanPlayInHand().contains(card.getId())) {
+            card.setPlayable(true);
+          }
+        }
+      }
+      if (game.getOpponentHands() != null) {
+        for (        Map.Entry<String,SimpleCardsView> hand : game.getOpponentHands().entrySet()) {
+          handCards.put(hand.getKey(),CardsViewUtil.convertSimple(hand.getValue(),loadedCards));
+        }
+      }
+      if (!handCards.containsKey(chosenHandKey)) {
+        chosenHandKey=YOUR_HAND;
+      }
     }
-    handContainer.loadCards(handCards.get(chosenHandKey),bigCard,gameId);
+ else     if (chosenHandKey.isEmpty() && handCards.size() > 0) {
+      chosenHandKey=handCards.keySet().iterator().next();
+    }
+    if (chosenHandKey != null && handCards.containsKey(chosenHandKey)) {
+      handContainer.loadCards(handCards.get(chosenHandKey),bigCard,gameId);
+    }
     hideAll();
-    boolean previous=btnSwitchHands.isVisible();
-    boolean visible=handCards.size() > 1;
-    if (previous != visible) {
-      btnSwitchHands.setVisible(visible);
-      if (visible) {
-        JOptionPane.showMessageDialog(null,"You control other player's turn. \nUse \"Switch Hand\" button to switch between cards in different hands.");
-      }
+    if (playerId != null) {
+      btnSwitchHands.setVisible(handCards.size() > 1);
+      boolean change=(handCardsOfOpponentAvailable != (game.getOpponentHands() != null));
+      if (change) {
+        handCardsOfOpponentAvailable=!handCardsOfOpponentAvailable;
+        if (handCardsOfOpponentAvailable) {
+          JOptionPane.showMessageDialog(null,"You control other player's turn. \nUse \"Switch Hand\" button to switch between cards in different hands.");
+        }
  else {
-        JOptionPane.showMessageDialog(null,"You lost control on other player's turn.");
+          JOptionPane.showMessageDialog(null,"You lost control on other player's turn.");
+        }
       }
+    }
+ else {
+      btnSwitchHands.setVisible(!handCards.isEmpty());
     }
   }
   if (game.getPhase() != null) {

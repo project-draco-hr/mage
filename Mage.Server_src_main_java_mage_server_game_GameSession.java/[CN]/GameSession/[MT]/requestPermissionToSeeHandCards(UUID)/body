@@ -1,0 +1,14 @@
+{
+  if (!killed) {
+    User watcher=UserManager.getInstance().getUser(watcherId);
+    User user=UserManager.getInstance().getUser(userId);
+    if (user != null && watcher != null) {
+      UserRequestMessage userRequestMessage=new UserRequestMessage("User request","Allow user <b>" + watcher.getName() + "</b> for this match to see your hand cards?<br>"+ "(You can revoke this every time using related popup menu item of your battlefield.)",PlayerAction.REQUEST_PERMISSION_TO_SEE_HAND_CARDS);
+      userRequestMessage.setRelatedUser(watcherId,watcher.getName());
+      userRequestMessage.setGameId(game.getId());
+      userRequestMessage.setButton1("Accept",PlayerAction.ADD_PERMISSION_TO_SEE_HAND_CARDS);
+      userRequestMessage.setButton2("Reject",null);
+      user.fireCallback(new ClientCallback("userRequestDialog",game.getId(),userRequestMessage));
+    }
+  }
+}

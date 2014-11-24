@@ -1,0 +1,33 @@
+{
+  Player grantingPlayer=game.getPlayer(userIdGranter);
+  if (grantingPlayer != null) {
+    if (!grantingPlayer.getUsersAllowedToSeeHandCards().contains(userIdRequester)) {
+      if (grantingPlayer.isHuman()) {
+        GameSession gameSession=gameSessions.get(userIdGranter);
+        if (gameSession != null) {
+          UUID requestingPlayer=getPlayerId(userIdRequester);
+          if (requestingPlayer == null || !requestingPlayer.equals(grantingPlayer.getId())) {
+            if (grantingPlayer.isRequestToShowHandCardsAllowed()) {
+              gameSession.requestPermissionToSeeHandCards(userIdRequester);
+            }
+ else {
+              User requester=UserManager.getInstance().getUser(userIdRequester);
+              if (requester != null) {
+                requester.showUserMessage("Request to show hand cards","Player " + grantingPlayer.getName() + " does not allow to request to show hand cards!");
+              }
+            }
+          }
+        }
+      }
+ else {
+        grantingPlayer.addPermissionToShowHandCards(userIdRequester);
+      }
+    }
+ else {
+      User requester=UserManager.getInstance().getUser(userIdRequester);
+      if (requester != null) {
+        requester.showUserMessage("Request to show hand cards","You can see already the hand cards of player " + grantingPlayer.getName() + "!");
+      }
+    }
+  }
+}
