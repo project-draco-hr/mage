@@ -6,10 +6,7 @@
   this.power=new MageInt(5);
   this.toughness=new MageInt(5);
   this.addAbility(HexproofAbility.getInstance());
-  Effect effect=new ConditionalContinousEffect(new BoostSourceEffect(2,2,Duration.WhileOnBattlefield),CommanderInPlayCondition.getInstance(),"<i>Lieutenant</i> - As long as you control your commander, Stormsurge Kraken gets +2/+2");
-  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,effect);
-  effect=new GainAbilitySourceEffect(new BecomesBlockedTriggeredAbility(new DrawCardSourceControllerEffect(2),true),Duration.WhileOnBattlefield);
+  ContinuousEffect effect=new GainAbilitySourceEffect(new BecomesBlockedTriggeredAbility(new DrawCardSourceControllerEffect(2),true),Duration.WhileOnBattlefield);
   effect.setText("and has \"Whenever Stormsurge Kraken becomes blocked, you may draw two cards.\"");
-  ability.addEffect(effect);
-  this.addAbility(ability);
+  this.addAbility(new LieutenantAbility(effect));
 }
