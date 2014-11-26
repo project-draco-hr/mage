@@ -4,12 +4,12 @@
     message.append(game.getStep().getType().toString()).append(" - ");
   }
   message.append("Waiting for ").append(game.getPlayer(playerId).getName());
-  for (  final Entry<UUID,GameSession> entry : gameSessions.entrySet()) {
+  for (  final Entry<UUID,GameSessionPlayer> entry : gameSessions.entrySet()) {
     if (!entry.getKey().equals(playerId)) {
       entry.getValue().inform(message.toString());
     }
   }
-  for (  final GameWatcher watcher : watchers.values()) {
+  for (  final GameSessionWatcher watcher : watchers.values()) {
     watcher.inform(message.toString());
   }
 }

@@ -1,5 +1,26 @@
 {
   ShowCardsDialog dialog=null;
+  if (options != null && options.containsKey("targetZone")) {
+    if (Zone.HAND.equals(options.get("targetZone"))) {
+      List<UUID> choosen=null;
+      if (options.containsKey("chosen")) {
+        choosen=(List<UUID>)options.get("chosen");
+      }
+      for (      CardView card : gameView.getHand().values()) {
+        if (targets == null || targets.isEmpty()) {
+          card.setPlayable(false);
+          card.setChoosable(true);
+        }
+ else         if (targets.contains(card.getId())) {
+          card.setPlayable(false);
+          card.setChoosable(true);
+        }
+        if (choosen != null && choosen.contains(card.getId())) {
+          card.setSelected(true);
+        }
+      }
+    }
+  }
   updateGame(gameView);
   Map<String,Serializable> options0=options == null ? new HashMap<String,Serializable>() : options;
   if (cardView != null && cardView.size() > 0) {

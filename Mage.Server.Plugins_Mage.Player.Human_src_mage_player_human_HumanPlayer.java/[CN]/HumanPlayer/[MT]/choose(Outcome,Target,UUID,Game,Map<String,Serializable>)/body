@@ -1,5 +1,8 @@
 {
   updateGameStatePriority("choose(5)",game);
+  if (options == null) {
+    options=new HashMap<>();
+  }
   while (!abort) {
     Set<UUID> targetIds=target.possibleTargets(sourceId,playerId,game);
     if (targetIds == null || targetIds.isEmpty()) {
@@ -9,7 +12,9 @@
     if (target.getTargets().size() >= target.getNumberOfTargets()) {
       required=false;
     }
-    game.fireSelectTargetEvent(playerId,target.getMessage(),targetIds,required,options);
+    List<UUID> chosen=target.getTargets();
+    options.put("chosen",(Serializable)chosen);
+    game.fireSelectTargetEvent(playerId,target.getMessage(),targetIds,required,getOptions(target,options));
     waitForResponse(game);
     if (response.getUUID() != null) {
       if (!targetIds.contains(response.getUUID())) {
@@ -27,17 +32,27 @@
         MageObject object=game.getObject(sourceId);
         if (object instanceof Ability) {
           if (target.canTarget(response.getUUID(),(Ability)object,game)) {
-            target.add(response.getUUID(),game);
-            if (target.doneChosing()) {
-              return true;
+            if (target.getTargets().contains(response.getUUID())) {
+              target.remove(response.getUUID());
+            }
+ else {
+              target.addTarget(response.getUUID(),(Ability)object,game);
+              if (target.doneChosing()) {
+                return true;
+              }
             }
           }
         }
  else {
           if (target.canTarget(response.getUUID(),game)) {
-            target.add(response.getUUID(),game);
-            if (target.doneChosing()) {
-              return true;
+            if (target.getTargets().contains(response.getUUID())) {
+              target.remove(response.getUUID());
+            }
+ else {
+              target.addTarget(response.getUUID(),null,game);
+              if (target.doneChosing()) {
+                return true;
+              }
             }
           }
         }

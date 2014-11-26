@@ -7,7 +7,7 @@
     return;
   }
   final String message=new StringBuilder(game.getStep().getType().toString()).append(" - Waiting for ").append(controller.getName()).toString();
-  for (  final Entry<UUID,GameSession> entry : gameSessions.entrySet()) {
+  for (  final Entry<UUID,GameSessionPlayer> entry : gameSessions.entrySet()) {
     boolean skip=false;
     for (    UUID uuid : players) {
       if (entry.getKey().equals(uuid)) {
@@ -19,7 +19,7 @@
       entry.getValue().inform(message);
     }
   }
-  for (  final GameWatcher watcher : watchers.values()) {
+  for (  final GameSessionWatcher watcher : watchers.values()) {
     watcher.inform(message);
   }
 }

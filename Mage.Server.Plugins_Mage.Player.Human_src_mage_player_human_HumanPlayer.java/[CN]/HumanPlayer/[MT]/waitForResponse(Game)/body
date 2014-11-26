@@ -1,7 +1,7 @@
 {
   response.clear();
   log.debug("Waiting response from player: " + getId());
-  game.resumeTimer(playerId);
+  game.resumeTimer(getTurnControlledBy());
 synchronized (response) {
     try {
       response.wait();
@@ -11,7 +11,7 @@ synchronized (response) {
       ex.printStackTrace();
     }
  finally {
-      game.pauseTimer(playerId);
+      game.pauseTimer(getTurnControlledBy());
     }
   }
 }

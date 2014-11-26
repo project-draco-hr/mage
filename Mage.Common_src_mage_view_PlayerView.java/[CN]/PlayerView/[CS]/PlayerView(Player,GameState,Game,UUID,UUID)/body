@@ -8,6 +8,8 @@
   this.manaPool=new ManaPoolView(player.getManaPool());
   this.isActive=(player.getId().equals(state.getActivePlayerId()));
   this.hasPriority=player.getId().equals(state.getPriorityPlayerId());
+  this.priorityTimeLeft=player.getPriorityTimeLeft();
+  this.timerActive=(this.hasPriority && player.isGameUnderControl()) || (player.getPlayersUnderYourControl().contains(state.getPriorityPlayerId()));
   this.hasLeft=player.hasLeft();
   for (  Card card : player.getGraveyard().getCards(game)) {
     graveyard.put(card.getId(),new CardView(card));
@@ -56,7 +58,6 @@
     attachments.addAll(player.getAttachments());
   }
   this.statesSavedSize=player.getStoredBookmark();
-  this.priorityTimeLeft=player.getPriorityTimeLeft();
   this.passedTurn=player.getPassedTurn();
   this.passedUntilEndOfTurn=player.getPassedUntilEndOfTurn();
   this.passedUntilNextMain=player.getPassedUntilNextMain();

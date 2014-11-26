@@ -1,23 +1,7 @@
 {
   Player player=game.getPlayer(targetPointer.getFirst(game,source));
   if (player != null) {
-    if (randomDiscard) {
-      int maxAmount=Math.min(amount.calculate(game,source,this),player.getHand().size());
-      for (int i=0; i < maxAmount; i++) {
-        Card card=player.getHand().getRandom(game);
-        if (card != null) {
-          player.discard(card,source,game);
-          if (setTargetPointer) {
-            for (            Effect effect : source.getEffects()) {
-              effect.setTargetPointer(new FixedTarget(card.getId()));
-            }
-          }
-        }
-      }
-    }
- else {
-      player.discard(amount.calculate(game,source,this),source,game);
-    }
+    player.discard(amount.calculate(game,source,this),randomDiscard,source,game);
     return true;
   }
   return false;

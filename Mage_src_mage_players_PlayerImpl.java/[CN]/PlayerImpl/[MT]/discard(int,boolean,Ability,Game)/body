@@ -7,22 +7,18 @@
     }
     return discardedCards;
   }
-  int numDiscarded=0;
-  while (isInGame() && numDiscarded < amount) {
-    if (this.getHand().size() == 0) {
-      break;
+  if (random) {
+    for (int i=0; i < amount; i++) {
+      Card card=this.getHand().getRandom(game);
+      discardedCards.add(card);
+      discard(card,source,game);
     }
-    Card card;
-    if (random) {
-      card=this.getHand().getRandom(game);
-    }
+  }
  else {
-      TargetDiscard target=new TargetDiscard(playerId);
-      choose(Outcome.Discard,target,source.getSourceId(),game);
-      card=this.getHand().get(target.getFirstTarget(),game);
-    }
-    if (card != null) {
-      numDiscarded++;
+    TargetDiscard target=new TargetDiscard(amount,amount,new FilterCard(CardUtil.numberToText(amount,"a") + " card" + (amount > 1 ? "s" : "")),playerId);
+    choose(Outcome.Discard,target,source == null ? null : source.getSourceId(),game);
+    for (    UUID cardId : target.getTargets()) {
+      Card card=this.getHand().get(cardId,game);
       discardedCards.add(card);
       discard(card,source,game);
     }

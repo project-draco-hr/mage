@@ -1,11 +1,6 @@
 {
   if (hand.size() > this.maxHandSize) {
     game.informPlayers(new StringBuilder(getName()).append(" discards down to ").append(this.maxHandSize).append(this.maxHandSize == 1 ? " hand card" : " hand cards").toString());
-    while (isInGame() && hand.size() > this.maxHandSize) {
-      TargetDiscard target=new TargetDiscard(playerId);
-      target.setTargetName(new StringBuilder(" card to discard (").append(hand.size() - this.maxHandSize).append(" in total)").toString());
-      choose(Outcome.Discard,target,null,game);
-      discard(hand.get(target.getFirstTarget(),game),null,game);
-    }
+    discard(hand.size() - this.maxHandSize,null,game);
   }
 }
