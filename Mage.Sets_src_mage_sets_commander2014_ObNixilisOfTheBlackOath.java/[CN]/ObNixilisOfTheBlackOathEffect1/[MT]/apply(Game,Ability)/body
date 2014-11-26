@@ -1,0 +1,12 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int damage=0;
+    for (    UUID opponentId : game.getOpponents(source.getControllerId())) {
+      damage+=game.getPlayer(opponentId).damage(1,source.getSourceId(),game,false,true);
+    }
+    controller.gainLife(damage,game);
+    return true;
+  }
+  return false;
+}

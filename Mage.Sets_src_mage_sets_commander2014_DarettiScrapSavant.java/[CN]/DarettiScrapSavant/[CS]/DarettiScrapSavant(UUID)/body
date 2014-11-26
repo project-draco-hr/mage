@@ -1,0 +1,13 @@
+{
+  super(ownerId,33,"Daretti, Scrap Savant",Rarity.MYTHIC,new CardType[]{CardType.PLANESWALKER},"{3}{R}");
+  this.expansionSetCode="C14";
+  this.subtype.add("Daretti");
+  this.color.setRed(true);
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.LOYALTY.createInstance(3)),false));
+  this.addAbility(new LoyaltyAbility(new DarettiDiscardDrawEffect(),2));
+  LoyaltyAbility loyaltyAbility=new LoyaltyAbility(new DarettiSacrificeEffect(),-2);
+  loyaltyAbility.addTarget(new TargetCardInYourGraveyard(new FilterArtifactCard("artifact card from your graveyard")));
+  this.addAbility(loyaltyAbility);
+  this.addAbility(new LoyaltyAbility(new GetEmblemEffect(new DarettiScrapSavantEmblem()),-10));
+  this.addAbility(CanBeYourCommanderAbility.getInstance());
+}

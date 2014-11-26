@@ -78,16 +78,10 @@
         }
       }
     }
-    if (!(this.getCommanderId() == null)) {
-      Zone zone=game.getState().getZone(this.getCommanderId());
-      if (zone != null && zone.equals(Zone.COMMAND)) {
-        MageObject object=game.getObject(this.getCommanderId());
-        if (object != null) {
-          for (          ActivatedAbility ability : ((Commander)object).getAbilities().getActivatedAbilities(Zone.COMMAND)) {
-            if (canPlay(ability,availableMana,object,game)) {
-              playableActivated.put(ability.toString(),ability);
-            }
-          }
+    for (    CommandObject commandObject : game.getState().getCommand()) {
+      for (      ActivatedAbility ability : commandObject.getAbilities().getActivatedAbilities(Zone.COMMAND)) {
+        if (ability.getControllerId().equals(getId()) && ability.getAbilityType().equals(AbilityType.ACTIVATED) && canPlay(ability,availableMana,game.getObject(ability.getSourceId()),game)) {
+          playableActivated.put(ability.toString(),ability);
         }
       }
     }

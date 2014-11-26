@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(0,Integer.MAX_VALUE,new FilterLandCard("any number of land cards"));
+    target.choose(outcome,controller.getId(),controller.getId(),game);
+    int count=0;
+    for (    UUID cardId : target.getTargets()) {
+      Card card=game.getCard(cardId);
+      controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.LIBRARY);
+      count++;
+    }
+    controller.shuffleLibrary(game);
+    game.addEffect(new SetPowerToughnessSourceEffect(count,count,Duration.EndOfGame),source);
+    return true;
+  }
+  return false;
+}
