@@ -1,0 +1,26 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Target target=new TargetOpponent(true);
+    target.choose(Outcome.PutCreatureInPlay,source.getControllerId(),source.getSourceId(),game);
+    Player opponent=game.getPlayer(target.getFirstTarget());
+    target=new TargetCardInYourGraveyard(new FilterCreatureCard("creature card in your graveyard"));
+    if (target.choose(Outcome.PutCreatureInPlay,player.getId(),source.getSourceId(),game)) {
+      Card card=player.getGraveyard().get(target.getFirstTarget(),game);
+      if (card != null) {
+        player.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId());
+      }
+    }
+    if (opponent != null) {
+      target=new TargetCardInYourGraveyard(new FilterCreatureCard("creature card in your graveyard"));
+      if (target.choose(Outcome.PutCreatureInPlay,opponent.getId(),source.getSourceId(),game)) {
+        Card card=opponent.getGraveyard().get(target.getFirstTarget(),game);
+        if (card != null) {
+          opponent.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId());
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
