@@ -1,0 +1,52 @@
+{
+  TextLines textLines=new TextLines();
+  textLines.lines=new ArrayList<>(card.getRules());
+  for (  String rule : card.getRules()) {
+    textLines.basicTextLength+=rule.length();
+  }
+  if (card.getMageObjectType().equals(MageObjectType.PERMANENT)) {
+    if (card.getPairedCard() != null) {
+      textLines.lines.add("<span color='green'><i>Paired with another creature</i></span>");
+      textLines.basicTextLength+=30;
+    }
+  }
+  if (card.getMageObjectType().canHaveCounters()) {
+    ArrayList<CounterView> counters=new ArrayList<>();
+    if (card instanceof PermanentView) {
+      if (((PermanentView)card).getCounters() != null) {
+        counters=new ArrayList<>(((PermanentView)card).getCounters());
+      }
+    }
+ else {
+      if (card.getCounters() != null) {
+        counters=new ArrayList<>(card.getCounters());
+      }
+    }
+    if (!counters.isEmpty()) {
+      StringBuilder sb=new StringBuilder();
+      int index=0;
+      for (      CounterView counter : counters) {
+        if (counter.getCount() > 0) {
+          if (index == 0) {
+            sb.append("<b>Counters:</b> ");
+          }
+ else {
+            sb.append(", ");
+          }
+          sb.append(counter.getCount()).append(" x <i>").append(counter.getName()).append("</i>");
+          index++;
+        }
+      }
+      textLines.lines.add(sb.toString());
+      textLines.basicTextLength+=50;
+    }
+  }
+  if (card.getMageObjectType().isPermanent() && card instanceof PermanentView) {
+    int damage=((PermanentView)card).getDamage();
+    if (damage > 0) {
+      textLines.lines.add("<span color='red'><b>Damage dealt:</b> " + damage + "</span>");
+      textLines.basicTextLength+=50;
+    }
+  }
+  return textLines;
+}

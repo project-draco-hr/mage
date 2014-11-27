@@ -10,48 +10,6 @@
   while ((offset=castingCost.indexOf("<img",offset) + 1) != 0) {
     symbolCount++;
   }
-  ArrayList<String> rulings=new ArrayList<>(card.getRules());
-  if (card.getMageObjectType().equals(MageObjectType.PERMANENT)) {
-    if (card.getPairedCard() != null) {
-      rulings.add("<span color='green'><i>Paired with another creature</i></span>");
-    }
-  }
-  if (card.getMageObjectType().canHaveCounters()) {
-    ArrayList<CounterView> counters=new ArrayList<>();
-    if (card instanceof PermanentView) {
-      if (((PermanentView)card).getCounters() != null) {
-        counters=new ArrayList<>(((PermanentView)card).getCounters());
-      }
-    }
- else {
-      if (card.getCounters() != null) {
-        counters=new ArrayList<>(card.getCounters());
-      }
-    }
-    if (!counters.isEmpty()) {
-      StringBuilder sb=new StringBuilder();
-      int index=0;
-      for (      CounterView counter : counters) {
-        if (counter.getCount() > 0) {
-          if (index == 0) {
-            sb.append("<b>Counters:</b> ");
-          }
- else {
-            sb.append(", ");
-          }
-          sb.append(counter.getCount()).append(" x <i>").append(counter.getName()).append("</i>");
-          index++;
-        }
-      }
-      rulings.add(sb.toString());
-    }
-  }
-  if (card.getMageObjectType().isPermanent() && card instanceof PermanentView) {
-    int damage=((PermanentView)card).getDamage();
-    if (damage > 0) {
-      rulings.add("<span color='red'><b>Damage dealt:</b> " + damage + "</span>");
-    }
-  }
   int fontSize=11;
   String fontFamily="tahoma";
   final StringBuilder buffer=new StringBuilder(512);
@@ -97,7 +55,7 @@ if (CardUtil.isCreature(card)) {
 pt=card.getPower() + "/" + card.getToughness();
 }
  else if (CardUtil.isPlaneswalker(card)) {
-pt=card.getLoyalty().toString();
+pt=card.getLoyalty();
 }
 buffer.append("<table cellspacing=0 cellpadding=0 border=0 width='100%' valign='bottom'><tr><td><b>");
 buffer.append(pt).append("</b></td>");
@@ -143,10 +101,10 @@ rule.append("<p style='margin: 2px'>").append(ruling).append("</p>");
 }
 }
 }
-if (rulings.size() > 0) {
-for (String ruling : rulings) {
-if (ruling != null && !ruling.replace(".","").trim().isEmpty()) {
-rule.append("<p style='margin: 2px'>").append(ruling).append("</p>");
+if (textLines.lines.size() > 0) {
+for (String textLine : textLines.lines) {
+if (textLine != null && !textLine.replace(".","").trim().isEmpty()) {
+rule.append("<p style='margin: 2px'>").append(textLine).append("</p>");
 }
 }
 }
