@@ -14,14 +14,9 @@
             if (!card.equals(currentCard)) {
               return;
             }
-            StringBuilder buffer=GuiDisplayUtil.getRulefromCardView(card);
-            int ruleLength=0;
-            int rules=0;
-            for (            String rule : card.getRules()) {
-              ruleLength+=rule.length();
-              rules++;
-            }
-            resizeTooltipIfNeeded(container,ruleLength,rules);
+            TextLines textLines=GuiDisplayUtil.getTextLinesfromCardView(card);
+            StringBuilder buffer=GuiDisplayUtil.getRulefromCardView(card,textLines);
+            resizeTooltipIfNeeded(container,textLines.basicTextLength,textLines.lines.size());
             setText(buffer.toString());
             setCaretPosition(0);
           }

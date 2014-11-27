@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Random random=new Random();
+    List<UUID> opponents=new ArrayList<>();
+    opponents.addAll(game.getOpponents(controller.getId()));
+    Player opponent=game.getPlayer(opponents.get(random.nextInt(opponents.size())));
+    if (opponent != null) {
+      ContinuousEffect effect=new AttacksIfAbleTargetPlayerSourceEffect();
+      effect.setTargetPointer(new FixedTarget(opponent.getId()));
+      game.addEffect(effect,source);
+      return true;
+    }
+  }
+  return false;
+}
