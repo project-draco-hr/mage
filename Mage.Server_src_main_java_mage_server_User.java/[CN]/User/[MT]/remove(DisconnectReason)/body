@@ -12,6 +12,10 @@
   draftSessions.clear();
   logger.debug("REMOVE " + getName() + " Tournament sessions "+ tournamentSessions.size());
   for (  TournamentSession tournamentSession : tournamentSessions.values()) {
+    TournamentController tournamentController=TournamentManager.getInstance().getTournamentController(tournamentSession.getTournamentId());
+    if (tournamentController != null) {
+      tournamentController.quit(userId);
+    }
     tournamentSession.setKilled();
   }
   tournamentSessions.clear();
