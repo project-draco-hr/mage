@@ -1,3 +1,10 @@
 {
-  return source.getControllerId().equals(affectedControllerId) && targetPointer.getFirst(game,source).equals(objectId) && game.getState().getZone(objectId) == Zone.GRAVEYARD;
+  UUID targetId=getTargetPointer().getFirst(game,source);
+  if (targetId != null) {
+    return targetId.equals(objectId) && source.getControllerId().equals(affectedControllerId) && Zone.GRAVEYARD.equals(game.getState().getZone(objectId));
+  }
+ else {
+    discard();
+    return false;
+  }
 }
