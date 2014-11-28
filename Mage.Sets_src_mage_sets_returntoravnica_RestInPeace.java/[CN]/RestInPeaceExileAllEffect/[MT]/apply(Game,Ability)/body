@@ -1,14 +1,18 @@
 {
-  for (  UUID playerId : game.getPlayerList()) {
-    Player player=game.getPlayer(playerId);
-    if (player != null) {
-      for (      UUID cid : player.getGraveyard().copy()) {
-        Card c=game.getCard(cid);
-        if (c != null) {
-          c.moveToExile(null,null,source.getSourceId(),game);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        for (        UUID cid : player.getGraveyard().copy()) {
+          Card card=game.getCard(cid);
+          if (card != null) {
+            controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.GRAVEYARD);
+          }
         }
       }
     }
+    return true;
   }
-  return true;
+  return false;
 }
