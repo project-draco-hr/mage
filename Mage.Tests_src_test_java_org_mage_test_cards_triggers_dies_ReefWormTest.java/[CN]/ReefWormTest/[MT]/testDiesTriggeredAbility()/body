@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",4);
+  addCard(Zone.HAND,playerA,"Lightning Bolt",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Reef Worm",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt","Reef Worm");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt","Fish");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt","Whale");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt","Whale");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Lightning Bolt",4);
+  assertPermanentCount(playerB,"Fish",0);
+  assertPermanentCount(playerB,"Whale",0);
+  assertPermanentCount(playerB,"Kraken",1);
+  assertGraveyardCount(playerB,"Reef Worm",1);
+}

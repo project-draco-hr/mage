@@ -1,0 +1,54 @@
+{
+  boolean targetExists=false;
+  for (  MageObjectReference mor : objectList) {
+    Permanent permanent=mor.getPermanent(game);
+    if (permanent != null && permanent.isFaceDown()) {
+      targetExists=true;
+switch (layer) {
+case TypeChangingEffects_4:
+        permanent.setName("");
+      permanent.getSupertype().clear();
+    permanent.getCardType().clear();
+  permanent.getCardType().add(CardType.CREATURE);
+permanent.getSubtype().clear();
+permanent.getManaCost().clear();
+break;
+case ColorChangingEffects_5:
+permanent.getColor().setColor(new ObjectColor());
+break;
+case AbilityAddingRemovingEffects_6:
+Card card=game.getCard(permanent.getId());
+List<Ability> abilities=new ArrayList<>();
+for (Ability ability : permanent.getAbilities()) {
+if (card != null && !card.getAbilities().contains(ability)) {
+continue;
+}
+if (ability.getWorksFaceDown()) {
+ability.setRuleVisible(false);
+continue;
+}
+if (!ability.getRuleVisible() && !ability.getEffects().isEmpty()) {
+if (ability.getEffects().get(0) instanceof BecomesFaceDownCreatureAllEffect) {
+continue;
+}
+}
+abilities.add(ability);
+}
+permanent.getAbilities().removeAll(abilities);
+if (turnFaceUpAbilityMap.containsKey(permanent.getId())) {
+permanent.addAbility(turnFaceUpAbilityMap.get(permanent.getId()),game);
+}
+break;
+case PTChangingEffects_7:
+if (sublayer == SubLayer.SetPT_7b) {
+permanent.getPower().setValue(2);
+permanent.getToughness().setValue(2);
+}
+}
+}
+}
+if (!targetExists) {
+discard();
+}
+return true;
+}
