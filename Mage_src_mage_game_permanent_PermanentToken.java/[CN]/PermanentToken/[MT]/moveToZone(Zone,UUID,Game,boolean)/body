@@ -2,7 +2,10 @@
   if (!game.replaceEvent(new ZoneChangeEvent(this,this.getControllerId(),Zone.BATTLEFIELD,zone))) {
     game.rememberLKI(objectId,Zone.BATTLEFIELD,this);
     if (game.getPlayer(controllerId).removeFromBattlefield(this,game)) {
+      game.setZone(objectId,zone);
       game.fireEvent(new ZoneChangeEvent(this,this.getControllerId(),Zone.BATTLEFIELD,zone));
+      game.getState().resetTriggersForSourceId(this.getId());
+      game.getState().getContinuousEffects().removeGainedEffectsForSource(this.getId());
       return true;
     }
   }
