@@ -16,9 +16,17 @@
       }
     }
  else {
-      this.fillEmpty(card,false);
-      this.hideInfo=true;
-      return;
+      if (card instanceof Permanent) {
+        this.fillEmpty(card,controlled);
+        this.power=Integer.toString(card.getPower().getValue());
+        this.toughness=Integer.toString(card.getToughness().getValue());
+        this.cardTypes=card.getCardType();
+      }
+ else {
+        this.fillEmpty(card,false);
+        this.hideInfo=true;
+        return;
+      }
     }
   }
   SplitCard splitCard=null;
