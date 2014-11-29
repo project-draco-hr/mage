@@ -1,0 +1,29 @@
+{
+  if (event.getType().equals(GameEvent.EventType.ATTACKER_DECLARED)) {
+    Permanent permanent=game.getPermanent(event.getSourceId());
+    if (filter.match(permanent,getSourceId(),getControllerId(),game)) {
+      if (attacksYouOrYourPlaneswalker) {
+        boolean check=false;
+        if (event.getTargetId().equals(getControllerId())) {
+          check=true;
+        }
+ else {
+          Permanent planeswalker=game.getPermanent(event.getTargetId());
+          if (planeswalker != null && planeswalker.getCardType().contains(CardType.PLANESWALKER) && planeswalker.getControllerId().equals(getControllerId())) {
+            check=true;
+          }
+        }
+        if (!check) {
+          return false;
+        }
+      }
+      if (SetTargetPointer.CREATURE.equals(setTargetPointer)) {
+        for (        Effect effect : getEffects()) {
+          effect.setTargetPointer(new FixedTarget(permanent.getId()));
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}
