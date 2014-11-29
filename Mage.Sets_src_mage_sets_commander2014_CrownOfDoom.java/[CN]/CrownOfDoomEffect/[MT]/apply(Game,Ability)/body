@@ -1,0 +1,11 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player newController=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (controller != null && newController != null) {
+    ContinuousEffect effect=new GainControlTargetEffect(Duration.EndOfGame,newController.getId());
+    effect.setTargetPointer(new FixedTarget(source.getSourceId()));
+    game.addEffect(effect,source);
+    return true;
+  }
+  return false;
+}
