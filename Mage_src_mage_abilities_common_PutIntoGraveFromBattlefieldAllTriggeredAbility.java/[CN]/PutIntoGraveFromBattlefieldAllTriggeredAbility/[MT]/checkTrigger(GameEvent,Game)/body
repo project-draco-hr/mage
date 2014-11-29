@@ -2,8 +2,7 @@
   if (event.getType() == EventType.ZONE_CHANGE) {
     ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
     if (zEvent.getFromZone() == Zone.BATTLEFIELD && zEvent.getToZone() == Zone.GRAVEYARD) {
-      Permanent permanent=game.getPermanent(event.getTargetId());
-      if (filter.match(permanent,this.getSourceId(),this.getControllerId(),game)) {
+      if (filter.match(zEvent.getTarget(),this.getSourceId(),this.getControllerId(),game)) {
         if (setTargetPointer) {
           for (          Effect effect : this.getEffects()) {
             effect.setTargetPointer(new FixedTarget(event.getSourceId()));
