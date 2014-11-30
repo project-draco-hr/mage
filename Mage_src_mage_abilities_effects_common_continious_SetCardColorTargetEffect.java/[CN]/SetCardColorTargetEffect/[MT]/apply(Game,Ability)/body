@@ -1,11 +1,25 @@
 {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
   boolean result=false;
-  ObjectColor objectColor=null;
+  ObjectColor objectColor;
   if (setColor == null) {
-    ChoiceColor choice=(ChoiceColor)source.getChoices().get(0);
-    if (choice != null && choice.getColor() != null) {
+    ChoiceColor choice=new ChoiceColor();
+    while (!choice.isChosen()) {
+      controller.choose(Outcome.PutManaInPool,choice,game);
+      if (!controller.isInGame()) {
+        return false;
+      }
+    }
+    if (choice.getColor() != null) {
       objectColor=choice.getColor();
     }
+ else {
+      return false;
+    }
+    game.informPlayers(controller.getName() + " has chosen the color: " + objectColor.toString());
   }
  else {
     objectColor=this.setColor;
