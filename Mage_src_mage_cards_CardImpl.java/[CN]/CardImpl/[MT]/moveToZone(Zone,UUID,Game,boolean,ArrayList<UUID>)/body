@@ -68,7 +68,7 @@ game.getPlayer(ownerId).getLibrary().putOnBottom(this,game);
 }
 break;
 case BATTLEFIELD:
-PermanentCard permanent=new PermanentCard(this,ownerId);
+PermanentCard permanent=new PermanentCard(this,event.getPlayerId());
 game.resetForSourceId(permanent.getId());
 game.addPermanent(permanent);
 game.setZone(objectId,Zone.BATTLEFIELD);
@@ -87,7 +87,7 @@ Card sourceCard=game.getCard(sourceId);
 logger.fatal(new StringBuilder("Invalid to zone [").append(toZone).append("] for card [").append(this.getName()).append("] to zone [").append(toZone).append("] source [").append(sourceCard != null ? sourceCard.getName() : "null").append("]").toString());
 return false;
 }
-setControllerId(ownerId);
+setControllerId(event.getPlayerId());
 game.setZone(objectId,event.getToZone());
 game.addSimultaneousEvent(event);
 return game.getState().getZone(objectId) == toZone;

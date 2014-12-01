@@ -35,9 +35,9 @@ logger.warn("Couldn't find card in fromZone, card=" + getName() + ", fromZone="+
 }
 }
 updateZoneChangeCounter();
-PermanentCard permanent=new PermanentCard(this,controllerId);
+PermanentCard permanent=new PermanentCard(this,event.getPlayerId());
 game.resetForSourceId(permanent.getId());
-game.getContinuousEffects().setController(objectId,controllerId);
+game.getContinuousEffects().setController(objectId,event.getPlayerId());
 game.addPermanent(permanent);
 game.setZone(objectId,Zone.BATTLEFIELD);
 game.setScopeRelevant(true);
@@ -45,7 +45,7 @@ permanent.setTapped(tapped);
 permanent.entersBattlefield(sourceId,game,event.getFromZone(),true);
 game.setScopeRelevant(false);
 game.applyEffects();
-game.fireEvent(new ZoneChangeEvent(permanent,controllerId,fromZone,Zone.BATTLEFIELD));
+game.fireEvent(new ZoneChangeEvent(permanent,event.getPlayerId(),fromZone,Zone.BATTLEFIELD));
 return true;
 }
 return false;

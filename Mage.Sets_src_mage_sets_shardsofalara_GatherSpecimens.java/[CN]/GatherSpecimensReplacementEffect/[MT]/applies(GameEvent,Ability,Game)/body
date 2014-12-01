@@ -1,10 +1,17 @@
 {
   if (event.getType() == GameEvent.EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).getToZone() == Zone.BATTLEFIELD) {
-    Card card=game.getCard(((ZoneChangeEvent)event).getTargetId());
-    if (card != null && filter.match(card,source.getSourceId(),source.getControllerId(),game)) {
-      if (game.getOpponents(source.getControllerId()).contains(event.getPlayerId())) {
+    Card card=game.getCard(event.getTargetId());
+    if (card.getCardType().contains(CardType.CREATURE)) {
+      Player controller=game.getPlayer(source.getControllerId());
+      if (controller != null && controller.hasOpponent(event.getPlayerId(),game)) {
         return true;
       }
+    }
+  }
+  if (event.getType() == GameEvent.EventType.CREATE_TOKEN && event.getFlag()) {
+    Player controller=game.getPlayer(source.getControllerId());
+    if (controller != null && controller.hasOpponent(event.getPlayerId(),game)) {
+      return true;
     }
   }
   return false;
