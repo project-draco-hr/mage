@@ -1,6 +1,8 @@
 {
+  boolean lockSet=false;
   try {
-    if (lock.tryLock(5,TimeUnit.SECONDS)) {
+    if (lock.tryLock(500,TimeUnit.MILLISECONDS)) {
+      lockSet=true;
       User user=UserManager.getInstance().getUser(userId);
       if (user == null || !user.isConnected()) {
         return;
@@ -9,17 +11,19 @@
         logger.info("OLD SESSION IGNORED - " + user.getName());
         return;
       }
-      logger.info("LOST CONNECTION - " + user.getName());
+      logger.info("LOST CONNECTION - " + user.getName() + " id: "+ userId);
       UserManager.getInstance().disconnect(userId,DisconnectReason.LostConnection);
     }
  else {
-      logger.error("SESSION LOCK - userId " + userId);
+      logger.error("SESSION LOCK lost connection - userId: " + userId);
     }
   }
  catch (  InterruptedException ex) {
-    logger.error("SESSION LOCK - userId " + userId,ex);
+    logger.error("SESSION LOCK lost connection - userId: " + userId,ex);
   }
  finally {
-    lock.unlock();
+    if (lockSet) {
+      lock.unlock();
+    }
   }
 }

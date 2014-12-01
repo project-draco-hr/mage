@@ -1,0 +1,10 @@
+{
+  Throwable t=cause;
+  while (t.getCause() != null) {
+    t=t.getCause();
+    if (t == cause) {
+      throw new IllegalArgumentException("Infinite cycle detected in causal chain");
+    }
+  }
+  return t;
+}

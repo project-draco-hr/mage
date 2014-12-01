@@ -1,27 +1,33 @@
 {
+  boolean lockSet=false;
   try {
-    boolean tryLock;
-    if (lock.tryLock(5,TimeUnit.SECONDS)) {
+    if (lock.tryLock(500,TimeUnit.MILLISECONDS)) {
+      lockSet=true;
       call.setMessageId(messageId++);
       callbackHandler.handleCallbackOneway(new Callback(call));
     }
  else {
-      logger.error("CALLBACK LOCK - userId " + userId);
+      logger.error("SESSION LOCK callback: userId " + userId);
       logger.error(" - method: " + call.getMethod());
     }
   }
  catch (  HandleCallbackException ex) {
-    logger.info("CALLBACK EXCEPTION - userId " + userId,ex);
-    if (logger.isDebugEnabled()) {
-      ex.printStackTrace();
-    }
+    User user=UserManager.getInstance().getUser(userId);
+    logger.warn("SESSION CALLBACK EXCEPTION - " + (user != null ? user.getName() : "") + " userId "+ userId);
+    logger.warn(" - method: " + call.getMethod());
+    logger.warn(" - cause: " + getBasicCause(ex).toString());
+    logger.trace("Stack trace:",ex);
     userLostConnection();
   }
 catch (  InterruptedException ex) {
-    logger.error("CALLBACK LOCK EXCEPTION - userId " + userId,ex);
+    logger.error("SESSION LOCK callback -userId: " + userId);
     logger.error(" - method: " + call.getMethod());
+    logger.error(" - cause: " + getBasicCause(ex).toString());
+    logger.trace("Stack trace:",ex);
   }
  finally {
-    lock.unlock();
+    if (lockSet) {
+      lock.unlock();
+    }
   }
 }

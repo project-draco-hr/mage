@@ -2,15 +2,16 @@
   this.sessionId=sessionId;
   if (sessionId.isEmpty()) {
     userState=UserState.Disconnected;
-    logger.debug("Disconnected User " + userName + " id: "+ userId);
+    lostConnection();
+    logger.debug("USER - lost connection: " + userName + " id: "+ userId);
   }
  else   if (userState == UserState.Created) {
     userState=UserState.Connected;
-    logger.debug("Created user " + userName + " id: "+ userId);
+    logger.debug("USER - created: " + userName + " id: "+ userId);
   }
  else {
     userState=UserState.Reconnected;
     reconnect();
-    logger.info("Reconnected user " + userName + " id: "+ userId);
+    logger.info("USER - reconnected: " + userName + " id: "+ userId);
   }
 }

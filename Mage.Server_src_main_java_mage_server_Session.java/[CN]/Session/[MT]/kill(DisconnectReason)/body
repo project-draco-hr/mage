@@ -1,3 +1,20 @@
 {
-  UserManager.getInstance().removeUser(userId,reason);
+  boolean lockSet=false;
+  try {
+    if (lock.tryLock(500,TimeUnit.MILLISECONDS)) {
+      lockSet=true;
+      UserManager.getInstance().removeUser(userId,reason);
+    }
+ else {
+      logger.error("SESSION LOCK - kill: userId " + userId);
+    }
+  }
+ catch (  InterruptedException ex) {
+    logger.error("SESSION LOCK - kill: userId " + userId,ex);
+  }
+ finally {
+    if (lockSet) {
+      lock.unlock();
+    }
+  }
 }
