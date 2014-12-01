@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Target target=new TargetOpponent(true);
+    target.choose(Outcome.Sacrifice,source.getControllerId(),source.getSourceId(),game);
+    Player opponent=game.getPlayer(target.getFirstTarget());
+    if (opponent != null) {
+      int count=game.getBattlefield().countAll(new FilterCreaturePermanent(),controller.getId(),game);
+      controller.gainLife(count,game);
+      count=game.getBattlefield().countAll(new FilterCreaturePermanent(),opponent.getId(),game);
+      opponent.gainLife(count,game);
+      return true;
+    }
+  }
+  return false;
+}

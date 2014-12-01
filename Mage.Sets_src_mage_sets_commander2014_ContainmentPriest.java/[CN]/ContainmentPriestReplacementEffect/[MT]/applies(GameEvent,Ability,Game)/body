@@ -1,0 +1,12 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).getToZone() == Zone.BATTLEFIELD) {
+    Card card=game.getCard(event.getTargetId());
+    if (card.getCardType().contains(CardType.CREATURE)) {
+      CreatureCastWatcher watcher=(CreatureCastWatcher)game.getState().getWatchers().get("CreatureWasCast");
+      if (watcher != null && !watcher.wasCreatureCastThisTurn(event.getTargetId())) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

@@ -1,0 +1,17 @@
+{
+  if (event.getType() == GameEvent.EventType.SPELL_CAST) {
+    Spell spell=(Spell)game.getObject(event.getTargetId());
+    if (spell != null) {
+      Card card=game.getCard(spell.getSourceId());
+      if (card != null && card.getCardType().contains(CardType.CREATURE)) {
+        creaturesCasted.add(card.getId());
+      }
+    }
+  }
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).getFromZone() == Zone.BATTLEFIELD) {
+    Card card=game.getCard(event.getTargetId());
+    if (card != null && card.getCardType().contains(CardType.CREATURE)) {
+      creaturesCasted.remove(card.getId());
+    }
+  }
+}
