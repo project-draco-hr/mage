@@ -1,7 +1,8 @@
 {
   if (event.getType() == GameEvent.EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).isDiesEvent()) {
     Card card=game.getCard(event.getTargetId());
-    if (card != null && card.getCardType().contains(CardType.ARTIFACT)) {
+    Player controller=game.getPlayer(getControllerId());
+    if (controller != null && card != null && card.getCardType().contains(CardType.ARTIFACT) && controller.hasOpponent(card.getOwnerId(),game)) {
       return true;
     }
   }
