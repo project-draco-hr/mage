@@ -1,0 +1,38 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Map<UUID,Set<UUID>> exiledCards=new HashMap<>();
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        Set<UUID> cards=new HashSet<>();
+        for (        Card card : player.getGraveyard().getCards(new FilterArtifactCard(),game)) {
+          cards.add(card.getId());
+          player.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.GRAVEYARD);
+        }
+        exiledCards.put(player.getId(),cards);
+      }
+    }
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        for (        Permanent permanent : game.getBattlefield().getAllActivePermanents(new FilterArtifactPermanent(),playerId,game)) {
+          permanent.sacrifice(source.getSourceId(),game);
+        }
+      }
+    }
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        for (        UUID cardId : exiledCards.get(playerId)) {
+          Card card=game.getCard(cardId);
+          if (card != null) {
+            player.putOntoBattlefieldWithInfo(card,game,Zone.EXILED,cardId);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
