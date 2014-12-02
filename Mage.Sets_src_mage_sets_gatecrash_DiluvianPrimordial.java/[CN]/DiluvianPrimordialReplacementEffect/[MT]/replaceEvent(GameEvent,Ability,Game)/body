@@ -1,12 +1,11 @@
 {
-  UUID eventObject=((ZoneChangeEvent)event).getTargetId();
-  StackObject card=game.getStack().getStackObject(eventObject);
-  if (card instanceof Spell) {
-    game.rememberLKI(card.getId(),Zone.STACK,(Spell)card);
-  }
-  if (card instanceof Card && card != null && eventObject == cardid) {
-    ((Card)card).moveToExile(id,"Diluvian Primordial",id,game);
-    return true;
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Card card=game.getCard(getTargetPointer().getFirst(game,source));
+    if (card != null) {
+      controller.moveCardToGraveyardWithInfo(card,source.getSourceId(),game,Zone.STACK);
+      return true;
+    }
   }
   return false;
 }
