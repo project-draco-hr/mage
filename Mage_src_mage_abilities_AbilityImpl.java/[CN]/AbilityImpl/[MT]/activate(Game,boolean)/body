@@ -32,32 +32,9 @@
       this.getManaCostsToPay().clear();
     }
   }
-  if (sourceObject != null && !(this instanceof FlashbackAbility)) {
-    boolean alternativeCostisUsed=false;
-    for (    Ability ability : sourceObject.getAbilities()) {
-      if (!noMana && ability instanceof AlternativeSourceCosts) {
-        AlternativeSourceCosts alternativeSpellCosts=(AlternativeSourceCosts)ability;
-        if (alternativeSpellCosts.isAvailable(this,game)) {
-          if (alternativeSpellCosts.askToActivateAlternativeCosts(this,game)) {
-            alternativeCostisUsed=true;
-            break;
-          }
-        }
-      }
-      if (ability instanceof OptionalAdditionalSourceCosts) {
-        ((OptionalAdditionalSourceCosts)ability).addOptionalAdditionalCosts(this,game);
-      }
-    }
-    if (!noMana && !alternativeCostisUsed) {
-      if (this.getAbilityType().equals(AbilityType.SPELL)) {
-        for (        AlternativeSourceCosts alternativeSourceCosts : controller.getAlternativeSourceCosts()) {
-          if (alternativeSourceCosts.isAvailable(this,game)) {
-            if (alternativeSourceCosts.askToActivateAlternativeCosts(this,game)) {
-              break;
-            }
-          }
-        }
-      }
+  if (!activateAlternateOrAdditionalCosts(sourceObject,noMana,controller,game)) {
+    if (getAbilityType().equals(AbilityType.SPELL) && ((SpellAbility)this).getSpellAbilityType().equals(SpellAbilityType.LAND_ALTERNATE)) {
+      return false;
     }
   }
   VariableManaCost variableManaCost=handleManaXCosts(game,noMana,controller);

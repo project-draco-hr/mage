@@ -1,9 +1,22 @@
 {
   LinkedHashMap<UUID,ActivatedAbility> useable=new LinkedHashMap<>();
   if (!(object instanceof Permanent) || ((Permanent)object).canUseActivatedAbilities(game)) {
-    for (    ActivatedAbility ability : object.getAbilities().getActivatedAbilities(zone)) {
-      if (ability.canActivate(playerId,game)) {
-        useable.put(ability.getId(),ability);
+    for (    Ability ability : object.getAbilities()) {
+      if (ability.getZone().match(zone)) {
+        if (ability instanceof ActivatedAbility) {
+          if (((ActivatedAbility)ability).canActivate(playerId,game)) {
+            useable.put(ability.getId(),(ActivatedAbility)ability);
+          }
+        }
+ else         if (ability instanceof AlternativeSourceCosts) {
+          if (object.getCardType().contains(CardType.LAND)) {
+            for (            Ability ability2 : object.getAbilities().copy()) {
+              if (ability2 instanceof PlayLandAbility) {
+                useable.put(ability2.getId(),(ActivatedAbility)ability2);
+              }
+            }
+          }
+        }
       }
     }
     if (zone != Zone.HAND) {

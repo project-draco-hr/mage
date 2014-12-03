@@ -1,0 +1,32 @@
+{
+  boolean alternativeCostisUsed=false;
+  if (sourceObject != null && !(sourceObject instanceof Permanent) && !(this instanceof FlashbackAbility)) {
+    for (    Ability ability : sourceObject.getAbilities()) {
+      if (!noMana && ability instanceof AlternativeSourceCosts) {
+        AlternativeSourceCosts alternativeSpellCosts=(AlternativeSourceCosts)ability;
+        if (alternativeSpellCosts.isAvailable(this,game)) {
+          if (alternativeSpellCosts.askToActivateAlternativeCosts(this,game)) {
+            alternativeCostisUsed=true;
+            break;
+          }
+        }
+      }
+      if (ability instanceof OptionalAdditionalSourceCosts) {
+        ((OptionalAdditionalSourceCosts)ability).addOptionalAdditionalCosts(this,game);
+      }
+    }
+    if (!noMana && !alternativeCostisUsed) {
+      if (this.getAbilityType().equals(AbilityType.SPELL)) {
+        for (        AlternativeSourceCosts alternativeSourceCosts : controller.getAlternativeSourceCosts()) {
+          if (alternativeSourceCosts.isAvailable(this,game)) {
+            if (alternativeSourceCosts.askToActivateAlternativeCosts(this,game)) {
+              alternativeCostisUsed=true;
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+  return alternativeCostisUsed;
+}

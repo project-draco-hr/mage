@@ -1,0 +1,34 @@
+{
+  if (!(sourceObject instanceof Permanent)) {
+    Ability sourceAbility=null;
+    for (    Ability landAbility : sourceObject.getAbilities()) {
+      if (landAbility.getAbilityType().equals(AbilityType.PLAY_LAND)) {
+        sourceAbility=landAbility;
+        break;
+      }
+    }
+    if (sourceAbility != null && ((AlternativeSourceCosts)ability).isAvailable(sourceAbility,game)) {
+      if (ability.getCosts().canPay(ability,sourceObject.getId(),this.getId(),game)) {
+        ManaCostsImpl manaCosts=new ManaCostsImpl();
+        for (        Cost cost : ability.getCosts()) {
+          if (cost instanceof ManaCost) {
+            manaCosts.add(cost);
+          }
+        }
+        if (manaCosts.size() == 0) {
+          return true;
+        }
+ else {
+          for (          Mana mana : manaCosts.getOptions()) {
+            for (            Mana avail : available) {
+              if (mana.enough(avail)) {
+                return true;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

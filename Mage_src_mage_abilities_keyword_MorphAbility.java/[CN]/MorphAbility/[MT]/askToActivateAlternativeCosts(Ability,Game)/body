@@ -1,5 +1,5 @@
 {
-  if (ability instanceof SpellAbility) {
+  if (ability.getAbilityType().equals(AbilityType.SPELL)) {
     Player player=game.getPlayer(controllerId);
     Spell spell=game.getStack().getSpell(ability.getId());
     if (player != null && spell != null) {
@@ -28,6 +28,28 @@
         }
  else {
           spell.setFaceDown(false);
+        }
+      }
+    }
+  }
+  if (ability.getAbilityType().equals(AbilityType.PLAY_LAND)) {
+    Player player=game.getPlayer(controllerId);
+    if (player != null) {
+      this.resetMorph();
+      if (alternateCosts.canPay(ability,sourceId,controllerId,game)) {
+        if (player.chooseUse(Outcome.Benefit,new StringBuilder("Cast this card as a 2/2 face-down creature for ").append(getCosts().getText()).append(" ?").toString(),game)) {
+          activateMorph(game);
+          ability.getManaCostsToPay().clear();
+          ability.getCosts().clear();
+          for (Iterator it=this.alternateCosts.iterator(); it.hasNext(); ) {
+            Cost cost=(Cost)it.next();
+            if (cost instanceof ManaCost) {
+              ability.getManaCostsToPay().add((ManaCost)cost.copy());
+            }
+ else {
+              ability.getCosts().add(cost.copy());
+            }
+          }
         }
       }
     }

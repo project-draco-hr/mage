@@ -1,33 +1,35 @@
 {
   boolean result;
-  if (!ability.canActivate(this.playerId,game)) {
-    return false;
-  }
   if (ability instanceof PassAbility) {
     pass(game);
     return true;
   }
- else   if (ability instanceof PlayLandAbility) {
+  if (ability instanceof PlayLandAbility) {
     Card card=hand.get(ability.getSourceId(),game);
     if (card == null) {
       card=game.getCard(ability.getSourceId());
     }
     result=playLand(card,game);
   }
- else   if (ability instanceof SpecialAction) {
-    result=specialAction((SpecialAction)ability.copy(),game);
-  }
- else   if (ability instanceof ManaAbility) {
-    result=playManaAbility((ManaAbility)ability.copy(),game);
-  }
- else   if (ability instanceof FlashbackAbility) {
-    result=playAbility(ability.copy(),game);
-  }
- else   if (ability instanceof SpellAbility) {
-    result=cast((SpellAbility)ability,game,false);
-  }
  else {
-    result=playAbility(ability.copy(),game);
+    if (!ability.canActivate(this.playerId,game)) {
+      return false;
+    }
+    if (ability instanceof SpecialAction) {
+      result=specialAction((SpecialAction)ability.copy(),game);
+    }
+ else     if (ability instanceof ManaAbility) {
+      result=playManaAbility((ManaAbility)ability.copy(),game);
+    }
+ else     if (ability instanceof FlashbackAbility) {
+      result=playAbility(ability.copy(),game);
+    }
+ else     if (ability instanceof SpellAbility) {
+      result=cast((SpellAbility)ability,game,false);
+    }
+ else {
+      result=playAbility(ability.copy(),game);
+    }
   }
   if (result) {
     game.getPlayers().resetPassed();
