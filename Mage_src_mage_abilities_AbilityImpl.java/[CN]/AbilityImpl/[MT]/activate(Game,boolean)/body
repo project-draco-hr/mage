@@ -101,7 +101,17 @@
   if (this.getAbilityType().equals(AbilityType.MANA)) {
     for (    Cost cost : costs) {
       if (cost instanceof TapSourceCost) {
-        game.fireEvent(GameEvent.getEvent(GameEvent.EventType.TAPPED_FOR_MANA,sourceId,sourceId,controllerId));
+        Mana mana=null;
+        Effect effect=getEffects().get(0);
+        if (effect instanceof BasicManaEffect) {
+          mana=((BasicManaEffect)effect).getMana(game,this);
+        }
+ else         if (effect instanceof DynamicManaEffect) {
+          mana=((DynamicManaEffect)effect).getMana(game,this);
+        }
+        if (mana != null) {
+          game.fireEvent(new ManaEvent(GameEvent.EventType.TAPPED_FOR_MANA,sourceId,sourceId,controllerId,mana));
+        }
         break;
       }
     }
