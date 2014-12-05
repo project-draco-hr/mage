@@ -3,6 +3,7 @@
   try {
     if (lock.tryLock(500,TimeUnit.MILLISECONDS)) {
       lockSet=true;
+      logger.debug("SESSION LOCK SET sessionId: " + sessionId);
       UserManager.getInstance().removeUser(userId,reason);
     }
  else {
@@ -15,6 +16,7 @@
  finally {
     if (lockSet) {
       lock.unlock();
+      logger.debug("SESSION LOCK UNLOCK sessionId: " + sessionId);
     }
   }
 }

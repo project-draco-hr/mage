@@ -1,15 +1,7 @@
 {
-  boolean lockSet=false;
   try {
-    if (lock.tryLock(500,TimeUnit.MILLISECONDS)) {
-      lockSet=true;
-      call.setMessageId(messageId++);
-      callbackHandler.handleCallbackOneway(new Callback(call));
-    }
- else {
-      logger.error("SESSION LOCK callback: userId " + userId);
-      logger.error(" - method: " + call.getMethod());
-    }
+    call.setMessageId(messageId++);
+    callbackHandler.handleCallbackOneway(new Callback(call));
   }
  catch (  HandleCallbackException ex) {
     User user=UserManager.getInstance().getUser(userId);
@@ -18,16 +10,5 @@
     logger.warn(" - cause: " + getBasicCause(ex).toString());
     logger.trace("Stack trace:",ex);
     userLostConnection();
-  }
-catch (  InterruptedException ex) {
-    logger.error("SESSION LOCK callback -userId: " + userId);
-    logger.error(" - method: " + call.getMethod());
-    logger.error(" - cause: " + getBasicCause(ex).toString());
-    logger.trace("Stack trace:",ex);
-  }
- finally {
-    if (lockSet) {
-      lock.unlock();
-    }
   }
 }
