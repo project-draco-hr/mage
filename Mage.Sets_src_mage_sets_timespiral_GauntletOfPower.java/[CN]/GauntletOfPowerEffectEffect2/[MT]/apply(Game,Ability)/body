@@ -1,0 +1,12 @@
+{
+  Permanent land=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
+  if (land != null) {
+    Player player=game.getPlayer(land.getControllerId());
+    Mana mana=(Mana)getValue("mana");
+    if (player != null && mana != null) {
+      player.getManaPool().addMana(mana,game,source);
+      return true;
+    }
+  }
+  return false;
+}

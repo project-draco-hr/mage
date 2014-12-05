@@ -1,0 +1,33 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Spell spell=game.getStack().getSpell(getTargetPointer().getFirst(game,source));
+  if (controller != null && spell != null) {
+    Effect effect=new CounterTargetWithReplacementEffect(Zone.EXILED);
+    effect.setTargetPointer(targetPointer);
+    Card card=game.getCard(spell.getSourceId());
+    if (card != null && effect.apply(game,source) && Zone.EXILED.equals(game.getState().getZone(card.getId()))) {
+      boolean hasSuspend=false;
+      for (      Ability ability : card.getAbilities()) {
+        if (ability instanceof SuspendAbility) {
+          hasSuspend=true;
+          break;
+        }
+      }
+      card.addCounters(CounterType.TIME.createInstance(3),game);
+      if (!hasSuspend) {
+        Abilities oldAbilities=card.getAbilities().copy();
+        SuspendAbility suspendAbility=new SuspendAbility(3,null,card);
+        card.addAbility(suspendAbility);
+        for (        Ability ability : card.getAbilities()) {
+          if (!oldAbilities.contains(ability)) {
+            ability.setControllerId(source.getControllerId());
+            game.getState().addAbility(ability,card.getId(),card);
+          }
+        }
+      }
+      game.informPlayers(new StringBuilder(controller.getName()).append(" suspends (").append(3).append(") ").append(card.getName()).toString());
+    }
+    return true;
+  }
+  return false;
+}

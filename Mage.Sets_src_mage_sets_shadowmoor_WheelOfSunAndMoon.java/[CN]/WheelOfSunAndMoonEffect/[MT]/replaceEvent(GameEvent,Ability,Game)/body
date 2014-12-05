@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    Card card=game.getCard(event.getTargetId());
+    if (card != null) {
+      ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+      Cards cards=new CardsImpl(card);
+      controller.revealCards(sourceObject.getLogName(),cards,game);
+      controller.moveCardToLibraryWithInfo(card,source.getSourceId(),game,zEvent.getFromZone(),false,true);
+      return true;
+    }
+  }
+  return false;
+}
