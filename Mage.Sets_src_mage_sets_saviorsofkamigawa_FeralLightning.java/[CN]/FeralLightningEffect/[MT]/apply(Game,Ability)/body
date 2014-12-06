@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    CreateTokenEffect effect=new CreateTokenEffect(new FeralLightningElementalToken(),3);
+    effect.apply(game,source);
+    for (    UUID tokenId : effect.getLastAddedTokenIds()) {
+      ExileTargetEffect exileEffect=new ExileTargetEffect(null,"",Zone.BATTLEFIELD);
+      exileEffect.setTargetPointer(new FixedTarget(tokenId));
+      DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(exileEffect);
+      delayedAbility.setSourceId(source.getSourceId());
+      delayedAbility.setControllerId(source.getControllerId());
+      game.addDelayedTriggeredAbility(delayedAbility);
+    }
+    return true;
+  }
+  return false;
+}
