@@ -1,0 +1,44 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  boolean result=false;
+  ObjectColor objectColor;
+  if (setColor == null) {
+    ChoiceColor choice=new ChoiceColor();
+    while (!choice.isChosen()) {
+      controller.choose(Outcome.PutManaInPool,choice,game);
+      if (!controller.isInGame()) {
+        return false;
+      }
+    }
+    if (choice.getColor() != null) {
+      objectColor=choice.getColor();
+    }
+ else {
+      return false;
+    }
+    game.informPlayers(controller.getName() + " has chosen the color: " + objectColor.toString());
+  }
+ else {
+    objectColor=this.setColor;
+  }
+  if (objectColor != null) {
+    for (    UUID targetId : targetPointer.getTargets(game,source)) {
+      MageObject o=game.getObject(targetId);
+      if (o != null) {
+        if (o instanceof Permanent || o instanceof StackObject) {
+          o.getColor().setColor(objectColor);
+          result=true;
+        }
+      }
+    }
+  }
+  if (!result) {
+    if (this.getDuration().equals(Duration.Custom)) {
+      this.discard();
+    }
+  }
+  return result;
+}
