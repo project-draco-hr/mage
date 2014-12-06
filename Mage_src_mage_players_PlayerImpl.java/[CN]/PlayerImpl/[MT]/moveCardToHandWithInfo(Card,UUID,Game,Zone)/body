@@ -1,10 +1,11 @@
 {
   boolean result=false;
+  boolean faceDown=card.isFaceDown();
   if (card.moveToZone(Zone.HAND,sourceId,game,false)) {
     if (card instanceof PermanentCard) {
       card=game.getCard(card.getId());
     }
-    game.informPlayers(new StringBuilder(this.getName()).append(" puts ").append(card.isFaceDown() ? " a face down card" : card.getLogName()).append(" ").append(fromZone != null ? new StringBuilder("from ").append(fromZone.toString().toLowerCase(Locale.ENGLISH)).append(" ") : "").append(card.getOwnerId().equals(this.getId()) ? "into his or her hand" : "into its owner's hand").toString());
+    game.informPlayers(new StringBuilder(this.getName()).append(" puts ").append(faceDown ? " a face down card" : card.getLogName()).append(" ").append(fromZone != null ? new StringBuilder("from ").append(fromZone.toString().toLowerCase(Locale.ENGLISH)).append(" ") : "").append(card.getOwnerId().equals(this.getId()) ? "into his or her hand" : "into its owner's hand").toString());
     result=true;
   }
   return result;
