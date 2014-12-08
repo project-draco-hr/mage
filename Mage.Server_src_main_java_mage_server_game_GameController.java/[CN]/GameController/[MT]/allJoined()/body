@@ -1,7 +1,15 @@
 {
   for (  Player player : game.getPlayers().values()) {
-    if (player.isHuman() && gameSessions.get(player.getId()) == null) {
-      return false;
+    if (!player.hasLeft()) {
+      User user=getUserByPlayerId(player.getId());
+      if (user != null) {
+        if (!user.isConnected()) {
+          return false;
+        }
+      }
+      if (player.isHuman() && gameSessions.get(player.getId()) == null) {
+        return false;
+      }
     }
   }
   return true;

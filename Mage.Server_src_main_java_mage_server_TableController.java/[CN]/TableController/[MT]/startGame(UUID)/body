@@ -5,17 +5,10 @@
     GameManager.getInstance().createGameSession(match.getGame(),userPlayerMap,table.getId(),choosingPlayerId);
     String creator=null;
     StringBuilder opponent=new StringBuilder();
-    int activePlayers=0;
     for (    Entry<UUID,UUID> entry : userPlayerMap.entrySet()) {
       if (!match.getPlayer(entry.getValue()).hasQuit()) {
         User user=UserManager.getInstance().getUser(entry.getKey());
         if (user != null) {
-          activePlayers++;
-          if (!user.isConnected()) {
-            user.removeConstructing(match.getPlayer(entry.getValue()).getPlayer().getId());
-            GameManager.getInstance().joinGame(match.getGame().getId(),user.getId());
-            logger.debug("Joined currently not connected user " + user.getName() + "  matchId: "+ match.getId());
-          }
           Player player=match.getPlayer(entry.getValue()).getPlayer();
           player.setRequestToShowHandCardsAllowed(user.getUserData().allowRequestShowHandCards());
           user.gameStarted(match.getGame().getId(),entry.getValue());
@@ -40,15 +33,11 @@
     }
     for (    MatchPlayer mPlayer : match.getPlayers()) {
       if (!mPlayer.getPlayer().isHuman()) {
-        activePlayers++;
         if (opponent.length() > 0) {
           opponent.append(" - ");
         }
         opponent.append(mPlayer.getName());
       }
-    }
-    if (activePlayers < 2) {
-      throw new MageException("Can't start game - Less than two players active - " + activePlayers);
     }
     ServerMessagesUtil.getInstance().incGamesStarted();
     logger.info("GAME started " + match.getGame().getId() + " ["+ match.getName()+ "] "+ creator+ " - "+ opponent.toString());

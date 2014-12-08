@@ -118,5 +118,16 @@ logger.fatal("Player event listener error ",ex);
 }
 }
 );
+joinWaitingExecutor.scheduleAtFixedRate(new Runnable(){
+@Override public void run(){
+try {
+sendInfoAboutPlayersNotJoinedYet();
+}
+ catch (Exception ex) {
+logger.fatal("Send info about player not joined yet:",ex);
+}
+}
+}
+,15,15,TimeUnit.SECONDS);
 checkStart();
 }

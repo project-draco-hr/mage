@@ -1,9 +1,18 @@
 {
   UUID playerId=getPlayerId(userId);
   if (playerId != null) {
-    GameSessionPlayer gameSession=gameSessions.get(playerId);
-    if (gameSession != null) {
-      gameSession.quitGame();
+    if (allJoined()) {
+      GameSessionPlayer gameSession=gameSessions.get(playerId);
+      if (gameSession != null) {
+        gameSession.quitGame();
+      }
+    }
+ else {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        player.leave();
+        checkStart();
+      }
     }
   }
 }

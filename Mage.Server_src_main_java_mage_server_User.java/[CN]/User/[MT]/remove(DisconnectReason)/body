@@ -1,16 +1,16 @@
 {
-  logger.debug("REMOVE " + getName() + " Game sessions: "+ gameSessions.size());
+  logger.trace("REMOVE " + getName() + " Game sessions: "+ gameSessions.size());
   for (  GameSessionPlayer gameSession : gameSessions.values()) {
     logger.debug("-- kill game session of gameId: " + gameSession.getGameId());
     gameSession.quitGame();
   }
   gameSessions.clear();
-  logger.debug("REMOVE " + getName() + " Draft sessions "+ draftSessions.size());
+  logger.trace("REMOVE " + getName() + " Draft sessions "+ draftSessions.size());
   for (  DraftSession draftSession : draftSessions.values()) {
     draftSession.setKilled();
   }
   draftSessions.clear();
-  logger.debug("REMOVE " + getName() + " Tournament sessions "+ tournamentSessions.size());
+  logger.trace("REMOVE " + getName() + " Tournament sessions "+ tournamentSessions.size());
   for (  TournamentSession tournamentSession : tournamentSessions.values()) {
     TournamentController tournamentController=TournamentManager.getInstance().getTournamentController(tournamentSession.getTournamentId());
     if (tournamentController != null) {
@@ -19,17 +19,17 @@
     tournamentSession.setKilled();
   }
   tournamentSessions.clear();
-  logger.debug("REMOVE " + getName() + " Tables "+ tables.size());
+  logger.trace("REMOVE " + getName() + " Tables "+ tables.size());
   for (  Entry<UUID,Table> entry : tables.entrySet()) {
     logger.debug("-- leave tableId: " + entry.getValue().getId());
     TableManager.getInstance().leaveTable(userId,entry.getValue().getId());
   }
   tables.clear();
-  logger.debug("REMOVE " + getName() + " watched Games "+ watchedGames.size());
+  logger.trace("REMOVE " + getName() + " watched Games "+ watchedGames.size());
   for (  UUID gameId : watchedGames) {
     GameManager.getInstance().stopWatching(gameId,userId);
   }
   watchedGames.clear();
-  logger.debug("REMOVE " + getName() + " Chats ");
+  logger.trace("REMOVE " + getName() + " Chats ");
   ChatManager.getInstance().removeUser(userId,reason);
 }
