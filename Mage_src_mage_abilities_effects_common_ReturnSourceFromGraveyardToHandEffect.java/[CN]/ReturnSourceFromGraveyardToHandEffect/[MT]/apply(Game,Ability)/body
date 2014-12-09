@@ -1,10 +1,8 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  Card card=player.getGraveyard().get(source.getSourceId(),game);
+  Player controller=game.getPlayer(source.getControllerId());
+  Card card=controller.getGraveyard().get(source.getSourceId(),game);
   if (card != null) {
-    player.removeFromGraveyard(card,game);
-    card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
-    return true;
+    return controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.GRAVEYARD);
   }
   return false;
 }

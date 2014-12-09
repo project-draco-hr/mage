@@ -1,15 +1,11 @@
 {
-  Object object=game.getState().getValue(new StringBuilder("CardToCopy").append(source.getSourceId().toString()).toString());
-  Card card=null;
-  if (object instanceof UUID) {
-    card=game.getCard((UUID)object);
-  }
+  Card card=game.getCard(getTargetPointer().getFirst(game,source));
   Permanent permanent=game.getPermanent(source.getSourceId());
   if (card == null || permanent == null) {
     return false;
   }
-  if (IdOfCopiedCard == null || !IdOfCopiedCard.equals((UUID)object)) {
-    IdOfCopiedCard=(UUID)object;
+  if (IdOfCopiedCard == null || !IdOfCopiedCard.equals(card.getId())) {
+    IdOfCopiedCard=card.getId();
     cardToCopy=card.copy();
     cardToCopy.assignNewId();
   }
@@ -39,7 +35,7 @@
   }
   permanent.removeAllAbilities(source.getSourceId(),game);
   permanent.addAbility(HexproofAbility.getInstance(),source.getSourceId(),game);
-  permanent.addAbility(new CreatureCardPutOpponentGraveyardTriggeredAbility(),source.getSourceId(),game);
+  permanent.addAbility(new PutCardIntoGraveFromAnywhereAllTriggeredAbility(new LazavDimirEffect(),true,new FilterCreatureCard("a creature card"),TargetController.OPPONENT,SetTargetPointer.CARD),source.getSourceId(),game);
   for (  Ability ability : cardToCopy.getAbilities()) {
     if (!permanent.getAbilities().contains(ability)) {
       permanent.addAbility(ability,source.getSourceId(),game);

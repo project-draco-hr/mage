@@ -3,5 +3,7 @@
   this.expansionSetCode="ZEN";
   this.color.setBlack(true);
   this.addAbility(new BeginningOfEndStepTriggeredAbility(Zone.BATTLEFIELD,new AddCountersSourceEffect(CounterType.QUEST.createInstance(),false),TargetController.ANY,new OpponentLostLifeCondition(Condition.ComparisonType.GreaterThan,1),true));
-  this.addAbility(new BloodchiefAscensionTriggeredAbility());
+  Ability ability=new ConditionalTriggeredAbility(new PutCardIntoGraveFromAnywhereAllTriggeredAbility(new LoseLifeTargetEffect(2),true,new FilterCard("a card"),TargetController.OPPONENT,SetTargetPointer.PLAYER),new SourceHasCounterCondition(CounterType.QUEST,3),"Whenever a card is put into an opponent's graveyard from anywhere, if Bloodchief Ascension has three or more quest counters on it, you may have that player lose 2 life. If you do, you gain 2 life",true);
+  ability.addEffect(new GainLifeEffect(2));
+  this.addAbility(ability);
 }

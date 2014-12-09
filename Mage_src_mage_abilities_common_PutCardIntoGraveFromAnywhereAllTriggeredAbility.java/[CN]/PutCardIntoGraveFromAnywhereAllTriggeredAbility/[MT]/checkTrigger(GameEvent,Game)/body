@@ -1,0 +1,21 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).getToZone() == Zone.GRAVEYARD) {
+    Card card=game.getCard(event.getTargetId());
+    if (card != null && filter.match(card,getSourceId(),getControllerId(),game)) {
+switch (setTargetPointer) {
+case CARD:
+        for (        Effect effect : getEffects()) {
+          effect.setTargetPointer(new FixedTarget(card.getId()));
+        }
+      break;
+case PLAYER:
+    for (    Effect effect : getEffects()) {
+      effect.setTargetPointer(new FixedTarget(card.getOwnerId()));
+    }
+  break;
+}
+return true;
+}
+}
+return false;
+}
