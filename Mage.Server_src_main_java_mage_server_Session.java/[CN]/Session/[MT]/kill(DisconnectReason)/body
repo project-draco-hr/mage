@@ -1,14 +1,14 @@
 {
   boolean lockSet=false;
   try {
-    if (lock.tryLock(500,TimeUnit.MILLISECONDS)) {
+    if (lock.tryLock(5000,TimeUnit.MILLISECONDS)) {
       lockSet=true;
       logger.debug("SESSION LOCK SET sessionId: " + sessionId);
-      UserManager.getInstance().removeUser(userId,reason);
     }
  else {
       logger.error("SESSION LOCK - kill: userId " + userId);
     }
+    UserManager.getInstance().removeUser(userId,reason);
   }
  catch (  InterruptedException ex) {
     logger.error("SESSION LOCK - kill: userId " + userId,ex);
