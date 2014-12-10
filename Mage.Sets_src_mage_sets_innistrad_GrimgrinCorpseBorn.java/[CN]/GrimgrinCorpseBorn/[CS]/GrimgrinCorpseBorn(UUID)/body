@@ -8,9 +8,10 @@
   this.color.setBlack(true);
   this.power=new MageInt(5);
   this.toughness=new MageInt(5);
-  this.addAbility(new EntersBattlefieldTappedAbility());
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new SkipUntapSourceEffect()));
-  SimpleActivatedAbility ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new UntapSourceEffect(),new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filter,false)));
+  Ability ability=new EntersBattlefieldTappedAbility("{this} enters the battlefield tapped and doesn't untap during your untap step.");
+  ability.addEffect(new DontUntapInControllersUntapStepSourceEffect());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new UntapSourceEffect(),new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filter,false)));
   ability.addEffect(new AddCountersSourceEffect(CounterType.P1P1.createInstance()));
   this.addAbility(ability);
   this.addAbility(new GrimgrinCorpseBornAbility());

@@ -1,0 +1,28 @@
+{
+  if (GameEvent.EventType.UNTAP.equals(event.getType()) && PhaseStep.UNTAP.equals(game.getTurn().getStepType())) {
+    Permanent permanent=game.getPermanent(event.getTargetId());
+    if (permanent != null) {
+switch (targetController) {
+case YOU:
+        if (!permanent.getControllerId().equals(source.getControllerId())) {
+          return false;
+        }
+      break;
+case OPPONENT:
+    Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && !game.isOpponent(controller,permanent.getControllerId())) {
+    return false;
+  }
+break;
+case ANY:
+break;
+default :
+throw new RuntimeException("Type of TargetController not supported!");
+}
+if (game.getActivePlayerId().equals(permanent.getControllerId()) && filter.match(permanent,source.getSourceId(),source.getControllerId(),game)) {
+return true;
+}
+}
+}
+return false;
+}

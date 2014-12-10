@@ -7,7 +7,7 @@
       for (      Permanent creature : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game)) {
         if (attackerSet.contains(CardUtil.getCardZoneString(null,creature.getId(),game))) {
           creature.tap(game);
-          ContinuousEffect effect=new SkipNextUntapTargetEffect();
+          ContinuousEffect effect=new DontUntapInControllersNextUntapStepTargetEffect();
           effect.setTargetPointer(new FixedTarget(creature.getId()));
           game.addEffect(effect,source);
           game.informPlayers(new StringBuilder("Triton Tactics: ").append(creature.getName()).append(" doesn't untap during its controller's next untap step").toString());
