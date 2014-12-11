@@ -1,8 +1,8 @@
 {
-  ArrayList<CardDownloadData> list=new ArrayList<CardDownloadData>();
+  ArrayList<CardDownloadData> list=new ArrayList<>();
   InputStream in=DownloadPictures.class.getClassLoader().getResourceAsStream("card-pictures-tok.txt");
   if (in == null) {
-    log.error("resources input stream is null");
+    logger.error("resources input stream is null");
     return list;
   }
   BufferedReader reader=null;
@@ -39,14 +39,14 @@
           }
         }
  else {
-          log.error("wrong format for image urls: " + line);
+          logger.error("wrong format for image urls: " + line);
         }
       }
       line=reader.readLine();
     }
   }
  catch (  Exception ex) {
-    log.error(ex);
+    logger.error(ex);
     throw new RuntimeException("DownloadPictures : readFile() error");
   }
  finally {
@@ -55,7 +55,7 @@
         input.close();
       }
  catch (      Exception e) {
-        e.printStackTrace();
+        logger.error("Input close failed:",e);
       }
     }
     if (reader != null) {
@@ -63,7 +63,7 @@
         reader.close();
       }
  catch (      Exception e) {
-        e.printStackTrace();
+        logger.error("Reader close failed:",e);
       }
     }
   }

@@ -35,7 +35,7 @@ update(0,cardsToDownload.size());
 for (int i=0; i < cardsToDownload.size() && !cancel; i++) {
 try {
 CardDownloadData card=cardsToDownload.get(i);
-log.info("Downloading card: " + card.getName() + " ("+ card.getSet()+ ")");
+logger.debug("Downloading card: " + card.getName() + " ("+ card.getSet()+ ")");
 String url;
 if (ignoreUrls.contains(card.getSet()) || card.isToken()) {
 if (card.getCollectorId() != 0) {
@@ -47,7 +47,6 @@ url=cardImageSource.generateTokenUrl(card);
 url=cardImageSource.generateURL(card);
 }
 if (url != null) {
-Logger.getLogger(this.getClass()).info(url);
 Runnable task=new DownloadTask(card,new URL(url),cardsToDownload.size());
 executor.execute(task);
 }
@@ -58,7 +57,7 @@ update(cardIndex + 1,cardsToDownload.size());
 }
 }
  catch (Exception ex) {
-log.error(ex,ex);
+logger.error(ex,ex);
 }
 }
 executor.shutdown();
@@ -74,7 +73,7 @@ try {
 TVFS.umount();
 }
  catch (FsSyncException e) {
-e.printStackTrace();
+logger.fatal("Couldn't unmount zip files",e);
 JOptionPane.showMessageDialog(null,"Couldn't unmount zip files","Error",JOptionPane.ERROR_MESSAGE);
 }
  finally {

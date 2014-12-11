@@ -2,8 +2,9 @@
   ArrayList<CardDownloadData> cardsToDownload=new ArrayList<>();
   ArrayList<CardDownloadData> allCardsUrls=new ArrayList<>();
   HashSet<String> ignoreUrls=SettingsManager.getIntance().getIgnoreUrls();
-  Set<String> type2SetsFilter=new HashSet<String>();
+  Set<String> type2SetsFilter=new HashSet<>();
   type2SetsFilter.addAll(ConstructedFormats.getSetsByFormat(ConstructedFormats.STANDARD));
+  int numberCardImages=allCards.size();
   try {
     offlineMode=true;
     for (    CardInfo card : allCards) {
@@ -39,19 +40,20 @@
  else {
         if (card.getCardNumber() < 1) {
           System.err.println("There was a critical error!");
-          log.error("Card has no collector ID and won't be sent to client: " + card);
+          logger.error("Card has no collector ID and won't be sent to client: " + card);
         }
  else         if (card.getSetCode().isEmpty()) {
           System.err.println("There was a critical error!");
-          log.error("Card has no set name and won't be sent to client:" + card);
+          logger.error("Card has no set name and won't be sent to client:" + card);
         }
       }
     }
     allCardsUrls.addAll(getTokenCardUrls());
   }
  catch (  Exception e) {
-    log.error(e);
+    logger.error(e);
   }
+  int numberTokenImages=allCardsUrls.size() - numberCardImages;
   TFile file;
   for (  CardDownloadData card : allCardsUrls) {
     file=new TFile(CardImageUtils.generateImagePath(card));
@@ -59,16 +61,19 @@
       cardsToDownload.add(card);
     }
   }
-  for (  CardDownloadData card : cardsToDownload) {
-    if (card.isToken()) {
-      log.info("Card to download: " + card.getName() + " (Token) ");
-    }
- else {
-      try {
-        log.info("Card to download: " + card.getName() + " ("+ card.getSet()+ ")");
+  logger.info("Check download images (total cards: " + numberCardImages + ", total tokens: "+ numberTokenImages+ ") => Missing images: "+ cardsToDownload.size());
+  if (logger.isDebugEnabled()) {
+    for (    CardDownloadData card : cardsToDownload) {
+      if (card.isToken()) {
+        logger.debug("Card to download: " + card.getName() + " (Token) ");
       }
- catch (      Exception e) {
-        log.error(e);
+ else {
+        try {
+          logger.debug("Card to download: " + card.getName() + " ("+ card.getSet()+ ")");
+        }
+ catch (        Exception e) {
+          logger.error(e);
+        }
       }
     }
   }

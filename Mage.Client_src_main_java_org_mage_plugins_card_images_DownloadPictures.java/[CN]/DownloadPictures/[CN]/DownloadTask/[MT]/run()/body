@@ -25,7 +25,8 @@ synchronized (sync) {
     BufferedOutputStream out;
     URLConnection httpConn=url.openConnection(p);
     httpConn.connect();
-    if (((HttpURLConnection)httpConn).getResponseCode() == 200) {
+    int responseCode=((HttpURLConnection)httpConn).getResponseCode();
+    if (responseCode == 200) {
       try (BufferedInputStream in=new BufferedInputStream(((HttpURLConnection)httpConn).getInputStream())){
         out=new BufferedOutputStream(new TFileOutputStream(temporaryFile));
         byte[] buf=new byte[1024];
@@ -69,11 +70,14 @@ synchronized (sync) {
       }
     }
  else {
-      Logger.getLogger(this.getClass()).error(convertStreamToString(((HttpURLConnection)httpConn).getErrorStream()));
+      logger.warn("Image download failed - responseCode: " + responseCode + " url: "+ url.toString());
+      if (logger.isDebugEnabled()) {
+        logger.debug("Return ed HTML ERROR:\n" + convertStreamToString(((HttpURLConnection)httpConn).getErrorStream()));
+      }
     }
   }
  catch (  Exception e) {
-    log.error(e,e);
+    logger.error(e,e);
   }
 synchronized (sync) {
     update(cardIndex + 1,count);
