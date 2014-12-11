@@ -2,11 +2,7 @@
   if (cards.size() != 0) {
     if (!anyOrder) {
       for (      UUID cardId : cards) {
-        Card card=game.getCard(cardId);
-        if (card != null) {
-          Zone fromZone=game.getState().getZone(cardId);
-          this.moveCardToLibraryWithInfo(card,source.getSourceId(),game,fromZone,true,false);
-        }
+        moveObjectToLibrary(cardId,source.getSourceId(),game,true,false);
       }
     }
  else {
@@ -17,28 +13,12 @@
         Card chosenCard=cards.get(target.getFirstTarget(),game);
         if (chosenCard != null) {
           cards.remove(chosenCard);
-          Zone fromZone=game.getState().getZone(chosenCard.getId());
-          if (fromZone.equals(Zone.BATTLEFIELD)) {
-            Permanent permanent=game.getPermanent(chosenCard.getId());
-            this.moveCardToLibraryWithInfo(permanent,source.getSourceId(),game,fromZone,true,false);
-          }
- else {
-            this.moveCardToLibraryWithInfo(chosenCard,source.getSourceId(),game,fromZone,true,false);
-          }
+          moveObjectToLibrary(chosenCard.getId(),source.getSourceId(),game,true,false);
         }
         target.clearChosen();
       }
       if (cards.size() == 1) {
-        UUID cardId=cards.iterator().next();
-        Zone fromZone=game.getState().getZone(cardId);
-        if (fromZone.equals(Zone.BATTLEFIELD)) {
-          Permanent permanent=game.getPermanent(cardId);
-          this.moveCardToLibraryWithInfo(permanent,source.getSourceId(),game,fromZone,true,false);
-        }
- else {
-          Card chosenCard=cards.get(cardId,game);
-          this.moveCardToLibraryWithInfo(chosenCard,source.getSourceId(),game,fromZone,true,false);
-        }
+        moveObjectToLibrary(cards.iterator().next(),source.getSourceId(),game,true,false);
       }
     }
   }
