@@ -3,13 +3,20 @@
     UUID targetId=event.getTargetId();
     Permanent permanent=game.getPermanent(targetId);
     if (permanent != null && filter.match(permanent,getSourceId(),getControllerId(),game)) {
-      if (setTargetPointer) {
+      if (!setTargetPointer.equals(SetTargetPointer.NONE)) {
         for (        Effect effect : this.getEffects()) {
-          effect.setTargetPointer(new FixedTarget(event.getTargetId()));
-        }
-      }
-      return true;
-    }
+switch (setTargetPointer) {
+case PERMANENT:
+            effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+          break;
+case PLAYER:
+        effect.setTargetPointer(new FixedTarget(permanent.getControllerId()));
+      break;
   }
-  return false;
+}
+}
+return true;
+}
+}
+return false;
 }
