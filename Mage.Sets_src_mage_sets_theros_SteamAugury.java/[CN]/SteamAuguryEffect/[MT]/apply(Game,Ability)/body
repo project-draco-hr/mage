@@ -1,25 +1,28 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player == null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller == null || sourceObject == null) {
     return false;
   }
-  Cards cards=new CardsImpl(Zone.PICK);
-  int count=Math.min(player.getLibrary().size(),5);
-  for (int i=0; i < count; i++) {
-    Card card=player.getLibrary().removeFromTop(game);
-    if (card != null) {
-      cards.add(card);
-      game.setZone(card.getId(),Zone.PICK);
-    }
+  Cards cards=new CardsImpl();
+  cards.addAll(controller.getLibrary().getTopCards(game,5));
+  controller.revealCards(sourceObject.getLogName(),cards,game);
+  Player opponent;
+  Set<UUID> opponents=game.getOpponents(controller.getId());
+  if (opponents.size() == 1) {
+    opponent=game.getPlayer(opponents.iterator().next());
   }
-  player.revealCards("Steam Augury",cards,game);
-  Player opponent=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+ else {
+    Target target=new TargetOpponent(true);
+    controller.chooseTarget(Outcome.Detriment,target,source,game);
+    opponent=game.getPlayer(target.getFirstTarget());
+  }
   if (opponent != null) {
     TargetCard target=new TargetCard(0,cards.size(),Zone.PICK,new FilterCard("cards to put in the first pile"));
     List<Card> pile1=new ArrayList<>();
     Cards pile1CardsIds=new CardsImpl();
     target.setRequired(false);
-    if (player.choose(Outcome.Neutral,cards,target,game)) {
+    if (controller.choose(Outcome.Neutral,cards,target,game)) {
       List<UUID> targets=target.getTargets();
       for (      UUID targetId : targets) {
         Card card=game.getCard(targetId);
@@ -38,14 +41,14 @@
         pile2CardsIds.add(card.getId());
       }
     }
-    boolean choice=opponent.choosePile(Outcome.Detriment,new StringBuilder("Choose a pile to put into ").append(player.getName()).append("'s hand.").toString(),pile1,pile2,game);
+    boolean choice=opponent.choosePile(Outcome.Detriment,new StringBuilder("Choose a pile to put into ").append(controller.getName()).append("'s hand.").toString(),pile1,pile2,game);
     Zone pile1Zone=Zone.GRAVEYARD;
     Zone pile2Zone=Zone.HAND;
     if (choice) {
       pile1Zone=Zone.HAND;
       pile2Zone=Zone.GRAVEYARD;
     }
-    StringBuilder sb=new StringBuilder("Steam Augury: Pile 1, going to ").append(pile1Zone.equals(Zone.HAND) ? "Hand" : "Graveyard").append(": ");
+    StringBuilder sb=new StringBuilder(sourceObject.getLogName() + ": Pile 1, going to ").append(pile1Zone.equals(Zone.HAND) ? "Hand" : "Graveyard").append(": ");
     int i=0;
     for (    UUID cardUuid : pile1CardsIds) {
       i++;
@@ -59,7 +62,7 @@
       }
     }
     game.informPlayers(sb.toString());
-    sb=new StringBuilder("Steam Augury: Pile 2, going to ").append(pile2Zone.equals(Zone.HAND) ? "Hand" : "Graveyard").append(":");
+    sb=new StringBuilder(sourceObject.getLogName() + ": Pile 2, going to ").append(pile2Zone.equals(Zone.HAND) ? "Hand" : "Graveyard").append(":");
     i=0;
     for (    UUID cardUuid : pile2CardsIds) {
       Card card=game.getCard(cardUuid);

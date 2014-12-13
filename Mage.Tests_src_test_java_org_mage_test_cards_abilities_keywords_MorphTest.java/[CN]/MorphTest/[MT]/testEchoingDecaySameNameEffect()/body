@@ -1,0 +1,17 @@
+{
+  addCard(Zone.HAND,playerA,"Sagu Mauler",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",6);
+  addCard(Zone.HAND,playerB,"Echoing Decay");
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Sagu Mauler");
+  setChoice(playerA,"Yes");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Sagu Mauler");
+  setChoice(playerA,"Yes");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Echoing Decay","face down creature");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerB,20);
+  assertHandCount(playerA,"Sagu Mauler",0);
+  assertHandCount(playerB,"Echoing Decay",0);
+  assertPermanentCount(playerA,"face down creature",1);
+}

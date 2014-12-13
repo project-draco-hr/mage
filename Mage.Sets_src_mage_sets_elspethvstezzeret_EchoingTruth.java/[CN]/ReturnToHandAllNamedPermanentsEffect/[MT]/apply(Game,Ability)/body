@@ -1,11 +1,18 @@
 {
+  Player controller=game.getPlayer(source.getControllerId());
   Permanent permanent=game.getPermanent(source.getFirstTarget());
-  if (permanent != null) {
+  if (controller != null && permanent != null) {
     FilterPermanent filter=new FilterPermanent();
-    filter.add(new NamePredicate(permanent.getName()));
-    for (    Permanent perm : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
-      perm.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+    if (permanent.getName().isEmpty()) {
+      filter.add(new PermanentIdPredicate(permanent.getId()));
     }
+ else {
+      filter.add(new NamePredicate(permanent.getLogName()));
+    }
+    for (    Permanent perm : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
+      controller.moveCardToHandWithInfo(perm,source.getSourceId(),game,Zone.BATTLEFIELD);
+    }
+    return true;
   }
   return true;
 }
