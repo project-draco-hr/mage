@@ -1,0 +1,38 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (sourceObject != null && controller != null) {
+    Cards cards=new CardsImpl();
+    cards.addAll(controller.getLibrary().getTopCards(game,3));
+    if (!cards.isEmpty()) {
+      controller.revealCards(staticText,cards,game);
+      if (cards.size() == 1) {
+        controller.moveCardToGraveyardWithInfo(cards.getRandom(game),source.getSourceId(),game,Zone.LIBRARY);
+      }
+ else {
+        Player opponent;
+        Set<UUID> opponents=game.getOpponents(controller.getId());
+        if (opponents.size() == 1) {
+          opponent=game.getPlayer(opponents.iterator().next());
+        }
+ else {
+          Target target=new TargetOpponent(true);
+          controller.chooseTarget(Outcome.Detriment,target,source,game);
+          opponent=game.getPlayer(target.getFirstTarget());
+        }
+        TargetCard target=new TargetCard(1,Zone.LIBRARY,new FilterCard());
+        opponent.chooseTarget(outcome,cards,target,source,game);
+        Card card=game.getCard(target.getFirstTarget());
+        if (card != null) {
+          controller.moveCardToGraveyardWithInfo(cards.getRandom(game),source.getSourceId(),game,Zone.LIBRARY);
+          cards.remove(card);
+        }
+        for (        Card cardToHand : cards.getCards(game)) {
+          controller.moveCardToHandWithInfo(cardToHand,source.getSourceId(),game,Zone.LIBRARY);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
