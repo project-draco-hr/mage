@@ -1,0 +1,21 @@
+{
+  Permanent artifactCreature=game.getPermanent(this.getTargetPointer().getFirst(game,source));
+  if (artifactCreature != null) {
+    Player player=game.getPlayer(artifactCreature.getControllerId());
+    if (player != null) {
+      artifactCreature.sacrifice(source.getSourceId(),game);
+      if (player.chooseUse(Outcome.PutCardInPlay,"Search your library for a noncreature artifact card?",game)) {
+        TargetCardInLibrary target=new TargetCardInLibrary(filter);
+        if (player.searchLibrary(target,game)) {
+          Card card=game.getCard(target.getFirstTarget());
+          if (card != null) {
+            player.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+          }
+        }
+        player.shuffleLibrary(game);
+      }
+      return true;
+    }
+  }
+  return false;
+}
