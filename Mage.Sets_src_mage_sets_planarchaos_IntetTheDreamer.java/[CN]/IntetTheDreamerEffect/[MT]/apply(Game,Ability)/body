@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    if (controller.getLibrary().size() > 0) {
+      Card card=controller.getLibrary().removeFromTop(game);
+      card.setFaceDown(true);
+      ContinuousEffect effect=new IntetTheDreamerCastFromExileEffect();
+      effect.setTargetPointer(new FixedTarget(card.getId()));
+      game.addEffect(effect,source);
+    }
+    return false;
+  }
+  return true;
+}
