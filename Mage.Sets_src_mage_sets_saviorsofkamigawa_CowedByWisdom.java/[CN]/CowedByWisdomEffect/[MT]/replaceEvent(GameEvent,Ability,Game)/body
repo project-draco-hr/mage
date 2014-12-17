@@ -1,0 +1,25 @@
+{
+  Player player=game.getPlayer(event.getPlayerId());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (player != null && controller != null) {
+    if (controller.getHand().isEmpty()) {
+      return false;
+    }
+    String chooseText;
+    int cardsInHand=controller.getHand().size();
+    if (event.getType().equals(GameEvent.EventType.DECLARE_ATTACKER)) {
+      chooseText="Pay {" + cardsInHand + "} to attack?";
+    }
+ else {
+      chooseText="Pay {" + cardsInHand + "} to block?";
+    }
+    ManaCostsImpl attackBlockTax=new ManaCostsImpl("{" + cardsInHand + "}");
+    if (attackBlockTax.canPay(source,source.getSourceId(),event.getPlayerId(),game) && player.chooseUse(Outcome.Neutral,chooseText,game)) {
+      if (attackBlockTax.payOrRollback(source,game,source.getSourceId(),event.getPlayerId())) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+}
