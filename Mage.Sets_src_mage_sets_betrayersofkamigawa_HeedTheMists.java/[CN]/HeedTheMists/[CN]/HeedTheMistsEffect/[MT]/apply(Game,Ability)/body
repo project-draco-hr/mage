@@ -1,12 +1,12 @@
 {
   boolean result=false;
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
-    Card card=player.getLibrary().removeFromTop(game);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Card card=controller.getLibrary().removeFromTop(game);
     if (card != null) {
       int cmc=card.getManaCost().convertedManaCost();
-      result=card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,true);
-      player.drawCards(cmc,game);
+      controller.moveCardToGraveyardWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
+      controller.drawCards(cmc,game);
     }
   }
   return result;
