@@ -1,19 +1,21 @@
 {
   for (  Entry<UUID,Table> entry : tables.entrySet()) {
-    joinedTable(entry.getValue().getRoomId(),entry.getValue().getId(),entry.getValue().isTournament());
+    ccJoinedTable(entry.getValue().getRoomId(),entry.getValue().getId(),entry.getValue().isTournament());
   }
-  for (  Entry<UUID,TournamentSession> entry : tournamentSessions.entrySet()) {
-    tournamentStarted(entry.getValue().getTournamentId(),entry.getKey());
-    entry.getValue().init();
-    entry.getValue().update();
+  for (  Entry<UUID,UUID> entry : userTournaments.entrySet()) {
+    TournamentController tournamentController=TournamentManager.getInstance().getTournamentController(entry.getValue());
+    if (tournamentController != null) {
+      ccTournamentStarted(entry.getValue(),entry.getKey());
+      tournamentController.rejoin(entry.getKey());
+    }
   }
   for (  Entry<UUID,GameSessionPlayer> entry : gameSessions.entrySet()) {
-    gameStarted(entry.getValue().getGameId(),entry.getKey());
+    ccGameStarted(entry.getValue().getGameId(),entry.getKey());
     entry.getValue().init();
     GameManager.getInstance().sendPlayerString(entry.getValue().getGameId(),userId,"");
   }
   for (  Entry<UUID,DraftSession> entry : draftSessions.entrySet()) {
-    draftStarted(entry.getValue().getDraftId(),entry.getKey());
+    ccDraftStarted(entry.getValue().getDraftId(),entry.getKey());
     entry.getValue().init();
     entry.getValue().update();
   }
@@ -22,6 +24,6 @@
   }
   for (  Entry<UUID,Deck> entry : sideboarding.entrySet()) {
     TableController controller=TableManager.getInstance().getController(entry.getKey());
-    sideboard(entry.getValue(),entry.getKey(),controller.getRemainingTime(),controller.getOptions().isLimited());
+    ccSideboard(entry.getValue(),entry.getKey(),controller.getRemainingTime(),controller.getOptions().isLimited());
   }
 }

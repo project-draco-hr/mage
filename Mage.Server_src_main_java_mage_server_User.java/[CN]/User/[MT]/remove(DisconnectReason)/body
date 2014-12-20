@@ -1,30 +1,27 @@
 {
-  logger.trace("REMOVE " + getName() + " Game sessions: "+ gameSessions.size());
-  for (  GameSessionPlayer gameSession : gameSessions.values()) {
-    logger.debug("-- kill game session of gameId: " + gameSession.getGameId());
-    gameSession.quitGame();
-  }
-  gameSessions.clear();
   logger.trace("REMOVE " + getName() + " Draft sessions "+ draftSessions.size());
   for (  DraftSession draftSession : draftSessions.values()) {
     draftSession.setKilled();
   }
   draftSessions.clear();
-  logger.trace("REMOVE " + getName() + " Tournament sessions "+ tournamentSessions.size());
-  for (  TournamentSession tournamentSession : tournamentSessions.values()) {
-    TournamentController tournamentController=TournamentManager.getInstance().getTournamentController(tournamentSession.getTournamentId());
-    if (tournamentController != null) {
-      tournamentController.quit(userId);
-    }
-    tournamentSession.setKilled();
+  logger.trace("REMOVE " + getName() + " Tournament sessions "+ userTournaments.size());
+  for (  UUID tournamentId : userTournaments.values()) {
+    TournamentManager.getInstance().quit(tournamentId,getId());
   }
-  tournamentSessions.clear();
+  userTournaments.clear();
   logger.trace("REMOVE " + getName() + " Tables "+ tables.size());
   for (  Entry<UUID,Table> entry : tables.entrySet()) {
     logger.debug("-- leave tableId: " + entry.getValue().getId());
     TableManager.getInstance().leaveTable(userId,entry.getValue().getId());
   }
   tables.clear();
+  logger.trace("REMOVE " + getName() + " Game sessions: "+ gameSessions.size());
+  for (  GameSessionPlayer gameSessionPlayer : gameSessions.values()) {
+    logger.debug("-- kill game session of gameId: " + gameSessionPlayer.getGameId());
+    GameManager.getInstance().quitMatch(gameSessionPlayer.getGameId(),userId);
+    gameSessionPlayer.quitGame();
+  }
+  gameSessions.clear();
   logger.trace("REMOVE " + getName() + " watched Games "+ watchedGames.size());
   for (  UUID gameId : watchedGames) {
     GameManager.getInstance().stopWatching(gameId,userId);

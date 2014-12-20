@@ -1,7 +1,13 @@
 {
   Set<Card> cards=new LinkedHashSet<>();
-  for (  UUID card : this) {
-    cards.add(game.getCard(card));
+  for (  UUID cardId : this) {
+    Card card=game.getCard(cardId);
+    if (card != null) {
+      cards.add(card);
+    }
+ else {
+      logger.error("Card not found  cardId: " + cardId + " gameId: "+ game.getId());
+    }
   }
   return cards;
 }
