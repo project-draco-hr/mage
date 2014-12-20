@@ -1,0 +1,27 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (player != null && sourcePermanent != null) {
+    Target target=new TargetPermanent(new FilterCreaturePermanent());
+    target.setNotTarget(true);
+    if (target.canChoose(source.getSourceId(),source.getControllerId(),game)) {
+      player.choose(Outcome.Copy,target,source.getSourceId(),game);
+      Permanent copyFromPermanent=game.getPermanent(target.getFirstTarget());
+      if (copyFromPermanent != null) {
+        game.copyPermanent(copyFromPermanent,sourcePermanent,source,new ApplyToPermanent(){
+          @Override public Boolean apply(          Game game,          Permanent permanent){
+            if (!permanent.getSupertype().contains("Legendary")) {
+              permanent.getSubtype().add("Legendary");
+            }
+            permanent.setName("Sakashima the Impostor");
+            permanent.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateDelayedTriggeredAbilityEffect(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnToHandSourceEffect(true)),false),new ManaCostsImpl("{2}{U}{U}")),game);
+            return true;
+          }
+        }
+);
+        return true;
+      }
+    }
+  }
+  return false;
+}

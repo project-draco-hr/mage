@@ -1,0 +1,21 @@
+{
+  UUID objectId=targetPointer.getFirst(game,source);
+  UUID sourceId=source.getSourceId();
+  StackObject stackObject=game.getStack().getStackObject(objectId);
+  if (stackObject != null && !game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.COUNTER,objectId,sourceId,stackObject.getControllerId()))) {
+    game.rememberLKI(objectId,Zone.STACK,stackObject);
+    game.getStack().remove(stackObject);
+    if (!((Spell)stackObject).isCopiedSpell()) {
+      MageObject card=game.getObject(stackObject.getSourceId());
+      if (card instanceof Card) {
+        ((Card)card).moveToZone(Zone.EXILED,sourceId,game,true);
+        ContinuousEffect effect=new SpelljackCastFromExileEffect();
+        effect.setTargetPointer(new FixedTarget(card.getId()));
+        game.addEffect(effect,source);
+      }
+    }
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.COUNTERED,objectId,sourceId,stackObject.getControllerId()));
+    return true;
+  }
+  return false;
+}

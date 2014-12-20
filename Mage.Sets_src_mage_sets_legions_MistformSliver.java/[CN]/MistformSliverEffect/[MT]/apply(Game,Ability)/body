@@ -11,9 +11,9 @@
       }
     }
     game.informPlayers(permanent.getName() + ": " + player.getName()+ " has chosen "+ typeChoice.getChoice());
-    game.getState().setValue(permanent.getId() + "_type",typeChoice.getChoice().toString());
-    permanent.addInfo("chosen type","<i>Chosen type: " + typeChoice.getChoice() + "</i>");
-    permanent.getSubtype().add(typeChoice.getChoice());
+    ContinuousEffect effect=new AddCardSubTypeTargetEffect(typeChoice.getChoice(),Duration.EndOfTurn);
+    effect.setTargetPointer(new FixedTarget(permanent.getId()));
+    game.addEffect(effect,source);
   }
   return false;
 }

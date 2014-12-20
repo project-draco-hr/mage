@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(filter);
+    if (player.searchLibrary(target,game)) {
+      if (target.getTargets().size() > 0) {
+        Card card=player.getLibrary().remove(target.getFirstTarget(),game);
+        if (card != null) {
+          player.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
+          Cards cards=new CardsImpl();
+          cards.add(card);
+          player.revealCards("Wild Research",cards,game,true);
+        }
+      }
+    }
+    player.discardOne(true,source,game);
+    player.shuffleLibrary(game);
+    return true;
+  }
+  return false;
+}

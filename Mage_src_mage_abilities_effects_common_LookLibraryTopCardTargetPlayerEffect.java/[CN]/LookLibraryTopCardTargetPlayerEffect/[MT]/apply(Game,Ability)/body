@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (player != null && targetPlayer != null && sourceObject != null) {
+    Card card=targetPlayer.getLibrary().getFromTop(game);
+    if (card != null) {
+      CardsImpl cards=new CardsImpl();
+      cards.add(card);
+      player.lookAtCards(sourceObject.getLogName(),cards,game);
+    }
+    return true;
+  }
+  return false;
+}
