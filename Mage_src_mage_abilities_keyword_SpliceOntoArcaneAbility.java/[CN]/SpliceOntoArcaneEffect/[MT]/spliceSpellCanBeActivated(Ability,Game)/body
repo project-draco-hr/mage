@@ -1,7 +1,12 @@
 {
   Card card=game.getCard(source.getSourceId());
   if (card != null) {
-    return card.getSpellAbility().canActivate(source.getControllerId(),game);
+    if (card.getManaCost().isEmpty()) {
+      return card.getSpellAbility().spellCanBeActivatedRegularlyNow(source.getControllerId(),game);
+    }
+ else {
+      return card.getSpellAbility().canActivate(source.getControllerId(),game);
+    }
   }
   return false;
 }
