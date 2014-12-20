@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    TargetCardInExile target=new TargetCardInExile(new FilterCard(),CardUtil.getCardExileZoneId(game,source));
+    FilterCard filter=new FilterCard();
+    filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,source.getManaCostsToPay().getX()));
+    Cards cards=new CardsImpl(Zone.EXILED,game.getExile().getExileZone(CardUtil.getCardExileZoneId(game,source)).getCards(filter,game));
+    if (cards.size() > 0 && controller.choose(Outcome.PlayForFree,cards,target,game)) {
+      Card card=game.getCard(target.getFirstTarget());
+      if (card != null) {
+        game.getExile().removeCard(card,game);
+        controller.cast(card.getSpellAbility(),game,true);
+      }
+    }
+    return true;
+  }
+  return false;
+}

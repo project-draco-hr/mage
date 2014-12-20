@@ -1,0 +1,14 @@
+{
+  super(ownerId,151,"Iname as One",Rarity.RARE,new CardType[]{CardType.CREATURE},"{8}{B}{B}{G}{G}");
+  this.expansionSetCode="SOK";
+  this.supertype.add("Legendary");
+  this.subtype.add("Spirit");
+  this.power=new MageInt(8);
+  this.toughness=new MageInt(8);
+  Ability ability=new EntersBattlefieldTriggeredAbility(new ConditionalOneShotEffect(new SearchLibraryPutInPlayEffect(new TargetCardInLibrary(0,1,filter),false),new CastFromHandCondition()));
+  this.addAbility(ability);
+  this.addWatcher(new CastFromHandWatcher());
+  ability=new DiesTriggeredAbility(new InameAsOneEffect(),false);
+  ability.addTarget(new TargetCardInYourGraveyard(filter));
+  this.addAbility(ability);
+}
