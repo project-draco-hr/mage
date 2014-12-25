@@ -3,19 +3,16 @@
   Permanent permanent=game.getPermanent(source.getSourceId());
   if (player != null && permanent != null) {
     for (    Card card : player.getHand().getCards(CastThroughTime.filter,game)) {
-      boolean found=false;
-      for (      Ability ability : card.getAbilities()) {
-        if (ability instanceof ReboundAbility) {
-          found=true;
-          break;
+      addReboundAbility(card,source,game);
+    }
+    for (Iterator<StackObject> iterator=game.getStack().iterator(); iterator.hasNext(); ) {
+      StackObject stackObject=iterator.next();
+      if (stackObject instanceof Spell && stackObject.getControllerId().equals(source.getControllerId())) {
+        Spell spell=(Spell)stackObject;
+        Card card=spell.getCard();
+        if (card != null) {
+          addReboundAbility(card,source,game);
         }
-      }
-      if (!found) {
-        Ability ability=new AttachedReboundAbility();
-        card.addAbility(ability);
-        ability.setControllerId(source.getControllerId());
-        ability.setSourceId(card.getId());
-        game.getState().addAbility(ability,source.getSourceId(),card);
       }
     }
     return true;

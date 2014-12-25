@@ -1,22 +1,16 @@
 {
+  for (Iterator<MageObjectReference> it=affectedObjectList.iterator(); it.hasNext(); ) {
+    Permanent permanent=it.next().getPermanent(game);
+    if (permanent != null) {
 switch (layer) {
 case TypeChangingEffects_4:
-    if (sublayer == SubLayer.NA) {
-      objects.clear();
-      for (      Permanent permanent : game.getBattlefield().getAllActivePermanents(filter,getTargetPointer().getFirst(game,source),game)) {
-        if (permanent != null) {
-          objects.add(permanent.getId());
+        if (sublayer == SubLayer.NA) {
           permanent.getSubtype().clear();
           permanent.getSubtype().add("Frog");
         }
-      }
-    }
-  break;
+      break;
 case ColorChangingEffects_5:
-if (sublayer == SubLayer.NA) {
-  for (  UUID uuid : objects) {
-    Permanent permanent=game.getPermanent(uuid);
-    if (permanent != null) {
+    if (sublayer == SubLayer.NA) {
       permanent.getColor().setBlack(false);
       permanent.getColor().setGreen(false);
       permanent.getColor().setBlue(false);
@@ -24,26 +18,19 @@ if (sublayer == SubLayer.NA) {
       permanent.getColor().setBlack(false);
       permanent.getColor().setColor(ObjectColor.BLUE);
     }
-  }
-}
-break;
+  break;
 case AbilityAddingRemovingEffects_6:
-for (UUID uuid : objects) {
-Permanent permanent=game.getPermanent(uuid);
-if (permanent != null) {
 permanent.removeAllAbilities(source.getSourceId(),game);
-}
-}
 break;
 case PTChangingEffects_7:
 if (sublayer == SubLayer.SetPT_7b) {
-for (UUID uuid : objects) {
-Permanent permanent=game.getPermanent(uuid);
-if (permanent != null) {
 permanent.getPower().setValue(1);
 permanent.getToughness().setValue(1);
 }
 }
+}
+ else {
+it.remove();
 }
 }
 return true;

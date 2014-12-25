@@ -1,5 +1,11 @@
 {
-  Permanent target=game.getPermanent(source.getSourceId());
+  Permanent target;
+  if (affectedObjectsSet) {
+    target=affectedObjectList.get(0).getPermanent(game);
+  }
+ else {
+    target=game.getPermanent(source.getSourceId());
+  }
   if (target != null) {
     target.addPower(power.calculate(game,source,this));
     target.addToughness(toughness.calculate(game,source,this));

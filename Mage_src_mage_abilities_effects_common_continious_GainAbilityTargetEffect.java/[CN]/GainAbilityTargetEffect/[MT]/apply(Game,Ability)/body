@@ -15,8 +15,16 @@
  else {
     for (    UUID permanentId : targetPointer.getTargets(game,source)) {
       Permanent permanent=game.getPermanent(permanentId);
+      boolean shortLivingLKI=false;
+      if (permanent == null) {
+        permanent=(Permanent)game.getShortLivingLKI(permanentId,Zone.BATTLEFIELD);
+        shortLivingLKI=true;
+      }
       if (permanent != null) {
         permanent.addAbility(ability,source.getSourceId(),game);
+        if (shortLivingLKI) {
+          game.rememberLKI(permanentId,Zone.BATTLEFIELD,permanent);
+        }
         affectedTargets++;
       }
     }

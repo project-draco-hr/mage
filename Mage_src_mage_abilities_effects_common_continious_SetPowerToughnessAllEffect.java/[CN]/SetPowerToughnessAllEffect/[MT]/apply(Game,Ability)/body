@@ -2,11 +2,14 @@
   int newPower=power.calculate(game,source,this);
   int newToughness=toughness.calculate(game,source,this);
   if (affectedObjectsSet) {
-    for (    UUID permanentId : objects) {
-      Permanent permanent=game.getPermanent(permanentId);
+    for (Iterator<MageObjectReference> it=affectedObjectList.iterator(); it.hasNext(); ) {
+      Permanent permanent=it.next().getPermanent(game);
       if (permanent != null) {
         permanent.getPower().setValue(newPower);
         permanent.getToughness().setValue(newToughness);
+      }
+ else {
+        it.remove();
       }
     }
   }

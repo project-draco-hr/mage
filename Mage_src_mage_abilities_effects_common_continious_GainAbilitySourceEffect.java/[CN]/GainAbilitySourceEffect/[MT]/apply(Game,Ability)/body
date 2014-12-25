@@ -1,6 +1,12 @@
 {
   if (onCard) {
-    Card card=game.getCard(source.getSourceId());
+    Card card;
+    if (affectedObjectsSet) {
+      card=affectedObjectList.get(0).getCard(game);
+    }
+ else {
+      card=game.getCard(source.getSourceId());
+    }
     if (card != null) {
       card.addAbility(ability);
       discard();
@@ -8,14 +14,20 @@
     }
   }
  else {
-    Permanent permanent=game.getPermanent(source.getSourceId());
+    Permanent permanent;
+    if (affectedObjectsSet) {
+      permanent=affectedObjectList.get(0).getPermanent(game);
+    }
+ else {
+      permanent=game.getPermanent(source.getSourceId());
+    }
     if (permanent != null) {
       permanent.addAbility(ability,source.getSourceId(),game);
       return true;
     }
-    if (duration.equals(Duration.Custom)) {
-      this.discard();
-    }
   }
-  return false;
+  if (duration.equals(Duration.Custom)) {
+    this.discard();
+  }
+  return true;
 }

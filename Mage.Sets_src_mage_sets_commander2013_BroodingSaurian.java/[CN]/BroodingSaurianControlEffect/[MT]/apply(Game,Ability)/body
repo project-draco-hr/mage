@@ -1,18 +1,16 @@
 {
-  Set<UUID> toRemove=new HashSet<UUID>();
-  for (  UUID creatureId : objects) {
-    Permanent creature=game.getPermanent(creatureId);
+  for (Iterator<MageObjectReference> it=affectedObjectList.iterator(); it.hasNext(); ) {
+    Permanent creature=it.next().getPermanent(game);
     if (creature != null) {
       if (!creature.getControllerId().equals(creature.getOwnerId())) {
         creature.changeControllerId(creature.getOwnerId(),game);
       }
     }
  else {
-      toRemove.add(creatureId);
+      it.remove();
     }
   }
-  objects.removeAll(toRemove);
-  if (objects.isEmpty()) {
+  if (affectedObjectList.isEmpty()) {
     this.discard();
   }
   return true;

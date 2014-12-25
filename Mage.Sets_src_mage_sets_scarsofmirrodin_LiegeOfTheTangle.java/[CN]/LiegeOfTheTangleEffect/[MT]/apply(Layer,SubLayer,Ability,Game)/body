@@ -1,6 +1,6 @@
 {
-  for (  UUID permId : objects) {
-    Permanent perm=game.getPermanent(permId);
+  for (Iterator<MageObjectReference> it=affectedObjectList.iterator(); it.hasNext(); ) {
+    Permanent perm=it.next().getPermanent(game);
     if (perm != null) {
       if (perm.getCounters().getCount(CounterType.AWAKENING) > 0) {
 switch (layer) {
@@ -23,6 +23,9 @@ case PTChangingEffects_7:
 break;
 }
 }
+}
+ else {
+it.remove();
 }
 }
 return true;

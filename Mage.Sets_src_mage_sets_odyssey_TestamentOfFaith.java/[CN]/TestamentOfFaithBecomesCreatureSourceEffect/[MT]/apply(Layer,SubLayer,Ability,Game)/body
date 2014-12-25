@@ -1,6 +1,6 @@
 {
-  Permanent permanent=game.getPermanent(source.getSourceId());
-  if (permanent != null && permanent.getZoneChangeCounter() == this.zoneChangeCounter) {
+  Permanent permanent=affectedObjectList.get(0).getPermanent(game);
+  if (permanent != null) {
 switch (layer) {
 case TypeChangingEffects_4:
       if (sublayer == SubLayer.NA) {
@@ -39,10 +39,8 @@ case PTChangingEffects_7:
 if (sublayer == SubLayer.SetPT_7b) {
 MageInt power=new MageInt(source.getManaCosts().getVariableCosts().get(0).getAmount());
 MageInt toughness=new MageInt(source.getManaCosts().getVariableCosts().get(0).getAmount());
-if (power != null && toughness != null) {
 permanent.getPower().setValue(power.getValue());
 permanent.getToughness().setValue(toughness.getValue());
-}
 }
 }
 return true;

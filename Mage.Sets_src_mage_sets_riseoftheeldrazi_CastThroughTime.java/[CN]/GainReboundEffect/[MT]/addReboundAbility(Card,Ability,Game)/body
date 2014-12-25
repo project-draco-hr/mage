@@ -1,0 +1,18 @@
+{
+  if (CastThroughTime.filter.match(card,game)) {
+    boolean found=false;
+    for (    Ability ability : card.getAbilities()) {
+      if (ability instanceof ReboundAbility) {
+        found=true;
+        break;
+      }
+    }
+    if (!found) {
+      Ability ability=new AttachedReboundAbility();
+      card.addAbility(ability);
+      ability.setControllerId(source.getControllerId());
+      ability.setSourceId(card.getId());
+      game.getState().addAbility(ability,card);
+    }
+  }
+}
