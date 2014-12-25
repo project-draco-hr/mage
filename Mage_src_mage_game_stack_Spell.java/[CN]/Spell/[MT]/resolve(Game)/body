@@ -32,7 +32,7 @@
           }
         }
         if (game.getState().getZone(card.getId()) == Zone.STACK) {
-          card.moveToZone(Zone.GRAVEYARD,ability.getId(),game,false);
+          card.moveToZone(Zone.GRAVEYARD,ability.getSourceId(),game,false);
         }
       }
       return result;
@@ -48,7 +48,7 @@
       if (bestow) {
         card.getCardType().remove(CardType.CREATURE);
       }
-      if (card.putOntoBattlefield(game,fromZone,ability.getId(),controllerId)) {
+      if (card.putOntoBattlefield(game,fromZone,ability.getSourceId(),controllerId)) {
         if (bestow) {
           Permanent permanent=game.getPermanent(card.getId());
           if (permanent != null && permanent instanceof PermanentCard) {
@@ -66,7 +66,7 @@
     }
     if (this.getSpellAbility() instanceof BestowAbility) {
       updateOptionalCosts(0);
-      result=card.putOntoBattlefield(game,fromZone,ability.getId(),controllerId);
+      result=card.putOntoBattlefield(game,fromZone,ability.getSourceId(),controllerId);
       return result;
     }
  else {
@@ -80,7 +80,7 @@
     if (isFaceDown()) {
       card.setFaceDown(true);
     }
-    result=card.putOntoBattlefield(game,fromZone,ability.getId(),controllerId);
+    result=card.putOntoBattlefield(game,fromZone,ability.getSourceId(),controllerId);
     return result;
   }
 }

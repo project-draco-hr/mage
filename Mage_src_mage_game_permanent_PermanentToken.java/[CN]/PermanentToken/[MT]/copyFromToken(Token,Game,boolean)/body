@@ -1,9 +1,15 @@
 {
   this.name=token.getName();
   this.abilities.clear();
-  for (  Ability ability : token.getAbilities()) {
-    this.addAbility(ability,game);
+  if (reset) {
+    this.abilities.addAll(token.getAbilities());
   }
+ else {
+    for (    Ability ability : token.getAbilities()) {
+      this.addAbility(ability,game);
+    }
+  }
+  this.abilities.setControllerId(this.controllerId);
   this.manaCost.clear();
   for (  ManaCost cost : token.getManaCost()) {
     this.getManaCost().add(cost.copy());

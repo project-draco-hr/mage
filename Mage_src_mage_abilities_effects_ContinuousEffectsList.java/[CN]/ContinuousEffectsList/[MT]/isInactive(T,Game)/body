@@ -10,26 +10,30 @@
     if (ability == null) {
       it.remove();
     }
+ else     if (ability instanceof MageSingleton) {
+      return false;
+    }
  else     if (effect.isDiscarded()) {
+      it.remove();
+    }
+ else     if (game.getObject(ability.getSourceId()) == null) {
+      logger.debug("Ability without source object removed: " + ability.getSourceId() + " "+ ability.getRule());
       it.remove();
     }
  else {
 switch (effect.getDuration()) {
-case WhileOnBattlefield:
-        if (game.getObject(ability.getSourceId()) == null) {
+case OneUse:
+        if (effect.isUsed()) {
+          logger.debug("Ability one use removed: " + ability.getSourceId() + " "+ ability.getRule());
           it.remove();
         }
       break;
-case OneUse:
-    if (effect.isUsed()) {
-      it.remove();
-    }
-  break;
 case Custom:
 case UntilYourNextTurn:
-if (effect.isInactive(ability,game)) {
-  it.remove();
-}
+    if (effect.isInactive(ability,game)) {
+      logger.debug("Ability custom removed: " + ability.getSourceId() + " "+ ability.getRule());
+      it.remove();
+    }
 }
 }
 }

@@ -16,8 +16,10 @@
       if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,null,false)) {
         if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
           if (!game.getScopeRelevant() || effect.hasSelfScope() || !event.getTargetId().equals(ability.getSourceId())) {
-            if (effect.applies(event,ability,game)) {
-              applicableAbilities.add(ability);
+            if (checkAbilityStillExists(ability,effect,event,game)) {
+              if (effect.applies(event,ability,game)) {
+                applicableAbilities.add(ability);
+              }
             }
           }
         }

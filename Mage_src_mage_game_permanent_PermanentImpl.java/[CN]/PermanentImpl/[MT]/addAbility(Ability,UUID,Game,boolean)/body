@@ -1,9 +1,12 @@
 {
   if (!abilities.containsKey(ability.getId())) {
     Ability copyAbility=ability.copy();
+    if (createNewId) {
+      copyAbility.newId();
+    }
     copyAbility.setControllerId(controllerId);
     copyAbility.setSourceId(objectId);
-    game.getState().addAbility(copyAbility,this);
+    game.getState().addAbility(copyAbility,sourceId,this);
     abilities.add(copyAbility);
   }
 }

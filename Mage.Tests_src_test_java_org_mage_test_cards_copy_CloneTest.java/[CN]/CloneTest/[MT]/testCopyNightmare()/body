@@ -1,0 +1,34 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",5);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",6);
+  addCard(Zone.BATTLEFIELD,playerB,"Forest",1);
+  addCard(Zone.HAND,playerB,"Ranger's Guile");
+  addCard(Zone.HAND,playerA,"Clone");
+  addCard(Zone.HAND,playerA,"Disperse");
+  addCard(Zone.BATTLEFIELD,playerB,"Nightmare",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Clone");
+  setChoice(playerA,"Nightmare");
+  castSpell(1,PhaseStep.BEGIN_COMBAT,playerB,"Ranger's Guile","Nightmare");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Disperse","Nightmare");
+  setStopAt(2,PhaseStep.UPKEEP);
+  execute();
+  assertPermanentCount(playerB,"Nightmare",1);
+  assertPowerToughness(playerB,"Nightmare",6,6);
+  assertPermanentCount(playerA,"Nightmare",0);
+  assertHandCount(playerA,"Disperse",0);
+  FilterCard filter=new FilterCard();
+  filter.add(new NamePredicate("Clone"));
+  Card card=playerA.getHand().getCards(filter,currentGame).iterator().next();
+  if (card != null) {
+    Assert.assertEquals("Power has to be 0 because copy from nightmare P/T ability may no longer be applied",0,card.getPower().getValue());
+  }
+  Logger.getLogger(CloneTest.class).debug("EXISTING CONTINUOUS EFFECTS:");
+  for (  ContinuousEffectsList effectsList : currentGame.getContinuousEffects().allEffectsLists) {
+    Iterator it=effectsList.iterator();
+    while (it.hasNext()) {
+      ContinuousEffect effect=(ContinuousEffect)it.next();
+      Logger.getLogger(CloneTest.class).debug("- " + effect.toString());
+    }
+  }
+}

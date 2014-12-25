@@ -1,0 +1,26 @@
+{
+  if (effect.getDuration().equals(Duration.OneUse)) {
+    return true;
+  }
+  MageObject object;
+  if (event.getType().equals(EventType.ZONE_CHANGE) && ((ZoneChangeEvent)event).getFromZone().equals(Zone.BATTLEFIELD) && event.getTargetId().equals(ability.getSourceId())) {
+    object=((ZoneChangeEvent)event).getTarget();
+  }
+ else {
+    object=game.getObject(ability.getSourceId());
+  }
+  if (object == null) {
+    return false;
+  }
+  boolean exists=true;
+  if (!object.getAbilities().contains(ability)) {
+    exists=false;
+    if (object instanceof PermanentCard) {
+      PermanentCard permanent=(PermanentCard)object;
+      if (permanent.canTransform() && event.getType() == GameEvent.EventType.TRANSFORMED) {
+        exists=permanent.getCard().getAbilities().contains(ability);
+      }
+    }
+  }
+  return exists;
+}

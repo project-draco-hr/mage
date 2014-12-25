@@ -1,6 +1,13 @@
 {
   Permanent permanent=game.getPermanent(this.sourceId);
+  if (affectedObjectsSet) {
+    permanent=affectedObjectList.get(0).getPermanent(game);
+  }
+ else {
+    permanent=game.getPermanent(this.sourceId);
+  }
   if (permanent == null) {
+    discard();
     return false;
   }
   permanent.setName(target.getName());
@@ -21,7 +28,7 @@
   }
   permanent.removeAllAbilities(source.getSourceId(),game);
   for (  Ability ability : target.getAbilities()) {
-    permanent.addAbility(ability,game);
+    permanent.addAbility(ability,getSourceId(),game,false);
   }
   permanent.getPower().setValue(target.getPower().getValue());
   permanent.getToughness().setValue(target.getToughness().getValue());

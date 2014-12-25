@@ -1,0 +1,42 @@
+{
+  for (  Map.Entry<ContinuousEffect,Set<Ability>> entry : temporaryEffects.entrySet()) {
+switch (entry.getKey().getEffectType()) {
+case REPLACEMENT:
+case REDIRECTION:
+      replacementEffects.removeEffects(entry.getKey().getId(),entry.getValue());
+    break;
+case PREVENTION:
+  preventionEffects.removeEffects(entry.getKey().getId(),entry.getValue());
+break;
+case RESTRICTION:
+restrictionEffects.removeEffects(entry.getKey().getId(),entry.getValue());
+break;
+case RESTRICTION_UNTAP_NOT_MORE_THAN:
+restrictionUntapNotMoreThanEffects.removeEffects(entry.getKey().getId(),entry.getValue());
+break;
+case REQUIREMENT:
+requirementEffects.removeEffects(entry.getKey().getId(),entry.getValue());
+break;
+case ASTHOUGH:
+AsThoughEffect newAsThoughEffect=(AsThoughEffect)entry.getKey();
+if (!asThoughEffectsMap.containsKey(newAsThoughEffect.getAsThoughEffectType())) {
+break;
+}
+asThoughEffectsMap.get(newAsThoughEffect.getAsThoughEffectType()).removeEffects(entry.getKey().getId(),entry.getValue());
+break;
+case COSTMODIFICATION:
+costModificationEffects.removeEffects(entry.getKey().getId(),entry.getValue());
+break;
+case SPLICE:
+spliceCardEffects.removeEffects(entry.getKey().getId(),entry.getValue());
+break;
+case CONTINUOUS_RULE_MODIFICATION:
+continuousRuleModifyingEffects.removeEffects(entry.getKey().getId(),entry.getValue());
+break;
+default :
+layeredEffects.removeEffects(entry.getKey().getId(),entry.getValue());
+break;
+}
+}
+temporaryEffects.clear();
+}
