@@ -1,0 +1,15 @@
+{
+  logger.debug(this.getName() + " has lost gameId: " + game.getId());
+  if (!this.wins) {
+    this.loses=true;
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.LOST,null,null,playerId));
+    game.informPlayers(this.getName() + " has lost the game.");
+  }
+ else {
+    logger.debug(this.getName() + " has already won - stop lost");
+  }
+  if (!hasLeft()) {
+    logger.debug("Game over playerId: " + playerId);
+    game.gameOver(playerId);
+  }
+}

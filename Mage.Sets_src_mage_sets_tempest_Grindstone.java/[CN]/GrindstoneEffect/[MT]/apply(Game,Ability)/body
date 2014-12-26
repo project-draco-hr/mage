@@ -2,7 +2,14 @@
   Player targetPlayer=game.getPlayer(this.getTargetPointer().getFirst(game,source));
   boolean colorShared;
   if (targetPlayer != null) {
+    int possibleIterations=targetPlayer.getLibrary().size() / 2;
+    int iteration=0;
     do {
+      iteration++;
+      if (iteration > possibleIterations + 20) {
+        game.setDraw(source.getControllerId());
+        return true;
+      }
       colorShared=false;
       Card card1=targetPlayer.getLibrary().removeFromTop(game);
       if (card1 != null) {
