@@ -1,19 +1,22 @@
 {
   updateGame(gameView,options);
-  String messageToDisplay=message;
-  Map<String,Serializable> panelOptions=null;
   for (  PlayerView playerView : gameView.getPlayers()) {
     if (playerView.getPlayerId().equals(playerId)) {
-      if (playerView.isActive()) {
-        panelOptions=new HashMap<>();
-        panelOptions.put("your_turn",true);
-        messageToDisplay=message + " <div style='font-size:11pt'>Your turn / " + gameView.getStep().toString()+ "</div>";
-      }
       if (playerView.getStatesSavedSize() > 0 && gameView.getStack().size() == 0) {
         feedbackPanel.allowUndo(playerView.getStatesSavedSize());
       }
       break;
     }
   }
+  Map<String,Serializable> panelOptions=new HashMap<>();
+  panelOptions.put("your_turn",true);
+  String playerName;
+  if (gameView.getActivePlayerId().equals(playerId)) {
+    playerName="Your turn";
+  }
+ else {
+    playerName=gameView.getActivePlayerName();
+  }
+  String messageToDisplay=message + "<div style='font-size:11pt'>" + playerName+ " / "+ gameView.getStep().toString()+ "</div>";
   this.feedbackPanel.getFeedback(FeedbackMode.SELECT,messageToDisplay,gameView.getSpecial(),panelOptions,messageId);
 }
