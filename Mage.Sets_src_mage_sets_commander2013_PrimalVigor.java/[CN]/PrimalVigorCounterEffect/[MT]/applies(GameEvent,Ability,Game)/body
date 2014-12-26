@@ -1,9 +1,7 @@
 {
-  if (event.getType() == GameEvent.EventType.ADD_COUNTERS) {
-    Permanent target=game.getPermanent(event.getTargetId());
-    if (target != null && filter.match(target,game) && event.getData() != null && event.getData().equals("+1/+1")) {
-      return true;
-    }
+  Permanent target=game.getPermanent(event.getTargetId());
+  if (target != null && target.getCardType().contains(CardType.CREATURE) && event.getData() != null && event.getData().equals("+1/+1")) {
+    return true;
   }
   return false;
 }
