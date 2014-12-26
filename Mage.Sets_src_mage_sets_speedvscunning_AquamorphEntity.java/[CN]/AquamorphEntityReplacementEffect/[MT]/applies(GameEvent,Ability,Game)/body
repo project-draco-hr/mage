@@ -1,0 +1,16 @@
+{
+  if (event.getType() == EventType.ENTERS_THE_BATTLEFIELD) {
+    if (event.getTargetId().equals(source.getSourceId())) {
+      Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+      if (sourcePermanent != null && !sourcePermanent.isFaceDown()) {
+        return true;
+      }
+    }
+  }
+  if (event.getType().equals(EventType.TURNFACEUP)) {
+    if (event.getTargetId().equals(source.getSourceId())) {
+      return true;
+    }
+  }
+  return false;
+}

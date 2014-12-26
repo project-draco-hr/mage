@@ -1,0 +1,36 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    Choice choice=new ChoiceImpl(true);
+    choice.setMessage("Choose what the creature becomes to");
+    choice.getChoices().add(choice51);
+    choice.getChoices().add(choice15);
+    Player controller=game.getPlayer(source.getControllerId());
+    if (controller != null) {
+      while (!choice.isChosen()) {
+        controller.choose(Outcome.Neutral,choice,game);
+        if (!controller.isInGame()) {
+          return false;
+        }
+      }
+    }
+    MageObject mageObject;
+    if (permanent instanceof PermanentCard) {
+      mageObject=((PermanentCard)permanent).getCard();
+    }
+ else {
+      mageObject=((PermanentToken)permanent).getToken();
+    }
+switch (choice.getChoice()) {
+case choice51:
+      mageObject.getPower().setValue(5);
+    mageObject.getToughness().setValue(1);
+  break;
+case choice15:
+mageObject.getPower().setValue(1);
+mageObject.getToughness().setValue(5);
+break;
+}
+}
+return false;
+}
