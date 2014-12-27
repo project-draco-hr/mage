@@ -1,12 +1,17 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    Permanent copyFromCreature=game.getPermanentOrLKIBattlefield(source.getFirstTarget());
-    if (copyFromCreature != null) {
-      for (      UUID copyToId : source.getTargets().get(1).getTargets()) {
-        Permanent copyToCreature=game.getPermanent(copyToId);
-        if (copyToCreature != null) {
-          game.copyPermanent(Duration.EndOfTurn,copyFromCreature,copyToCreature,source,new EmptyApplyToPermanent());
+    Target target=new TargetCreaturePermanent(new FilterCreaturePermanent(""));
+    target.setNotTarget(true);
+    target.setTargetName("a creature on the battlefield (creature to copy)");
+    if (target.canChoose(source.getId(),controller.getId(),game) && controller.chooseTarget(outcome,target,source,game)) {
+      Permanent copyFromCreature=game.getPermanent(target.getFirstTarget());
+      if (copyFromCreature != null) {
+        for (        UUID copyToId : getTargetPointer().getTargets(game,source)) {
+          Permanent copyToCreature=game.getPermanent(copyToId);
+          if (copyToCreature != null) {
+            game.copyPermanent(Duration.EndOfTurn,copyFromCreature,copyToCreature,source,new EmptyApplyToPermanent());
+          }
         }
       }
     }
