@@ -1,0 +1,24 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",6);
+  addCard(Zone.HAND,playerA,"Gilded Drake");
+  addCard(Zone.HAND,playerA,"Polymorphous Rush");
+  addCard(Zone.BATTLEFIELD,playerB,"Manta Riders");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Gilded Drake");
+  addTarget(playerA,"Silvercoat Lion");
+  castSpell(1,PhaseStep.BEGIN_COMBAT,playerA,"Polymorphous Rush","Silvercoat Lion");
+  addTarget(playerA,"Manta Riders");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"{U}: {this} gains Flying until end of turn.");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerB,"Gilded Drake",1);
+  assertGraveyardCount(playerA,"Polymorphous Rush",1);
+  assertPermanentCount(playerB,"Silvercoat Lion",0);
+  assertPermanentCount(playerA,"Silvercoat Lion",0);
+  assertPermanentCount(playerB,"Manta Riders",1);
+  assertPermanentCount(playerA,"Manta Riders",1);
+  Permanent controlledMantas=getPermanent("Manta Riders",playerA.getId());
+  Assert.assertTrue("Manta Riders should have flying ability",controlledMantas.getAbilities().contains(FlyingAbility.getInstance()));
+}
