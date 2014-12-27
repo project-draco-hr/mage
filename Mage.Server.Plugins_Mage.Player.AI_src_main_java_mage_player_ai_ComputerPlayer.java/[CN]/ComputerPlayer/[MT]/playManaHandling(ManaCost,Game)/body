@@ -1,0 +1,65 @@
+{
+  ManaCost cost;
+  List<Permanent> producers;
+  if (unpaid instanceof ManaCosts) {
+    cost=((ManaCosts<ManaCost>)unpaid).get(0);
+    producers=getSortedProducers((ManaCosts)unpaid,game);
+  }
+ else {
+    cost=unpaid;
+    producers=this.getAvailableManaProducers(game);
+    producers.addAll(this.getAvailableManaProducersWithCost(game));
+  }
+  for (  Permanent perm : producers) {
+    for (    ManaAbility ability : perm.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
+      if (cost instanceof ColoredManaCost) {
+        for (        Mana netMana : ability.getNetMana(game)) {
+          if (cost.testPay(netMana)) {
+            if (activateAbility(ability,game)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    for (    ManaAbility ability : perm.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
+      if (cost instanceof HybridManaCost) {
+        for (        Mana netMana : ability.getNetMana(game)) {
+          if (cost.testPay(netMana)) {
+            if (activateAbility(ability,game)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    for (    ManaAbility ability : perm.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
+      if (cost instanceof MonoHybridManaCost) {
+        for (        Mana netMana : ability.getNetMana(game)) {
+          if (cost.testPay(netMana)) {
+            if (activateAbility(ability,game)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    for (    ManaAbility ability : perm.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
+      if (cost instanceof GenericManaCost) {
+        for (        Mana netMana : ability.getNetMana(game)) {
+          if (cost.testPay(netMana)) {
+            if (activateAbility(ability,game)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+  }
+  if (cost instanceof PhyrexianManaCost) {
+    if (cost.pay(null,game,null,playerId,false)) {
+      return true;
+    }
+  }
+  return false;
+}
