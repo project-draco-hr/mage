@@ -1,0 +1,12 @@
+{
+  if (!useTimeout) {
+    return;
+  }
+  cancelTimeout();
+  futureTimeout=timeoutIdleExecutor.schedule(new Runnable(){
+    @Override public void run(){
+      idleTimeout(playerId);
+    }
+  }
+,Main.isTestMode() ? 3600 : ConfigSettings.getInstance().getMaxSecondsIdle(),TimeUnit.SECONDS);
+}

@@ -3,6 +3,7 @@
   if (game.getPlayer(playerId).isGameUnderControl()) {
     if (game.getPriorityPlayerId() == null || game.getPriorityPlayerId().equals(playerId)) {
       if (gameSessions.containsKey(playerId)) {
+        cancelTimeout();
         command.execute(playerId);
       }
     }
@@ -11,6 +12,7 @@
       if (player != null) {
         for (        UUID controlled : player.getPlayersUnderYourControl()) {
           if (gameSessions.containsKey(controlled) && game.getPriorityPlayerId().equals(controlled)) {
+            cancelTimeout();
             command.execute(controlled);
           }
         }

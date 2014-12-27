@@ -1,6 +1,7 @@
 {
   if (game.getPlayer(playerId).isGameUnderControl()) {
     if (gameSessions.containsKey(playerId)) {
+      setupTimeout(playerId);
       command.execute(playerId);
     }
     if (informOthers) {
@@ -11,6 +12,7 @@
     List<UUID> players=Splitter.split(game,playerId);
     for (    UUID uuid : players) {
       if (gameSessions.containsKey(uuid)) {
+        setupTimeout(uuid);
         command.execute(uuid);
       }
     }
