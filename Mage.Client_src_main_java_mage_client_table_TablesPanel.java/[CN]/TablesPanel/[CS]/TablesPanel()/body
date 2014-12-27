@@ -25,7 +25,7 @@
       UUID gameId=(UUID)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN + 2);
       String action=(String)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN);
       String deckType=(String)tableModel.getValueAt(modelRow,TableTableModel.COLUMN_DECK_TYPE);
-      String info=(String)tableModel.getValueAt(modelRow,TableTableModel.COLUMN_INFO);
+      String status=(String)tableModel.getValueAt(modelRow,TableTableModel.COLUMN_STATUS);
       boolean isTournament=(Boolean)tableModel.getValueAt(modelRow,TableTableModel.ACTION_COLUMN + 1);
       String owner=(String)tableModel.getValueAt(modelRow,1);
 switch (action) {
@@ -55,7 +55,7 @@ case "Join":
       if (isTournament) {
         logger.info("Joining tournament " + tableId);
         if (deckType.startsWith("Limited")) {
-          if (!info.startsWith("PW")) {
+          if (!status.endsWith("PW")) {
             session.joinTournamentTable(roomId,tableId,session.getUserName(),"Human",1,null,"");
           }
  else {
