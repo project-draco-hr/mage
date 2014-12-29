@@ -5,10 +5,10 @@
   this.color.setBlue(true);
   this.power=new MageInt(4);
   this.toughness=new MageInt(3);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new CantAttackUnlessDefenderControllsPermanent(filter)));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new CantAttackUnlessDefenderControllsPermanent(new FilterLandPermanent("Island","an Island"))));
   Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BecomesBasicLandTargetEffect(Duration.EndOfTurn,"Island"),new ManaCostsImpl("{U}"));
   Target target=new TargetLandPermanent();
   ability.addTarget(target);
-  ability.addCost(new SacrificeTargetCost(new TargetControlledPermanent(1,1,filter,true)));
+  ability.addCost(new SacrificeTargetCost(new TargetControlledPermanent(1,1,new FilterLandPermanent("Island","an Island"),true)));
   this.addAbility(ability);
 }
