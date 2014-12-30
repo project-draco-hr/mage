@@ -1,0 +1,22 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    List<Card> cards=controller.getLibrary().getTopCards(game,amount);
+    for (    Card card : cards) {
+      card.setFaceDown(true);
+      controller.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+      ManaCosts manaCosts=null;
+      if (card.getCardType().contains(CardType.CREATURE)) {
+        manaCosts=card.getSpellAbility().getManaCosts();
+        if (manaCosts == null) {
+          manaCosts=new ManaCostsImpl("{0}");
+        }
+      }
+      ContinuousEffect effect=new BecomesFaceDownCreatureEffect(manaCosts,true,Duration.Custom);
+      effect.setTargetPointer(new FixedTarget(card.getId()));
+      game.addEffect(effect,source);
+    }
+    return true;
+  }
+  return false;
+}

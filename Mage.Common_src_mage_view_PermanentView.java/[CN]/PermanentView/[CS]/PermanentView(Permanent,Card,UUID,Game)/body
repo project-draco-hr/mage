@@ -74,6 +74,14 @@
     }
  else {
       if (controlled && card != null) {
+        for (        Ability permanentAbility : permanent.getAbilities()) {
+          if (permanentAbility instanceof TurnFaceUpAbility && !permanentAbility.getRuleVisible()) {
+            this.rules.add(permanentAbility.getRule(true));
+          }
+          if (permanentAbility.getWorksFaceDown()) {
+            this.rules.add(permanentAbility.getRule());
+          }
+        }
         this.name=card.getName();
         this.displayName=card.getName();
       }
