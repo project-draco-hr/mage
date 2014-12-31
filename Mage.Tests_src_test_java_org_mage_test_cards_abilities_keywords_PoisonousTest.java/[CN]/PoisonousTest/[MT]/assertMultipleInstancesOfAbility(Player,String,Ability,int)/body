@@ -1,0 +1,19 @@
+{
+  int permanentCount=0;
+  Permanent found=null;
+  for (  Permanent permanent : currentGame.getBattlefield().getAllActivePermanents(player.getId())) {
+    if (permanent.getName().equals(cardName)) {
+      found=permanent;
+      permanentCount++;
+    }
+  }
+  Assert.assertNotNull("There is no such permanent under player's control, player=" + player.getName() + ", cardName="+ cardName,found);
+  Assert.assertTrue("There is more than one such permanent under player's control, player=" + player.getName() + ", cardName="+ cardName,permanentCount == 1);
+  int abilityCount=0;
+  for (  Ability existingAbility : found.getAbilities()) {
+    if (existingAbility.getRule().equals(ability.getRule())) {
+      abilityCount++;
+    }
+  }
+  Assert.assertEquals("Ability count mismatch (" + ability.getRule() + "). Expected "+ count+ ", got "+ abilityCount,count,abilityCount);
+}
