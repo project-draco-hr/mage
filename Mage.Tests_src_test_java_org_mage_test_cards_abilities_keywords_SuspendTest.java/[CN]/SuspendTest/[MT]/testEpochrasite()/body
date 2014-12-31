@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.HAND,playerA,"Epochrasite",1);
+  addCard(Zone.HAND,playerB,"Lightning Bolt",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Epochrasite");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Lightning Bolt","Epochrasite");
+  setStopAt(7,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertPermanentCount(playerA,"Epochrasite",1);
+  assertPowerToughness(playerA,"Epochrasite",4,4);
+}
