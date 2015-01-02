@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Card card=controller.getLibrary().getFromTop(game);
+    if (card != null) {
+      controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.LIBRARY);
+      if (game.getState().getZone(card.getId()) == Zone.EXILED) {
+        ContinuousEffect effect=new CastFromNonHandZoneTargetEffect(Duration.EndOfTurn);
+        effect.setTargetPointer(new FixedTarget(card.getId()));
+        game.addEffect(effect,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}
