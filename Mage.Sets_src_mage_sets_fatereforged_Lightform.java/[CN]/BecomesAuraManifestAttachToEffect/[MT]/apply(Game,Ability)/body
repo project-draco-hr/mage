@@ -1,0 +1,20 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (controller != null && enchantment != null) {
+    Card card=controller.getLibrary().getFromTop(game);
+    if (card != null) {
+      new ManifestEffect(1).apply(game,source);
+      Permanent enchantedCreature=game.getPermanent(card.getId());
+      if (enchantedCreature != null) {
+        enchantedCreature.addAttachment(enchantment.getId(),game);
+        FilterCreaturePermanent filter=new FilterCreaturePermanent();
+        Target target=new TargetCreaturePermanent(filter);
+        target.addTarget(enchantedCreature.getId(),source,game);
+        game.addEffect(new BecomesAuraEffect(target),source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

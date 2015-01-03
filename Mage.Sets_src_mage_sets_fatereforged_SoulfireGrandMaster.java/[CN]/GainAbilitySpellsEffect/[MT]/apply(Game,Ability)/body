@@ -1,0 +1,24 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (player != null && permanent != null) {
+    for (Iterator<StackObject> iterator=game.getStack().iterator(); iterator.hasNext(); ) {
+      StackObject stackObject=iterator.next();
+      if (stackObject instanceof Spell && filter.match(stackObject,source.getControllerId(),game)) {
+        Spell spell=(Spell)stackObject;
+        Card card=spell.getCard();
+        if (card != null) {
+          if (!card.getAbilities().contains(ability)) {
+            card.addAbility(ability);
+            SoulfireGrandMasterLeavesStackWatcher watcher=(SoulfireGrandMasterLeavesStackWatcher)game.getState().getWatchers().get("SoulfireGrandMasterLeavesStackWatcher");
+            if (watcher != null) {
+              watcher.addCardId(card.getId());
+            }
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

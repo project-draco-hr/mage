@@ -1,0 +1,15 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && cardIds.contains(event.getTargetId())) {
+    Card card=game.getCard(event.getTargetId());
+    if (card != null) {
+      Iterator<Ability> it=card.getAbilities().iterator();
+      while (it.hasNext()) {
+        if (it.next() instanceof LifelinkAbility) {
+          it.remove();
+          break;
+        }
+      }
+      cardIds.remove(event.getTargetId());
+    }
+  }
+}
