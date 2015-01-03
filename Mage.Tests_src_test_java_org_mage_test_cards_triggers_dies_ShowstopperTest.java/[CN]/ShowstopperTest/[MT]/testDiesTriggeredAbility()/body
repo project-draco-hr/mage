@@ -1,0 +1,17 @@
+{
+  addCard(Zone.HAND,playerA,"Showstopper");
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.HAND,playerA,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerB,"Ornithopter",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Showstopper");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Lightning Bolt","Silvercoat Lion");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Showstopper",1);
+  assertGraveyardCount(playerA,"Silvercoat Lion",1);
+  assertGraveyardCount(playerB,"Ornithopter",1);
+}

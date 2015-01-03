@@ -1,14 +1,17 @@
 {
   if (this.affectedObjectsSet) {
     for (Iterator<MageObjectReference> it=affectedObjectList.iterator(); it.hasNext(); ) {
-      Permanent perm=it.next().getPermanent(game);
+      Permanent perm=it.next().getPermanentOrLKIBattlefield(game);
       if (perm != null) {
         for (        Ability abilityToAdd : ability) {
-          perm.addAbility(abilityToAdd,source.getSourceId(),game);
+          perm.addAbility(abilityToAdd,source.getSourceId(),game,false);
         }
       }
  else {
         it.remove();
+        if (affectedObjectList.isEmpty()) {
+          discard();
+        }
       }
     }
   }
@@ -16,7 +19,7 @@
     for (    Permanent perm : game.getBattlefield().getAllActivePermanents(filter,source.getControllerId(),game)) {
       if (!(excludeSource && perm.getId().equals(source.getSourceId()))) {
         for (        Ability abilityToAdd : ability) {
-          perm.addAbility(abilityToAdd,source.getSourceId(),game);
+          perm.addAbility(abilityToAdd,source.getSourceId(),game,false);
         }
       }
     }
