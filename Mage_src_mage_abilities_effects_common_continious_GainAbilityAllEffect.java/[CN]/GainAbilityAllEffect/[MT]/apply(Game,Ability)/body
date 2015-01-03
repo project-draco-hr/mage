@@ -1,12 +1,15 @@
 {
   if (this.affectedObjectsSet) {
     for (Iterator<MageObjectReference> it=affectedObjectList.iterator(); it.hasNext(); ) {
-      Permanent permanent=it.next().getPermanent(game);
+      Permanent permanent=it.next().getPermanentOrLKIBattlefield(game);
       if (permanent != null) {
         permanent.addAbility(ability,source.getSourceId(),game);
       }
  else {
         it.remove();
+        if (affectedObjectList.isEmpty()) {
+          discard();
+        }
       }
     }
   }
