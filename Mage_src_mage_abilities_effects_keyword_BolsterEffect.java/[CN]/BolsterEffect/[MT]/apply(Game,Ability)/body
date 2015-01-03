@@ -1,6 +1,9 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
+    if (amount.calculate(game,source,this) <= 0) {
+      return true;
+    }
     int leastToughness=Integer.MAX_VALUE;
     Permanent selectedCreature=null;
     for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),controller.getId(),game)) {
@@ -23,7 +26,7 @@
         }
       }
       if (selectedCreature != null) {
-        Effect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance(amount));
+        Effect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance(amount.calculate(game,source,this)));
         effect.setTargetPointer(new FixedTarget(selectedCreature.getId()));
         return effect.apply(game,source);
       }
