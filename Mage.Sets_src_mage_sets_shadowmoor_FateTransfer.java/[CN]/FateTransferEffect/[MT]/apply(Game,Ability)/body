@@ -1,0 +1,14 @@
+{
+  Permanent creatureToMoveCountersFrom=game.getPermanent(source.getTargets().get(0).getFirstTarget());
+  Permanent creatureToMoveCountersTo=game.getPermanent(source.getTargets().get(1).getFirstTarget());
+  if (creatureToMoveCountersFrom != null && creatureToMoveCountersTo != null) {
+    Permanent copyCreature=creatureToMoveCountersFrom.copy();
+    for (    Counter counter : copyCreature.getCounters().values()) {
+      Counter newCounterTest=new Counter(counter.getName(),counter.getCount());
+      creatureToMoveCountersFrom.removeCounters(newCounterTest,game);
+      creatureToMoveCountersTo.addCounters(newCounterTest,game);
+    }
+    return true;
+  }
+  return false;
+}
