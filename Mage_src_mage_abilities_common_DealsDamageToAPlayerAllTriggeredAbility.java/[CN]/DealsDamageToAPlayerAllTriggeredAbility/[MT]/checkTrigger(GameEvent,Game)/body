@@ -2,14 +2,21 @@
   if (event.getType() == EventType.DAMAGED_PLAYER && (!onlyCombat || ((DamagedPlayerEvent)event).isCombatDamage())) {
     Permanent permanent=game.getPermanent(event.getSourceId());
     if (permanent != null && filter.match(permanent,sourceId,controllerId,game)) {
-      if (setTargetPointer) {
+      if (!setTargetPointer.equals(SetTargetPointer.NONE)) {
         for (        Effect effect : this.getEffects()) {
           effect.setValue("damage",event.getAmount());
-          effect.setTargetPointer(new FixedTarget(permanent.getControllerId()));
-        }
-      }
-      return true;
-    }
+switch (setTargetPointer) {
+case PLAYER:
+            effect.setTargetPointer(new FixedTarget(permanent.getControllerId()));
+          break;
+case PERMANENT:
+        effect.setTargetPointer(new FixedTarget(permanent.getId()));
+      break;
   }
-  return false;
+}
+}
+return true;
+}
+}
+return false;
 }
