@@ -1,7 +1,7 @@
 {
   if (canActivate(this.controllerId,game)) {
     if (super.activate(game,noMana)) {
-      ActivationInfo activationInfo=(ActivationInfo)game.getState().getValue(CardUtil.getCardZoneString("activations",sourceId,game));
+      ActivationInfo activationInfo=getActivationInfo(game);
       if (activationInfo == null) {
         activationInfo=new ActivationInfo(game.getTurnNum(),1);
       }
@@ -14,7 +14,7 @@
           activationInfo.activationCounter++;
         }
       }
-      game.getState().setValue(CardUtil.getCardZoneString("activations",sourceId,game),activationInfo);
+      setActivationInfo(activationInfo,game);
       return true;
     }
   }
