@@ -24,7 +24,9 @@
         User user=UserManager.getInstance().getUser(userId);
         if (user != null) {
           ChatManager.getInstance().broadcast(chatId,user.getName(),"has left the table",ChatMessage.MessageColor.BLUE,true,ChatMessage.MessageType.STATUS,ChatMessage.SoundToPlay.PlayerLeft);
-          user.removeTable(playerId);
+          if (!table.isTournamentSubTable()) {
+            user.removeTable(playerId);
+          }
         }
  else {
           logger.debug("User not found - userId: " + userId + " tableId:"+ table.getId());
