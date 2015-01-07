@@ -1,0 +1,15 @@
+{
+  addCard(Zone.GRAVEYARD,playerA,"Sepulchral Primordial",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Feldon of the Third Path",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
+  addCard(Zone.GRAVEYARD,playerB,"Silvercoat Lion",1);
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerA,"{2}{R},{T}: Put a token onto the battlefield that's a copy of target creature card in your graveyard, except it's an artifact in addition to its other types. It gains haste. Sacrifice it at the beginning of the next end step.","Sepulchral Primordial");
+  addTarget(playerA,"Silvercoat Lion");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerA,"Feldon of the Third Path",1);
+  assertPermanentCount(playerA,"Sepulchral Primordial",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+}
