@@ -1,0 +1,15 @@
+{
+  if (ability instanceof SpellAbility) {
+    Player player=game.getPlayer(controllerId);
+    if (player != null) {
+      this.resetConspire();
+      if (player.chooseUse(Outcome.Benefit,new StringBuilder("Pay ").append(conspireCost.getText(false)).append(" ?").toString(),game)) {
+        conspireCost.activate();
+        for (Iterator it=((Costs)conspireCost).iterator(); it.hasNext(); ) {
+          Cost cost=(Cost)it.next();
+          ability.getCosts().add(cost.copy());
+        }
+      }
+    }
+  }
+}
