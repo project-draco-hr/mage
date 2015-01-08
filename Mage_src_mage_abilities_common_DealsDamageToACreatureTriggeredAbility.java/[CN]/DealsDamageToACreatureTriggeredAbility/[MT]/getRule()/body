@@ -1,3 +1,15 @@
 {
-  return new StringBuilder("Whenever {this} deals ").append(combatOnly ? "combat " : "").append("damage to a creature, ").append(super.getRule()).toString();
+  StringBuilder sb=new StringBuilder("Whenever {this} deals ");
+  if (combatOnly) {
+    sb.append("combat ");
+  }
+  sb.append("damage to ");
+  if (filter == null) {
+    sb.append("a creature, ");
+  }
+ else {
+    sb.append(filter.getMessage());
+  }
+  sb.append(super.getRule());
+  return sb.toString();
 }

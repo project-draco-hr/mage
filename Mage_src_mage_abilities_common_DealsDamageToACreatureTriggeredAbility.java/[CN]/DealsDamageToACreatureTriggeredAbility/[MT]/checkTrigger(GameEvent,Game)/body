@@ -1,6 +1,12 @@
 {
   if (event.getType() == EventType.DAMAGED_CREATURE) {
     if (event.getSourceId().equals(this.sourceId) && (!combatOnly || ((DamagedCreatureEvent)event).isCombatDamage())) {
+      if (filter != null) {
+        Permanent creature=game.getPermanentOrLKIBattlefield(event.getTargetId());
+        if (creature == null || !filter.match(creature,getSourceId(),getControllerId(),game)) {
+          return false;
+        }
+      }
       if (setTargetPointer) {
         for (        Effect effect : this.getEffects()) {
           effect.setTargetPointer(new FixedTarget(event.getTargetId()));

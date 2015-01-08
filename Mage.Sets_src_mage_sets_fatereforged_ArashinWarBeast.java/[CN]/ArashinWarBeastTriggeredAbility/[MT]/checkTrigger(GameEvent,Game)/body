@@ -1,0 +1,14 @@
+{
+  if (event.getType() == EventType.DAMAGED_CREATURE && event.getSourceId().equals(this.sourceId) && ((DamagedCreatureEvent)event).isCombatDamage() && !usedForCombatDamageStep) {
+    Permanent creature=game.getPermanentOrLKIBattlefield(event.getTargetId());
+    if (creature == null || !filter.match(creature,getSourceId(),getControllerId(),game)) {
+      return false;
+    }
+    usedForCombatDamageStep=true;
+    return true;
+  }
+  if (event.getType() == EventType.COMBAT_DAMAGE_STEP_POST) {
+    usedForCombatDamageStep=false;
+  }
+  return false;
+}
