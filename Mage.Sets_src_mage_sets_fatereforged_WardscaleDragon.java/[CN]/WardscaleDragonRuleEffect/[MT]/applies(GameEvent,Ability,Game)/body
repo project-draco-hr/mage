@@ -1,0 +1,9 @@
+{
+  if (event.getType() == GameEvent.EventType.CAST_SPELL) {
+    Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+    if (sourcePermanent != null && sourcePermanent.isAttacking()) {
+      return event.getPlayerId() == game.getCombat().getDefendingPlayerId(sourcePermanent.getId(),game);
+    }
+  }
+  return false;
+}
