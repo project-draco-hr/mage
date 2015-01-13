@@ -12,12 +12,14 @@
   if (!CardUtil.isCheckPlayableMode(ability) && player.chooseUse(Outcome.Detriment,"Delve cards from your graveyard?",game)) {
     player.chooseTarget(Outcome.Detriment,target,ability,game);
     if (target.getTargets().size() > 0) {
+      delvedCards=new ArrayList<>();
       int adjCost=0;
       for (      UUID cardId : target.getTargets()) {
         Card card=game.getCard(cardId);
         if (card == null) {
           continue;
         }
+        delvedCards.add(card);
         player.moveCardToExileWithInfo(card,null,"",getSourceId(),game,Zone.GRAVEYARD);
         ++adjCost;
       }
