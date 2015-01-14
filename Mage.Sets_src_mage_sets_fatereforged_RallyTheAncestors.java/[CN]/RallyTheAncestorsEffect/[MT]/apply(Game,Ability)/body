@@ -1,0 +1,22 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    int xValue=source.getManaCostsToPay().getX();
+    FilterCreatureCard filter=new FilterCreatureCard();
+    filter.add(new ConvertedManaCostPredicate(ComparisonType.LessThan,xValue + 1));
+    Set<Card> cards=player.getGraveyard().getCards(filter,game);
+    for (    Card card : cards) {
+      if (card != null) {
+        player.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId());
+        Effect exileEffect=new ExileTargetEffect();
+        exileEffect.setTargetPointer(new FixedTarget(card.getId()));
+        DelayedTriggeredAbility delayedAbility=new AtTheBeginOfYourNextUpkeepDelayedTriggeredAbility(exileEffect);
+        delayedAbility.setSourceId(source.getSourceId());
+        delayedAbility.setControllerId(source.getControllerId());
+        game.addDelayedTriggeredAbility(delayedAbility);
+      }
+    }
+    return true;
+  }
+  return false;
+}
