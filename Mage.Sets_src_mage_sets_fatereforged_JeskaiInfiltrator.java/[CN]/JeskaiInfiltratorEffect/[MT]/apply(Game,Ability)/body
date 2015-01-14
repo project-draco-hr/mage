@@ -1,0 +1,48 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    List<Card> cardsToManifest=new ArrayList<>(2);
+    Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+    Card sourceCard=game.getCard(source.getSourceId());
+    if (sourcePermanent != null && sourceCard != null) {
+      sourceCard.setFaceDown(true);
+      player.moveCardToExileWithInfo(sourcePermanent,null,"",source.getSourceId(),game,Zone.BATTLEFIELD);
+      cardsToManifest.add(sourceCard);
+    }
+    if (player.getLibrary().size() > 0) {
+      Card cardFromLibrary=player.getLibrary().removeFromTop(game);
+      cardFromLibrary.setFaceDown(true);
+      player.moveCardToExileWithInfo(cardFromLibrary,null,"",source.getSourceId(),game,Zone.LIBRARY);
+      cardsToManifest.add(cardFromLibrary);
+    }
+    Collections.shuffle(cardsToManifest);
+    for (    Card card : cardsToManifest) {
+      ZoneChangeEvent event=new ZoneChangeEvent(card.getId(),source.getSourceId(),source.getControllerId(),Zone.EXILED,Zone.BATTLEFIELD);
+      if (!game.replaceEvent(event)) {
+        game.getExile().removeCard(card,game);
+        game.rememberLKI(card.getId(),event.getFromZone(),card);
+        PermanentCard permanent=new PermanentCard(card,event.getPlayerId());
+        game.addPermanent(permanent);
+        game.setZone(card.getId(),Zone.BATTLEFIELD);
+        game.setScopeRelevant(true);
+        permanent.entersBattlefield(source.getSourceId(),game,event.getFromZone(),true);
+        game.setScopeRelevant(false);
+        game.applyEffects();
+        game.fireEvent(new ZoneChangeEvent(permanent,event.getPlayerId(),Zone.EXILED,Zone.BATTLEFIELD));
+        ManaCosts<ManaCost> manaCosts=null;
+        if (card.getCardType().contains(CardType.CREATURE)) {
+          manaCosts=card.getSpellAbility().getManaCosts();
+          if (manaCosts == null) {
+            manaCosts=new ManaCostsImpl<>("{0}");
+          }
+        }
+        ContinuousEffect effect=new BecomesFaceDownCreatureEffect(manaCosts,true,Duration.Custom);
+        effect.setTargetPointer(new FixedTarget(card.getId()));
+        game.addEffect(effect,source);
+        game.informPlayers(new StringBuilder(player.getName()).append(" puts facedown card from exile onto the battlefield").toString());
+      }
+    }
+    return true;
+  }
+  return false;
+}
