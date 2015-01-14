@@ -1,0 +1,9 @@
+{
+  int damage=(Integer)this.getValue("damage");
+  if (damage > 0) {
+    FilterPermanent filter=new FilterCreaturePermanent("each other creature");
+    filter.add(Predicates.not(new PermanentIdPredicate(source.getTargets().getFirstTarget())));
+    return new DamageEverythingEffect(damage,filter).apply(game,source);
+  }
+  return false;
+}

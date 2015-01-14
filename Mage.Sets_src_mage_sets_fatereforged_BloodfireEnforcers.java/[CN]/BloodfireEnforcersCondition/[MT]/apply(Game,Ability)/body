@@ -1,0 +1,22 @@
+{
+  boolean instantFound=false;
+  boolean sorceryFound=false;
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    for (    Card card : player.getGraveyard().getCards(game)) {
+      if (card.getCardType().contains(CardType.INSTANT)) {
+        if (sorceryFound) {
+          return true;
+        }
+        instantFound=true;
+      }
+ else       if (card.getCardType().contains(CardType.SORCERY)) {
+        if (instantFound) {
+          return true;
+        }
+        sorceryFound=true;
+      }
+    }
+  }
+  return false;
+}
