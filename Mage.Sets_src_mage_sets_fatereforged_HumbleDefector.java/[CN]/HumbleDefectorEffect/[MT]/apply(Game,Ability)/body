@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent humbleDefector=game.getPermanent(source.getSourceId());
+  if (controller != null) {
+    controller.drawCards(2,game);
+  }
+  Player targetOpponent=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (targetOpponent != null && humbleDefector != null) {
+    ContinuousEffect effect=new HumbleDefectorControlSourceEffect();
+    game.addEffect(effect,source);
+    game.informPlayers(humbleDefector.getName() + " is now controlled by " + targetOpponent.getName());
+    return true;
+  }
+  return false;
+}
