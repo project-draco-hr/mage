@@ -1,0 +1,42 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (controller != null && targetPlayer != null) {
+    ArrayList<Card> cardsToManifest=new ArrayList<>();
+    for (    Card card : targetPlayer.getGraveyard().getCards(new FilterCreatureCard(),game)) {
+      cardsToManifest.add(card);
+      controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.GRAVEYARD);
+      card.setFaceDown(true);
+    }
+    Collections.shuffle(cardsToManifest);
+    game.informPlayers(controller.getName() + " shuffles the face-down pile");
+    for (    Card card : cardsToManifest) {
+      ZoneChangeEvent event=new ZoneChangeEvent(card.getId(),source.getSourceId(),source.getControllerId(),Zone.EXILED,Zone.BATTLEFIELD);
+      if (!game.replaceEvent(event)) {
+        game.getExile().removeCard(card,game);
+        game.rememberLKI(card.getId(),event.getFromZone(),card);
+        PermanentCard permanent=new PermanentCard(card,event.getPlayerId());
+        game.addPermanent(permanent);
+        game.setZone(card.getId(),Zone.BATTLEFIELD);
+        game.setScopeRelevant(true);
+        permanent.entersBattlefield(source.getSourceId(),game,event.getFromZone(),true);
+        game.setScopeRelevant(false);
+        game.applyEffects();
+        game.fireEvent(new ZoneChangeEvent(permanent,event.getPlayerId(),Zone.EXILED,Zone.BATTLEFIELD));
+        ManaCosts<ManaCost> manaCosts=null;
+        if (card.getCardType().contains(CardType.CREATURE)) {
+          manaCosts=card.getSpellAbility().getManaCosts();
+          if (manaCosts == null) {
+            manaCosts=new ManaCostsImpl<>("{0}");
+          }
+        }
+        ContinuousEffect effect=new BecomesFaceDownCreatureEffect(manaCosts,true,Duration.Custom);
+        effect.setTargetPointer(new FixedTarget(card.getId()));
+        game.addEffect(effect,source);
+        game.informPlayers(controller.getName() + " puts facedown card from exile onto the battlefield");
+      }
+    }
+    return true;
+  }
+  return false;
+}
