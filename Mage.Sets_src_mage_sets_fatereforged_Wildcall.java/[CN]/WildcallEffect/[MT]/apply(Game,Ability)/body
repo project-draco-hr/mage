@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Card card=controller.getLibrary().getFromTop(game);
+    if (card != null) {
+      new ManifestEffect(1).apply(game,source);
+      int xValue=source.getManaCostsToPay().getX();
+      if (xValue > 0) {
+        Effect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance(xValue));
+        effect.setTargetPointer(new FixedTarget(card.getId()));
+        return effect.apply(game,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}
