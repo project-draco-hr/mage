@@ -17,13 +17,23 @@
           return false;
         }
       }
-      if (SetTargetPointer.PERMANENT.equals(setTargetPointer)) {
+switch (setTargetPointer) {
+case PERMANENT:
         for (        Effect effect : getEffects()) {
           effect.setTargetPointer(new FixedTarget(permanent.getId()));
         }
-      }
-      return true;
+      break;
+case PLAYER:
+    UUID defendingPlayerId=game.getCombat().getDefendingPlayerId(permanent.getId(),game);
+  if (defendingPlayerId != null) {
+    for (    Effect effect : getEffects()) {
+      effect.setTargetPointer(new FixedTarget(defendingPlayerId));
     }
   }
-  return false;
+break;
+}
+return true;
+}
+}
+return false;
 }
