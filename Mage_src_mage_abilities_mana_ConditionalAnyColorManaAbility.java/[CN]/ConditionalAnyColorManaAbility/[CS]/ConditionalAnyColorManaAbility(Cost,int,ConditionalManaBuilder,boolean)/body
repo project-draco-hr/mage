@@ -1,14 +1,3 @@
 {
-  super(Zone.BATTLEFIELD,new AddConditionalManaOfAnyColorEffect(oneChoice ? 1 : amount,manaBuilder),cost);
-  int choices=amount;
-  if (oneChoice) {
-    for (int i=1; i < amount; i++) {
-      this.addEffect(new AddConditionalManaOfAnyColorEffect(1,manaBuilder));
-    }
-    choices=1;
-  }
-  for (int i=0; i < choices; i++) {
-    this.addChoice(new ChoiceColor());
-  }
-  this.netMana.add(new Mana(0,0,0,0,0,0,amount));
+  this(cost,new StaticValue(amount),manaBuilder,oneChoice);
 }
