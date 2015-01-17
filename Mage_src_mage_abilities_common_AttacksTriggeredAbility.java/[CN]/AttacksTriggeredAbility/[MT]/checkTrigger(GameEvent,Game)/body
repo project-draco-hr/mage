@@ -1,6 +1,16 @@
 {
   if (event.getType() == EventType.DECLARED_ATTACKERS && game.getCombat().getAttackers().contains(this.getSourceId())) {
-    return true;
-  }
-  return false;
+switch (setTargetPointer) {
+case PLAYER:
+      UUID defendingPlayerId=game.getCombat().getDefendingPlayerId(getSourceId(),game);
+    if (defendingPlayerId != null) {
+      for (      Effect effect : getEffects()) {
+        effect.setTargetPointer(new FixedTarget(defendingPlayerId));
+      }
+    }
+  break;
+}
+return true;
+}
+return false;
 }
