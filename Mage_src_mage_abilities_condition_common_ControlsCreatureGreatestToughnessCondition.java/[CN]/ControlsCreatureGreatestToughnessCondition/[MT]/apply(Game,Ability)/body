@@ -1,0 +1,19 @@
+{
+  Set<UUID> controllers=new HashSet<>();
+  Integer maxToughness=null;
+  List<Permanent> permanents=game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game);
+  for (  Permanent permanent : permanents) {
+    if (permanent == null) {
+      continue;
+    }
+    int toughness=permanent.getToughness().getValue();
+    if (maxToughness == null || toughness > maxToughness) {
+      maxToughness=permanent.getToughness().getValue();
+      controllers.clear();
+    }
+    if (toughness == maxToughness) {
+      controllers.add(permanent.getControllerId());
+    }
+  }
+  return controllers.contains(source.getControllerId());
+}

@@ -1,13 +1,13 @@
 {
   boolean isMountain=false;
-  Card sourceCard=game.getCard(source.getSourceId());
-  Player player=game.getPlayer(source.getControllerId());
-  if (player == null || sourceCard == null) {
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null || sourceObject == null) {
     return false;
   }
   Cards cards=new CardsImpl();
-  while (player.getLibrary().size() > 0) {
-    Card card=player.getLibrary().removeFromTop(game);
+  while (controller.getLibrary().size() > 0) {
+    Card card=controller.getLibrary().removeFromTop(game);
     if (card != null) {
       cards.add(card);
       if (card.getCardType().contains(CardType.LAND)) {
@@ -21,7 +21,7 @@
       break;
     }
   }
-  player.revealCards(sourceCard.getName(),cards,game);
+  controller.revealCards(sourceObject.getLogName(),cards,game);
   int damage=cards.size();
   if (isMountain == true) {
     damage*=2;
@@ -36,6 +36,6 @@
       targetPlayer.damage(damage,source.getSourceId(),game,false,true);
     }
   }
-  player.putCardsOnBottomOfLibrary(cards,game,source,true);
+  controller.putCardsOnBottomOfLibrary(cards,game,source,true);
   return true;
 }
