@@ -1,0 +1,40 @@
+{
+  Spell spell=(Spell)getValue("TriggeringSpell");
+  if (spell != null) {
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
+      Spell copy=spell.copySpell();
+      copy.setControllerId(source.getControllerId());
+      copy.setCopiedSpell(true);
+      if (permanent.getId().equals(source.getSourceId())) {
+        continue;
+      }
+      boolean legal=true;
+      for (      SpellAbility sa : copy.getSpellAbilities()) {
+        Modes modes=sa.getModes();
+        for (        UUID mode : modes.getSelectedModes()) {
+          for (          Target targetInstance : modes.get(mode).getTargets()) {
+            legal&=targetInstance.canTarget(permanent.getId(),sa,game);
+          }
+        }
+      }
+      if (legal) {
+        for (        SpellAbility sa : copy.getSpellAbilities()) {
+          Modes modes=sa.getModes();
+          for (          UUID mode : modes.getSelectedModes()) {
+            for (            Target targetInstance : modes.get(mode).getTargets()) {
+              int numTargets=targetInstance.getNumberOfTargets();
+              targetInstance.clearChosen();
+              while (numTargets > 0) {
+                targetInstance.add(permanent.getId(),game);
+                numTargets--;
+              }
+            }
+          }
+        }
+        game.getStack().push(copy);
+      }
+    }
+    return true;
+  }
+  return false;
+}
