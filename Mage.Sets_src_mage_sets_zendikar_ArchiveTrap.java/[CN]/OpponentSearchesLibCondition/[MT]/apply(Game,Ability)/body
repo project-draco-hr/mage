@@ -1,0 +1,12 @@
+{
+  ArchiveTrapWatcher watcher=(ArchiveTrapWatcher)game.getState().getWatchers().get("LibrarySearched");
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && watcher != null) {
+    for (    UUID playerId : watcher.getPlayersSearchedLibrary()) {
+      if (game.isOpponent(controller,playerId)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
