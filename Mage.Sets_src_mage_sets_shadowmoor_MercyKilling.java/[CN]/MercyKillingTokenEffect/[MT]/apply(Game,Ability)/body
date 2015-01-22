@@ -1,9 +1,8 @@
 {
-  Permanent permanent=game.getPermanentOrLKIBattlefield(targetPointer.getFirst(game,source));
+  Permanent permanent=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
   if (permanent != null) {
     int power=permanent.getPower().getValue();
-    MercyKillingToken token=new MercyKillingToken();
-    token.putOntoBattlefield(power,game,source.getSourceId(),permanent.getControllerId());
+    return new MercyKillingToken().putOntoBattlefield(power,game,source.getSourceId(),permanent.getControllerId());
   }
-  return true;
+  return false;
 }
