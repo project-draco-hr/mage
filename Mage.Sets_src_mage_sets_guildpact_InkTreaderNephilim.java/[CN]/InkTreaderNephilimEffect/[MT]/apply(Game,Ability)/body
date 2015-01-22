@@ -1,0 +1,57 @@
+{
+  Spell spell=(Spell)getValue("TriggeringSpell");
+  if (spell != null) {
+    Map<UUID,Spell> targetable=new HashMap<>();
+    UUID controller=source.getControllerId();
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(filter,controller,source.getSourceId(),game)) {
+      Spell copy=spell.copySpell();
+      copy.setControllerId(controller);
+      copy.setCopiedSpell(true);
+      if (permanent.getId().equals(source.getSourceId())) {
+        continue;
+      }
+      boolean legal=true;
+      for (      SpellTargetAddress addr : SpellTargetAddress.walk(copy)) {
+        Target targetInstance=addr.getTarget(copy);
+        legal&=targetInstance.canTarget(permanent.getId(),addr.getSpellAbility(copy),game);
+      }
+      if (legal) {
+        for (        SpellTargetAddress addr : SpellTargetAddress.walk(copy)) {
+          Target targetInstance=addr.getTarget(copy);
+          int numTargets=targetInstance.getNumberOfTargets();
+          targetInstance.clearChosen();
+          while (numTargets > 0) {
+            targetInstance.add(permanent.getId(),game);
+            numTargets--;
+          }
+        }
+        targetable.put(permanent.getId(),copy);
+      }
+    }
+    while (targetable.size() > 0) {
+      FilterPermanent filter=new FilterPermanent("creature that spell could target (" + Integer.toString(targetable.size()) + " remaining)");
+      filter.add(new FromSetPredicate(targetable.keySet()));
+      TargetPermanent target=new TargetPermanent(0,1,filter,true);
+      if (target.possibleTargets(controller,game).size() > 1 && target.canChoose(source.getSourceId(),controller,game)) {
+        game.getPlayer(controller).choose(Outcome.Neutral,target,source.getId(),game);
+      }
+      Collection<UUID> chosen=target.getTargets();
+      if (chosen.size() == 0) {
+        chosen=targetable.keySet();
+      }
+      List<UUID> toDelete=new ArrayList<>();
+      for (      UUID chosenId : chosen) {
+        Spell chosenCopy=targetable.get(chosenId);
+        if (chosenCopy != null) {
+          game.getStack().push(chosenCopy);
+          toDelete.add(chosenId);
+        }
+      }
+      for (      UUID id : toDelete) {
+        targetable.remove(id);
+      }
+    }
+    return true;
+  }
+  return false;
+}
