@@ -9,17 +9,14 @@
   filter.add(new CanBeEnchantedPredicate(enchantment));
   Target target=new TargetControlledCreaturePermanent(filter);
   target.setNotTarget(true);
-  if (enchantedCreature != null && controller != null) {
-    enchantedCreature.sacrifice(source.getSourceId(),game);
-    if (target.canChoose(source.getSourceId(),source.getControllerId(),game)) {
-      controller.choose(outcome,target,source.getSourceId(),game);
-      Permanent newCreature=game.getPermanent(target.getFirstTarget());
-      if (newCreature != null && newCreature.addAttachment(enchantment.getId(),game)) {
-        for (        Permanent permanent : game.getBattlefield().getAllActivePermanents(new FilterControlledCreaturePermanent(),controller.getId(),game)) {
-          permanent.untap(game);
-        }
-        game.getState().getTurnMods().add(new TurnMod(source.getControllerId(),TurnPhase.COMBAT,null,false));
+  if (enchantedCreature != null && controller != null && enchantedCreature.sacrifice(source.getSourceId(),game) && target.canChoose(source.getSourceId(),source.getControllerId(),game)) {
+    controller.choose(outcome,target,source.getSourceId(),game);
+    Permanent newCreature=game.getPermanent(target.getFirstTarget());
+    if (newCreature != null && newCreature.addAttachment(enchantment.getId(),game)) {
+      for (      Permanent permanent : game.getBattlefield().getAllActivePermanents(new FilterControlledCreaturePermanent(),controller.getId(),game)) {
+        permanent.untap(game);
       }
+      game.getState().getTurnMods().add(new TurnMod(source.getControllerId(),TurnPhase.COMBAT,null,false));
     }
     return true;
   }
