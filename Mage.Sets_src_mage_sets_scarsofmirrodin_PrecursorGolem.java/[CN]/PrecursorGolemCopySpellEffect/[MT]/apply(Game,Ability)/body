@@ -1,14 +1,14 @@
 {
   Spell spell=game.getStack().getSpell(targetPointer.getFirst(game,source));
   if (spell != null) {
-    SpellAbility sa=spell.getSpellAbility();
     UUID targetedGolem=(UUID)getValue("targetedGolem");
     for (    Permanent permanent : game.getBattlefield().getActivePermanents(filterGolem,source.getControllerId(),source.getSourceId(),game)) {
       if (permanent.getId().equals(targetedGolem)) {
         continue;
       }
       boolean legal=true;
-      for (      Target target : sa.getTargets()) {
+      for (      SpellTargetAddress addr : SpellTargetAddress.walk(spell)) {
+        Target target=addr.getTarget(spell);
         if (!target.canTarget(permanent.getId(),game)) {
           legal=false;
           break;
@@ -18,10 +18,8 @@
         Spell copy=spell.copySpell();
         copy.setControllerId(spell.getControllerId());
         copy.setCopiedSpell(true);
-        for (        Effect effect : copy.getSpellAbility().getEffects()) {
-          effect.setTargetPointer(new FixedTarget(permanent.getId()));
-        }
-        for (        Target target : copy.getSpellAbility().getTargets()) {
+        for (        SpellTargetAddress addr : SpellTargetAddress.walk(copy)) {
+          Target target=addr.getTarget(copy);
           target.clearChosen();
           target.add(permanent.getId(),game);
         }
