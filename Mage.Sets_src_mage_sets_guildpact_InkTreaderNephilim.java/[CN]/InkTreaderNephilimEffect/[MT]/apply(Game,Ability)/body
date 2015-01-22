@@ -29,7 +29,9 @@
       }
     }
     while (targetable.size() > 0) {
-      TargetPermanent target=new TargetPermanent(0,1,new FilterPermanentFromSet("creature that spell could target (" + Integer.toString(targetable.size()) + " remaining)",targetable.keySet()),true);
+      FilterPermanent filter=new FilterPermanent("creature that spell could target (" + Integer.toString(targetable.size()) + " remaining)");
+      filter.add(new FromSetPredicate(targetable.keySet()));
+      TargetPermanent target=new TargetPermanent(0,1,filter,true);
       if (target.possibleTargets(controller,game).size() > 1 && target.canChoose(source.getSourceId(),controller,game)) {
         game.getPlayer(controller).choose(Outcome.Neutral,target,source.getId(),game);
       }
