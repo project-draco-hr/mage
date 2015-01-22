@@ -1,9 +1,14 @@
 {
-  FilterCreaturePermanent filter=new FilterCreaturePermanent();
-  for (  Permanent permanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
-    if (permanent.getTurnsOnBattlefield() == 0) {
-      permanent.addCounters(CounterType.P1P1.createInstance(),game);
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game)) {
+      if (permanent.getTurnsOnBattlefield() == 0) {
+        permanent.addCounters(CounterType.P1P1.createInstance(),game);
+        game.informPlayers(sourceObject.getLogName() + ": " + controller.getName()+ " puts a +1/+1 counter on "+ permanent.getLogName());
+      }
     }
+    return true;
   }
-  return true;
+  return false;
 }
