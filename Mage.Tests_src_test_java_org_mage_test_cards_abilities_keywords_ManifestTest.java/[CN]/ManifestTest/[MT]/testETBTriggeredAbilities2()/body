@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.HAND,playerA,"Soul Summons");
+  addCard(Zone.LIBRARY,playerA,"Doomwake Giant");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  skipInitShuffling();
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Soul Summons");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"face down creature",1);
+  assertPowerToughness(playerA,"face down creature",2,2);
+  assertPermanentCount(playerB,"Silvercoat Lion",1);
+  assertPowerToughness(playerB,"Silvercoat Lion",2,2);
+}
