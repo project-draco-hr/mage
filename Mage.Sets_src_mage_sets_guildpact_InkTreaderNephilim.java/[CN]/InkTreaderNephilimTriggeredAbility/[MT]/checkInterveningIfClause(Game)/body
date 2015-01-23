@@ -3,15 +3,11 @@
   if (spell != null) {
     boolean allTargetsInkTreaderNephilim=true;
     boolean atLeastOneTargetsInkTreaderNephilim=false;
-    for (    SpellAbility sa : spell.getSpellAbilities()) {
-      Modes modes=sa.getModes();
-      for (      UUID mode : modes.getSelectedModes()) {
-        for (        Target targetInstance : modes.get(mode).getTargets()) {
-          for (          UUID target : targetInstance.getTargets()) {
-            allTargetsInkTreaderNephilim&=target.equals(sourceId);
-            atLeastOneTargetsInkTreaderNephilim|=target.equals(sourceId);
-          }
-        }
+    for (    SpellTargetAddress addr : SpellTargetAddress.walk(spell)) {
+      Target targetInstance=addr.getTarget(spell);
+      for (      UUID target : targetInstance.getTargets()) {
+        allTargetsInkTreaderNephilim&=target.equals(sourceId);
+        atLeastOneTargetsInkTreaderNephilim|=target.equals(sourceId);
       }
     }
     if (allTargetsInkTreaderNephilim && atLeastOneTargetsInkTreaderNephilim) {

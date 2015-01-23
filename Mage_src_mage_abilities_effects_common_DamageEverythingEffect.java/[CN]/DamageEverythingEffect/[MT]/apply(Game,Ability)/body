@@ -2,12 +2,12 @@
   int damage=amount.calculate(game,source,this);
   List<Permanent> permanents=game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game);
   for (  Permanent permanent : permanents) {
-    permanent.damage(damage,source.getSourceId(),game,false,true);
+    permanent.damage(damage,damageSource == null ? source.getSourceId() : damageSource,game,false,true);
   }
   for (  UUID playerId : game.getPlayer(source.getControllerId()).getInRange()) {
     Player player=game.getPlayer(playerId);
     if (player != null) {
-      player.damage(damage,source.getSourceId(),game,false,true);
+      player.damage(damage,damageSource == null ? source.getSourceId() : damageSource,game,false,true);
     }
   }
   return true;

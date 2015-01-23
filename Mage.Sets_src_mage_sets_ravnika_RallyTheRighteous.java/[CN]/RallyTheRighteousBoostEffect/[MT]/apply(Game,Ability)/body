@@ -1,14 +1,9 @@
 {
-  Permanent target=game.getPermanent(targetPointer.getFirst(game,source));
-  if (target != null) {
-    ObjectColor color=target.getColor();
-    target.addPower(2);
-    for (    Permanent p : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game)) {
-      if (p.getColor().shares(color) && !p.getId().equals(target.getId())) {
-        p.addPower(2);
-      }
+  for (  MageObjectReference mageObjectReference : affectedObjectList) {
+    Permanent permanent=mageObjectReference.getPermanent(game);
+    if (permanent != null) {
+      permanent.addPower(2);
     }
-    return true;
   }
-  return false;
+  return true;
 }

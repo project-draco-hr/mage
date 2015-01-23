@@ -2,10 +2,7 @@
   if (event.getType() == EventType.TARGET) {
     Permanent permanent=game.getPermanent(event.getTargetId());
     if (permanent != null) {
-      UUID permanentController=permanent.getControllerId();
-      UUID abilityController=ability.getControllerId();
-      UUID sourceController=event.getPlayerId();
-      if (permanent.getCardType().contains(CardType.CREATURE) && permanentController.equals(abilityController) && game.getPlayer(abilityController).hasOpponent(sourceController,game)) {
+      if (permanent.getCardType().contains(CardType.CREATURE) && permanent.getControllerId().equals(ability.getControllerId()) && game.getPlayer(ability.getControllerId()).hasOpponent(event.getPlayerId(),game)) {
         return true;
       }
     }

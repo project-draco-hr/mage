@@ -1,11 +1,8 @@
 {
   if (event instanceof DamagedPlayerEvent) {
     DamagedPlayerEvent damageEvent=(DamagedPlayerEvent)event;
-    Permanent p=game.getPermanent(event.getSourceId());
-    if (damageEvent.isCombatDamage() && p != null && p.getAttachments().contains(this.getSourceId())) {
-      for (      Effect effect : getEffects()) {
-        effect.setTargetPointer(new FixedTarget(p.getId()));
-      }
+    Permanent enchantment=game.getPermanent(getSourceId());
+    if (damageEvent.isCombatDamage() && enchantment != null && enchantment.getAttachedTo().equals(event.getSourceId())) {
       return true;
     }
   }
