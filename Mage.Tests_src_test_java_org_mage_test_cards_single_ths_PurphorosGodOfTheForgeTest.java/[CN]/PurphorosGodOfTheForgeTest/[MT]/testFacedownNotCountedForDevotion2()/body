@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Purphoros, God of the Forge");
+  addCard(Zone.BATTLEFIELD,playerA,"Eidolon of the Great Revel");
+  addCard(Zone.HAND,playerA,"Ashcloud Phoenix");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Ashcloud Phoenix");
+  setChoice(playerA,"Yes");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Ashcloud Phoenix",0);
+  assertPermanentCount(playerA,"face down creature",1);
+  assertLife(playerA,18);
+  assertLife(playerB,18);
+  Permanent purphorosGodOfTheForge=getPermanent("Purphoros, God of the Forge",playerA);
+  Assert.assertFalse("Purphoros may not be a creature but it is",purphorosGodOfTheForge.getCardType().contains(CardType.CREATURE));
+}
