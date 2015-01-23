@@ -1,0 +1,22 @@
+{
+  Spell spell=(Spell)getEffects().get(0).getValue("TriggeringSpell");
+  if (spell != null) {
+    boolean allTargetsInkTreaderNephilim=true;
+    boolean atLeastOneTargetsInkTreaderNephilim=false;
+    for (    SpellAbility spellAbility : spell.getSpellAbilities()) {
+      Modes modesSpell=spellAbility.getModes();
+      for (      UUID mode : modesSpell.getSelectedModes()) {
+        for (        Target targetInstance : modesSpell.get(mode).getTargets()) {
+          for (          UUID target : targetInstance.getTargets()) {
+            allTargetsInkTreaderNephilim&=target.equals(sourceId);
+            atLeastOneTargetsInkTreaderNephilim|=target.equals(sourceId);
+          }
+        }
+      }
+    }
+    if (allTargetsInkTreaderNephilim && atLeastOneTargetsInkTreaderNephilim) {
+      return true;
+    }
+  }
+  return false;
+}

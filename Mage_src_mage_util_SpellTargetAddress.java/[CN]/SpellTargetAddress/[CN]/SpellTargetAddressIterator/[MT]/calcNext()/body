@@ -1,0 +1,44 @@
+{
+  if (targetIterator == null) {
+    if (modeIterator == null) {
+      if (spellAbilityIterator.hasNext()) {
+        if (lastSpellAbilityIndex == null) {
+          lastSpellAbilityIndex=0;
+        }
+ else {
+          lastSpellAbilityIndex++;
+        }
+        modes=spellAbilityIterator.next().getModes();
+        modeIterator=modes.getSelectedModes().iterator();
+      }
+ else {
+        lastSpellAbilityIndex=null;
+        return;
+      }
+    }
+    if (modeIterator != null && modeIterator.hasNext()) {
+      lastMode=modeIterator.next();
+      targetIterator=modes.get(lastMode).getTargets().iterator();
+    }
+ else {
+      lastMode=null;
+      modes=null;
+      modeIterator=null;
+      calcNext();
+    }
+  }
+  if (targetIterator != null && targetIterator.hasNext()) {
+    if (lastTargetIndex == null) {
+      lastTargetIndex=0;
+    }
+ else {
+      lastTargetIndex++;
+    }
+    targetIterator.next();
+  }
+ else {
+    targetIterator=null;
+    lastTargetIndex=null;
+    calcNext();
+  }
+}
