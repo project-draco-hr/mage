@@ -8,14 +8,14 @@
   }
   JLayeredPane battlefieldPanel=(JLayeredPane)component;
   JComponent jPanel=ui.get("jPanel");
-  Row allLands=new Row();
+  Row rowAllLands=new Row();
   outerLoop:   for (  MagePermanent permanent : permanents) {
     if (!CardUtil.isLand(permanent) || CardUtil.isCreature(permanent)) {
       continue;
     }
     int insertIndex=-1;
-    for (int i=0, n=allLands.size(); i < n; i++) {
-      Stack stack=allLands.get(i);
+    for (int i=0, n=rowAllLands.size(); i < n; i++) {
+      Stack stack=rowAllLands.get(i);
       MagePermanent firstPanel=stack.get(0);
       if (firstPanel.getOriginal().getName().equals(permanent.getOriginal().getName())) {
         if (!empty(firstPanel.getOriginalPermanent().getAttachments())) {
@@ -48,17 +48,17 @@
       stack.setMaxAttachedCount(permanent.getOriginalPermanent().getAttachments().size());
     }
     stack.add(permanent);
-    allLands.add(insertIndex == -1 ? allLands.size() : insertIndex,stack);
+    rowAllLands.add(insertIndex == -1 ? rowAllLands.size() : insertIndex,stack);
   }
-  Row allCreatures=new Row(permanents,RowType.creature);
-  Row allOthers=new Row(permanents,RowType.other);
-  Row allAttached=new Row(permanents,RowType.attached);
+  Row rowAllCreatures=new Row(permanents,RowType.creature);
+  Row rowAllOthers=new Row(permanents,RowType.other);
+  Row rowAllAttached=new Row(permanents,RowType.attached);
   boolean othersOnTheRight=true;
   if (options != null && options.containsKey("nonLandPermanentsInOnePile")) {
     if (options.get("nonLandPermanentsInOnePile").equals("true")) {
       othersOnTheRight=false;
-      allCreatures.addAll(allOthers);
-      allOthers.clear();
+      rowAllCreatures.addAll(rowAllOthers);
+      rowAllOthers.clear();
     }
   }
   cardWidth=cardWidthMax;
@@ -74,9 +74,9 @@
     stackSpacingX=stackVertical ? 0 : Math.round(cardWidth * STACK_SPACING_X);
     stackSpacingY=Math.round(cardHeight * STACK_SPACING_Y);
     attachmentSpacingY=Math.round(cardHeight * ATTACHMENT_SPACING_Y);
-    Row creatures=(Row)allCreatures.clone();
-    Row lands=(Row)allLands.clone();
-    Row others=(Row)allOthers.clone();
+    Row creatures=(Row)rowAllCreatures.clone();
+    Row lands=(Row)rowAllLands.clone();
+    Row others=(Row)rowAllOthers.clone();
     wrap(creatures,rows,-1);
     int afterCreaturesIndex=rows.size();
     wrap(lands,rows,afterCreaturesIndex);
@@ -150,7 +150,7 @@
     }
     y=rowBottom;
   }
-  for (  Stack stack : allAttached) {
+  for (  Stack stack : rowAllAttached) {
     for (    MagePermanent panel : stack) {
       panel.setCardBounds(0,0,cardWidth,cardHeight);
     }
