@@ -2,12 +2,13 @@
   super(card.getId(),card.getExpansionSetCode(),card.getCardNumber(),card.isFaceDown(),card.getUsesVariousArt(),card.getTokenSetCode());
   this.morphCard=card.isMorphCard();
   if (card.isFaceDown()) {
+    this.fillEmpty(card,controlled);
     if (card.isMorphCard()) {
-      this.fillEmpty(card,controlled);
       if (card instanceof Spell) {
         if (controlled) {
           this.name=card.getName();
           this.displayName=card.getName();
+          this.alternateName=card.getName();
         }
         this.power="2";
         this.toughness="2";
@@ -17,13 +18,11 @@
     }
  else {
       if (card instanceof Permanent) {
-        this.fillEmpty(card,controlled);
         this.power=Integer.toString(card.getPower().getValue());
         this.toughness=Integer.toString(card.getToughness().getValue());
         this.cardTypes=card.getCardType();
       }
  else {
-        this.fillEmpty(card,false);
         this.hideInfo=true;
         return;
       }

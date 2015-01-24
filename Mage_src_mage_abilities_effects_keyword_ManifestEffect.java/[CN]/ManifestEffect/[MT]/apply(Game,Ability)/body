@@ -5,18 +5,22 @@
     for (    Card card : cards) {
       card.setFaceDown(true);
       controller.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
-      ManaCosts manaCosts=null;
-      if (card.getCardType().contains(CardType.CREATURE)) {
-        manaCosts=card.getSpellAbility().getManaCosts();
-        if (manaCosts == null) {
-          manaCosts=new ManaCostsImpl("{0}");
+      Permanent permanent=game.getPermanent(card.getId());
+      if (permanent != null) {
+        permanent.setManifested(true);
+        ManaCosts manaCosts=null;
+        if (card.getCardType().contains(CardType.CREATURE)) {
+          manaCosts=card.getSpellAbility().getManaCosts();
+          if (manaCosts == null) {
+            manaCosts=new ManaCostsImpl("{0}");
+          }
         }
+        ContinuousEffect effect=new BecomesFaceDownCreatureEffect(manaCosts,true,Duration.Custom,FaceDownType.MANIFESTED);
+        effect.setTargetPointer(new FixedTarget(card.getId()));
+        game.addEffect(effect,source);
       }
-      ContinuousEffect effect=new BecomesFaceDownCreatureEffect(manaCosts,true,Duration.Custom);
-      effect.setTargetPointer(new FixedTarget(card.getId()));
-      game.addEffect(effect,source);
-      game.applyEffects();
     }
+    game.applyEffects();
     return true;
   }
   return false;

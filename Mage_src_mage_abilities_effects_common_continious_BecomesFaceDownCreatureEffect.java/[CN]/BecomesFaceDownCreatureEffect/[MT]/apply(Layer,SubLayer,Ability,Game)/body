@@ -7,12 +7,22 @@
     permanent=game.getPermanent(source.getSourceId());
   }
   if (permanent != null && permanent.isFaceDown()) {
-    foundPermanent=true;
+    if (!foundPermanent) {
+      foundPermanent=true;
+switch (faceDownType) {
+case MANIFESTED:
+        permanent.setManifested(true);
+      break;
+case MORPHED:
+    permanent.setMorphed(true);
+  break;
+}
+}
 switch (layer) {
 case TypeChangingEffects_4:
-      permanent.setName("");
-    permanent.getSupertype().clear();
-  permanent.getCardType().clear();
+permanent.setName("");
+permanent.getSupertype().clear();
+permanent.getCardType().clear();
 permanent.getCardType().add(CardType.CREATURE);
 permanent.getSubtype().clear();
 permanent.getManaCost().clear();
