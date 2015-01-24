@@ -3,12 +3,14 @@
   if (player != null) {
     Card card=player.getLibrary().removeFromTop(game);
     if (card != null) {
-      card.moveToExile(source.getSourceId(),"Omen Machine Exile",source.getSourceId(),game);
+      player.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.LIBRARY);
       if (card.getCardType().contains(CardType.LAND)) {
-        card.putOntoBattlefield(game,Zone.EXILED,source.getSourceId(),player.getId());
+        player.putOntoBattlefieldWithInfo(card,game,Zone.EXILED,source.getSourceId());
       }
  else {
-        player.cast(card.getSpellAbility(),game,true);
+        if (card.getSpellAbility().canChooseTarget(game)) {
+          player.cast(card.getSpellAbility(),game,true);
+        }
       }
     }
     return true;
