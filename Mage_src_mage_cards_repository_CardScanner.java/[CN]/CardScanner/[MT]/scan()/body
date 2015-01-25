@@ -9,6 +9,7 @@
     packages.add(set.getPackageName());
     ExpansionRepository.instance.add(new ExpansionInfo(set));
   }
+  ExpansionRepository.instance.setContentVersion(CardRepository.instance.getContentVersionConstant());
   for (  Class c : ClassScanner.findClasses(packages,CardImpl.class)) {
     if (!CardRepository.instance.cardExists(c.getCanonicalName())) {
       Card card=CardImpl.createCard(c);
@@ -26,4 +27,5 @@
     logger.info("Cards need storing in DB: " + cardsToAdd.size());
     CardRepository.instance.addCards(cardsToAdd);
   }
+  CardRepository.instance.setContentVersion(CardRepository.instance.getContentVersionConstant());
 }

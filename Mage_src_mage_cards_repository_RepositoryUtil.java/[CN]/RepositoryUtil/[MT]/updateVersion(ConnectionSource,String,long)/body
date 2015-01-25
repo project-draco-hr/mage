@@ -1,0 +1,16 @@
+{
+  TableUtils.createTableIfNotExists(connectionSource,DatabaseVersion.class);
+  Dao<DatabaseVersion,Object> dbVersionDao=DaoManager.createDao(connectionSource,DatabaseVersion.class);
+  QueryBuilder<DatabaseVersion,Object> queryBuilder=dbVersionDao.queryBuilder();
+  queryBuilder.where().eq("entity",new SelectArg(entityName));
+  List<DatabaseVersion> dbVersions=dbVersionDao.query(queryBuilder.prepare());
+  if (!dbVersions.isEmpty()) {
+    DeleteBuilder<DatabaseVersion,Object> deleteBuilder=dbVersionDao.deleteBuilder();
+    deleteBuilder.where().eq("entity",new SelectArg(entityName));
+    deleteBuilder.delete();
+  }
+  DatabaseVersion databaseVersion=new DatabaseVersion();
+  databaseVersion.setEntity(entityName);
+  databaseVersion.setVersion(version);
+  dbVersionDao.create(databaseVersion);
+}
