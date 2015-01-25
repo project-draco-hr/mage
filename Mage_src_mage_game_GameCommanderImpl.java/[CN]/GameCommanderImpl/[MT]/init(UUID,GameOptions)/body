@@ -10,15 +10,7 @@
           commander.moveToZone(Zone.COMMAND,null,this,true);
           ability.addEffect(new CommanderReplacementEffect(commander.getId(),alsoLibrary));
           ability.addEffect(new CommanderCostModification(commander.getId()));
-          Mana commanderMana;
-          if (commander.getSpellAbility().getManaCosts() == null) {
-            Logger.getLogger(GameCommanderImpl.class).warn("Got commander without Mana costs: " + commander.getName());
-            commanderMana=new Mana();
-          }
- else {
-            commanderMana=commander.getSpellAbility().getManaCosts().getMana();
-          }
-          ability.addEffect(new CommanderManaReplacementEffect(player.getId(),commanderMana));
+          ability.addEffect(new CommanderManaReplacementEffect(player.getId(),CardUtil.getColorIdentity(commander)));
           getState().setValue(commander.getId() + "_castCount",0);
           CommanderCombatDamageWatcher watcher=new CommanderCombatDamageWatcher(commander.getId());
           getState().getWatchers().add(watcher);
