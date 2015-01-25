@@ -5,5 +5,10 @@
   this.subtype.add("Wizard");
   this.power=new MageInt(1);
   this.toughness=new MageInt(2);
-  this.addAbility(new MagusOfTheCandelabraAbility());
+  Effect effect=new UntapTargetEffect();
+  effect.setText("untap X target lands");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl("{X}"));
+  ability.addCost(new TapSourceCost());
+  originalId=ability.getOriginalId();
+  this.addAbility(ability);
 }
