@@ -3,13 +3,13 @@
   if (enchantment == null) {
     return false;
   }
-  Permanent enchantedCreature=game.getPermanent(enchantment.getAttachedTo());
+  Permanent enchantedCreature=game.getPermanent((UUID)getValue("TriggeringCreatureId"));
   Player controller=game.getPlayer(source.getControllerId());
   FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent("creature you control that could be enchanted by " + enchantment.getName());
   filter.add(new CanBeEnchantedByPredicate(enchantment));
   Target target=new TargetControlledCreaturePermanent(filter);
   target.setNotTarget(true);
-  if (enchantedCreature != null && controller != null && enchantedCreature.sacrifice(source.getSourceId(),game) && target.canChoose(source.getSourceId(),source.getControllerId(),game)) {
+  if (enchantedCreature != null && controller != null && enchantedCreature.sacrifice(source.getSourceId(),game) && target.canChoose(source.getSourceId(),controller.getId(),game)) {
     controller.choose(outcome,target,source.getSourceId(),game);
     Permanent newCreature=game.getPermanent(target.getFirstTarget());
     if (newCreature != null && newCreature.addAttachment(enchantment.getId(),game)) {
