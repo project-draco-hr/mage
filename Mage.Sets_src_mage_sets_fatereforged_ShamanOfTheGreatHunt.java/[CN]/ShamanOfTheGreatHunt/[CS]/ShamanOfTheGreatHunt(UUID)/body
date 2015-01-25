@@ -6,7 +6,9 @@
   this.power=new MageInt(4);
   this.toughness=new MageInt(2);
   this.addAbility(HasteAbility.getInstance());
-  this.addAbility(new DealsDamageToAPlayerAllTriggeredAbility(new AddCountersTargetEffect(CounterType.P1P1.createInstance()),new FilterControlledCreaturePermanent(),false,SetTargetPointer.PERMANENT,true));
+  Effect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance());
+  effect.setText("put a +1/+1 counter on that creature");
+  this.addAbility(new DealsDamageToAPlayerAllTriggeredAbility(effect,new FilterControlledCreaturePermanent("a creature you control"),false,SetTargetPointer.PERMANENT,true));
   DynamicValue amount=new PermanentsOnBattlefieldCount(filter);
   Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DrawCardSourceControllerEffect(amount),new ManaCostsImpl("{2}{G/U}{G/U}"));
   ability.setAbilityWord(AbilityWord.FEROCIOUS);

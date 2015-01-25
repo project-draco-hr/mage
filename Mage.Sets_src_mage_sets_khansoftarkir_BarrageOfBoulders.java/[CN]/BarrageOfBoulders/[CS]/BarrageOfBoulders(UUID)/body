@@ -3,7 +3,7 @@
   this.expansionSetCode="KTK";
   this.color.setRed(true);
   this.getSpellAbility().addEffect(new DamageAllEffect(1,filter));
-  Effect effect=new BarrageOfBouldersCantBlockAllEffect(new FilterCreaturePermanent("creatures"),Duration.EndOfTurn);
-  effect.setText("<br/><br/><i>Ferocious</i> - If you control a creature with power 4 or greater, creatures can't block this turn");
+  Effect effect=new ConditionalRestrictionEffect(Duration.EndOfTurn,new CantBlockAllEffect(new FilterCreaturePermanent("creatures"),Duration.EndOfTurn),new LockedInCondition(FerociousCondition.getInstance()),null);
+  effect.setText("<br/><i>Ferocious</i> &mdash; If you control a creature with power 4 or greater, creatures can't block this turn");
   this.getSpellAbility().addEffect(effect);
 }
