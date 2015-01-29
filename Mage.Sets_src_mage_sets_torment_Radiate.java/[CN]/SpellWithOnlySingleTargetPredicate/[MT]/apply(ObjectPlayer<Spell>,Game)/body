@@ -1,0 +1,19 @@
+{
+  Spell spell=input.getObject();
+  if (spell == null) {
+    return false;
+  }
+  UUID singleTarget=null;
+  for (  TargetAddress addr : TargetAddress.walk(spell)) {
+    Target targetInstance=addr.getTarget(spell);
+    for (    UUID targetId : targetInstance.getTargets()) {
+      if (singleTarget == null) {
+        singleTarget=targetId;
+      }
+ else       if (!singleTarget.equals(targetId)) {
+        return false;
+      }
+    }
+  }
+  return singleTarget != null;
+}
