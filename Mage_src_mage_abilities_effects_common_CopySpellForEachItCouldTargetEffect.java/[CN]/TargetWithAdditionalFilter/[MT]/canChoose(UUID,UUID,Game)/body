@@ -1,0 +1,24 @@
+{
+  int remainingTargets=getNumberOfTargets() - targets.size();
+  if (remainingTargets <= 0) {
+    return true;
+  }
+  int count=0;
+  for (  UUID objId : originalTarget.possibleTargets(sourceId,sourceControllerId,game)) {
+    MageItem obj=game.getObject(objId);
+    if (obj == null) {
+      obj=game.getPlayer(objId);
+    }
+    try {
+      if (!targets.containsKey(objId) && obj != null && additionalFilter.match((T)obj,sourceId,sourceControllerId,game)) {
+        count++;
+        if (count >= remainingTargets) {
+          return true;
+        }
+      }
+    }
+ catch (    ClassCastException e) {
+    }
+  }
+  return false;
+}

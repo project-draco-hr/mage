@@ -1,0 +1,17 @@
+{
+  Set<UUID> ret=new HashSet<>();
+  for (  UUID id : originalTarget.possibleTargets(sourceControllerId,game)) {
+    MageItem obj=game.getObject(id);
+    if (obj == null) {
+      obj=game.getPlayer(id);
+    }
+    try {
+      if (obj != null && additionalFilter.match((T)obj,game)) {
+        ret.add(id);
+      }
+    }
+ catch (    ClassCastException e) {
+    }
+  }
+  return ret;
+}

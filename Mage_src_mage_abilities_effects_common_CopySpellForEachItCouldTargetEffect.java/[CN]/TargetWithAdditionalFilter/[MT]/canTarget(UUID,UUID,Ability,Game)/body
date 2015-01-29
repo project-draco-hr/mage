@@ -1,0 +1,12 @@
+{
+  MageItem obj=game.getObject(id);
+  if (obj == null) {
+    obj=game.getPlayer(id);
+  }
+  try {
+    return obj != null && originalTarget.canTarget(controllerId,id,source,game) && additionalFilter.match((T)obj,source.getSourceId(),controllerId,game);
+  }
+ catch (  ClassCastException e) {
+    return false;
+  }
+}

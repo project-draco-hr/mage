@@ -1,0 +1,108 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  Spell spell=getSpell(game,source);
+  if (spell != null) {
+    Set<TargetAddress> targetsToBeChanged=new HashSet<>();
+    boolean madeACopy=false;
+    for (    TargetAddress addr : TargetAddress.walk(spell)) {
+      Target targetInstance=addr.getTarget(spell);
+      if (targetInstance.getNumberOfTargets() > 1) {
+        throw new UnsupportedOperationException("Changing Target instances with multiple targets is unsupported");
+      }
+      if (changeTarget(targetInstance,game,source)) {
+        targetsToBeChanged.add(addr);
+      }
+    }
+    if (targetsToBeChanged.size() < 1) {
+      return false;
+    }
+    Spell copy=spell.copySpell();
+    copy.setCopiedSpell(true);
+    modifyCopy(copy,game,source);
+    Target sampleTarget=targetsToBeChanged.iterator().next().getTarget(copy);
+    sampleTarget.setNotTarget(true);
+    Map<UUID,Map<UUID,Spell>> playerTargetCopyMap=new HashMap<>();
+    for (    UUID objId : sampleTarget.possibleTargets(controller.getId(),game)) {
+      MageItem obj=game.getObject(objId);
+      if (obj == null) {
+        obj=game.getPlayer(objId);
+      }
+      if (obj != null) {
+        copy=spell.copySpell();
+        copy.setCopiedSpell(true);
+        try {
+          modifyCopy(copy,(T)obj,game,source);
+          if (!filter.match((T)obj,game)) {
+            continue;
+          }
+        }
+ catch (        ClassCastException e) {
+          continue;
+        }
+        boolean legal=true;
+        for (        TargetAddress addr : targetsToBeChanged) {
+          Target targetInstance=addr.getTarget(copy);
+          legal&=targetInstance.canTarget(objId,addr.getSpellAbility(copy),game);
+          if (!legal) {
+            break;
+          }
+          targetInstance=addr.getTarget(spell);
+          legal&=!targetInstance.getTargets().contains(objId);
+          if (!legal) {
+            break;
+          }
+        }
+        if (legal) {
+          for (          TargetAddress addr : targetsToBeChanged) {
+            Target targetInstance=addr.getTarget(copy);
+            targetInstance.clearChosen();
+            targetInstance.add(objId,game);
+          }
+          if (!playerTargetCopyMap.containsKey(copy.getControllerId())) {
+            playerTargetCopyMap.put(copy.getControllerId(),new HashMap<UUID,Spell>());
+          }
+          playerTargetCopyMap.get(copy.getControllerId()).put(objId,copy);
+        }
+      }
+    }
+    for (    Player player : game.getPlayers().values()) {
+      if (playerTargetCopyMap.containsKey(player.getId())) {
+        Map<UUID,Spell> targetCopyMap=playerTargetCopyMap.get(player.getId());
+        if (targetCopyMap != null) {
+          while (targetCopyMap.size() > 0) {
+            FilterInPlay<T> setFilter=filter.copy();
+            setFilter.add(new FromSetPredicate(targetCopyMap.keySet()));
+            Target target=new TargetWithAdditionalFilter(sampleTarget,setFilter);
+            target.setMinNumberOfTargets(0);
+            target.setMaxNumberOfTargets(1);
+            target.setTargetName(filter.getMessage() + " that " + spell.getLogName()+ " could target ("+ targetCopyMap.size()+ " remaining)");
+            if (targetCopyMap.size() > 1 && target.canChoose(spell.getId(),player.getId(),game)) {
+              player.choose(Outcome.Neutral,target,spell.getId(),game);
+            }
+            Collection<UUID> chosenIds=target.getTargets();
+            if (chosenIds.isEmpty()) {
+              chosenIds=targetCopyMap.keySet();
+            }
+            List<UUID> toDelete=new ArrayList<>();
+            for (            UUID chosenId : chosenIds) {
+              Spell chosenCopy=targetCopyMap.get(chosenId);
+              if (chosenCopy != null) {
+                game.getStack().push(chosenCopy);
+                toDelete.add(chosenId);
+                madeACopy=true;
+              }
+            }
+            for (            UUID idToDelete : toDelete) {
+              targetCopyMap.remove(idToDelete);
+            }
+          }
+        }
+      }
+    }
+    return madeACopy;
+  }
+  return false;
+}
