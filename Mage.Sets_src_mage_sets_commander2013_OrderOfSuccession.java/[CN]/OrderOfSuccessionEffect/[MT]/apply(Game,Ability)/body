@@ -3,7 +3,7 @@
   if (controller != null) {
     Map<UUID,UUID> playerCreature=new HashMap<>();
     boolean left=source.getChoices().get(0).getChoice().equals("Left");
-    PlayerList playerList=game.getState().getPlayerList();
+    PlayerList playerList=game.getState().getPlayerList().copy();
     while (!playerList.get().equals(source.getControllerId()) && controller.isInGame()) {
       playerList.getNext();
     }
@@ -17,6 +17,9 @@
       }
       if (firstNextPlayer == null) {
         firstNextPlayer=nextPlayer.getId();
+      }
+      if (!nextPlayer.isInGame()) {
+        continue;
       }
       if (currentPlayer != null && controller.getInRange().contains(currentPlayer.getId())) {
         FilterCreaturePermanent filter=new FilterCreaturePermanent(new StringBuilder("creature controlled by ").append(nextPlayer.getName()).toString());
