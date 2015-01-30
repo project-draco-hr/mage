@@ -1,0 +1,22 @@
+{
+  addCard(Zone.HAND,playerA,"Villainous Wealth");
+  addCard(Zone.HAND,playerA,"Master of Pearls");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Zone.LIBRARY,playerB,"Secret Plans");
+  skipInitShuffling();
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Master of Pearls");
+  setChoice(playerA,"Yes");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Villainous Wealth",playerB);
+  setChoice(playerA,"X=3");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Secret Plans");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Villainous Wealth",1);
+  assertExileCount(playerB,2);
+  assertExileCount("Secret Plans",0);
+  assertPermanentCount(playerA,"Secret Plans",1);
+  assertPermanentCount(playerA,"face down creature",1);
+  assertPowerToughness(playerA,"face down creature",2,3);
+}
