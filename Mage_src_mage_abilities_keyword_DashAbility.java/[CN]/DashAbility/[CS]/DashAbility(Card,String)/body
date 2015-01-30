@@ -3,6 +3,8 @@
   name=KEYWORD;
   this.addDashCost(manaString);
   Ability ability=new EntersBattlefieldAbility(new GainAbilitySourceEffect(HasteAbility.getInstance(),Duration.Custom,false),DashedCondition.getInstance(),false,"","");
-  ability.addEffect(new CreateDelayedTriggeredAbilityEffect(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnToHandSourceEffect(true)),false));
+  Effect effect=new ReturnToHandTargetEffect();
+  effect.setTargetPointer(new FixedTarget(card.getId()));
+  ability.addEffect(new CreateDelayedTriggeredAbilityEffect(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect),false));
   card.addAbility(ability);
 }
