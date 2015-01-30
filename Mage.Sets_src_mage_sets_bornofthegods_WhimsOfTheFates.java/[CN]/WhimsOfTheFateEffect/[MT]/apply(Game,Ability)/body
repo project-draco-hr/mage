@@ -2,7 +2,7 @@
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
     Map<UUID,Map<Integer,Set<UUID>>> playerPermanents=new LinkedHashMap<>();
-    PlayerList playerList=game.getState().getPlayerList();
+    PlayerList playerList=game.getState().getPlayerList().copy();
     while (!playerList.get().equals(source.getControllerId()) && controller.isInGame()) {
       playerList.getNext();
     }
@@ -16,6 +16,9 @@
       }
       if (firstNextPlayer == null) {
         firstNextPlayer=nextPlayer.getId();
+      }
+      if (!nextPlayer.isInGame()) {
+        continue;
       }
       if (currentPlayer != null && controller.getInRange().contains(currentPlayer.getId())) {
         Map<Integer,Set<UUID>> playerPiles=new HashMap<>();
