@@ -9,7 +9,7 @@
       sourceCard.setFaceDown(true);
       cardsToManifest.add(sourceCard);
     }
-    if (player.getLibrary().size() > 0) {
+    if (sourcePermanent != null && player.getLibrary().size() > 0) {
       Card cardFromLibrary=player.getLibrary().removeFromTop(game);
       cardFromLibrary.setFaceDown(true);
       player.moveCardToExileWithInfo(cardFromLibrary,sourcePermanent.getId(),sourcePermanent.getName(),source.getSourceId(),game,Zone.LIBRARY);
@@ -17,8 +17,10 @@
     }
     Collections.shuffle(cardsToManifest);
     game.fireUpdatePlayersEvent();
+    Ability newSource=source.copy();
+    newSource.setWorksFaceDown(true);
     for (    Card card : cardsToManifest) {
-      if (card.moveToZone(Zone.BATTLEFIELD,source.getSourceId(),game,false)) {
+      if (card.moveToZone(Zone.BATTLEFIELD,newSource.getSourceId(),game,false)) {
         game.informPlayers(new StringBuilder(player.getName()).append(" puts facedown card from exile onto the battlefield").toString());
         ManaCosts<ManaCost> manaCosts=null;
         if (card.getCardType().contains(CardType.CREATURE)) {
@@ -29,7 +31,7 @@
         }
         ContinuousEffect effect=new BecomesFaceDownCreatureEffect(manaCosts,true,Duration.Custom,FaceDownType.MANIFESTED);
         effect.setTargetPointer(new FixedTarget(card.getId()));
-        game.addEffect(effect,source);
+        game.addEffect(effect,newSource);
       }
     }
     return true;

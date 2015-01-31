@@ -3,7 +3,10 @@
   if (zoneChangeCounter.containsKey(targetId)) {
     Card card=game.getCard(targetId);
     if (card != null && zoneChangeCounter.containsKey(targetId) && card.getZoneChangeCounter() != zoneChangeCounter.get(targetId)) {
-      return null;
+      Permanent permanent=game.getPermanentOrLKIBattlefield(targetId);
+      if (permanent == null || permanent.getZoneChangeCounter() != zoneChangeCounter.get(targetId)) {
+        return null;
+      }
     }
   }
   return targetId;
