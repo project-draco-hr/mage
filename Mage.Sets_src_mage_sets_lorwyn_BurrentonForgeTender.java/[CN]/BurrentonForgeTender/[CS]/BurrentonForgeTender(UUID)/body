@@ -7,10 +7,5 @@
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
   this.addAbility(new ProtectionAbility(filter));
-  Effect effect=new PreventDamageByTargetEffect(Duration.EndOfTurn,Integer.MAX_VALUE,false);
-  effect.setText("Prevent all damage a red source of your choice would deal this turn");
-  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new SacrificeSourceCost());
-  TargetSource targetSource=new TargetSource(filterObject);
-  ability.addTarget(targetSource);
-  this.addAbility(ability);
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new PreventDamageBySourceEffect(filterObject),new SacrificeSourceCost()));
 }

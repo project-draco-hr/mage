@@ -1,28 +1,24 @@
 {
-  UUID defenderId=game.getCombat().getDefenderId(source.getSourceId());
-  Player player=game.getPlayer(defenderId);
-  if (player == null) {
-    Permanent permanent=game.getPermanent(defenderId);
-    if (permanent != null) {
-      player=game.getPlayer(permanent.getControllerId());
-    }
+  UUID defendingPlayerId=(UUID)getValue("defendingPlayerId");
+  Player player=null;
+  if (defendingPlayerId != null) {
+    player=game.getPlayer(defendingPlayerId);
   }
   if (player != null) {
     int amount=Math.min(count,game.getBattlefield().countAll(filter,player.getId(),game));
     Target target=new TargetControlledPermanent(amount,amount,filter,false);
     if (target.canChoose(player.getId(),game)) {
-      boolean abilityApplied=false;
       while (!target.isChosen() && target.canChoose(player.getId(),game) && player.isInGame()) {
         player.choose(Outcome.Sacrifice,target,source.getSourceId(),game);
       }
       for (int idx=0; idx < target.getTargets().size(); idx++) {
         Permanent permanent=game.getPermanent((UUID)target.getTargets().get(idx));
         if (permanent != null) {
-          abilityApplied|=permanent.sacrifice(source.getSourceId(),game);
+          permanent.sacrifice(source.getSourceId(),game);
         }
       }
-      return abilityApplied;
     }
+    return true;
   }
   return false;
 }

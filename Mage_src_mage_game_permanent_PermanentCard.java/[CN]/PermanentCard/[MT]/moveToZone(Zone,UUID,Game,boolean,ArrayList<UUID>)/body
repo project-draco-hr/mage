@@ -2,9 +2,10 @@
   Zone fromZone=game.getState().getZone(objectId);
   Player controller=game.getPlayer(controllerId);
   if (controller != null && controller.removeFromBattlefield(this,game)) {
+    Card originalCard=game.getCard(this.getId());
     if (isFaceDown()) {
       setFaceDown(false);
-      game.getCard(this.getId()).setFaceDown(false);
+      originalCard.setFaceDown(false);
     }
     ZoneChangeEvent event=new ZoneChangeEvent(this,sourceId,controllerId,fromZone,toZone,appliedEffects);
     if (!game.replaceEvent(event)) {
@@ -12,6 +13,7 @@
       game.rememberLKI(objectId,Zone.BATTLEFIELD,this);
       if (owner != null) {
         this.setControllerId(ownerId);
+        originalCard.updateZoneChangeCounter();
 switch (event.getToZone()) {
 case GRAVEYARD:
           owner.putInGraveyard(card,game,!flag);

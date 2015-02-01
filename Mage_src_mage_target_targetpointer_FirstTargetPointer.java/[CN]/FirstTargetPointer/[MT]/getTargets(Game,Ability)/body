@@ -4,7 +4,10 @@
     for (    UUID targetId : source.getTargets().get(0).getTargets()) {
       Card card=game.getCard(targetId);
       if (card != null && zoneChangeCounter.containsKey(targetId) && card.getZoneChangeCounter() != zoneChangeCounter.get(targetId)) {
-        continue;
+        Permanent permanent=game.getPermanentOrLKIBattlefield(targetId);
+        if (permanent == null || permanent.getZoneChangeCounter() != zoneChangeCounter.get(targetId)) {
+          continue;
+        }
       }
       target.add(targetId);
     }

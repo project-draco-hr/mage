@@ -1,7 +1,8 @@
 {
   if (event.getTargetId().equals(source.getSourceId())) {
-    Object fixedTarget=game.getState().getValue(new StringBuilder("undying").append(source.getSourceId()).toString());
-    if (fixedTarget instanceof FixedTarget && ((FixedTarget)fixedTarget).getFirst(game,source).equals(source.getSourceId())) {
+    UUID target=(UUID)game.getState().getValue("undying" + source.getSourceId());
+    if (target.equals(source.getSourceId())) {
+      game.getState().setValue("undying" + source.getSourceId(),null);
       return true;
     }
   }

@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.HAND,playerB,"Reality Shift");
+  addCard(Zone.LIBRARY,playerA,"Nylea, God of the Hunt");
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  skipInitShuffling();
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Reality Shift","Silvercoat Lion");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerB,"Reality Shift",1);
+  assertExileCount("Silvercoat Lion",1);
+  assertPermanentCount(playerA,"face down creature",1);
+  assertPowerToughness(playerA,"face down creature",2,2);
+}

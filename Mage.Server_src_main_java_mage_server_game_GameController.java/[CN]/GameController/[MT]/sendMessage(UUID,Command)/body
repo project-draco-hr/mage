@@ -1,6 +1,7 @@
 {
   final UUID playerId=userPlayerMap.get(userId);
-  if (game.getPlayer(playerId).isGameUnderControl()) {
+  Player player=game.getPlayer(playerId);
+  if (player != null && player.isGameUnderControl()) {
     if (game.getPriorityPlayerId() == null || game.getPriorityPlayerId().equals(playerId)) {
       if (gameSessions.containsKey(playerId)) {
         cancelTimeout();
@@ -8,13 +9,10 @@
       }
     }
  else {
-      Player player=game.getPlayer(playerId);
-      if (player != null) {
-        for (        UUID controlled : player.getPlayersUnderYourControl()) {
-          if (gameSessions.containsKey(controlled) && game.getPriorityPlayerId().equals(controlled)) {
-            cancelTimeout();
-            command.execute(controlled);
-          }
+      for (      UUID controlled : player.getPlayersUnderYourControl()) {
+        if (gameSessions.containsKey(controlled) && game.getPriorityPlayerId().equals(controlled)) {
+          cancelTimeout();
+          command.execute(controlled);
         }
       }
     }

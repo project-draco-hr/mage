@@ -3,18 +3,16 @@
   this.morphCard=card.isMorphCard();
   if (card.isFaceDown()) {
     this.fillEmpty(card,controlled);
-    if (card.isMorphCard()) {
-      if (card instanceof Spell) {
-        if (controlled) {
-          this.name=card.getName();
-          this.displayName=card.getName();
-          this.alternateName=card.getName();
-        }
-        this.power="2";
-        this.toughness="2";
-        this.rules.add("You may cast this card as a 2/2 face-down creature, with no text," + " no name, no subtypes, and no mana cost by paying {3} rather than paying its mana cost.");
-        return;
+    if (card.isMorphCard() && card instanceof Spell) {
+      if (controlled) {
+        this.name=card.getName();
+        this.displayName=card.getName();
+        this.alternateName=card.getName();
       }
+      this.power="2";
+      this.toughness="2";
+      this.rules.add("You may cast this card as a 2/2 face-down creature, with no text," + " no name, no subtypes, and no mana cost by paying {3} rather than paying its mana cost.");
+      return;
     }
  else {
       if (card instanceof Permanent) {
@@ -23,7 +21,6 @@
         this.cardTypes=card.getCardType();
       }
  else {
-        this.hideInfo=true;
         return;
       }
     }

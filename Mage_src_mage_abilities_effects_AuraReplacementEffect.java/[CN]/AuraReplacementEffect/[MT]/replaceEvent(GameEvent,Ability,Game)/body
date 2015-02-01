@@ -3,6 +3,9 @@
   Card card=game.getCard(event.getTargetId());
   UUID sourceId=event.getSourceId();
   UUID controllerId=event.getPlayerId();
+  if (card.isFaceDown()) {
+    return false;
+  }
   Object object=game.getState().getValue("attachTo:" + card.getId());
   if (object != null && object instanceof PermanentCard) {
     return false;
