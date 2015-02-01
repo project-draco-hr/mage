@@ -1,0 +1,26 @@
+{
+  Random random=new Random();
+  int spellSize=deckCards.size();
+  int nonLandSize=(deckSize - landCount);
+  if (spellSize < nonLandSize) {
+    int spellsNeeded=nonLandSize - spellSize;
+    List<Card> spellsToAdd=new ArrayList<>(spellsNeeded);
+    for (int i=0; i < spellsNeeded - 1; i++)     spellsToAdd.add(reserveSpells.get(i));
+    for (int j=spellsNeeded + 1; j < reserveSpells.size() - 1; j++) {
+      int index=random.nextInt(j);
+      Card randomCard=reserveSpells.get(index);
+      if (index < j && isValidSpellCard(randomCard)) {
+        spellsToAdd.set(j,randomCard);
+      }
+    }
+    deckCards.addAll(spellsToAdd);
+  }
+ else   if (spellSize > (deckSize - landCount)) {
+    int spellsRemoved=(spellSize) - (deckSize - landCount);
+    for (int i=0; i < spellsRemoved; ++i) {
+      deckCards.remove(random.nextInt(deckCards.size()));
+    }
+  }
+  if (deckCards.size() != nonLandSize)   throw new IllegalStateException("Not enough cards found to generate deck. Please try again");
+  return deckCards;
+}

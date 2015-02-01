@@ -1,0 +1,29 @@
+{
+  int colorTotal=0;
+  ColoredManaSymbol colourToAdd=null;
+  for (  Map.Entry<String,Integer> c : count.entrySet()) {
+    colorTotal+=c.getValue();
+  }
+  while (landsNeeded > 0) {
+    double minPercentage=Integer.MIN_VALUE;
+    for (    ColoredManaSymbol color : ColoredManaSymbol.values()) {
+      double neededPercentage=percentage.get(color.toString());
+      if (neededPercentage <= 0) {
+        continue;
+      }
+      int currentCount=count.get(color.toString());
+      double thisPercentage=0.0;
+      if (currentCount > 0)       thisPercentage=(currentCount / (double)colorTotal) * 100.0;
+      if (neededPercentage - thisPercentage > minPercentage) {
+        colourToAdd=color;
+        minPercentage=(neededPercentage - thisPercentage);
+      }
+    }
+    if (colourToAdd != null) {
+      genPool.addCard(getBasicLand(colourToAdd,basicLands));
+      count.put(colourToAdd.toString(),count.get(colourToAdd.toString()) + 1);
+      colorTotal++;
+      landsNeeded--;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  for (  String symbol : card.getManaCost().getSymbols()) {
+    boolean found=false;
+    symbol=symbol.replace("{","").replace("}","");
+    if (isColoredManaSymbol(symbol)) {
+      for (      ColoredManaSymbol allowed : allowedColors) {
+        if (symbol.contains(allowed.toString())) {
+          found=true;
+          break;
+        }
+      }
+      if (!found) {
+        return false;
+      }
+    }
+  }
+  return true;
+}

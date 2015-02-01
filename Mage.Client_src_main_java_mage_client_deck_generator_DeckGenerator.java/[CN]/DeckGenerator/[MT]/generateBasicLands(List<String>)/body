@@ -1,0 +1,42 @@
+{
+  List<String> landSets=new LinkedList<>();
+  for (  String setCode : setsToUse) {
+    ExpansionInfo expansionInfo=ExpansionRepository.instance.getSetByCode(setCode);
+    if (expansionInfo.hasBasicLands()) {
+      landSets.add(expansionInfo.getCode());
+    }
+  }
+  if (landSets.isEmpty()) {
+    for (    String setCode : setsToUse) {
+      ExpansionInfo expansionInfo=ExpansionRepository.instance.getSetByCode(setCode);
+      List<ExpansionInfo> blockSets=ExpansionRepository.instance.getSetsFromBlock(expansionInfo.getBlockName());
+      for (      ExpansionInfo blockSet : blockSets) {
+        if (blockSet.hasBasicLands()) {
+          landSets.add(blockSet.getCode());
+        }
+      }
+    }
+  }
+  if (landSets.isEmpty()) {
+    Random generator=new Random();
+    List<ExpansionInfo> basicLandSets=ExpansionRepository.instance.getSetsWithBasicLandsByReleaseDate();
+    if (basicLandSets.size() > 0) {
+      landSets.add(basicLandSets.get(generator.nextInt(basicLandSets.size())).getCode());
+    }
+  }
+  if (landSets.isEmpty()) {
+    throw new IllegalArgumentException("No set with basic land was found");
+  }
+  CardCriteria criteria=new CardCriteria();
+  if (!landSets.isEmpty()) {
+    criteria.setCodes(landSets.toArray(new String[landSets.size()]));
+  }
+  Map<String,List<CardInfo>> basicLandMap=new HashMap<>();
+  for (  ColoredManaSymbol c : ColoredManaSymbol.values()) {
+    String landName=DeckGeneratorPool.getBasicLandName(c.toString());
+    criteria.rarities(Rarity.LAND).name(landName);
+    List<CardInfo> cards=CardRepository.instance.findCards(criteria);
+    basicLandMap.put(landName,cards);
+  }
+  return basicLandMap;
+}

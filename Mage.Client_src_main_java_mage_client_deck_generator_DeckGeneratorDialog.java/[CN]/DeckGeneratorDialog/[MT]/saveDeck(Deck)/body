@@ -1,0 +1,14 @@
+{
+  try {
+    File tmp=File.createTempFile("tempDeck" + UUID.randomUUID().toString(),".dck");
+    tmp.createNewFile();
+    deck.setName("Generated-Deck-" + UUID.randomUUID());
+    Sets.saveDeck(tmp.getAbsolutePath(),deck.getDeckCardLists());
+    DeckGeneratorDialog.cleanUp();
+    return tmp.getAbsolutePath();
+  }
+ catch (  Exception e) {
+    JOptionPane.showMessageDialog(null,"Couldn't generate deck. Try again.");
+  }
+  return null;
+}
