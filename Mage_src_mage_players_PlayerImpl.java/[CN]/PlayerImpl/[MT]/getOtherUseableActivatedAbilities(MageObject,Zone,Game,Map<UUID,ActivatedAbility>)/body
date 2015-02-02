@@ -15,7 +15,9 @@
         flashbackAbility.setControllerId(card.getOwnerId());
         flashbackAbility.setSpellAbilityType(SpellAbilityType.SPLIT_LEFT);
         flashbackAbility.setAbilityName(((SplitCard)card).getLeftHalfCard().getName());
-        useable.put(flashbackAbility.getId(),flashbackAbility);
+        if (flashbackAbility.canActivate(playerId,game)) {
+          useable.put(flashbackAbility.getId(),flashbackAbility);
+        }
         if (card.getCardType().contains(CardType.INSTANT)) {
           flashbackAbility=new FlashbackAbility(((SplitCard)card).getRightHalfCard().getManaCost(),TimingRule.INSTANT);
         }
@@ -26,7 +28,9 @@
         flashbackAbility.setControllerId(card.getOwnerId());
         flashbackAbility.setSpellAbilityType(SpellAbilityType.SPLIT_RIGHT);
         flashbackAbility.setAbilityName(((SplitCard)card).getRightHalfCard().getName());
-        useable.put(flashbackAbility.getId(),flashbackAbility);
+        if (flashbackAbility.canActivate(playerId,game)) {
+          useable.put(flashbackAbility.getId(),flashbackAbility);
+        }
       }
  else {
         useable.put(ability.getId(),ability);
