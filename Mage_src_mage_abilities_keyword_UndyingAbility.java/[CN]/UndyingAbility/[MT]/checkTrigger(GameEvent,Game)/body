@@ -2,6 +2,7 @@
   if (super.checkTrigger(event,game)) {
     Permanent permanent=(Permanent)game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
     if (!permanent.getCounters().containsKey(CounterType.P1P1) || permanent.getCounters().getCount(CounterType.P1P1) == 0) {
+      Logger.getLogger(UndyingAbility.class).info("Undying trigger: " + getSourceId());
       game.getState().setValue("undying" + getSourceId(),permanent.getId());
       return true;
     }
