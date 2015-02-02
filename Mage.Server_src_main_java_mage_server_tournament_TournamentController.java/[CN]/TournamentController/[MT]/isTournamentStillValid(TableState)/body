@@ -1,0 +1,33 @@
+{
+  int activePlayers=0;
+  for (  Entry<UUID,UUID> entry : userPlayerMap.entrySet()) {
+    TournamentPlayer tournamentPlayer=tournament.getPlayer(entry.getValue());
+    if (tournamentPlayer != null) {
+      if (!tournamentPlayer.hasQuit()) {
+        if (tournamentPlayer.getPlayer().isHuman()) {
+          User user=UserManager.getInstance().getUser(entry.getKey());
+          if (user == null) {
+            logger.debug("Tournament user is missing but player active -> start quit - tournamentId: " + tournament.getId() + " state: "+ tableState.toString());
+            quit(entry.getKey());
+          }
+        }
+        activePlayers++;
+      }
+    }
+ else {
+      logger.debug("Tournament player is missing - tournamentId: " + tournament.getId() + " state: "+ tableState.toString());
+    }
+  }
+  for (  TournamentPlayer tournamentPlayer : tournament.getPlayers()) {
+    if (!tournamentPlayer.getPlayer().isHuman()) {
+      if (!tournamentPlayer.hasQuit()) {
+        activePlayers++;
+      }
+    }
+  }
+  if (activePlayers < 2 && !tableState.equals(TableState.WAITING)) {
+    logger.debug("Tournament has less than 2 active players - tournamentId: " + tournament.getId() + " state: "+ tableState.toString());
+    return false;
+  }
+  return true;
+}

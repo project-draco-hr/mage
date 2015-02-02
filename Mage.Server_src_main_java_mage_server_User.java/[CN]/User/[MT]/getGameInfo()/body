@@ -36,6 +36,7 @@ if (!isConnected()) {
 }
  else {
 logger.debug(getName() + " tournament player missing - tableId:" + table.getId(),null);
+tablesToDelete.add(tableEntry.getKey());
 }
 }
  else {
@@ -59,6 +60,12 @@ break;
 }
 }
 }
+}
+if (!tablesToDelete.isEmpty()) {
+for (UUID keyId : tablesToDelete) {
+removeTable(keyId);
+}
+tablesToDelete.clear();
 }
 if (waiting > 0) {
 sb.append("Wait: ").append(waiting).append(" ");
