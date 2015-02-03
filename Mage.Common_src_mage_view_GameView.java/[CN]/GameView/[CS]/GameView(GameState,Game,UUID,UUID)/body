@@ -80,4 +80,11 @@
     combat.add(new CombatGroupView(combatGroup,game));
   }
   this.special=state.getSpecialActions().getControlledBy(state.getPriorityPlayerId()).size() > 0;
+  CastSpellLastTurnWatcher watcher=(CastSpellLastTurnWatcher)game.getState().getWatchers().get("CastSpellLastTurnWatcher");
+  if (watcher != null) {
+    spellsCastCurrentTurn=watcher.getAmountOfSpellsAllPlayersCastOnCurrentTurn();
+  }
+ else {
+    spellsCastCurrentTurn=0;
+  }
 }
