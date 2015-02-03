@@ -31,7 +31,7 @@
             }
           }
         }
-        if (game.getState().getZone(card.getId()) == Zone.STACK) {
+        if (game.getState().getZone(card.getMainCard().getId()) == Zone.STACK) {
           card.moveToZone(Zone.GRAVEYARD,ability.getSourceId(),game,false);
         }
       }
@@ -52,6 +52,7 @@
         if (bestow) {
           Permanent permanent=game.getPermanent(card.getId());
           if (permanent != null && permanent instanceof PermanentCard) {
+            permanent.setSpellAbility(ability);
             ((PermanentCard)permanent).getCard().getCardType().add(CardType.CREATURE);
           }
           card.getCardType().add(CardType.CREATURE);
