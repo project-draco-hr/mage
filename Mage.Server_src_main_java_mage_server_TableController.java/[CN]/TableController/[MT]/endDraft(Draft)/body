@@ -1,7 +1,10 @@
 {
-  for (  DraftPlayer player : draft.getPlayers()) {
-    player.prepareDeck();
-    tournament.getPlayer(player.getPlayer().getId()).setDeck(player.getDeck());
+  if (!draft.isAbort()) {
+    for (    DraftPlayer player : draft.getPlayers()) {
+      player.prepareDeck();
+      tournament.getPlayer(player.getPlayer().getId()).setDeck(player.getDeck());
+    }
   }
+  tournament.clearDraft();
   tournament.nextStep();
 }
