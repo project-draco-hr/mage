@@ -6,6 +6,7 @@
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
   this.addAbility(FlyingAbility.getInstance());
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new PrideOfTheCloudsEffect()));
+  DynamicValue xValue=new PermanentsOnBattlefieldCount(filter);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostSourceEffect(xValue,xValue,Duration.WhileOnBattlefield)));
   this.addAbility(new ForecastAbility(new CreateTokenEffect(new BirdToken()),new ManaCostsImpl("{2}{W}{U}")));
 }
