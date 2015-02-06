@@ -1,13 +1,21 @@
 {
   if (targets.choose(Outcome.Exile,controllerId,sourceId,game)) {
     Player player=game.getPlayer(controllerId);
+    int cmc=0;
     for (    UUID targetId : targets.get(0).getTargets()) {
       Card card=player.getHand().get(targetId,game);
       if (card == null) {
         return false;
       }
+      cmc+=card.getManaCost().convertedManaCost();
       this.cards.add(card);
       paid|=player.moveCardToExileWithInfo(card,null,null,ability.getSourceId(),game,Zone.HAND);
+    }
+    if (paid && setXFromCMC) {
+      VariableManaCost vmc=new VariableManaCost();
+      vmc.setAmount(cmc);
+      vmc.setPaid();
+      ability.getManaCostsToPay().add(vmc);
     }
   }
   return paid;
