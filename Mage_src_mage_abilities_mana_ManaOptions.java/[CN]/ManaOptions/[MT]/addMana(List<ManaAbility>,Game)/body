@@ -26,10 +26,20 @@
       this.clear();
       for (      ManaAbility ability : abilities) {
         for (        Mana netMana : ability.getNetMana(game)) {
-          for (          Mana mana : copy) {
+          SkipAddMana:           for (          Mana mana : copy) {
             Mana newMana=new Mana();
             newMana.add(mana);
             newMana.add(netMana);
+            for (            Mana existingMana : this) {
+              if (existingMana.equalManaValue(newMana)) {
+                continue SkipAddMana;
+              }
+              Mana moreValuable=Mana.getMoreValuableMana(newMana,existingMana);
+              if (moreValuable != null) {
+                existingMana.setToMana(newMana);
+                continue SkipAddMana;
+              }
+            }
             this.add(newMana);
           }
         }

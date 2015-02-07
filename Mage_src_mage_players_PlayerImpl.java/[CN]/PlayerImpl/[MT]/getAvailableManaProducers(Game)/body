@@ -3,12 +3,12 @@
   for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
     boolean canAdd=false;
     for (    ManaAbility ability : permanent.getAbilities().getManaAbilities(Zone.BATTLEFIELD)) {
-      if (ability.canActivate(playerId,game)) {
-        canAdd=true;
-      }
       if (!ability.getManaCosts().isEmpty()) {
         canAdd=false;
         break;
+      }
+      if (ability.canActivate(playerId,game)) {
+        canAdd=true;
       }
     }
     if (canAdd) {
