@@ -3,45 +3,28 @@
   if (!hasBoosters) {
     return booster;
   }
-  List<CardInfo> common=getCommon();
-  CardCriteria criteria=new CardCriteria();
-  criteria.setCodes(this.code).rarities(Rarity.UNCOMMON).doubleFaced(false);
-  if (maxCardNumberInBooster != Integer.MAX_VALUE) {
-    criteria.maxCardNumber(maxCardNumberInBooster);
-  }
-  List<CardInfo> uncommon=CardRepository.instance.findCards(criteria);
-  criteria=new CardCriteria();
-  criteria.setCodes(this.code).rarities(Rarity.RARE).doubleFaced(false);
-  if (maxCardNumberInBooster != Integer.MAX_VALUE) {
-    criteria.maxCardNumber(maxCardNumberInBooster);
-  }
-  List<CardInfo> rare=CardRepository.instance.findCards(criteria);
-  criteria=new CardCriteria();
-  criteria.setCodes(this.code).rarities(Rarity.MYTHIC).doubleFaced(false);
-  if (maxCardNumberInBooster != Integer.MAX_VALUE) {
-    criteria.maxCardNumber(maxCardNumberInBooster);
-  }
-  List<CardInfo> mythic=CardRepository.instance.findCards(criteria);
   if (numBoosterLands > 0) {
-    criteria=new CardCriteria();
-    criteria.setCodes(!hasBasicLands && parentSet != null ? parentSet.code : this.code).rarities(Rarity.LAND).doubleFaced(false);
-    List<CardInfo> basicLand=CardRepository.instance.findCards(criteria);
+    List<CardInfo> basicLands=getCardsByRarity(Rarity.LAND);
     for (int i=0; i < numBoosterLands; i++) {
-      addToBooster(booster,basicLand);
+      addToBooster(booster,basicLands);
     }
   }
+  List<CardInfo> commons=getCardsByRarity(Rarity.COMMON);
   for (int i=0; i < numBoosterCommon; i++) {
-    addToBooster(booster,common);
+    addToBooster(booster,commons);
   }
+  List<CardInfo> uncommons=getCardsByRarity(Rarity.UNCOMMON);
   for (int i=0; i < numBoosterUncommon; i++) {
-    addToBooster(booster,uncommon);
+    addToBooster(booster,uncommons);
   }
+  List<CardInfo> rares=getCardsByRarity(Rarity.RARE);
+  List<CardInfo> mythics=getCardsByRarity(Rarity.MYTHIC);
   for (int i=0; i < numBoosterRare; i++) {
     if (ratioBoosterMythic > 0 && rnd.nextInt(ratioBoosterMythic) == 1) {
-      addToBooster(booster,mythic);
+      addToBooster(booster,mythics);
     }
  else {
-      addToBooster(booster,rare);
+      addToBooster(booster,rares);
     }
   }
   if (numBoosterDoubleFaced > 0) {
@@ -72,7 +55,7 @@
     if (specialCards > 0) {
       for (int i=0; i < numBoosterSpecial; i++) {
         if (rnd.nextInt(15) < 10) {
-          if (specialCommon != null) {
+          if (specialCommon != null && !specialCommon.isEmpty()) {
             addToBooster(booster,specialCommon);
           }
  else {
@@ -81,7 +64,7 @@
           continue;
         }
         if (rnd.nextInt(4) < 3) {
-          if (specialUncommon != null) {
+          if (specialUncommon != null && !specialUncommon.isEmpty()) {
             addToBooster(booster,specialUncommon);
           }
  else {
@@ -90,7 +73,7 @@
           continue;
         }
         if (rnd.nextInt(8) < 7) {
-          if (specialRare != null) {
+          if (specialRare != null && !specialRare.isEmpty()) {
             addToBooster(booster,specialRare);
           }
  else {
@@ -98,8 +81,8 @@
           }
           continue;
         }
-        if (specialMythic != null) {
-          if (specialBonus != null) {
+        if (specialMythic != null && !specialMythic.isEmpty()) {
+          if (specialBonus != null && !specialBonus.isEmpty()) {
             if (rnd.nextInt(3) < 2) {
               addToBooster(booster,specialMythic);
               continue;
@@ -113,7 +96,7 @@
  else {
           i--;
         }
-        if (specialBonus != null) {
+        if (specialBonus != null && !specialBonus.isEmpty()) {
           addToBooster(booster,specialBonus);
         }
       }

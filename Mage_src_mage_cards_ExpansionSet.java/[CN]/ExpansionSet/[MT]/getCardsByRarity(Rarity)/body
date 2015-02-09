@@ -1,0 +1,21 @@
+{
+  List<CardInfo> savedCardsInfos=savedCards.get(rarity);
+  if (savedCardsInfos == null) {
+    CardCriteria criteria=new CardCriteria();
+    if (rarity.equals(Rarity.LAND)) {
+      criteria.setCodes(!hasBasicLands && parentSet != null ? parentSet.code : this.code);
+    }
+ else {
+      criteria.setCodes(this.code);
+    }
+    criteria.rarities(rarity).doubleFaced(false);
+    if (maxCardNumberInBooster != Integer.MAX_VALUE) {
+      criteria.maxCardNumber(maxCardNumberInBooster);
+    }
+    savedCardsInfos=CardRepository.instance.findCards(criteria);
+    savedCards.put(rarity,savedCardsInfos);
+  }
+  List<CardInfo> cards=new ArrayList<>();
+  cards.addAll(savedCardsInfos);
+  return cards;
+}
