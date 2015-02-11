@@ -1,13 +1,22 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null) {
-    Card card=game.getCard(targetPointer.getFirst(game,source));
-    if (card != null) {
-      Zone currentZone=game.getState().getZone(card.getId());
-      if (controller.putOntoBattlefieldWithInfo(card,game,currentZone,source.getSourceId())) {
-        return true;
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    Card card=null;
+    if (fromExileZone) {
+      UUID exilZoneId=CardUtil.getObjectExileZoneId(game,sourceObject);
+      if (exilZoneId != null) {
+        card=game.getExile().getExileZone(exilZoneId).get(getTargetPointer().getFirst(game,source),game);
       }
     }
+ else {
+      card=game.getCard(targetPointer.getFirst(game,source));
+    }
+    if (card != null) {
+      Zone currentZone=game.getState().getZone(card.getId());
+      controller.putOntoBattlefieldWithInfo(card,game,currentZone,source.getSourceId());
+    }
+    return true;
   }
   return false;
 }

@@ -1,0 +1,24 @@
+{
+  addCard(Zone.HAND,playerA,"Journey to Nowhere");
+  addCard(Zone.HAND,playerA,"Boomerang");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Zone.HAND,playerB,"Disenchant",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Journey to Nowhere");
+  addTarget(playerA,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Boomerang","Journey to Nowhere");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Journey to Nowhere");
+  addTarget(playerA,"Pillarfield Ox");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Disenchant","Journey to Nowhere");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Boomerang",1);
+  assertGraveyardCount(playerA,"Journey to Nowhere",1);
+  assertGraveyardCount(playerB,"Disenchant",1);
+  assertPermanentCount(playerB,"Pillarfield Ox",1);
+  assertPermanentCount(playerB,"Silvercoat Lion",0);
+  assertExileCount("Silvercoat Lion",1);
+}

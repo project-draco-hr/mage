@@ -1,7 +1,8 @@
 {
   if (event.getType().equals(GameEvent.EventType.SPELL_CAST) && event.getSourceId().equals(this.getSourceId())) {
-    if (getSourceObject() != null && getSourceObject() instanceof Spell) {
-      Spell spell=(Spell)getSourceObject();
+    MageObject sourceObject=getSourceObject(game);
+    if (sourceObject != null && (sourceObject instanceof Spell)) {
+      Spell spell=(Spell)sourceObject;
       if (spell.getSpellAbility() != null) {
         for (        Effect effect : getEffects()) {
           effect.setValue(SOURCE_CAST_SPELL_ABILITY,spell.getSpellAbility());
