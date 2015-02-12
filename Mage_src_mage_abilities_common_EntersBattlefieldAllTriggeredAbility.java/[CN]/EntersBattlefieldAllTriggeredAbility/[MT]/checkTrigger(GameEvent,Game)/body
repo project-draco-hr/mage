@@ -1,22 +1,20 @@
 {
-  if (event.getType() == GameEvent.EventType.ENTERS_THE_BATTLEFIELD) {
-    UUID targetId=event.getTargetId();
-    Permanent permanent=game.getPermanent(targetId);
-    if (permanent != null && filter.match(permanent,getSourceId(),getControllerId(),game)) {
-      if (!setTargetPointer.equals(SetTargetPointer.NONE)) {
-        for (        Effect effect : this.getEffects()) {
+  UUID targetId=event.getTargetId();
+  Permanent permanent=game.getPermanent(targetId);
+  if (permanent != null && filter.match(permanent,getSourceId(),getControllerId(),game)) {
+    if (!setTargetPointer.equals(SetTargetPointer.NONE)) {
+      for (      Effect effect : this.getEffects()) {
 switch (setTargetPointer) {
 case PERMANENT:
-            effect.setTargetPointer(new FixedTarget(event.getTargetId()));
-          break;
+          effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+        break;
 case PLAYER:
-        effect.setTargetPointer(new FixedTarget(permanent.getControllerId()));
-      break;
-  }
+      effect.setTargetPointer(new FixedTarget(permanent.getControllerId()));
+    break;
+}
 }
 }
 return true;
-}
 }
 return false;
 }

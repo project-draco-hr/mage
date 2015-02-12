@@ -1,23 +1,22 @@
 {
-  if (event.getType() == GameEvent.EventType.UNTAP_STEP_PRE) {
 switch (targetController) {
 case YOU:
-      boolean yours=event.getPlayerId().equals(this.controllerId);
-    if (yours) {
-      if (getTargets().size() == 0) {
-        for (        Effect effect : this.getEffects()) {
-          effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
-        }
+    boolean yours=event.getPlayerId().equals(this.controllerId);
+  if (yours) {
+    if (getTargets().size() == 0) {
+      for (      Effect effect : this.getEffects()) {
+        effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
       }
     }
-  return yours;
+  }
+return yours;
 case NOT_YOU:
 Player controller=game.getPlayer(this.getControllerId());
 if (controller != null && controller.getInRange().contains(event.getPlayerId()) && !event.getPlayerId().equals(this.getControllerId())) {
 if (getTargets().size() == 0) {
-  for (  Effect effect : this.getEffects()) {
-    effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
-  }
+for (Effect effect : this.getEffects()) {
+  effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
+}
 }
 return true;
 }
@@ -41,7 +40,6 @@ effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
 }
 }
 return true;
-}
 }
 }
 return false;

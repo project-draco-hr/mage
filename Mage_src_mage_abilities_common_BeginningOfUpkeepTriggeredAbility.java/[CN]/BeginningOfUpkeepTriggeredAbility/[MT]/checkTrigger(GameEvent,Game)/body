@@ -1,24 +1,23 @@
 {
-  if (event.getType() == GameEvent.EventType.UPKEEP_STEP_PRE) {
 switch (targetController) {
 case YOU:
-      boolean yours=event.getPlayerId().equals(this.controllerId);
-    if (yours && setTargetPointer) {
-      if (getTargets().size() == 0) {
-        for (        Effect effect : this.getEffects()) {
-          effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
-        }
+    boolean yours=event.getPlayerId().equals(this.controllerId);
+  if (yours && setTargetPointer) {
+    if (getTargets().size() == 0) {
+      for (      Effect effect : this.getEffects()) {
+        effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
       }
     }
-  return yours;
+  }
+return yours;
 case OPPONENT:
 if (game.getPlayer(this.controllerId).hasOpponent(event.getPlayerId(),game)) {
-  if (setTargetPointer && getTargets().size() == 0) {
-    for (    Effect effect : this.getEffects()) {
-      effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
-    }
+if (setTargetPointer && getTargets().size() == 0) {
+  for (  Effect effect : this.getEffects()) {
+    effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
   }
-  return true;
+}
+return true;
 }
 break;
 case ANY:
@@ -44,7 +43,6 @@ return true;
 break;
 default :
 throw new UnsupportedOperationException("Value for targetController not supported: " + targetController.toString());
-}
 }
 return false;
 }

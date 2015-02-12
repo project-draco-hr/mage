@@ -1,39 +1,37 @@
 {
-  if (event.getType().equals(GameEvent.EventType.ATTACKER_DECLARED)) {
-    Permanent permanent=game.getPermanent(event.getSourceId());
-    if (filter.match(permanent,getSourceId(),getControllerId(),game)) {
-      if (attacksYouOrYourPlaneswalker) {
-        boolean check=false;
-        if (event.getTargetId().equals(getControllerId())) {
+  Permanent permanent=game.getPermanent(event.getSourceId());
+  if (filter.match(permanent,getSourceId(),getControllerId(),game)) {
+    if (attacksYouOrYourPlaneswalker) {
+      boolean check=false;
+      if (event.getTargetId().equals(getControllerId())) {
+        check=true;
+      }
+ else {
+        Permanent planeswalker=game.getPermanent(event.getTargetId());
+        if (planeswalker != null && planeswalker.getCardType().contains(CardType.PLANESWALKER) && planeswalker.getControllerId().equals(getControllerId())) {
           check=true;
         }
- else {
-          Permanent planeswalker=game.getPermanent(event.getTargetId());
-          if (planeswalker != null && planeswalker.getCardType().contains(CardType.PLANESWALKER) && planeswalker.getControllerId().equals(getControllerId())) {
-            check=true;
-          }
-        }
-        if (!check) {
-          return false;
-        }
       }
+      if (!check) {
+        return false;
+      }
+    }
 switch (setTargetPointer) {
 case PERMANENT:
-        for (        Effect effect : getEffects()) {
-          effect.setTargetPointer(new FixedTarget(permanent.getId()));
-        }
-      break;
+      for (      Effect effect : getEffects()) {
+        effect.setTargetPointer(new FixedTarget(permanent.getId()));
+      }
+    break;
 case PLAYER:
-    UUID defendingPlayerId=game.getCombat().getDefendingPlayerId(permanent.getId(),game);
-  if (defendingPlayerId != null) {
-    for (    Effect effect : getEffects()) {
-      effect.setTargetPointer(new FixedTarget(defendingPlayerId));
-    }
+  UUID defendingPlayerId=game.getCombat().getDefendingPlayerId(permanent.getId(),game);
+if (defendingPlayerId != null) {
+  for (  Effect effect : getEffects()) {
+    effect.setTargetPointer(new FixedTarget(defendingPlayerId));
   }
+}
 break;
 }
 return true;
-}
 }
 return false;
 }

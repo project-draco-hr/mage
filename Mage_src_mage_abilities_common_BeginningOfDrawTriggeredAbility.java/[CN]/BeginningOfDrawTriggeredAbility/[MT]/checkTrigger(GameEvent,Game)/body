@@ -1,31 +1,30 @@
 {
-  if (event.getType() == GameEvent.EventType.DRAW_STEP_PRE) {
 switch (targetController) {
 case YOU:
-      boolean yours=event.getPlayerId().equals(this.controllerId);
-    if (yours) {
-      if (getTargets().size() == 0) {
-        for (        Effect effect : this.getEffects()) {
-          effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
-        }
+    boolean yours=event.getPlayerId().equals(this.controllerId);
+  if (yours) {
+    if (getTargets().size() == 0) {
+      for (      Effect effect : this.getEffects()) {
+        effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
       }
     }
-  return yours;
+  }
+return yours;
 case OPPONENT:
 if (game.getPlayer(this.controllerId).hasOpponent(event.getPlayerId(),game)) {
-  if (getTargets().size() == 0) {
-    for (    Effect effect : this.getEffects()) {
-      effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
-    }
+if (getTargets().size() == 0) {
+  for (  Effect effect : this.getEffects()) {
+    effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
   }
-  return true;
+}
+return true;
 }
 break;
 case NOT_YOU:
 if (!this.controllerId.equals(event.getPlayerId())) {
 if (getTargets().size() == 0) {
 for (Effect effect : this.getEffects()) {
-  effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
+effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
 }
 }
 return true;
@@ -52,7 +51,6 @@ effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
 }
 }
 return true;
-}
 }
 return false;
 }
