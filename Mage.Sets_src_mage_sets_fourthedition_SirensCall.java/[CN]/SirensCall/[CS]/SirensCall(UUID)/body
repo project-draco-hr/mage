@@ -1,0 +1,10 @@
+{
+  super(ownerId,101,"Siren's Call",Rarity.UNCOMMON,new CardType[]{CardType.INSTANT},"{U}");
+  this.expansionSetCode="4ED";
+  Ability ability=new SimpleStaticAbility(Zone.ALL,new SirensCallTimingEffect());
+  ability.setRuleAtTheTop(true);
+  this.addAbility(ability);
+  this.getSpellAbility().addEffect(new SirensCallMustAttackEffect());
+  this.getSpellAbility().addEffect(new CreateDelayedTriggeredAbilityEffect(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new SirensCallDestroyEffect())));
+  this.addWatcher(new AttackedThisTurnWatcher());
+}
