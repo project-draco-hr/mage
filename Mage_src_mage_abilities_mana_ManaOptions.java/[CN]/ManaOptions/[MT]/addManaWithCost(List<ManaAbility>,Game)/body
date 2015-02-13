@@ -58,12 +58,19 @@
         }
  else {
           for (          Mana netMana : netManas) {
-            for (            Mana mana : copy) {
+            CombineWithExisting:             for (            Mana mana : copy) {
               Mana newMana=new Mana();
               newMana.add(mana);
               if (mana.includesMana(ability.getManaCosts().getMana())) {
                 newMana.subtractCost(ability.getManaCosts().getMana());
                 newMana.add(netMana);
+                for (                Mana existingMana : this) {
+                  Mana moreValuable=Mana.getMoreValuableMana(newMana,existingMana);
+                  if (moreValuable != null) {
+                    existingMana.setToMana(moreValuable);
+                    continue CombineWithExisting;
+                  }
+                }
                 this.add(newMana);
               }
             }

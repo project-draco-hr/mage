@@ -1,0 +1,12 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Sedge Scorpion",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Akroan Crusader",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Nykthos, Shrine to Nyx",1);
+  setStopAt(1,PhaseStep.UPKEEP);
+  execute();
+  ManaOptions manaOptions=playerA.getAvailableManaTest(currentGame);
+  Assert.assertEquals("mana variations don't fit",2,manaOptions.size());
+  Assert.assertEquals("{G}{G}{G}{G}{G}",getManaOption(0,manaOptions));
+  Assert.assertEquals("{R}{R}{R}{G}",getManaOption(1,manaOptions));
+}
