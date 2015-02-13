@@ -58,10 +58,9 @@
         }
  else {
           for (          Mana netMana : netManas) {
-            CombineWithExisting:             for (            Mana mana : copy) {
-              Mana newMana=new Mana();
-              newMana.add(mana);
-              if (mana.includesMana(ability.getManaCosts().getMana())) {
+            CombineWithExisting:             for (            Mana previousMana : copy) {
+              Mana newMana=new Mana(previousMana);
+              if (previousMana.includesMana(ability.getManaCosts().getMana())) {
                 newMana.subtractCost(ability.getManaCosts().getMana());
                 newMana.add(netMana);
                 for (                Mana existingMana : this) {
