@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",2);
+  addCard(Zone.HAND,playerA,"Mesmeric Fiend",2);
+  addCard(Zone.HAND,playerB,"Bloodflow Connoisseur",1);
+  addCard(Zone.HAND,playerB,"Lightning Bolt",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Mesmeric Fiend");
+  addTarget(playerA,"Bloodflow Connoisseur");
+  castSpell(1,PhaseStep.BEGIN_COMBAT,playerB,"Lightning Bolt","Mesmeric Fiend");
+  setStopAt(1,PhaseStep.DECLARE_ATTACKERS);
+  execute();
+  assertGraveyardCount(playerA,"Mesmeric Fiend",1);
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertHandCount(playerB,"Bloodflow Connoisseur",1);
+  assertExileCount("Bloodflow Connoisseur",0);
+}
