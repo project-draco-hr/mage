@@ -1,18 +1,17 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  Permanent permanent=game.getPermanent(source.getSourceId());
-  if (permanent == null) {
-    permanent=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
-  }
-  if (player != null && permanent != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent permanent=(Permanent)source.getSourceObject(game);
+  if (controller != null && permanent != null) {
     if (!permanent.isTapped()) {
-      player.gainLife(3,game);
+      controller.gainLife(3,game);
     }
  else {
-      for (      UUID opponentId : player.getInRange()) {
-        Player opponent=game.getPlayer(opponentId);
-        if (opponent != null) {
-          opponent.loseLife(3,game);
+      for (      UUID opponentId : controller.getInRange()) {
+        if (controller.hasOpponent(opponentId,game)) {
+          Player opponent=game.getPlayer(opponentId);
+          if (opponent != null) {
+            opponent.loseLife(3,game);
+          }
         }
       }
     }
