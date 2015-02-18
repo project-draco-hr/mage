@@ -5,7 +5,9 @@
     Card originalCard=game.getCard(this.getId());
     if (isFaceDown()) {
       setFaceDown(false);
-      originalCard.setFaceDown(false);
+      if (originalCard != null) {
+        originalCard.setFaceDown(false);
+      }
     }
     ZoneChangeEvent event=new ZoneChangeEvent(this,sourceId,controllerId,fromZone,toZone,appliedEffects);
     if (!game.replaceEvent(event)) {
@@ -13,7 +15,9 @@
       game.rememberLKI(objectId,Zone.BATTLEFIELD,this);
       if (owner != null) {
         this.setControllerId(ownerId);
-        originalCard.updateZoneChangeCounter();
+        if (originalCard != null) {
+          originalCard.updateZoneChangeCounter();
+        }
 switch (event.getToZone()) {
 case GRAVEYARD:
           owner.putInGraveyard(card,game,!flag);
