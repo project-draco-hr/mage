@@ -6,12 +6,14 @@
   Player player=game.getPlayer(controllerId);
   assignPayment(game,ability,player.getManaPool());
   while (!isPaid()) {
+    addSpecialManaPayAbilities(ability,game);
     if (player.playMana(this.getUnpaid(),game)) {
       assignPayment(game,ability,player.getManaPool());
     }
  else {
       return false;
     }
+    game.getState().getSpecialActions().removeManaActions();
   }
   return true;
 }
