@@ -1,0 +1,17 @@
+{
+  LinkedHashMap<UUID,SpecialAction> specialActions=game.getState().getSpecialActions().getControlledBy(playerId,true);
+  if (!specialActions.isEmpty()) {
+    updateGameStatePriority("specialAction",game);
+    game.fireGetChoiceEvent(playerId,name,null,new ArrayList<>(specialActions.values()));
+    waitForResponse(game);
+    if (response.getUUID() != null) {
+      if (specialActions.containsKey(response.getUUID())) {
+        SpecialAction specialAction=specialActions.get(response.getUUID());
+        if (specialAction != null) {
+          specialAction.setUnpaidMana(unpaid);
+          activateAbility(specialActions.get(response.getUUID()),game);
+        }
+      }
+    }
+  }
+}
