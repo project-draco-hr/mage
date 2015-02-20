@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && controller.getGraveyard().size() > 0) {
+    if (unpaid.getMana().getColorless() > 0 && source.getAbilityType().equals(AbilityType.SPELL)) {
+      SpecialAction specialAction=new DelveSpecialAction();
+      specialAction.setControllerId(source.getControllerId());
+      specialAction.setSourceId(source.getSourceId());
+      specialAction.addCost(new ExileFromGraveCost(new TargetCardInYourGraveyard(0,Math.min(controller.getGraveyard().size(),unpaid.getMana().getColorless()),new FilterCard())));
+      if (specialAction.canActivate(source.getControllerId(),game)) {
+        game.getState().getSpecialActions().add(specialAction);
+      }
+    }
+  }
+}
