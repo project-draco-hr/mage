@@ -1,45 +1,51 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    Card commander=game.getCard(controller.getCommanderId());
-    if (commander != null) {
-      Mana commanderMana=commander.getManaCost().getMana();
-      Choice choice=new ChoiceImpl();
-      choice.setMessage("Pick a mana color");
-      if (commanderMana.getBlack() > 0) {
-        choice.getChoices().add("Black");
+    if (commanderMana == null) {
+      Card commander=game.getCard(controller.getCommanderId());
+      if (commander != null) {
+        commanderMana=CardUtil.getColorIdentity(commander);
       }
-      if (commanderMana.getRed() > 0) {
-        choice.getChoices().add("Red");
-      }
-      if (commanderMana.getBlue() > 0) {
-        choice.getChoices().add("Blue");
-      }
-      if (commanderMana.getGreen() > 0) {
-        choice.getChoices().add("Green");
-      }
-      if (commanderMana.getWhite() > 0) {
-        choice.getChoices().add("White");
-      }
-      if (choice.getChoices().size() > 0) {
-        if (choice.getChoices().size() == 1) {
-          choice.setChoice(choice.getChoices().iterator().next());
-        }
  else {
-          if (!controller.choose(outcome,choice,game)) {
-            return false;
-          }
+        commanderMana=new FilterMana();
+      }
+    }
+    Choice choice=new ChoiceImpl();
+    choice.setMessage("Pick a mana color");
+    if (commanderMana.isBlack()) {
+      choice.getChoices().add("Black");
+    }
+    if (commanderMana.isRed()) {
+      choice.getChoices().add("Red");
+    }
+    if (commanderMana.isBlue()) {
+      choice.getChoices().add("Blue");
+    }
+    if (commanderMana.isGreen()) {
+      choice.getChoices().add("Green");
+    }
+    if (commanderMana.isWhite()) {
+      choice.getChoices().add("White");
+    }
+    if (choice.getChoices().size() > 0) {
+      if (choice.getChoices().size() == 1) {
+        choice.setChoice(choice.getChoices().iterator().next());
+      }
+ else {
+        if (!controller.choose(outcome,choice,game)) {
+          return false;
         }
-        Mana mana=new Mana();
+      }
+      Mana mana=new Mana();
 switch (choice.getChoice()) {
 case "Black":
-          mana.setBlack(1);
-        break;
+        mana.setBlack(1);
+      break;
 case "Blue":
-      mana.setBlue(1);
-    break;
+    mana.setBlue(1);
+  break;
 case "Red":
-  mana.setRed(1);
+mana.setRed(1);
 break;
 case "Green":
 mana.setGreen(1);
@@ -51,7 +57,6 @@ break;
 checkToFirePossibleEvents(mana,game,source);
 controller.getManaPool().addMana(mana,game,source);
 return true;
-}
 }
 }
 return false;
