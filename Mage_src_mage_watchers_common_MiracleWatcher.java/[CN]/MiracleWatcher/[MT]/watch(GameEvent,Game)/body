@@ -1,8 +1,9 @@
 {
   if (event.getType() == GameEvent.EventType.UNTAP_STEP_PRE) {
     reset();
+    return;
   }
-  if (event.getType() == GameEvent.EventType.DREW_CARD) {
+  if (game.getPhase() != null && event.getType() == GameEvent.EventType.DREW_CARD) {
     UUID playerId=event.getPlayerId();
     if (playerId != null) {
       Integer amount=amountOfCardsDrawnThisTurn.get(playerId);
