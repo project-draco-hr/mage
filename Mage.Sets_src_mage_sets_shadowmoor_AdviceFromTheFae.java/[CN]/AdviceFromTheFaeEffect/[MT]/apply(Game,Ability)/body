@@ -1,0 +1,41 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject mageObject=game.getObject(source.getSourceId());
+  if (controller != null) {
+    List<Card> cardsFromTopLibrary=controller.getLibrary().getTopCards(game,5);
+    Cards cards=new CardsImpl(Zone.HAND);
+    for (    Card card : cardsFromTopLibrary) {
+      cards.add(card);
+    }
+    controller.lookAtCards(mageObject.getLogName(),cards,game);
+    int max=0;
+    for (    UUID playerId : controller.getInRange()) {
+      FilterCreaturePermanent filter=new FilterCreaturePermanent();
+      filter.add(new ControllerIdPredicate(playerId));
+      if (playerId != controller.getId()) {
+        if (max < game.getBattlefield().countAll(filter,playerId,game)) {
+          max=game.getBattlefield().countAll(filter,playerId,game);
+        }
+      }
+    }
+    if (game.getBattlefield().countAll(new FilterControlledCreaturePermanent(),controller.getId(),game) > max) {
+      TargetCard target=new TargetCard(2,Zone.HAND,new FilterCard());
+      if (controller.choose(Outcome.DrawCard,cards,target,game)) {
+        controller.moveCardToHandWithInfo(game.getCard(target.getFirstTarget()),source.getId(),game,Zone.LIBRARY);
+        cards.remove(game.getCard(target.getFirstTarget()));
+        controller.moveCardToHandWithInfo(game.getCard(target.getTargets().get(1)),source.getId(),game,Zone.LIBRARY);
+        cards.remove(game.getCard(target.getTargets().get(1)));
+      }
+    }
+ else {
+      TargetCard target=new TargetCard(1,Zone.HAND,new FilterCard());
+      if (controller.choose(Outcome.DrawCard,cards,target,game)) {
+        controller.moveCardToHandWithInfo(game.getCard(target.getFirstTarget()),source.getId(),game,Zone.LIBRARY);
+        cards.remove(game.getCard(target.getFirstTarget()));
+      }
+    }
+    controller.putCardsOnBottomOfLibrary(cards,game,source,true);
+    return true;
+  }
+  return false;
+}
