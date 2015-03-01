@@ -1,0 +1,60 @@
+{
+  boolean valid=true;
+  if (deck.getCards().size() != 49) {
+    invalid.put("Deck","Must contain 49 cards: has " + deck.getCards().size() + " cards");
+    valid=false;
+  }
+  List<String> basicLandNames=new ArrayList<>(Arrays.asList("Forest","Island","Mountain","Swamp","Plains","Snow-Covered Forest","Snow-Covered Island","Snow-Covered Mountain","Snow-Covered Swamp","Snow-Covered Plains"));
+  Map<String,Integer> counts=new HashMap<>();
+  countCards(counts,deck.getCards());
+  countCards(counts,deck.getSideboard());
+  for (  Map.Entry<String,Integer> entry : counts.entrySet()) {
+    if (entry.getValue() > 1) {
+      if (!basicLandNames.contains(entry.getKey()) && !entry.getKey().equals("Relentless Rats") && !entry.getKey().equals("Shadowborn Apostle")) {
+        invalid.put(entry.getKey(),"Too many: " + entry.getValue());
+        valid=false;
+      }
+    }
+  }
+  for (  String bannedCard : banned) {
+    if (counts.containsKey(bannedCard)) {
+      invalid.put(bannedCard,"Banned");
+      valid=false;
+    }
+  }
+  if (deck.getSideboard().size() == 1) {
+    Card commander=(Card)deck.getSideboard().toArray()[0];
+    if (commander == null || commander.getManaCost().convertedManaCost() > 3) {
+      invalid.put("Commander","Commander invalide ");
+      return false;
+    }
+    if ((commander.getCardType().contains(CardType.CREATURE) && commander.getSupertype().contains("Legendary")) || (commander.getCardType().contains(CardType.PLANESWALKER) && commander.getAbilities().contains(CanBeYourCommanderAbility.getInstance()))) {
+      if (!bannedCommander.contains(commander.getName())) {
+        FilterMana color=CardUtil.getColorIdentity(commander);
+        for (        Card card : deck.getCards()) {
+          if (!cardHasValideColor(color,card)) {
+            invalid.put(card.getName(),"Invalid color (" + commander.getName() + ")");
+            valid=false;
+          }
+          if (card.getManaCost().convertedManaCost() > 3) {
+            invalid.put(card.getName(),"Invalid cost (" + card.getManaCost().convertedManaCost() + ")");
+            valid=false;
+          }
+        }
+      }
+ else {
+        invalid.put("Commander","Commander banned (" + commander.getName() + ")");
+        valid=false;
+      }
+    }
+ else {
+      invalid.put("Commander","Commander invalide (" + commander.getName() + ")");
+      valid=false;
+    }
+  }
+ else {
+    invalid.put("Commander","Sideboard must contain only the commander");
+    valid=false;
+  }
+  return valid;
+}
