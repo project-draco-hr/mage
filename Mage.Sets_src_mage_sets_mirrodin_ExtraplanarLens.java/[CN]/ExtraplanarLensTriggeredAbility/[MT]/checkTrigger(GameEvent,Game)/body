@@ -1,15 +1,17 @@
 {
   Permanent landTappedForMana=game.getPermanentOrLKIBattlefield(event.getSourceId());
   Permanent extraplanarLens=game.getPermanent(getSourceId());
-  if (extraplanarLens != null && landTappedForMana != null) {
-    MageObject object=game.getObject(extraplanarLens.getImprinted().get(0));
-    if (landTappedForMana.getName().equals(object.getName()) && landTappedForMana.getCardType().contains(CardType.LAND)) {
-      ManaEvent mEvent=(ManaEvent)event;
-      for (      Effect effect : getEffects()) {
-        effect.setValue("mana",mEvent.getMana());
+  if (extraplanarLens != null && landTappedForMana != null && !extraplanarLens.getImprinted().isEmpty()) {
+    Card imprinted=game.getCard(extraplanarLens.getImprinted().get(0));
+    if (imprinted != null && game.getState().getZone(imprinted.getId()).equals(Zone.EXILED)) {
+      if (landTappedForMana.getName().equals(imprinted.getName()) && landTappedForMana.getCardType().contains(CardType.LAND)) {
+        ManaEvent mEvent=(ManaEvent)event;
+        for (        Effect effect : getEffects()) {
+          effect.setValue("mana",mEvent.getMana());
+        }
+        getEffects().get(0).setTargetPointer(new FixedTarget(landTappedForMana.getId()));
+        return true;
       }
-      getEffects().get(0).setTargetPointer(new FixedTarget(landTappedForMana.getId()));
-      return true;
     }
   }
   return false;
