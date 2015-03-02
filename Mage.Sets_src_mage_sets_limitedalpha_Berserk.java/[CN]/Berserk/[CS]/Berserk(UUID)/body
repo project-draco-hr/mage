@@ -2,8 +2,7 @@
   super(ownerId,94,"Berserk",Rarity.UNCOMMON,new CardType[]{CardType.INSTANT},"{G}");
   this.expansionSetCode="LEA";
   this.color.setGreen(true);
-  this.addAbility(new SimpleStaticAbility(Zone.ALL,new BerserkReplacementEffect()));
-  this.addWatcher(new CombatDamageStepStartedWatcher());
+  this.addAbility(new SimpleStaticAbility(Zone.ALL,new BerserkReplacementEffect()),new CombatDamageStepStartedWatcher());
   Effect effect=new GainAbilityTargetEffect(TrampleAbility.getInstance(),Duration.EndOfTurn);
   effect.setText("Target creature gains trample");
   this.getSpellAbility().addEffect(effect);
@@ -12,5 +11,5 @@
   this.getSpellAbility().addEffect(effect);
   this.getSpellAbility().addEffect(new BerserkDestroyEffect());
   this.getSpellAbility().addTarget(new TargetCreaturePermanent());
-  this.addWatcher(new AttackedThisTurnWatcher());
+  this.getSpellAbility().addWatcher(new AttackedThisTurnWatcher());
 }

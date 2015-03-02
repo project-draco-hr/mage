@@ -3,13 +3,12 @@
   if (player == null) {
     return false;
   }
-  FilterCreaturePermanent filter=new FilterCreaturePermanent();
-  filter.add(new ControllerIdPredicate(player.getId()));
+  FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent();
   int realCount=game.getBattlefield().countAll(filter,player.getId(),game);
   if (realCount > 0) {
     Target target=new TargetControlledPermanent(1,1,filter,true);
     while (player.isInGame() && !target.isChosen() && target.canChoose(player.getId(),game)) {
-      player.choose(Outcome.Sacrifice,target,source.getSourceId(),game);
+      player.chooseTarget(Outcome.Sacrifice,target,source,game);
     }
     Permanent permanent=game.getPermanent(target.getFirstTarget());
     if (permanent != null) {

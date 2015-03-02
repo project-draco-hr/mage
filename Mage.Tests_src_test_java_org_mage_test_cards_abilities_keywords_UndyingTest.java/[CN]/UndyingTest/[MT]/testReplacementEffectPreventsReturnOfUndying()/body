@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",2);
+  addCard(Zone.HAND,playerA,"Butcher Ghoul");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerB,"Anafenza, the Foremost");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Butcher Ghoul");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Bolt","Butcher Ghoul");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerB,"Anafenza, the Foremost",1);
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertPermanentCount(playerA,"Butcher Ghoul",0);
+  assertExileCount("Butcher Ghoul",1);
+}
