@@ -1,5 +1,13 @@
 {
-  List<Permanent> threats=(playerId == null || sourceId == null) ? game.getBattlefield().getActivePermanents(filter,this.getId(),sourceId,game) : game.getBattlefield().getActivePermanents(filter,playerId,sourceId,game);
+  List<Permanent> threats;
+  if (playerId == null) {
+    threats=game.getBattlefield().getActivePermanents(filter,this.getId(),sourceId,game);
+  }
+ else {
+    FilterPermanent filterCopy=filter.copy();
+    filterCopy.add(new ControllerIdPredicate(playerId));
+    threats=game.getBattlefield().getActivePermanents(filter,this.getId(),sourceId,game);
+  }
   Iterator<Permanent> it=threats.iterator();
   while (it.hasNext()) {
     Permanent test=it.next();

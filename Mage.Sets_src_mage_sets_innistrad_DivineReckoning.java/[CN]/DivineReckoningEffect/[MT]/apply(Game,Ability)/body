@@ -1,13 +1,13 @@
 {
-  List<Card> chosen=new ArrayList<Card>();
+  List<Card> chosen=new ArrayList<>();
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
     for (    UUID playerId : controller.getInRange()) {
       Player player=game.getPlayer(playerId);
-      Target target=new TargetControlledPermanent(1,1,filter,false);
+      Target target=new TargetControlledPermanent(1,1,new FilterControlledCreaturePermanent(),false);
       if (target.canChoose(player.getId(),game)) {
         while (player.isInGame() && !target.isChosen() && target.canChoose(player.getId(),game)) {
-          player.choose(Outcome.Benefit,target,source.getSourceId(),game);
+          player.chooseTarget(Outcome.Benefit,target,source,game);
         }
         Permanent permanent=game.getPermanent(target.getFirstTarget());
         if (permanent != null) {

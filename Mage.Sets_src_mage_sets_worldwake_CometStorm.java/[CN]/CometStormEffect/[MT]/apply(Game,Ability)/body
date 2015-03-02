@@ -1,7 +1,7 @@
 {
   int damage=source.getManaCostsToPay().getX();
-  Player you=game.getPlayer(source.getControllerId());
-  if (you != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
     for (    UUID uuid : this.getTargetPointer().getTargets(game,source)) {
       Permanent permanent=game.getPermanent(uuid);
       Player player=game.getPlayer(uuid);
@@ -9,7 +9,7 @@
         permanent.damage(damage,source.getSourceId(),game,false,true);
       }
       if (player != null) {
-        player.damage(damage,source.getSourceId(),game,true,false);
+        player.damage(damage,source.getSourceId(),game,false,true);
       }
     }
     return true;

@@ -1,12 +1,21 @@
 {
   if (sourceId.equals(cardId)) {
-    Card card=game.getCard(cardId);
-    Card sourceCard=game.getCard(source.getSourceId());
-    Player controller=game.getPlayer(source.getControllerId());
-    if (controller != null && card != null && game.getState().getZone(cardId) == Zone.EXILED) {
-      if (controller.chooseUse(outcome,"Reveal exiled card?",game)) {
-        Cards cards=new CardsImpl(card);
-        controller.lookAtCards("Exiled with " + sourceCard.getName(),cards,game);
+    MageObject sourceObject=source.getSourceObject(game);
+    UUID exileId=CardUtil.getObjectExileZoneId(game,sourceObject,true);
+    if (exileId != null && sourceObject != null) {
+      ExileZone exileZone=game.getExile().getExileZone(exileId);
+      if (exileZone != null && exileZone.contains(cardId)) {
+        Player controller=game.getPlayer(source.getControllerId());
+        Card card=game.getCard(cardId);
+        if (controller != null && card != null && game.getState().getZone(cardId) == Zone.EXILED) {
+          if (controller.chooseUse(outcome,"Reveal exiled card?",game)) {
+            Cards cards=new CardsImpl(card);
+            controller.lookAtCards("Exiled with " + sourceObject.getName(),cards,game);
+          }
+        }
+      }
+ else {
+        discard();
       }
     }
   }

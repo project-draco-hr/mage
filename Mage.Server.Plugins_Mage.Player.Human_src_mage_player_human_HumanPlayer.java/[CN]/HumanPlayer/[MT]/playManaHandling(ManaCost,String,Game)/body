@@ -1,0 +1,35 @@
+{
+  updateGameStatePriority("playMana",game);
+  game.firePlayManaEvent(playerId,"Pay " + promptText);
+  waitForResponse(game);
+  if (!this.isInGame()) {
+    return false;
+  }
+  if (response.getBoolean() != null) {
+    return false;
+  }
+ else   if (response.getUUID() != null) {
+    playManaAbilities(unpaid,game);
+  }
+ else   if (response.getString() != null && response.getString().equals("special")) {
+    if (unpaid instanceof ManaCostsImpl) {
+      specialManaAction(unpaid,game);
+      ManaCostsImpl<ManaCost> costs=(ManaCostsImpl<ManaCost>)unpaid;
+      for (      ManaCost cost : costs.getUnpaid()) {
+        if (cost instanceof PhyrexianManaCost) {
+          PhyrexianManaCost ph=(PhyrexianManaCost)cost;
+          if (ph.canPay(null,null,playerId,game)) {
+            ((PhyrexianManaCost)cost).pay(null,game,null,playerId,false);
+          }
+          break;
+        }
+      }
+    }
+  }
+ else   if (response.getManaType() != null) {
+    if (response.getResponseManaTypePlayerId().equals(this.getId())) {
+      this.getManaPool().unlockManaType(response.getManaType());
+    }
+  }
+  return true;
+}
