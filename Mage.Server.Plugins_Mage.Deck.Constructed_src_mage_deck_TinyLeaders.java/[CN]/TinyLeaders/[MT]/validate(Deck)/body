@@ -11,8 +11,12 @@
       invalid.put("Commander Mana Cost","Converted Mana Cost of " + card.getName() + " is too high");
     }
   }
-  if (deck.getCards().size() != 49) {
-    invalid.put("Deck","Must contain 49 cards: has " + deck.getCards().size() + " cards");
+  if (deck.getCards().size() != 50) {
+    invalid.put("Deck","Main deck must contain 50 cards including your commander: has " + deck.getCards().size() + " cards");
+    valid=false;
+  }
+  if (deck.getSideboard().size() != 10) {
+    invalid.put("Sideboard","Sideboard must contain 10 cards: has " + deck.getSideboard().size() + " cards");
     valid=false;
   }
   List<String> basicLandNames=new ArrayList<>(Arrays.asList("Forest","Island","Mountain","Swamp","Plains","Snow-Covered Forest","Snow-Covered Island","Snow-Covered Mountain","Snow-Covered Swamp","Snow-Covered Plains"));
@@ -33,17 +37,24 @@
       valid=false;
     }
   }
-  if (deck.getSideboard().size() == 1) {
-    Card commander=(Card)deck.getSideboard().toArray()[0];
-    if (commander == null) {
-      invalid.put("Commander","Commander invalid ");
-      return false;
+  Card commander=null;
+  for (  Card card : deck.getCards()) {
+    if (card.getName().equals(deck.getName())) {
+      commander=card.copy();
     }
-    if ((commander.getCardType().contains(CardType.CREATURE) && commander.getSupertype().contains("Legendary")) || (commander.getCardType().contains(CardType.PLANESWALKER) && commander.getAbilities().contains(CanBeYourCommanderAbility.getInstance()))) {
+  }
+  if (commander != null) {
+    if (commander.getCardType().contains(CardType.CREATURE) && commander.getSupertype().contains("Legendary")) {
       if (!bannedCommander.contains(commander.getName())) {
         FilterMana color=CardUtil.getColorIdentity(commander);
         for (        Card card : deck.getCards()) {
-          if (!cardHasValideColor(color,card)) {
+          if (!cardHasValidColor(color,card)) {
+            invalid.put(card.getName(),"Invalid color (" + commander.getName() + ")");
+            valid=false;
+          }
+        }
+        for (        Card card : deck.getSideboard()) {
+          if (!cardHasValidColor(color,card)) {
             invalid.put(card.getName(),"Invalid color (" + commander.getName() + ")");
             valid=false;
           }
@@ -60,7 +71,8 @@
     }
   }
  else {
-    invalid.put("Commander","Sideboard must contain only the commander");
+    invalid.put("Commander",deck.getName() + " not found in main board");
+    valid=false;
   }
   return valid;
 }
