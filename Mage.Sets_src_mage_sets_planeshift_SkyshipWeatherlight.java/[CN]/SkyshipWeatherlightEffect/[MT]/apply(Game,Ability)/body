@@ -1,18 +1,20 @@
 {
-  Player you=game.getPlayer(source.getControllerId());
-  if (you != null) {
-    if (you.searchLibrary(target,game)) {
-      UUID exileZone=CardUtil.getCardExileZoneId(game,source);
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (sourceObject != null && controller != null) {
+    if (controller.searchLibrary(target,game)) {
+      UUID exileZone=CardUtil.getObjectExileZoneId(game,sourceObject);
       if (target.getTargets().size() > 0) {
         for (        UUID cardID : target.getTargets()) {
-          Card card=you.getLibrary().getCard(cardID,game);
+          Card card=controller.getLibrary().getCard(cardID,game);
           if (card != null) {
-            card.moveToExile(exileZone,"Skyship Weatherlight",source.getSourceId(),game);
+            controller.moveCardToExileWithInfo(card,exileZone,sourceObject.getLogName(),source.getSourceId(),game,Zone.LIBRARY);
           }
         }
       }
     }
-    you.shuffleLibrary(game);
+    controller.shuffleLibrary(game);
+    return true;
   }
   return false;
 }

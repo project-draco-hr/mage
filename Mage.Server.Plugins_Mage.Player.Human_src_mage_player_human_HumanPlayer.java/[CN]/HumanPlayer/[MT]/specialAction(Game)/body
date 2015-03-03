@@ -1,11 +1,13 @@
 {
-  updateGameStatePriority("specialAction",game);
-  LinkedHashMap<UUID,SpecialAction> specialActions=game.getState().getSpecialActions().getControlledBy(playerId);
-  game.fireGetChoiceEvent(playerId,name,null,new ArrayList<>(specialActions.values()));
-  waitForResponse(game);
-  if (response.getUUID() != null) {
-    if (specialActions.containsKey(response.getUUID())) {
-      activateAbility(specialActions.get(response.getUUID()),game);
+  LinkedHashMap<UUID,SpecialAction> specialActions=game.getState().getSpecialActions().getControlledBy(playerId,false);
+  if (!specialActions.isEmpty()) {
+    updateGameStatePriority("specialAction",game);
+    game.fireGetChoiceEvent(playerId,name,null,new ArrayList<>(specialActions.values()));
+    waitForResponse(game);
+    if (response.getUUID() != null) {
+      if (specialActions.containsKey(response.getUUID())) {
+        activateAbility(specialActions.get(response.getUUID()),game);
+      }
     }
   }
 }

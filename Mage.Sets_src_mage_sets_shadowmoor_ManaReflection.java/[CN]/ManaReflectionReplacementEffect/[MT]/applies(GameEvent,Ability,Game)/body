@@ -1,13 +1,3 @@
 {
-  if (event.getType() == GameEvent.EventType.ADD_MANA && event.getPlayerId().equals(source.getControllerId()) && game.getPermanentOrLKIBattlefield(event.getSourceId()) != null) {
-    UUID permanentId=game.getPermanentOrLKIBattlefield(event.getSourceId()).getId();
-    PermanentTappedForManaWatcher watcher=(PermanentTappedForManaWatcher)game.getState().getWatchers().get("PermanentTappedForMana");
-    if (watcher != null) {
-      if (watcher.permanentId.contains(permanentId)) {
-        watcher.permanentId.remove(permanentId);
-        return true;
-      }
-    }
-  }
-  return false;
+  return event.getPlayerId().equals(source.getControllerId()) && game.getPermanentOrLKIBattlefield(event.getSourceId()) != null;
 }

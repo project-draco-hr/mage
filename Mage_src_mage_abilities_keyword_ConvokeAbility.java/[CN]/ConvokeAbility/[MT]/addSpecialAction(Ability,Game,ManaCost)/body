@@ -1,0 +1,37 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && controller.getGraveyard().size() > 0) {
+    if (unpaid.getMana().getColorless() > 0 && source.getAbilityType().equals(AbilityType.SPELL)) {
+      SpecialAction specialAction=new ConvokeSpecialAction(unpaid);
+      specialAction.setControllerId(source.getControllerId());
+      specialAction.setSourceId(source.getSourceId());
+      FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent();
+      filter.add(Predicates.not(new TappedPredicate()));
+      if (unpaid.getMana().getColorless() == 0) {
+        List<ColorPredicate> colorPredicates=new ArrayList<>();
+        if (unpaid.getMana().getBlack() > 0) {
+          colorPredicates.add(new ColorPredicate(ObjectColor.BLACK));
+        }
+        if (unpaid.getMana().getBlue() > 0) {
+          colorPredicates.add(new ColorPredicate(ObjectColor.BLUE));
+        }
+        if (unpaid.getMana().getRed() > 0) {
+          colorPredicates.add(new ColorPredicate(ObjectColor.RED));
+        }
+        if (unpaid.getMana().getGreen() > 0) {
+          colorPredicates.add(new ColorPredicate(ObjectColor.GREEN));
+        }
+        if (unpaid.getMana().getWhite() > 0) {
+          colorPredicates.add(new ColorPredicate(ObjectColor.WHITE));
+        }
+        filter.add(Predicates.or(colorPredicates));
+      }
+      Target target=new TargetControlledCreaturePermanent(1,1,filter,true);
+      target.setTargetName("creature to convoke");
+      specialAction.addTarget(target);
+      if (specialAction.canActivate(source.getControllerId(),game)) {
+        game.getState().getSpecialActions().add(specialAction);
+      }
+    }
+  }
+}

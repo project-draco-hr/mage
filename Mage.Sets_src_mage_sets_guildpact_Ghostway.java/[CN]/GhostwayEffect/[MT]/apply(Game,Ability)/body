@@ -1,16 +1,21 @@
 {
-  UUID exileId=source.getSourceId();
-  if (exileId != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (sourceObject != null && controller != null) {
+    int numberCreatures=0;
+    UUID exileId=CardUtil.getObjectExileZoneId(game,sourceObject);
     for (    Permanent creature : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
       if (creature != null) {
-        if (creature.moveToExile(source.getSourceId(),"Ghostway Exile",source.getSourceId(),game)) {
-          AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Zone.BATTLEFIELD,true));
-          delayedAbility.setSourceId(source.getSourceId());
-          delayedAbility.setControllerId(source.getControllerId());
-          delayedAbility.setSourceObject(source.getSourceObject(game));
-          game.addDelayedTriggeredAbility(delayedAbility);
-        }
+        controller.moveCardToExileWithInfo(creature,exileId,sourceObject.getLogName(),source.getSourceId(),game,Zone.BATTLEFIELD);
+        numberCreatures++;
       }
+    }
+    if (numberCreatures > 0) {
+      AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(exileId,Zone.BATTLEFIELD,false));
+      delayedAbility.setSourceId(source.getSourceId());
+      delayedAbility.setControllerId(source.getControllerId());
+      delayedAbility.setSourceObject(source.getSourceObject(game));
+      game.addDelayedTriggeredAbility(delayedAbility);
     }
     return true;
   }

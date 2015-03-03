@@ -2,11 +2,10 @@
   super(ownerId,120,"Contaminated Bond",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{1}{B}");
   this.expansionSetCode="9ED";
   this.subtype.add("Aura");
-  this.color.setBlack(true);
   TargetPermanent auraTarget=new TargetCreaturePermanent();
   this.getSpellAbility().addTarget(auraTarget);
-  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.UnboostCreature));
   Ability ability=new EnchantAbility(auraTarget.getTargetName());
   this.addAbility(ability);
-  this.addAbility(new AttacksOrBlocksEnchantedTriggeredAbility(Zone.BATTLEFIELD,new LoseLifeSourceControllerEffect(3)));
+  this.addAbility(new AttacksOrBlocksEnchantedTriggeredAbility(Zone.BATTLEFIELD,new LoseLifeControllerAttachedEffect(3)));
 }

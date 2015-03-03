@@ -1,0 +1,20 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment == null) {
+    enchantment=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+  }
+  if (enchantment != null && enchantment.getAttachedTo() != null) {
+    Permanent creature=game.getPermanent(enchantment.getAttachedTo());
+    if (creature == null) {
+      creature=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+    }
+    if (creature != null) {
+      Player player=game.getPlayer(creature.getControllerId());
+      if (player != null) {
+        player.loseLife(amount.calculate(game,source,this),game);
+        return true;
+      }
+    }
+  }
+  return false;
+}

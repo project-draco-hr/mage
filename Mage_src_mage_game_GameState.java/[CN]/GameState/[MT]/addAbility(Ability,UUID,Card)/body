@@ -1,0 +1,19 @@
+{
+  if (ability instanceof StaticAbility) {
+    for (    Mode mode : ability.getModes().values()) {
+      for (      Effect effect : mode.getEffects()) {
+        if (effect instanceof ContinuousEffect) {
+          addEffect((ContinuousEffect)effect,sourceId,ability);
+        }
+      }
+    }
+  }
+ else   if (ability instanceof TriggeredAbility) {
+    this.triggers.add((TriggeredAbility)ability,sourceId,attachedTo);
+  }
+  for (  Watcher watcher : ability.getWatchers()) {
+    watcher.setControllerId(attachedTo.getOwnerId());
+    watcher.setSourceId(attachedTo.getId());
+    watchers.add(watcher);
+  }
+}

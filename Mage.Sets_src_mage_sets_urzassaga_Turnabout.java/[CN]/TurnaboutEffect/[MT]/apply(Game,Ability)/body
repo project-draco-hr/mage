@@ -1,10 +1,14 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
+  Player controller=game.getPlayer(source.getControllerId());
   UUID target=source.getFirstTarget();
-  if (player != null && target != null) {
+  if (controller != null && target != null) {
     Choice choiceImpl=new ChoiceImpl();
     choiceImpl.setChoices(choice);
-    while (!player.choose(outcome.Neutral,choiceImpl,game))     ;
+    while (!controller.choose(Outcome.Neutral,choiceImpl,game)) {
+      if (!controller.isInGame()) {
+        return false;
+      }
+    }
     CardType type;
     String choosenType=choiceImpl.getChoice();
     if (choosenType.equals(CardType.ARTIFACT.toString())) {
@@ -18,7 +22,11 @@
     }
     choiceImpl=new ChoiceImpl();
     choiceImpl.setChoices(choice2);
-    while (!player.choose(outcome.Neutral,choiceImpl,game))     ;
+    while (!controller.choose(Outcome.Neutral,choiceImpl,game)) {
+      if (!controller.isInGame()) {
+        return false;
+      }
+    }
     FilterPermanent filter=new FilterPermanent();
     filter.add(new CardTypePredicate(type));
     if (choiceImpl.getChoice().equals("Untap")) {

@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",2);
+  addCard(Zone.HAND,playerA,"Avalanche Riders");
+  addCard(Zone.HAND,playerA,"Restoration Angel");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Avalanche Riders");
+  castSpell(3,PhaseStep.UPKEEP,playerA,"Restoration Angel",null,"Echo {3}{R} <i>(At the beginning of your upkeep, if this came under your control since the beginning of your last upkeep, sacrifice it unless you pay its echo cost.)</i>");
+  addTarget(playerA,"Avalanche Riders");
+  setStopAt(3,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Avalanche Riders",1);
+  assertPermanentCount(playerA,"Restoration Angel",1);
+  assertPermanentCount(playerB,"Mountain",0);
+}

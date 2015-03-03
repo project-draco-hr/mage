@@ -1,24 +1,24 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (sourceObject != null && controller != null) {
     TargetCardInLibrary target=new TargetCardInLibrary(new FilterBasicLandCard());
-    if (player.searchLibrary(target,game)) {
-      Cards cards=new CardsImpl();
-      Card card=player.getLibrary().getCard(target.getFirstTarget(),game);
+    if (controller.searchLibrary(target,game)) {
+      Card card=controller.getLibrary().getCard(target.getFirstTarget(),game);
       if (card != null) {
+        Cards cards=new CardsImpl();
         cards.add(card);
-        if (MorbidCondition.getInstance().apply(game,source) && player.chooseUse(Outcome.PutLandInPlay,"Do you wish to put the card onto the battlefield instead?",game)) {
-          card.putOntoBattlefield(game,Zone.HAND,source.getSourceId(),source.getControllerId());
+        if (MorbidCondition.getInstance().apply(game,source) && controller.chooseUse(Outcome.PutLandInPlay,"Do you wish to put the card onto the battlefield instead?",game)) {
+          controller.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
         }
  else {
-          card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+          controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
         }
+        controller.revealCards(sourceObject.getLogName(),cards,game);
       }
-      player.revealCards("Caravan Vigil",cards,game);
-      player.shuffleLibrary(game);
-      return true;
     }
-    player.shuffleLibrary(game);
+    controller.shuffleLibrary(game);
+    return true;
   }
   return false;
 }

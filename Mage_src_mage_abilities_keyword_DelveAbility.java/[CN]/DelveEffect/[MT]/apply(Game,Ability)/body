@@ -1,0 +1,22 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    ExileFromGraveCost exileFromGraveCost=(ExileFromGraveCost)source.getCosts().get(0);
+    List<Card> exiledCards=exileFromGraveCost.getExiledCards();
+    if (exiledCards.size() > 0) {
+      ManaPool manaPool=controller.getManaPool();
+      manaPool.addMana(new Mana(0,0,0,0,0,exiledCards.size(),0),game,source);
+      manaPool.unlockManaType(ManaType.COLORLESS);
+      String keyString=CardUtil.getCardZoneString("delvedCards",source.getSourceId(),game);
+      List<Card> delvedCards=(List<Card>)game.getState().getValue(keyString);
+      if (delvedCards == null) {
+        game.getState().setValue(keyString,exiledCards);
+      }
+ else {
+        delvedCards.addAll(exiledCards);
+      }
+    }
+    return true;
+  }
+  return false;
+}

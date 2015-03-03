@@ -13,7 +13,15 @@
         index=symbolString.indexOf("{X}");
       }
     }
-    cmc+=spellAbility.getManaCosts().convertedManaCost() + spellAbility.getManaCostsToPay().getX() * xMultiplier;
+    if (this.getSpellAbility().getSpellAbilityType().equals(SpellAbilityType.BASE_ALTERNATE)) {
+      cmc+=spellAbility.getManaCostsToPay().getX() * xMultiplier;
+    }
+ else {
+      cmc+=spellAbility.getManaCosts().convertedManaCost() + spellAbility.getManaCostsToPay().getX() * xMultiplier;
+    }
+  }
+  if (this.getSpellAbility().getSpellAbilityType().equals(SpellAbilityType.BASE_ALTERNATE)) {
+    cmc+=getCard().getManaCost().convertedManaCost();
   }
   return cmc;
 }

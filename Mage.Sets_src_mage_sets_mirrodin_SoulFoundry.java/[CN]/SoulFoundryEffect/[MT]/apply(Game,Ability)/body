@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Permanent soulFoundry=game.getPermanentOrLKIBattlefield(source.getSourceId());
+    if (soulFoundry != null && soulFoundry.getImprinted() != null && !soulFoundry.getImprinted().isEmpty()) {
+      Card imprinted=game.getCard(soulFoundry.getImprinted().get(0));
+      if (imprinted != null && game.getState().getZone(imprinted.getId()).equals(Zone.EXILED)) {
+        EmptyToken token=new EmptyToken();
+        CardUtil.copyTo(token).from(imprinted);
+        return token.putOntoBattlefield(1,game,source.getSourceId(),controller.getId());
+      }
+    }
+  }
+  return false;
+}

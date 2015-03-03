@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",7);
+  addCard(Zone.HAND,playerA,"Hypnotic Siren");
+  addCard(Zone.HAND,playerB,"Disdainful Stroke");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Hypnotic Siren using bestow","Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Disdainful Stroke","Hypnotic Siren");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertHandCount(playerA,"Hypnotic Siren",0);
+  assertGraveyardCount(playerA,"Hypnotic Siren",0);
+  assertHandCount(playerB,"Disdainful Stroke",1);
+  assertPermanentCount(playerA,"Hypnotic Siren",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertPowerToughness(playerA,"Silvercoat Lion",3,3);
+}

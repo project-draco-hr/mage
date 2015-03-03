@@ -1,0 +1,15 @@
+{
+  boolean applied=false;
+  FilterCreaturePermanent filter=new FilterCreaturePermanent();
+  filter.add(new CounterPredicate(CounterType.M1M1));
+  if (game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game).isEmpty()) {
+    return true;
+  }
+  for (  Permanent creature : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
+    if (creature != null) {
+      creature.addCounters(CounterType.M1M1.createInstance(),game);
+      applied=true;
+    }
+  }
+  return applied;
+}

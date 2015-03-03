@@ -1,21 +1,16 @@
 {
-  List<UUID> chosen=new ArrayList<UUID>();
+  List<UUID> chosen=new ArrayList<>();
   Player controller=game.getPlayer(source.getControllerId());
   if (controller == null) {
     return false;
   }
   for (  UUID playerId : controller.getInRange()) {
     Player player=game.getPlayer(playerId);
-    Target target1=new TargetControlledPermanent(1,1,filter1,false);
-    Target target2=new TargetControlledPermanent(1,1,filter2,false);
-    Target target3=new TargetControlledPermanent(1,1,filter3,false);
-    Target target4=new TargetControlledPermanent(1,1,filter4,false);
-    Target target5=new TargetControlledPermanent(1,1,filter5,false);
-    target1.setNotTarget(false);
-    target2.setNotTarget(false);
-    target3.setNotTarget(false);
-    target4.setNotTarget(false);
-    target5.setNotTarget(false);
+    Target target1=new TargetControlledPermanent(1,1,new FilterControlledArtifactPermanent(),true);
+    Target target2=new TargetControlledPermanent(1,1,new FilterControlledCreaturePermanent(),true);
+    Target target3=new TargetControlledPermanent(1,1,new FilterControlledEnchantmentPermanent(),true);
+    Target target4=new TargetControlledPermanent(1,1,new FilterControlledLandPermanent(),true);
+    Target target5=new TargetControlledPermanent(1,1,new FilterControlledPlaneswalkerPermanent(),true);
     if (target1.canChoose(player.getId(),game)) {
       while (player.isInGame() && !target1.isChosen() && target1.canChoose(player.getId(),game)) {
         player.chooseTarget(Outcome.Benefit,target1,source,game);

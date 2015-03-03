@@ -1,0 +1,23 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",5);
+  addCard(Zone.BATTLEFIELD,playerA,"Ashen-Skin Zubera");
+  addCard(Zone.BATTLEFIELD,playerA,"Dripping-Tongue Zubera");
+  addCard(Zone.BATTLEFIELD,playerA,"Ember-Fist Zubera");
+  addCard(Zone.BATTLEFIELD,playerA,"Floating-Dream Zubera");
+  addCard(Zone.BATTLEFIELD,playerA,"Silent-Chant Zubera");
+  addCard(Zone.HAND,playerA,"Lightning Bolt",5);
+  addCard(Zone.HAND,playerB,"Island",3);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt","Silent-Chant Zubera");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt","Floating-Dream Zubera");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt","Ember-Fist Zubera");
+  addTarget(playerA,playerB);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt","Ashen-Skin Zubera");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt","Dripping-Tongue Zubera");
+  setStopAt(1,PhaseStep.DECLARE_BLOCKERS);
+  execute();
+  assertPermanentCount(playerA,"Spirit",1);
+  assertHandCount(playerB,1);
+  assertHandCount(playerA,4);
+  assertLife(playerB,17);
+  assertLife(playerA,30);
+}
