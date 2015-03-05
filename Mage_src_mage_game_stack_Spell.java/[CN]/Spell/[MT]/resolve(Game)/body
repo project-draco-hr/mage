@@ -47,6 +47,7 @@
       boolean bestow=this.getSpellAbility() instanceof BestowAbility;
       if (bestow) {
         card.getCardType().remove(CardType.CREATURE);
+        card.getSubtype().add("Aura");
       }
       if (card.putOntoBattlefield(game,fromZone,ability.getSourceId(),controllerId)) {
         if (bestow) {
@@ -54,8 +55,10 @@
           if (permanent != null && permanent instanceof PermanentCard) {
             permanent.setSpellAbility(ability);
             ((PermanentCard)permanent).getCard().getCardType().add(CardType.CREATURE);
+            ((PermanentCard)permanent).getCard().getSubtype().remove("Aura");
           }
           card.getCardType().add(CardType.CREATURE);
+          card.getSubtype().remove("Aura");
         }
         game.getState().handleSimultaneousEvent(game);
         return ability.resolve(game);

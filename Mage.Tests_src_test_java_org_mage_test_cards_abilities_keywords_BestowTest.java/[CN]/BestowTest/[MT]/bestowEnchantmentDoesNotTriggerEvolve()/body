@@ -7,8 +7,11 @@
   castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Boon Satyr using bestow","Silent Artisan");
   setStopAt(1,PhaseStep.END_TURN);
   execute();
+  assertPermanentCount(playerA,"Boon Satyr",1);
+  Permanent boonSatyr=getPermanent("Boon Satyr",playerA);
+  Assert.assertTrue("Boon Satyr may not be a creature",!boonSatyr.getCardType().contains(CardType.CREATURE));
   assertPermanentCount(playerA,"Silent Artisan",1);
-  assertPowerToughness(playerA,"Silent Artisan",7,7);
   assertPermanentCount(playerA,"Experiment One",1);
   assertPowerToughness(playerA,"Experiment One",1,1);
+  assertPowerToughness(playerA,"Silent Artisan",7,7);
 }
