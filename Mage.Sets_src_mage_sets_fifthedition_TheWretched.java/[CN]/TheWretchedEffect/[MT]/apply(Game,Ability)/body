@@ -1,0 +1,24 @@
+{
+  Permanent theWretched=game.getPermanent(source.getSourceId());
+  if (theWretched == null) {
+    return false;
+  }
+  if (theWretched.isRemovedFromCombat()) {
+    return false;
+  }
+  if (!new SourceOnBattlefieldControlUnchangedCondition().apply(game,source)) {
+    return false;
+  }
+  BlockedAttackerWatcher watcher=(BlockedAttackerWatcher)game.getState().getWatchers().get("BlockedAttackerWatcher");
+  if (watcher != null) {
+    for (    Permanent creature : game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),game)) {
+      if (watcher.creatureHasBlockedAttacker(theWretched,creature) && !creature.isRemovedFromCombat()) {
+        ContinuousEffect effect=new ConditionalContinuousEffect(new GainControlTargetEffect(Duration.Custom,source.getControllerId()),new SourceOnBattlefieldControlUnchangedCondition(),"test");
+        effect.setTargetPointer(new FixedTarget(creature.getId()));
+        game.addEffect(effect,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}
