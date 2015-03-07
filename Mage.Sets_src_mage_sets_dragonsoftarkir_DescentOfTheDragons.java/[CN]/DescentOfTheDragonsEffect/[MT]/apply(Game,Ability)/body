@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    Target target : source.getTargets()) {
+      for (      UUID permanentId : target.getTargets()) {
+        Permanent permanent=game.getPermanent(permanentId);
+        if (permanent != null) {
+          UUID controllerOfTargetId=permanent.getControllerId();
+          if (permanent.destroy(source.getSourceId(),game,false)) {
+            DragonToken dragonToken=new DragonToken();
+            dragonToken.putOntoBattlefield(1,game,source.getSourceId(),controllerOfTargetId);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
