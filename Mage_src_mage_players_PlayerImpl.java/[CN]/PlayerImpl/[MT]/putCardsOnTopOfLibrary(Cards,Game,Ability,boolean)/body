@@ -10,11 +10,9 @@
       target.setRequired(true);
       while (isInGame() && cards.size() > 1) {
         this.choose(Outcome.Neutral,cards,target,game);
-        Card chosenCard=cards.get(target.getFirstTarget(),game);
-        if (chosenCard != null) {
-          cards.remove(chosenCard);
-          moveObjectToLibrary(chosenCard.getId(),source.getSourceId(),game,true,false);
-        }
+        UUID targetObjectId=target.getFirstTarget();
+        cards.remove(targetObjectId);
+        moveObjectToLibrary(targetObjectId,source.getSourceId(),game,true,false);
         target.clearChosen();
       }
       if (cards.size() == 1) {
