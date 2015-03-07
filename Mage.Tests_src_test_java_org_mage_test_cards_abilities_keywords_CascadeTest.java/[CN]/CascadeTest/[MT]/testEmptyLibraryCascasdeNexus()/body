@@ -1,0 +1,16 @@
+{
+  playerA.getLibrary().clear();
+  addCard(Zone.LIBRARY,playerA,"Plains",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Maelstrom Nexus");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.HAND,playerA,"Aven Skirmisher");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Aven Skirmisher");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Maelstrom Nexus",1);
+  Assert.assertTrue("Player A is still in game",playerA.isInGame());
+  assertHandCount(playerA,"Aven Skirmisher",0);
+  assertPermanentCount(playerA,"Aven Skirmisher",1);
+  Assert.assertEquals("The 2 lands went back to library",2,playerA.getLibrary().size());
+  Assert.assertTrue("Player A is still in game",playerA.isInGame());
+}

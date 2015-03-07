@@ -1,0 +1,13 @@
+{
+  playerA.getLibrary().clear();
+  addCard(Zone.LIBRARY,playerA,"Plains",10);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Zone.HAND,playerA,"Ardent Plea");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Ardent Plea");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Ardent Plea",1);
+  Assert.assertEquals("The 10 lands went back to library",10,playerA.getLibrary().size());
+  Assert.assertTrue("Player A is still in game",playerA.isInGame());
+}
