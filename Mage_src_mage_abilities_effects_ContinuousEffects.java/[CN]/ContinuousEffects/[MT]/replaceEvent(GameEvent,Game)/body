@@ -28,7 +28,13 @@
     boolean onlyOne=false;
     if (rEffects.size() == 1) {
       ReplacementEffect effect=rEffects.keySet().iterator().next();
-      HashSet<Ability> abilities=replacementEffects.getAbility(effect.getId());
+      HashSet<Ability> abilities;
+      if (effect.getEffectType().equals(EffectType.REPLACEMENT)) {
+        abilities=replacementEffects.getAbility(effect.getId());
+      }
+ else {
+        abilities=preventionEffects.getAbility(effect.getId());
+      }
       if (abilities == null || abilities.size() == 1) {
         onlyOne=true;
       }
