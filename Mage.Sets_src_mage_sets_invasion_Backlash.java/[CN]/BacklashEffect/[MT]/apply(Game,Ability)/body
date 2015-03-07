@@ -1,0 +1,13 @@
+{
+  boolean applied=false;
+  Permanent targetCreature=game.getPermanent(targetPointer.getFirst(game,source));
+  if (targetCreature != null) {
+    applied=targetCreature.tap(game);
+    Player controller=game.getPlayer(targetCreature.getControllerId());
+    if (controller != null) {
+      controller.damage(targetCreature.getPower().getValue(),source.getSourceId(),game,false,true);
+      applied=true;
+    }
+  }
+  return applied;
+}
