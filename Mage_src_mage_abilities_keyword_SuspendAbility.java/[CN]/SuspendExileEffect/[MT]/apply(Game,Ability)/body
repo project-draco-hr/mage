@@ -7,12 +7,8 @@
         return false;
       }
     }
-    UUID exileId=(UUID)game.getState().getValue("SuspendExileId" + source.getControllerId().toString());
-    if (exileId == null) {
-      exileId=UUID.randomUUID();
-      game.getState().setValue("SuspendExileId" + source.getControllerId().toString(),exileId);
-    }
-    if (card.moveToExile(exileId,new StringBuilder("Suspended cards of ").append(controller.getName()).toString(),source.getSourceId(),game)) {
+    UUID exileId=SuspendAbility.getSuspendExileId(controller.getId(),game);
+    if (controller.moveCardToExileWithInfo(card,exileId,"Suspended cards of " + controller.getName(),source.getSourceId(),game,Zone.HAND)) {
       if (suspend == Integer.MAX_VALUE) {
         suspend=source.getManaCostsToPay().getX();
       }
