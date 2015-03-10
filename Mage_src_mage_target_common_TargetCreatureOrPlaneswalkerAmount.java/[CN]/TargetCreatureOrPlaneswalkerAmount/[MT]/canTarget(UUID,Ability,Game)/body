@@ -1,0 +1,13 @@
+{
+  Permanent permanent=game.getPermanent(id);
+  if (source != null) {
+    MageObject targetSource=game.getObject(source.getSourceId());
+    if (permanent != null) {
+      return permanent.canBeTargetedBy(targetSource,source.getControllerId(),game) && filter.match(permanent,source.getSourceId(),source.getControllerId(),game);
+    }
+  }
+  if (permanent != null) {
+    return filter.match(permanent,game);
+  }
+  return false;
+}
