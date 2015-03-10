@@ -1,18 +1,9 @@
 {
   try {
-    List<String> rules=abilities.getRules(this.getLogName());
-    if (info != null) {
-      for (      String data : info.values()) {
-        rules.add(data);
-      }
-    }
-    return rules;
+    return abilities.getRules(this.getLogName());
   }
  catch (  Exception e) {
-    System.out.println("Exception in rules generation for card: " + this.getName());
-    e.printStackTrace();
+    logger.info("Exception in rules generation for card: " + this.getName(),e);
   }
-  ArrayList<String> rules=new ArrayList<>();
-  rules.add("Exception occured in rules generation");
-  return rules;
+  return rulesError;
 }

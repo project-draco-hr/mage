@@ -1,0 +1,24 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Blind Hunter",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Goblin Roughrider");
+  addCard(Zone.HAND,playerA,"Lightning Bolt",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt","Blind Hunter");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Lightning Bolt","Goblin Roughrider");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerA,"Lightning Bolt",2);
+  assertExileCount("Blind Hunter",1);
+  assertGraveyardCount(playerA,"Goblin Roughrider",1);
+  boolean found=false;
+  for (  Card card : currentGame.getPlayer(playerA.getId()).getGraveyard().getCards(currentGame)) {
+    if (card.getName().equals("Goblin Roughrider")) {
+      for (      String rule : card.getRules(currentGame)) {
+        if (rule.startsWith("Haunted by Blind Hunter")) {
+          found=true;
+        }
+      }
+    }
+  }
+  Assert.assertFalse("Found Haunted by rule text displayed for the card",found);
+}
