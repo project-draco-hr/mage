@@ -25,7 +25,7 @@
  else       if (action.getAction().startsWith("manaActivate:")) {
         String command=action.getAction();
         command=command.substring(command.indexOf("manaActivate:") + 13);
-        String[] groups=command.split("$");
+        String[] groups=command.split("\\$");
         List<Permanent> manaPerms=this.getAvailableManaProducers(game);
         for (        Permanent perm : manaPerms) {
           for (          Ability manaAbility : perm.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
@@ -52,7 +52,7 @@
  else       if (action.getAction().startsWith("addCounters:")) {
         String command=action.getAction();
         command=command.substring(command.indexOf("addCounters:") + 12);
-        String[] groups=command.split("$");
+        String[] groups=command.split("\\$");
         for (        Permanent permanent : game.getBattlefield().getAllActivePermanents()) {
           if (permanent.getName().equals(groups[0])) {
             Counter counter=new Counter(groups[1],Integer.parseInt(groups[2]));
