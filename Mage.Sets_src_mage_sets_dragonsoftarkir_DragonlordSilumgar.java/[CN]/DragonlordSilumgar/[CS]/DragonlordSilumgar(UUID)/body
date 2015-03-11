@@ -1,0 +1,16 @@
+{
+  super(ownerId,220,"Dragonlord Silumgar",Rarity.MYTHIC,new CardType[]{CardType.CREATURE},"{4}{U}{B}");
+  this.expansionSetCode="DTK";
+  this.supertype.add("Legendary");
+  this.subtype.add("Elder");
+  this.subtype.add("Dragon");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(5);
+  this.addAbility(FlyingAbility.getInstance());
+  this.addAbility(DeathtouchAbility.getInstance());
+  ConditionalContinuousEffect effect=new ConditionalContinuousEffect(new GainControlTargetEffect(Duration.Custom),new SourceOnBattlefieldControlUnchangedCondition(),null);
+  effect.setText("gain control of target creature or planeswalker for as long as you control {this}");
+  Ability ability=new EntersBattlefieldTriggeredAbility(effect,false);
+  ability.addTarget(new TargetCreatureOrPlaneswalker());
+  this.addAbility(ability);
+}
