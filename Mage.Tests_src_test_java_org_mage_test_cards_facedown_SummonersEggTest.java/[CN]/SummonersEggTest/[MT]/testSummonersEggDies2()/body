@@ -1,0 +1,20 @@
+{
+  addCard(Zone.HAND,playerA,"Summoner's Egg");
+  addCard(Zone.HAND,playerA,"Forest",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Zone.HAND,playerB,"Char");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",3);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Summoner's Egg");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Char","Summoner's Egg");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertHandCount(playerA,1);
+  assertHandCount(playerA,"Forest",1);
+  assertGraveyardCount(playerA,"Summoner's Egg",1);
+  assertExileCount("Forest",1);
+  for (  Card card : currentGame.getExile().getAllCards(currentGame)) {
+    if (card.getName().equals("Forest")) {
+      Assert.assertTrue("Exiled card is not face up",!card.isFaceDown(currentGame));
+    }
+  }
+}
