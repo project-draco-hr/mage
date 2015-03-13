@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Opalescence");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",4);
+  addCard(Zone.HAND,playerA,"Parallax Wave");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Parallax Wave");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Remove a fade counter from {this}: Exile target creature","Silvercoat Lion");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Remove a fade counter from {this}: Exile target creature","Parallax Wave");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Remove a fade counter from {this}: Exile target creature","Pillarfield Ox");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Remove a fade counter from {this}: Exile target creature","Parallax Wave");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Parallax Wave",1);
+  assertCounterCount("Parallax Wave",CounterType.FADE,5);
+  assertExileCount("Silvercoat Lion",1);
+  assertExileCount("Pillarfield Ox",1);
+}

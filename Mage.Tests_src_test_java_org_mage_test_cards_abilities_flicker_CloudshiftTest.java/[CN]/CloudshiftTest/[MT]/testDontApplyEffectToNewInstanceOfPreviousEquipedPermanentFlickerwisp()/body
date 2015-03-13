@@ -1,0 +1,25 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerA,"Umezawa's Jitte");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",3);
+  addCard(Zone.HAND,playerB,"Flickerwisp");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Equip {2}","Silvercoat Lion");
+  attack(3,playerA,"Silvercoat Lion");
+  activateAbility(4,PhaseStep.DRAW,playerA,"Remove a charge counter from {this}: Choose one &mdash;<br>&bull  Equipped creature gets");
+  setModeChoice(playerA,"1");
+  castSpell(4,PhaseStep.PRECOMBAT_MAIN,playerB,"Flickerwisp");
+  addTarget(playerB,"Silvercoat Lion");
+  setStopAt(4,PhaseStep.END_TURN);
+  execute();
+  Permanent Umezawa=getPermanent("Umezawa's Jitte",playerA.getId());
+  Permanent silvercoatLion=getPermanent("Silvercoat Lion",playerA.getId());
+  assertLife(playerA,20);
+  assertLife(playerB,18);
+  assertCounterCount("Umezawa's Jitte",CounterType.CHARGE,1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertPermanentCount(playerB,"Flickerwisp",1);
+  Assert.assertTrue(silvercoatLion.getAttachments().isEmpty());
+  Assert.assertTrue("Umezawa must not be connected to Silvercoat Lion",Umezawa.getAttachedTo() == null);
+  assertPowerToughness(playerA,"Silvercoat Lion",2,2);
+}

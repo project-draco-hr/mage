@@ -1,14 +1,20 @@
 {
-  ExileZone exileZone=game.getExile().getExileZone(source.getSourceId());
-  if (exileZone != null) {
-    for (    Card card : exileZone.getCards(game)) {
-      Player player=game.getPlayer(card.getOwnerId());
-      if (player != null) {
-        player.putOntoBattlefieldWithInfo(card,game,Zone.EXILED,source.getSourceId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (sourceObject != null) {
+    UUID exileZoneId=CardUtil.getObjectExileZoneId(game,sourceObject);
+    if (exileZoneId != null) {
+      ExileZone exileZone=game.getExile().getExileZone(exileZoneId);
+      if (exileZone != null) {
+        for (        Card card : exileZone.getCards(game)) {
+          Player player=game.getPlayer(card.getOwnerId());
+          if (player != null) {
+            player.putOntoBattlefieldWithInfo(card,game,Zone.EXILED,source.getSourceId());
+          }
+        }
+        exileZone.clear();
       }
+      return true;
     }
-    exileZone.clear();
-    return true;
   }
   return false;
 }
