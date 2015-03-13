@@ -1,0 +1,18 @@
+{
+  addCard(Zone.HAND,playerA,"Summoner's Egg");
+  addCard(Zone.HAND,playerA,"Sejiri Merfolk");
+  addCard(Zone.HAND,playerA,"Goblin Roughrider");
+  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Summoner's Egg");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertHandCount(playerA,1);
+  assertHandCount(playerA,"Sejiri Merfolk",1);
+  assertHandCount(playerA,"Goblin Roughrider",0);
+  assertExileCount("Goblin Roughrider",1);
+  for (  Card card : currentGame.getExile().getAllCards(currentGame)) {
+    if (card.getName().equals("Goblin Roughrider")) {
+      Assert.assertTrue("Exiled card is not face down",card.isFaceDown(currentGame));
+    }
+  }
+}

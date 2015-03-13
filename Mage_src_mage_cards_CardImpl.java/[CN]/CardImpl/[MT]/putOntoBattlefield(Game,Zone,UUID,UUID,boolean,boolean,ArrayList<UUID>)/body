@@ -1,0 +1,49 @@
+{
+  ZoneChangeEvent event=new ZoneChangeEvent(this.objectId,sourceId,controllerId,fromZone,Zone.BATTLEFIELD,appliedEffects,tapped);
+  if (!game.replaceEvent(event)) {
+    if (fromZone != null) {
+      boolean removed=false;
+switch (fromZone) {
+case GRAVEYARD:
+        removed=game.getPlayer(ownerId).removeFromGraveyard(this,game);
+      break;
+case HAND:
+    removed=game.getPlayer(ownerId).removeFromHand(this,game);
+  break;
+case LIBRARY:
+removed=game.getPlayer(ownerId).removeFromLibrary(this,game);
+break;
+case EXILED:
+game.getExile().removeCard(this,game);
+removed=true;
+break;
+case COMMAND:
+removed=true;
+break;
+case PICK:
+removed=true;
+break;
+default :
+logger.warn("putOntoBattlefield, not fully implemented: fromZone=" + fromZone);
+}
+game.rememberLKI(objectId,event.getFromZone(),this);
+if (!removed) {
+logger.warn("Couldn't find card in fromZone, card=" + getName() + ", fromZone="+ fromZone);
+}
+}
+updateZoneChangeCounter();
+PermanentCard permanent=new PermanentCard(this,event.getPlayerId());
+game.getContinuousEffects().setController(objectId,event.getPlayerId());
+game.addPermanent(permanent);
+setZone(Zone.BATTLEFIELD,game);
+game.setScopeRelevant(true);
+permanent.setTapped(tapped);
+permanent.setFaceDown(facedown,game);
+permanent.entersBattlefield(sourceId,game,event.getFromZone(),true);
+game.setScopeRelevant(false);
+game.applyEffects();
+game.fireEvent(new ZoneChangeEvent(permanent,event.getPlayerId(),fromZone,Zone.BATTLEFIELD));
+return true;
+}
+return false;
+}
