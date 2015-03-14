@@ -1,0 +1,21 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    while (game.getBattlefield().count(filter,source.getOriginalId(),source.getControllerId(),game) > 0 && controller.chooseUse(outcome,"Look at a face-down attacking creature?",game)) {
+      if (!controller.isInGame()) {
+        return false;
+      }
+      Target target=new TargetCreaturePermanent(filter);
+      if (controller.chooseTarget(outcome,target,source,game)) {
+        Card card=game.getCard(target.getFirstTarget());
+        if (card != null) {
+          Cards cards=new CardsImpl();
+          controller.lookAtCards(sourceObject.getName(),cards,game);
+          game.informPlayers(controller.getName() + " look at a face-down attacking creature");
+        }
+      }
+    }
+  }
+  return true;
+}

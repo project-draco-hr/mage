@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (sourceObject != null && controller != null && sourceObject instanceof Permanent) {
+    int amount=((Permanent)sourceObject).getCounters().getCount(CounterType.P1P1);
+    if (amount > 0) {
+      Effect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance(amount));
+      effect.setTargetPointer(targetPointer);
+      effect.apply(game,source);
+    }
+    return true;
+  }
+  return false;
+}
