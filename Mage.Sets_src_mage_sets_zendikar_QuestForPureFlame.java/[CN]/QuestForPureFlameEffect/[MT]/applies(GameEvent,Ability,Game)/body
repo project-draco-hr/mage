@@ -1,17 +1,15 @@
 {
-  if (event.getType().equals(GameEvent.EventType.DAMAGE_PLAYER) || event.getType().equals(GameEvent.EventType.DAMAGE_CREATURE)) {
-    Permanent permanent=game.getPermanent(event.getSourceId());
-    Player player=game.getPlayer(event.getSourceId());
-    StackObject spell=game.getStack().getStackObject(event.getSourceId());
-    if (permanent != null && permanent.getControllerId().equals(source.getControllerId())) {
-      event.setAmount(event.getAmount() * 2);
-    }
-    if (player != null && player.getId().equals(source.getControllerId())) {
-      event.setAmount(event.getAmount() * 2);
-    }
-    if (spell != null && spell.getControllerId().equals(source.getControllerId())) {
-      event.setAmount(event.getAmount() * 2);
-    }
+  Permanent permanent=game.getPermanent(event.getSourceId());
+  if (permanent != null && permanent.getControllerId().equals(source.getControllerId())) {
+    return true;
+  }
+  Player player=game.getPlayer(event.getSourceId());
+  if (player != null && player.getId().equals(source.getControllerId())) {
+    return true;
+  }
+  StackObject spell=game.getStack().getStackObject(event.getSourceId());
+  if (spell != null && spell.getControllerId().equals(source.getControllerId())) {
+    return true;
   }
   return false;
 }
