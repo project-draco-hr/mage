@@ -1,0 +1,24 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment == null || enchantment.getAttachedTo() == null) {
+    return false;
+  }
+  Permanent enchanted=game.getPermanent(enchantment.getAttachedTo());
+  if (enchanted != null) {
+    Card card=game.getCard(enchanted.getId());
+    if (card != null) {
+      EmptyToken token=new EmptyToken();
+      CardUtil.copyTo(token).from(card);
+      token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
+      ExileTargetEffect exileEffect=new ExileTargetEffect();
+      exileEffect.setTargetPointer(new FixedTarget(token.getLastAddedToken()));
+      DelayedTriggeredAbility delayedAbility=new AtTheEndOfCombatDelayedTriggeredAbility(exileEffect);
+      delayedAbility.setSourceId(source.getSourceId());
+      delayedAbility.setControllerId(source.getControllerId());
+      delayedAbility.setSourceObject(source.getSourceObject(game));
+      game.addDelayedTriggeredAbility(delayedAbility);
+      return true;
+    }
+  }
+  return false;
+}

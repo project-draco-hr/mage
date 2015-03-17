@@ -1,0 +1,27 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    MageObject mageObject=source.getSourceObject(game);
+    Permanent permanent=game.getPermanent(source.getSourceId());
+    if (permanent != null && mageObject != null && new MageObjectReference(permanent).refersTo(mageObject)) {
+      if (permanent.sacrifice(source.getSourceId(),game)) {
+        UUID exileId=CardUtil.getObjectExileZoneId(game,mageObject);
+        if (exileId != null) {
+          ExileZone exileZone=game.getExile().getExileZone(exileId);
+          Card exiledCard=null;
+          for (          Card card : exileZone.getCards(game)) {
+            exiledCard=card;
+            break;
+          }
+          if (exiledCard != null) {
+            if (exiledCard.getSpellAbility().canChooseTarget(game)) {
+              controller.cast(exiledCard.getSpellAbility(),game,true);
+            }
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

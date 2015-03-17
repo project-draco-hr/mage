@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (sourceObject != null && controller != null) {
+    TargetCardInYourGraveyard target=new TargetCardInYourGraveyard(new FilterInstantOrSorceryCard("instant or sorcery card from your graveyard"));
+    if (controller.chooseTarget(outcome,target,source,game)) {
+      UUID exileId=CardUtil.getObjectExileZoneId(game,sourceObject);
+      Card card=controller.getGraveyard().get(target.getFirstTarget(),game);
+      if (card != null) {
+        controller.moveCardToExileWithInfo(card,exileId,sourceObject.getName(),source.getSourceId(),game,Zone.GRAVEYARD);
+      }
+    }
+    return true;
+  }
+  return false;
+}
