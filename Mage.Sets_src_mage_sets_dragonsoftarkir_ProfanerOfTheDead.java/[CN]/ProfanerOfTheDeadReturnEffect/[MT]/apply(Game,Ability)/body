@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent exploitedCreature=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
+  if (controller != null && exploitedCreature != null) {
+    FilterCreaturePermanent filter=new FilterCreaturePermanent();
+    filter.add(new ControllerPredicate(TargetController.OPPONENT));
+    filter.add(new ToughnessPredicate(Filter.ComparisonType.LessThan,exploitedCreature.getToughness().getValue()));
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
+      controller.moveCardToHandWithInfo(permanent,source.getSourceId(),game,Zone.BATTLEFIELD);
+    }
+    return true;
+  }
+  return false;
+}
