@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && targetPlayer != null && sourceObject != null) {
+    UUID exileId=CardUtil.getObjectExileZoneId(game,sourceObject);
+    ArrayList<UUID> graveyard=new ArrayList<>(targetPlayer.getGraveyard());
+    for (    UUID cardId : graveyard) {
+      Card card=game.getCard(cardId);
+      if (card != null) {
+        controller.moveCardToExileWithInfo(card,exileId,sourceObject.getName(),source.getSourceId(),game,Zone.GRAVEYARD);
+      }
+    }
+    return true;
+  }
+  return false;
+}

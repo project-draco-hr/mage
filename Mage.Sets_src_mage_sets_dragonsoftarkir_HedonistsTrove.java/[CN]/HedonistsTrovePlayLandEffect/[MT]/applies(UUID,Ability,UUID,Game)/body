@@ -1,0 +1,12 @@
+{
+  Card card=game.getCard(objectId);
+  MageObject sourceObject=source.getSourceObject(game);
+  if (card != null && card.getCardType().contains(CardType.LAND) && sourceObject != null) {
+    UUID exileId=CardUtil.getObjectExileZoneId(game,sourceObject);
+    if (exileId != null) {
+      ExileZone exileZone=game.getState().getExile().getExileZone(exileId);
+      return exileZone != null && exileZone.contains(objectId);
+    }
+  }
+  return false;
+}
