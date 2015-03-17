@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Card card=game.getCard(targetPointer.getFirst(game,source));
+    if (card != null) {
+      controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.GRAVEYARD);
+      ContinuousEffect effect=new BoostTargetEffect(-4,-4,Duration.EndOfTurn);
+      effect.setTargetPointer(new FixedTarget(source.getTargets().get(1).getFirstTarget()));
+      game.addEffect(effect,source);
+    }
+    return true;
+  }
+  return false;
+}
