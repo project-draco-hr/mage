@@ -1,13 +1,38 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    for (    UUID playerId : controller.getInRange()) {
-      Player player=game.getPlayer(playerId);
-      if (player != null) {
-        player.setCanGainLife(false);
-      }
+switch (targetController) {
+case YOU:
+      controller.setCanGainLife(false);
+    break;
+case NOT_YOU:
+  for (  UUID playerId : controller.getInRange()) {
+    Player player=game.getPlayer(playerId);
+    if (player != null && !player.equals(controller)) {
+      player.setCanGainLife(false);
     }
-    return true;
   }
-  return false;
+break;
+case OPPONENT:
+for (UUID playerId : controller.getInRange()) {
+if (controller.hasOpponent(playerId,game)) {
+  Player player=game.getPlayer(playerId);
+  if (player != null) {
+    player.setCanGainLife(false);
+  }
+}
+}
+break;
+case ANY:
+for (UUID playerId : controller.getInRange()) {
+Player player=game.getPlayer(playerId);
+if (player != null) {
+player.setCanGainLife(false);
+}
+}
+break;
+}
+return true;
+}
+return false;
 }
