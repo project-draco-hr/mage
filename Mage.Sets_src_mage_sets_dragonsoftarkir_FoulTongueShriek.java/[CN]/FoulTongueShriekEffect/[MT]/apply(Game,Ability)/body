@@ -1,0 +1,13 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player targetOpponent=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (controller != null && targetOpponent != null) {
+    int amount=new AttackingCreatureCount().calculate(game,source,this);
+    if (amount > 0) {
+      targetOpponent.loseLife(amount,game);
+      controller.gainLife(amount,game);
+    }
+    return true;
+  }
+  return false;
+}

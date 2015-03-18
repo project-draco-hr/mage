@@ -1,0 +1,21 @@
+{
+  Player controller=game.getPlayer(getControllerId());
+  if (controller != null && controller.hasOpponent(event.getPlayerId(),game)) {
+    Card card=game.getCard(event.getSourceId());
+    if (card != null && (card.getCardType().contains(CardType.CREATURE) || card.getCardType().contains(CardType.PLANESWALKER))) {
+      Player opponent=game.getPlayer(event.getPlayerId());
+      boolean sameName=false;
+      for (      Card graveCard : opponent.getGraveyard().getCards(game)) {
+        if (graveCard.getName().equals(card.getName())) {
+          sameName=true;
+          break;
+        }
+      }
+      if (sameName) {
+        this.getEffects().get(0).setTargetPointer(new FixedTarget(event.getPlayerId()));
+        return true;
+      }
+    }
+  }
+  return false;
+}
