@@ -2,7 +2,17 @@
   if (event.getType() == GameEvent.EventType.SPELL_CAST) {
     Spell spell=game.getState().getStack().getSpell(event.getTargetId());
     if (spell != null) {
-      if (game.getBattlefield().countAll(filter,spell.getControllerId(),game) > 0) {
+      boolean revealedOrOnBattlefield=false;
+      for (      Cost cost : spell.getSpellAbility().getCosts()) {
+        if (cost instanceof RevealTargetFromHandCost) {
+          revealedOrOnBattlefield=((RevealTargetFromHandCost)cost).getNumberRevealedCards() > 0;
+          break;
+        }
+      }
+      if (!revealedOrOnBattlefield) {
+        revealedOrOnBattlefield=game.getBattlefield().countAll(filter,spell.getControllerId(),game) > 0;
+      }
+      if (revealedOrOnBattlefield) {
         castWithDragonOnTheBattlefield.add(spell.getId());
       }
     }
