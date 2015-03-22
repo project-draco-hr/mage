@@ -1,21 +1,22 @@
 {
   Spell spell=game.getStack().getSpell(targetPointer.getFirst(game,source));
-  if (spell != null) {
-    if (spell.moveToExile(source.getSourceId(),"Possibility Storm Exile",source.getSourceId(),game)) {
-      Player player=game.getPlayer(spell.getControllerId());
-      if (player != null && player.getLibrary().size() > 0) {
-        Library library=player.getLibrary();
+  MageObject sourceObject=source.getSourceObject(game);
+  if (sourceObject != null && spell != null) {
+    Player spellController=game.getPlayer(spell.getControllerId());
+    if (spellController != null && spellController.moveCardToExileWithInfo(spell,source.getSourceId(),sourceObject.getName(),source.getSourceId(),game,Zone.STACK)) {
+      if (spellController.getLibrary().size() > 0) {
+        Library library=spellController.getLibrary();
         Card card;
         do {
           card=library.removeFromTop(game);
           if (card != null) {
-            card.moveToExile(source.getSourceId(),"Possibility Storm Exile",source.getSourceId(),game);
+            spellController.moveCardToExileWithInfo(card,source.getSourceId(),sourceObject.getName(),source.getSourceId(),game,Zone.LIBRARY);
           }
         }
  while (library.size() > 0 && card != null && !sharesType(card,spell.getCardType()));
         if (card != null && sharesType(card,spell.getCardType())) {
-          if (player.chooseUse(Outcome.PlayForFree,new StringBuilder("Cast ").append(card.getName()).append(" without paying cost?").toString(),game)) {
-            player.cast(card.getSpellAbility(),game,true);
+          if (spellController.chooseUse(Outcome.PlayForFree,new StringBuilder("Cast ").append(card.getName()).append(" without paying cost?").toString(),game)) {
+            spellController.cast(card.getSpellAbility(),game,true);
           }
         }
         ExileZone exile=game.getExile().getExileZone(source.getSourceId());
@@ -23,7 +24,7 @@
           while (exile.size() > 0) {
             card=exile.getRandom(game);
             exile.remove(card.getId());
-            card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,false);
+            spellController.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.EXILED,false,false);
           }
         }
       }
