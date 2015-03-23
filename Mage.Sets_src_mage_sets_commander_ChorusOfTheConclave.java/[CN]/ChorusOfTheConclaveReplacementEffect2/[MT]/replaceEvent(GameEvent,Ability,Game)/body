@@ -1,0 +1,14 @@
+{
+  Permanent creature=game.getPermanent(event.getSourceId());
+  Map<UUID,Integer> spellX=(Map<UUID,Integer>)game.getState().getValue("spellX" + source.getSourceId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (sourceObject != null && creature != null && spellX != null) {
+    int xValue=spellX.get(event.getSourceId());
+    if (xValue > 0) {
+      creature.addCounters(CounterType.P1P1.createInstance(xValue),game);
+      game.informPlayers(sourceObject.getName() + ": Added " + xValue+ " +1/+1 counter"+ (xValue > 1 ? "s" : "")+ "on "+ creature.getName());
+    }
+    spellX.remove(event.getSourceId());
+  }
+  return false;
+}
