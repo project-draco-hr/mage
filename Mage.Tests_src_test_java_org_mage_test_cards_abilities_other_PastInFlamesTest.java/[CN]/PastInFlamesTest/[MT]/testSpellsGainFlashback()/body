@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",5);
+  addCard(Zone.HAND,playerA,"Past in Flames");
+  addCard(Zone.GRAVEYARD,playerA,"Lightning Bolt");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Past in Flames");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Flashback");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertExileCount("Lightning Bolt",1);
+  assertGraveyardCount(playerA,"Lightning Bolt",0);
+  assertLife(playerB,17);
+  assertLife(playerA,20);
+}

@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Crucible of Worlds");
+  addCard(Zone.GRAVEYARD,playerA,"Swamp");
+  addCard(Zone.GRAVEYARD,playerA,"Plains");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Play Swamp");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Play Plains");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Swamp",1);
+  assertGraveyardCount(playerA,"Swamp",0);
+  assertPermanentCount(playerA,"Plains",0);
+  assertGraveyardCount(playerA,"Plains",1);
+}

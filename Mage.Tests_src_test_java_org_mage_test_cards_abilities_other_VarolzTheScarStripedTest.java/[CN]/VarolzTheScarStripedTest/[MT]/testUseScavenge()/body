@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Varolz, the Scar-Striped");
+  addCard(Zone.BATTLEFIELD,playerA,"Goblin Roughrider");
+  addCard(Zone.GRAVEYARD,playerA,"Goblin Roughrider");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Scavenge","Goblin Roughrider");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Goblin Roughrider",1);
+  assertGraveyardCount(playerA,"Goblin Roughrider",0);
+  assertExileCount("Goblin Roughrider",1);
+  assertCounterCount("Goblin Roughrider",CounterType.P1P1,3);
+}

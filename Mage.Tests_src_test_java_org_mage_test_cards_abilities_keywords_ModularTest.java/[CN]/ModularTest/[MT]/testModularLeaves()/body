@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",5);
+  addCard(Zone.HAND,playerA,"Arcbound Bruiser");
+  addCard(Zone.HAND,playerA,"Arcbound Hybrid");
+  addCard(Zone.HAND,playerA,"Lightning Bolt");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Arcbound Bruiser");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Arcbound Hybrid");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt","Arcbound Bruiser");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  setChoice(playerA,"Yes");
+  execute();
+  assertPermanentCount(playerA,"Arcbound Bruiser",0);
+  assertPermanentCount(playerA,"Arcbound Hybrid",1);
+  assertGraveyardCount(playerA,"Arcbound Bruiser",1);
+  assertPowerToughness(playerA,"Arcbound Hybrid",5,5);
+}

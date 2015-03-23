@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Goblin Roughrider");
+  addCard(Zone.HAND,playerA,"Lightning Crafter");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Crafter");
+  activateAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: {source} deals 3 damage to target creature or player.","Lightning Crafter");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Lightning Crafter",0);
+  assertPermanentCount(playerA,"Goblin Roughrider",1);
+  assertExileCount("Goblin Roughrider",0);
+  assertGraveyardCount(playerA,"Lightning Crafter",1);
+}

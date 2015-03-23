@@ -1,0 +1,11 @@
+{
+  addCard(Zone.HAND,playerA,"Shelldock Isle");
+  this.playLand(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Shelldock Isle");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Shelldock Isle",1);
+  assertExileCount(playerA,1);
+  for (  Card card : currentGame.getExile().getAllCards(currentGame)) {
+    Assert.assertTrue("Exiled card is not face down",card.isFaceDown(currentGame));
+  }
+}
