@@ -44,11 +44,25 @@
             for (            UUID attackingCreatureId : getAttackers()) {
               if (creature.canBlock(attackingCreatureId,game)) {
                 Permanent attackingCreature=game.getPermanent(attackingCreatureId);
-                if (attackingCreature != null && attackingCreature.getMinBlockedBy() > 1) {
-                }
+                if (attackingCreature != null) {
+                  if (attackingCreature.getMaxBlockedBy() != 0) {
+                    int alreadyBlockingCreatures=0;
+                    for (                    CombatGroup group : getGroups()) {
+                      if (group.getAttackers().contains(attackingCreatureId)) {
+                        alreadyBlockingCreatures=group.getBlockers().size();
+                        break;
+                      }
+                    }
+                    if (attackingCreature.getMaxBlockedBy() <= alreadyBlockingCreatures) {
+                      continue;
+                    }
+                  }
+                  if (attackingCreature.getMinBlockedBy() > 1) {
+                  }
  else {
-                  mayBlock=true;
-                  break;
+                    mayBlock=true;
+                    break;
+                  }
                 }
               }
             }
