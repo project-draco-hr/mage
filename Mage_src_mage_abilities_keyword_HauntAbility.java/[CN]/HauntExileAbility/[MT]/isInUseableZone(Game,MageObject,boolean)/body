@@ -1,5 +1,8 @@
 {
-  MageObject before=game.getLastKnownInformation(sourceId,Zone.BATTLEFIELD);
+  boolean fromOK=true;
+  if (creatureHaunt) {
+    fromOK=game.getLastKnownInformation(sourceId,Zone.BATTLEFIELD) != null;
+  }
   Zone after=game.getState().getZone(sourceId);
-  return before != null && after != null && Zone.GRAVEYARD.match(after);
+  return fromOK && after != null && Zone.GRAVEYARD.match(after);
 }
