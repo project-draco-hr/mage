@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"The Wretched");
+  addCard(Zone.BATTLEFIELD,playerB,"Wall of Pine Needles");
+  addCard(Zone.BATTLEFIELD,playerB,"Living Wall");
+  attack(2,playerA,"The Wretched");
+  block(2,playerB,"Wall of Pine Needles","The Wretched");
+  block(2,playerB,"Living Wall","The Wretched");
+  activateAbility(2,PhaseStep.DECLARE_BLOCKERS,playerB,"{G}: Regenerate {this}.");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerA,"The Wretched",1);
+  assertPermanentCount(playerA,"Living Wall",1);
+  assertPermanentCount(playerB,"Wall of Pine Needles",1);
+}
