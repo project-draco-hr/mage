@@ -1,0 +1,12 @@
+{
+  Token hornetToken=new HornetToken();
+  hornetToken.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
+  DestroyTargetEffect destroyEffect=new DestroyTargetEffect("destroy the token.");
+  destroyEffect.setTargetPointer(new FixedTarget(hornetToken.getLastAddedToken()));
+  DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(destroyEffect);
+  delayedAbility.setSourceId(source.getSourceId());
+  delayedAbility.setControllerId(source.getControllerId());
+  delayedAbility.setSourceObject(source.getSourceObject(game));
+  game.addDelayedTriggeredAbility(delayedAbility);
+  return true;
+}
