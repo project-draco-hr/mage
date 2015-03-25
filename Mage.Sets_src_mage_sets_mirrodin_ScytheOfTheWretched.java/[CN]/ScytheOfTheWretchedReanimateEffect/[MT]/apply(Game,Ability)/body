@@ -1,11 +1,10 @@
 {
   Card card=game.getCard(getTargetPointer().getFirst(game,source));
-  if (card != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (card != null && controller != null) {
     Zone currentZone=game.getState().getZone(card.getId());
-    Player player=game.getPlayer(source.getControllerId());
-    if (player != null && player.putOntoBattlefieldWithInfo(card,game,currentZone,source.getSourceId())) {
-      return true;
-    }
+    controller.putOntoBattlefieldWithInfo(card,game,currentZone,source.getSourceId());
+    return true;
   }
   return false;
 }
