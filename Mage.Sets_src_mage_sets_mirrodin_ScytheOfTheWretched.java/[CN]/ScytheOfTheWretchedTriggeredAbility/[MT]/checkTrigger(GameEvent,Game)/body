@@ -1,0 +1,16 @@
+{
+  ZoneChangeEvent zoneChange=(ZoneChangeEvent)event;
+  if (zoneChange.isDiesEvent() && zoneChange.getTarget().getCardType().contains(CardType.CREATURE)) {
+    Permanent equippedCreature=getEquippedCreature(game);
+    if (equippedCreature == null) {
+      return false;
+    }
+    for (    MageObjectReference mor : zoneChange.getTarget().getDealtDamageByThisTurn()) {
+      if (mor.refersTo(equippedCreature)) {
+        setTarget(new FixedTarget(event.getTargetId()));
+        return true;
+      }
+    }
+  }
+  return false;
+}
