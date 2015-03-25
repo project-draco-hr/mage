@@ -1,15 +1,8 @@
 {
-  if (event.getType() == GameEvent.EventType.DAMAGED_CREATURE && event.getTargetId().equals(this.sourceId)) {
-    UUID controller=game.getControllerId(event.getTargetId());
-    if (controller != null) {
-      Player player=game.getPlayer(controller);
-      Card card=game.getCard(event.getSourceId());
-      if (player != null && card.getCardType().contains(CardType.CREATURE)) {
-        getEffects().get(0).setTargetPointer(new FixedTarget(player.getId()));
-        ((SacrificeEffect)getEffects().get(0)).setAmount(new StaticValue(event.getAmount()));
-        return true;
-      }
-    }
+  if (event.getTargetId().equals(getSourceId())) {
+    getEffects().get(0).setTargetPointer(new FixedTarget(getControllerId()));
+    ((SacrificeEffect)getEffects().get(0)).setAmount(new StaticValue(event.getAmount()));
+    return true;
   }
   return false;
 }
