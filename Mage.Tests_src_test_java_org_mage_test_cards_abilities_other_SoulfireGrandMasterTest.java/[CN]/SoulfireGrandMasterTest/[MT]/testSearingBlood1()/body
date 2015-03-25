@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",2);
+  addCard(Zone.HAND,playerA,"Searing Blood");
+  addCard(Zone.BATTLEFIELD,playerA,"Soulfire Grand Master",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Searing Blood","Silvercoat Lion");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Soulfire Grand Master",1);
+  assertGraveyardCount(playerA,"Searing Blood",1);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+  assertLife(playerB,17);
+  assertLife(playerA,25);
+}

@@ -4,10 +4,9 @@
   if (player != null && permanent != null) {
     for (Iterator<StackObject> iterator=game.getStack().iterator(); iterator.hasNext(); ) {
       StackObject stackObject=iterator.next();
-      if (stackObject instanceof Spell && filter.match(stackObject,source.getControllerId(),game)) {
-        Spell spell=(Spell)stackObject;
-        Card card=spell.getCard();
-        if (card != null) {
+      if (stackObject.getControllerId().equals(source.getControllerId())) {
+        Card card=game.getCard(stackObject.getSourceId());
+        if (card != null && filter.match(card,game)) {
           if (!card.getAbilities().contains(ability)) {
             game.getState().addOtherAbility(card,ability);
             SoulfireGrandMasterLeavesStackWatcher watcher=(SoulfireGrandMasterLeavesStackWatcher)game.getState().getWatchers().get("SoulfireGrandMasterLeavesStackWatcher");

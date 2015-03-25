@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
+  addCard(Zone.HAND,playerA,"Searing Blood");
+  addCard(Zone.HAND,playerA,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerA,"Soulfire Grand Master",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Searing Blood","Pillarfield Ox");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Lightning Bolt","Pillarfield Ox");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Soulfire Grand Master",1);
+  assertGraveyardCount(playerA,"Searing Blood",1);
+  assertGraveyardCount(playerA,"Lightning Bolt",1);
+  assertGraveyardCount(playerB,"Pillarfield Ox",1);
+  assertLife(playerB,17);
+  assertLife(playerA,28);
+}
