@@ -4,7 +4,7 @@
     if (!ability.checkEventType(event,game)) {
       continue;
     }
-    if (ability.isInUseableZone(game,null,event.getType().equals(EventType.ZONE_CHANGE) || event.getType().equals(EventType.DESTROYED_PERMANENT))) {
+    if (ability.isInUseableZone(game,ability.getSourceObject(game),event.getType().equals(EventType.ZONE_CHANGE) || event.getType().equals(EventType.DESTROYED_PERMANENT))) {
       if (!game.getContinuousEffects().preventedByRuleModification(event,ability,game,false)) {
         MageObject object=null;
         if (!ability.getZone().equals(Zone.COMMAND) && !game.getState().getZone(ability.getSourceId()).equals(ability.getZone())) {
@@ -15,6 +15,9 @@
         }
         if (object != null) {
           if (object instanceof Permanent) {
+            if (((Permanent)object).isFaceDown(game) && !ability.getWorksFaceDown()) {
+              continue;
+            }
             ability.setControllerId(((Permanent)object).getControllerId());
           }
           ability.setSourceObject(object);
