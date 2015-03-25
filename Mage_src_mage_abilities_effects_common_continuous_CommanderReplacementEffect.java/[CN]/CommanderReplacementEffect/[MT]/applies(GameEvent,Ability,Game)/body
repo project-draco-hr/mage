@@ -1,18 +1,24 @@
 {
-  if (((ZoneChangeEvent)event).getToZone() == Zone.GRAVEYARD || ((ZoneChangeEvent)event).getToZone() == Zone.EXILED || (alsoLibrary && ((ZoneChangeEvent)event).getToZone() == Zone.LIBRARY)) {
-    if (commanderId != null) {
-      if (((ZoneChangeEvent)event).getFromZone().equals(Zone.STACK)) {
-        Spell spell=game.getStack().getSpell(event.getTargetId());
-        if (spell != null) {
-          if (commanderId.equals(spell.getSourceId())) {
-            return true;
-          }
-        }
-      }
-      if (commanderId.equals(event.getTargetId())) {
-        return true;
-      }
+switch (((ZoneChangeEvent)event).getToZone()) {
+case HAND:
+    if (!alsoHand) {
+      return false;
     }
+case GRAVEYARD:
+case EXILED:
+case LIBRARY:
+  if (commanderId.equals(event.getTargetId())) {
+    return true;
   }
-  return false;
+break;
+case STACK:
+Spell spell=game.getStack().getSpell(event.getTargetId());
+if (spell != null) {
+if (commanderId.equals(spell.getSourceId())) {
+return true;
+}
+}
+break;
+}
+return false;
 }
