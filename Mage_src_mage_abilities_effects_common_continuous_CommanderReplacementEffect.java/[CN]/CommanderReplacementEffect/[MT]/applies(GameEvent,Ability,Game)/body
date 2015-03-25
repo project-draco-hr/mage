@@ -1,15 +1,18 @@
 {
 switch (((ZoneChangeEvent)event).getToZone()) {
 case HAND:
-    if (!alsoHand) {
+    if (!alsoHand && ((ZoneChangeEvent)event).getToZone() == Zone.HAND) {
       return false;
     }
+case LIBRARY:
+  if (!alsoLibrary && ((ZoneChangeEvent)event).getToZone() == Zone.LIBRARY) {
+    return false;
+  }
 case GRAVEYARD:
 case EXILED:
-case LIBRARY:
-  if (commanderId.equals(event.getTargetId())) {
-    return true;
-  }
+if (commanderId.equals(event.getTargetId())) {
+  return true;
+}
 break;
 case STACK:
 Spell spell=game.getStack().getSpell(event.getTargetId());
