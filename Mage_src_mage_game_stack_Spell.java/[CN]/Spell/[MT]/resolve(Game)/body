@@ -22,18 +22,8 @@
           index++;
         }
       }
-      if (!isCopiedSpell()) {
-        for (        Effect effect : ability.getEffects()) {
-          if (effect instanceof PostResolveEffect) {
-            if (((PostResolveEffect)effect).isActive(ability,game)) {
-              ((PostResolveEffect)effect).postResolve(card,ability,controllerId,game);
-              return result;
-            }
-          }
-        }
-        if (game.getState().getZone(card.getMainCard().getId()) == Zone.STACK) {
-          card.moveToZone(Zone.GRAVEYARD,ability.getSourceId(),game,false);
-        }
+      if (game.getState().getZone(card.getMainCard().getId()) == Zone.STACK) {
+        card.moveToZone(Zone.GRAVEYARD,ability.getSourceId(),game,false);
       }
       return result;
     }

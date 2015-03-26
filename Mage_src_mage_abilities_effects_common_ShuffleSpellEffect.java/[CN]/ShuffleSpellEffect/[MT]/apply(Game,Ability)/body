@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Card spellCard=game.getStack().getSpell(source.getSourceId()).getCard();
+    if (spellCard != null) {
+      Player owner=game.getPlayer(spellCard.getOwnerId());
+      if (owner != null) {
+        controller.moveCardToLibraryWithInfo(spellCard,source.getSourceId(),game,Zone.STACK,true,true);
+        owner.shuffleLibrary(game);
+      }
+    }
+    return true;
+  }
+  return false;
+}

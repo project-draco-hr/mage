@@ -1,0 +1,23 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player != null && player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().getFromTop(game);
+    Cards cards=new CardsImpl();
+    cards.add(card);
+    player.revealCards("Cerebral Eruption",cards,game);
+    game.getState().setValue(source.getSourceId().toString(),card);
+    int damage=card.getManaCost().convertedManaCost();
+    player.damage(damage,source.getSourceId(),game,false,true);
+    for (    Permanent perm : game.getBattlefield().getAllActivePermanents(filter,player.getId(),game)) {
+      perm.damage(damage,source.getSourceId(),game,false,true);
+    }
+    if (card.getCardType().contains(CardType.LAND)) {
+      Card spellCard=game.getStack().getSpell(source.getSourceId()).getCard();
+      if (spellCard != null) {
+        player.moveCardToHandWithInfo(spellCard,source.getSourceId(),game,Zone.STACK);
+      }
+    }
+    return true;
+  }
+  return false;
+}
