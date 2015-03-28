@@ -4,7 +4,14 @@
   int haveMountains=0;
   int haveSwamps=0;
   int haveForests=0;
-  for (  Permanent p : game.getBattlefield().getAllActivePermanents(sourceAbility.getControllerId())) {
+  UUID targetPlayer;
+  if (countTargetPlayer) {
+    targetPlayer=sourceAbility.getTargets().getFirstTarget();
+  }
+ else {
+    targetPlayer=sourceAbility.getControllerId();
+  }
+  for (  Permanent p : game.getBattlefield().getAllActivePermanents(targetPlayer)) {
     if (p.getCardType().contains(CardType.LAND)) {
       if (havePlains == 0 && p.getSubtype().contains("Plains")) {
         havePlains=1;
