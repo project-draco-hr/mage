@@ -1,7 +1,7 @@
 {
   if (event.getType() == EventType.ATTACKER_DECLARED && event.getSourceId().equals(this.getSourceId())) {
     Card sourceCard=game.getCard(getSourceId());
-    Integer amountAttacks=(Integer)game.getState().getValue(getValueKey(sourceCard));
+    Integer amountAttacks=(Integer)game.getState().getValue(getValueKey(sourceCard,game));
     if (amountAttacks == null || amountAttacks.intValue() < 1) {
       if (amountAttacks == null) {
         amountAttacks=new Integer(1);
@@ -9,7 +9,7 @@
  else {
         ++amountAttacks;
       }
-      game.getState().setValue(getValueKey(sourceCard),amountAttacks);
+      game.getState().setValue(getValueKey(sourceCard,game),amountAttacks);
       return true;
     }
   }

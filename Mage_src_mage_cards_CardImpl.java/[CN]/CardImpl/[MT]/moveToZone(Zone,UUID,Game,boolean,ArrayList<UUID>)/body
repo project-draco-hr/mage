@@ -39,7 +39,7 @@ break;
 game.rememberLKI(objectId,event.getFromZone(),this);
 }
 setFaceDown(false,game);
-updateZoneChangeCounter();
+updateZoneChangeCounter(game);
 switch (event.getToZone()) {
 case GRAVEYARD:
 game.getPlayer(ownerId).putInGraveyard(this,game,!flag);
@@ -65,7 +65,7 @@ game.getPlayer(ownerId).getLibrary().putOnBottom(this,game);
 }
 break;
 case BATTLEFIELD:
-PermanentCard permanent=new PermanentCard(this,event.getPlayerId());
+PermanentCard permanent=new PermanentCard(this,event.getPlayerId(),game);
 game.addPermanent(permanent);
 game.setZone(objectId,Zone.BATTLEFIELD);
 game.setScopeRelevant(true);

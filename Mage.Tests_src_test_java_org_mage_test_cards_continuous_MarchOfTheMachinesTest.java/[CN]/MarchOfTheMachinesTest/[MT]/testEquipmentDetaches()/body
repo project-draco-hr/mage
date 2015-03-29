@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",6);
+  addCard(Zone.BATTLEFIELD,playerA,"Avacyn's Collar");
+  addCard(Zone.BATTLEFIELD,playerA,"Ornithopter");
+  addCard(Zone.HAND,playerA,"March of the Machines");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Equip","Ornithopter");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"March of the Machines");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Ornithopter",1);
+  assertPowerToughness(playerA,"Ornithopter",0,2);
+  assertPermanentCount(playerA,"Avacyn's Collar",1);
+  assertPowerToughness(playerA,"Avacyn's Collar",1,1);
+  assertType("Avacyn's Collar",CardType.CREATURE,true);
+}
