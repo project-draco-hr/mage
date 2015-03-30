@@ -32,6 +32,7 @@ if (p != null) {
 HashSet<String> ignoreUrls=SettingsManager.getIntance().getIgnoreUrls();
 ArrayList<CardDownloadData> cardsToDownload=this.checkBox.isSelected() ? type2cards : cards;
 update(0,cardsToDownload.size());
+ExecutorService executor=Executors.newFixedThreadPool(10);
 for (int i=0; i < cardsToDownload.size() && !cancel; i++) {
 try {
 CardDownloadData card=cardsToDownload.get(i);
@@ -51,6 +52,7 @@ Runnable task=new DownloadTask(card,new URL(url),cardsToDownload.size());
 executor.execute(task);
 }
  else {
+logger.info("Card not available on " + cardImageSource.getSourceName() + ": "+ card.getName()+ " ("+ card.getSet()+ ")");
 synchronized (sync) {
 update(cardIndex + 1,cardsToDownload.size());
 }

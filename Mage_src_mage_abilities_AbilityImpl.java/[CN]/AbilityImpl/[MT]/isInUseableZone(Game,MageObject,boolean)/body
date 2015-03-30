@@ -27,6 +27,10 @@
   if (object != null && !object.getAbilities().contains(this)) {
     boolean found=false;
     if (object instanceof PermanentCard) {
+      if (((PermanentCard)object).canTransform()) {
+        PermanentCard permanent=(PermanentCard)object;
+        found=permanent.getSecondCardFace().getAbilities().contains(this) || permanent.getCard().getAbilities().contains(this);
+      }
     }
  else {
       Abilities<Ability> otherAbilities=game.getState().getAllOtherAbilities(this.getSourceId());

@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Abzan Banner");
+  addCard(Zone.HAND,playerA,"March of the Machines");
+  addCard(Zone.HAND,playerB,"Disenchant");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"March of the Machines");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Disenchant","March of the Machines");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Abzan Banner",1);
+  assertType("Abzan Banner",CardType.CREATURE,false);
+}
