@@ -4,19 +4,21 @@
   }
   if (!game.replaceEvent(GameEvent.getEvent(EventType.DESTROY_PERMANENT,objectId,sourceId,controllerId,noRegen ? 1 : 0))) {
     if (moveToZone(Zone.GRAVEYARD,sourceId,game,false)) {
-      String logName;
-      Card card=game.getCard(this.getId());
-      if (card != null) {
-        logName=card.getLogName();
-      }
+      if (!game.isSimulation()) {
+        String logName;
+        Card card=game.getCard(this.getId());
+        if (card != null) {
+          logName=card.getLogName();
+        }
  else {
-        logName=this.getLogName();
-      }
-      if (this.getCardType().contains(CardType.CREATURE)) {
-        game.informPlayers(logName + " died");
-      }
+          logName=this.getLogName();
+        }
+        if (this.getCardType().contains(CardType.CREATURE)) {
+          game.informPlayers(logName + " died");
+        }
  else {
-        game.informPlayers(logName + " was destroyed");
+          game.informPlayers(logName + " was destroyed");
+        }
       }
       game.fireEvent(GameEvent.getEvent(EventType.DESTROYED_PERMANENT,objectId,sourceId,controllerId));
       return true;

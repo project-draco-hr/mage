@@ -68,7 +68,9 @@
             }
             if (mayBlock) {
               if (controller.isHuman()) {
-                game.informPlayer(controller,"Creature should block this turn: " + creature.getLogName());
+                if (!game.isSimulation()) {
+                  game.informPlayer(controller,"Creature should block this turn: " + creature.getLogName());
+                }
               }
  else {
                 Player defender=game.getPlayer(creature.getControllerId());
@@ -124,7 +126,7 @@
               }
             }
             if (possibleBlockerAvailable) {
-              game.informPlayer(controller,new StringBuilder(toBeBlockedCreature.getLogName()).append(" has to be blocked by at least one creature.").toString());
+              if (!game.isSimulation())               game.informPlayer(controller,new StringBuilder(toBeBlockedCreature.getLogName()).append(" has to be blocked by at least one creature.").toString());
               return false;
             }
           }
@@ -180,9 +182,11 @@
     }
   }
   if (sb.length() > 0) {
-    sb.insert(0,"Some creatures are forced to block certain attacker(s):\n");
-    sb.append("\nPlease block with each of these creatures an appropriate attacker.");
-    game.informPlayer(controller,sb.toString());
+    if (!game.isSimulation()) {
+      sb.insert(0,"Some creatures are forced to block certain attacker(s):\n");
+      sb.append("\nPlease block with each of these creatures an appropriate attacker.");
+      game.informPlayer(controller,sb.toString());
+    }
     return false;
   }
   return true;
