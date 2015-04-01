@@ -1,0 +1,14 @@
+{
+  ChoiceColor choice=new ChoiceColor();
+  choice.setMessage("Choose color to get protection from");
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && controller.choose(outcome,choice,game)) {
+    FilterCard protectionFilter=new FilterCard();
+    protectionFilter.add(new ColorPredicate(choice.getColor()));
+    protectionFilter.setMessage(choice.getChoice().toLowerCase());
+    ContinuousEffect effect=new GainAbilitySourceEffect(new ProtectionAbility(protectionFilter),Duration.EndOfTurn);
+    game.addEffect(effect,source);
+    return true;
+  }
+  return false;
+}
