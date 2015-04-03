@@ -1,0 +1,17 @@
+{
+  Card copiedCard=cardToCopy.copy();
+  copiedCard.assignNewId();
+  copiedCard.setOwnerId(source.getControllerId());
+  copiedCard.setCopy(true);
+  copiedCards.put(copiedCard.getId(),copiedCard);
+  addCard(copiedCard);
+  if (copiedCard.isSplitCard()) {
+    Card leftCard=((SplitCard)copiedCard).getLeftHalfCard();
+    copiedCards.put(leftCard.getId(),leftCard);
+    addCard(leftCard);
+    Card rightCard=((SplitCard)copiedCard).getRightHalfCard();
+    copiedCards.put(rightCard.getId(),rightCard);
+    addCard(rightCard);
+  }
+  return copiedCard;
+}

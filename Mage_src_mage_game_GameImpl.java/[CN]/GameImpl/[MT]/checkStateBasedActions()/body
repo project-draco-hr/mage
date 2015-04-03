@@ -5,25 +5,9 @@
       player.lost(this);
     }
   }
-  for (  Player player : getPlayers().values()) {
-    for (    Card card : player.getHand().getCards(this)) {
-      if (card.isCopy()) {
-        player.getHand().remove(card);
-        this.unloadCard(card);
-      }
-    }
-    for (    Card card : player.getGraveyard().getCards(this)) {
-      if (card.isCopy()) {
-        player.getGraveyard().remove(card);
-        this.unloadCard(card);
-      }
-    }
-  }
-  for (  Card card : this.getState().getExile().getAllCards(this)) {
-    if (card.isCopy()) {
-      this.getState().getExile().removeCard(card,this);
-      this.unloadCard(card);
-    }
+  for (  Card card : this.getState().getCopiedCards()) {
+    Zone zone=state.getZone(card.getId());
+    if (zone != Zone.BATTLEFIELD && zone != Zone.STACK)     state.removeCopiedCard(card);
   }
   List<Permanent> planeswalkers=new ArrayList<>();
   List<Permanent> legendary=new ArrayList<>();
