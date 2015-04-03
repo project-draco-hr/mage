@@ -1,10 +1,9 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  MageObject sourceObject=source.getSourceObject(game);
-  if (controller != null && sourceObject != null) {
+  if (controller != null) {
     Card card=null;
     if (fromExileZone) {
-      UUID exilZoneId=CardUtil.getObjectExileZoneId(game,sourceObject);
+      UUID exilZoneId=CardUtil.getExileZoneId(game,source.getSourceId(),source.getSourceObjectZoneChangeCounter());
       if (exilZoneId != null) {
         card=game.getExile().getExileZone(exilZoneId).get(getTargetPointer().getFirst(game,source),game);
       }

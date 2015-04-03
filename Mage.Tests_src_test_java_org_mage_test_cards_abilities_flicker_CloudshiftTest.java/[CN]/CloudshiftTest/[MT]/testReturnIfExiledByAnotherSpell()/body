@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains");
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.HAND,playerA,"Cloudshift");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains");
+  addCard(Zone.HAND,playerB,"Swords to Plowshares");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Cloudshift","Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Swords to Plowshares","Silvercoat Lion","Cloudshift");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Cloudshift",1);
+  assertGraveyardCount(playerB,"Swords to Plowshares",1);
+  assertLife(playerA,22);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Silvercoat Lion",0);
+  assertExileCount("Silvercoat Lion",1);
+}

@@ -35,7 +35,11 @@ spellAbility.getManaCostsToPay().setX(amount);
 }
 game.informPlayers(new StringBuilder(controller.getName()).append(" flashbacks ").append(card.getName()).toString());
 spellAbility.setCostModificationActive(false);
-return controller.cast(spellAbility,game,true);
+if (controller.cast(spellAbility,game,true)) {
+game.addEffect(new FlashbackReplacementEffect(),source);
+return true;
+}
+return false;
 }
 }
 return false;

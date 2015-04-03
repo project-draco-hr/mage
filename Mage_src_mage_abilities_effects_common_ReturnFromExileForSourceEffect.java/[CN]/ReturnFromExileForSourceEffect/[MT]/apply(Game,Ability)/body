@@ -1,8 +1,8 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  MageObject sourceObject=source.getSourceObject(game);
-  if (controller != null && sourceObject != null) {
-    UUID exileId=CardUtil.getObjectExileZoneId(game,sourceObject);
+  if (controller != null) {
+    int zoneChangeCounter=source.getSourceObjectZoneChangeCounter() - (previousZone ? 1 : 0);
+    UUID exileId=CardUtil.getExileZoneId(game,source.getSourceId(),zoneChangeCounter);
     ExileZone exile=game.getExile().getExileZone(exileId);
     if (exile != null) {
       LinkedList<UUID> cards=new LinkedList<>(exile);
@@ -11,8 +11,8 @@
         if (card == null) {
           return false;
         }
-        game.informPlayers(controller.getName() + " moves " + card.getLogName()+ " from exile to "+ zone.toString().toLowerCase());
-        card.moveToZone(zone,source.getSourceId(),game,tapped);
+        game.informPlayers(controller.getName() + " moves " + card.getLogName()+ " from exile to "+ returnToZone.toString().toLowerCase());
+        card.moveToZone(returnToZone,source.getSourceId(),game,tapped);
       }
       exile.clear();
     }
