@@ -22,10 +22,10 @@
       }
       this.remove(stackObject);
       stackObject.counter(sourceId,game);
-      game.informPlayers(counteredObjectName + " is countered by " + sourceObject.getLogName());
+      if (!game.isSimulation())       game.informPlayers(counteredObjectName + " is countered by " + sourceObject.getLogName());
       game.fireEvent(GameEvent.getEvent(GameEvent.EventType.COUNTERED,objectId,sourceId,stackObject.getControllerId()));
     }
- else {
+ else     if (!game.isSimulation()) {
       game.informPlayers(counteredObjectName + " could not be countered by " + sourceObject.getLogName());
     }
     return true;

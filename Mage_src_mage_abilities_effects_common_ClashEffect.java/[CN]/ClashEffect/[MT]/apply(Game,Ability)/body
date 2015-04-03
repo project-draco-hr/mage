@@ -38,18 +38,20 @@
           message.append(" no card");
         }
         message.append(" - ");
-        if (cmcController > cmcOpponent) {
-          message.append(controller.getName()).append(" won the clash");
-          game.informPlayer(controller,"You won the clash!");
-        }
- else         if (cmcController < cmcOpponent) {
-          message.append(opponent.getName()).append(" won the clash");
-          game.informPlayer(controller,opponent.getName() + " won the clash!");
-        }
+        if (!game.isSimulation()) {
+          if (cmcController > cmcOpponent) {
+            message.append(controller.getName()).append(" won the clash");
+            game.informPlayer(controller,"You won the clash!");
+          }
+ else           if (cmcController < cmcOpponent) {
+            message.append(opponent.getName()).append(" won the clash");
+            game.informPlayer(controller,opponent.getName() + " won the clash!");
+          }
  else {
-          message.append(" no winner ");
+            message.append(" no winner ");
+          }
+          game.informPlayers(message.toString());
         }
-        game.informPlayers(message.toString());
         PlayerList playerList=game.getPlayerList().copy();
         playerList.setCurrent(game.getActivePlayerId());
         do {
