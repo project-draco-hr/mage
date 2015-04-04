@@ -5,9 +5,13 @@
       player.lost(this);
     }
   }
-  for (  Card card : this.getState().getCopiedCards()) {
+  Iterator<Card> copiedCards=this.getState().getCopiedCards().iterator();
+  while (copiedCards.hasNext()) {
+    Card card=copiedCards.next();
     Zone zone=state.getZone(card.getId());
-    if (zone != Zone.BATTLEFIELD && zone != Zone.STACK)     state.removeCopiedCard(card);
+    if (zone != Zone.BATTLEFIELD && zone != Zone.STACK) {
+      copiedCards.remove();
+    }
   }
   List<Permanent> planeswalkers=new ArrayList<>();
   List<Permanent> legendary=new ArrayList<>();
