@@ -1,0 +1,17 @@
+{
+  if (event != null) {
+switch (event.getType()) {
+case ZONE_CHANGE:
+      if (source == null && ((ZoneChangeEvent)event).getTarget() != null) {
+        source=((ZoneChangeEvent)event).getTarget();
+      }
+case DESTROYED_PERMANENT:
+case PHASED_OUT:
+case PHASED_IN:
+    if (game.getLastKnownInformation(getSourceId(),zone) != null) {
+      return true;
+    }
+}
+}
+return super.isInUseableZone(game,source,event);
+}

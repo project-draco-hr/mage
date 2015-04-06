@@ -16,7 +16,7 @@
     HashSet<Ability> abilities=replacementEffects.getAbility(effect.getId());
     HashSet<Ability> applicableAbilities=new HashSet<>();
     for (    Ability ability : abilities) {
-      if (ability.getAbilityType() != AbilityType.STATIC || ability.isInUseableZone(game,null,true)) {
+      if (ability.getAbilityType() != AbilityType.STATIC || ability.isInUseableZone(game,null,event)) {
         if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
           if (!game.getScopeRelevant() || effect.hasSelfScope() || !event.getTargetId().equals(ability.getSourceId())) {
             if (checkAbilityStillExists(ability,effect,event,game)) {
@@ -42,7 +42,7 @@
     HashSet<Ability> abilities=preventionEffects.getAbility(effect.getId());
     HashSet<Ability> applicableAbilities=new HashSet<>();
     for (    Ability ability : abilities) {
-      if (ability.getAbilityType() != AbilityType.STATIC || ability.isInUseableZone(game,null,true)) {
+      if (ability.getAbilityType() != AbilityType.STATIC || ability.isInUseableZone(game,null,event)) {
         if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
           if (effect.applies(event,ability,game)) {
             applicableAbilities.add(ability);
