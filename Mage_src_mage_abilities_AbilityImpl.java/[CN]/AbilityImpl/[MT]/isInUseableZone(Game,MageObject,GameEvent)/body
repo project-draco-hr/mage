@@ -19,19 +19,11 @@
     parameterSourceId=getSourceId();
   }
   if (object != null && !object.getAbilities().contains(this)) {
-    boolean found=false;
-    if (object instanceof PermanentCard) {
-      if (((PermanentCard)object).canTransform()) {
-        PermanentCard permanent=(PermanentCard)object;
-        found=permanent.getSecondCardFace().getAbilities().contains(this) || permanent.getCard().getAbilities().contains(this);
-      }
-    }
- else {
+    if (!(object instanceof Permanent)) {
       Abilities<Ability> otherAbilities=game.getState().getAllOtherAbilities(this.getSourceId());
-      found=otherAbilities != null && otherAbilities.contains(this);
-    }
-    if (!found) {
-      return false;
+      if (otherAbilities == null || !otherAbilities.contains(this)) {
+        return false;
+      }
     }
   }
   Zone test=game.getState().getZone(parameterSourceId);
