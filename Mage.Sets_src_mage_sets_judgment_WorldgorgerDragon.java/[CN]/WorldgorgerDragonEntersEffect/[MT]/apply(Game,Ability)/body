@@ -1,12 +1,12 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  MageObject sourceObject=game.getObject(source.getSourceId());
+  MageObject sourceObject=source.getSourceObject(game);
   if (controller != null) {
-    UUID exileId=CardUtil.getCardExileZoneId(game,source);
+    UUID exileId=CardUtil.getObjectExileZoneId(game,sourceObject);
     if (exileId != null) {
       for (      Permanent permanent : game.getBattlefield().getAllActivePermanents(filter,source.getControllerId(),game)) {
         if (!permanent.getId().equals(source.getSourceId())) {
-          controller.moveCardToExileWithInfo(permanent,exileId,sourceObject.getLogName(),source.getSourceId(),game,Zone.BATTLEFIELD);
+          controller.moveCardToExileWithInfo(permanent,exileId,sourceObject.getLogName(),source.getSourceId(),game,Zone.BATTLEFIELD,true);
         }
       }
       return true;
