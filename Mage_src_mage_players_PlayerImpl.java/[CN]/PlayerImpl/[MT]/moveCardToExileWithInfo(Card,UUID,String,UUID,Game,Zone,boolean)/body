@@ -1,0 +1,13 @@
+{
+  boolean result=false;
+  if (card.moveToExile(exileId,exileName,sourceId,game)) {
+    if (!game.isSimulation()) {
+      if (card instanceof PermanentCard) {
+        card=game.getCard(card.getId());
+      }
+      game.informPlayers(new StringBuilder(this.getName()).append(" moves ").append(withName ? card.getLogName() : "a card face down ").append(fromZone != null ? new StringBuilder("from ").append(fromZone.toString().toLowerCase(Locale.ENGLISH)).append(" ") : "").append("to the exile zone").toString());
+    }
+    result=true;
+  }
+  return result;
+}
