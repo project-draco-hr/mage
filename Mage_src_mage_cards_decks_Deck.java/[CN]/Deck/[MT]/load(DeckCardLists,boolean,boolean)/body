@@ -1,23 +1,31 @@
 {
   Deck deck=new Deck();
   deck.setName(deckCardLists.getName());
+  List<String> deckCardNames=new ArrayList<>();
   for (  DeckCardInfo deckCardInfo : deckCardLists.getCards()) {
     Card card=createCard(deckCardInfo,mockCards);
     if (card != null) {
       deck.cards.add(card);
+      deckCardNames.add(card.getName());
     }
  else     if (!ignoreErrors) {
       throw createCardNotFoundGameException(deckCardInfo,deckCardLists.getName());
     }
   }
+  List<String> sbCardNames=new ArrayList<>();
   for (  DeckCardInfo deckCardInfo : deckCardLists.getSideboard()) {
     Card card=createCard(deckCardInfo,mockCards);
     if (card != null) {
       deck.sideboard.add(card);
+      sbCardNames.add(card.getName());
     }
  else     if (!ignoreErrors) {
       throw createCardNotFoundGameException(deckCardInfo,deckCardLists.getName());
     }
   }
+  Collections.sort(deckCardNames);
+  Collections.sort(sbCardNames);
+  String deckString=deckCardNames.toString() + sbCardNames.toString();
+  deck.setDeckHashCode(DeckUtil.fixedHash(deckString));
   return deck;
 }
