@@ -1,5 +1,9 @@
 {
-  if (targets.choose(Outcome.Sacrifice,controllerId,sourceId,game)) {
+  UUID activator=controllerId;
+  if (ability.getAbilityType().equals(AbilityType.ACTIVATED) || ability.getAbilityType().equals(AbilityType.SPECIAL_ACTION)) {
+    activator=((ActivatedAbilityImpl)ability).getActivatorId();
+  }
+  if (targets.choose(Outcome.Sacrifice,activator,sourceId,game)) {
     for (    UUID targetId : targets.get(0).getTargets()) {
       Permanent permanent=game.getPermanent(targetId);
       if (permanent == null) {

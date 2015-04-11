@@ -1,6 +1,10 @@
 {
-  if (!game.getPlayer(controllerId).canPaySacrificeCost()) {
+  UUID activator=controllerId;
+  if (ability.getAbilityType().equals(AbilityType.ACTIVATED)) {
+    activator=((ActivatedAbilityImpl)ability).getActivatorId();
+  }
+  if (!game.getPlayer(activator).canPaySacrificeCost()) {
     return false;
   }
-  return targets.canChoose(controllerId,game);
+  return targets.canChoose(activator,game);
 }
