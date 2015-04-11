@@ -1,9 +1,9 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    Card card=game.getCard(source.getSourceId());
-    if (card != null) {
-switch (game.getState().getZone(card.getId())) {
+    MageObject mageObject=source.getSourceObjectIfItStillExists(game);
+    if (mageObject != null) {
+switch (game.getState().getZone(mageObject.getId())) {
 case BATTLEFIELD:
         Permanent permanent=game.getPermanent(source.getSourceId());
       if (permanent != null) {
@@ -11,11 +11,13 @@ case BATTLEFIELD:
       }
     break;
 case GRAVEYARD:
-  if (!fromBattlefieldOnly) {
-    return controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.GRAVEYARD);
-  }
+  Card card=(Card)mageObject;
+if (!fromBattlefieldOnly) {
+  return controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.GRAVEYARD);
 }
 }
+}
+return true;
 }
 return false;
 }

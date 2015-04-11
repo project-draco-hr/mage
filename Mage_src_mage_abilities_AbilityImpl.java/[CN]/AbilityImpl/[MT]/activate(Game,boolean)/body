@@ -14,7 +14,7 @@
     sourceObject.adjustChoices(this,game);
   }
   for (  UUID modeId : this.getModes().getSelectedModes()) {
-    this.getModes().setMode(this.getModes().get(modeId));
+    this.getModes().setActiveMode(modeId);
     if (getChoices().size() > 0 && getChoices().choose(game,this) == false) {
       logger.debug("activate failed - choice");
       return false;
@@ -40,7 +40,7 @@
   VariableManaCost variableManaCost=handleManaXCosts(game,noMana,controller);
   String announceString=handleOtherXCosts(game,controller);
   for (  UUID modeId : this.getModes().getSelectedModes()) {
-    this.getModes().setMode(this.getModes().get(modeId));
+    this.getModes().setActiveMode(modeId);
     if (sourceObject != null && !this.getAbilityType().equals(AbilityType.TRIGGERED)) {
       sourceObject.adjustTargets(this,game);
     }
