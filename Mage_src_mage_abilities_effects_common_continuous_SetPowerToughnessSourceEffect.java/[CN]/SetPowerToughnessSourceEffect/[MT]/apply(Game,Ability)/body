@@ -1,5 +1,11 @@
 {
-  MageObject mageObject=game.getObject(source.getSourceId());
+  MageObject mageObject;
+  if (source.getZone() == Zone.BATTLEFIELD) {
+    mageObject=source.getSourceObjectIfItStillExists(game);
+  }
+ else {
+    mageObject=game.getObject(source.getSourceId());
+  }
   if (mageObject == null) {
     if (duration.equals(Duration.Custom)) {
       discard();
