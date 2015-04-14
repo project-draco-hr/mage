@@ -16,7 +16,9 @@
     }
     boolean spendAnyMana=spendAnyMana(ability,game);
     if (mana.get(manaType) > 0 || (spendAnyMana && mana.count() > 0)) {
-      game.fireEvent(new GameEvent(GameEvent.EventType.MANA_PAYED,ability.getId(),mana.getSourceId(),ability.getControllerId(),0,mana.getFlag()));
+      GameEvent event=new GameEvent(GameEvent.EventType.MANA_PAYED,ability.getId(),mana.getSourceId(),ability.getControllerId(),0,mana.getFlag());
+      event.setData(mana.getOriginalId().toString());
+      game.fireEvent(event);
       if (spendAnyMana) {
         mana.removeAny();
       }
