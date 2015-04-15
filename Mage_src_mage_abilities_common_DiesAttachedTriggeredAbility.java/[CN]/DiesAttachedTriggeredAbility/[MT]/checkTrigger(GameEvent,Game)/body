@@ -1,9 +1,9 @@
 {
   if (((ZoneChangeEvent)event).isDiesEvent()) {
-    Permanent p=(Permanent)game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
-    if (p.getAttachments().contains(this.getSourceId())) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getTarget().getAttachments().contains(this.getSourceId())) {
       for (      Effect effect : getEffects()) {
-        effect.setValue("attachedTo",p);
+        effect.setValue("attachedTo",zEvent.getTarget());
       }
       return true;
     }
