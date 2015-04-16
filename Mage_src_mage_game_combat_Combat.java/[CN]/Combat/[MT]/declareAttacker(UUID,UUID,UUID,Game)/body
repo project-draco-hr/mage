@@ -1,0 +1,12 @@
+{
+  Permanent attacker=game.getPermanent(attackerId);
+  if (!attacker.getAbilities().containsKey(VigilanceAbility.getInstance().getId())) {
+    if (!attacker.isTapped()) {
+      attacker.tap(game);
+    }
+  }
+  if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARE_ATTACKER,defenderId,attackerId,playerId))) {
+    return addAttackerToCombat(attackerId,defenderId,game);
+  }
+  return false;
+}
