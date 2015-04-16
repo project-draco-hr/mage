@@ -1,6 +1,7 @@
 {
   Player player=game.getPlayer(source.getControllerId());
-  if (player == null) {
+  MageObject sourceObject=source.getSourceObject(game);
+  if (player == null || sourceObject == null) {
     return false;
   }
   Cards cards=new CardsImpl(Zone.PICK);
@@ -12,7 +13,7 @@
       game.setZone(card.getId(),Zone.PICK);
     }
   }
-  player.revealCards("Sphinx of Uthuun",cards,game);
+  player.revealCards(sourceObject.getLogName(),cards,game);
   Set<UUID> opponents=game.getOpponents(source.getControllerId());
   if (!opponents.isEmpty()) {
     Player opponent=game.getPlayer(opponents.iterator().next());
@@ -46,7 +47,7 @@
       pile1Zone=Zone.HAND;
       pile2Zone=Zone.GRAVEYARD;
     }
-    StringBuilder sb=new StringBuilder("Sphinx of Uthuun: Pile 1, going to ").append(pile1Zone.equals(Zone.HAND) ? "Hand" : "Graveyard").append(": ");
+    StringBuilder sb=new StringBuilder(sourceObject.getLogName()).append(": Pile 1, going to ").append(pile1Zone.equals(Zone.HAND) ? "Hand" : "Graveyard").append(": ");
     int i=0;
     for (    UUID cardUuid : pile1CardsIds) {
       i++;
@@ -60,7 +61,7 @@
       }
     }
     game.informPlayers(sb.toString());
-    sb=new StringBuilder("Sphinx of Uthuun: Pile 2, going to ").append(pile2Zone.equals(Zone.HAND) ? "Hand" : "Graveyard").append(":");
+    sb=new StringBuilder(sourceObject.getLogName()).append(": Pile 2, going to ").append(pile2Zone.equals(Zone.HAND) ? "Hand" : "Graveyard").append(":");
     i=0;
     for (    UUID cardUuid : pile2CardsIds) {
       Card card=game.getCard(cardUuid);
