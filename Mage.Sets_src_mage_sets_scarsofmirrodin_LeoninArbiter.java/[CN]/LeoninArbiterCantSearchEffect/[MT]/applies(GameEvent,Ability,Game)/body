@@ -1,8 +1,7 @@
 {
-  boolean applies=false;
-  if (EventType.SEARCH_LIBRARY.equals(event.getType())) {
-    applies=true;
-    Permanent permanent=game.getPermanent(source.getSourceId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    boolean applies=true;
     String key=permanent.getId() + keyString;
     Map.Entry<Long,Set<UUID>> turnIgnoringPlayersPair=(Map.Entry<Long,Set<UUID>>)game.getState().getValue(key);
     if (turnIgnoringPlayersPair != null) {
@@ -13,6 +12,7 @@
         applies=!turnIgnoringPlayersPair.getValue().contains(event.getPlayerId());
       }
     }
+    return applies;
   }
-  return applies;
+  return false;
 }
