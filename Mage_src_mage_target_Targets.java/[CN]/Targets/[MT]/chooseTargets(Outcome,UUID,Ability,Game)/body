@@ -5,7 +5,11 @@
     }
     while (!isChosen()) {
       Target target=this.getUnchosen().get(0);
-      if (!target.chooseTarget(outcome,playerId,source,game)) {
+      UUID targetController=playerId;
+      if (target.getTargetController() != null) {
+        targetController=target.getTargetController();
+      }
+      if (!target.chooseTarget(outcome,targetController,source,game)) {
         return false;
       }
     }
