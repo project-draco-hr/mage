@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
+  addCard(Zone.HAND,playerA,"Act of Treason");
+  addCard(Zone.BATTLEFIELD,playerA,"Conjurer's Closet");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Act of Treason","Silvercoat Lion");
+  addTarget(playerA,"Silvercoat Lion");
+  setStopAt(2,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerA,"Conjurer's Closet",1);
+  assertGraveyardCount(playerA,"Act of Treason",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertPermanentCount(playerB,"Silvercoat Lion",0);
+}
