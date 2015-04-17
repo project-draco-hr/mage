@@ -6,26 +6,15 @@
     effect.setTargetPointer(targetPointer);
     Card card=game.getCard(spell.getSourceId());
     if (card != null && effect.apply(game,source) && Zone.EXILED.equals(game.getState().getZone(card.getId()))) {
-      boolean hasSuspend=false;
-      for (      Ability ability : card.getAbilities()) {
-        if (ability instanceof SuspendAbility) {
-          hasSuspend=true;
-          break;
+      boolean hasSuspend=card.getAbilities().containsClass(SuspendAbility.class);
+      UUID exileId=SuspendAbility.getSuspendExileId(controller.getId(),game);
+      if (controller.moveCardToExileWithInfo(card,exileId,"Suspended cards of " + controller.getName(),source.getSourceId(),game,Zone.HAND,true)) {
+        card.addCounters(CounterType.TIME.createInstance(3),game);
+        if (!hasSuspend) {
+          game.addEffect(new GainSuspendEffect(new MageObjectReference(card,game)),source);
         }
+        game.informPlayers(controller.getName() + " suspends 3 - " + card.getName());
       }
-      card.addCounters(CounterType.TIME.createInstance(3),game);
-      if (!hasSuspend) {
-        Abilities oldAbilities=card.getAbilities().copy();
-        SuspendAbility suspendAbility=new SuspendAbility(3,null,card);
-        game.getState().addOtherAbility(card,suspendAbility);
-        for (        Ability ability : card.getAbilities()) {
-          if (!oldAbilities.contains(ability)) {
-            ability.setControllerId(source.getControllerId());
-            game.getState().addAbility(ability,card.getId(),card);
-          }
-        }
-      }
-      game.informPlayers(new StringBuilder(controller.getName()).append(" suspends (").append(3).append(") ").append(card.getName()).toString());
     }
     return true;
   }
