@@ -1,0 +1,18 @@
+{
+  addCard(Zone.HAND,playerA,"Triton Tactics");
+  addCard(Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Soulmender",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  activateAbility(4,PhaseStep.POSTCOMBAT_MAIN,playerA,"{T}: You gain 1 life");
+  attack(4,playerB,"Silvercoat Lion");
+  castSpell(4,PhaseStep.DECLARE_ATTACKERS,playerA,"Triton Tactics","Soulmender");
+  block(4,playerA,"Soulmender","Silvercoat Lion");
+  setStopAt(6,PhaseStep.DRAW);
+  execute();
+  assertGraveyardCount(playerA,"Triton Tactics",1);
+  assertPowerToughness(playerA,"Soulmender",1,1);
+  assertPowerToughness(playerB,"Silvercoat Lion",2,2);
+  assertTapped("Silvercoat Lion",true);
+  assertLife(playerA,21);
+  assertLife(playerB,20);
+}
