@@ -2,9 +2,11 @@
   boolean applies=false;
   Spell spell=game.getStack().getSpell(source.getSourceId());
   if (spell != null) {
-    RevealTargetFromHandCost cost=(RevealTargetFromHandCost)spell.getSpellAbility().getCosts().get(0);
-    if (cost != null) {
-      applies=!cost.getTargets().isEmpty();
+    for (    Cost cost : spell.getSpellAbility().getCosts()) {
+      if (cost instanceof RevealTargetFromHandCost) {
+        applies=!((RevealTargetFromHandCost)cost).getTargets().isEmpty();
+        break;
+      }
     }
   }
   if (!applies) {
