@@ -1,20 +1,14 @@
 {
-  boolean spell=event.getType() == GameEvent.EventType.CAST_SPELL;
-  boolean activated=event.getType() == GameEvent.EventType.ACTIVATE_ABILITY;
-  if ((spell || activated) && game.getActivePlayerId().equals(source.getControllerId()) && game.getOpponents(source.getControllerId()).contains(event.getPlayerId())) {
-    if (spell) {
+  if (game.getActivePlayerId().equals(source.getControllerId()) && game.getOpponents(source.getControllerId()).contains(event.getPlayerId())) {
+switch (event.getType()) {
+case CAST_SPELL:
       return true;
-    }
+case ACTIVATE_ABILITY:
     Permanent permanent=game.getPermanent(event.getSourceId());
-    if (permanent != null) {
-      return permanent.getCardType().contains(CardType.ARTIFACT) || permanent.getCardType().contains(CardType.CREATURE) || permanent.getCardType().contains(CardType.ENCHANTMENT);
-    }
- else {
-      MageObject object=game.getObject(event.getSourceId());
-      if (object != null) {
-        return object.getCardType().contains(CardType.ARTIFACT) || object.getCardType().contains(CardType.CREATURE) || object.getCardType().contains(CardType.ENCHANTMENT);
-      }
-    }
+  if (permanent != null) {
+    return permanent.getCardType().contains(CardType.ARTIFACT) || permanent.getCardType().contains(CardType.CREATURE) || permanent.getCardType().contains(CardType.ENCHANTMENT);
   }
-  return false;
+}
+}
+return false;
 }
