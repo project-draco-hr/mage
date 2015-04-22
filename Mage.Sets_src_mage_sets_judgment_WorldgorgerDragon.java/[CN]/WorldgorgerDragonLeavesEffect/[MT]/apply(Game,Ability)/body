@@ -1,8 +1,9 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null) {
-    UUID exileId=source.getSourceId();
-    ExileZone exile=game.getExile().getExileZone(CardUtil.getCardExileZoneId(game,source));
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    int zoneChangeCounter=(sourceObject instanceof PermanentToken) ? source.getSourceObjectZoneChangeCounter() : source.getSourceObjectZoneChangeCounter() - 1;
+    ExileZone exile=game.getExile().getExileZone(CardUtil.getExileZoneId(game,source.getSourceId(),zoneChangeCounter));
     if (exile != null) {
       exile=exile.copy();
       for (      UUID cardId : exile) {

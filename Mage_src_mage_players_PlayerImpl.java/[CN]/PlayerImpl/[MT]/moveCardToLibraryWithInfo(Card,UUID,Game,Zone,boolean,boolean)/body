@@ -1,29 +1,31 @@
 {
   boolean result=false;
   if (card.moveToZone(Zone.LIBRARY,sourceId,game,toTop)) {
-    if (card instanceof PermanentCard) {
-      card=game.getCard(card.getId());
-    }
-    StringBuilder sb=new StringBuilder(this.getName()).append(" puts ").append(withName ? card.getLogName() : "a card").append(" ");
-    if (fromZone != null) {
-      if (fromZone.equals(Zone.PICK)) {
-        sb.append("a picked card ");
+    if (!game.isSimulation()) {
+      if (card instanceof PermanentCard) {
+        card=game.getCard(card.getId());
+      }
+      StringBuilder sb=new StringBuilder(this.getName()).append(" puts ").append(withName ? card.getLogName() : "a card").append(" ");
+      if (fromZone != null) {
+        if (fromZone.equals(Zone.PICK)) {
+          sb.append("a picked card ");
+        }
+ else {
+          sb.append("from ").append(fromZone.toString().toLowerCase(Locale.ENGLISH)).append(" ");
+        }
+      }
+      sb.append("to the ").append(toTop ? "top" : "bottom");
+      if (card.getOwnerId().equals(getId())) {
+        sb.append(" of his or her library");
       }
  else {
-        sb.append("from ").append(fromZone.toString().toLowerCase(Locale.ENGLISH)).append(" ");
+        Player player=game.getPlayer(card.getOwnerId());
+        if (player != null) {
+          sb.append(" of ").append(player.getName()).append("'s library");
+        }
       }
+      game.informPlayers(sb.toString());
     }
-    sb.append("to the ").append(toTop ? "top" : "bottom");
-    if (card.getOwnerId().equals(getId())) {
-      sb.append(" of his or her library");
-    }
- else {
-      Player player=game.getPlayer(card.getOwnerId());
-      if (player != null) {
-        sb.append(" of ").append(player.getName()).append("'s library");
-      }
-    }
-    game.informPlayers(sb.toString());
     result=true;
   }
   return result;

@@ -6,15 +6,15 @@
   if (!modes.choose(game,this)) {
     return false;
   }
+  getSourceObject(game);
   if (this.abilityType.equals(AbilityType.SPELL)) {
     game.getContinuousEffects().applySpliceEffects(this,game);
   }
-  sourceObject=this.getSourceObject(game);
   if (sourceObject != null) {
     sourceObject.adjustChoices(this,game);
   }
   for (  UUID modeId : this.getModes().getSelectedModes()) {
-    this.getModes().setMode(this.getModes().get(modeId));
+    this.getModes().setActiveMode(modeId);
     if (getChoices().size() > 0 && getChoices().choose(game,this) == false) {
       logger.debug("activate failed - choice");
       return false;
@@ -40,12 +40,12 @@
   VariableManaCost variableManaCost=handleManaXCosts(game,noMana,controller);
   String announceString=handleOtherXCosts(game,controller);
   for (  UUID modeId : this.getModes().getSelectedModes()) {
-    this.getModes().setMode(this.getModes().get(modeId));
+    this.getModes().setActiveMode(modeId);
     if (sourceObject != null && !this.getAbilityType().equals(AbilityType.TRIGGERED)) {
       sourceObject.adjustTargets(this,game);
     }
     if (getTargets().size() > 0 && getTargets().chooseTargets(getEffects().get(0).getOutcome(),this.controllerId,this,game) == false) {
-      if (variableManaCost != null || announceString != null) {
+      if ((variableManaCost != null || announceString != null) && !game.isSimulation()) {
         game.informPlayer(controller,new StringBuilder(sourceObject != null ? sourceObject.getLogName() : "").append(": no valid targets with this value of X").toString());
       }
       return false;
@@ -90,12 +90,14 @@
     logger.debug("activate failed - non mana costs");
     return false;
   }
-  if (announceString != null) {
-    game.informPlayers(announceString);
-  }
-  if (variableManaCost != null) {
-    int xValue=getManaCostsToPay().getX();
-    game.informPlayers(new StringBuilder(controller.getName()).append(" announces a value of ").append(xValue).append(" for ").append(variableManaCost.getText()).toString());
+  if (!game.isSimulation()) {
+    if (announceString != null) {
+      game.informPlayers(announceString);
+    }
+    if (variableManaCost != null) {
+      int xValue=getManaCostsToPay().getX();
+      game.informPlayers(new StringBuilder(controller.getName()).append(" announces a value of ").append(xValue).append(" for ").append(variableManaCost.getText()).toString());
+    }
   }
   activated=true;
   if (this.getAbilityType().equals(AbilityType.MANA)) {

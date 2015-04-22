@@ -86,13 +86,14 @@
 );
   }
  else {
-    menuItem=new JCheckBoxMenuItem("Allow requests to show your hand cards",allowRequestToShowHandCards);
-    menuItem.setMnemonic(KeyEvent.VK_A);
-    menuItem.setToolTipText("If activated watchers or other players can request to see your hand cards. If you grant this to a user, it's valid for the complete match.");
-    popupMenu.add(menuItem);
-    menuItem.addActionListener(new ActionListener(){
+    allowViewHandCardsMenuItem=new JCheckBoxMenuItem("Allow requests to show your hand cards",allowRequestToShowHandCards);
+    allowViewHandCardsMenuItem.setMnemonic(KeyEvent.VK_A);
+    allowViewHandCardsMenuItem.setToolTipText("If activated watchers or other players can request to see your hand cards. If you grant this to a user, it's valid for the complete match.");
+    popupMenu.add(allowViewHandCardsMenuItem);
+    allowViewHandCardsMenuItem.addActionListener(new ActionListener(){
       @Override public void actionPerformed(      ActionEvent e){
         boolean requestsAllowed=((JCheckBoxMenuItem)e.getSource()).getState();
+        PreferencesDialog.setPrefValue(KEY_GAME_ALLOW_REQUEST_SHOW_HAND_CARDS,requestsAllowed);
         gamePanel.getSession().sendPlayerAction(requestsAllowed ? PlayerAction.PERMISSION_REQUESTS_ALLOWED_ON : PlayerAction.PERMISSION_REQUESTS_ALLOWED_OFF,gameId,null);
       }
     }

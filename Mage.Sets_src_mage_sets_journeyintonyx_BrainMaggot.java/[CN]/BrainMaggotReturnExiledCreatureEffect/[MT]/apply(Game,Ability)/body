@@ -1,7 +1,9 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null) {
-    ExileZone exile=game.getExile().getExileZone(CardUtil.getObjectExileZoneId(game,source.getSourceObject(game)));
+  MageObject sourceObject=source.getSourceObject(game);
+  if (sourceObject != null && controller != null) {
+    int zoneChangeCounter=(sourceObject instanceof PermanentToken) ? source.getSourceObjectZoneChangeCounter() : source.getSourceObjectZoneChangeCounter() - 1;
+    ExileZone exile=game.getExile().getExileZone(CardUtil.getExileZoneId(game,source.getSourceId(),zoneChangeCounter));
     Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
     if (exile != null && sourcePermanent != null) {
       LinkedList<UUID> cards=new LinkedList<>(exile);

@@ -61,7 +61,7 @@
               }
  else {
                 filter.add(Predicates.not(new PermanentIdPredicate(selectedPermanent.getId())));
-                if (this.isHuman()) {
+                if (this.isHuman() && !game.isSimulation()) {
                   game.informPlayer(this,"This permanent can't be untapped because of other restricting effect.");
                 }
               }
@@ -71,8 +71,10 @@
       }
     }
  while (isInGame() && playerCanceledSelection);
-    for (    Permanent permanent : selectedToUntap) {
-      game.informPlayers(new StringBuilder(this.getName()).append(" untapped ").append(permanent.getName()).toString());
+    if (!game.isSimulation()) {
+      for (      Permanent permanent : selectedToUntap) {
+        game.informPlayers(new StringBuilder(this.getName()).append(" untapped ").append(permanent.getName()).toString());
+      }
     }
     for (    Permanent permanent : canBeUntapped) {
       boolean doUntap=true;

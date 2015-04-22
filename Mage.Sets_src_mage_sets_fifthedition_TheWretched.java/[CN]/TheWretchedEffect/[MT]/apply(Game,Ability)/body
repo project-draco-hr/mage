@@ -1,24 +1,25 @@
 {
-  Permanent theWretched=game.getPermanent(source.getSourceId());
+  Permanent theWretched=(Permanent)source.getSourceObjectIfItStillExists(game);
   if (theWretched == null) {
     return false;
   }
-  if (theWretched.isRemovedFromCombat()) {
+  if (theWretched.isRemovedFromCombat() || !theWretched.isAttacking()) {
     return false;
   }
   if (!new SourceOnBattlefieldControlUnchangedCondition().apply(game,source)) {
     return false;
   }
-  BlockedAttackerWatcher watcher=(BlockedAttackerWatcher)game.getState().getWatchers().get("BlockedAttackerWatcher");
-  if (watcher != null) {
-    for (    Permanent creature : game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),game)) {
-      if (watcher.creatureHasBlockedAttacker(theWretched,creature,game) && !creature.isRemovedFromCombat()) {
-        ContinuousEffect effect=new ConditionalContinuousEffect(new GainControlTargetEffect(Duration.Custom,source.getControllerId()),new SourceOnBattlefieldControlUnchangedCondition(),"test");
-        effect.setTargetPointer(new FixedTarget(creature.getId()));
-        game.addEffect(effect,source);
+  for (  CombatGroup combatGroup : game.getCombat().getGroups()) {
+    if (combatGroup.getAttackers().contains(source.getSourceId())) {
+      for (      UUID creatureId : combatGroup.getBlockers()) {
+        Permanent blocker=game.getPermanent(creatureId);
+        if (blocker != null && blocker.getBlocking() > 0) {
+          ContinuousEffect effect=new ConditionalContinuousEffect(new GainControlTargetEffect(Duration.Custom,source.getControllerId()),new SourceOnBattlefieldControlUnchangedCondition(),"");
+          effect.setTargetPointer(new FixedTarget(blocker.getId()));
+          game.addEffect(effect,source);
+        }
       }
     }
-    return true;
   }
-  return false;
+  return true;
 }

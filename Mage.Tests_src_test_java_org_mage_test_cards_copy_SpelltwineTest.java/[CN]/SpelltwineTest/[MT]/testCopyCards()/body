@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",6);
+  addCard(Zone.HAND,playerA,"Spelltwine");
+  addCard(Zone.GRAVEYARD,playerA,"Lightning Bolt");
+  addCard(Zone.GRAVEYARD,playerB,"Shock");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Spelltwine");
+  addTarget(playerA,"Lightning Bolt");
+  addTarget(playerA,"Shock");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertExileCount("Spelltwine",1);
+  assertExileCount("Lightning Bolt",1);
+  assertExileCount("Shock",1);
+  assertLife(playerB,15);
+}

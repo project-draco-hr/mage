@@ -10,15 +10,12 @@
       newMap.put(objectId,copy);
       lki.put(zone,newMap);
     }
-    Map<UUID,MageObject> shortLivingLkiMap=shortLivingLKI.get(zone);
-    if (shortLivingLkiMap != null) {
-      shortLivingLkiMap.put(objectId,copy);
+    Set<UUID> idSet=shortLivingLKI.get(zone);
+    if (idSet == null) {
+      idSet=new HashSet<>();
+      shortLivingLKI.put(zone,idSet);
     }
- else {
-      HashMap<UUID,MageObject> newMap=new HashMap<>();
-      newMap.put(objectId,copy);
-      shortLivingLKI.put(zone,newMap);
-    }
+    idSet.add(objectId);
     if (object instanceof Permanent) {
       Map<Integer,MageObject> lkiExtendedMap=lkiExtended.get(objectId);
       if (lkiExtendedMap != null) {

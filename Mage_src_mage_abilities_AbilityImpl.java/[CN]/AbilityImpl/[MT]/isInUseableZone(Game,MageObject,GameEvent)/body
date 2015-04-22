@@ -1,0 +1,37 @@
+{
+  if (zone.equals(Zone.COMMAND)) {
+    if (this.getSourceId() == null) {
+      return true;
+    }
+    MageObject object=game.getObject(this.getSourceId());
+    if (object != null && object instanceof Emblem) {
+      return true;
+    }
+  }
+  MageObject object;
+  UUID parameterSourceId;
+  if (this instanceof MageSingleton && source != null) {
+    object=source;
+    parameterSourceId=source.getId();
+  }
+ else {
+    object=game.getObject(getSourceId());
+    parameterSourceId=getSourceId();
+  }
+  if (object != null && !object.getAbilities().contains(this)) {
+    if (object instanceof Permanent) {
+      return false;
+    }
+ else {
+      Abilities<Ability> otherAbilities=game.getState().getAllOtherAbilities(this.getSourceId());
+      if (otherAbilities == null || !otherAbilities.contains(this)) {
+        return false;
+      }
+    }
+  }
+  if (game.getShortLivingLKI(getSourceId(),getZone())) {
+    return true;
+  }
+  Zone test=game.getState().getZone(parameterSourceId);
+  return test != null && zone.match(test);
+}

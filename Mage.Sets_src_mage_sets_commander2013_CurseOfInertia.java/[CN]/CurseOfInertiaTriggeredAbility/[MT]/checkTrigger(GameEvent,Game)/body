@@ -1,12 +1,10 @@
 {
-  if (event.getType().equals(EventType.DECLARED_ATTACKERS)) {
-    Permanent enchantment=game.getPermanent(this.getSourceId());
-    if (enchantment != null && enchantment.getAttachedTo() != null && game.getCombat().getPlayerDefenders(game).contains(enchantment.getAttachedTo())) {
-      for (      Effect effect : this.getEffects()) {
-        effect.setTargetPointer(new FixedTarget(game.getCombat().getAttackerId()));
-      }
-      return true;
-    }
+  Permanent enchantment=game.getPermanent(this.getSourceId());
+  if (enchantment != null && enchantment.getAttachedTo() != null && game.getCombat().getPlayerDefenders(game).contains(enchantment.getAttachedTo())) {
+    TargetPermanent target=new TargetPermanent();
+    target.setTargetController(game.getCombat().getAttackerId());
+    addTarget(target);
+    return true;
   }
   return false;
 }

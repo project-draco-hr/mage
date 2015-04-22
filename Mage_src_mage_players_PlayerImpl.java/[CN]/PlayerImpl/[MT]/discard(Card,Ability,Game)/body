@@ -1,6 +1,6 @@
 {
   if (card != null) {
-    game.informPlayers(new StringBuilder(name).append(" discards ").append(card.getName()).toString());
+    if (!game.isSimulation())     game.informPlayers(new StringBuilder(name).append(" discards ").append(card.getName()).toString());
     card.moveToZone(Zone.GRAVEYARD,source == null ? null : source.getSourceId(),game,false);
     game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DISCARDED_CARD,card.getId(),source == null ? null : source.getSourceId(),playerId));
     return true;

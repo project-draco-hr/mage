@@ -1,0 +1,20 @@
+{
+  addCard(Zone.HAND,playerA,"Kilnmouth Dragon",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",7);
+  addCard(Zone.HAND,playerB,"Clone",1);
+  addCard(Zone.HAND,playerB,"Phantasmal Dragon",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",4);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Kilnmouth Dragon");
+  setChoice(playerA,"Yes");
+  addTarget(playerA,"Kilnmouth Dragon");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Clone");
+  setChoice(playerB,"Kilnmouth Dragon");
+  setChoice(playerB,"Yes");
+  addTarget(playerB,"Phantasmal Dragon");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Kilnmouth Dragon",1);
+  assertPowerToughness(playerA,"Kilnmouth Dragon",8,8);
+  assertPermanentCount(playerB,"Kilnmouth Dragon",1);
+  assertPowerToughness(playerB,"Kilnmouth Dragon",8,8);
+}

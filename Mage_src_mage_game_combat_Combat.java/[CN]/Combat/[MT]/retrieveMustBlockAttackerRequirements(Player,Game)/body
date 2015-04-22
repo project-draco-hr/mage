@@ -8,7 +8,7 @@
         for (        Ability ability : requirementEntry.getValue()) {
           UUID attackingCreatureId=requirementEntry.getKey().mustBlockAttacker(ability,game);
           Player defender=game.getPlayer(possibleBlocker.getControllerId());
-          if (attackingCreatureId != null && defender != null) {
+          if (attackingCreatureId != null && defender != null && possibleBlocker.canBlock(attackingCreatureId,game)) {
             if (creatureMustBlockAttackers.containsKey(possibleBlocker.getId())) {
               creatureMustBlockAttackers.get(possibleBlocker.getId()).add(attackingCreatureId);
             }

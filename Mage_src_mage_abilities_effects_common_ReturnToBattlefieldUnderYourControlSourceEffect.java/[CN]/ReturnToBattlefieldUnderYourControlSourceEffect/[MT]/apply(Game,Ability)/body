@@ -1,9 +1,9 @@
 {
-  MageObjectReference mor=new MageObjectReference(source.getSourceObject(game),game);
-  Card card=game.getCard(source.getSourceId());
-  if (card != null && game.getState().getZone(source.getSourceId()) == onlyFromZone && mor.getZoneChangeCounter() == card.getZoneChangeCounter(game) + 1) {
-    Zone currentZone=game.getState().getZone(card.getId());
-    if (card.putOntoBattlefield(game,currentZone,source.getSourceId(),source.getControllerId())) {
+  UUID exileZoneId=CardUtil.getExileZoneId(game,source.getSourceId(),source.getSourceObjectZoneChangeCounter());
+  ExileZone exileZone=game.getExile().getExileZone(exileZoneId);
+  if (exileZone != null && exileZone.contains(source.getSourceId())) {
+    Card card=game.getCard(source.getSourceId());
+    if (card != null && card.putOntoBattlefield(game,Zone.EXILED,source.getSourceId(),source.getControllerId())) {
       return true;
     }
   }

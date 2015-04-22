@@ -1,7 +1,14 @@
 {
-  Permanent permanent=game.getPermanent(sourceId);
-  if (permanent != null) {
-    paid=permanent.moveToExile(null,"",sourceId,game);
+  MageObject sourceObject=ability.getSourceObject(game);
+  Player controller=game.getPlayer(controllerId);
+  if (controller != null && sourceObject != null && (sourceObject instanceof Card)) {
+    UUID exileZoneId=null;
+    String exileZoneName="";
+    if (toUniqueExileZone) {
+      exileZoneId=CardUtil.getExileZoneId(game,ability.getSourceId(),ability.getSourceObjectZoneChangeCounter());
+      exileZoneName=sourceObject.getLogName();
+    }
+    paid=controller.moveCardToExileWithInfo((Card)sourceObject,exileZoneId,exileZoneName,sourceId,game,game.getState().getZone(sourceObject.getId()),true);
   }
   return paid;
 }

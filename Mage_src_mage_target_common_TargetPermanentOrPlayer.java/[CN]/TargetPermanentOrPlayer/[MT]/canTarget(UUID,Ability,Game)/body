@@ -4,10 +4,20 @@
   if (source != null) {
     MageObject targetSource=game.getObject(source.getSourceId());
     if (permanent != null) {
-      return permanent.canBeTargetedBy(targetSource,source.getControllerId(),game) && filter.match(permanent,source.getSourceId(),source.getControllerId(),game);
+      if (!isNotTarget()) {
+        if (!permanent.canBeTargetedBy(game.getObject(source.getId()),source.getControllerId(),game) || !permanent.canBeTargetedBy(game.getObject(source.getSourceId()),source.getControllerId(),game)) {
+          return false;
+        }
+      }
+      return filter.match(permanent,source.getSourceId(),source.getControllerId(),game);
     }
     if (player != null) {
-      return player.canBeTargetedBy(targetSource,game) && filter.match(player,game);
+      if (!isNotTarget()) {
+        if (!player.canBeTargetedBy(targetSource,game)) {
+          return false;
+        }
+      }
+      return filter.match(player,game);
     }
   }
   if (permanent != null) {

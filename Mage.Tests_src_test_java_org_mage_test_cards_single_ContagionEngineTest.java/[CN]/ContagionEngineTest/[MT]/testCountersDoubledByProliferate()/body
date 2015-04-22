@@ -1,0 +1,23 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",6);
+  addCard(Zone.HAND,playerA,"Contagion Engine");
+  addCard(Zone.BATTLEFIELD,playerA,"Ajani Goldmane");
+  addCard(Zone.BATTLEFIELD,playerB,"Wall of Frost");
+  addCard(Zone.BATTLEFIELD,playerB,"Kalonian Behemoth");
+  addCard(Zone.BATTLEFIELD,playerB,"Plated Slagwurm");
+  addCard(Zone.BATTLEFIELD,playerB,"Teysa, Envoy of Ghosts");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Contagion Engine");
+  addTarget(playerA,playerB);
+  activateAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"{4},{T}: Proliferate");
+  setChoice(playerA,"Wall of Frost^Kalonian Behemoth^Plated Slagwurm^Teysa, Envoy of Ghosts^Ajani Goldmane");
+  setChoice(playerA,"Wall of Frost^Kalonian Behemoth^Plated Slagwurm^Teysa, Envoy of Ghosts^Ajani Goldmane");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertCounterCount("Ajani Goldmane",CounterType.LOYALTY,6);
+  assertPowerToughness(playerB,"Kalonian Behemoth",6,6);
+  assertPowerToughness(playerB,"Plated Slagwurm",5,5);
+  assertPowerToughness(playerB,"Teysa, Envoy of Ghosts",1,1);
+  assertPowerToughness(playerB,"Wall of Frost",-3,4);
+}

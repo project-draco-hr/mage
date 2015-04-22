@@ -2,7 +2,7 @@
   if (!game.replaceEvent(GameEvent.getEvent(EventType.SACRIFICE_PERMANENT,objectId,sourceId,controllerId))) {
     moveToZone(Zone.GRAVEYARD,sourceId,game,false);
     Player player=game.getPlayer(getControllerId());
-    if (player != null) {
+    if (player != null && !game.isSimulation()) {
       game.informPlayers(new StringBuilder(player.getName()).append(" sacrificed ").append(this.getLogName()).toString());
     }
     game.fireEvent(GameEvent.getEvent(EventType.SACRIFICED_PERMANENT,objectId,sourceId,controllerId));

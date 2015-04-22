@@ -9,7 +9,12 @@
     binary.insert(0,"0");
   }
   for (int i=0; i < attackersList.size(); i++) {
-    if (binary.charAt(i) == '1')     game.getCombat().declareAttacker(attackersList.get(i).getId(),defenderId,game);
+    if (binary.charAt(i) == '1') {
+      setStoredBookmark(game.bookmarkState());
+      if (!game.getCombat().declareAttacker(attackersList.get(i).getId(),defenderId,playerId,game)) {
+        game.undo(playerId);
+      }
+    }
   }
   actionCount++;
 }

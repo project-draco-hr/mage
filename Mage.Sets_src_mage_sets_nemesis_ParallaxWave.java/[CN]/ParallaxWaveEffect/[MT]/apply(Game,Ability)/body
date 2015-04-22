@@ -1,7 +1,8 @@
 {
   MageObject sourceObject=source.getSourceObject(game);
   if (sourceObject != null) {
-    UUID exileZoneId=CardUtil.getObjectExileZoneId(game,sourceObject);
+    int zoneChangeCounter=(sourceObject instanceof PermanentToken) ? source.getSourceObjectZoneChangeCounter() : source.getSourceObjectZoneChangeCounter() - 1;
+    UUID exileZoneId=CardUtil.getExileZoneId(game,source.getSourceId(),zoneChangeCounter);
     if (exileZoneId != null) {
       ExileZone exileZone=game.getExile().getExileZone(exileZoneId);
       if (exileZone != null) {
