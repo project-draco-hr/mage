@@ -10,10 +10,16 @@
     target.setCopySourceCard(((PermanentToken)source).getToken().getCopySourceCard());
   }
  else   if (source instanceof PermanentCard) {
-    sourceObj=((PermanentCard)source).getCard();
-    target.setOriginalExpansionSetCode(source.getExpansionSetCode());
-    target.setOriginalCardNumber(source.getCardNumber());
-    target.setCopySourceCard((Card)sourceObj);
+    if (((PermanentCard)source).isMorphed() || ((PermanentCard)source).isManifested()) {
+      MorphAbility.setPermanentToFaceDownCreature(target);
+      return target;
+    }
+ else {
+      sourceObj=((PermanentCard)source).getCard();
+      target.setOriginalExpansionSetCode(source.getExpansionSetCode());
+      target.setOriginalCardNumber(source.getCardNumber());
+      target.setCopySourceCard((Card)sourceObj);
+    }
   }
  else {
     target.setOriginalExpansionSetCode(source.getExpansionSetCode());
