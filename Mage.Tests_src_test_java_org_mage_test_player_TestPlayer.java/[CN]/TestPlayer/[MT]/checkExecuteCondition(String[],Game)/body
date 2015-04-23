@@ -1,0 +1,36 @@
+{
+  if (groups[2].startsWith("spellOnStack=")) {
+    String spellOnStack=groups[2].substring(13);
+    for (    StackObject stackObject : game.getStack()) {
+      if (stackObject.getStackAbility().toString().contains(spellOnStack)) {
+        return true;
+      }
+    }
+    return false;
+  }
+ else   if (groups[2].startsWith("!spellOnStack=")) {
+    String spellNotOnStack=groups[2].substring(14);
+    for (    StackObject stackObject : game.getStack()) {
+      if (stackObject.getStackAbility().toString().contains(spellNotOnStack)) {
+        return false;
+      }
+    }
+    return true;
+  }
+ else   if (groups[2].startsWith("spellOnTopOfStack=")) {
+    String spellOnTopOFStack=groups[2].substring(18);
+    if (game.getStack().size() > 0) {
+      StackObject stackObject=game.getStack().getFirst();
+      if (stackObject != null && stackObject.getStackAbility().toString().contains(spellOnTopOFStack)) {
+        return true;
+      }
+    }
+    return false;
+  }
+ else   if (groups[2].startsWith("manaInPool=")) {
+    String manaInPool=groups[2].substring(11);
+    int amountOfMana=Integer.parseUnsignedInt(manaInPool);
+    return this.getManaPool().getMana().count() >= amountOfMana;
+  }
+  return true;
+}
