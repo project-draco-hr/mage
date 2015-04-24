@@ -1,8 +1,14 @@
 {
-  if (cbStatusFilter.getSelectedItem().toString().equals("All tables")) {
-    activeTablesSorter.setRowFilter(null);
+  StringBuilder stateFilter=new StringBuilder();
+  if (btnStateWaiting.isSelected()) {
+    stateFilter.append("Waiting");
   }
- else {
-    activeTablesSorter.setRowFilter(RowFilter.regexFilter("Waiting for players",4));
+  if (btnStateActive.isSelected()) {
+    if (stateFilter.length() > 0) {
+      stateFilter.append("|");
+    }
+    stateFilter.append("Dueling|Constructing|Drafting|Sideboard");
   }
+  RowFilter rf=RowFilter.regexFilter(stateFilter.toString(),4);
+  activeTablesSorter.setRowFilter(rf);
 }
