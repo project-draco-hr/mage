@@ -1,12 +1,15 @@
 {
-  Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
-  if (permanent != null) {
-    return permanent.addAttachment(source.getSourceId(),game);
-  }
+  Permanent sourcePermanent=(Permanent)source.getSourceObjectIfItStillExists(game);
+  if (sourcePermanent != null) {
+    Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (permanent != null) {
+      return permanent.addAttachment(source.getSourceId(),game);
+    }
  else {
-    Player player=game.getPlayer(getTargetPointer().getFirst(game,source));
-    if (player != null) {
-      return player.addAttachment(source.getSourceId(),game);
+      Player player=game.getPlayer(getTargetPointer().getFirst(game,source));
+      if (player != null) {
+        return player.addAttachment(source.getSourceId(),game);
+      }
     }
   }
   return false;
