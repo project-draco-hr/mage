@@ -1,0 +1,23 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Xathrid Necromancer",1);
+  addCard(Zone.HAND,playerA,"Gather the Townsfolk");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Siege Mastodon",1);
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Gather the Townsfolk");
+  attack(2,playerB,"Silvercoat Lion");
+  attack(2,playerB,"Pillarfield Ox");
+  attack(2,playerB,"Siege Mastodon");
+  block(2,playerA,"Human","Silvercoat Lion");
+  block(2,playerA,"Human","Pillarfield Ox");
+  block(2,playerA,"Xathrid Necromancer","Siege Mastodon");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertGraveyardCount(playerA,"Xathrid Necromancer",1);
+  assertGraveyardCount(playerA,"Gather the Townsfolk",1);
+  assertPermanentCount(playerA,"Human",0);
+  assertPermanentCount(playerA,"Zombie",3);
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+}
