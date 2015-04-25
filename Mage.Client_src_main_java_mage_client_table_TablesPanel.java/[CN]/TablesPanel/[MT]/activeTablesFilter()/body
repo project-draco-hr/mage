@@ -1,14 +1,74 @@
 {
-  StringBuilder stateFilter=new StringBuilder();
+  List<RowFilter<Object,Object>> stateFilterList=new ArrayList<>();
   if (btnStateWaiting.isSelected()) {
-    stateFilter.append("Waiting");
+    stateFilterList.add(RowFilter.regexFilter("Waiting",TableTableModel.COLUMN_STATUS));
   }
   if (btnStateActive.isSelected()) {
-    if (stateFilter.length() > 0) {
-      stateFilter.append("|");
-    }
-    stateFilter.append("Dueling|Constructing|Drafting|Sideboard");
+    stateFilterList.add(RowFilter.regexFilter("Dueling|Constructing|Drafting|Sideboard",TableTableModel.COLUMN_STATUS));
   }
-  RowFilter rf=RowFilter.regexFilter(stateFilter.toString(),4);
-  activeTablesSorter.setRowFilter(rf);
+  List<RowFilter<Object,Object>> typeFilterList=new ArrayList<>();
+  if (btnTypeMatch.isSelected()) {
+    typeFilterList.add(RowFilter.regexFilter("Two|Commander|Free|Tiny",TableTableModel.COLUMN_GAME_TYPE));
+  }
+  if (btnTypeTourneyConstructed.isSelected()) {
+    typeFilterList.add(RowFilter.regexFilter("Constructed",TableTableModel.COLUMN_GAME_TYPE));
+  }
+  if (btnTypeTourneyLimited.isSelected()) {
+    typeFilterList.add(RowFilter.regexFilter("Booster|Sealed",TableTableModel.COLUMN_GAME_TYPE));
+  }
+  List<RowFilter<Object,Object>> formatFilterList=new ArrayList<>();
+  if (btnFormatBlock.isSelected()) {
+    formatFilterList.add(RowFilter.regexFilter("Block",TableTableModel.COLUMN_DECK_TYPE));
+  }
+  if (btnFormatStandard.isSelected()) {
+    formatFilterList.add(RowFilter.regexFilter("Standard",TableTableModel.COLUMN_DECK_TYPE));
+  }
+  if (btnFormatModern.isSelected()) {
+    formatFilterList.add(RowFilter.regexFilter("Modern",TableTableModel.COLUMN_DECK_TYPE));
+  }
+  if (btnFormatCommander.isSelected()) {
+    formatFilterList.add(RowFilter.regexFilter("Commander",TableTableModel.COLUMN_DECK_TYPE));
+  }
+  if (btnFormatTinyLeader.isSelected()) {
+    formatFilterList.add(RowFilter.regexFilter("Tiny",TableTableModel.COLUMN_DECK_TYPE));
+  }
+  if (btnFormatLegacy.isSelected()) {
+    formatFilterList.add(RowFilter.regexFilter("Legacy",TableTableModel.COLUMN_DECK_TYPE));
+  }
+  if (btnFormatVintage.isSelected()) {
+    formatFilterList.add(RowFilter.regexFilter("Vintage",TableTableModel.COLUMN_DECK_TYPE));
+  }
+  if (btnFormatOther.isSelected()) {
+    formatFilterList.add(RowFilter.regexFilter("Pauper|Extended|Limited",TableTableModel.COLUMN_DECK_TYPE));
+  }
+  if (stateFilterList.isEmpty() || typeFilterList.isEmpty() || formatFilterList.isEmpty()) {
+    activeTablesSorter.setRowFilter(RowFilter.regexFilter("Nothing",TableTableModel.COLUMN_GAME_TYPE));
+  }
+ else {
+    List<RowFilter<Object,Object>> filterList=new ArrayList<>();
+    if (stateFilterList.size() > 1) {
+      filterList.add(RowFilter.orFilter(stateFilterList));
+    }
+ else     if (stateFilterList.size() == 1) {
+      filterList.addAll(stateFilterList);
+    }
+    if (typeFilterList.size() > 1) {
+      filterList.add(RowFilter.orFilter(typeFilterList));
+    }
+ else     if (typeFilterList.size() == 1) {
+      filterList.addAll(typeFilterList);
+    }
+    if (formatFilterList.size() > 1) {
+      filterList.add(RowFilter.orFilter(formatFilterList));
+    }
+ else     if (formatFilterList.size() == 1) {
+      filterList.addAll(formatFilterList);
+    }
+    if (filterList.size() == 1) {
+      activeTablesSorter.setRowFilter(filterList.get(0));
+    }
+ else {
+      activeTablesSorter.setRowFilter(RowFilter.andFilter(filterList));
+    }
+  }
 }
