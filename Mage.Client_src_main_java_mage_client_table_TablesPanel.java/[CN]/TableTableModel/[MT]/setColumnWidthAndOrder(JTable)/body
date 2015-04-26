@@ -1,0 +1,20 @@
+{
+  table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+  int[] widths=Util.getIntArrayFromString(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_TABLES_COLUMNS_WIDTH,null));
+  int lengthW=widths.length;
+  int i=0;
+  for (  int width : defaultColumnsWidth) {
+    if (lengthW > i) {
+      width=widths[i];
+    }
+    TableColumn column=table.getColumnModel().getColumn(i++);
+    column.setWidth(width);
+    column.setPreferredWidth(width);
+  }
+  int[] order=Util.getIntArrayFromString(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_TABLES_COLUMNS_ORDER,null));
+  if (order != null && order.length == table.getColumnCount()) {
+    for (int j=0; j < table.getColumnCount(); j++) {
+      table.moveColumn(table.convertColumnIndexToView(order[j]),j);
+    }
+  }
+}
