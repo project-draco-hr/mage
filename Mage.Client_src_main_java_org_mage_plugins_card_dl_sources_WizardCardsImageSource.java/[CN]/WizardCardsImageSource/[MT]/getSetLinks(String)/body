@@ -49,11 +49,16 @@
               String urlLandDocument="http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=" + multiverseId;
               Document landDoc=Jsoup.connect(urlLandDocument).get();
               Elements variations=landDoc.select("a.variationlink");
-              int landNumber=1;
-              for (              Element variation : variations) {
-                Integer landMultiverseId=Integer.parseInt(variation.attr("onclick").replaceAll("[^\\d]",""));
-                setLinks.put((cardName + landNumber).toLowerCase(),"/Handlers/Image.ashx?multiverseid=" + landMultiverseId + "&type=card");
-                landNumber++;
+              if (!variations.isEmpty()) {
+                int landNumber=1;
+                for (                Element variation : variations) {
+                  Integer landMultiverseId=Integer.parseInt(variation.attr("onclick").replaceAll("[^\\d]",""));
+                  setLinks.put((cardName + landNumber).toLowerCase(),"/Handlers/Image.ashx?multiverseid=" + landMultiverseId + "&type=card");
+                  landNumber++;
+                }
+              }
+ else {
+                setLinks.put(cardName.toLowerCase(),cardsImages.get(i).attr("src").substring(5));
               }
             }
  else {
