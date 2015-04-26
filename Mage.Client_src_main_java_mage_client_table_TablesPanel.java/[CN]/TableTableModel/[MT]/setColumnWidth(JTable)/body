@@ -1,12 +1,29 @@
 {
   table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-  int i=0;
-  for (  int width : columnsWidth) {
-    TableColumn column=table.getColumnModel().getColumn(i++);
-    if (i == COLUMN_ICON) {
-      column.setMinWidth(width);
-      column.setMaxWidth(width);
+  String widthsString=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_TABLES_COLUMNS_WIDTH,null);
+  int[] widths=null;
+  int length=0;
+  if (widthsString != null && !widthsString.isEmpty()) {
+    String[] items=widthsString.split(",");
+    length=items.length;
+    widths=new int[length];
+    for (int i=0; i < length; i++) {
+      try {
+        widths[i]=Integer.parseInt(items[i]);
+        if (widths[i] > 500) {
+          widths[i]=300;
+        }
+      }
+ catch (      NumberFormatException nfe) {
+      }
     }
+  }
+  int i=0;
+  for (  int width : defaultColumnsWidth) {
+    if (length > i) {
+      width=widths[i];
+    }
+    TableColumn column=table.getColumnModel().getColumn(i++);
     column.setWidth(width);
     column.setPreferredWidth(width);
   }
