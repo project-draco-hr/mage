@@ -3,6 +3,7 @@
   addCard(Zone.HAND,playerA,"Phyrexian Metamorph",1);
   addCard(Zone.BATTLEFIELD,playerB,"Island",2);
   addCard(Zone.BATTLEFIELD,playerB,"Swamp",6);
+  addCard(Zone.HAND,playerB,"Turn to Frog",1);
   addCard(Zone.HAND,playerB,"Public Execution",1);
   addCard(Zone.BATTLEFIELD,playerB,"Thragtusk",1);
   castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Phyrexian Metamorph");
@@ -12,7 +13,9 @@
   castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Public Execution","Thragtusk");
   setStopAt(1,PhaseStep.END_TURN);
   execute();
+  assertGraveyardCount(playerB,"Turn to Frog",1);
   assertPermanentCount(playerB,"Thragtusk",1);
+  assertPermanentCount(playerA,"Thragtusk",0);
   assertGraveyardCount(playerA,"Phyrexian Metamorph",1);
   assertGraveyardCount(playerB,"Public Execution",1);
   assertLife(playerA,25);

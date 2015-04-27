@@ -1,7 +1,11 @@
 {
   boolean fromOK=true;
-  if (creatureHaunt) {
-    fromOK=game.getLastKnownInformation(sourceId,Zone.BATTLEFIELD) != null;
+  Permanent sourcePermanent=(Permanent)game.getLastKnownInformation(sourceId,Zone.BATTLEFIELD);
+  if (creatureHaunt && sourcePermanent == null) {
+    fromOK=false;
+  }
+  if (!this.hasSourceObjectAbility(game,sourcePermanent,event)) {
+    return false;
   }
   Zone after=game.getState().getZone(sourceId);
   return fromOK && after != null && Zone.GRAVEYARD.match(after);

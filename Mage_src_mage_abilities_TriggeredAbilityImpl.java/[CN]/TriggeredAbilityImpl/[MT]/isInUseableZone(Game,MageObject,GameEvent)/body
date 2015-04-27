@@ -2,14 +2,25 @@
   if (event != null && event.getTargetId() != null && event.getTargetId().equals(getSourceId())) {
 switch (event.getType()) {
 case ZONE_CHANGE:
-      if (source == null && ((ZoneChangeEvent)event).getTarget() != null) {
-        source=((ZoneChangeEvent)event).getTarget();
-      }
 case DESTROYED_PERMANENT:
+      if (event.getType().equals(EventType.DESTROYED_PERMANENT)) {
+        source=game.getLastKnownInformation(getSourceId(),Zone.BATTLEFIELD);
+      }
+ else {
+        if (((ZoneChangeEvent)event).getTarget() != null) {
+          source=((ZoneChangeEvent)event).getTarget();
+          if (source.getName().equals("Thragtusk")) {
+            logger.info(source.getAbilities().toString());
+          }
+        }
+ else {
+          source=game.getLastKnownInformation(getSourceId(),((ZoneChangeEvent)event).getZone());
+        }
+      }
 case PHASED_OUT:
 case PHASED_IN:
     if (this.zone == Zone.ALL || game.getLastKnownInformation(getSourceId(),zone) != null) {
-      return true;
+      return this.hasSourceObjectAbility(game,source,event);
     }
 }
 }

@@ -1,0 +1,18 @@
+{
+  MageObject object=source;
+  if (object == null) {
+    object=game.getObject(getSourceId());
+  }
+  if (object != null && !object.getAbilities().contains(this)) {
+    if (object instanceof Permanent) {
+      return false;
+    }
+ else {
+      Abilities<Ability> otherAbilities=game.getState().getAllOtherAbilities(this.getSourceId());
+      if (otherAbilities == null || !otherAbilities.contains(this)) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
