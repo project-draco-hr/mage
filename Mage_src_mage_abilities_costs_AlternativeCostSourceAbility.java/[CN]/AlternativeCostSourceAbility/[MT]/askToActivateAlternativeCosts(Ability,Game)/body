@@ -8,12 +8,27 @@
     }
     Player player=game.getPlayer(ability.getControllerId());
     if (player != null) {
-      if (alternateCosts.canPay(ability,ability.getSourceId(),ability.getControllerId(),game) && player.chooseUse(Outcome.Detriment,alternateCosts.isEmpty() ? "Cast without paying its mana cost?" : "Pay alternative costs? (" + alternateCosts.getText() + ")",game)) {
+      Costs<AlternativeCost2> alternativeCosts;
+      if (dynamicCost != null) {
+        alternativeCosts=new CostsImpl<>();
+        alternativeCosts.add(convertToAlternativeCost(dynamicCost.getCost(ability,game)));
+      }
+ else {
+        alternativeCosts=this.alternateCosts;
+      }
+      String costChoiceText;
+      if (dynamicCost != null) {
+        costChoiceText=dynamicCost.getText(ability,game);
+      }
+ else {
+        costChoiceText=alternativeCosts.isEmpty() ? "Cast without paying its mana cost?" : "Pay alternative costs? (" + alternativeCosts.getText() + ")";
+      }
+      if (alternativeCosts.canPay(ability,ability.getSourceId(),ability.getControllerId(),game) && player.chooseUse(Outcome.Benefit,costChoiceText,game)) {
         ability.getManaCostsToPay().clear();
         if (!onlyMana) {
           ability.getCosts().clear();
         }
-        for (        Cost cost : alternateCosts) {
+        for (        Cost cost : alternativeCosts) {
           AlternativeCost2 alternateCost=(AlternativeCost2)cost;
           alternateCost.activate();
           for (Iterator it=((Costs)alternateCost).iterator(); it.hasNext(); ) {
