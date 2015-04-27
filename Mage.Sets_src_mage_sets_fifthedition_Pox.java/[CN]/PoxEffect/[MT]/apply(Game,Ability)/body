@@ -13,19 +13,18 @@
       if (player != null) {
         int cardsToDiscard=(int)Math.ceil(player.getHand().size() / 3.0);
         if (cardsToDiscard > 0) {
-          player.discard(cardsToDiscard,source,game);
+          player.discard(cardsToDiscard,false,source,game);
         }
       }
     }
     for (    UUID playerId : controller.getInRange()) {
       Player player=game.getPlayer(playerId);
       if (player != null) {
-        FilterCreaturePermanent filter=new FilterCreaturePermanent();
-        filter.add(new ControllerIdPredicate(playerId));
-        int creaturesToSacrifice=(int)Math.ceil(game.getBattlefield().count(filter,source.getSourceId(),source.getControllerId(),game) / 3.0);
+        FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent();
+        int creaturesToSacrifice=(int)Math.ceil(game.getBattlefield().count(filter,source.getSourceId(),player.getId(),game) / 3.0);
         if (creaturesToSacrifice > 0) {
-          Target target=new TargetCreaturePermanent(creaturesToSacrifice,creaturesToSacrifice,filter,true);
-          target.choose(Outcome.Sacrifice,playerId,source.getSourceId(),game);
+          Target target=new TargetControlledCreaturePermanent(creaturesToSacrifice,creaturesToSacrifice,filter,true);
+          target.chooseTarget(Outcome.Sacrifice,playerId,source,game);
           for (          UUID permanentId : target.getTargets()) {
             Permanent permanent=game.getPermanent(permanentId);
             if (permanent != null) {
@@ -38,12 +37,11 @@
     for (    UUID playerId : controller.getInRange()) {
       Player player=game.getPlayer(playerId);
       if (player != null) {
-        FilterLandPermanent filter=new FilterLandPermanent();
-        filter.add(new ControllerIdPredicate(playerId));
-        int landsToSacrifice=(int)Math.ceil(game.getBattlefield().count(filter,source.getSourceId(),source.getControllerId(),game) / 3.0);
+        FilterControlledLandPermanent filter=new FilterControlledLandPermanent();
+        int landsToSacrifice=(int)Math.ceil(game.getBattlefield().count(filter,source.getSourceId(),player.getId(),game) / 3.0);
         if (landsToSacrifice > 0) {
-          Target target=new TargetLandPermanent(landsToSacrifice,landsToSacrifice,filter,true);
-          target.choose(Outcome.Sacrifice,playerId,source.getSourceId(),game);
+          Target target=new TargetControlledPermanent(landsToSacrifice,landsToSacrifice,filter,true);
+          target.chooseTarget(Outcome.Sacrifice,playerId,source,game);
           for (          UUID permanentId : target.getTargets()) {
             Permanent permanent=game.getPermanent(permanentId);
             if (permanent != null) {
