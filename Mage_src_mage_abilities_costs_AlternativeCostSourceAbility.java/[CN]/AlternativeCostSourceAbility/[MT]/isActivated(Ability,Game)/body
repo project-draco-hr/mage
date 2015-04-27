@@ -1,5 +1,13 @@
 {
-  for (  AlternativeCost2 cost : alternateCosts) {
+  Costs<AlternativeCost2> alternativeCosts;
+  if (dynamicCost != null) {
+    alternativeCosts=new CostsImpl<>();
+    alternativeCosts.add(convertToAlternativeCost(dynamicCost.getCost(source,game)));
+  }
+ else {
+    alternativeCosts=this.alternateCosts;
+  }
+  for (  AlternativeCost2 cost : alternativeCosts) {
     if (cost.isActivated(game)) {
       return true;
     }
