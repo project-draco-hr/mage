@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Zone.HAND,playerA,"Distortion Strike");
+  addCard(Zone.BATTLEFIELD,playerA,"Memnite",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  addCard(Zone.HAND,playerB,"Lightning Bolt",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Distortion Strike","Memnite");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Bolt","Memnite","Distortion Strike");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertGraveyardCount(playerA,"Distortion Strike",1);
+  assertGraveyardCount(playerA,"Memnite",1);
+}

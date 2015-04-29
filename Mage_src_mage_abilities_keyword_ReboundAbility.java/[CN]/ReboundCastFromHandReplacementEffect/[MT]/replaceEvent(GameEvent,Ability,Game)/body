@@ -1,15 +1,20 @@
 {
-  Spell sourceSpell=(Spell)game.getObject(source.getId());
+  Spell sourceSpell=game.getStack().getSpell(source.getSourceId());
   if (sourceSpell != null && sourceSpell.isCopiedSpell()) {
     return false;
   }
  else {
-    Card sourceCard=(Card)game.getObject(source.getSourceId());
-    Player player=game.getPlayer(sourceCard.getOwnerId());
-    if (player != null) {
-      player.moveCardToExileWithInfo(sourceCard,this.cardId,new StringBuilder(player.getName()).append(" Rebound").toString(),source.getSourceId(),game,Zone.HAND,true);
-      this.used=true;
-      return true;
+    Card sourceCard=game.getCard(source.getSourceId());
+    if (sourceCard != null) {
+      Player player=game.getPlayer(sourceCard.getOwnerId());
+      if (player != null) {
+        ReboundEffectCastFromExileDelayedTrigger trigger=new ReboundEffectCastFromExileDelayedTrigger(source.getSourceId(),source.getSourceId());
+        trigger.setControllerId(source.getControllerId());
+        trigger.setSourceObject(source.getSourceObject(game),game);
+        game.addDelayedTriggeredAbility(trigger);
+        player.moveCardToExileWithInfo(sourceCard,sourceCard.getId(),player.getName() + " Rebound",source.getSourceId(),game,Zone.STACK,true);
+        return true;
+      }
     }
   }
   return false;

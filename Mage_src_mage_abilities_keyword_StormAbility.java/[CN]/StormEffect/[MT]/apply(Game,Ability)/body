@@ -1,16 +1,21 @@
 {
-  Spell spell=(Spell)this.getValue("StormSpell");
-  if (spell != null) {
+  MageObjectReference spellRef=(MageObjectReference)this.getValue("StormSpellRef");
+  if (spellRef != null) {
     CastSpellLastTurnWatcher watcher=(CastSpellLastTurnWatcher)game.getState().getWatchers().get("CastSpellLastTurnWatcher");
-    int stormCount=watcher.getSpellOrder(spell,game) - 1;
+    int stormCount=watcher.getSpellOrder(spellRef,game) - 1;
     if (stormCount > 0) {
-      if (!game.isSimulation())       game.informPlayers("Storm: " + spell.getName() + " will be copied "+ stormCount+ " time"+ (stormCount > 1 ? "s" : ""));
-      for (int i=0; i < stormCount; i++) {
-        Spell copy=spell.copySpell();
-        copy.setControllerId(source.getControllerId());
-        copy.setCopiedSpell(true);
-        game.getStack().push(copy);
-        copy.chooseNewTargets(game,source.getControllerId());
+      Spell spell=(Spell)this.getValue("StormSpell");
+      if (spell != null) {
+        if (!game.isSimulation()) {
+          game.informPlayers("Storm: " + spell.getName() + " will be copied "+ stormCount+ " time"+ (stormCount > 1 ? "s" : ""));
+        }
+        for (int i=0; i < stormCount; i++) {
+          Spell copy=spell.copySpell();
+          copy.setControllerId(source.getControllerId());
+          copy.setCopiedSpell(true);
+          game.getStack().push(copy);
+          copy.chooseNewTargets(game,source.getControllerId());
+        }
       }
     }
     return true;

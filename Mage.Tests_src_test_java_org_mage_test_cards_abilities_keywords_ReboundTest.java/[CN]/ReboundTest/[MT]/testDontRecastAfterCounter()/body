@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Zone.HAND,playerA,"Distortion Strike");
+  addCard(Zone.BATTLEFIELD,playerA,"Memnite",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.HAND,playerB,"Counterspell");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Distortion Strike","Memnite");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Counterspell","Distortion Strike");
+  setStopAt(3,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertGraveyardCount(playerB,"Counterspell",1);
+  assertGraveyardCount(playerA,"Distortion Strike",1);
+  assertPowerToughness(playerA,"Memnite",1,1);
+  assertExileCount("Distortion Strike",0);
+}
