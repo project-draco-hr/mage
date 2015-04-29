@@ -26,6 +26,32 @@
         }
       }
     }
+    for (    AlternativeSourceCosts alternativeSourceCosts : getAlternativeSourceCosts()) {
+      if (alternativeSourceCosts instanceof Ability) {
+        if (((AlternativeSourceCosts)alternativeSourceCosts).isAvailable(ability,game)) {
+          if (((Ability)alternativeSourceCosts).getCosts().canPay(ability,playerId,playerId,game)) {
+            ManaCostsImpl manaCosts=new ManaCostsImpl();
+            for (            Cost cost : ((Ability)alternativeSourceCosts).getCosts()) {
+              if (cost instanceof ManaCost) {
+                manaCosts.add((ManaCost)cost);
+              }
+            }
+            if (manaCosts.size() == 0) {
+              return true;
+            }
+ else {
+              for (              Mana mana : manaCosts.getOptions()) {
+                for (                Mana avail : available) {
+                  if (mana.enough(avail)) {
+                    return true;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
   return false;
 }
