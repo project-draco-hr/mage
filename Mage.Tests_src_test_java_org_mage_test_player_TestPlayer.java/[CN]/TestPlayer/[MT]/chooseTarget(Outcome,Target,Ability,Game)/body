@@ -62,6 +62,25 @@
         }
       }
     }
+    if (target instanceof TargetSpell) {
+      for (      String targetDefinition : targets) {
+        String[] targetList=targetDefinition.split("\\^");
+        boolean targetFound=false;
+        for (        String targetName : targetList) {
+          for (          StackObject stackObject : game.getStack()) {
+            if (stackObject.getName().equals(targetName)) {
+              target.add(stackObject.getId(),game);
+              targetFound=true;
+              break;
+            }
+          }
+        }
+        if (targetFound) {
+          targets.remove(targetDefinition);
+          return true;
+        }
+      }
+    }
   }
   return super.chooseTarget(outcome,target,source,game);
 }
