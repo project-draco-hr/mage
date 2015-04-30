@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Melira, Sylvok Outcast");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Inkmoth Nexus");
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerB,"{1}: {this} becomes");
+  attack(2,playerB,"Inkmoth Nexus");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertTapped("Plains",true);
+  assertTapped("Inkmoth Nexus",true);
+  assertCounterCount(playerA,CounterType.POISON,0);
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+}
