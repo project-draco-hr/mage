@@ -1,5 +1,10 @@
 {
-  if (game.getStep().getType() == PhaseStep.PRECOMBAT_MAIN)   logList("computer player " + name + " hand: ",new ArrayList(hand.getCards(game)));
+  if (game.getStep().getType() == PhaseStep.UPKEEP) {
+    if (!lastPhase.equals(game.getTurn().getValue(game.getTurnNum()))) {
+      logList(game.getTurn().getValue(game.getTurnNum()) + name + " hand: ",new ArrayList(hand.getCards(game)));
+      lastPhase=game.getTurn().getValue(game.getTurnNum());
+    }
+  }
   game.getState().setPriorityPlayerId(playerId);
   game.firePriorityEvent(playerId);
   getNextAction(game,NextAction.PRIORITY);
@@ -7,5 +12,7 @@
   if (ability == null)   logger.fatal("null ability");
   activateAbility((ActivatedAbility)ability,game);
   if (ability instanceof PassAbility)   return false;
+  logLife(game);
+  logger.info("choose action:" + root.getAction() + " success ratio: "+ root.getWinRatio());
   return true;
 }

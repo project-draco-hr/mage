@@ -1,11 +1,12 @@
 {
   if (!stateValue.equals(merge.stateValue)) {
-    logger.info("mismatched merge states");
+    logger.info("mismatched merge states at root");
     return;
   }
   this.visits+=merge.visits;
   this.wins+=merge.wins;
-  List<MCTSNode> mergeChildren=new ArrayList<MCTSNode>();
+  int mismatchCount=0;
+  List<MCTSNode> mergeChildren=new ArrayList<>();
   for (  MCTSNode child : merge.children) {
     mergeChildren.add(child);
   }
@@ -14,8 +15,7 @@
       if (mergeChild.action != null && child.action != null) {
         if (mergeChild.action.toString().equals(child.action.toString())) {
           if (!mergeChild.stateValue.equals(child.stateValue)) {
-            logger.info("mismatched merge states");
-            mergeChildren.remove(mergeChild);
+            mismatchCount++;
           }
  else {
             child.merge(mergeChild);
@@ -27,8 +27,7 @@
  else {
         if (mergeChild.combat.getValue().equals(child.combat.getValue())) {
           if (!mergeChild.stateValue.equals(child.stateValue)) {
-            logger.info("mismatched merge states");
-            mergeChildren.remove(mergeChild);
+            mismatchCount++;
           }
  else {
             child.merge(mergeChild);

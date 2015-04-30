@@ -1,11 +1,7 @@
 {
-  int simCount=0;
-  long startTime=System.nanoTime();
-  long endTime=startTime + (thinkTime * 1000000000l);
+  simCount=0;
   MCTSNode current;
   while (true) {
-    long currentTime=System.nanoTime();
-    if (currentTime > endTime)     break;
     current=root;
     while (!current.isLeaf()) {
       current=current.select(this.playerId);
@@ -28,6 +24,4 @@
     }
     current.backpropagate(result);
   }
-  logger.info("Simulated " + simCount + " games - nodes in tree: "+ root.size());
-  return true;
 }
