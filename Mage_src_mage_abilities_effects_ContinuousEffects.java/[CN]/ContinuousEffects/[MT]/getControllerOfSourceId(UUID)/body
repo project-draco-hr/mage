@@ -1,0 +1,30 @@
+{
+  UUID controllerFound=null;
+  for (  PreventionEffect effect : preventionEffects) {
+    HashSet<Ability> abilities=preventionEffects.getAbility(effect.getId());
+    for (    Ability ability : abilities) {
+      if (ability.getSourceId().equals(sourceId)) {
+        if (controllerFound == null || controllerFound == ability.getControllerId()) {
+          controllerFound=ability.getControllerId();
+        }
+ else {
+          return null;
+        }
+      }
+    }
+  }
+  for (  ReplacementEffect effect : replacementEffects) {
+    HashSet<Ability> abilities=replacementEffects.getAbility(effect.getId());
+    for (    Ability ability : abilities) {
+      if (ability.getSourceId().equals(sourceId)) {
+        if (controllerFound == null || controllerFound == ability.getControllerId()) {
+          controllerFound=ability.getControllerId();
+        }
+ else {
+          return null;
+        }
+      }
+    }
+  }
+  return controllerFound;
+}

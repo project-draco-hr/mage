@@ -1,9 +1,7 @@
 {
-  MageObject object=game.getObject(event.getSourceId());
-  if (object != null && object instanceof Spell) {
-    if (((Spell)object).getControllerId().equals(source.getControllerId()) && (object.getCardType().contains(CardType.INSTANT) || object.getCardType().contains(CardType.SORCERY))) {
-      return true;
-    }
+  if (source.getControllerId().equals(game.getControllerId(event.getSourceId()))) {
+    MageObject object=game.getObject(event.getSourceId());
+    return object != null && (object.getCardType().contains(CardType.INSTANT) || object.getCardType().contains(CardType.SORCERY));
   }
   return false;
 }

@@ -1,11 +1,10 @@
 {
-  if (event.getType() == EventType.DAMAGED_CREATURE || event.getType() == EventType.DAMAGED_PLANESWALKER || event.getType() == EventType.DAMAGED_PLAYER) {
-    StackObject stackObject=game.getStack().getStackObject(event.getSourceId());
-    if (stackObject != null && stackObject.getControllerId().equals(getControllerId())) {
-      MageObject object=game.getObject(stackObject.getSourceId());
-      if (object.getCardType().contains(CardType.INSTANT) || object.getCardType().contains(CardType.SORCERY)) {
-        if (!handledStackObjects.contains(stackObject.getId())) {
-          handledStackObjects.add(stackObject.getId());
+  if (getControllerId().equals(game.getControllerId(event.getSourceId()))) {
+    MageObject damageSource=game.getObject(event.getSourceId());
+    if (damageSource != null) {
+      if (damageSource.getCardType().contains(CardType.INSTANT) || damageSource.getCardType().contains(CardType.SORCERY)) {
+        if (!handledStackObjects.contains(damageSource.getId())) {
+          handledStackObjects.add(damageSource.getId());
           return true;
         }
       }

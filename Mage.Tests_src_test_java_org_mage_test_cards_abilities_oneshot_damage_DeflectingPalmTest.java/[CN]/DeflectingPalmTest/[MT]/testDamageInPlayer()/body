@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains");
+  addCard(Zone.HAND,playerA,"Deflecting Palm");
+  addCard(Zone.BATTLEFIELD,playerA,"Satyr Firedancer");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain");
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Bolt",playerA);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Deflecting Palm",null,"Lightning Bolt");
+  setChoice(playerA,"Lightning Bolt");
+  addTarget(playerA,"Silvercoat Lion");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Deflecting Palm",1);
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+  assertLife(playerA,20);
+  assertLife(playerB,17);
+}
