@@ -2,7 +2,11 @@
   if (event.getType() == GameEvent.EventType.SPELL_CAST) {
     Spell spell=game.getStack().getSpell(event.getTargetId());
     if (spell != null && (spell.getCardType().contains(CardType.INSTANT) || spell.getCardType().contains(CardType.SORCERY))) {
-      this.getEffects().get(0).setTargetPointer(new FixedTarget(spell.getId()));
+      for (      Effect effect : getEffects()) {
+        if (effect instanceof HiveMindEffect) {
+          ((HiveMindEffect)effect).setTargetPointer(new FixedTarget(spell.getId()));
+        }
+      }
       return true;
     }
   }
