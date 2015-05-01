@@ -1,6 +1,7 @@
 {
-  StringBuilder sb=new StringBuilder(1024);
-  sb.append(turnNum).append(turn.getPhaseType()).append(turn.getStepType()).append(activePlayerId).append(priorityPlayerId);
+  StringBuilder sb=threadLocalBuilder.get();
+  sb.append(turn.getValue(turnNum));
+  sb.append(activePlayerId).append(priorityPlayerId);
   for (  Player player : players.values()) {
     sb.append("player").append(player.isPassed()).append(player.getLife()).append("hand");
     if (useHidden) {
