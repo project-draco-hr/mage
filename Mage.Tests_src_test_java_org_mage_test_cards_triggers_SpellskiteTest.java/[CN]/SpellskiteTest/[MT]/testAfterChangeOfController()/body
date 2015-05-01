@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Vedalken Shackles",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",6);
+  addCard(Zone.BATTLEFIELD,playerB,"Spellskite",1);
+  addCard(Zone.HAND,playerB,"Frost Titan",1);
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{2},{T}: Gain control","Spellskite");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Frost Titan");
+  addTarget(playerB,"Mountain");
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerA,"{UP}: Change a target","stack ability (Whenever {this} enters ");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Spellskite",1);
+  assertPermanentCount(playerB,"Frost Titan",1);
+  assertTapped("Mountain",false);
+  assertTapped("Spellskite",true);
+}
