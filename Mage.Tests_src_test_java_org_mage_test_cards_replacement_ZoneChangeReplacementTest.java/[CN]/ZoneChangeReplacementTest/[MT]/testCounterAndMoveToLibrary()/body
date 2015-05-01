@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",7);
+  addCard(Zone.HAND,playerA,"Legacy Weapon");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.HAND,playerB,"Mana Drain");
+  addCard(Zone.HAND,playerB,"Legacy Weapon");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Legacy Weapon");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Mana Drain","Legacy Weapon");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Legacy Weapon");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertHandCount(playerA,"Legacy Weapon",0);
+  assertPermanentCount(playerA,"Legacy Weapon",0);
+  assertGraveyardCount(playerA,"Legacy Weapon",0);
+  assertGraveyardCount(playerB,"Mana Drain",1);
+  assertPermanentCount(playerB,"Legacy Weapon",1);
+}
