@@ -11,12 +11,5 @@
   assertPowerToughness(playerA,"Volrath's Shapeshifter",0,1);
   Permanent shapeshifter=getPermanent("Volrath's Shapeshifter",playerA.getId());
   Assert.assertTrue(shapeshifter.getSubtype().contains("Shapeshifter"));
-  boolean hasShapeshifterOriginalAbility=false;
-  for (  Ability ability : shapeshifter.getAbilities()) {
-    if (ability instanceof SimpleActivatedAbility) {
-      SimpleActivatedAbility simpleActivatedAbility=(SimpleActivatedAbility)ability;
-      hasShapeshifterOriginalAbility=simpleActivatedAbility.getZone() == Zone.BATTLEFIELD && simpleActivatedAbility.getEffects().size() == 1 && simpleActivatedAbility.getEffects().get(0) instanceof DiscardControllerEffect && simpleActivatedAbility.getManaCosts().size() == 1 && simpleActivatedAbility.getManaCosts().get(0) instanceof GenericManaCost && simpleActivatedAbility.getManaCosts().get(0).convertedManaCost() == 2;
-    }
-  }
-  Assert.assertTrue("Volrath's Shapeshifter must have {2} : Discard a card",hasShapeshifterOriginalAbility);
+  Assert.assertTrue("Volrath's Shapeshifter must have {2} : Discard a card",hasShapeshiftersOriginalAbility(shapeshifter));
 }
