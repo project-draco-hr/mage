@@ -1,5 +1,9 @@
 {
-  Spell spell=(Spell)game.getLastKnownInformation(((FixedTarget)getTargetPointer()).getTarget(),Zone.STACK);
+  Spell spell;
+  spell=game.getStack().getSpell(((FixedTarget)getTargetPointer()).getTarget());
+  if (spell == null) {
+    spell=(Spell)game.getLastKnownInformation(((FixedTarget)getTargetPointer()).getTarget(),Zone.STACK);
+  }
   Player player=game.getPlayer(source.getControllerId());
   if (spell != null && player != null) {
     Set<UUID> players=player.getInRange();
