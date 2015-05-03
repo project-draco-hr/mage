@@ -4,17 +4,15 @@
   sb.append(activePlayerId).append(priorityPlayerId);
   for (  Player player : players.values()) {
     sb.append("player").append(player.isPassed()).append(player.getLife()).append("hand");
-    if (useHidden) {
-      sb.append(player.getHand());
+    if (useHidden && priorityPlayerId == player.getId()) {
+      sb.append(player.getHand().getValue(game));
     }
  else {
       sb.append(player.getHand().size());
     }
     sb.append("library").append(player.getLibrary().size());
     sb.append("graveyard");
-    for (    Card card : player.getGraveyard().getCards(game)) {
-      sb.append(card.getName());
-    }
+    sb.append(player.getGraveyard().getValue(game));
   }
   sb.append("permanents");
   List<String> perms=new ArrayList<>();
@@ -43,7 +41,7 @@
     }
   }
   for (  ExileZone zone : exile.getExileZones()) {
-    sb.append("exile").append(zone.getName()).append(zone);
+    sb.append("exile").append(zone.getName()).append(zone.getValue(game));
   }
   sb.append("combat");
   for (  CombatGroup group : combat.getGroups()) {
