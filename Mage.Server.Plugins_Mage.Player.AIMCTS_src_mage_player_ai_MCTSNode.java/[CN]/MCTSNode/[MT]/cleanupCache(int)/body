@@ -1,0 +1,32 @@
+{
+  Set<String> playablesKeys=playablesCache.keySet();
+  Iterator<String> playablesIterator=playablesKeys.iterator();
+  int count=0;
+  while (playablesIterator.hasNext()) {
+    String next=playablesIterator.next();
+    int cacheTurn=Integer.valueOf(next.split(":",2)[0].substring(1));
+    if (cacheTurn < turnNum) {
+      playablesIterator.remove();
+      count++;
+    }
+  }
+  Set<String> attacksKeys=attacksCache.keySet();
+  Iterator<String> attacksIterator=attacksKeys.iterator();
+  while (attacksIterator.hasNext()) {
+    int cacheTurn=Integer.valueOf(attacksIterator.next().split(":",2)[0].substring(1));
+    if (cacheTurn < turnNum) {
+      attacksIterator.remove();
+      count++;
+    }
+  }
+  Set<String> blocksKeys=blocksCache.keySet();
+  Iterator<String> blocksIterator=blocksKeys.iterator();
+  while (blocksIterator.hasNext()) {
+    int cacheTurn=Integer.valueOf(blocksIterator.next().split(":",2)[0].substring(1));
+    if (cacheTurn < turnNum) {
+      blocksIterator.remove();
+      count++;
+    }
+  }
+  return count;
+}

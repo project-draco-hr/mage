@@ -5,17 +5,21 @@
   }
 switch (player.getNextAction()) {
 case PRIORITY:
-    List<Ability> abilities=player.getPlayableOptions(game);
-  for (  Ability ability : abilities) {
-    Game sim=game.copy();
-    MCTSPlayer simPlayer=(MCTSPlayer)sim.getPlayer(player.getId());
-    simPlayer.activateAbility((ActivatedAbility)ability,sim);
-    sim.resume();
-    children.add(new MCTSNode(this,sim,ability));
-  }
+    List<Ability> abilities;
+  if (!USE_ACTION_CACHE)   abilities=player.getPlayableOptions(game);
+ else   abilities=getPlayables(player,fullStateValue,game);
+for (Ability ability : abilities) {
+  Game sim=game.copy();
+  MCTSPlayer simPlayer=(MCTSPlayer)sim.getPlayer(player.getId());
+  simPlayer.activateAbility((ActivatedAbility)ability,sim);
+  sim.resume();
+  children.add(new MCTSNode(this,sim,ability));
+}
 break;
 case SELECT_ATTACKERS:
-List<List<UUID>> attacks=player.getAttacks(game);
+List<List<UUID>> attacks;
+if (!USE_ACTION_CACHE) attacks=player.getAttacks(game);
+ else attacks=getAttacks(player,fullStateValue,game);
 UUID defenderId=game.getOpponents(player.getId()).iterator().next();
 for (List<UUID> attack : attacks) {
 Game sim=game.copy();
@@ -28,7 +32,9 @@ children.add(new MCTSNode(this,sim,sim.getCombat()));
 }
 break;
 case SELECT_BLOCKERS:
-List<List<List<UUID>>> blocks=player.getBlocks(game);
+List<List<List<UUID>>> blocks;
+if (!USE_ACTION_CACHE) blocks=player.getBlocks(game);
+ else blocks=getBlocks(player,fullStateValue,game);
 for (List<List<UUID>> block : blocks) {
 Game sim=game.copy();
 MCTSPlayer simPlayer=(MCTSPlayer)sim.getPlayer(player.getId());

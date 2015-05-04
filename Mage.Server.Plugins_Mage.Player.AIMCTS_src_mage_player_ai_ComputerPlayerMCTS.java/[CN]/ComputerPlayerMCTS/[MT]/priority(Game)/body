@@ -3,6 +3,10 @@
     if (!lastPhase.equals(game.getTurn().getValue(game.getTurnNum()))) {
       logList(game.getTurn().getValue(game.getTurnNum()) + name + " hand: ",new ArrayList(hand.getCards(game)));
       lastPhase=game.getTurn().getValue(game.getTurnNum());
+      if (MCTSNode.USE_ACTION_CACHE) {
+        int count=MCTSNode.cleanupCache(game.getTurnNum());
+        if (count > 0)         logger.info("Removed " + count + " cache entries");
+      }
     }
   }
   game.getState().setPriorityPlayerId(playerId);
