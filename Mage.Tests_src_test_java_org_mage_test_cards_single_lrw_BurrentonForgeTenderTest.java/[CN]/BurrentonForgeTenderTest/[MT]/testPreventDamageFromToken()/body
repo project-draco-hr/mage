@@ -1,0 +1,21 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Burrenton Forge-Tender");
+  addCard(Zone.BATTLEFIELD,playerA,"Soldier of the Pantheon");
+  addCard(Zone.BATTLEFIELD,playerA,"Mogg Fanatic");
+  addCard(Zone.HAND,playerB,"Rite of Replication");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",4);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Rite of Replication","Mogg Fanatic");
+  setChoice(playerB,"No");
+  activateAbility(2,PhaseStep.BEGIN_COMBAT,playerA,"Sacrifice {this}: {source} deals 1 damage to target creature or player.",playerB);
+  activateAbility(2,PhaseStep.END_COMBAT,playerA,"Sacrifice {this}: Prevent all damage a red source of your choice would deal this turn.");
+  playerA.addChoice("Mogg Fanatic");
+  activateAbility(2,PhaseStep.POSTCOMBAT_MAIN,playerB,"Sacrifice {this}: {source} deals 1 damage to target creature or player.","Soldier of the Pantheon");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerB,19);
+  assertPermanentCount(playerB,"Mogg Fanatic",0);
+  assertGraveyardCount(playerA,"Mogg Fanatic",1);
+  assertGraveyardCount(playerB,"Rite of Replication",1);
+  assertGraveyardCount(playerA,"Burrenton Forge-Tender",1);
+  assertPermanentCount(playerA,"Soldier of the Pantheon",1);
+}

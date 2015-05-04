@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Burrenton Forge-Tender");
+  addCard(Zone.BATTLEFIELD,playerA,"Soldier of the Pantheon");
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Bolt","Soldier of the Pantheon");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Sacrifice {this}: Prevent all damage a red source of your choice would deal this turn.",NO_TARGET,"Cast Lightning Bolt");
+  playerA.addChoice("Lightning Bolt");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertGraveyardCount(playerA,"Burrenton Forge-Tender",1);
+  assertPermanentCount(playerA,"Soldier of the Pantheon",1);
+}

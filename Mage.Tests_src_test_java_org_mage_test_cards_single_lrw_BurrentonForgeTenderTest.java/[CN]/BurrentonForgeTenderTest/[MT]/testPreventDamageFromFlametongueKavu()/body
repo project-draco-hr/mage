@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Burrenton Forge-Tender");
+  addCard(Zone.BATTLEFIELD,playerA,"Soldier of the Pantheon");
+  addCard(Zone.HAND,playerB,"Flametongue Kavu");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",4);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Flametongue Kavu");
+  addTarget(playerB,"Soldier of the Pantheon");
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerA,"Sacrifice {this}: Prevent all damage a red source of your choice would deal this turn.",NO_TARGET,"When {this} enters the battlefield, {source} deals 4 damage to target creature.");
+  playerA.addChoice("Flametongue Kavu");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerB,"Flametongue Kavu",1);
+  assertGraveyardCount(playerA,"Burrenton Forge-Tender",1);
+  assertPermanentCount(playerA,"Soldier of the Pantheon",1);
+}
