@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",5);
+  addCard(Zone.HAND,playerA,"Destroy the Evidence");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",2);
+  addCard(Zone.LIBRARY,playerB,"Forest",1);
+  addCard(Zone.LIBRARY,playerB,"Silvercoat Lion",2);
+  skipInitShuffling();
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Destroy the Evidence","Mountain");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Destroy the Evidence",1);
+  assertGraveyardCount(playerB,"Mountain",1);
+  assertGraveyardCount(playerB,"Forest",1);
+  assertGraveyardCount(playerB,"Silvercoat Lion",2);
+  assertPermanentCount(playerB,"Mountain",1);
+  assertLife(playerB,20);
+}
