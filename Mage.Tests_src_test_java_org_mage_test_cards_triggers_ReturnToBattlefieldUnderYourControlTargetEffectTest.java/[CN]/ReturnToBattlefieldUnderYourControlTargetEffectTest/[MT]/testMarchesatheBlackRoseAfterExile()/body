@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Marchesa, the Black Rose");
+  addCard(Zone.HAND,playerA,"Arcbound Worker",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  addCard(Zone.HAND,playerB,"Lightning Bolt",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Relic of Progenitus",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Arcbound Worker");
+  castSpell(1,PhaseStep.END_COMBAT,playerB,"Lightning Bolt","Arcbound Worker");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"{T}: Target player exiles",playerA);
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertPermanentCount(playerA,"Arcbound Worker",0);
+  assertExileCount("Arcbound Worker",1);
+}
