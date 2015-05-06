@@ -1,8 +1,21 @@
 {
-  Card card=game.getCard(objectId);
-  if (affectedControllerId.equals(source.getControllerId()) && card != null && game.getState().getZone(card.getId()) == Zone.EXILED) {
-    ExileZone zone=game.getExile().getExileZone(CardUtil.getCardExileZoneId(game,source));
-    return zone != null && zone.contains(card.getId());
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    Card card=game.getCard(objectId);
+    if (affectedControllerId.equals(source.getControllerId()) && card != null && game.getState().getZone(card.getId()) == Zone.EXILED) {
+      ExileZone zone=game.getExile().getExileZone(CardUtil.getExileZoneId(game,source.getSourceId(),source.getSourceObjectZoneChangeCounter()));
+      if (zone != null && zone.contains(card.getId())) {
+        if (controller.chooseUse(outcome,"Look at the card?",game)) {
+          Cards cards=new CardsImpl();
+          cards.add(card);
+          controller.lookAtCards(sourceObject.getLogName(),cards,game);
+          return false;
+        }
+        controller.setCastSourceIdWithoutMana(objectId);
+        return true;
+      }
+    }
   }
   return false;
 }

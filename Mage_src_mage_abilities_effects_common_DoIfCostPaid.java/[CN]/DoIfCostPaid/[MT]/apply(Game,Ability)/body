@@ -4,7 +4,11 @@
   if (player != null && mageObject != null) {
     String message;
     if (chooseUseText == null) {
-      message=new StringBuilder(getCostText()).append(" and ").append(executingEffects.getText(source.getModes().getMode())).append("?").toString();
+      String effectText=executingEffects.getText(source.getModes().getMode());
+      if (effectText.length() > 0 && effectText.charAt(effectText.length() - 1) == '.') {
+        effectText=effectText.substring(0,effectText.length() - 1);
+      }
+      message=getCostText() + " and " + effectText+ "?";
     }
  else {
       message=chooseUseText;

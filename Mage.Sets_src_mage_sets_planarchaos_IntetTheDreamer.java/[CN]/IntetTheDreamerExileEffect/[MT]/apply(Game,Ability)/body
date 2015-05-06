@@ -1,10 +1,12 @@
 {
   Player player=game.getPlayer(source.getControllerId());
   if (player != null) {
-    Card card=player.getLibrary().removeFromTop(game);
-    MageObject sourceObject=game.getObject(source.getSourceId());
+    Card card=player.getLibrary().getFromTop(game);
+    MageObject sourceObject=source.getSourceObject(game);
     if (card != null && sourceObject != null) {
-      player.moveCardToExileWithInfo(card,CardUtil.getCardExileZoneId(game,source),sourceObject.getLogName(),source.getSourceId(),game,Zone.LIBRARY,true);
+      UUID exileZoneId=CardUtil.getExileZoneId(game,source.getSourceId(),source.getSourceObjectZoneChangeCounter());
+      player.moveCardToExileWithInfo(card,exileZoneId,sourceObject.getLogName(),source.getSourceId(),game,Zone.LIBRARY,false);
+      card.setFaceDown(true,game);
       return true;
     }
   }
