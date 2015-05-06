@@ -1,9 +1,10 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
-    player.getLibrary().addAll(player.getGraveyard().getCards(game),game);
-    player.getGraveyard().clear();
-    player.shuffleLibrary(game);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    Card card : controller.getGraveyard().getCards(game)) {
+      controller.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.GRAVEYARD,true,true);
+    }
+    controller.shuffleLibrary(game);
     return true;
   }
   return false;

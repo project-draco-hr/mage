@@ -3,9 +3,10 @@
   for (  UUID playerId : sourcePlayer.getInRange()) {
     Player player=game.getPlayer(playerId);
     if (player != null) {
-      player.getLibrary().addAll(player.getGraveyard().getCards(game),game);
+      for (      Card card : player.getGraveyard().getCards(game)) {
+        card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
+      }
       player.shuffleLibrary(game);
-      player.getGraveyard().clear();
     }
   }
   return true;

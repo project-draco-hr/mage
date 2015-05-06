@@ -1,8 +1,9 @@
 {
   Player player=game.getPlayer(this.getTargetPointer().getFirst(game,source));
   if (player != null) {
-    player.getLibrary().addAll(player.getGraveyard().getCards(game),game);
-    player.getGraveyard().clear();
+    for (    Card card : player.getGraveyard().getCards(game)) {
+      player.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.GRAVEYARD,true,true);
+    }
     player.shuffleLibrary(game);
     return true;
   }
