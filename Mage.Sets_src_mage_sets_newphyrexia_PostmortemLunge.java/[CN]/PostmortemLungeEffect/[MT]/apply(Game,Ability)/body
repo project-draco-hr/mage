@@ -5,8 +5,10 @@
     if (player == null) {
       return false;
     }
-    game.getState().addOtherAbility(card,HasteAbility.getInstance());
     card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),source.getControllerId());
+    ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.Custom);
+    effect.setTargetPointer(new FixedTarget(card.getId()));
+    game.addEffect(effect,source);
     ExileTargetEffect exileEffect=new ExileTargetEffect();
     exileEffect.setTargetPointer(new FixedTarget(card.getId()));
     DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(exileEffect);
