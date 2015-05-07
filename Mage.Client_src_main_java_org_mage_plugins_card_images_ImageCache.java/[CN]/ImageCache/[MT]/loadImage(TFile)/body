@@ -1,14 +1,17 @@
 {
+  if (file == null) {
+    return null;
+  }
   BufferedImage image=null;
   if (!file.exists()) {
     log.debug("File does not exist: " + file.toString());
     return null;
   }
   try {
-    TFileInputStream inputStream=new TFileInputStream(file);
-    image=ImageIO.read(inputStream);
-    inputStream.close();
-  }
+    try (TFileInputStream inputStream=new TFileInputStream(file)){
+      image=ImageIO.read(inputStream);
+    }
+   }
  catch (  Exception e) {
     log.error(e,e);
   }
