@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Card card=game.getCard(getTargetPointer().getFirst(game,source));
+    if (card != null) {
+      if (card.getCardType().contains(CardType.LAND) && controller.canPlayLand() && controller.chooseUse(outcome,"Play " + card.getName() + " from your graveyard for free?",game)) {
+        controller.playLand(card,game);
+      }
+ else {
+        if (card.getSpellAbility().canChooseTarget(game) && controller.chooseUse(outcome,"Play " + card.getName() + " from your graveyard for free?",game)) {
+          controller.cast(card.getSpellAbility(),game,true);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
