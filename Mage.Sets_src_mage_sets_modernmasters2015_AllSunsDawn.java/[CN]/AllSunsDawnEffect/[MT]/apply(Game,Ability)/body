@@ -1,18 +1,11 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    for (    ObjectColor objectColor : ObjectColor.getAllColors()) {
-      FilterCard filterColor=new FilterCard("up to one " + objectColor.getDescription() + " card to return to your hand");
-      filterColor.add(new ColorPredicate(objectColor));
-      if (controller.getGraveyard().count(filterColor,game) > 0) {
-        TargetCardInYourGraveyard target=new TargetCardInYourGraveyard(0,1,filterColor);
-        controller.chooseTarget(outcome,target,source,game);
-        if (!target.getTargets().isEmpty()) {
-          Card card=game.getCard(target.getFirstTarget());
-          if (card != null) {
-            controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.GRAVEYARD,true);
-          }
-        }
+    for (    Target target : source.getTargets()) {
+      UUID targetId=target.getFirstTarget();
+      Card card=game.getCard(targetId);
+      if (card != null) {
+        controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.GRAVEYARD,true);
       }
     }
     return true;
