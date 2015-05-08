@@ -1,0 +1,37 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Runeclaw Bear",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",3);
+  addCard(Zone.HAND,playerA,"Narrow Escape");
+  addCard(Zone.HAND,playerB,"Progenitor Mimic",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",3);
+  addCard(Zone.BATTLEFIELD,playerB,"Forest",3);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Progenitor Mimic");
+  setChoice(playerB,"Runeclaw Bear");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Narrow Escape","Runeclaw Bear");
+  castSpell(4,PhaseStep.PRECOMBAT_MAIN,playerB,"Progenitor Mimic");
+  setChoice(playerB,"Runeclaw Bear");
+  setStopAt(6,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertLife(playerA,24);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Narrow Escape",1);
+  assertPermanentCount(playerA,"Runeclaw Bear",0);
+  assertHandCount(playerA,"Runeclaw Bear",1);
+  assertPermanentCount(playerB,"Runeclaw Bear",6);
+  int tokens=0;
+  int nonTokens=0;
+  for (  Permanent permanent : currentGame.getBattlefield().getAllPermanents()) {
+    if (permanent.getControllerId().equals(playerB.getId())) {
+      if (permanent.getCardType().contains(CardType.CREATURE)) {
+        if (permanent instanceof PermanentToken) {
+          tokens++;
+        }
+ else {
+          nonTokens++;
+        }
+      }
+    }
+  }
+  Assert.assertEquals("Two non token permanents ",2,nonTokens);
+  Assert.assertEquals("Four token permanents",4,tokens);
+}
