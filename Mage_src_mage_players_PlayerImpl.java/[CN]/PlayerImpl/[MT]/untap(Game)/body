@@ -33,7 +33,7 @@
               StringBuilder sb=new StringBuilder(message).append(" to untap").append(" (").append(Math.min(leftForUntap.size(),numberToUntap)).append(" in total");
               MageObject effectSource=game.getObject(ability.getSourceId());
               if (effectSource != null) {
-                sb.append(" from ").append(effectSource.getName()).toString();
+                sb.append(" from ").append(effectSource.getLogName()).toString();
               }
               sb.append(")");
               filter.setMessage(sb.toString());
@@ -73,7 +73,7 @@
  while (isInGame() && playerCanceledSelection);
     if (!game.isSimulation()) {
       for (      Permanent permanent : selectedToUntap) {
-        game.informPlayers(new StringBuilder(this.getName()).append(" untapped ").append(permanent.getName()).toString());
+        game.informPlayers(this.getLogName() + " untapped " + permanent.getLogName());
       }
     }
     for (    Permanent permanent : canBeUntapped) {

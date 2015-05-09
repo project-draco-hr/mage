@@ -1,6 +1,6 @@
 {
   boolean result=true;
-  if (target.isEmpty()) {
+  if (target == null) {
     return true;
   }
   String[] targetList=target.split("\\^");
@@ -24,7 +24,7 @@
       }
       for (      UUID id : ability.getTargets().get(0).possibleTargets(ability.getSourceId(),ability.getControllerId(),game)) {
         MageObject object=game.getObject(id);
-        if (object != null && object.getLogName().startsWith(targetName)) {
+        if (object != null && ((!targetName.isEmpty() && object.getName().startsWith(targetName)) || (targetName.isEmpty() && object.getName().isEmpty()))) {
           if (index >= ability.getTargets().size()) {
             index--;
           }

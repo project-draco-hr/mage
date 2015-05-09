@@ -10,7 +10,7 @@
  else {
       message=chooseUseText;
     }
-    message=CardUtil.replaceSourceName(message,sourceObject.getLogName());
+    message=CardUtil.replaceSourceName(message,sourceObject.getName());
     boolean result=true;
     boolean doEffect=true;
     for (    UUID playerId : controller.getInRange()) {
@@ -18,7 +18,7 @@
       if (player != null && cost.canPay(source,source.getSourceId(),player.getId(),game) && player.chooseUse(Outcome.Detriment,message,game)) {
         cost.clearPaid();
         if (cost.pay(source,game,source.getSourceId(),player.getId(),false)) {
-          if (!game.isSimulation())           game.informPlayers(player.getName() + " pays the cost to prevent the effect");
+          if (!game.isSimulation())           game.informPlayers(player.getLogName() + " pays the cost to prevent the effect");
           doEffect=false;
           break;
         }

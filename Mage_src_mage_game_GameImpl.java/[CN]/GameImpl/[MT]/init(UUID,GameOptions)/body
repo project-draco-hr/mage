@@ -30,12 +30,12 @@
   if (choosingPlayer != null && choosingPlayer.choose(Outcome.Benefit,targetPlayer,null,this)) {
     startingPlayerId=targetPlayer.getTargets().get(0);
     Player startingPlayer=state.getPlayer(startingPlayerId);
-    StringBuilder message=new StringBuilder(choosingPlayer.getName()).append(" chooses that ");
+    StringBuilder message=new StringBuilder(choosingPlayer.getLogName()).append(" chooses that ");
     if (choosingPlayer.getId().equals(startingPlayerId)) {
       message.append("he or she");
     }
  else {
-      message.append(startingPlayer.getName());
+      message.append(startingPlayer.getLogName());
     }
     message.append(" takes the first turn");
     this.informPlayers(message.toString());
@@ -76,11 +76,11 @@
         if (keep) {
           endMulligan(player.getId());
           keepPlayers.add(playerId);
-          fireInformEvent(player.getName() + " keeps hand");
+          fireInformEvent(player.getLogName() + " keeps hand");
         }
  else {
           mulliganPlayers.add(playerId);
-          fireInformEvent(player.getName() + " decides to take mulligan");
+          fireInformEvent(player.getLogName() + " decides to take mulligan");
         }
       }
     }

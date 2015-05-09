@@ -3,7 +3,7 @@
     int bookmark=game.bookmarkState();
     if (action.activate(game,false)) {
       game.fireEvent(GameEvent.getEvent(GameEvent.EventType.ACTIVATED_ABILITY,action.getSourceId(),action.getId(),playerId));
-      if (!game.isSimulation())       game.informPlayers(new StringBuilder(name).append(action.getGameLogMessage(game)).toString());
+      if (!game.isSimulation())       game.informPlayers(getLogName() + action.getGameLogMessage(game));
       if (action.resolve(game)) {
         game.removeBookmark(bookmark);
         resetStoredBookmark(game);

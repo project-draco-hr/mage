@@ -6,7 +6,7 @@
       game.getStack().push(new StackAbility(ability,playerId));
       if (ability.activate(game,false)) {
         game.fireEvent(GameEvent.getEvent(GameEvent.EventType.ACTIVATED_ABILITY,ability.getId(),ability.getSourceId(),playerId));
-        if (!game.isSimulation())         game.informPlayers(new StringBuilder(name).append(ability.getGameLogMessage(game)).toString());
+        if (!game.isSimulation())         game.informPlayers(getLogName() + ability.getGameLogMessage(game));
         game.removeBookmark(bookmark);
         resetStoredBookmark(game);
         return true;
