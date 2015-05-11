@@ -1,0 +1,24 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",7);
+  addCard(Zone.HAND,playerA,"No Rest for the Wicked");
+  addCard(Zone.HAND,playerA,"Beacon of Unrest");
+  addCard(Zone.BATTLEFIELD,playerA,"Moorland Inquisitor");
+  addCard(Zone.BATTLEFIELD,playerB,"Moorland Inquisitor");
+  addCard(Zone.BATTLEFIELD,playerB,"Memnite");
+  castSpell(3,PhaseStep.POSTCOMBAT_MAIN,playerA,"No Rest for the Wicked");
+  attack(4,playerB,"Memnite");
+  block(4,playerA,"Moorland Inquisitor","Memnite");
+  castSpell(5,PhaseStep.POSTCOMBAT_MAIN,playerA,"Beacon of Unrest","Memnite");
+  attack(7,playerA,"Memnite");
+  block(7,playerB,"Moorland Inquisitor","Memnite");
+  activateAbility(7,PhaseStep.POSTCOMBAT_MAIN,playerA,"Sacrifice {this}: Return to your hand all creature cards in your graveyard that were put there from the battlefield this turn.");
+  setStopAt(7,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerB,"Memnite",1);
+  assertHandCount(playerB,"Memnite",0);
+  assertPermanentCount(playerA,"No Rest for the Wicked",0);
+  assertGraveyardCount(playerA,1);
+  assertGraveyardCount(playerA,"No Rest for the Wicked",1);
+  assertGraveyardCount(playerA,"Memnite",0);
+  assertHandCount(playerA,"Memnite",0);
+}
