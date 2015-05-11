@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",5);
+  addCard(Zone.GRAVEYARD,playerA,"Decree of Pain");
+  addCard(Zone.BATTLEFIELD,playerB,"Disciple Of Grace");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Cycling {3}{B}{B}");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Cycling {2}");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertHandCount(playerA,0);
+  assertHandCount(playerB,0);
+  assertGraveyardCount(playerA,"Decree of Pain",1);
+  assertPermanentCount(playerB,"Disciple Of Grace",1);
+}

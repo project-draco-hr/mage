@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",5);
+  addCard(Zone.HAND,playerA,"Decree of Pain");
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox",1);
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Cycling {3}{B}{B}");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertHandCount(playerA,1);
+  assertGraveyardCount(playerA,"Decree of Pain",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",0);
+  assertPermanentCount(playerB,"Pillarfield Ox",1);
+  assertPowerToughness(playerB,"Pillarfield Ox",0,2);
+}
