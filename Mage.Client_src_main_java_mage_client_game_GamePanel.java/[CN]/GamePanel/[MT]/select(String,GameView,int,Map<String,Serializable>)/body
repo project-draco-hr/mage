@@ -1,7 +1,9 @@
 {
   updateGame(gameView,options);
+  boolean controllingPlayer=false;
   for (  PlayerView playerView : gameView.getPlayers()) {
     if (playerView.getPlayerId().equals(playerId)) {
+      controllingPlayer=!gameView.getPriorityPlayerName().equals(playerView.getName());
       if (playerView.getStatesSavedSize() > 0 && gameView.getStack().size() == 0) {
         feedbackPanel.allowUndo(playerView.getStatesSavedSize());
       }
@@ -10,13 +12,17 @@
   }
   Map<String,Serializable> panelOptions=new HashMap<>();
   panelOptions.put("your_turn",true);
-  String playerName;
+  String activePlayerText;
   if (gameView.getActivePlayerId().equals(playerId)) {
-    playerName="Your turn";
+    activePlayerText="Your turn";
   }
  else {
-    playerName=gameView.getActivePlayerName();
+    activePlayerText=gameView.getActivePlayerName() + "'s turn";
   }
-  String messageToDisplay=message + "<div style='font-size:11pt'>" + playerName+ " / "+ gameView.getStep().toString()+ "</div>";
+  String priorityPlayerText="";
+  if (controllingPlayer) {
+    priorityPlayerText=" / priority " + gameView.getPriorityPlayerName();
+  }
+  String messageToDisplay=message + "<div style='font-size:11pt'>" + activePlayerText+ " / "+ gameView.getStep().toString()+ priorityPlayerText+ "</div>";
   this.feedbackPanel.getFeedback(FeedbackMode.SELECT,messageToDisplay,gameView.getSpecial(),panelOptions,messageId);
 }
