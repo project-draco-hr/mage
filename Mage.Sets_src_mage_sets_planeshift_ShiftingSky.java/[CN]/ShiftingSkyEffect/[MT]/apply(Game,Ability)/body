@@ -1,0 +1,25 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  FilterPermanent filter=new FilterPermanent("All nonland permanents");
+  filter.add(Predicates.not(new CardTypePredicate(CardType.LAND)));
+  if (player != null && permanent != null) {
+    ChoiceColor colorChoice=new ChoiceColor();
+    if (player.choose(Outcome.Neutral,colorChoice,game)) {
+      game.informPlayers(permanent.getName() + ": " + player.getName()+ " has chosen "+ colorChoice.getChoice());
+      ContinuousEffect effect;
+      for (      UUID playerId : player.getInRange()) {
+        Player p=game.getPlayer(playerId);
+        if (p != null) {
+          for (          Permanent chosen : game.getBattlefield().getAllActivePermanents(filter,playerId,game)) {
+            effect=new BecomesColorTargetEffect(colorChoice.getColor(),Duration.EndOfTurn,"is " + colorChoice.getChoice());
+            effect.setTargetPointer(new FixedTarget(chosen.getId()));
+            game.addEffect(effect,source);
+          }
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}
