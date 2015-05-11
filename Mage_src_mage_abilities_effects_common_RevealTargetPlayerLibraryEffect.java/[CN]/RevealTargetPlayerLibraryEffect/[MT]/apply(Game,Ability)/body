@@ -1,0 +1,17 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (player == null || targetPlayer == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl(Zone.LIBRARY);
+  int count=Math.min(targetPlayer.getLibrary().size(),amountCards.calculate(game,source,this));
+  for (int i=0; i < count; i++) {
+    Card card=targetPlayer.getLibrary().removeFromTop(game);
+    if (card != null) {
+      cards.add(card);
+    }
+  }
+  player.lookAtCards("Top " + amountCards.toString() + "cards of "+ targetPlayer.getName()+ "\'s library",cards,game);
+  return true;
+}
