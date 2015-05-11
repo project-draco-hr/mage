@@ -1,0 +1,11 @@
+{
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && ((ZoneChangeEvent)event).isDiesEvent() && ((ZoneChangeEvent)event).getPlayerId().equals(this.getControllerId())) {
+    Permanent permanent=game.getPermanent(event.getTargetId());
+    if (permanent.getCardType().contains(CardType.CREATURE) && permanent.getControllerId().equals(this.controllerId)) {
+      Effect effect=this.getEffects().get(0);
+      effect.setValue("returningCreature",event.getTargetId());
+      return true;
+    }
+  }
+  return false;
+}

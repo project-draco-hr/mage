@@ -1,0 +1,21 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  if (you == null) {
+    return false;
+  }
+ else   if (you.getLibrary().size() > 0) {
+    Card top=you.getLibrary().removeFromTop(game);
+    Cards cards=new CardsImpl(Zone.PICK);
+    cards.add(top);
+    you.revealCards("Top card of " + you.getName() + "'s library",cards,game);
+    if (top.getCardType().contains(CardType.CREATURE)) {
+      top.moveToZone(Zone.GRAVEYARD,top.getId(),game,true);
+    }
+ else {
+      top.moveToZone(Zone.HAND,top.getId(),game,false);
+    }
+    cards.clear();
+    return true;
+  }
+  return false;
+}
