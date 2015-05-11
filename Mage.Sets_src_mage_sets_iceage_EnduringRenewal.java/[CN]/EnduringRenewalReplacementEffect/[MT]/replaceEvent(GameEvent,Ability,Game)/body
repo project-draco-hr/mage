@@ -4,17 +4,16 @@
     return false;
   }
  else   if (you.getLibrary().size() > 0) {
-    Card top=you.getLibrary().removeFromTop(game);
-    Cards cards=new CardsImpl(Zone.PICK);
+    Card top=you.getLibrary().getFromTop(game);
+    Cards cards=new CardsImpl();
     cards.add(top);
     you.revealCards("Top card of " + you.getName() + "'s library",cards,game);
     if (top.getCardType().contains(CardType.CREATURE)) {
-      top.moveToZone(Zone.GRAVEYARD,top.getId(),game,true);
+      you.moveCardToGraveyardWithInfo(top,source.getSourceId(),game,Zone.LIBRARY);
     }
  else {
-      top.moveToZone(Zone.HAND,top.getId(),game,false);
+      you.moveCardToHandWithInfo(top,source.getSourceId(),game,Zone.LIBRARY);
     }
-    cards.clear();
     return true;
   }
   return false;
