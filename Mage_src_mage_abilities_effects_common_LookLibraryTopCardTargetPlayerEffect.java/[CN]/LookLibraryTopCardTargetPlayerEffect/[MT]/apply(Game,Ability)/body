@@ -3,12 +3,9 @@
   Player targetPlayer=game.getPlayer(source.getFirstTarget());
   MageObject sourceObject=game.getObject(source.getSourceId());
   if (player != null && targetPlayer != null && sourceObject != null) {
-    Card card=targetPlayer.getLibrary().getFromTop(game);
-    if (card != null) {
-      CardsImpl cards=new CardsImpl();
-      cards.add(card);
-      player.lookAtCards(sourceObject.getName(),cards,game);
-    }
+    Cards cards=new CardsImpl();
+    cards.addAll(targetPlayer.getLibrary().getTopCards(game,amount));
+    player.lookAtCards(sourceObject.getName(),cards,game);
     return true;
   }
   return false;

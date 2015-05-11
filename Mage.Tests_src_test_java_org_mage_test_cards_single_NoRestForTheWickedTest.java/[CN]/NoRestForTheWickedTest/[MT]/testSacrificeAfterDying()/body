@@ -1,0 +1,23 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",4);
+  addCard(Zone.HAND,playerA,"No Rest for the Wicked");
+  addCard(Zone.BATTLEFIELD,playerA,"Memnite");
+  addCard(Zone.BATTLEFIELD,playerA,"Royal Assassin");
+  addCard(Zone.BATTLEFIELD,playerA,"Sengir Vampire");
+  addCard(Zone.BATTLEFIELD,playerB,"Island");
+  addCard(Zone.BATTLEFIELD,playerB,"Flowering Lumberknot");
+  addCard(Zone.BATTLEFIELD,playerB,"Moorland Inquisitor");
+  attack(3,playerA,"Memnite");
+  attack(3,playerA,"Royal Assassin");
+  attack(3,playerA,"Sengin Vampire");
+  block(3,playerB,"Moorland Inquisitor","Memnite");
+  castSpell(3,PhaseStep.POSTCOMBAT_MAIN,playerA,"No Rest for the Wicked");
+  activateAbility(3,PhaseStep.POSTCOMBAT_MAIN,playerA,"Sacrifice {this}: Return to your hand all creature cards in your graveyard that were put there from the battlefield this turn.");
+  setStopAt(3,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"No Rest for the Wicked",0);
+  assertGraveyardCount(playerA,1);
+  assertGraveyardCount(playerA,"No Rest for the Wicked",1);
+  assertGraveyardCount(playerA,"Memnite",0);
+  assertHandCount(playerA,"Memnite",1);
+}
