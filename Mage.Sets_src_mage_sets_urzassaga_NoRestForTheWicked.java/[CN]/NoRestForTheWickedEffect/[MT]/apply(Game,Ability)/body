@@ -1,13 +1,15 @@
 {
   NoRestForTheWickedWatcher watcher=(NoRestForTheWickedWatcher)game.getState().getWatchers().get("NoRestForTheWickedWatcher");
   if (watcher != null) {
-    for (    UUID id : watcher.cards) {
-      Card c=game.getCard(id);
+    for (    UUID cardId : watcher.cards) {
+      Card c=game.getCard(cardId);
       if (c != null) {
-        if (game.getState().getZone(id) == Zone.GRAVEYARD) {
-          if (c.getCardType().contains(CardType.CREATURE) && c.getOwnerId().equals(source.getControllerId())) {
-            c.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+        if (game.getState().getZone(cardId) == Zone.GRAVEYARD && c.getCardType().contains(CardType.CREATURE) && c.getOwnerId().equals(source.getControllerId())) {
+          Player p=game.getPlayer(source.getControllerId());
+          if (p != null) {
+            p.moveCardToHandWithInfo(c,source.getSourceId(),game,Zone.GRAVEYARD);
           }
+          return false;
         }
       }
     }
