@@ -1,0 +1,15 @@
+{
+  if (ability instanceof SimpleActivatedAbility) {
+    int xValue=ability.getManaCostsToPay().getX();
+    for (    Cost cost : ability.getCosts()) {
+      if (cost instanceof DiscardTargetCost) {
+        DiscardTargetCost discardCost=(DiscardTargetCost)cost;
+        discardCost.getTargets().clear();
+        FilterCard adjustedFilter=filter.copy();
+        adjustedFilter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,xValue));
+        discardCost.addTarget(new TargetCardInHand(adjustedFilter));
+        return;
+      }
+    }
+  }
+}
