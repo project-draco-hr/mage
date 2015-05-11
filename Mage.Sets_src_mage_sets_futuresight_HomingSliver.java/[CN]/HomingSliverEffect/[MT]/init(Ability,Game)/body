@@ -1,0 +1,16 @@
+{
+  super.init(source,game);
+  if (this.affectedObjectsSet) {
+    for (    UUID p : game.getPlayerList()) {
+      Player player=game.getPlayer(p);
+      if (player != null) {
+        for (        UUID cardId : player.getHand()) {
+          Card card=game.getCard(cardId);
+          if (card.getSubtype().contains("Sliver")) {
+            affectedObjectList.add(new MageObjectReference(card,game));
+          }
+        }
+      }
+    }
+  }
+}
