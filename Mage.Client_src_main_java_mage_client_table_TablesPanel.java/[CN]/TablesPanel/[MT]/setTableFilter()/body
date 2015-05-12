@@ -44,8 +44,18 @@
   if (btnFormatOther.isSelected()) {
     formatFilterList.add(RowFilter.regexFilter("Pauper|Extended",TableTableModel.COLUMN_DECK_TYPE));
   }
-  if (stateFilterList.isEmpty() || typeFilterList.isEmpty() || formatFilterList.isEmpty()) {
-    activeTablesSorter.setRowFilter(RowFilter.regexFilter("Nothing",TableTableModel.COLUMN_GAME_TYPE));
+  List<RowFilter<Object,Object>> skillFilterList=new ArrayList<>();
+  if (btnSkillBeginner.isSelected()) {
+    skillFilterList.add(RowFilter.regexFilter(SkillLevel.BEGINNER.toString(),TableTableModel.COLUMN_SKILL));
+  }
+  if (btnSkillCasual.isSelected()) {
+    skillFilterList.add(RowFilter.regexFilter(SkillLevel.CASUAL.toString(),TableTableModel.COLUMN_SKILL));
+  }
+  if (btnSkillSerious.isSelected()) {
+    skillFilterList.add(RowFilter.regexFilter(SkillLevel.SERIOUS.toString(),TableTableModel.COLUMN_SKILL));
+  }
+  if (stateFilterList.isEmpty() || typeFilterList.isEmpty() || formatFilterList.isEmpty()|| skillFilterList.isEmpty()) {
+    activeTablesSorter.setRowFilter(RowFilter.regexFilter("Nothing",TableTableModel.COLUMN_SKILL));
   }
  else {
     List<RowFilter<Object,Object>> filterList=new ArrayList<>();
@@ -66,6 +76,12 @@
     }
  else     if (formatFilterList.size() == 1) {
       filterList.addAll(formatFilterList);
+    }
+    if (skillFilterList.size() > 1) {
+      filterList.add(RowFilter.orFilter(skillFilterList));
+    }
+ else     if (skillFilterList.size() == 1) {
+      filterList.addAll(skillFilterList);
     }
     if (filterList.size() == 1) {
       activeTablesSorter.setRowFilter(filterList.get(0));
