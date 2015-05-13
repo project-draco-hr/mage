@@ -1,0 +1,14 @@
+{
+  addCard(Zone.HAND,playerA,"Otherworldly Journey");
+  addCard(Zone.HAND,playerA,"Cloudshift");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Otherworldly Journey","Silvercoat Lion");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Cloudshift","Silvercoat Lion");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Otherworldly Journey",1);
+  assertGraveyardCount(playerA,"Cloudshift",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertPowerToughness(playerA,"Silvercoat Lion",2,2);
+}

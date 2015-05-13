@@ -4,14 +4,17 @@
     if (permanent.moveToExile(source.getSourceId(),"Otherworldly Journey",source.getSourceId(),game)) {
       ExileZone exile=game.getExile().getExileZone(source.getSourceId());
       if (exile != null && !exile.isEmpty()) {
-        AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Zone.BATTLEFIELD,"return that card to the battlefield under its owner's control with a +1/+1 counter on it"));
-        delayedAbility.setSourceId(source.getSourceId());
-        delayedAbility.setControllerId(source.getControllerId());
-        delayedAbility.setSourceObject(source.getSourceObject(game),game);
-        AddCountersTargetEffect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance());
-        effect.setTargetPointer(new FixedTarget(source.getFirstTarget()));
-        delayedAbility.addEffect(effect);
-        game.addDelayedTriggeredAbility(delayedAbility);
+        Card card=game.getCard(permanent.getId());
+        if (card != null) {
+          DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new OtherworldlyJourneyReturnFromExileEffect(new MageObjectReference(card,game)));
+          delayedAbility.setSourceId(source.getSourceId());
+          delayedAbility.setControllerId(source.getControllerId());
+          delayedAbility.setSourceObject(source.getSourceObject(game),game);
+          AddCountersTargetEffect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance());
+          effect.setTargetPointer(new FixedTarget(source.getFirstTarget()));
+          delayedAbility.addEffect(effect);
+          game.addDelayedTriggeredAbility(delayedAbility);
+        }
       }
       return true;
     }
