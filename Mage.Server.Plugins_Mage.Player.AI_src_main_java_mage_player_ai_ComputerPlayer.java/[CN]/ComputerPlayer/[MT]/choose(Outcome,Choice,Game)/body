@@ -3,6 +3,28 @@
   if (choice.getMessage() != null && choice.getMessage().equals("Choose creature type")) {
     chooseCreatureType(outcome,choice,game);
   }
+  if (outcome.equals(Outcome.PutManaInPool) && choice instanceof ChoiceColor && currentUnpaidMana != null) {
+    if (currentUnpaidMana.containsColor(ColoredManaSymbol.W) && choice.getChoices().contains("White")) {
+      choice.setChoice("White");
+      return true;
+    }
+    if (currentUnpaidMana.containsColor(ColoredManaSymbol.R) && choice.getChoices().contains("Red")) {
+      choice.setChoice("Red");
+      return true;
+    }
+    if (currentUnpaidMana.containsColor(ColoredManaSymbol.G) && choice.getChoices().contains("Green")) {
+      choice.setChoice("Green");
+      return true;
+    }
+    if (currentUnpaidMana.containsColor(ColoredManaSymbol.U) && choice.getChoices().contains("Blue")) {
+      choice.setChoice("Blue");
+      return true;
+    }
+    if (currentUnpaidMana.containsColor(ColoredManaSymbol.B) && choice.getChoices().contains("Black")) {
+      choice.setChoice("Black");
+      return true;
+    }
+  }
   if (!choice.isChosen()) {
     int choiceIdx=(int)(Math.random() * choice.getChoices().size() + 1);
     for (    String next : choice.getChoices()) {
