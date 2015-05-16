@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",4);
+  addCard(Zone.HAND,playerA,"Angelic Destiny",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Champion of the Parish",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",1);
+  addCard(Zone.HAND,playerB,"Terminate",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Angelic Destiny","Champion of the Parish");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Terminate","Champion of the Parish");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerA,"Champion of the Parish",1);
+  assertGraveyardCount(playerB,"Terminate",1);
+  assertGraveyardCount(playerA,"Angelic Destiny",0);
+  assertHandCount(playerA,"Angelic Destiny",1);
+}
