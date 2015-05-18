@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int toughness=0;
+    for (    Cost cost : source.getCosts()) {
+      if (cost instanceof SacrificeTargetCost && ((SacrificeTargetCost)cost).getPermanents().size() > 0) {
+        toughness=((SacrificeTargetCost)cost).getPermanents().get(0).getToughness().getValue();
+        break;
+      }
+    }
+    if (toughness > 0) {
+      controller.gainLife(toughness,game);
+    }
+    return true;
+  }
+  return false;
+}
