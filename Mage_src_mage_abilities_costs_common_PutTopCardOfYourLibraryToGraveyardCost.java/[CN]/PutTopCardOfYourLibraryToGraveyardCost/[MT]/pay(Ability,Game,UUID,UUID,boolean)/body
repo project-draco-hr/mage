@@ -1,15 +1,10 @@
 {
   Player player=game.getPlayer(controllerId);
   if (player != null && player.getLibrary().size() >= numberOfCards) {
-    int i=0;
     paid=true;
-    while (player.isInGame() && i < numberOfCards) {
-      Card card=player.getLibrary().removeFromTop(game);
-      if (card != null) {
-        paid&=card.moveToZone(Zone.GRAVEYARD,sourceId,game,true);
-      }
-      ++i;
-    }
+    Cards cards=new CardsImpl();
+    cards.addAll(player.getLibrary().getTopCards(game,numberOfCards));
+    player.moveCardsToGraveyardWithInfo(cards,ability,game,Zone.LIBRARY);
   }
   return paid;
 }

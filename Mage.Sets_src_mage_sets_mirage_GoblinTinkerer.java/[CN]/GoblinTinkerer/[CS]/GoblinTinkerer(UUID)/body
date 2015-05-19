@@ -5,6 +5,9 @@
   this.subtype.add("Artificer");
   this.power=new MageInt(1);
   this.toughness=new MageInt(2);
-  this.getSpellAbility().addTarget(new TargetArtifactPermanent());
-  this.getSpellAbility().addEffect(new DestroyTargetEffect());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DestroyTargetEffect(),new ManaCostsImpl<>("{R}"));
+  ability.addEffect(new GoblinTinkererDamageEffect());
+  ability.addCost(new TapSourceCost());
+  ability.addTarget(new TargetArtifactPermanent());
+  this.addAbility(ability);
 }
