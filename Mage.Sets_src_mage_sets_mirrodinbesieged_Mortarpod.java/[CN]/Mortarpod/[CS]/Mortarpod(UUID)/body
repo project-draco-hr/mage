@@ -3,9 +3,12 @@
   this.expansionSetCode="MBS";
   this.subtype.add("Equipment");
   this.addAbility(new LivingWeaponAbility());
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEquippedEffect(0,1)));
-  SimpleActivatedAbility ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new SacrificeSourceCost());
-  ability.addTarget(new TargetCreatureOrPlayer());
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(ability,AttachmentType.EQUIPMENT)));
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEquippedEffect(0,1));
+  SimpleActivatedAbility abilityToGain=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new SacrificeSourceCost());
+  abilityToGain.addTarget(new TargetCreatureOrPlayer());
+  Effect effect=new GainAbilityAttachedEffect(abilityToGain,AttachmentType.EQUIPMENT);
+  effect.setText("and has \"Sacrifice this creature: This creature deals 1 damage to target creature or player.\"");
+  ability.addEffect(effect);
+  this.addAbility(ability);
   this.addAbility(new EquipAbility(Outcome.BoostCreature,new GenericManaCost(2)));
 }
