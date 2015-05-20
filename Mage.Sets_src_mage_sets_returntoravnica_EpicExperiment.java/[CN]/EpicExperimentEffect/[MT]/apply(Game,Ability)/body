@@ -1,17 +1,18 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null) {
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
     for (int i=0; i < source.getManaCostsToPay().getX(); i++) {
       if (controller.getLibrary().size() > 0) {
         Card topCard=controller.getLibrary().getFromTop(game);
-        controller.moveCardToExileWithInfo(topCard,source.getSourceId(),"Cards exiled by Epic Experiment",source.getSourceId(),game,Zone.LIBRARY,true);
+        controller.moveCardToExileWithInfo(topCard,source.getSourceId(),"Cards exiled by " + sourceObject.getName(),source.getSourceId(),game,Zone.LIBRARY,true);
       }
     }
     ExileZone epicExperimentExileZone=game.getExile().getExileZone(source.getSourceId());
     FilterCard filter=filterStatic.copy();
     filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.LessThan,source.getManaCostsToPay().getX() + 1));
     filter.setMessage("instant and sorcery cards with converted mana cost " + source.getManaCostsToPay().getX() + " or less");
-    while (epicExperimentExileZone != null && epicExperimentExileZone.count(filter,game) > 0 && controller.chooseUse(Outcome.PlayForFree,"Cast cards exiled with Epic Experiment without paying its mana cost?",game)) {
+    while (epicExperimentExileZone != null && epicExperimentExileZone.count(filter,game) > 0 && controller.chooseUse(Outcome.PlayForFree,"Cast cards exiled with " + sourceObject.getLogName() + " without paying its mana cost?",game)) {
       TargetCardInExile target=new TargetCardInExile(filter,source.getSourceId());
       while (epicExperimentExileZone.count(filter,game) > 0 && controller.choose(Outcome.PlayForFree,epicExperimentExileZone,target,game)) {
         Card card=game.getCard(target.getFirstTarget());
@@ -25,9 +26,7 @@
     }
     ExileZone exile=game.getExile().getExileZone(source.getSourceId());
     if (exile != null) {
-      for (      Card card : exile.getCards(game)) {
-        controller.moveCardToGraveyardWithInfo(card,source.getSourceId(),game,Zone.EXILED);
-      }
+      controller.moveCardsToGraveyardWithInfo(exile,source,game,Zone.EXILED);
     }
     return true;
   }
