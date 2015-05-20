@@ -25,8 +25,10 @@
     choosingPlayer=this.getPlayer(choosingPlayerId);
   }
   if (choosingPlayer == null) {
-    choosingPlayer=getPlayer(pickChoosingPlayer());
+    choosingPlayerId=pickChoosingPlayer();
+    choosingPlayer=getPlayer(choosingPlayerId);
   }
+  getState().setChoosingPlayerId(choosingPlayerId);
   if (choosingPlayer != null && choosingPlayer.choose(Outcome.Benefit,targetPlayer,null,this)) {
     startingPlayerId=targetPlayer.getTargets().get(0);
     Player startingPlayer=state.getPlayer(startingPlayerId);
@@ -67,6 +69,7 @@
           GameEvent event=new GameEvent(GameEvent.EventType.CAN_TAKE_MULLIGAN,null,null,playerId);
           if (!replaceEvent(event)) {
             fireEvent(event);
+            getState().setChoosingPlayerId(playerId);
             if (player.chooseMulligan(this)) {
               keep=false;
             }
@@ -90,6 +93,7 @@
     saveState(false);
   }
  while (!mulliganPlayers.isEmpty());
+  getState().setChoosingPlayerId(null);
   for (  UUID playerId : state.getPlayerList(startingPlayerId)) {
     state.getWatchers().add(new PlayerDamagedBySourceWatcher(playerId));
   }
