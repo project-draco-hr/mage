@@ -1,26 +1,15 @@
 {
 switch (targetZoneLookedCards) {
 case LIBRARY:
-    TargetCard target=new TargetCard(Zone.LIBRARY,new FilterCard(this.getPutBackText()));
-  while (player.isInGame() && cards.size() > 1) {
-    player.choose(Outcome.Neutral,cards,target,game);
-    Card card=cards.get(target.getFirstTarget(),game);
-    if (card != null) {
-      cards.remove(card);
-      player.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.LIBRARY,putOnTop,false);
+    if (putOnTop) {
+      player.putCardsOnTopOfLibrary(cards,game,source,true);
     }
-    target.clearChosen();
-  }
-if (cards.size() == 1) {
-  Card card=cards.get(cards.iterator().next(),game);
-  player.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.LIBRARY,putOnTop,false);
-}
-break;
+ else {
+      player.putCardsOnBottomOfLibrary(cards,game,source,true);
+    }
+  break;
 case GRAVEYARD:
-for (Card card : cards.getCards(game)) {
-player.moveCardToGraveyardWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
-card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,true);
-}
+player.moveCards(cards,Zone.LIBRARY,Zone.GRAVEYARD,source,game);
 break;
 default :
 }
