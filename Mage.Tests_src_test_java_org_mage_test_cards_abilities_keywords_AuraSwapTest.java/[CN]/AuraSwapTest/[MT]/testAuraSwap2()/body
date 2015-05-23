@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",5);
+  addCard(Zone.HAND,playerA,"Arcanum Wings");
+  addCard(Zone.HAND,playerA,"Eldrazi Conscription");
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",2);
+  addCard(Zone.HAND,playerB,"Disenchant");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Arcanum Wings","Silvercoat Lion");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Aura swap");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Disenchant","Arcanum Wings","Aura swap");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerB,"Disenchant",1);
+  assertGraveyardCount(playerA,"Arcanum Wings",1);
+  assertPermanentCount(playerA,"Eldrazi Conscription",0);
+  assertHandCount(playerA,"Eldrazi Conscription",1);
+  assertPowerToughness(playerA,"Silvercoat Lion",2,2);
+}
