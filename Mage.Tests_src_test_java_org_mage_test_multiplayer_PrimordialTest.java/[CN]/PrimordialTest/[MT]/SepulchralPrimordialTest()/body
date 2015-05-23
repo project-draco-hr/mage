@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerA,"Sepulchral Primordial");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",7);
+  addCard(Zone.GRAVEYARD,playerB,"Silvercoat Lion");
+  addCard(Zone.GRAVEYARD,playerC,"Walking Corpse");
+  addCard(Zone.GRAVEYARD,playerD,"Pillarfield Ox");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Sepulchral Primordial");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Sepulchral Primordial",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertPermanentCount(playerA,"Walking Corpse",0);
+  assertPermanentCount(playerA,"Pillarfield Ox",1);
+  assertGraveyardCount(playerC,"Walking Corpse",1);
+}

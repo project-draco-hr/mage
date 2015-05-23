@@ -1,9 +1,9 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    Card card=game.getCard(getTargetPointer().getFirst(game,source));
+    Card card=game.getCard(((FixedTarget)getTargetPointer()).getTarget());
     if (card != null) {
-      controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.STACK,true);
+      controller.moveCards(card,Zone.STACK,Zone.EXILED,source,game);
       return true;
     }
   }
