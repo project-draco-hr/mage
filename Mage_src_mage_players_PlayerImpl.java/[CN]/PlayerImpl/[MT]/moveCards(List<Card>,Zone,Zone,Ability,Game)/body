@@ -1,12 +1,17 @@
 {
+  if (cards.isEmpty()) {
+    return true;
+  }
+  game.fireEvent(new ZoneChangeGroupEvent(cards,source == null ? null : source.getSourceId(),this.getId(),fromZone,toZone));
 switch (toZone) {
 case GRAVEYARD:
     return moveCardsToGraveyardWithInfo(cards,source,game,fromZone);
 case HAND:
-  for (  Card card : cards) {
-    moveCardToHandWithInfo(card,playerId,game,fromZone);
-  }
-return true;
+  boolean result=false;
+for (Card card : cards) {
+  result|=moveCardToHandWithInfo(card,playerId,game,fromZone);
+}
+return result;
 default :
 throw new UnsupportedOperationException("to Zone not supported yet");
 }

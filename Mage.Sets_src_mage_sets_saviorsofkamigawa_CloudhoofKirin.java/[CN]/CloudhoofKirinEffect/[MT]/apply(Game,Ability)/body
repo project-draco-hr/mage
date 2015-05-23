@@ -8,17 +8,7 @@
       }
     }
     if (targetPlayer != null) {
-      int cardsCount=Math.min(spell.getConvertedManaCost(),targetPlayer.getLibrary().size());
-      for (int i=0; i < cardsCount; i++) {
-        Card card=targetPlayer.getLibrary().removeFromTop(game);
-        if (card != null) {
-          card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,false);
-        }
- else {
-          break;
-        }
-      }
-      return true;
+      return targetPlayer.moveCards(targetPlayer.getLibrary().getTopCards(game,spell.getConvertedManaCost()),Zone.LIBRARY,Zone.GRAVEYARD,source,game);
     }
   }
   return false;

@@ -1,12 +1,6 @@
 {
   Player player=game.getPlayer(playerId);
   if (player != null) {
-    int cardsCount=Math.min(numberCards.calculate(game,source,this),player.getLibrary().size());
-    for (int i=0; i < cardsCount; i++) {
-      Card card=player.getLibrary().removeFromTop(game);
-      if (card != null) {
-        card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,true);
-      }
-    }
+    player.moveCards(player.getLibrary().getTopCards(game,numberCards.calculate(game,source,this)),Zone.LIBRARY,Zone.GRAVEYARD,source,game);
   }
 }

@@ -76,11 +76,7 @@
   player=game.getPlayer(game.getActivePlayerId());
   do {
     CardsImpl cards=cardsRevealed.get(player.getId());
-    for (    Card card : cards.getCards(game)) {
-      if (card != null) {
-        card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,false);
-      }
-    }
+    player.putCardsOnBottomOfLibrary(cards,game,source,false);
     player=playerList.getNext(game);
   }
  while (!player.getId().equals(game.getActivePlayerId()));

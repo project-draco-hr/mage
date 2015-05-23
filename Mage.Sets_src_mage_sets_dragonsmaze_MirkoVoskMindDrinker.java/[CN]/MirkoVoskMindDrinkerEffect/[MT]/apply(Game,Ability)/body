@@ -1,7 +1,7 @@
 {
   Player player=game.getPlayer(getTargetPointer().getFirst(game,source));
-  Card sourceCard=game.getCard(source.getSourceId());
-  if (player == null || sourceCard == null) {
+  MageObject sourceObject=source.getSourceObject(game);
+  if (player == null || sourceObject == null) {
     return false;
   }
   int landsToReveal=4;
@@ -18,11 +18,7 @@
       }
     }
   }
-  player.revealCards("by " + sourceCard.getName() + " from "+ player.getName(),cards,game);
-  for (  Card card : cards.getCards(game)) {
-    if (card != null) {
-      card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,false);
-    }
-  }
+  player.revealCards("by " + sourceObject.getName() + " from "+ player.getName(),cards,game);
+  player.moveCards(cards,Zone.LIBRARY,Zone.GRAVEYARD,source,game);
   return true;
 }

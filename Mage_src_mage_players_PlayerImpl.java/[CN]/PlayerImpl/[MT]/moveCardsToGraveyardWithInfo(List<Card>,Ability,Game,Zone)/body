@@ -2,18 +2,17 @@
   while (!allCards.isEmpty()) {
     Cards cards=new CardsImpl();
     UUID ownerId=null;
-    for (    Card card : allCards) {
+    for (Iterator<Card> it=allCards.iterator(); it.hasNext(); ) {
+      Card card=it.next();
       if (cards.isEmpty()) {
         ownerId=card.getOwnerId();
       }
       if (card.getOwnerId().equals(ownerId)) {
+        it.remove();
         cards.add(card);
       }
     }
-    allCards.removeAll(cards.getCards(game));
-    if (cards.size() != 0) {
-      TargetCard target=new TargetCard(fromZone,new FilterCard("card to put on the top of your graveyard (last one chosen will be topmost)"));
-      target.setRequired(true);
+    if (!cards.isEmpty()) {
       Player choosingPlayer=this;
       if (ownerId != this.getId()) {
         choosingPlayer=game.getPlayer(ownerId);
@@ -26,6 +25,8 @@
         chooseOrder=choosingPlayer.chooseUse(Outcome.Neutral,"Would you like to choose the order the cards go to graveyard?",game);
       }
       if (chooseOrder) {
+        TargetCard target=new TargetCard(fromZone,new FilterCard("card to put on the top of your graveyard (last one chosen will be topmost)"));
+        target.setRequired(true);
         while (choosingPlayer.isInGame() && cards.size() > 1) {
           choosingPlayer.chooseTarget(Outcome.Neutral,cards,target,source,game);
           UUID targetObjectId=target.getFirstTarget();
@@ -37,7 +38,7 @@
           target.clearChosen();
         }
         if (cards.size() == 1) {
-          choosingPlayer.moveCardToGraveyardWithInfo(cards.getCards(game).iterator().next(),source.getSourceId(),game,fromZone);
+          choosingPlayer.moveCardToGraveyardWithInfo(cards.getCards(game).iterator().next(),source == null ? null : source.getSourceId(),game,fromZone);
         }
       }
  else {

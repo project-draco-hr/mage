@@ -1,15 +1,15 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
     int maxCost=0;
-    for (int i=0; i < Math.min(3,player.getLibrary().size()); i++) {
-      Card card=player.getLibrary().removeFromTop(game);
-      if (card != null) {
-        card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,true);
-        int test=card.getManaCost().convertedManaCost();
-        if (test > maxCost)         maxCost=test;
+    List<Card> cardList=controller.getLibrary().getTopCards(game,3);
+    for (    Card card : cardList) {
+      int test=card.getManaCost().convertedManaCost();
+      if (test > maxCost) {
+        maxCost=test;
       }
     }
+    controller.moveCards(cardList,Zone.LIBRARY,Zone.GRAVEYARD,source,game);
     Permanent permanent=game.getPermanent(targetPointer.getFirst(game,source));
     if (permanent != null) {
       permanent.damage(maxCost,source.getSourceId(),game,false,true);

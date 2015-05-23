@@ -1,12 +1,12 @@
 {
-  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  Player player=game.getPlayer(getTargetPointer().getFirst(game,source));
   if (player != null) {
     Card card=player.getLibrary().removeFromTop(game);
     if (card != null) {
-      if (card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,false)) {
+      if (player.moveCards(card,Zone.LIBRARY,Zone.GRAVEYARD,source,game)) {
         int cmc=card.getManaCost().convertedManaCost();
         MinionToken token=new MinionToken();
-        token.putOntoBattlefield(cmc,game,id,player.getId());
+        token.putOntoBattlefield(cmc,game,source.getSourceId(),player.getId());
       }
     }
   }

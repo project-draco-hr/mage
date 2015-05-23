@@ -1,13 +1,8 @@
 {
   for (  UUID opponentId : game.getOpponents(source.getControllerId())) {
-    Player player=game.getPlayer(opponentId);
-    if (player != null) {
-      int cardsCount=Math.min(7,player.getLibrary().size());
-      for (int i=0; i < cardsCount; i++) {
-        Card card=player.getLibrary().removeFromTop(game);
-        if (card != null)         card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,false);
- else         break;
-      }
+    Player opponent=game.getPlayer(opponentId);
+    if (opponent != null) {
+      opponent.moveCards(opponent.getLibrary().getTopCards(game,7),Zone.LIBRARY,Zone.GRAVEYARD,source,game);
     }
   }
   return true;

@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Sidisi, Brood Tyrant");
+  addCard(Zone.HAND,playerA,"Sultai Soothsayer");
+  addCard(Zone.LIBRARY,playerA,"Silvercoat Lion",5);
+  skipInitShuffling();
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Sultai Soothsayer");
+  addTarget(playerA,"Silvercoat Lion");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertHandCount(playerA,"Silvercoat Lion",1);
+  assertGraveyardCount(playerA,"Silvercoat Lion",3);
+  assertPermanentCount(playerA,"Zombie",1);
+}

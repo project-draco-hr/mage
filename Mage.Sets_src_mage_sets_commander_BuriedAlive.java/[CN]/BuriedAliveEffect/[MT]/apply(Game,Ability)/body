@@ -1,17 +1,10 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
-    if (player.searchLibrary(target,game)) {
-      if (target.getTargets().size() > 0) {
-        for (        UUID cardId : target.getTargets()) {
-          Card card=player.getLibrary().remove(cardId,game);
-          if (card != null) {
-            card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,false);
-          }
-        }
-      }
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    if (controller.searchLibrary(target,game)) {
+      controller.moveCards(new CardsImpl(target.getTargets()),Zone.LIBRARY,Zone.GRAVEYARD,source,game);
     }
-    player.shuffleLibrary(game);
+    controller.shuffleLibrary(game);
     return true;
   }
   return false;

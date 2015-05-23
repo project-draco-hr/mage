@@ -1,11 +1,12 @@
 {
   Permanent permanent=game.getPermanent(source.getSourceId());
-  if (permanent == null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null || permanent == null) {
     return false;
   }
   for (  UUID imprinted : permanent.getImprinted()) {
     Card card=game.getCard(imprinted);
-    card.moveToZone(Zone.GRAVEYARD,source.getSourceId(),game,false);
+    controller.moveCards(card,Zone.EXILED,Zone.GRAVEYARD,source,game);
   }
   permanent.clearImprinted(game);
   UUID target=targetPointer.getFirst(game,source);

@@ -23,7 +23,10 @@
         }
       }
       if (game.getState().getZone(card.getMainCard().getId()) == Zone.STACK) {
-        card.moveToZone(Zone.GRAVEYARD,ability.getSourceId(),game,false);
+        Player player=game.getPlayer(getControllerId());
+        if (player != null) {
+          player.moveCards(card,Zone.STACK,Zone.GRAVEYARD,ability,game);
+        }
       }
       return result;
     }
