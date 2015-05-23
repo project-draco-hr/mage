@@ -1,0 +1,16 @@
+{
+  addCard(Zone.HAND,playerA,"Angel's Grace");
+  addCard(Zone.HAND,playerA,"Bandage");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Laboratory Maniac",1);
+  skipInitShuffling();
+  playerA.getLibrary().clear();
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Angel's Grace");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Bandage");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  Assert.assertEquals("Player A library is empty",0,playerA.getLibrary().size());
+  Assert.assertTrue("Player A has not won but should have",playerA.hasWon());
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+}
