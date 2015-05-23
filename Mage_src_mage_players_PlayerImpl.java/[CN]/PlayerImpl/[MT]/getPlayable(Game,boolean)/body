@@ -74,11 +74,10 @@
     }
     Map<String,Ability> playableActivated=new HashMap<>();
     for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
-      for (      ActivatedAbility ability : permanent.getAbilities().getActivatedAbilities(Zone.BATTLEFIELD)) {
+      LinkedHashMap<UUID,ActivatedAbility> useableAbilities=getUseableActivatedAbilities(permanent,Zone.BATTLEFIELD,game);
+      for (      ActivatedAbility ability : useableAbilities.values()) {
         if (!playableActivated.containsKey(ability.toString())) {
-          if (canPlay(ability,availableMana,permanent,game)) {
-            playableActivated.put(ability.toString(),ability);
-          }
+          playableActivated.put(ability.toString(),ability);
         }
       }
     }

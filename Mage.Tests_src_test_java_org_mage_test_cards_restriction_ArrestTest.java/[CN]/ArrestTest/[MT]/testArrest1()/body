@@ -1,0 +1,14 @@
+{
+  addCard(Zone.HAND,playerA,"Arrest");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",3);
+  addCard(Zone.BATTLEFIELD,playerB,"Forest",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Selesnya Guildmage");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Arrest","Selesnya Guildmage");
+  attack(2,playerB,"Selesnya Guildmage");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerA,"Arrest",1);
+  assertPermanentCount(playerB,"Saproling",0);
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+}
