@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Endrek Sahr, Master Breeder",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.HAND,playerA,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.HAND,playerB,"Counterspell",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Counterspell","Silvercoat Lion","Silvercoat Lion");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Silvercoat Lion",1);
+  assertGraveyardCount(playerB,"Counterspell",1);
+  assertPermanentCount(playerA,"Thrull",2);
+}
