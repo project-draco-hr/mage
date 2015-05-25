@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.HAND,playerA,"Battlegrowth");
+  addCard(Zone.HAND,playerA,"Steady Progress");
+  addCard(Zone.BATTLEFIELD,playerB,"Sporeback Troll");
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",3);
+  addCard(Zone.HAND,playerB,"Grim Affliction");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Battlegrowth","Silvercoat Lion");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Grim Affliction","Silvercoat Lion");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerA,"Steady Progress");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Battlegrowth",1);
+  assertGraveyardCount(playerA,"Steady Progress",1);
+  assertGraveyardCount(playerB,"Grim Affliction",1);
+  assertCounterCount("Silvercoat Lion",CounterType.P1P1,0);
+  assertCounterCount("Sporeback Troll",CounterType.P1P1,3);
+}
