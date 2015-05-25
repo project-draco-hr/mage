@@ -1,7 +1,10 @@
 {
   Player player=game.getPlayer(event.getPlayerId());
   if (player != null) {
-    boolean secondCoinFlip=player.flipCoin(game,event.getAppliedEffects());
+    boolean secondCoinFlip=new Random().nextBoolean();
+    if (!game.isSimulation()) {
+      game.informPlayers("[Flip a coin] " + player.getLogName() + (secondCoinFlip ? " won (head)." : " lost (tail)."));
+    }
     if (player.chooseUse(outcome,"Ignore the first coin flip?",game)) {
       event.setFlag(secondCoinFlip);
       game.informPlayers(new StringBuilder(player.getLogName()).append(" ignores the first coin flip.").toString());
