@@ -1,8 +1,8 @@
 {
-  if (source.getSourceObjectIfItStillExists(game) != null) {
+  if (event.getTargetId().equals(source.getSourceId())) {
     ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
     if (zEvent.getFromZone() == Zone.BATTLEFIELD && zEvent.getToZone() != Zone.EXILED) {
-      return true;
+      return source.getSourceObjectZoneChangeCounter() + 1 == game.getState().getZoneChangeCounter(source.getSourceId());
     }
   }
   return false;
