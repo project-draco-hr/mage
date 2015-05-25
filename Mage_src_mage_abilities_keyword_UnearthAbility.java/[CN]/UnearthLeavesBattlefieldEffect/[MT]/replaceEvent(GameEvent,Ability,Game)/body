@@ -1,4 +1,8 @@
 {
-  new ExileSourceEffect().apply(game,source);
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && permanent != null) {
+    controller.moveCardToExileWithInfo(permanent,null,"",source.getSourceId(),game,Zone.BATTLEFIELD,true);
+  }
   return true;
 }
