@@ -1,0 +1,20 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    UUID cardId=this.getTargetPointer().getFirst(game,source);
+    Card card=controller.getGraveyard().get(cardId,game);
+    if (card != null) {
+      if (controller.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId())) {
+        Permanent permanent=game.getPermanent(cardId);
+        if (permanent != null) {
+          permanent.addCounters(CounterType.MANNEQUIN.createInstance(),game);
+          ContinuousEffect gainedEffect=new MakeshiftMannequinGainAbilityEffect();
+          gainedEffect.setTargetPointer(new FixedTarget(cardId));
+          game.addEffect(gainedEffect,source);
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}
