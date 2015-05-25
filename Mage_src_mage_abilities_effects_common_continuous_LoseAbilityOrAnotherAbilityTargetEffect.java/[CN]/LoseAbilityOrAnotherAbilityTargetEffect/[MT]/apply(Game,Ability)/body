@@ -1,0 +1,30 @@
+{
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  if (permanent != null) {
+    ChoiceImpl chooseAbility=new ChoiceImpl();
+    chooseAbility.setMessage("What ability do you wish to remove?");
+    HashSet<String> choice=new HashSet<>();
+    if (permanent.getAbilities().contains(ability)) {
+      choice.add(ability.getRule());
+    }
+    if (permanent.getAbilities().contains(ability2)) {
+      choice.add(ability2.getRule());
+    }
+    chooseAbility.setChoices(choice);
+    Player player=game.getPlayer(source.getControllerId());
+    if (player.choose(outcome,chooseAbility,game)) {
+      String chosenAbility=chooseAbility.getChoice();
+      if (chosenAbility.equals(ability.getRule())) {
+        while (permanent.getAbilities().contains(ability)) {
+          permanent.getAbilities().remove(ability);
+        }
+      }
+ else       if (chosenAbility.equals(ability2.getRule())) {
+        while (permanent.getAbilities().contains(ability2)) {
+          permanent.getAbilities().remove(ability2);
+        }
+      }
+    }
+  }
+  return true;
+}
