@@ -1,11 +1,11 @@
 {
-  if (!this.used && super.applies(event,source,game)) {
+  if (super.applies(event,source,game)) {
     MageObject object=game.getObject(event.getSourceId());
     if (object == null) {
       game.informPlayers("Couldn't find source of damage");
       return false;
     }
-    if (!object.getId().equals(source.getFirstTarget()) && (!(object instanceof Spell) || !((Spell)object).getSourceId().equals(source.getFirstTarget()))) {
+    if (!object.getId().equals(target.getFirstTarget()) && (!(object instanceof Spell) || !((Spell)object).getSourceId().equals(target.getFirstTarget()))) {
       return false;
     }
     Permanent permanent=game.getPermanent(event.getTargetId());
