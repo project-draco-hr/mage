@@ -1,18 +1,4 @@
 {
-  DamageEvent damageEvent=(DamageEvent)event;
-  if (damageEvent.getType() == EventType.DAMAGE_PLAYER) {
-    Player targetPlayer=game.getPlayer(event.getTargetId());
-    if (targetPlayer != null) {
-      targetPlayer.damage(damageEvent.getAmount() * 2,damageEvent.getSourceId(),game,damageEvent.isPreventable(),damageEvent.isCombatDamage(),event.getAppliedEffects());
-      return true;
-    }
-  }
- else {
-    Permanent targetPermanent=game.getPermanent(event.getTargetId());
-    if (targetPermanent != null) {
-      targetPermanent.damage(damageEvent.getAmount() * 2,damageEvent.getSourceId(),game,damageEvent.isCombatDamage(),damageEvent.isPreventable(),event.getAppliedEffects());
-      return true;
-    }
-  }
+  event.setAmount(2 * event.getAmount());
   return false;
 }

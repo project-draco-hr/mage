@@ -1,3 +1,12 @@
 {
-  return apply(game,source);
+  Card card=game.getCard(source.getSourceId());
+  if (card != null) {
+    Player owner=game.getPlayer(card.getOwnerId());
+    if (owner != null) {
+      if (owner.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId())) {
+        return true;
+      }
+    }
+  }
+  return false;
 }

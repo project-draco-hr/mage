@@ -1,5 +1,5 @@
 {
-  if (event.getType().equals(GameEvent.EventType.DAMAGE_PLAYER) && event.getTargetId().equals(source.getControllerId())) {
+  if (event.getTargetId().equals(source.getControllerId())) {
     Spell spell=null;
     StackObject stackObject=game.getStack().getStackObject(event.getSourceId());
     if (stackObject == null) {
@@ -9,7 +9,7 @@
       spell=(Spell)stackObject;
     }
     if (spell != null && instantOrSorceryfilter.match(spell.getCard(),game)) {
-      TargetPermanent target=new TargetPermanent();
+      TargetPlayer target=new TargetPlayer();
       target.add(spell.getControllerId(),game);
       redirectTarget=target;
       return true;

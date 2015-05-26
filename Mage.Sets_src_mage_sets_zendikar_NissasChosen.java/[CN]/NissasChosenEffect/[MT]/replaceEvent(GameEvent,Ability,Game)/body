@@ -1,10 +1,9 @@
 {
   Permanent permanent=((ZoneChangeEvent)event).getTarget();
-  if (permanent != null) {
-    if (permanent.moveToZone(Zone.LIBRARY,source.getSourceId(),game,false)) {
-      game.informPlayers(new StringBuilder(permanent.getName()).append(" was put on the bottom of its owner's library").toString());
-      return true;
-    }
+  Player controller=game.getPlayer(source.getControllerId());
+  if (permanent != null && controller != null) {
+    controller.moveCardToLibraryWithInfo(permanent,source.getSourceId(),game,Zone.BATTLEFIELD,false,true);
+    return true;
   }
   return false;
 }
