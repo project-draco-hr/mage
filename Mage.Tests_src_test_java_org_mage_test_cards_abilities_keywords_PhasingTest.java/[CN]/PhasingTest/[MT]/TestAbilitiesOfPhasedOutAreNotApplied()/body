@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",3);
+  addCard(Zone.HAND,playerA,"Teferi's Realm",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Crusade",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Teferi's Realm");
+  setChoice(playerB,"Non-Aura enchantment");
+  setStopAt(2,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerB,"Crusade",0);
+  assertPermanentCount(playerB,"Silvercoat Lion",1);
+  assertPowerToughness(playerB,"Silvercoat Lion",2,2);
+}
