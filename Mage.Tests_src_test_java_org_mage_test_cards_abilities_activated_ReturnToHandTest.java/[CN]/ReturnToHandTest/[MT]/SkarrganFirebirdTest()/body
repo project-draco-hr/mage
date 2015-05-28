@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Pillarfield Ox");
+  addCard(Zone.BATTLEFIELD,playerB,"Skarrgan Firebird");
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",3);
+  addCard(Zone.HAND,playerB,"Bone Splinters");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Bone Splinters","Pillarfield Ox");
+  setChoice(playerB,"Skarrgan Firebird");
+  attack(2,playerB,"Silvercoat Lion");
+  activateAbility(2,PhaseStep.POSTCOMBAT_MAIN,playerB,"{R}{R}{R}: Return");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Skarrgan Firebird",0);
+  assertGraveyardCount(playerA,"Pillarfield Ox",1);
+  assertGraveyardCount(playerB,"Bone Splinters",1);
+  assertHandCount(playerB,"Skarrgan Firebird",1);
+}
