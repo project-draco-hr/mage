@@ -1,0 +1,28 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Zone.HAND,playerA,"Angel's Grace");
+  addCard(Zone.HAND,playerA,"Ad Nauseam");
+  addCard(Zone.BATTLEFIELD,playerA,"Laboratory Maniac",1);
+  skipInitShuffling();
+  playerA.getLibrary().clear();
+  addCard(Zone.LIBRARY,playerA,"Serum Visions");
+  addCard(Zone.LIBRARY,playerA,"Bogardan Hellkite",3);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Angel's Grace");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Ad Nauseam");
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"Yes");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Serum Visions");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerA,"Angel's Grace",1);
+  assertGraveyardCount(playerA,"Ad Nauseam",1);
+  assertGraveyardCount(playerA,"Serum Visions",1);
+  Assert.assertEquals("Player A library is empty",0,playerA.getLibrary().size());
+  assertLife(playerA,-5);
+  assertLife(playerB,20);
+  Assert.assertTrue("Player A has not won but should have",playerA.hasWon());
+}
