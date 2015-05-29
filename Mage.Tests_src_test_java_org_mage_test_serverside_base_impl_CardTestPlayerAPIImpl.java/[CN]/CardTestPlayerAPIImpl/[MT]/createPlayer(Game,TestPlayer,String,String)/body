@@ -1,0 +1,14 @@
+{
+  player=createNewPlayer(name);
+  player.setTestMode(true);
+  logger.debug("Loading deck...");
+  Deck deck=Deck.load(DeckImporterUtil.importDeck(deckName),false,false);
+  logger.debug("Done!");
+  if (deck.getCards().size() < 40) {
+    throw new IllegalArgumentException("Couldn't load deck, deck size=" + deck.getCards().size());
+  }
+  game.loadCards(deck.getCards(),player.getId());
+  game.loadCards(deck.getSideboard(),player.getId());
+  game.addPlayer(player,deck);
+  return player;
+}
