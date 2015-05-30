@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerB,"Torpor Orb");
+  addCard(Zone.BATTLEFIELD,playerB,"Treacherous Pit-Dweller");
+  addCard(Zone.HAND,playerA,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  attack(2,playerB,"Treacherous Pit-Dweller");
+  castSpell(2,PhaseStep.DECLARE_ATTACKERS,playerA,"Lightning Bolt","Treacherous Pit-Dweller");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Lightning Bolt",1);
+  assertPermanentCount(playerB,"Treacherous Pit-Dweller",1);
+  assertPowerToughness(playerB,"Treacherous Pit-Dweller",5,4);
+}
