@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Favored Hoplite",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Lagonna-Band Trailblazer");
+  addCard(Zone.HAND,playerA,"Dromoka's Command",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Dromoka's Command","mode=3Lagonna-Band Trailblazer^mode=4Favored Hoplite^Silvercoat Lion");
+  setModeChoice(playerA,"3");
+  setModeChoice(playerA,"4");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Dromoka's Command",1);
+  assertPowerToughness(playerA,"Favored Hoplite",2,3);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+  assertPowerToughness(playerA,"Lagonna-Band Trailblazer",2,6);
+}
