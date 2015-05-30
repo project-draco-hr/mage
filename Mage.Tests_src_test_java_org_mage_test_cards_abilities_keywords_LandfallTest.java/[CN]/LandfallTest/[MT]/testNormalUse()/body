@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",3);
+  addCard(Zone.HAND,playerA,"Plains");
+  addCard(Zone.HAND,playerA,"Rest for the Weary",2);
+  playLand(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Plains");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Rest for the Weary");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerA,"Rest for the Weary");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Plains",4);
+  assertGraveyardCount(playerA,"Rest for the Weary",2);
+  assertLife(playerA,32);
+  assertLife(playerB,20);
+}
