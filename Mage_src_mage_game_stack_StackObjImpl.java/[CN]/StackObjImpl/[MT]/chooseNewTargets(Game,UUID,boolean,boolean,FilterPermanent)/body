@@ -1,0 +1,31 @@
+{
+  Player targetController=game.getPlayer(targetControllerId);
+  if (targetController != null) {
+    StringBuilder newTargetDescription=new StringBuilder();
+    Abilities<Ability> objectAbilities=new AbilitiesImpl<>();
+    if (this instanceof Spell) {
+      objectAbilities.addAll(((Spell)this).getSpellAbilities());
+    }
+ else {
+      objectAbilities.addAll(getAbilities());
+    }
+    for (    Ability ability : objectAbilities) {
+      for (      UUID modeId : ability.getModes().getSelectedModes()) {
+        Mode mode=ability.getModes().get(modeId);
+        for (        Target target : mode.getTargets()) {
+          Target newTarget=chooseNewTarget(targetController,ability,mode,target,forceChange,filterNewTarget,game);
+          target.clearChosen();
+          for (          UUID targetId : newTarget.getTargets()) {
+            target.addTarget(targetId,newTarget.getTargetAmount(targetId),ability,game,false);
+          }
+        }
+        newTargetDescription.append(ability.getTargetDescription(mode.getTargets(),game));
+      }
+    }
+    if (newTargetDescription.length() > 0 && !game.isSimulation()) {
+      game.informPlayers(this.getLogName() + " is now " + newTargetDescription.toString());
+    }
+    return true;
+  }
+  return false;
+}

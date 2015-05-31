@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
+  addCard(Zone.HAND,playerA,"Seismic Rupture",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Whisperwood Elemental",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",2);
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Sacrifice");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Seismic Rupture");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Seismic Rupture",1);
+  assertGraveyardCount(playerB,"Whisperwood Elemental",1);
+  assertGraveyardCount(playerB,"Silvercoat Lion",2);
+  assertPermanentCount(playerB,"",2);
+}

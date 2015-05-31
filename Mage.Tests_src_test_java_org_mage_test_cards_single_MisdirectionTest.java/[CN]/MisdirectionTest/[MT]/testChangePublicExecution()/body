@@ -1,0 +1,18 @@
+{
+  addCard(Zone.HAND,playerA,"Public Execution");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",6);
+  addCard(Zone.HAND,playerB,"Misdirection");
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Custodian of the Trove",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",5);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Public Execution","Pillarfield Ox");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Misdirection","Public Execution","Public Execution");
+  addTarget(playerB,"Custodian of the Trove");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Public Execution",1);
+  assertGraveyardCount(playerB,"Misdirection",1);
+  assertGraveyardCount(playerB,"Custodian of the Trove",1);
+  assertPermanentCount(playerB,"Pillarfield Ox",1);
+  assertPowerToughness(playerB,"Pillarfield Ox",0,4);
+}

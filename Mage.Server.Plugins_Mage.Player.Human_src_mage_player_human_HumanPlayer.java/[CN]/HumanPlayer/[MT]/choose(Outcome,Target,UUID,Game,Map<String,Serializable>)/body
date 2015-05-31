@@ -1,10 +1,14 @@
 {
   updateGameStatePriority("choose(5)",game);
+  UUID abilityControllerId=playerId;
+  if (target.getTargetController() != null && target.getAbilityController() != null) {
+    abilityControllerId=target.getAbilityController();
+  }
   if (options == null) {
     options=new HashMap<>();
   }
   while (!abort) {
-    Set<UUID> targetIds=target.possibleTargets(sourceId,playerId,game);
+    Set<UUID> targetIds=target.possibleTargets(sourceId,abilityControllerId,game);
     if (targetIds == null || targetIds.isEmpty()) {
       return false;
     }
@@ -14,14 +18,14 @@
     }
     List<UUID> chosen=target.getTargets();
     options.put("chosen",(Serializable)chosen);
-    game.fireSelectTargetEvent(playerId,target.getMessage(),targetIds,required,getOptions(target,options));
+    game.fireSelectTargetEvent(getId(),target.getMessage(),targetIds,required,getOptions(target,options));
     waitForResponse(game);
     if (response.getUUID() != null) {
       if (!targetIds.contains(response.getUUID())) {
         continue;
       }
       if (target instanceof TargetPermanent) {
-        if (((TargetPermanent)target).canTarget(playerId,response.getUUID(),sourceId,game,false)) {
+        if (((TargetPermanent)target).canTarget(abilityControllerId,response.getUUID(),sourceId,game,false)) {
           target.add(response.getUUID(),game);
           if (target.doneChosing()) {
             return true;

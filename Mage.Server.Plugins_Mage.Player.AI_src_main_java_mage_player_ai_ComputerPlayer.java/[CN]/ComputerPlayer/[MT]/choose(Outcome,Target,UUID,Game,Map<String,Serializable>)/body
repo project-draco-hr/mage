@@ -2,11 +2,15 @@
   if (log.isDebugEnabled()) {
     log.debug("chooseTarget: " + outcome.toString() + ":"+ target.toString());
   }
-  UUID opponentId=game.getOpponents(playerId).iterator().next();
+  UUID abilityControllerId=playerId;
+  if (target.getTargetController() != null && target.getAbilityController() != null) {
+    abilityControllerId=target.getAbilityController();
+  }
+  UUID opponentId=game.getOpponents(abilityControllerId).iterator().next();
   if (target instanceof TargetPlayer) {
     if (outcome.isGood()) {
-      if (target.canTarget(playerId,game)) {
-        target.add(playerId,game);
+      if (target.canTarget(abilityControllerId,game)) {
+        target.add(abilityControllerId,game);
         return true;
       }
       if (target.isRequired(sourceId,game)) {
@@ -22,8 +26,8 @@
         return true;
       }
       if (target.isRequired(sourceId,game)) {
-        if (target.canTarget(playerId,game)) {
-          target.add(playerId,game);
+        if (target.canTarget(abilityControllerId,game)) {
+          target.add(abilityControllerId,game);
           return true;
         }
       }
@@ -56,12 +60,12 @@
   }
   if (target instanceof TargetControlledPermanent) {
     List<Permanent> targets;
-    targets=threats(playerId,sourceId,((TargetControlledPermanent)target).getFilter(),game,target.getTargets());
+    targets=threats(abilityControllerId,sourceId,((TargetControlledPermanent)target).getFilter(),game,target.getTargets());
     if (!outcome.isGood()) {
       Collections.reverse(targets);
     }
     for (    Permanent permanent : targets) {
-      if (((TargetControlledPermanent)target).canTarget(playerId,permanent.getId(),sourceId,game,false) && !target.getTargets().contains(permanent.getId())) {
+      if (((TargetControlledPermanent)target).canTarget(abilityControllerId,permanent.getId(),sourceId,game,false) && !target.getTargets().contains(permanent.getId())) {
         target.add(permanent.getId(),game);
         return true;
       }
@@ -75,14 +79,14 @@
     }
  else {
       if (outcome.isGood()) {
-        targets=threats(playerId,sourceId,((TargetPermanent)target).getFilter(),game,target.getTargets());
+        targets=threats(abilityControllerId,sourceId,((TargetPermanent)target).getFilter(),game,target.getTargets());
       }
  else {
         targets=threats(opponentId,sourceId,((TargetPermanent)target).getFilter(),game,target.getTargets());
       }
     }
     for (    Permanent permanent : targets) {
-      if (((TargetPermanent)target).canTarget(playerId,permanent.getId(),null,game) && !target.getTargets().contains(permanent.getId())) {
+      if (((TargetPermanent)target).canTarget(abilityControllerId,permanent.getId(),null,game) && !target.getTargets().contains(permanent.getId())) {
         target.add(permanent.getId(),game);
         return true;
       }
@@ -110,14 +114,14 @@
     List<Permanent> targets;
     TargetCreatureOrPlayer t=((TargetCreatureOrPlayer)target);
     if (outcome.isGood()) {
-      targets=threats(playerId,sourceId,((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
+      targets=threats(abilityControllerId,sourceId,((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
     }
  else {
       targets=threats(opponentId,sourceId,((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
     }
     for (    Permanent permanent : targets) {
       List<UUID> alreadyTargetted=target.getTargets();
-      if (t.canTarget(playerId,permanent.getId(),null,game)) {
+      if (t.canTarget(abilityControllerId,permanent.getId(),null,game)) {
         if (alreadyTargetted != null && !alreadyTargetted.contains(permanent.getId())) {
           target.add(permanent.getId(),game);
           return true;
@@ -125,8 +129,8 @@
       }
     }
     if (outcome.isGood()) {
-      if (target.canTarget(playerId,null,game)) {
-        target.add(playerId,game);
+      if (target.canTarget(abilityControllerId,null,game)) {
+        target.add(abilityControllerId,game);
         return true;
       }
     }
@@ -143,7 +147,7 @@
   if (target instanceof TargetPermanentOrPlayer) {
     List<Permanent> targets;
     TargetPermanentOrPlayer t=((TargetPermanentOrPlayer)target);
-    List<Permanent> ownedTargets=threats(playerId,sourceId,((FilterPermanentOrPlayer)t.getFilter()).getPermanentFilter(),game,target.getTargets());
+    List<Permanent> ownedTargets=threats(abilityControllerId,sourceId,((FilterPermanentOrPlayer)t.getFilter()).getPermanentFilter(),game,target.getTargets());
     ;
     List<Permanent> opponentTargets=threats(opponentId,sourceId,((FilterPermanentOrPlayer)t.getFilter()).getPermanentFilter(),game,target.getTargets());
     if (outcome.isGood()) {
@@ -162,8 +166,8 @@
       }
     }
     if (outcome.isGood()) {
-      if (target.canTarget(playerId,null,game)) {
-        target.add(playerId,game);
+      if (target.canTarget(abilityControllerId,null,game)) {
+        target.add(abilityControllerId,game);
         return true;
       }
     }
@@ -180,8 +184,8 @@
       target.add(opponentId,game);
       return true;
     }
-    if (target.canTarget(playerId,null,game)) {
-      target.add(playerId,game);
+    if (target.canTarget(abilityControllerId,null,game)) {
+      target.add(abilityControllerId,game);
       return true;
     }
     if (outcome.isGood()) {
@@ -220,7 +224,7 @@
   }
   if (target instanceof TargetCardInYourGraveyard) {
     List<UUID> alreadyTargetted=target.getTargets();
-    List<Card> cards=new ArrayList<>(game.getPlayer(playerId).getGraveyard().getCards(game));
+    List<Card> cards=new ArrayList<>(game.getPlayer(abilityControllerId).getGraveyard().getCards(game));
     while (!cards.isEmpty()) {
       Card card=pickTarget(cards,outcome,target,null,game);
       if (card != null && alreadyTargetted != null && !alreadyTargetted.contains(card.getId())) {
@@ -233,7 +237,7 @@
   if (target instanceof TargetSource) {
     Set<UUID> targets;
     TargetSource t=((TargetSource)target);
-    targets=t.possibleTargets(sourceId,playerId,game);
+    targets=t.possibleTargets(sourceId,abilityControllerId,game);
     for (    UUID targetId : targets) {
       MageObject targetObject=game.getObject(targetId);
       if (targetObject != null) {
