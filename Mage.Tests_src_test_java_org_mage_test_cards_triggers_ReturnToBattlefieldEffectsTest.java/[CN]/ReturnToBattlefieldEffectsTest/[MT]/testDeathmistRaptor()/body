@@ -1,0 +1,18 @@
+{
+  addCard(Zone.GRAVEYARD,playerA,"Deathmist Raptor");
+  addCard(Zone.HAND,playerA,"Pine Walker");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",5);
+  addCard(Zone.BATTLEFIELD,playerB,"Forest",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Pharika, God of Affliction",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Pine Walker");
+  setChoice(playerA,"Yes");
+  activateAbility(3,PhaseStep.POSTCOMBAT_MAIN,playerA,"{4}{G}: Turn this face-down permanent face up.");
+  activateAbility(3,PhaseStep.POSTCOMBAT_MAIN,playerB,"{B}{G}: Exile target creature card from a graveyard","Deathmist Raptor","Whenever a permanent you control is turned face up");
+  setStopAt(3,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerB,"Pharika, God of Affliction",1);
+  assertPermanentCount(playerA,"Snake",1);
+  assertPermanentCount(playerA,"Pine Walker",1);
+  assertExileCount("Deathmist Raptor",1);
+}
