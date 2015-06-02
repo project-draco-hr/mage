@@ -1,4 +1,6 @@
 {
+  boolean result=true;
+  UUID sourceId=source == null ? null : source.getSourceId();
   while (!allCards.isEmpty()) {
     Cards cards=new CardsImpl();
     UUID ownerId=null;
@@ -33,20 +35,20 @@
           Card card=cards.get(targetObjectId,game);
           cards.remove(targetObjectId);
           if (card != null) {
-            choosingPlayer.moveCardToGraveyardWithInfo(card,source.getSourceId(),game,fromZone);
+            result&=choosingPlayer.moveCardToGraveyardWithInfo(card,sourceId,game,fromZone);
           }
           target.clearChosen();
         }
         if (cards.size() == 1) {
-          choosingPlayer.moveCardToGraveyardWithInfo(cards.getCards(game).iterator().next(),source == null ? null : source.getSourceId(),game,fromZone);
+          result&=choosingPlayer.moveCardToGraveyardWithInfo(cards.getCards(game).iterator().next(),sourceId,game,fromZone);
         }
       }
  else {
         for (        Card card : cards.getCards(game)) {
-          choosingPlayer.moveCardToGraveyardWithInfo(card,source.getSourceId(),game,fromZone);
+          result&=choosingPlayer.moveCardToGraveyardWithInfo(card,sourceId,game,fromZone);
         }
       }
     }
   }
-  return true;
+  return result;
 }
