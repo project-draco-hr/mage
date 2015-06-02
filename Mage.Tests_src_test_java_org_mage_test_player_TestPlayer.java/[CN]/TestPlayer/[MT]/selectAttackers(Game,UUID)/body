@@ -2,12 +2,6 @@
   UUID defenderId=null;
   for (  PlayerAction action : actions) {
     if (action.getTurnNum() == game.getTurnNum() && action.getAction().startsWith("attack:")) {
-      for (      UUID uuid : game.getCombat().getDefenders()) {
-        Player defender=game.getPlayer(uuid);
-        if (defender != null) {
-          defenderId=uuid;
-        }
-      }
       String command=action.getAction();
       command=command.substring(command.indexOf("attack:") + 7);
       String[] groups=command.split("\\$");
@@ -19,6 +13,23 @@
             if (permanent.getName().equals(planeswalkerName)) {
               defenderId=permanent.getId();
             }
+          }
+        }
+        if (group.startsWith("defendingPlayer=")) {
+          String defendingPlayerName=group.substring(group.indexOf("defendingPlayer=") + 16);
+          for (          Player defendingPlayer : game.getPlayers().values()) {
+            if (defendingPlayer.getName().equals(defendingPlayerName)) {
+              defenderId=defendingPlayer.getId();
+              break;
+            }
+          }
+        }
+      }
+      if (defenderId == null) {
+        for (        UUID uuid : game.getCombat().getDefenders()) {
+          Player defender=game.getPlayer(uuid);
+          if (defender != null) {
+            defenderId=uuid;
           }
         }
       }
