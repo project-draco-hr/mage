@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerB,"Dark Depths",1);
+  addCard(Zone.HAND,playerA,"Vesuva",1);
+  playLand(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Vesuva");
+  setChoice(playerA,"Dark Depths");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Dark Depths",1);
+  assertPermanentCount(playerB,"Dark Depths",1);
+  Permanent darkDepth=getPermanent("Dark Depths",playerA);
+  if (darkDepth != null) {
+    Assert.assertEquals(darkDepth.getCounters().getCount("ice"),10);
+  }
+}
