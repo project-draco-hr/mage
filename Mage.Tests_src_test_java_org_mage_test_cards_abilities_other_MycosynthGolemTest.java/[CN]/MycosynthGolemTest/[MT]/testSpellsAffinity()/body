@@ -1,5 +1,6 @@
 {
   addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
   addCard(Zone.BATTLEFIELD,playerA,"Mycosynth Golem");
   addCard(Zone.HAND,playerA,"Alpha Myr");
   castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Alpha Myr");
@@ -7,4 +8,14 @@
   execute();
   assertPermanentCount(playerA,"Alpha Myr",1);
   assertHandCount(playerA,"Alpha Myr",0);
+  Permanent mountain=getPermanent("Mountain",playerA);
+  Permanent forest=getPermanent("Forest",playerA);
+  int tappedLands=0;
+  if (mountain.isTapped()) {
+    tappedLands++;
+  }
+  if (forest.isTapped()) {
+    tappedLands++;
+  }
+  Assert.assertEquals("only one land may be tapped because the cost reduction",1,tappedLands);
 }
