@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",5);
+  addCard(Zone.HAND,playerA,"Snapcaster Mage",1);
+  addCard(Zone.GRAVEYARD,playerA,"Fracturing Gust");
+  addCard(Zone.BATTLEFIELD,playerA,"Berserkers' Onslaught",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Darksteel Citadel",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Snapcaster Mage");
+  setChoice(playerA,"Fracturing Gust");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Flashback {2}{G/W}{G/W}{G/W}");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Snapcaster Mage",1);
+  assertGraveyardCount(playerA,"Berserkers' Onslaught",1);
+  assertPermanentCount(playerB,"Darksteel Citadel",1);
+  assertExileCount("Fracturing Gust",1);
+}
