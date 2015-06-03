@@ -1,12 +1,15 @@
 {
   if (event.getType() == GameEvent.EventType.DREW_CARD && event.getPlayerId().equals(this.getControllerId())) {
-    if (game.getActivePlayerId().equals(this.getControllerId()) && this.lastTriggeredTurn != game.getTurnNum()) {
+    if (game.getActivePlayerId().equals(this.getControllerId())) {
+      CardsDrawnDuringTurnWatcher watcher=(CardsDrawnDuringTurnWatcher)game.getState().getWatchers().get("CardsDrawnDuringTurn");
+      if (watcher != null && watcher.getAmountCardsDrawn(event.getPlayerId()) != 1) {
+        return false;
+      }
       Card card=game.getCard(event.getTargetId());
       Player controller=game.getPlayer(this.getControllerId());
-      Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(this.getSourceId());
+      Permanent sourcePermanent=(Permanent)getSourceObject(game);
       if (card != null && controller != null && sourcePermanent != null) {
-        lastTriggeredTurn=game.getTurnNum();
-        controller.revealCards(sourcePermanent.getName(),new CardsImpl(card),game);
+        controller.revealCards(sourcePermanent.getIdName(),new CardsImpl(card),game);
         this.getTargets().clear();
         this.getEffects().clear();
         if (card.getCardType().contains(CardType.LAND)) {
