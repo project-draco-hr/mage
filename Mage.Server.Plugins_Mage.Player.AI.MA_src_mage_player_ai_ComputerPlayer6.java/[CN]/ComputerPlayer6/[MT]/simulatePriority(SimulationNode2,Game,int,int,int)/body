@@ -1,5 +1,5 @@
 {
-  if (Thread.interrupted()) {
+  if (ALLOW_INTERRUPT && Thread.interrupted()) {
     Thread.currentThread().interrupt();
     logger.info("interrupted");
     return GameStateEvaluator2.evaluate(playerId,game);
@@ -15,7 +15,7 @@
   int counter=0;
   for (  Ability action : allActions) {
     counter++;
-    if (Thread.interrupted()) {
+    if (ALLOW_INTERRUPT && Thread.interrupted()) {
       Thread.currentThread().interrupt();
       logger.info("Sim Prio [" + depth + "] -- interrupted");
       break;
@@ -29,13 +29,23 @@
         continue;
       }
       if (!sim.gameOver(null) && action.isUsesStack()) {
-        sim.getPlayer(currentPlayer.getId()).pass(game);
-        sim.getPlayerList().getNext();
+        UUID nextPlayerId=sim.getPlayerList().get();
+        do {
+          sim.getPlayer(nextPlayerId).pass(game);
+          nextPlayerId=sim.getPlayerList().getNext();
+        }
+ while (nextPlayerId != this.getId());
       }
       SimulationNode2 newNode=new SimulationNode2(node,sim,action,depth,currentPlayer.getId());
-      logger.trace(new StringBuilder("Sim Prio [").append(depth).append("]#").append(counter).append(" -- newNode (").append(action.toString()).append(") ").append(newNode.hashCode()).append(" parent node ").append(node.hashCode()));
       sim.checkStateAndTriggered();
-      int val=addActions(newNode,depth - 1,alpha,beta);
+      int val;
+      if (action instanceof PassAbility) {
+        val=GameStateEvaluator2.evaluate(this.getId(),sim);
+      }
+ else {
+        val=addActions(newNode,depth - 1,alpha,beta);
+      }
+      logger.debug("Sim Prio " + BLANKS.substring(0,2 + (maxDepth - depth) * 3) + "["+ depth+ "]#"+ counter+ " <"+ val+ "> - ("+ action.toString()+ ") "+ newNode.hashCode()+ " parent node "+ node.hashCode());
       if (logger.isInfoEnabled() && depth == maxDepth) {
         StringBuilder sb=new StringBuilder("Sim Prio [").append(depth).append("] #").append(counter).append(" <").append(val).append("> (").append(action).append(action.isModal() ? " Mode = " + action.getModes().getMode().toString() : "").append(listTargets(game,action.getTargets())).append(")").append(logger.isTraceEnabled() ? " #" + newNode.hashCode() : "");
         SimulationNode2 logNode=newNode;
@@ -48,10 +58,10 @@
         logger.info(sb);
       }
       if (currentPlayer.getId().equals(playerId)) {
-        if (action instanceof PassAbility) {
-          val=val - 15;
+        if (depth == maxDepth && action instanceof PassAbility) {
+          val=val - PASSIVITY_PENALTY;
         }
-        if (val > alpha) {
+        if (val > alpha || (depth == maxDepth && val == alpha && random.nextBoolean())) {
           alpha=val;
           bestNode=newNode;
           bestNode.setScore(val);

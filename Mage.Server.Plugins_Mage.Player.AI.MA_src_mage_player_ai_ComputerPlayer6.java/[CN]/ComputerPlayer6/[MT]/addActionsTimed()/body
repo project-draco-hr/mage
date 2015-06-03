@@ -7,8 +7,12 @@
 );
   pool.execute(task);
   try {
-    logger.debug("maxThink: " + maxThink + " seconds");
-    return task.get(maxThink,TimeUnit.SECONDS);
+    int maxSeconds=maxThink;
+    if (!ALLOW_INTERRUPT) {
+      maxSeconds=3600;
+    }
+    logger.debug("maxThink: " + maxSeconds + " seconds ");
+    return task.get(maxSeconds,TimeUnit.SECONDS);
   }
  catch (  TimeoutException e) {
     logger.info("simulating - timed out");
