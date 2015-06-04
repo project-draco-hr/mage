@@ -1,13 +1,21 @@
 {
   Random random=new Random();
+  String landSetName=(String)cbLandSet.getSelectedItem();
   CardCriteria criteria=new CardCriteria();
-  if (!setCodesland.isEmpty()) {
+  if (landSetName.equals("<Random lands>")) {
     criteria.setCodes(setCodesland.toArray(new String[setCodesland.size()]));
+  }
+ else {
+    ExpansionInfo expansionInfo=ExpansionRepository.instance.getSetByName(landSetName);
+    if (expansionInfo == null) {
+      throw new IllegalArgumentException("Code of Set " + landSetName + " not found");
+    }
+    criteria.setCodes(expansionInfo.getCode());
   }
   criteria.rarities(Rarity.LAND).name(landName);
   List<CardInfo> cards=CardRepository.instance.findCards(criteria);
   if (cards.isEmpty()) {
-    return;
+    throw new IllegalArgumentException("No basic lands found in Set: " + landSetName);
   }
   for (int i=0; i < number; i++) {
     Card land=cards.get(random.nextInt(cards.size())).getMockCard();
