@@ -1,0 +1,23 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",3);
+  addCard(Zone.HAND,playerA,"Kitchen Finks");
+  addCard(Zone.HAND,playerA,"Public Execution");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",6);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.HAND,playerB,"Phantasmal Image");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Kitchen Finks");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Phantasmal Image");
+  setChoice(playerB,"Kitchen Finks");
+  castSpell(2,PhaseStep.POSTCOMBAT_MAIN,playerA,"Public Execution","Kitchen Finks");
+  setChoice(playerB,"Kitchen Finks");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerA,"Public Execution",1);
+  assertLife(playerA,22);
+  assertLife(playerB,24);
+  assertPermanentCount(playerA,"Kitchen Finks",1);
+  assertHandCount(playerB,"Phantasmal Image",0);
+  assertGraveyardCount(playerB,"Phantasmal Image",0);
+  assertPermanentCount(playerB,"Kitchen Finks",1);
+  assertPowerToughness(playerB,"Kitchen Finks",2,1);
+}

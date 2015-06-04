@@ -1,8 +1,10 @@
 {
   if (super.checkTrigger(event,game)) {
-    Permanent p=(Permanent)game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
-    if (p.getCounters().getCount(CounterType.M1M1) == 0) {
-      game.getState().setValue("persist" + getSourceId().toString(),new FixedTarget(p.getId()));
+    Permanent permanent=((ZoneChangeEvent)event).getTarget();
+    if (permanent.getCounters().getCount(CounterType.M1M1) == 0) {
+      FixedTarget fixedTarget=new FixedTarget(permanent.getId());
+      fixedTarget.init(game,this);
+      game.getState().setValue("persist" + getSourceId().toString(),fixedTarget);
       return true;
     }
   }
