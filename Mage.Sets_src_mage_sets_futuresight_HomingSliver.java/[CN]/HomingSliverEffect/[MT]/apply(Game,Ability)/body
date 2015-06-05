@@ -1,23 +1,15 @@
 {
-  for (  UUID p : game.getPlayerList()) {
-    Player player=game.getPlayer(p);
-    if (player != null) {
-      for (      UUID cardId : player.getHand()) {
-        if (affectedObjectList.contains(new MageObjectReference(cardId,game))) {
-          Card card=game.getCard(cardId);
-          CyclingAbility ability=null;
-          if (card.hasSubtype("Sliver")) {
-            ability=new CyclingAbility(new ManaCostsImpl("{3}"),filter2,"Slivercycling");
-          }
-          if (ability != null) {
-            ability.setSourceId(cardId);
-            ability.setControllerId(card.getOwnerId());
-            game.getState().addOtherAbility(card,ability);
-          }
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        for (        Card card : player.getHand().getCards(filter,game)) {
+          game.getState().addOtherAbility(card,new CyclingAbility(new GenericManaCost(3),filter,"Slivercycling"));
         }
       }
-      return true;
     }
+    return true;
   }
   return false;
 }
