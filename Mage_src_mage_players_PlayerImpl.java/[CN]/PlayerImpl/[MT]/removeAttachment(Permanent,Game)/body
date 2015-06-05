@@ -1,0 +1,11 @@
+{
+  if (this.attachments.contains(attachment.getId())) {
+    if (!game.replaceEvent(new GameEvent(GameEvent.EventType.UNATTACH,playerId,attachment.getId(),attachment.getControllerId()))) {
+      this.attachments.remove(attachment.getId());
+      attachment.attachTo(null,game);
+      game.fireEvent(new GameEvent(GameEvent.EventType.UNATTACHED,playerId,attachment.getId(),attachment.getControllerId()));
+      return true;
+    }
+  }
+  return false;
+}
