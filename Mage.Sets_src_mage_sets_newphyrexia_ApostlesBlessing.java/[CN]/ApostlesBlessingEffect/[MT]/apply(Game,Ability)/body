@@ -1,17 +1,25 @@
 {
-  FilterCard protectionFilter=new FilterCard();
-  ChoiceColorOrArtifact choice=(ChoiceColorOrArtifact)source.getChoices().get(0);
-  if (choice.isArtifactSelected()) {
-    protectionFilter.add(new CardTypePredicate(CardType.ARTIFACT));
-  }
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    ChoiceColorOrArtifact choice=new ChoiceColorOrArtifact();
+    while (!choice.isChosen()) {
+      if (!controller.isInGame()) {
+        return false;
+      }
+      controller.choose(outcome,choice,game);
+    }
+    FilterCard protectionFilter=new FilterCard();
+    if (choice.isArtifactSelected()) {
+      protectionFilter.add(new CardTypePredicate(CardType.ARTIFACT));
+    }
  else {
-    protectionFilter.add(new ColorPredicate(choice.getColor()));
-  }
-  protectionFilter.setMessage(choice.getChoice());
-  ((ProtectionAbility)ability).setFilter(protectionFilter);
-  Permanent creature=game.getPermanent(source.getFirstTarget());
-  if (creature != null) {
-    creature.addAbility(ability,game);
+      protectionFilter.add(new ColorPredicate(choice.getColor()));
+    }
+    protectionFilter.setMessage(choice.getChoice());
+    ProtectionAbility protectionAbility=new ProtectionAbility(protectionFilter);
+    ContinuousEffect effect=new GainAbilityTargetEffect(protectionAbility,Duration.EndOfTurn);
+    effect.setTargetPointer(getTargetPointer());
+    game.addEffect(effect,source);
     return true;
   }
   return false;
