@@ -1,0 +1,18 @@
+{
+  gameSessionId=UUID.randomUUID();
+  this.userPlayerMap=userPlayerMap;
+  chatId=ChatManager.getInstance().createChatSession("Game " + game.getId());
+  this.userReqestingRollback=null;
+  this.game=game;
+  this.game.setSaveGame(ConfigSettings.getInstance().isSaveGameActivated());
+  this.tableId=tableId;
+  this.choosingPlayerId=choosingPlayerId;
+  this.gameOptions=gameOptions;
+  for (  Player player : game.getPlayers().values()) {
+    if (!player.isHuman()) {
+      useTimeout=false;
+      break;
+    }
+  }
+  init();
+}

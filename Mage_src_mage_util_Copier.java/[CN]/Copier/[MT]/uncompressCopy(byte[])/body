@@ -1,7 +1,6 @@
 {
   T copy=null;
-  try {
-    ObjectInputStream in=new CopierObjectInputStream(loader,new GZIPInputStream(new ByteArrayInputStream(buffer)));
+  try (ObjectInputStream in=new CopierObjectInputStream(loader,new GZIPInputStream(new ByteArrayInputStream(buffer)))){
     copy=(T)in.readObject();
   }
  catch (  IOException e) {

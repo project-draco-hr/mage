@@ -2,7 +2,10 @@
   try {
     match.startGame();
     table.initGame();
-    GameManager.getInstance().createGameSession(match.getGame(),userPlayerMap,table.getId(),choosingPlayerId);
+    GameOptions gameOptions=new GameOptions();
+    gameOptions.rollbackTurnsAllowed=match.getOptions().isRollbackTurnsAllowed();
+    match.getGame().setGameOptions(gameOptions);
+    GameManager.getInstance().createGameSession(match.getGame(),userPlayerMap,table.getId(),choosingPlayerId,gameOptions);
     String creator=null;
     StringBuilder opponent=new StringBuilder();
     for (    Entry<UUID,UUID> entry : userPlayerMap.entrySet()) {

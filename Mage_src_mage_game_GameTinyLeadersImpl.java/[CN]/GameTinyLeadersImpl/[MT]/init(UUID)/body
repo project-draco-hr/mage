@@ -1,0 +1,31 @@
+{
+  Ability ability=new SimpleStaticAbility(Zone.COMMAND,new InfoEffect("Commander effects"));
+  for (  UUID playerId : state.getPlayerList(startingPlayerId)) {
+    Player player=getPlayer(playerId);
+    if (player != null) {
+      Card commander=getCommanderCard(player.getMatchPlayer().getDeck().getName(),player.getId());
+      if (commander != null) {
+        Set<Card> cards=new HashSet<>();
+        cards.add(commander);
+        this.loadCards(cards,playerId);
+        player.setCommanderId(commander.getId());
+        commander.moveToZone(Zone.COMMAND,null,this,true);
+        ability.addEffect(new CommanderReplacementEffect(commander.getId(),alsoHand,alsoLibrary));
+        ability.addEffect(new CommanderCostModification(commander.getId()));
+        ability.addEffect(new CommanderManaReplacementEffect(player.getId(),CardUtil.getColorIdentity(commander)));
+        getState().setValue(commander.getId() + "_castCount",0);
+        CommanderInfoWatcher watcher=new CommanderInfoWatcher(commander.getId(),false);
+        getState().getWatchers().add(watcher);
+        watcher.addCardInfoToCommander(this);
+      }
+ else {
+        throw new UnknownError("Commander card could not be created. Name: [" + player.getMatchPlayer().getDeck().getName() + "]");
+      }
+    }
+  }
+  this.getState().addAbility(ability,null);
+  super.init(choosingPlayerId);
+  if (startingPlayerSkipsDraw) {
+    state.getTurnMods().add(new TurnMod(startingPlayerId,PhaseStep.DRAW));
+  }
+}

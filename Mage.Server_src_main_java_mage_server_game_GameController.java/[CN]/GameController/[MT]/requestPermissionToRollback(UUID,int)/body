@@ -1,0 +1,14 @@
+{
+  int requests=0;
+  for (  Player player : game.getState().getPlayers().values()) {
+    User requestedUser=getUserByPlayerId(player.getId());
+    if (player.isInGame() && player.isHuman() && requestedUser != null && !requestedUser.getId().equals(userIdRequester)) {
+      requests++;
+      GameSessionPlayer gameSession=gameSessions.get(player.getId());
+      if (gameSession != null) {
+        gameSession.requestPermissionToRollbackTurn(userIdRequester,numberTurns);
+      }
+    }
+  }
+  return requests;
+}

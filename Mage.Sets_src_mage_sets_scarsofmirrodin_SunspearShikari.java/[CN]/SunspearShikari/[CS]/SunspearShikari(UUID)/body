@@ -3,11 +3,11 @@
   this.expansionSetCode="SOM";
   this.subtype.add("Cat");
   this.subtype.add("Soldier");
-  this.color.setWhite(true);
   this.power=new MageInt(2);
   this.toughness=new MageInt(2);
-  ConditionalContinuousEffect effect1=new ConditionalContinuousEffect(new GainAbilitySourceEffect(FirstStrikeAbility.getInstance()),EquippedCondition.getInstance(),rule1);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect1));
-  ConditionalContinuousEffect effect2=new ConditionalContinuousEffect(new GainAbilitySourceEffect(LifelinkAbility.getInstance()),EquippedCondition.getInstance(),rule2);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect2));
+  ConditionalContinuousEffect effect1=new ConditionalContinuousEffect(new GainAbilitySourceEffect(FirstStrikeAbility.getInstance()),EquippedCondition.getInstance(),"As long as {this} is equipped, it has first strike");
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,effect1);
+  ConditionalContinuousEffect effect2=new ConditionalContinuousEffect(new GainAbilitySourceEffect(LifelinkAbility.getInstance()),EquippedCondition.getInstance(),"and lifelink");
+  ability.addEffect(effect2);
+  this.addAbility(ability);
 }

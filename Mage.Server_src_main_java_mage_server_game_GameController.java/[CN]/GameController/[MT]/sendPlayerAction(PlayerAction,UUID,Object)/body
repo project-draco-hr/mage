@@ -3,6 +3,58 @@ switch (playerAction) {
 case UNDO:
     game.undo(getPlayerId(userId));
   break;
+case ROLLBACK_TURNS:
+if (data instanceof Integer) {
+  turnsToRollback=(Integer)data;
+  if (game.canRollbackTurns(turnsToRollback)) {
+    requestsOpen=requestPermissionToRollback(userId,turnsToRollback);
+    if (requestsOpen == 0) {
+      game.rollbackTurns(turnsToRollback);
+      turnsToRollback=-1;
+      requestsOpen=-1;
+    }
+ else {
+      userReqestingRollback=userId;
+    }
+  }
+ else {
+    UUID playerId=getPlayerId(userId);
+    if (playerId != null) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        game.informPlayer(player,"That turn is not available for rollback.");
+      }
+    }
+  }
+}
+break;
+case ADD_PERMISSION_TO_ROLLBACK_TURN:
+if (userReqestingRollback != null && requestsOpen > 0 && !userId.equals(userReqestingRollback)) {
+requestsOpen--;
+if (requestsOpen == 0) {
+game.rollbackTurns(turnsToRollback);
+turnsToRollback=-1;
+userReqestingRollback=null;
+requestsOpen=-1;
+}
+}
+break;
+case DENY_PERMISSON_TO_ROLLBACK_TURN:
+{
+UUID playerId=getPlayerId(userId);
+if (playerId != null) {
+Player player=game.getPlayer(playerId);
+if (player != null) {
+if (userReqestingRollback != null && requestsOpen > 0 && !userId.equals(userReqestingRollback)) {
+turnsToRollback=-1;
+userReqestingRollback=null;
+requestsOpen=-1;
+game.informPlayers("Rollback request denied by " + player.getLogName());
+}
+}
+}
+}
+break;
 case CONCEDE:
 game.concede(getPlayerId(userId));
 break;

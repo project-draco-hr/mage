@@ -1,0 +1,34 @@
+{
+  activePlayer.becomesActivePlayer();
+  this.setDeclareAttackersStepStarted(false);
+  if (game.isPaused() || game.gameOver(null)) {
+    return;
+  }
+  if (game.getState().getTurnMods().skipTurn(activePlayer.getId())) {
+    return;
+  }
+  checkTurnIsControlledByOtherPlayer(game,activePlayer.getId());
+  this.activePlayerId=activePlayer.getId();
+  resetCounts();
+  game.getPlayer(activePlayer.getId()).beginTurn(game);
+  for (  Phase phase : phases) {
+    if (game.isPaused() || game.gameOver(null)) {
+      return;
+    }
+    if (!isEndTurnRequested() || phase.getType().equals(TurnPhase.END)) {
+      currentPhase=phase;
+      game.fireEvent(new GameEvent(GameEvent.EventType.PHASE_CHANGED,activePlayer.getId(),null,activePlayer.getId()));
+      if (!game.getState().getTurnMods().skipPhase(activePlayer.getId(),currentPhase.getType())) {
+        if (phase.play(game,activePlayer.getId())) {
+          if (game.executingRollback()) {
+            return;
+          }
+          game.emptyManaPools();
+          game.saveState(false);
+          while (playExtraPhases(game,phase.getType())) {
+          }
+        }
+      }
+    }
+  }
+}

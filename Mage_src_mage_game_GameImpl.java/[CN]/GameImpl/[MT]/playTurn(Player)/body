@@ -1,11 +1,25 @@
 {
-  this.logStartOfTurn(player);
-  if (checkStopOnTurnOption()) {
-    return false;
+  do {
+    if (executingRollback) {
+      executingRollback=false;
+      player=getPlayer(state.getActivePlayerId());
+      for (      Player playerObject : getPlayers().values()) {
+        if (playerObject.isInGame()) {
+          playerObject.abortReset();
+        }
+      }
+    }
+ else {
+      state.setActivePlayerId(player.getId());
+      saveRollBackGameState();
+    }
+    this.logStartOfTurn(player);
+    if (checkStopOnTurnOption()) {
+      return false;
+    }
+    state.getTurn().play(this,player);
   }
-  state.setActivePlayerId(player.getId());
-  player.becomesActivePlayer();
-  state.getTurn().play(this,player.getId());
+ while (executingRollback);
   if (isPaused() || gameOver(null)) {
     return false;
   }
