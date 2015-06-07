@@ -2,6 +2,9 @@
   if (!autoPayment && !manaType.equals(unlockedManaType)) {
     return false;
   }
+  if (autoPayment && autoPaymentRestricted && !wasManaAddedBeyondStock()&& !manaType.equals(unlockedManaType)) {
+    return false;
+  }
   if (getConditional(manaType,ability,filter,game) > 0) {
     removeConditional(manaType,ability,game);
     lockManaType();
@@ -14,6 +17,9 @@
         continue;
       }
     }
+    if (!manaType.equals(unlockedManaType) && autoPayment && autoPaymentRestricted&& mana.count() == mana.getStock()) {
+      continue;
+    }
     boolean spendAnyMana=spendAnyMana(ability,game);
     if (mana.get(manaType) > 0 || (spendAnyMana && mana.count() > 0)) {
       GameEvent event=new GameEvent(GameEvent.EventType.MANA_PAYED,ability.getId(),mana.getSourceId(),ability.getControllerId(),0,mana.getFlag());
@@ -24,6 +30,9 @@
       }
  else {
         mana.remove(manaType);
+      }
+      if (mana.count() == 0) {
+        manaItems.remove(mana);
       }
       lockManaType();
       return true;
