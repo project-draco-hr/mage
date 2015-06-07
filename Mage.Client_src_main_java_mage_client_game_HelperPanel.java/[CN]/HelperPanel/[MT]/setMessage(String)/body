@@ -1,11 +1,14 @@
 {
   if (message.startsWith("Use alternative cost")) {
-    textArea.setText("Use alternative cost?");
+    message="Use alternative cost?";
   }
- else   if (message.length() > 40 && message.contains("Use ")) {
-    textArea.setText("Use ability?");
-  }
+ else   if (message.contains("Use ")) {
+    if (message.length() < this.getWidth() / 10) {
+      message=getSmallText(message);
+    }
  else {
-    textArea.setText(message);
+      message="Use ability?" + getSmallText(message.substring(this.getWidth() / 10));
+    }
   }
+  textArea.setText(message);
 }

@@ -1,0 +1,21 @@
+{
+  if (userData.confirmEmptyManaPool() && game.getStack().isEmpty() && getManaPool().count() > 0) {
+    String activePlayerText;
+    if (game.getActivePlayerId().equals(playerId)) {
+      activePlayerText="Your turn";
+    }
+ else {
+      activePlayerText=game.getPlayer(game.getActivePlayerId()).getName() + "'s turn";
+    }
+    String priorityPlayerText="";
+    if (!isGameUnderControl()) {
+      priorityPlayerText=" / priority " + game.getPlayer(game.getPriorityPlayerId()).getName();
+    }
+    if (!chooseUse(Outcome.Detriment,GameLog.getPlayerConfirmColoredText("You have still mana in your mana pool. Pass regardless?") + GameLog.getSmallSecondLineText(activePlayerText + " / " + game.getStep().getType().toString()+ priorityPlayerText),game)) {
+      sendPlayerAction(PlayerAction.PASS_PRIORITY_CANCEL_ALL_ACTIONS,game);
+      return false;
+    }
+  }
+  pass(game);
+  return true;
+}
