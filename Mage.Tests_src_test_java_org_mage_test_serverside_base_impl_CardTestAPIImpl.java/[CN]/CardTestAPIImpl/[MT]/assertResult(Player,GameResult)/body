@@ -1,22 +1,26 @@
 {
   if (player.equals(playerA)) {
     GameResult actual=CardTestAPI.GameResult.DRAW;
-    if (currentGame.getWinner().equals("Player PlayerA is the winner")) {
+switch (currentGame.getWinner()) {
+case "Player PlayerA is the winner":
       actual=CardTestAPI.GameResult.WON;
-    }
- else     if (currentGame.getWinner().equals("Player PlayerB is the winner")) {
-      actual=CardTestAPI.GameResult.LOST;
-    }
-    Assert.assertEquals("Game results are not equal",result,actual);
-  }
- else   if (player.equals(playerB)) {
-    GameResult actual=CardTestAPI.GameResult.DRAW;
-    if (currentGame.getWinner().equals("Player PlayerB is the winner")) {
-      actual=CardTestAPI.GameResult.WON;
-    }
- else     if (currentGame.getWinner().equals("Player PlayerA is the winner")) {
-      actual=CardTestAPI.GameResult.LOST;
-    }
-    Assert.assertEquals("Game results are not equal",result,actual);
-  }
+    break;
+case "Player PlayerB is the winner":
+  actual=CardTestAPI.GameResult.LOST;
+break;
+}
+Assert.assertEquals("Game results are not equal",result,actual);
+}
+ else if (player.equals(playerB)) {
+GameResult actual=CardTestAPI.GameResult.DRAW;
+switch (currentGame.getWinner()) {
+case "Player PlayerB is the winner":
+actual=CardTestAPI.GameResult.WON;
+break;
+case "Player PlayerA is the winner":
+actual=CardTestAPI.GameResult.LOST;
+break;
+}
+Assert.assertEquals("Game results are not equal",result,actual);
+}
 }

@@ -1,4 +1,5 @@
 {
+  int numberOfActions=actions.size();
   for (  PlayerAction action : actions) {
     if (action.getTurnNum() == game.getTurnNum() && action.getStep() == game.getStep().getType()) {
       if (action.getAction().startsWith("activate:")) {
@@ -8,7 +9,7 @@
         if (groups.length > 2 && !checkExecuteCondition(groups,game)) {
           break;
         }
-        for (        Ability ability : this.getPlayable(game,true)) {
+        for (        Ability ability : computerPlayer.getPlayable(game,true)) {
           if (ability.toString().startsWith(groups[0])) {
             Ability newAbility=ability.copy();
             if (groups.length > 1 && !groups[1].equals("target=NO_TARGET")) {
@@ -16,7 +17,7 @@
                 break;
               }
             }
-            this.activateAbility((ActivatedAbility)newAbility,game);
+            computerPlayer.activateAbility((ActivatedAbility)newAbility,game);
             actions.remove(action);
             return true;
           }
@@ -26,23 +27,23 @@
         String command=action.getAction();
         command=command.substring(command.indexOf("manaActivate:") + 13);
         String[] groups=command.split("\\$");
-        List<Permanent> manaPerms=this.getAvailableManaProducers(game);
+        List<Permanent> manaPerms=computerPlayer.getAvailableManaProducers(game);
         for (        Permanent perm : manaPerms) {
           for (          Ability manaAbility : perm.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
             if (manaAbility.toString().startsWith(groups[0])) {
               Ability newManaAbility=manaAbility.copy();
-              this.activateAbility((ActivatedAbility)newManaAbility,game);
+              computerPlayer.activateAbility((ActivatedAbility)newManaAbility,game);
               actions.remove(action);
               return true;
             }
           }
         }
-        List<Permanent> manaPermsWithCost=this.getAvailableManaProducersWithCost(game);
+        List<Permanent> manaPermsWithCost=computerPlayer.getAvailableManaProducersWithCost(game);
         for (        Permanent perm : manaPermsWithCost) {
           for (          ManaAbility manaAbility : perm.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
-            if (manaAbility.toString().startsWith(groups[0]) && manaAbility.canActivate(playerId,game)) {
+            if (manaAbility.toString().startsWith(groups[0]) && manaAbility.canActivate(computerPlayer.getId(),game)) {
               Ability newManaAbility=manaAbility.copy();
-              this.activateAbility((ActivatedAbility)newManaAbility,game);
+              computerPlayer.activateAbility((ActivatedAbility)newManaAbility,game);
               actions.remove(action);
               return true;
             }
@@ -63,6 +64,15 @@
       }
     }
   }
-  pass(game);
+  computerPlayer.pass(game);
+  if (numberOfActions == actions.size()) {
+    foundNoAction++;
+    if (foundNoAction > maxCallsWithoutAction) {
+      throw new AssertionError("More priority calls to " + getName() + " and doing no action than allowed ("+ maxCallsWithoutAction+ ")");
+    }
+  }
+ else {
+    foundNoAction=0;
+  }
   return false;
 }

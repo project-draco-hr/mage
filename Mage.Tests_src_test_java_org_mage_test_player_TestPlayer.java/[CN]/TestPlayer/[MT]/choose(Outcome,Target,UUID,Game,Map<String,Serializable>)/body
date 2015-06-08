@@ -17,14 +17,14 @@
               continue;
             }
             if (permanent.getName().equals(targetName)) {
-              if (target.isNotTarget() || ((TargetPermanent)target).canTarget(playerId,permanent.getId(),null,game)) {
+              if (target.isNotTarget() || ((TargetPermanent)target).canTarget(computerPlayer.getId(),permanent.getId(),null,game)) {
                 target.add(permanent.getId(),game);
                 targetFound=true;
                 break;
               }
             }
  else             if ((permanent.getName() + "-" + permanent.getExpansionSetCode()).equals(targetName)) {
-              if (target.isNotTarget() || ((TargetPermanent)target).canTarget(playerId,permanent.getId(),null,game)) {
+              if (target.isNotTarget() || ((TargetPermanent)target).canTarget(computerPlayer.getId(),permanent.getId(),null,game)) {
                 target.add(permanent.getId(),game);
                 targetFound=true;
                 break;
@@ -42,7 +42,7 @@
       for (      Player player : game.getPlayers().values()) {
         for (        String choose2 : choices) {
           if (player.getName().equals(choose2)) {
-            if (((TargetPlayer)target).canTarget(playerId,player.getId(),null,game) && !target.getTargets().contains(player.getId())) {
+            if (((TargetPlayer)target).canTarget(computerPlayer.getId(),player.getId(),null,game) && !target.getTargets().contains(player.getId())) {
               target.add(player.getId(),game);
               choices.remove(choose2);
               return true;
@@ -54,7 +54,7 @@
     if (target instanceof TargetSource) {
       Set<UUID> possibleTargets;
       TargetSource t=((TargetSource)target);
-      possibleTargets=t.possibleTargets(sourceId,playerId,game);
+      possibleTargets=t.possibleTargets(sourceId,computerPlayer.getId(),game);
       for (      UUID targetId : possibleTargets) {
         MageObject targetObject=game.getObject(targetId);
         if (targetObject != null) {
@@ -82,5 +82,5 @@
       }
     }
   }
-  return super.choose(outcome,target,sourceId,game,options);
+  return computerPlayer.choose(outcome,target,sourceId,game,options);
 }

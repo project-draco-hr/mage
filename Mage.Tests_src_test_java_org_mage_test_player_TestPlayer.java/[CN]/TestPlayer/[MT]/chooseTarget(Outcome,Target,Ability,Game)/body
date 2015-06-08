@@ -1,6 +1,6 @@
 {
   if (!targets.isEmpty()) {
-    UUID abilityControllerId=playerId;
+    UUID abilityControllerId=computerPlayer.getId();
     if (target.getTargetController() != null && target.getAbilityController() != null) {
       abilityControllerId=target.getAbilityController();
     }
@@ -44,7 +44,7 @@
         if (targetDefinition.startsWith("targetPlayer=")) {
           String playerName=targetDefinition.substring(targetDefinition.indexOf("targetPlayer=") + 13);
           for (          Player player : game.getPlayers().values()) {
-            if (player.getName().equals(playerName) && ((TargetPlayer)target).canTarget(playerId,player.getId(),source,game)) {
+            if (player.getName().equals(playerName) && ((TargetPlayer)target).canTarget(computerPlayer.getId(),player.getId(),source,game)) {
               target.add(player.getId(),game);
               return true;
             }
@@ -57,7 +57,7 @@
         String[] targetList=targetDefinition.split("\\^");
         boolean targetFound=false;
         for (        String targetName : targetList) {
-          for (          Card card : this.getHand().getCards(((TargetCardInHand)target).getFilter(),game)) {
+          for (          Card card : computerPlayer.getHand().getCards(((TargetCardInHand)target).getFilter(),game)) {
             if (card.getName().equals(targetName) || (card.getName() + "-" + card.getExpansionSetCode()).equals(targetName)) {
               if (((TargetCardInHand)target).canTarget(abilityControllerId,card.getId(),source,game) && !target.getTargets().contains(card.getId())) {
                 target.add(card.getId(),game);
@@ -93,5 +93,5 @@
       }
     }
   }
-  return super.chooseTarget(outcome,target,source,game);
+  return computerPlayer.chooseTarget(outcome,target,source,game);
 }
