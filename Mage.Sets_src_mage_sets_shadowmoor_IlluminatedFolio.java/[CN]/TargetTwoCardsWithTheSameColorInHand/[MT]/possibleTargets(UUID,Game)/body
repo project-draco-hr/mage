@@ -12,7 +12,7 @@
       Card chosenCard=cardsToCheck.get(entry.getKey(),game);
       if (chosenCard != null) {
         for (        UUID cardToCheck : cardsToCheck) {
-          if (!cardToCheck.equals(chosenCard.getId()) && chosenCard.getColor().equals(game.getCard(cardToCheck).getColor())) {
+          if (!cardToCheck.equals(chosenCard.getId()) && chosenCard.getColor(game).equals(game.getCard(cardToCheck).getColor(game))) {
             newPossibleTargets.add(cardToCheck);
           }
         }
@@ -22,7 +22,7 @@
  else {
     for (    UUID cardToCheck : cardsToCheck) {
       FilterCard colorFilter=new FilterCard();
-      colorFilter.add(new ColorPredicate(game.getCard(cardToCheck).getColor()));
+      colorFilter.add(new ColorPredicate(game.getCard(cardToCheck).getColor(game)));
       if (cardsToCheck.count(colorFilter,game) > 1) {
         newPossibleTargets.add(cardToCheck);
       }

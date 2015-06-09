@@ -1,10 +1,10 @@
 {
   Permanent target=game.getPermanent(getTargetPointer().getFirst(game,source));
   if (target != null) {
-    ObjectColor color=target.getColor();
+    ObjectColor color=target.getColor(game);
     target.untap(game);
     for (    Permanent permanent : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),source.getSourceId(),game)) {
-      if (permanent.getColor().shares(color) && !permanent.getId().equals(target.getId())) {
+      if (permanent.getColor(game).shares(color) && !permanent.getId().equals(target.getId())) {
         permanent.untap(game);
       }
     }

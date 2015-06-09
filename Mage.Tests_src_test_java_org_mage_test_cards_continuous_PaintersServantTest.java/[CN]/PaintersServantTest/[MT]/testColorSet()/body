@@ -1,0 +1,37 @@
+{
+  addCard(Zone.HAND,playerA,"Painter's Servant",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",2);
+  addCard(Zone.HAND,playerA,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.GRAVEYARD,playerA,"Silvercoat Lion");
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  addCard(Zone.GRAVEYARD,playerA,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Painter's Servant");
+  setChoice(playerA,"Blue");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Painter's Servant",1);
+  Permanent silvercoatLion=getPermanent("Silvercoat Lion",playerA);
+  Assert.assertEquals(true,silvercoatLion.getColor(currentGame).isWhite());
+  Assert.assertEquals(true,silvercoatLion.getColor(currentGame).isBlue());
+  silvercoatLion=getPermanent("Silvercoat Lion",playerB);
+  Assert.assertEquals(true,silvercoatLion.getColor(currentGame).isWhite());
+  Assert.assertEquals(true,silvercoatLion.getColor(currentGame).isBlue());
+  for (  Card card : playerA.getHand().getCards(currentGame)) {
+    Assert.assertEquals(true,card.getColor(currentGame).isRed());
+    Assert.assertEquals(true,card.getColor(currentGame).isBlue());
+  }
+  for (  Card card : playerB.getHand().getCards(currentGame)) {
+    Assert.assertEquals(true,card.getColor(currentGame).isRed());
+    Assert.assertEquals(true,card.getColor(currentGame).isBlue());
+  }
+  for (  Card card : playerA.getGraveyard().getCards(currentGame)) {
+    Assert.assertEquals(true,card.getColor(currentGame).isWhite());
+    Assert.assertEquals(true,card.getColor(currentGame).isBlue());
+  }
+  for (  Card card : playerB.getGraveyard().getCards(currentGame)) {
+    Assert.assertEquals(true,card.getColor(currentGame).isWhite());
+    Assert.assertEquals(true,card.getColor(currentGame).isBlue());
+  }
+}

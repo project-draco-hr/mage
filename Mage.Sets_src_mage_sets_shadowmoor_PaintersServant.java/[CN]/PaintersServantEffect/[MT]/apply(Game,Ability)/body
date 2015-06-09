@@ -7,32 +7,32 @@
     }
     String colorString=color.toString();
     for (    Permanent perm : game.getBattlefield().getActivePermanents(source.getControllerId(),game)) {
-      setObjectColor(perm,colorString);
+      setObjectColor(perm,colorString,game);
     }
     for (    MageObject object : game.getStack()) {
       if (object instanceof Spell) {
-        setObjectColor(object,colorString);
+        setObjectColor(object,colorString,game);
       }
     }
     for (    Card card : game.getExile().getAllCards(game)) {
-      setObjectColor(card,colorString);
+      setCardColor(card,colorString,game);
     }
     for (    CommandObject commandObject : game.getState().getCommand()) {
       if (commandObject instanceof Commander) {
-        setObjectColor(commandObject,colorString);
+        setObjectColor(commandObject,colorString,game);
       }
     }
     for (    UUID playerId : controller.getInRange()) {
       Player player=game.getPlayer(playerId);
       if (player != null) {
         for (        Card card : player.getHand().getCards(game)) {
-          setObjectColor(card,colorString);
+          setCardColor(card,colorString,game);
         }
         for (        Card card : player.getLibrary().getCards(game)) {
-          setObjectColor(card,colorString);
+          setCardColor(card,colorString,game);
         }
         for (        Card card : player.getGraveyard().getCards(game)) {
-          setObjectColor(card,colorString);
+          setCardColor(card,colorString,game);
         }
       }
     }
