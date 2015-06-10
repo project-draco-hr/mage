@@ -4,21 +4,5 @@
     formatSettings.append(component.isSelected() ? "x" : "-");
   }
   PreferencesDialog.saveValue(PreferencesDialog.KEY_TABLES_FILTER_SETTINGS,formatSettings.toString());
-  StringBuilder columnWidthSettings=new StringBuilder();
-  StringBuilder columnOrderSettings=new StringBuilder();
-  boolean firstValue=true;
-  for (int i=0; i < tableTables.getColumnModel().getColumnCount(); i++) {
-    TableColumn column=tableTables.getColumnModel().getColumn(tableTables.convertColumnIndexToView(i));
-    if (!firstValue) {
-      columnWidthSettings.append(",");
-      columnOrderSettings.append(",");
-    }
- else {
-      firstValue=false;
-    }
-    columnWidthSettings.append(column.getWidth());
-    columnOrderSettings.append(tableTables.convertColumnIndexToModel(i));
-  }
-  PreferencesDialog.saveValue(PreferencesDialog.KEY_TABLES_COLUMNS_WIDTH,columnWidthSettings.toString());
-  PreferencesDialog.saveValue(PreferencesDialog.KEY_TABLES_COLUMNS_ORDER,columnOrderSettings.toString());
+  TableUtil.saveColumnWidthAndOrderToPrefs(tableTables,KEY_TABLES_COLUMNS_WIDTH,KEY_TABLES_COLUMNS_ORDER);
 }
