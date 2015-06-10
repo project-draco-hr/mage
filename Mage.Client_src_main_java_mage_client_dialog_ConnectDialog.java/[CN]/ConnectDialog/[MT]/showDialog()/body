@@ -2,8 +2,16 @@
   this.txtServer.setText(MageFrame.getPreferences().get("serverAddress",Config.serverName));
   this.txtPort.setText(MageFrame.getPreferences().get("serverPort",Integer.toString(Config.port)));
   this.txtUserName.setText(MageFrame.getPreferences().get("userName",""));
-  this.chkAutoConnect.setSelected(Boolean.parseBoolean(MageFrame.getPreferences().get("autoConnect","false")));
+  this.chkAutoConnect.setSelected(Boolean.parseBoolean(MageFrame.getPreferences().get(KEY_CONNECT_AUTO_CONNECT,"false")));
   this.chkForceUpdateDB.setSelected(false);
+  String selectedFlag=MageFrame.getPreferences().get(KEY_CONNECT_FLAG,"world.png");
+  for (int i=0; i < cbFlag.getItemCount(); i++) {
+    String[] name=(String[])cbFlag.getItemAt(i);
+    if (name[1].equals(selectedFlag)) {
+      cbFlag.setSelectedIndex(i);
+      break;
+    }
+  }
   this.setModal(true);
   this.setLocation(50,50);
   this.setVisible(true);

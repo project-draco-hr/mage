@@ -24,6 +24,7 @@
     connection.setPort(Integer.valueOf(this.txtPort.getText().trim()));
     connection.setUsername(this.txtUserName.getText().trim());
     connection.setForceDBComparison(this.chkForceUpdateDB.isSelected());
+    MageFrame.getPreferences().put(KEY_CONNECT_FLAG,(String)cbFlag.getSelectedItem());
     ProxyType configProxyType=Connection.ProxyType.valueByText(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_TYPE,"None"));
     if (configProxyType != null) {
       connection.setProxyType(configProxyType);
@@ -45,13 +46,7 @@
         }
       }
     }
-    int avatarId=PreferencesDialog.getSelectedAvatar();
-    connection.setAvatarId(avatarId);
-    boolean showAbilityPickerForced=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_SHOW_ABILITY_PICKER_FORCED,"true").equals("true");
-    connection.setAllowRequestShowHandCards(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_GAME_ALLOW_REQUEST_SHOW_HAND_CARDS,"true").equals("true"));
-    connection.setShowAbilityPickerForced(showAbilityPickerForced);
-    connection.setUserSkipPrioritySteps(PreferencesDialog.getUserSkipPrioritySteps());
-    connection.setConfirmEmptyManaPool(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_GAME_CONFIRM_EMPTY_MANA_POOL,"true").equals("true"));
+    MageFrame.getInstance().setUserPrefsToConnection(connection);
     logger.debug("connecting: " + connection.getProxyType() + " "+ connection.getProxyHost()+ " "+ connection.getProxyPort());
     task=new ConnectTask();
     task.execute();
