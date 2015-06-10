@@ -1,0 +1,12 @@
+{
+  Integer playerDamage=(Integer)this.getValue(RepercussionTriggeredAbility.PLAYER_DAMAGE_AMOUNT_KEY);
+  UUID targetId=this.targetPointer.getFirst(game,source);
+  if (playerDamage != null && targetId != null) {
+    Player player=game.getPlayer(targetId);
+    if (player != null) {
+      player.damage(playerDamage,targetId,game,false,true);
+      return true;
+    }
+  }
+  return false;
+}
