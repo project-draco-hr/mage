@@ -3,44 +3,21 @@
   if (controller == null) {
     return false;
   }
-  boolean result=false;
-  ObjectColor objectColor;
-  if (setColor == null) {
-    ChoiceColor choice=new ChoiceColor();
-    while (!choice.isChosen()) {
-      controller.choose(Outcome.PutManaInPool,choice,game);
-      if (!controller.isInGame()) {
-        return false;
-      }
-    }
-    if (choice.getColor() != null) {
-      objectColor=choice.getColor();
-    }
- else {
-      return false;
-    }
-    if (!game.isSimulation()) {
-      game.informPlayers(controller.getLogName() + " has chosen the color: " + objectColor.toString());
-    }
-  }
- else {
-    objectColor=this.setColor;
-  }
-  if (objectColor != null) {
+  if (setColor != null) {
+    boolean objectFound=false;
     for (    UUID targetId : targetPointer.getTargets(game,source)) {
-      MageObject o=game.getObject(targetId);
-      if (o != null) {
-        if (o instanceof Permanent || o instanceof StackObject) {
-          o.getColor(game).setColor(objectColor);
-          result=true;
-        }
+      MageObject targetObject=game.getObject(targetId);
+      if (targetObject != null) {
+        objectFound=true;
+        targetObject.getColor(game).setColor(setColor);
       }
     }
-  }
-  if (!result) {
-    if (this.getDuration().equals(Duration.Custom)) {
+    if (!objectFound && this.getDuration().equals(Duration.Custom)) {
       this.discard();
     }
+    return true;
   }
-  return result;
+ else {
+    throw new UnsupportedOperationException("No color set");
+  }
 }

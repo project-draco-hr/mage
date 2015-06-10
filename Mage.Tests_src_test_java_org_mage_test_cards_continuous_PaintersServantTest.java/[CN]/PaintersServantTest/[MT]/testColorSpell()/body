@@ -1,0 +1,23 @@
+{
+  addCard(Zone.HAND,playerA,"Painter's Servant",1);
+  addCard(Zone.HAND,playerA,"Divination",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",5);
+  addCard(Zone.BATTLEFIELD,playerA,"Dragon's Claw");
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.HAND,playerB,"Cerulean Wisps",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Painter's Servant");
+  setChoice(playerA,"Red");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Cerulean Wisps","Silvercoat Lion","Painter's Servant",StackClause.WHILE_NOT_ON_STACK);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Divination",NO_TARGET,"Painter's Servant",StackClause.WHILE_NOT_ON_STACK);
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Painter's Servant",1);
+  assertGraveyardCount(playerA,"Divination",1);
+  assertGraveyardCount(playerB,"Cerulean Wisps",1);
+  assertLife(playerA,22);
+  Permanent silvercoatLion=getPermanent("Silvercoat Lion",playerA);
+  Assert.assertEquals(false,silvercoatLion.getColor(currentGame).isWhite());
+  Assert.assertEquals(false,silvercoatLion.getColor(currentGame).isRed());
+  Assert.assertEquals(true,silvercoatLion.getColor(currentGame).isBlue());
+}
