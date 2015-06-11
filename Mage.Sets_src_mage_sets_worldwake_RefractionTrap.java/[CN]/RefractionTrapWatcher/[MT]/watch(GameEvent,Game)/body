@@ -1,12 +1,9 @@
 {
-  if (condition == true) {
-    return;
-  }
-  if (event.getType() == GameEvent.EventType.SPELL_CAST && game.getOpponents(controllerId).contains(event.getPlayerId())) {
+  if (event.getType() == GameEvent.EventType.SPELL_CAST) {
     Spell spell=game.getStack().getSpell(event.getTargetId());
     if (spell.getColor(game).isRed()) {
       if (spell.getCardType().contains(CardType.INSTANT) || spell.getCardType().contains(CardType.SORCERY)) {
-        condition=true;
+        playersMetCondition.add(event.getPlayerId());
       }
     }
   }
