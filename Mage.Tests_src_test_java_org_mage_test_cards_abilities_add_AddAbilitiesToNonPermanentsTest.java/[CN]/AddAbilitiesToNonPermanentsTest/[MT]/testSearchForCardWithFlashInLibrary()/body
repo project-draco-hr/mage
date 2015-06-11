@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Teferi, Mage of Zhalfir");
+  addCard(Zone.HAND,playerA,"Mystical Teachings");
+  addCard(Zone.LIBRARY,playerA,"Keranos, God of Storms");
+  addCard(Zone.LIBRARY,playerA,"Plains",3);
+  skipInitShuffling();
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Mystical Teachings");
+  addTarget(playerA,"Keranos, God of Storms");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Mystical Teachings",1);
+  assertHandCount(playerA,"Keranos, God of Storms",1);
+}
