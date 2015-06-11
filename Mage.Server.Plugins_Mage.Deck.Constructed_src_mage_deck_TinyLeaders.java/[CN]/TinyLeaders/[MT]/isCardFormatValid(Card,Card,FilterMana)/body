@@ -1,0 +1,23 @@
+{
+  if (!cardHasValideColor(color,card)) {
+    invalid.put(card.getName(),"Invalid color (" + commander.getName() + ")");
+    return false;
+  }
+  if (card instanceof SplitCard) {
+    if (((SplitCard)card).getLeftHalfCard().getManaCost().convertedManaCost() > 3) {
+      invalid.put(card.getName(),"Invalid cost (" + ((SplitCard)card).getLeftHalfCard().getManaCost().convertedManaCost() + ")");
+      return false;
+    }
+    if (((SplitCard)card).getRightHalfCard().getManaCost().convertedManaCost() > 3) {
+      invalid.put(card.getName(),"Invalid cost (" + ((SplitCard)card).getRightHalfCard().getManaCost().convertedManaCost() + ")");
+      return false;
+    }
+  }
+ else {
+    if (card.getManaCost().convertedManaCost() > 3) {
+      invalid.put(card.getName(),"Invalid cost (" + card.getManaCost().convertedManaCost() + ")");
+      return false;
+    }
+  }
+  return true;
+}

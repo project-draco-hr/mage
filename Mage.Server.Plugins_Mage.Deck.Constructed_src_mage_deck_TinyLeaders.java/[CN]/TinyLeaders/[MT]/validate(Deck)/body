@@ -43,12 +43,12 @@
       if (!bannedCommander.contains(commander.getName())) {
         FilterMana color=CardUtil.getColorIdentity(commander);
         for (        Card card : deck.getCards()) {
-          if (!cardHasValideColor(color,card)) {
-            invalid.put(card.getName(),"Invalid color (" + commander.getName() + ")");
+          if (!isCardFormatValid(card,commander,color)) {
             valid=false;
           }
-          if (card.getManaCost().convertedManaCost() > 3) {
-            invalid.put(card.getName(),"Invalid cost (" + card.getManaCost().convertedManaCost() + ")");
+        }
+        for (        Card card : deck.getSideboard()) {
+          if (!isCardFormatValid(card,commander,color)) {
             valid=false;
           }
         }
