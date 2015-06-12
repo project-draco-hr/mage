@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerB,"Wurmcoil Engine");
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.HAND,playerA,"Phantasmal Image");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Phantasmal Image");
+  setChoice(playerB,"Wurmcoil Engine");
+  attack(2,playerB,"Wurmcoil Engine");
+  block(2,playerA,"Wurmcoil Engine","Wurmcoil Engine");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertLife(playerB,26);
+  assertLife(playerA,26);
+  assertGraveyardCount(playerA,"Phantasmal Image",1);
+  assertGraveyardCount(playerB,"Wurmcoil Engine",1);
+  assertPermanentCount(playerA,"Wurm",2);
+  assertPermanentCount(playerB,"Wurm",2);
+}
