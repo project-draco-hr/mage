@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",5);
+  addCard(Zone.HAND,playerA,"Phyrexian Metamorph");
+  addCard(Zone.HAND,playerA,"Cloudshift");
+  addCard(Zone.BATTLEFIELD,playerB,"Aven Riftwatcher");
+  addCard(Zone.BATTLEFIELD,playerB,"Ponyback Brigade");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Phyrexian Metamorph");
+  setChoice(playerA,"Aven Riftwatcher");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Cloudshift","Aven Riftwatcher");
+  setChoice(playerA,"Ponyback Brigade");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,24);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Cloudshift",1);
+  assertPermanentCount(playerA,"Ponyback Brigade",1);
+  assertPermanentCount(playerA,"Goblin",3);
+}
