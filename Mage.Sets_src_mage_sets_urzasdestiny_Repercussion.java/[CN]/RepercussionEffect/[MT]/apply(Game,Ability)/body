@@ -1,12 +1,15 @@
 {
   Integer playerDamage=(Integer)this.getValue(RepercussionTriggeredAbility.PLAYER_DAMAGE_AMOUNT_KEY);
-  UUID targetId=this.targetPointer.getFirst(game,source);
-  if (playerDamage != null && targetId != null) {
-    Player player=game.getPlayer(targetId);
-    if (player != null) {
-      player.damage(playerDamage,source.getSourceId(),game,false,true);
-      return true;
+  MageObjectReference mor=(MageObjectReference)this.getValue(RepercussionTriggeredAbility.TRIGGERING_CREATURE_KEY);
+  if (playerDamage != null && mor != null) {
+    Permanent creature=mor.getPermanentOrLKIBattlefield(game);
+    if (creature != null) {
+      Player player=game.getPlayer(creature.getControllerId());
+      if (player != null) {
+        player.damage(playerDamage,source.getSourceId(),game,false,true);
+      }
     }
+    return true;
   }
   return false;
 }

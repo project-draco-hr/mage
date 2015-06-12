@@ -1,6 +1,7 @@
 {
-  MageObject eventSource=game.getObject(event.getSourceId());
-  this.getEffects().get(0).setValue(PLAYER_DAMAGE_AMOUNT_KEY,event.getAmount());
-  this.getEffects().get(0).setTargetPointer(new FixedTarget(game.getControllerId(eventSource.getId())));
+  for (  Effect effect : getEffects()) {
+    effect.setValue(PLAYER_DAMAGE_AMOUNT_KEY,event.getAmount());
+    effect.setValue(TRIGGERING_CREATURE_KEY,new MageObjectReference(event.getTargetId(),game));
+  }
   return true;
 }
