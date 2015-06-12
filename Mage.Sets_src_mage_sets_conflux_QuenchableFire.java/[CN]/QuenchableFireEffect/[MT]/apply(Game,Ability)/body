@@ -1,15 +1,24 @@
 {
-  QuenchableFireDelayedTriggeredAbility delayedAbility=new QuenchableFireDelayedTriggeredAbility();
-  delayedAbility.setSourceId(source.getSourceId());
-  delayedAbility.setControllerId(source.getControllerId());
-  delayedAbility.setSourceObject(source.getSourceObject(game),game);
-  delayedAbility.getTargets().addAll(source.getTargets());
-  game.addDelayedTriggeredAbility(delayedAbility);
-  QuenchableFireSpecialAction newAction=new QuenchableFireSpecialAction(delayedAbility.getId());
-  delayedAbility.setSpecialActionId(newAction.getId());
-  newAction.setSourceId(source.getSourceId());
-  newAction.setControllerId(source.getFirstTarget());
-  newAction.getTargets().addAll(source.getTargets());
-  game.getState().getSpecialActions().add(newAction);
-  return true;
+  MageObject sourceObject=source.getSourceObject(game);
+  if (sourceObject != null) {
+    QuenchableFireSpecialAction newAction=new QuenchableFireSpecialAction();
+    QuenchableFireDelayedTriggeredAbility delayedAbility=new QuenchableFireDelayedTriggeredAbility();
+    delayedAbility.setSourceId(source.getSourceId());
+    delayedAbility.setControllerId(source.getControllerId());
+    delayedAbility.setSourceObject(sourceObject,game);
+    delayedAbility.getTargets().addAll(source.getTargets());
+    delayedAbility.setSpecialActionId(newAction.getId());
+    UUID delayedAbilityId=game.addDelayedTriggeredAbility(delayedAbility);
+    newAction.addCost(new ManaCostsImpl("{U}"));
+    Effect effect=new RemoveDelayedTriggeredAbilityEffect(delayedAbilityId);
+    newAction.addEffect(effect);
+    effect.setText(sourceObject.getIdName() + " - Pay {U} to remove the triggered ability that deals 3 damage to you at the beginning of your next upkeep step");
+    newAction.addEffect(new RemoveSpecialActionEffect(newAction.getId()));
+    newAction.setSourceId(source.getSourceId());
+    newAction.setControllerId(source.getFirstTarget());
+    newAction.getTargets().addAll(source.getTargets());
+    game.getState().getSpecialActions().add(newAction);
+    return true;
+  }
+  return false;
 }
