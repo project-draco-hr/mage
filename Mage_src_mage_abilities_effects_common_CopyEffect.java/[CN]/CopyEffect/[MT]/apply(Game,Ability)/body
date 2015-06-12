@@ -7,9 +7,13 @@
     permanent=game.getPermanent(this.sourceId);
   }
   if (permanent == null) {
-    discard();
-    return false;
+    permanent=(Permanent)game.getLastKnownInformation(getSourceId(),Zone.BATTLEFIELD,source.getSourceObjectZoneChangeCounter());
+    if (permanent == null) {
+      discard();
+      return false;
+    }
   }
+  permanent.setCopy(true);
   permanent.setName(target.getName());
   permanent.getColor(game).setColor(target.getColor(game));
   permanent.getManaCost().clear();
@@ -47,6 +51,5 @@
     permanent.setCardNumber(((Card)target).getCardNumber());
     permanent.setExpansionSetCode(((Card)target).getExpansionSetCode());
   }
-  permanent.setCopy(true);
   return true;
 }
