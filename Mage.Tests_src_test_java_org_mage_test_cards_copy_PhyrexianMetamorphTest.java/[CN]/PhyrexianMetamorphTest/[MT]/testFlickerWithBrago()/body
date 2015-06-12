@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Zone.HAND,playerA,"Phyrexian Metamorph");
+  addCard(Zone.BATTLEFIELD,playerA,"Brago, King Eternal");
+  addCard(Zone.BATTLEFIELD,playerB,"Maelstrom Wanderer");
+  addCard(Zone.BATTLEFIELD,playerB,"Ponyback Brigade");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Phyrexian Metamorph");
+  setChoice(playerA,"Maelstrom Wanderer");
+  attack(3,playerA,"Brago, King Eternal");
+  addTarget(playerA,"Maelstrom Wanderer");
+  setChoice(playerA,"Ponyback Brigade");
+  setStopAt(3,PhaseStep.END_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,18);
+  assertPermanentCount(playerA,"Ponyback Brigade",1);
+  assertPermanentCount(playerA,"Goblin",3);
+}
