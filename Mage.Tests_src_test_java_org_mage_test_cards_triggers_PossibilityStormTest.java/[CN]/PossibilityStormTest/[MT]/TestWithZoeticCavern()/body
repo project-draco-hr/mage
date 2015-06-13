@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Possibility Storm",2);
+  addCard(Zone.HAND,playerA,"Zoetic Cavern");
+  addCard(Zone.LIBRARY,playerA,"Silvercoat Lion");
+  skipInitShuffling();
+  playLand(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Zoetic Cavern");
+  setChoice(playerA,"Yes");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Zoetic Cavern",0);
+  boolean zoeticCavernInLibrary=false;
+  for (  Card card : playerA.getLibrary().getCards(currentGame)) {
+    if (card.getName().equals("Zoetic Cavern")) {
+      zoeticCavernInLibrary=true;
+    }
+  }
+  Assert.assertEquals("Zoetic Cavern has to be in the library",true,zoeticCavernInLibrary);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+}
