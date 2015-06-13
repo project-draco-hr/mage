@@ -1,0 +1,23 @@
+{
+  addCard(Zone.HAND,playerA,"The Mimeoplasm",1);
+  addCard(Zone.HAND,playerA,"Clone",1);
+  addCard(Zone.GRAVEYARD,playerB,"Silvercoat Lion",1);
+  addCard(Zone.GRAVEYARD,playerB,"Aven Riftwatcher",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",7);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"The Mimeoplasm");
+  setChoice(playerA,"Aven Riftwatcher");
+  setChoice(playerA,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Clone");
+  setChoice(playerA,"Aven Riftwatcher");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertHandCount(playerA,"Clone",0);
+  assertLife(playerA,24);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Aven Riftwatcher",2);
+  assertPowerToughness(playerA,"Aven Riftwatcher",4,5);
+  assertPowerToughness(playerA,"Aven Riftwatcher",2,3);
+  assertGraveyardCount(playerB,0);
+}
