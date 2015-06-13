@@ -1,0 +1,16 @@
+{
+  addCard(Zone.HAND,playerA,"Boom // Bust");
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.HAND,playerB,"Counterspell");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Boom","Mountain^Island");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Counterspell","Boom");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerA,"Boom // Bust",1);
+  assertGraveyardCount(playerB,"Counterspell",1);
+  assertPermanentCount(playerA,"Mountain",2);
+  assertPermanentCount(playerB,"Island",2);
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+}
