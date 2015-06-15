@@ -1,6 +1,7 @@
 {
   super.init(source,game);
-  if (affectedObjectsSet) {
-    affectedObjectList.add(new MageObjectReference(sourceId,game));
+  if (!(target instanceof Permanent) && (target instanceof Card)) {
+    this.target=new PermanentCard((Card)target,source.getControllerId(),game);
   }
+  affectedObjectList.add(new MageObjectReference(getSourceId(),game));
 }

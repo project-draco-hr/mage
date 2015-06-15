@@ -1,3 +1,10 @@
 {
-  return permanent.getId().equals(source.getSourceId());
+  if (permanent.getId().equals(source.getSourceId())) {
+    if (eachCombat) {
+      return true;
+    }
+    AttackedThisTurnWatcher watcher=(AttackedThisTurnWatcher)game.getState().getWatchers().get("AttackedThisTurn");
+    return watcher != null && !watcher.getAttackedThisTurnCreatures().contains(permanent.getId());
+  }
+  return false;
 }

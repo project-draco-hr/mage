@@ -1,16 +1,19 @@
 {
-  Permanent card=game.getPermanent(ability.getSourceId());
-  if (card != null) {
-    if (card.getImprinted().size() > 0) {
-      Card imprinted=game.getCard(card.getImprinted().get(0));
-      if (imprinted != null) {
-        ability.getManaCostsToPay().add(0,new GenericManaCost(imprinted.getManaCost().convertedManaCost()));
+  if (ability instanceof SimpleActivatedAbility) {
+    Permanent sourcePermanent=game.getPermanent(ability.getSourceId());
+    if (sourcePermanent != null) {
+      if (sourcePermanent.getImprinted().size() > 0) {
+        Card imprinted=game.getCard(sourcePermanent.getImprinted().get(0));
+        if (imprinted != null) {
+          ability.getManaCostsToPay().clear();
+          ability.getManaCostsToPay().add(0,new GenericManaCost(imprinted.getManaCost().convertedManaCost()));
+        }
       }
     }
-  }
-  for (  ManaCost cost : ability.getManaCostsToPay()) {
-    if (cost instanceof VariableCost) {
-      cost.setPaid();
+    for (    ManaCost cost : ability.getManaCostsToPay()) {
+      if (cost instanceof VariableCost) {
+        cost.setPaid();
+      }
     }
   }
 }
