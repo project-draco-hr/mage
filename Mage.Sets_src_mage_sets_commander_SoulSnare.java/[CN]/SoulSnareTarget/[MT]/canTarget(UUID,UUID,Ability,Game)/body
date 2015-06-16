@@ -1,0 +1,22 @@
+{
+  if (!super.canTarget(controllerId,id,source,game)) {
+    return false;
+  }
+  for (  CombatGroup group : game.getCombat().getGroups()) {
+    for (    UUID attacker : group.getAttackers()) {
+      if (attacker.equals(id)) {
+        UUID defenderId=group.getDefenderId();
+        if (defenderId.equals(controllerId)) {
+          return true;
+        }
+ else {
+          Permanent permanent=game.getPermanent(defenderId);
+          if (permanent != null && permanent.getCardType().contains(CardType.PLANESWALKER) && permanent.getControllerId().equals(controllerId)) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
