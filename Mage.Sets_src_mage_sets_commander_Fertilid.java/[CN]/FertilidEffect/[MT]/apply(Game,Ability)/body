@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  if (player != null) {
+    if (player.searchLibrary(target,game)) {
+      if (target.getTargets().size() > 0) {
+        for (        UUID cardId : target.getTargets()) {
+          Card card=player.getLibrary().getCard(cardId,game);
+          if (card != null) {
+            player.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId(),tapped);
+          }
+        }
+      }
+      player.shuffleLibrary(game);
+      return true;
+    }
+    if (forceShuffle) {
+      player.shuffleLibrary(game);
+    }
+  }
+  return false;
+}
