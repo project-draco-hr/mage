@@ -7,6 +7,9 @@
   this.getSpellAbility().addEffect(new AttachEffect(Outcome.Benefit));
   Ability ability=new EnchantAbility(auraTarget.getTargetName());
   this.addAbility(ability);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(3,0,Duration.WhileOnBattlefield)));
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(CanAttackOnlyAloneAbility.getInstance(),AttachmentType.AURA)));
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(3,0,Duration.WhileOnBattlefield));
+  Effect effect=new GainAbilityAttachedEffect(CanAttackOnlyAloneAbility.getInstance(),AttachmentType.AURA);
+  effect.setText("and can only attack alone.");
+  ability.addEffect(effect);
+  this.addAbility(ability);
 }
