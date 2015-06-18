@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",4);
+  addCard(Zone.HAND,playerA,"Nourishing Shoal",1);
+  addCard(Zone.HAND,playerA,"Giant Growth",1);
+  addCard(Zone.HAND,playerA,"Through the Breach",1);
+  addCard(Zone.HAND,playerA,"Silvercoat Lion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Nourishing Shoal");
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"Silvercoat Lion");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,21);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Nourishing Shoal",1);
+  assertHandCount(playerA,"Through the Breach",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertAbility(playerA,"Silvercoat Lion",HasteAbility.getInstance(),true);
+  Assert.assertEquals("All available mana has to be used","[]",playerA.getManaAvailable(currentGame).toString());
+}

@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerA,"Searing Blaze",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.HAND,playerA,"Mountain");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  playLand(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Mountain");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Searing Blaze");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Mountain",2);
+  assertGraveyardCount(playerA,"Searing Blaze",1);
+  assertLife(playerA,20);
+  assertLife(playerB,17);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+}

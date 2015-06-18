@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && controller.getLibrary().size() > 0) {
+    Card card=controller.getLibrary().getFromTop(game);
+    if (card == null) {
+      return false;
+    }
+    CardsImpl cards=new CardsImpl();
+    cards.add(card);
+    controller.revealCards("Nissa, Sage Animist",cards,game);
+    if (card.getCardType().contains(CardType.LAND)) {
+      return controller.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+    }
+ else {
+      return controller.moveCards(card,Zone.LIBRARY,Zone.HAND,source,game);
+    }
+  }
+  return true;
+}
