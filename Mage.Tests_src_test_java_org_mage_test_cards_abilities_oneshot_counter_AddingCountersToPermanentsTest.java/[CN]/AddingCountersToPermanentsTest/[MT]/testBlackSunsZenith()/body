@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Witch's Familiar",1);
+  addCard(Zone.HAND,playerA,"Black Sun's Zenith",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Witch's Familiar",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Black Sun's Zenith");
+  setChoice(playerA,"X=2");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Silvercoat Lion",1);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+  assertPermanentCount(playerA,"Witch's Familiar",1);
+  assertPowerToughness(playerA,"Witch's Familiar",0,1);
+  assertPermanentCount(playerB,"Witch's Familiar",1);
+  assertPowerToughness(playerB,"Witch's Familiar",0,1);
+}
