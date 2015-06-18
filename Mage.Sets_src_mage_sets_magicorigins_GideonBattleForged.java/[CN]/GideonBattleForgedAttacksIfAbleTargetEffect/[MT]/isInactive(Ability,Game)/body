@@ -1,0 +1,10 @@
+{
+  Permanent targetPermanent=targetPermanentReference.getPermanent(game);
+  if (targetPermanent == null) {
+    return false;
+  }
+  if (nextTurnTargetController == 0 && startingTurn != game.getTurnNum() && game.getActivePlayerId().equals(targetPermanent.getControllerId())) {
+    nextTurnTargetController=game.getTurnNum();
+  }
+  return game.getPhase().getType() == TurnPhase.END && game.getTurnNum() > nextTurnTargetController;
+}
