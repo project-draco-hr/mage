@@ -1,0 +1,12 @@
+{
+  MageObject sourceObject=source.getSourceObjectIfItStillExists(game);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (sourceObject != null && controller != null) {
+    Card card=(Card)sourceObject;
+    if (controller.moveCards(card,Zone.BATTLEFIELD,Zone.EXILED,source,game)) {
+      game.getState().setValue(TransformAbility.VALUE_KEY_ENTER_TRANSFORMED + source.getSourceId(),Boolean.TRUE);
+      controller.putOntoBattlefieldWithInfo(card,game,Zone.EXILED,source.getSourceId());
+    }
+  }
+  return true;
+}

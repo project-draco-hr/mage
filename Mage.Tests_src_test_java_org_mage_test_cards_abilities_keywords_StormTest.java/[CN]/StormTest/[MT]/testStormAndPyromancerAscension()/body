@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",5);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Pyromancer Ascension",1);
+  addCard(Zone.LIBRARY,playerA,"Grapeshot",2);
+  skipInitShuffling();
+  addCard(Zone.HAND,playerA,"Sleight of Hand");
+  addCard(Zone.HAND,playerA,"Shock",3);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Sleight of Hand");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Shock",playerB);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Shock","targetPlayer=PlayerB","Shock",StackClause.WHILE_NOT_ON_STACK);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Shock","targetPlayer=PlayerB","Shock",StackClause.WHILE_NOT_ON_STACK);
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Grapeshot",playerB);
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerA,"Shock",3);
+  assertGraveyardCount(playerA,"Grapeshot",1);
+  assertCounterCount("Pyromancer Ascension",CounterType.QUEST,2);
+  assertLife(playerB,8);
+}

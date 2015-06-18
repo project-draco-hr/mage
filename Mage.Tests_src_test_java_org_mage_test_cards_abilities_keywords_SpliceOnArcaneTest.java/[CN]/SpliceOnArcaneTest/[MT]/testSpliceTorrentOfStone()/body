@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",2);
+  addCard(Zone.HAND,playerA,"Lava Spike",1);
+  addCard(Zone.HAND,playerA,"Torrent of Stone",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lava Spike",playerB);
+  addTarget(playerA,"Silvercoat Lion");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,17);
+  assertGraveyardCount(playerA,"Lava Spike",1);
+  assertHandCount(playerA,"Torrent of Stone",1);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+  assertPermanentCount(playerA,"Mountain",0);
+  Assert.assertEquals("No more mana available","[]",playerA.getManaAvailable(currentGame).toString());
+}

@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",5);
+  addCard(Zone.HAND,playerA,"Lava Spike",1);
+  addCard(Zone.HAND,playerA,"Through the Breach",1);
+  addCard(Zone.HAND,playerA,"Silvercoat Lion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lava Spike",playerB);
+  setChoice(playerA,"Silvercoat Lion");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,17);
+  assertGraveyardCount(playerA,"Lava Spike",1);
+  assertHandCount(playerA,"Through the Breach",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertAbility(playerA,"Silvercoat Lion",HasteAbility.getInstance(),true);
+  Assert.assertEquals("All available mana has to be used",0,playerA.getManaAvailable(currentGame).size());
+}

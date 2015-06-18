@@ -1,0 +1,13 @@
+{
+  addCard(Zone.LIBRARY,playerA,"Forest");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",6);
+  addCard(Zone.HAND,playerA,"Nissa, Vastwood Seer");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Nissa, Vastwood Seer");
+  playLand(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Forest");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Forest",7);
+  assertPermanentCount(playerA,"Nissa, Vastwood Seer",0);
+  assertPermanentCount(playerA,"Nissa, Sage Animist",1);
+  assertCounterCount("Nissa, Sage Animist",CounterType.LOYALTY,3);
+}
