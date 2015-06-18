@@ -1,16 +1,17 @@
 {
-  Boolean passed=true;
-  Permanent targetPermanent=game.getPermanent(source.getFirstTarget());
+  Permanent targetPermanent=game.getPermanent(getTargetPointer().getFirst(game,source));
   Player controller=game.getPlayer(source.getControllerId());
-  if (targetPermanent != null) {
+  Permanent sourcePermanent=(Permanent)source.getSourceObject(game);
+  if (targetPermanent != null && controller != null && sourcePermanent != null) {
+    Boolean passed=true;
     FilterPermanent filterChoice=new FilterPermanent("a different permanent with the same controller as the target to attach the enchantments to");
     filterChoice.add(new ControllerIdPredicate(targetPermanent.getControllerId()));
     filterChoice.add(Predicates.not(new PermanentIdPredicate(targetPermanent.getId())));
     Target chosenPermanentToAttachAuras=new TargetPermanent(filterChoice);
     chosenPermanentToAttachAuras.setNotTarget(true);
-    LinkedList<UUID> auras=new LinkedList();
+    LinkedList<UUID> auras=new LinkedList<>();
     auras.addAll(targetPermanent.getAttachments());
-    if (controller != null && controller.choose(Outcome.Neutral,chosenPermanentToAttachAuras,source.getSourceId(),game)) {
+    if (controller.choose(Outcome.Neutral,chosenPermanentToAttachAuras,source.getSourceId(),game)) {
       Permanent permanentToAttachAuras=game.getPermanent(chosenPermanentToAttachAuras.getFirstTarget());
       if (permanentToAttachAuras != null) {
         for (        UUID auraId : auras) {
@@ -29,7 +30,7 @@
           }
         }
         if (passed) {
-          LinkedList<UUID> aurasToAttach=new LinkedList();
+          LinkedList<UUID> aurasToAttach=new LinkedList<>();
           aurasToAttach.addAll(auras);
           for (          UUID auraId : aurasToAttach) {
             Permanent auraToAttachToPermanent=game.getPermanent(auraId);
@@ -38,9 +39,10 @@
           }
           return true;
         }
+        game.informPlayers(sourcePermanent.getLogName() + ": No enchantments were moved from the target permanent.");
       }
     }
+    return true;
   }
-  game.informPlayers("Glamer Spinners: No enchantments were moved from the target permanent.");
   return false;
 }
