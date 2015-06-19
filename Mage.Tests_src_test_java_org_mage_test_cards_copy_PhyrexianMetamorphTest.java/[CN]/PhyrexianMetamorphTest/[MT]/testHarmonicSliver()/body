@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Zone.HAND,playerA,"Phyrexian Metamorph");
+  addCard(Zone.BATTLEFIELD,playerB,"Alloy Myr",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Kitesail",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Harmonic Sliver");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Phyrexian Metamorph");
+  setChoice(playerA,"Harmonic Sliver");
+  addTarget(playerA,"Alloy Myr");
+  addTarget(playerA,"Kitesail");
+  setStopAt(1,PhaseStep.END_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Harmonic Sliver",1);
+  assertGraveyardCount(playerB,"Alloy Myr",1);
+  assertGraveyardCount(playerB,"Kitesail",1);
+}
