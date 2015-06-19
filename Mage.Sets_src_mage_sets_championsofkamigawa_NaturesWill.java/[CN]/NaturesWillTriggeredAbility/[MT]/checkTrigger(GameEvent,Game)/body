@@ -1,5 +1,5 @@
 {
-  if (event instanceof DamagedPlayerEvent) {
+  if (event.getType() == EventType.DAMAGED_PLAYER) {
     DamagedPlayerEvent damageEvent=(DamagedPlayerEvent)event;
     Permanent p=game.getPermanent(event.getSourceId());
     if (damageEvent.isCombatDamage() && p != null && p.getControllerId().equals(this.getControllerId())) {
@@ -7,7 +7,7 @@
       damagedPlayers.add(event.getPlayerId());
     }
   }
-  if (event.getType().equals(GameEvent.EventType.COMBAT_DAMAGE_STEP_POST)) {
+  if (event.getType().equals(EventType.COMBAT_DAMAGE_STEP_POST)) {
     if (madeDamge) {
       Set<UUID> damagedPlayersCopy=new HashSet<UUID>();
       damagedPlayersCopy.addAll(damagedPlayers);

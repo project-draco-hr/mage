@@ -1,5 +1,5 @@
 {
-  if (event.getType() == GameEvent.EventType.ENTERS_THE_BATTLEFIELD && !event.getTargetId().equals(this.getSourceId())) {
+  if (!event.getTargetId().equals(this.getSourceId())) {
     Permanent permanent=game.getPermanent(event.getTargetId());
     if (permanent != null && permanent.getControllerId().equals(getControllerId()) && !(permanent instanceof PermanentToken) && permanent.getCardType().contains(CardType.ARTIFACT)) {
       getEffects().get(0).setTargetPointer(new FixedTarget(permanent.getId()));

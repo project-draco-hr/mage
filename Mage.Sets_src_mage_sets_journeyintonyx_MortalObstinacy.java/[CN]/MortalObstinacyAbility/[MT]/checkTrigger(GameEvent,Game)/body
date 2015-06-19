@@ -1,10 +1,5 @@
 {
-  if (event instanceof DamagedPlayerEvent) {
-    DamagedPlayerEvent damageEvent=(DamagedPlayerEvent)event;
-    Permanent damageMakingCreature=game.getPermanent(event.getSourceId());
-    if (damageEvent.isCombatDamage() && damageMakingCreature != null && damageMakingCreature.getAttachments().contains(this.getSourceId())) {
-      return true;
-    }
-  }
-  return false;
+  DamagedPlayerEvent damageEvent=(DamagedPlayerEvent)event;
+  Permanent damageMakingCreature=game.getPermanent(event.getSourceId());
+  return damageEvent.isCombatDamage() && damageMakingCreature != null && damageMakingCreature.getAttachments().contains(this.getSourceId());
 }

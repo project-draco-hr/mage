@@ -1,15 +1,13 @@
 {
-  if (event.getType() == EventType.ZONE_CHANGE) {
-    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
-    if (zEvent.getFromZone() == Zone.BATTLEFIELD && zEvent.getToZone() == Zone.GRAVEYARD && zEvent.getTarget().getCardType().contains(CardType.LAND)) {
-      if (getTargets().size() == 0) {
-        UUID targetId=zEvent.getTarget().getControllerId();
-        for (        Effect effect : this.getEffects()) {
-          effect.setTargetPointer(new FixedTarget(targetId));
-        }
+  ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+  if (zEvent.getFromZone() == Zone.BATTLEFIELD && zEvent.getToZone() == Zone.GRAVEYARD && zEvent.getTarget().getCardType().contains(CardType.LAND)) {
+    if (getTargets().size() == 0) {
+      UUID targetId=zEvent.getTarget().getControllerId();
+      for (      Effect effect : this.getEffects()) {
+        effect.setTargetPointer(new FixedTarget(targetId));
       }
-      return true;
     }
+    return true;
   }
   return false;
 }

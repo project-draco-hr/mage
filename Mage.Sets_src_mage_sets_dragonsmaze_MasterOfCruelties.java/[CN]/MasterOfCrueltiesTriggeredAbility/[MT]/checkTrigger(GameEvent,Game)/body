@@ -1,13 +1,11 @@
 {
-  if (event.getType() == GameEvent.EventType.DECLARED_BLOCKERS) {
-    Permanent sourcePermanent=game.getPermanent(getSourceId());
-    if (sourcePermanent.isAttacking()) {
-      for (      CombatGroup combatGroup : game.getCombat().getGroups()) {
-        if (combatGroup.getBlockers().isEmpty() && combatGroup.getAttackers().contains(getSourceId())) {
-          Player defendingPlayer=game.getPlayer(combatGroup.getDefenderId());
-          if (defendingPlayer != null) {
-            return true;
-          }
+  Permanent sourcePermanent=game.getPermanent(getSourceId());
+  if (sourcePermanent.isAttacking()) {
+    for (    CombatGroup combatGroup : game.getCombat().getGroups()) {
+      if (combatGroup.getBlockers().isEmpty() && combatGroup.getAttackers().contains(getSourceId())) {
+        Player defendingPlayer=game.getPlayer(combatGroup.getDefenderId());
+        if (defendingPlayer != null) {
+          return true;
         }
       }
     }

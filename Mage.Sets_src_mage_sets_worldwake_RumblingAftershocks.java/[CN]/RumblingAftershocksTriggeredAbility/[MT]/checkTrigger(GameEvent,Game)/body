@@ -1,17 +1,15 @@
 {
-  if (event.getType() == GameEvent.EventType.SPELL_CAST) {
-    Spell spell=game.getStack().getSpell(event.getTargetId());
-    if (spell != null && spell.getControllerId().equals(controllerId)) {
-      int damageAmount=0;
-      for (      Ability ability : (Abilities<Ability>)spell.getAbilities()) {
-        if (ability instanceof KickerAbility) {
-          damageAmount+=((KickerAbility)ability).getKickedCounter(game);
-        }
+  Spell spell=game.getStack().getSpell(event.getTargetId());
+  if (spell != null && spell.getControllerId().equals(controllerId)) {
+    int damageAmount=0;
+    for (    Ability ability : spell.getAbilities()) {
+      if (ability instanceof KickerAbility) {
+        damageAmount+=((KickerAbility)ability).getKickedCounter(game);
       }
-      if (damageAmount > 0) {
-        this.getEffects().get(0).setValue("damageAmount",new Integer(damageAmount));
-        return true;
-      }
+    }
+    if (damageAmount > 0) {
+      this.getEffects().get(0).setValue("damageAmount",damageAmount);
+      return true;
     }
   }
   return false;

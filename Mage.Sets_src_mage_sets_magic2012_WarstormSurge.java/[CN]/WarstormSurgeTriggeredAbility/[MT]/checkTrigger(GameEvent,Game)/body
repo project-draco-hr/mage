@@ -1,11 +1,9 @@
 {
-  if (event.getType() == EventType.ENTERS_THE_BATTLEFIELD) {
-    Permanent permanent=game.getPermanent(event.getTargetId());
-    if (permanent.getCardType().contains(CardType.CREATURE) && permanent.getControllerId().equals(this.controllerId)) {
-      Effect effect=this.getEffects().get(0);
-      effect.setValue("damageSource",event.getTargetId());
-      return true;
-    }
+  Permanent permanent=game.getPermanent(event.getTargetId());
+  if (permanent.getCardType().contains(CardType.CREATURE) && permanent.getControllerId().equals(this.controllerId)) {
+    Effect effect=this.getEffects().get(0);
+    effect.setValue("damageSource",event.getTargetId());
+    return true;
   }
   return false;
 }
