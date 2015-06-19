@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  addCard(Zone.HAND,playerB,"Fireball",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",5);
+  addCard(Zone.HAND,playerA,"Bloodhusk Ritualist",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Bloodhusk Ritualist");
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"No");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Bolt","Bloodhusk Ritualist");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  Assert.assertEquals("All mana has to be used","[]",playerA.getManaAvailable(currentGame).toString());
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertGraveyardCount(playerA,"Bloodhusk Ritualist",1);
+  assertGraveyardCount(playerB,"Fireball",2);
+  assertHandCount(playerB,0);
+}
