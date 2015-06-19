@@ -1,15 +1,13 @@
 {
-  if (event instanceof DamagedPlayerEvent) {
-    DamagedPlayerEvent damageEvent=(DamagedPlayerEvent)event;
-    Permanent enchantment=game.getPermanent(getSourceId());
-    if (damageEvent.isCombatDamage() && enchantment != null && enchantment.getAttachedTo().equals(event.getSourceId())) {
-      Permanent creature=game.getPermanent(enchantment.getAttachedTo());
-      if (creature != null) {
-        for (        Effect effect : getEffects()) {
-          effect.setValue("TriggeringCreatureId",creature.getId());
-        }
-        return true;
+  DamagedPlayerEvent damageEvent=(DamagedPlayerEvent)event;
+  Permanent enchantment=game.getPermanent(getSourceId());
+  if (damageEvent.isCombatDamage() && enchantment != null && enchantment.getAttachedTo().equals(event.getSourceId())) {
+    Permanent creature=game.getPermanent(enchantment.getAttachedTo());
+    if (creature != null) {
+      for (      Effect effect : getEffects()) {
+        effect.setValue("TriggeringCreatureId",creature.getId());
       }
+      return true;
     }
   }
   return false;

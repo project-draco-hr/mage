@@ -1,11 +1,9 @@
 {
-  if (event.getType().equals(EventType.ZONE_CHANGE)) {
-    ZoneChangeEvent zce=(ZoneChangeEvent)event;
-    if (zce.isDiesEvent()) {
-      DamagedByWatcher watcher=(DamagedByWatcher)game.getState().getWatchers().get("DamagedByWatcher",this.getSourceId());
-      if (watcher != null) {
-        return watcher.wasDamaged(zce.getTarget(),game);
-      }
+  ZoneChangeEvent zce=(ZoneChangeEvent)event;
+  if (zce.isDiesEvent()) {
+    DamagedByWatcher watcher=(DamagedByWatcher)game.getState().getWatchers().get("DamagedByWatcher",this.getSourceId());
+    if (watcher != null) {
+      return watcher.wasDamaged(zce.getTarget(),game);
     }
   }
   return false;
