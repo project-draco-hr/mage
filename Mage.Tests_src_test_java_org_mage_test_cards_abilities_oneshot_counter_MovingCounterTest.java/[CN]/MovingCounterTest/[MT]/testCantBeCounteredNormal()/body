@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",6);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.HAND,playerA,"Bioshift",1);
+  addCard(Zone.HAND,playerA,"Protean Hydra",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Protean Hydra");
+  setChoice(playerA,"X=4");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Bioshift","Protean Hydra^Silvercoat Lion");
+  setChoice(playerA,"X=2");
+  setStopAt(2,PhaseStep.UPKEEP);
+  execute();
+  assertGraveyardCount(playerA,"Bioshift",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertPowerToughness(playerA,"Silvercoat Lion",4,4);
+  assertPermanentCount(playerA,"Protean Hydra",1);
+  assertPowerToughness(playerA,"Protean Hydra",6,6);
+}

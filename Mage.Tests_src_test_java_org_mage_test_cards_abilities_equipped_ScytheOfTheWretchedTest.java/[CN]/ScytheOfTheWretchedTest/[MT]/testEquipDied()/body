@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Oreskos Swiftclaw",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Scythe of the Wretched");
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Equip {4}","Silvercoat Lion");
+  attack(2,playerB,"Silvercoat Lion");
+  block(2,playerA,"Oreskos Swiftclaw","Silvercoat Lion");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Oreskos Swiftclaw",0);
+  assertPermanentCount(playerB,"Oreskos Swiftclaw",1);
+  assertPowerToughness(playerB,"Oreskos Swiftclaw",5,3);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+}

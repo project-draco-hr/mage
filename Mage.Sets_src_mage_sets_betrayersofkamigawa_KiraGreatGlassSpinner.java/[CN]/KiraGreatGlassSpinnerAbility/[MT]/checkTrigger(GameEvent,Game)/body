@@ -1,17 +1,17 @@
 {
-  if (event.getType() == EventType.TARGETED && event.getTargetId().equals(this.getSourceId())) {
+  if (event.getTargetId().equals(this.getSourceId())) {
     Integer turn=turnUsed.get(event.getTargetId());
-    if (turn == null || turn.intValue() < game.getTurnNum()) {
+    if (turn == null || turn < game.getTurnNum()) {
       this.getTargets().clear();
       TargetStackObject target=new TargetStackObject();
       target.add(event.getSourceId(),game);
       this.addTarget(target);
       if (turnUsed.containsKey(event.getTargetId())) {
         turnUsed.remove(event.getTargetId());
-        turnUsed.put(event.getTargetId(),new Integer(game.getTurnNum()));
+        turnUsed.put(event.getTargetId(),game.getTurnNum());
       }
  else {
-        turnUsed.put(event.getTargetId(),new Integer(game.getTurnNum()));
+        turnUsed.put(event.getTargetId(),game.getTurnNum());
       }
       return true;
     }
