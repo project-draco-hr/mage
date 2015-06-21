@@ -1,0 +1,21 @@
+{
+  CardInfoWindowDialog cardInfoWindowDialog;
+  if (!windowMap.containsKey(name)) {
+    cardInfoWindowDialog=new CardInfoWindowDialog(showType,name);
+    windowMap.put(name,cardInfoWindowDialog);
+    MageFrame.getDesktop().add(cardInfoWindowDialog,JLayeredPane.MODAL_LAYER);
+  }
+ else {
+    cardInfoWindowDialog=windowMap.get(name);
+  }
+  if (cardInfoWindowDialog != null && !cardInfoWindowDialog.isClosed()) {
+switch (showType) {
+case REVEAL:
+      cardInfoWindowDialog.loadCards((CardsView)cardsView,bigCard,gameId);
+    break;
+case LOOKED_AT:
+  cardInfoWindowDialog.loadCards((SimpleCardsView)cardsView,bigCard,gameId);
+break;
+}
+}
+}
