@@ -1,0 +1,39 @@
+{
+  Player controller=game.getPlayer(ability.getControllerId());
+  MageObject sourceObject=game.getObject(ability.getSourceId());
+  if (controller != null) {
+    Set<String> chosenTypes=new HashSet<>();
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      Choice typeChoice=new ChoiceImpl(true);
+      typeChoice.setMessage("Choose a creature type");
+      typeChoice.setChoices(CardRepository.instance.getCreatureTypes());
+      while (!player.choose(Outcome.PutCreatureInPlay,typeChoice,game)) {
+        if (!player.isInGame()) {
+          break;
+        }
+      }
+      String chosenType=typeChoice.getChoice();
+      if (chosenType != null) {
+        game.informPlayers(sourceObject.getName() + ": " + player.getLogName()+ " has chosen "+ chosenType);
+        chosenTypes.add(chosenType);
+      }
+    }
+    List<SubtypePredicate> predicates=new ArrayList<>();
+    for (    String type : chosenTypes) {
+      predicates.add(new SubtypePredicate(type));
+    }
+    FilterCard filter=new FilterCreatureCard();
+    filter.add(Predicates.or(predicates));
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        for (        Card card : player.getGraveyard().getCards(filter,game)) {
+          player.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,ability.getSourceId());
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
