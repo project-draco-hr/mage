@@ -1,9 +1,12 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    Card spellCard=game.getStack().getSpell(source.getSourceId()).getCard();
-    if (spellCard != null) {
-      controller.moveCardToLibraryWithInfo(spellCard,source.getSourceId(),game,Zone.STACK,toTop,true);
+    Spell spell=game.getStack().getSpell(source.getSourceId());
+    if (spell != null) {
+      Card spellCard=game.getStack().getSpell(source.getSourceId()).getCard();
+      if (spellCard != null) {
+        controller.moveCardToLibraryWithInfo(spellCard,source.getSourceId(),game,Zone.STACK,toTop,true);
+      }
     }
     return true;
   }
