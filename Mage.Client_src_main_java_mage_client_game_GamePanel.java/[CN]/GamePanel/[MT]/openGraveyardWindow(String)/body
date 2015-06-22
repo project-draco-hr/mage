@@ -1,0 +1,16 @@
+{
+  if (graveyardWindows.containsKey(playerName)) {
+    CardInfoWindowDialog cardInfoWindowDialog=graveyardWindows.get(playerName);
+    if (cardInfoWindowDialog.isVisible()) {
+      cardInfoWindowDialog.hideDialog();
+    }
+ else {
+      cardInfoWindowDialog.show();
+    }
+    return;
+  }
+  CardInfoWindowDialog newGraveyard=new CardInfoWindowDialog(ShowType.GRAVEYARD,playerName);
+  graveyardWindows.put(playerName,newGraveyard);
+  MageFrame.getDesktop().add(newGraveyard,JLayeredPane.MODAL_LAYER);
+  newGraveyard.loadCards(graveyards.get(playerName),bigCard,gameId);
+}
