@@ -1,8 +1,8 @@
 {
+  this.name=name;
   this.title=name;
   this.showType=showType;
   this.positioned=false;
-  this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
   initComponents();
   this.setModal(false);
 switch (this.showType) {
@@ -13,6 +13,18 @@ break;
 case REVEAL:
 this.setFrameIcon(new ImageIcon(ImageManagerImpl.getInstance().getRevealedImage()));
 this.setClosable(true);
+break;
+case GRAVEYARD:
+this.setFrameIcon(new ImageIcon(ImageHelper.getImageFromResources("/info/grave.png")));
+this.setIconifiable(false);
+this.setClosable(true);
+this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+addWindowListener(new WindowAdapter(){
+@Override public void windowClosing(WindowEvent e){
+CardInfoWindowDialog.this.hideDialog();
+}
+}
+);
 break;
 case EXILE:
 this.setFrameIcon(new ImageIcon(ImageManagerImpl.getInstance().getExileImage()));

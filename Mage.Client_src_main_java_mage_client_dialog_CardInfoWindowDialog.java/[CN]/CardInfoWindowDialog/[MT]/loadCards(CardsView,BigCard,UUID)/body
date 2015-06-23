@@ -1,22 +1,8 @@
 {
-  boolean changed=cards.loadCards(showCards,bigCard,gameId,null);
-  if (showCards.size() > 0) {
-    show();
-    if (changed) {
-      try {
-        if (!positioned) {
-          this.setIcon(false);
-          firstWindowPosition();
-        }
- else {
-        }
-      }
- catch (      PropertyVetoException ex) {
-        Logger.getLogger(CardInfoWindowDialog.class.getName()).log(Level.SEVERE,null,ex);
-      }
-    }
+  cards.loadCards(showCards,bigCard,gameId,null);
+  if (showType.equals(ShowType.GRAVEYARD)) {
+    setTitle(name + "'s Graveyard (" + showCards.size()+ ")");
+    this.setTitelBarToolTip(name);
   }
- else {
-    this.hideDialog();
-  }
+  showAndPositionWindow();
 }
