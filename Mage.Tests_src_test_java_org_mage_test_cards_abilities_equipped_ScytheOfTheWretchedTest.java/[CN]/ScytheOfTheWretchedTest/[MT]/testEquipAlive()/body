@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Soulmender",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Scythe of the Wretched");
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Equip {4}","Silvercoat Lion");
+  attack(2,playerB,"Silvercoat Lion");
+  block(2,playerA,"Soulmender","Silvercoat Lion");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Soulmender",0);
+  assertPermanentCount(playerB,"Soulmender",1);
+  assertPowerToughness(playerB,"Soulmender",3,3);
+  assertPowerToughness(playerB,"Silvercoat Lion",2,2);
+  Permanent silvercoatLion=getPermanent("Silvercoat Lion",playerB.getId());
+  Assert.assertTrue("Silvercoat Lion may not have any attachments",silvercoatLion.getAttachments().isEmpty());
+}

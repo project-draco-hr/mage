@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Serra Angel",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Scythe of the Wretched");
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Equip {4}","Silvercoat Lion");
+  attack(2,playerB,"Silvercoat Lion");
+  block(2,playerA,"Serra Angel","Silvercoat Lion");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Serra Angel",0);
+  assertPermanentCount(playerB,"Serra Angel",1);
+  assertPowerToughness(playerB,"Serra Angel",6,6);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+}

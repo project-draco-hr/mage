@@ -1,0 +1,22 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Serra Angel",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.HAND,playerA,"Disenchant",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Scythe of the Wretched");
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Equip {4}","Silvercoat Lion");
+  attack(2,playerB,"Silvercoat Lion");
+  block(2,playerA,"Serra Angel","Silvercoat Lion");
+  castSpell(2,PhaseStep.COMBAT_DAMAGE,playerA,"Disenchant","Scythe of the Wretched","Whenever a creature dealt damage");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Disenchant",1);
+  assertGraveyardCount(playerB,"Scythe of the Wretched",1);
+  assertPermanentCount(playerA,"Serra Angel",0);
+  assertPermanentCount(playerB,"Serra Angel",1);
+  assertPowerToughness(playerB,"Serra Angel",4,4);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+}

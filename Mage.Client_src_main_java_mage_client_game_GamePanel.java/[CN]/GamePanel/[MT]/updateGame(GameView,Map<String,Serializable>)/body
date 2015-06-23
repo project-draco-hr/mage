@@ -95,6 +95,16 @@
       if (player.getPlayerId().equals(playerId)) {
         updateSkipButtons(player.isPassedTurn(),player.isPassedUntilEndOfTurn(),player.isPassedUntilNextMain(),player.isPassedAllTurns(),player.isPassedUntilStackResolved());
       }
+      graveyards.put(player.getName(),player.getGraveyard());
+      if (graveyardWindows.containsKey(player.getName())) {
+        CardInfoWindowDialog cardInfoWindowDialog=graveyardWindows.get(player.getName());
+        if (cardInfoWindowDialog.isClosed()) {
+          graveyardWindows.remove(player.getName());
+        }
+ else {
+          cardInfoWindowDialog.loadCards(player.getGraveyard(),bigCard,gameId);
+        }
+      }
     }
  else {
       logger.warn("Couldn't find player.");
@@ -130,7 +140,7 @@
   displayStack(game,bigCard,feedbackPanel,gameId);
   for (  ExileView exile : game.getExile()) {
     if (!exiles.containsKey(exile.getId())) {
-      ExileZoneDialog newExile=new ExileZoneDialog();
+      CardInfoWindowDialog newExile=new CardInfoWindowDialog(ShowType.EXILE,exile.getName());
       exiles.put(exile.getId(),newExile);
       MageFrame.getDesktop().add(newExile,JLayeredPane.MODAL_LAYER);
       newExile.show();
