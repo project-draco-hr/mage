@@ -25,6 +25,16 @@
     if (tournamentType.isCubeBooster()) {
       tOptions.getLimitedOptions().setDraftCubeName(this.cbDraftCube.getSelectedItem().toString());
     }
+ else     if (tournamentType.isChaos()) {
+      for (      Integer pack : chaosList.getSelectedIndices()) {
+        String packStr=(String)chaosList.getModel().getElementAt(pack);
+        String code=packStr.substring(0,3);
+        tOptions.getLimitedOptions().getSetCodes().add(code);
+      }
+      if (tOptions.getLimitedOptions().getSetCodes().size() < 2) {
+        return;
+      }
+    }
  else {
       for (      JComboBox pack : packs) {
         tOptions.getLimitedOptions().getSetCodes().add(((ExpansionInfo)pack.getSelectedItem()).getCode());
