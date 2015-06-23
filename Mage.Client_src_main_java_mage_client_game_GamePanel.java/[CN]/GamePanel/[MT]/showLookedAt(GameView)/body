@@ -1,12 +1,6 @@
 {
-  for (  ShowCardsDialog looked : lookedAt.values()) {
-    looked.clearReloaded();
+  for (  LookedAtView lookedAtView : game.getLookedAt()) {
+    handleGameInfoWindow(lookedAt,ShowType.LOOKED_AT,lookedAtView.getName(),lookedAtView.getCards());
   }
-  for (  LookedAtView looked : game.getLookedAt()) {
-    if (!lookedAt.containsKey(looked.getName())) {
-      ShowCardsDialog newLookedAt=new ShowCardsDialog();
-      lookedAt.put(looked.getName(),newLookedAt);
-    }
-    lookedAt.get(looked.getName()).loadCards("Looked at by " + looked.getName(),looked.getCards(),bigCard,Config.dimensions,gameId,false);
-  }
+  removeClosedCardInfoWindows(lookedAt);
 }
