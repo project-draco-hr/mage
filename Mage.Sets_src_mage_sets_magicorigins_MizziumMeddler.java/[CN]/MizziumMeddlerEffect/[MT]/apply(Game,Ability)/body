@@ -1,0 +1,72 @@
+{
+  StackObject stackObject=game.getStack().getStackObject(source.getFirstTarget());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (stackObject != null && sourceObject != null) {
+    Targets targets;
+    Ability sourceAbility;
+    MageObject oldTarget=null;
+    if (stackObject instanceof Spell) {
+      Spell spell=(Spell)stackObject;
+      sourceAbility=spell.getSpellAbility();
+      targets=spell.getSpellAbility().getTargets();
+    }
+ else     if (stackObject instanceof StackAbility) {
+      StackAbility stackAbility=(StackAbility)stackObject;
+      sourceAbility=stackAbility;
+      targets=stackAbility.getTargets();
+    }
+ else {
+      return false;
+    }
+    boolean twoTimesTarget=false;
+    if (targets.size() == 1 && targets.get(0).getTargets().size() == 1) {
+      Target target=targets.get(0);
+      if (target.canTarget(stackObject.getControllerId(),source.getSourceId(),sourceAbility,game)) {
+        oldTarget=game.getObject(targets.getFirstTarget());
+        target.clearChosen();
+        target.addTarget(source.getSourceId(),stackObject.getStackAbility(),game);
+      }
+    }
+ else {
+      Player player=game.getPlayer(source.getControllerId());
+      for (      Target target : targets) {
+        for (        UUID targetId : target.getTargets()) {
+          MageObject object=game.getObject(targetId);
+          String name;
+          if (object == null) {
+            Player targetPlayer=game.getPlayer(targetId);
+            name=targetPlayer.getLogName();
+          }
+ else {
+            name=object.getName();
+          }
+          if (!targetId.equals(source.getSourceId()) && target.getTargets().contains(source.getSourceId())) {
+            twoTimesTarget=true;
+            continue;
+          }
+          if (name != null && player.chooseUse(Outcome.Neutral,new StringBuilder("Change target from ").append(name).append(" to ").append(sourceObject.getName()).append("?").toString(),game)) {
+            if (target.canTarget(stackObject.getControllerId(),source.getSourceId(),sourceAbility,game)) {
+              oldTarget=game.getObject(targets.getFirstTarget());
+              target.remove(targetId);
+              target.addTarget(source.getSourceId(),stackObject.getStackAbility(),game);
+              break;
+            }
+          }
+        }
+      }
+    }
+    if (oldTarget != null) {
+      game.informPlayers(sourceObject.getLogName() + ": Changed target of " + stackObject.getLogName()+ " from "+ oldTarget.getLogName()+ " to "+ sourceObject.getLogName());
+    }
+ else {
+      if (twoTimesTarget) {
+        game.informPlayers(sourceObject.getLogName() + ": Target not changed to " + sourceObject.getLogName()+ " because its not valid to target it twice for "+ stackObject.getName());
+      }
+ else {
+        game.informPlayers(sourceObject.getLogName() + ": Target not changed to " + sourceObject.getLogName()+ " because its no valid target for "+ stackObject.getName());
+      }
+    }
+    return true;
+  }
+  return false;
+}
