@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.HAND,playerA,"Honored Hierarch");
+  addCard(Zone.LIBRARY,playerA,"Veteran's Sidearm");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Honored Hierarch");
+  attack(3,playerA,"Honored Hierarch");
+  attack(5,playerA,"Honored Hierarch");
+  setStopAt(5,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertPowerToughness(playerA,"Honored Hierarch",2,2);
+  assertTapped("Honored Hierarch",false);
+  assertAbility(playerA,"Honored Hierarch",VigilanceAbility.getInstance(),true);
+  assertLife(playerA,20);
+  assertLife(playerB,17);
+}
