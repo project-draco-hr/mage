@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Zone.HAND,playerA,"Chronozoa");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Chronozoa");
+  setStopAt(9,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertGraveyardCount(playerA,1);
+  final List<Permanent> creatures=currentGame.getBattlefield().getAllActivePermanents(CardType.CREATURE);
+  Assert.assertEquals(2,creatures.size());
+  for (  final Permanent creature : creatures) {
+    Assert.assertEquals("Chronozoa",creature.getName());
+    Assert.assertEquals("Chronozoa has to be a token",true,creature instanceof PermanentToken);
+    final Counters counters=creature.getCounters();
+    Assert.assertEquals(1,counters.size());
+    for (    final Counter counter : counters.values()) {
+      Assert.assertEquals(CounterType.TIME.getName(),counter.getName());
+      Assert.assertEquals(2,counter.getCount());
+    }
+  }
+}

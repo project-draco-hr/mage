@@ -1,5 +1,13 @@
 {
-  final Permanent p=game.getPermanent(source.getSourceId());
-  final int timeCounters=p.getCounters().getCount(CounterType.TIME);
-  return timeCounters == 0;
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent == null) {
+    permanent=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+  }
+  if (permanent != null) {
+    final int timeCounters=permanent.getCounters().getCount(CounterType.TIME);
+    return timeCounters == 0;
+  }
+ else {
+    return false;
+  }
 }
