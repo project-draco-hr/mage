@@ -1,0 +1,53 @@
+{
+  if (pnlRandomPacks.getComponentCount() == 0) {
+    DefaultListModel randomListModel=new DefaultListModel();
+    randomList=new JList(randomListModel);
+    randomList.setToolTipText(randomDraftDescription);
+    ExpansionInfo[] allExpansions=ExpansionRepository.instance.getWithBoostersSortedByReleaseDate();
+    for (    ExpansionInfo expansion : allExpansions) {
+      String exp=expansion.getCode() + " - " + expansion.getName();
+      randomListModel.addElement(exp);
+    }
+    randomList.setSelectionModel(new DefaultListSelectionModel(){
+      private boolean mGestureStarted;
+      @Override public void setSelectionInterval(      int index0,      int index1){
+        if (!mGestureStarted) {
+          if (isSelectedIndex(index0)) {
+            super.removeSelectionInterval(index0,index1);
+          }
+ else {
+            if (getSelectionMode() == SINGLE_SELECTION) {
+              super.setSelectionInterval(index0,index1);
+            }
+ else {
+              super.addSelectionInterval(index0,index1);
+            }
+          }
+        }
+        mGestureStarted=getValueIsAdjusting();
+      }
+      @Override public void setValueIsAdjusting(      boolean isAdjusting){
+        super.setValueIsAdjusting(isAdjusting);
+        if (isAdjusting == false) {
+          mGestureStarted=false;
+        }
+      }
+    }
+);
+    String randomPrefs=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PACKS_RANDOM_DRAFT,"");
+    if (randomPrefs.length() > 0) {
+      for (      String exp : randomPrefs.split(";")) {
+        randomList.setSelectedValue(exp,false);
+      }
+    }
+ else {
+      randomList.setSelectionInterval(0,randomListModel.size() - 1);
+    }
+    JScrollPane list1scr=new JScrollPane(randomList);
+    randomList.setVisibleRowCount(4);
+    pnlRandomPacks.add(list1scr);
+  }
+  this.pack();
+  this.revalidate();
+  this.repaint();
+}

@@ -19,11 +19,17 @@
       PreferencesDialog.saveValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PLAYERS_DRAFT,Integer.toString(tOptions.getPlayerTypes().size()));
       PreferencesDialog.saveValue(PreferencesDialog.KEY_NEW_TOURNAMENT_DRAFT_TIMING,draftOptions.getTiming().name());
     }
-  }
-  if (tOptions.getTournamentType().startsWith("Booster")) {
     String deckFile=this.player1Panel.getDeckFile();
     if (deckFile != null && !deckFile.isEmpty()) {
       PreferencesDialog.saveValue(PreferencesDialog.KEY_NEW_TABLE_DECK_FILE,deckFile);
+    }
+    if (tOptions.getLimitedOptions().getIsRandom()) {
+      StringBuilder packlist=new StringBuilder();
+      for (      Object pack : randomList.getSelectedValuesList()) {
+        packlist.append((String)pack);
+        packlist.append(";");
+      }
+      PreferencesDialog.saveValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PACKS_RANDOM_DRAFT,packlist.toString());
     }
   }
   PreferencesDialog.saveValue(PreferencesDialog.KEY_NEW_TOURNAMENT_ALLOW_SPECTATORS,(tOptions.isWatchingAllowed() ? "Yes" : "No"));
