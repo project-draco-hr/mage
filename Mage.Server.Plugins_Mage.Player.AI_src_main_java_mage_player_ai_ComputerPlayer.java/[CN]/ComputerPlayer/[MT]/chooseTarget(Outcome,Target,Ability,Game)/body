@@ -40,7 +40,7 @@
       while (!target.isChosen() && !cardsInHand.isEmpty() && target.getMaxNumberOfTargets() > target.getTargets().size()) {
         Card card=pickBestCard(cardsInHand,null,target,source,game);
         if (card != null) {
-          if (target.canTarget(card.getId(),source,game)) {
+          if (target.canTarget(getId(),card.getId(),source,game)) {
             target.addTarget(card.getId(),source,game);
             cardsInHand.remove(card);
             if (target.isChosen()) {
@@ -54,7 +54,7 @@
       findPlayables(game);
       if (unplayable.size() > 0) {
         for (int i=unplayable.size() - 1; i >= 0; i--) {
-          if (target.canTarget(unplayable.values().toArray(new Card[0])[i].getId(),source,game)) {
+          if (target.canTarget(getId(),unplayable.values().toArray(new Card[0])[i].getId(),source,game)) {
             target.addTarget(unplayable.values().toArray(new Card[0])[i].getId(),source,game);
             if (target.isChosen()) {
               return true;
@@ -64,7 +64,7 @@
       }
       if (hand.size() > 0) {
         for (int i=0; i < hand.size(); i++) {
-          if (target.canTarget(hand.toArray(new UUID[0])[i],source,game)) {
+          if (target.canTarget(getId(),hand.toArray(new UUID[0])[i],source,game)) {
             target.addTarget(hand.toArray(new UUID[0])[i],source,game);
             if (target.isChosen()) {
               return true;
@@ -126,13 +126,13 @@
     }
     if (targets.isEmpty()) {
       if (outcome.isGood()) {
-        if (target.canTarget(abilityControllerId,source,game)) {
+        if (target.canTarget(getId(),abilityControllerId,source,game)) {
           target.addTarget(abilityControllerId,source,game);
           return true;
         }
       }
  else {
-        if (target.canTarget(opponentId,source,game)) {
+        if (target.canTarget(getId(),opponentId,source,game)) {
           target.addTarget(opponentId,source,game);
           return true;
         }
@@ -151,13 +151,13 @@
       }
     }
     if (outcome.isGood()) {
-      if (target.canTarget(abilityControllerId,source,game)) {
+      if (target.canTarget(getId(),abilityControllerId,source,game)) {
         target.addTarget(abilityControllerId,source,game);
         return true;
       }
     }
  else {
-      if (target.canTarget(opponentId,source,game)) {
+      if (target.canTarget(getId(),opponentId,source,game)) {
         target.addTarget(opponentId,source,game);
         return true;
       }
@@ -275,7 +275,7 @@
     targets=game.getBattlefield().getActivePermanents(new FilterPlaneswalkerPermanent(),opponentId,game);
     if (targets != null && !targets.isEmpty()) {
       for (      Permanent planeswalker : targets) {
-        if (target.canTarget(planeswalker.getId(),source,game)) {
+        if (target.canTarget(getId(),planeswalker.getId(),source,game)) {
           target.addTarget(planeswalker.getId(),source,game);
         }
         if (target.isChosen()) {
@@ -284,7 +284,7 @@
       }
     }
     if (!target.isChosen()) {
-      if (target.canTarget(opponentId,source,game)) {
+      if (target.canTarget(getId(),opponentId,source,game)) {
         target.addTarget(opponentId,source,game);
       }
     }

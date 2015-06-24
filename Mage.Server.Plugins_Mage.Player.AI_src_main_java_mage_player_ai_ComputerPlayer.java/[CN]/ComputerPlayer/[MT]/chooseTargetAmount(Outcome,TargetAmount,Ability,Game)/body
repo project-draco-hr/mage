@@ -16,22 +16,22 @@
       targets=threats(opponentId,source.getSourceId(),new FilterCreaturePermanent(),game,target.getTargets());
     }
     for (    Permanent permanent : targets) {
-      if (target.canTarget(permanent.getId(),source,game)) {
+      if (target.canTarget(getId(),permanent.getId(),source,game)) {
         if (permanent.getToughness().getValue() <= target.getAmountRemaining()) {
           target.addTarget(permanent.getId(),permanent.getToughness().getValue(),source,game);
           return true;
         }
       }
     }
-    if (outcome.isGood() && target.canTarget(playerId,playerId,source,game)) {
+    if (outcome.isGood() && target.canTarget(getId(),getId(),source,game)) {
       target.addTarget(opponentId,target.getAmountRemaining(),source,game);
       return true;
     }
- else     if (target.canTarget(playerId,opponentId,source,game)) {
+ else     if (target.canTarget(getId(),opponentId,source,game)) {
       target.addTarget(opponentId,target.getAmountRemaining(),source,game);
       return true;
     }
- else     if (target.canTarget(playerId,playerId,source,game)) {
+ else     if (target.canTarget(getId(),playerId,source,game)) {
       target.addTarget(opponentId,target.getAmountRemaining(),source,game);
       return true;
     }
