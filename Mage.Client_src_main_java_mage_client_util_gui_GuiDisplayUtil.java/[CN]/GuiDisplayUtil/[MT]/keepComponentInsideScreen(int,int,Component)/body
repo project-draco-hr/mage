@@ -1,27 +1,27 @@
 {
-  Dimension screenDim=c.getToolkit().getScreenSize();
-  GraphicsConfiguration g=c.getGraphicsConfiguration();
+  Dimension screenDim=component.getToolkit().getScreenSize();
+  GraphicsConfiguration g=component.getGraphicsConfiguration();
   if (g != null) {
-    Insets insets=c.getToolkit().getScreenInsets(g);
+    Insets insets=component.getToolkit().getScreenInsets(g);
     boolean setLocation=false;
-    if (x + c.getWidth() > screenDim.width - insets.right) {
-      x=(screenDim.width - insets.right) - c.getWidth();
+    if (centerX + component.getWidth() > screenDim.width - insets.right) {
+      centerX=(screenDim.width - insets.right) - component.getWidth();
       setLocation=true;
     }
- else     if (x < insets.left) {
-      x=insets.left;
+ else     if (centerX < insets.left) {
+      centerX=insets.left;
       setLocation=true;
     }
-    if (y + c.getHeight() > screenDim.height - insets.bottom) {
-      y=(screenDim.height - insets.bottom) - c.getHeight();
+    if (centerY + component.getHeight() > screenDim.height - insets.bottom) {
+      centerY=(screenDim.height - insets.bottom) - component.getHeight();
       setLocation=true;
     }
- else     if (y < insets.top) {
-      y=insets.top;
+ else     if (centerY < insets.top) {
+      centerY=insets.top;
       setLocation=true;
     }
     if (setLocation) {
-      c.setLocation(x,y);
+      component.setLocation(centerX,centerY);
     }
   }
  else {
