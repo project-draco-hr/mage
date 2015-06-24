@@ -22,8 +22,19 @@
   }
   if (tournamentType.isLimited()) {
     tOptions.getLimitedOptions().setConstructionTime((Integer)this.spnConstructTime.getValue() * 60);
+    tOptions.getLimitedOptions().setIsRandom(tournamentType.isRandom());
     if (tournamentType.isCubeBooster()) {
       tOptions.getLimitedOptions().setDraftCubeName(this.cbDraftCube.getSelectedItem().toString());
+    }
+ else     if (tournamentType.isRandom()) {
+      for (      Object pack : randomList.getSelectedValuesList()) {
+        String packStr=(String)pack;
+        String code=packStr.substring(0,3);
+        tOptions.getLimitedOptions().getSetCodes().add(code);
+      }
+      if (tOptions.getLimitedOptions().getSetCodes().size() < 2) {
+        return;
+      }
     }
  else {
       for (      JComboBox pack : packs) {

@@ -41,7 +41,9 @@
     if (tournamentType.isDraft()) {
       numPlayers=Integer.parseInt(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PLAYERS_DRAFT,"4"));
       setTournamentOptions(numPlayers);
-      loadBoosterPacks(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PACKS_DRAFT,""));
+      if (!tournamentType.isRandom()) {
+        loadBoosterPacks(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PACKS_DRAFT,""));
+      }
       String draftTiming=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_DRAFT_TIMING,"REGULAR");
       for (      TimingOption timingOption : DraftOptions.TimingOption.values()) {
         if (timingOption.toString().equals(draftTiming)) {
