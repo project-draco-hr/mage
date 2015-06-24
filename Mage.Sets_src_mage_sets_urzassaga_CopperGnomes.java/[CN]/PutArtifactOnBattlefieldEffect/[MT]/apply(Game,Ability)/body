@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null || !player.chooseUse(Outcome.PutCardInPlay,choiceText,game)) {
+    return false;
+  }
+  TargetCardInHand target=new TargetCardInHand(new FilterArtifactCard());
+  if (player.choose(Outcome.PutCardInPlay,target,source.getSourceId(),game)) {
+    Card card=game.getCard(target.getFirstTarget());
+    if (card != null) {
+      player.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId());
+      return true;
+    }
+  }
+  return false;
+}
