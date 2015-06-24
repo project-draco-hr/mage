@@ -12,7 +12,9 @@
       }
  else {
         sizeIndex++;
-        if (sizeIndex == sizes.length)         return endOfData();
+        if (sizeIndex == sizes.length) {
+          return endOfData();
+        }
         symIndex=0;
         numeric=0;
         dir=new File(outDir,sizes[sizeIndex]);
@@ -20,12 +22,20 @@
       }
       String symbol=sym.replaceAll("/","");
       File dst=new File(dir,symbol + ".jpg");
-      if (symbol.equals("T"))       symbol="tap";
- else       if (symbol.equals("Q"))       symbol="untap";
- else       if (symbol.equals("S"))       symbol="snow";
-      String url=format(urlFmt,sizes[sizeIndex],symbol);
-      return new DownloadJob(sym,fromURL(url),toFile(dst));
-    }
-  }
+switch (symbol) {
+case "T":
+        symbol="tap";
+      break;
+case "Q":
+    symbol="untap";
+  break;
+case "S":
+symbol="snow";
+break;
+}
+String url=format(urlFmt,sizes[sizeIndex],symbol);
+return new DownloadJob(sym,fromURL(url),toFile(dst));
+}
+}
 ;
 }

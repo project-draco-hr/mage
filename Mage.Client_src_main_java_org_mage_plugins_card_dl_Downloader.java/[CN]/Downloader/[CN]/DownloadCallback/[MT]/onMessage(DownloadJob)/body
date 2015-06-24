@@ -58,7 +58,17 @@ synchronized (job) {
     }
     job.setState(State.FINISHED);
   }
- catch (  IOException ex) {
+ catch (  ConnectException ex) {
+    String message;
+    if (ex.getMessage() != null) {
+      message=ex.getMessage();
+    }
+ else {
+      message="Unknown error";
+    }
+    logger.warn("Error resource download " + job.getName() + " from "+ job.getSource().toString()+ ": "+ message);
+  }
+catch (  IOException ex) {
     job.setError(ex);
   }
 }
