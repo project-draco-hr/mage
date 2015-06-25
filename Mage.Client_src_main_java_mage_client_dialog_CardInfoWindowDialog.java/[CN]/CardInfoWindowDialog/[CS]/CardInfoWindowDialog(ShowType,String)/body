@@ -14,13 +14,16 @@ case REVEAL:
 this.setFrameIcon(new ImageIcon(ImageManagerImpl.getInstance().getRevealedImage()));
 this.setClosable(true);
 break;
+case REVEAL_TOP_LIBRARY:
+this.setFrameIcon(new ImageIcon(ImageHelper.getImageFromResources("/info/library.png")));
+this.setClosable(true);
+break;
 case GRAVEYARD:
 this.setFrameIcon(new ImageIcon(ImageHelper.getImageFromResources("/info/grave.png")));
-this.setIconifiable(false);
 this.setClosable(true);
 this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-addWindowListener(new WindowAdapter(){
-@Override public void windowClosing(WindowEvent e){
+addInternalFrameListener(new InternalFrameAdapter(){
+@Override public void internalFrameClosing(InternalFrameEvent e){
 CardInfoWindowDialog.this.hideDialog();
 }
 }

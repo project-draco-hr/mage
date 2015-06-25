@@ -6,15 +6,13 @@
   lifeLabel=new JLabel();
   handLabel=new JLabel();
   poisonLabel=new JLabel();
+  graveLabel=new JLabel();
   libraryLabel=new JLabel();
   setOpaque(false);
   panelBackground.setXOffset(3);
   panelBackground.setYOffset(3);
   panelBackground.setVisible(true);
   Image image=ImageHelper.getImageFromResources(DEFAULT_AVATAR_PATH);
-  topCardPanel=Plugins.getInstance().getMageCard(new CardView(CardRepository.instance.findCard("Forest").getMockCard()),bigCard,topCardDimension,gameId,true);
-  topCardPanel.setVisible(false);
-  panelBackground.add(topCardPanel);
   BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
   avatar=new HoverButton("player",resized,resized,resized,r);
   String showPlayerNamePermanently=MageFrame.getPreferences().get(PreferencesDialog.KEY_SHOW_PLAYER_NAMES_PERMANENTLY,"true");
@@ -57,10 +55,15 @@
   libraryLabel.setToolTipText("Library");
   Image imageLibrary=ImageHelper.getImageFromResources("/info/library.png");
   BufferedImage resizedLibrary=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(imageLibrary,BufferedImage.TYPE_INT_ARGB),r);
-  library=new ImagePanel(resizedLibrary,ImagePanel.ACTUAL);
+  library=new HoverButton(null,resizedLibrary,resizedLibrary,resizedLibrary,r);
   library.setToolTipText("Library");
   library.setOpaque(false);
-  graveLabel=new JLabel();
+  library.setObserver(new Command(){
+    @Override public void execute(){
+      btnLibraryActionPerformed(null);
+    }
+  }
+);
   r=new Rectangle(21,21);
   graveLabel.setToolTipText("Graveyard");
   Image imageGrave=ImageHelper.getImageFromResources("/info/grave.png");
