@@ -5,13 +5,9 @@
     int maxCount=0;
     FilterNonlandPermanent filter=new FilterNonlandPermanent("a nonland permanent " + controller.getLogName() + " doesn't control");
     filter.add(Predicates.not(new ControllerIdPredicate(controller.getId())));
-    PlayerList playerList=game.getState().getPlayerList().copy();
-    while (!playerList.get().equals(controller.getId()) && controller.isInGame()) {
-      playerList.getNext();
-    }
-    do {
-      Player player=game.getPlayer(playerList.get());
-      if (player != null && player.isInGame()) {
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
         Target target=new TargetNonlandPermanent(filter);
         target.setNotTarget(true);
         if (player.choose(Outcome.Exile,target,source.getSourceId(),game)) {
@@ -35,7 +31,6 @@
         }
       }
     }
- while (playerList.getNextInRange(controller,game) != controller && controller.isInGame());
     for (    Entry<Permanent,Integer> entry : chosenCards.entrySet()) {
       if (entry.getValue() == maxCount) {
         Permanent permanent=entry.getKey();
