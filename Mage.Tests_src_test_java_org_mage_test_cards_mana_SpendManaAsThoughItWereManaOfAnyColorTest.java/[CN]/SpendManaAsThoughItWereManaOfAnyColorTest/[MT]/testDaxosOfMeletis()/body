@@ -1,0 +1,15 @@
+{
+  addCard(Zone.LIBRARY,playerA,"Moan of the Unhallowed",1);
+  skipInitShuffling();
+  addCard(Zone.BATTLEFIELD,playerB,"Daxos of Meletis",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",4);
+  attack(2,playerB,"Daxos of Meletis");
+  castSpell(2,PhaseStep.POSTCOMBAT_MAIN,playerB,"Moan of the Unhallowed");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,18);
+  assertLife(playerB,24);
+  assertExileCount(playerA,0);
+  assertGraveyardCount(playerA,"Moan of the Unhallowed",1);
+  assertPermanentCount(playerB,"Zombie",2);
+}
