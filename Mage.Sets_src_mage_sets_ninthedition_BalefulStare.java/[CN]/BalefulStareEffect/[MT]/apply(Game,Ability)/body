@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(source.getTargets().getFirstTarget());
+  if (controller != null && targetPlayer != null) {
+    int count=0;
+    for (    Card card : targetPlayer.getHand().getCards(game)) {
+      if (filter.match(card,game)) {
+        count++;
+      }
+    }
+    controller.drawCards(count,game);
+    return true;
+  }
+  return false;
+}
