@@ -29,6 +29,16 @@
     addedTokenPermanent=game.getPermanent(token.getLastAddedToken());
     if (addedTokenPermanent != null) {
       game.copyPermanent(copyFromPermanent,addedTokenPermanent,source,applier);
+      if (additionalCardType != null) {
+        ContinuousEffect effect=new AddCardTypeTargetEffect(additionalCardType,Duration.Custom);
+        effect.setTargetPointer(new FixedTarget(addedTokenPermanent.getId()));
+        game.addEffect(effect,source);
+      }
+      if (gainsHaste) {
+        ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.Custom);
+        effect.setTargetPointer(new FixedTarget(addedTokenPermanent.getId()));
+        game.addEffect(effect,source);
+      }
       return true;
     }
   }

@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerB,"Felhide Spiritbinder",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  attack(2,playerB,"Felhide Spiritbinder");
+  setStopAt(4,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerB,"Silvercoat Lion",1);
+  Permanent lion=getPermanent("Silvercoat Lion",playerB);
+  assertAbility(playerB,"Silvercoat Lion",HasteAbility.getInstance(),true);
+  Assert.assertEquals("token has to have card type enchantment",true,lion.getCardType().contains(CardType.ENCHANTMENT));
+  assertLife(playerA,17);
+  assertLife(playerB,20);
+}
