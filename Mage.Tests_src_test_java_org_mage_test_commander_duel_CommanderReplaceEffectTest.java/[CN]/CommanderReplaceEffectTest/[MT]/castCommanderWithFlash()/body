@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",6);
+  addCard(Zone.HAND,playerB,"Phyrexian Rebirth",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Daxos of Meletis");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Phyrexian Rebirth");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Daxos of Meletis",0);
+  assertGraveyardCount(playerA,"Daxos of Meletis",0);
+  assertPermanentCount(playerB,"Horror",1);
+  assertPowerToughness(playerB,"Horror",1,1);
+}
