@@ -35,7 +35,10 @@
   criteria.rarities(Rarity.LAND).name(landName);
   List<CardInfo> cards=CardRepository.instance.findCards(criteria);
   if (cards.isEmpty()) {
-    return;
+    criteria=new CardCriteria();
+    criteria.rarities(Rarity.LAND).name(landName);
+    criteria.setCodes("M15");
+    cards=CardRepository.instance.findCards(criteria);
   }
   for (int i=0; i < number; i++) {
     Card land=cards.get(random.nextInt(cards.size())).getCard();

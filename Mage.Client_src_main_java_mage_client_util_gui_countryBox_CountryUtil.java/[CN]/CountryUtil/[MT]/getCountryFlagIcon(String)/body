@@ -1,0 +1,17 @@
+{
+  ImageIcon flagIcon=flagIconCache.get(countryCode);
+  if (flagIcon == null) {
+    URL url=CountryUtil.class.getResource("/flags/" + countryCode + (countryCode.endsWith(".png") ? "" : ".png"));
+    if (url != null) {
+      flagIcon=new javax.swing.ImageIcon(url);
+    }
+    if (flagIcon == null || flagIcon.getImage() == null) {
+      logger.warn("Country flag resource not found: " + countryCode);
+      flagIconCache.put(countryCode,flagIcon);
+    }
+ else {
+      flagIconCache.put(countryCode,flagIcon);
+    }
+  }
+  return flagIcon;
+}
