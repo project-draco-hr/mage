@@ -1,0 +1,17 @@
+{
+  for (  Card card : cards) {
+    if (filter.match(card,game)) {
+      final String counterName=counter.getName();
+      if (removeCounter) {
+        final Counter existingCounterOfSameType=card.getCounters(game).get(counterName);
+        final int countersToRemove=Math.min(existingCounterOfSameType.getCount(),counter.getCount());
+        final Counter modifiedCounter=new Counter(counterName,countersToRemove);
+        card.removeCounters(modifiedCounter,game);
+      }
+ else {
+        card.addCounters(counter,game);
+      }
+      if (!game.isSimulation())       game.informPlayers(new StringBuilder(sourceObject.getName()).append(": ").append(controller.getLogName()).append(actionStr).append(counter.getCount()).append(" ").append(counterName.toLowerCase()).append(" counter on ").append(card.getName()).toString());
+    }
+  }
+}
