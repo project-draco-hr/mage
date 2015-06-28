@@ -8,7 +8,7 @@
           Cards cards=new CardsImpl();
           cards.add(permanent);
           controller.lookAtCards("Soulbond",cards,game);
-          if (controller.chooseUse(Outcome.Benefit,"Use Soulbond?",game)) {
+          if (controller.chooseUse(Outcome.Benefit,"Use Soulbond?",null,game)) {
             TargetControlledPermanent target=new TargetControlledPermanent(filter);
             target.setNotTarget(true);
             if (target.canChoose(permanent.getId(),controller.getId(),game)) {
@@ -17,7 +17,9 @@
                 if (chosen != null) {
                   chosen.setPairedCard(permanent.getId());
                   permanent.setPairedCard(chosen.getId());
-                  if (!game.isSimulation())                   game.informPlayers(new StringBuilder(controller.getLogName()).append(" souldbonds ").append(permanent.getLogName()).append(" with ").append(chosen.getName()).toString());
+                  if (!game.isSimulation()) {
+                    game.informPlayers(new StringBuilder(controller.getLogName()).append(" souldbonds ").append(permanent.getLogName()).append(" with ").append(chosen.getName()).toString());
+                  }
                 }
               }
             }
@@ -35,10 +37,12 @@
               Cards cards=new CardsImpl();
               cards.add(chosen);
               controller.lookAtCards("Soulbond",cards,game);
-              if (controller.chooseUse(Outcome.Benefit,"Use Soulbond for recent " + permanent.getLogName() + "?",game)) {
+              if (controller.chooseUse(Outcome.Benefit,"Use Soulbond for recent " + permanent.getLogName() + "?",null,game)) {
                 chosen.setPairedCard(permanent.getId());
                 permanent.setPairedCard(chosen.getId());
-                if (!game.isSimulation())                 game.informPlayers(new StringBuilder(controller.getLogName()).append(" souldbonds ").append(permanent.getLogName()).append(" with ").append(chosen.getName()).toString());
+                if (!game.isSimulation()) {
+                  game.informPlayers(new StringBuilder(controller.getLogName()).append(" souldbonds ").append(permanent.getLogName()).append(" with ").append(chosen.getName()).toString());
+                }
                 break;
               }
             }

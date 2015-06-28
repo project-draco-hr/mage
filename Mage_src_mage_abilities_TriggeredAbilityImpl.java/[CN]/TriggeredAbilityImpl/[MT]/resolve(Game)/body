@@ -1,16 +1,13 @@
 {
-  MageObject object=game.getObject(sourceId);
   if (optional) {
+    MageObject object=game.getObject(getSourceId());
     Player player=game.getPlayer(this.getControllerId());
-    StringBuilder sb=new StringBuilder();
-    if (object != null) {
-      sb.append("Use the following ability from ").append(object.getLogName()).append("? ");
-      sb.append(this.getRule(object.getLogName()));
+    if (player != null) {
+      if (!player.chooseUse(getEffects().get(0).getOutcome(),(object != null ? this.getRule(object.getLogName()) : this.getRule()),this,game)) {
+        return false;
+      }
     }
  else {
-      sb.append("Use the following ability? ").append(this.getRule());
-    }
-    if (!player.chooseUse(getEffects().get(0).getOutcome(),sb.toString(),game)) {
       return false;
     }
   }
