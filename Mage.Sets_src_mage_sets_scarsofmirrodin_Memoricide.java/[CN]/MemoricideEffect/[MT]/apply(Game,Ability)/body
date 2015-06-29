@@ -11,7 +11,10 @@
       }
     }
     String cardName=cardChoice.getChoice();
-    game.informPlayers("Memoricide, named card: [" + cardName + "]");
+    MageObject sourceObject=game.getObject(source.getSourceId());
+    if (sourceObject != null) {
+      game.informPlayers(sourceObject.getName() + " named card: [" + cardName+ "]");
+    }
     for (    Card card : player.getGraveyard().getCards(game)) {
       if (card.getName().equals(cardName)) {
         card.moveToExile(null,"",source.getSourceId(),game);

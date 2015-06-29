@@ -21,43 +21,31 @@
         }
       }
       cardsCount=(cardName.isEmpty() ? 0 : targetPlayer.getHand().count(filter,game));
-      if (cardsCount > 0) {
-        filter.setMessage("card named " + cardName + " in the hand of "+ targetPlayer.getLogName());
-        TargetCard target=new TargetCard(0,cardsCount,Zone.HAND,filter);
-        if (controller.choose(Outcome.Exile,targetPlayer.getHand(),target,game)) {
-          List<UUID> targets=target.getTargets();
-          for (          UUID targetId : targets) {
-            Card targetCard=targetPlayer.getHand().get(targetId,game);
-            if (targetCard != null) {
-              targetPlayer.getHand().remove(targetCard);
-              controller.moveCardToExileWithInfo(targetCard,null,null,source.getSourceId(),game,Zone.HAND,true);
-            }
+      filter.setMessage("card named " + cardName + " in the hand of "+ targetPlayer.getLogName());
+      TargetCard target=new TargetCard(0,cardsCount,Zone.HAND,filter);
+      if (controller.choose(Outcome.Exile,targetPlayer.getHand(),target,game)) {
+        List<UUID> targets=target.getTargets();
+        for (        UUID targetId : targets) {
+          Card targetCard=targetPlayer.getHand().get(targetId,game);
+          if (targetCard != null) {
+            targetPlayer.getHand().remove(targetCard);
+            controller.moveCardToExileWithInfo(targetCard,null,null,source.getSourceId(),game,Zone.HAND,true);
           }
-        }
-      }
- else {
-        if (targetPlayer.getHand().size() > 0) {
-          controller.lookAtCards(targetPlayer.getLogName() + " hand",targetPlayer.getHand(),game);
         }
       }
       Cards cardsInLibrary=new CardsImpl(Zone.LIBRARY);
       cardsInLibrary.addAll(targetPlayer.getLibrary().getCards(game));
       cardsCount=(cardName.isEmpty() ? 0 : cardsInLibrary.count(filter,game));
-      if (cardsCount > 0) {
-        filter.setMessage("card named " + cardName + " in the library of "+ targetPlayer.getLogName());
-        TargetCardInLibrary target=new TargetCardInLibrary(0,cardsCount,filter);
-        if (controller.choose(Outcome.Exile,cardsInLibrary,target,game)) {
-          List<UUID> targets=target.getTargets();
-          for (          UUID targetId : targets) {
-            Card targetCard=targetPlayer.getLibrary().remove(targetId,game);
-            if (targetCard != null) {
-              controller.moveCardToExileWithInfo(targetCard,null,null,source.getSourceId(),game,Zone.LIBRARY,true);
-            }
+      filter.setMessage("card named " + cardName + " in the library of "+ targetPlayer.getLogName());
+      TargetCardInLibrary targetLib=new TargetCardInLibrary(0,cardsCount,filter);
+      if (controller.choose(Outcome.Exile,cardsInLibrary,targetLib,game)) {
+        List<UUID> targets=targetLib.getTargets();
+        for (        UUID targetId : targets) {
+          Card targetCard=targetPlayer.getLibrary().remove(targetId,game);
+          if (targetCard != null) {
+            controller.moveCardToExileWithInfo(targetCard,null,null,source.getSourceId(),game,Zone.LIBRARY,true);
           }
         }
-      }
- else {
-        controller.lookAtCards(targetPlayer.getName() + " library",cardsInLibrary,game);
       }
       targetPlayer.shuffleLibrary(game);
     }
