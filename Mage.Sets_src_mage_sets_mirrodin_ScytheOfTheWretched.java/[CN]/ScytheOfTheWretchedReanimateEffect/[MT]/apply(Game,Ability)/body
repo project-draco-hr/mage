@@ -4,6 +4,9 @@
   if (card != null && controller != null) {
     Zone currentZone=game.getState().getZone(card.getId());
     controller.putOntoBattlefieldWithInfo(card,game,currentZone,source.getSourceId());
+    Effect effect=new AttachEffect(Outcome.AddAbility);
+    effect.setTargetPointer(new FixedTarget(card.getId()));
+    effect.apply(game,source);
     return true;
   }
   return false;
