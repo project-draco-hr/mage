@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.HAND,playerA,"Gilded Drake",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Pillarfield Ox",1);
+  addCard(Zone.HAND,playerB,"Clever Impersonator",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Gilded Drake");
+  addTarget(playerA,"Silvercoat Lion");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Clever Impersonator");
+  setChoice(playerB,"Gilded Drake");
+  addTarget(playerB,"Pillarfield Ox");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Gilded Drake",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertPermanentCount(playerB,"Gilded Drake",1);
+  assertPermanentCount(playerB,"Pillarfield Ox",1);
+}

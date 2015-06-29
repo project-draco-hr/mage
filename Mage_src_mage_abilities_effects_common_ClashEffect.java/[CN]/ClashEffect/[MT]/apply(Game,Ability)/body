@@ -1,6 +1,7 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null && !game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.CLASH,controller.getId(),controller.getId()))) {
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null && !game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.CLASH,controller.getId(),controller.getId()))) {
     Target target=new TargetOpponent(true);
     target.setTargetName("an opponent to clash with");
     if (controller.choose(Outcome.Benefit,target,source.getSourceId(),game)) {
@@ -18,7 +19,7 @@
           Cards cards=new CardsImpl();
           cardController=controller.getLibrary().getFromTop(game);
           cards.add(cardController);
-          controller.revealCards("for clash by " + controller.getLogName(),cards,game);
+          controller.revealCards(sourceObject.getIdName() + ": Clash card of " + controller.getName(),cards,game);
           cmcController=cardController.getManaCost().convertedManaCost();
           message.append(" (").append(cmcController).append(")");
         }
@@ -30,7 +31,7 @@
           Cards cards=new CardsImpl();
           cardOpponent=opponent.getLibrary().getFromTop(game);
           cards.add(cardOpponent);
-          opponent.revealCards("for clash by " + opponent.getLogName(),cards,game);
+          opponent.revealCards(sourceObject.getIdName() + ": Clash card of " + opponent.getName(),cards,game);
           cmcOpponent=cardOpponent.getManaCost().convertedManaCost();
           message.append(" (").append(cmcOpponent).append(")");
         }
@@ -57,10 +58,10 @@
         do {
           Player current=playerList.getCurrent(game);
           if (cardController != null && current.getId().equals(controller.getId())) {
-            topController=current.chooseUse(Outcome.Detriment,"Put " + cardController.getLogName() + " back on top of your library? (otherwise it goes to bottom)",game);
+            topController=current.chooseUse(Outcome.Detriment,"Put " + cardController.getLogName() + " back on top of your library? (otherwise it goes to bottom)",source,game);
           }
           if (cardOpponent != null && current.getId().equals(opponent.getId())) {
-            topOpponent=current.chooseUse(Outcome.Detriment,"Put " + cardOpponent.getLogName() + " back on top of your library? (otherwise it goes to bottom)",game);
+            topOpponent=current.chooseUse(Outcome.Detriment,"Put " + cardOpponent.getLogName() + " back on top of your library? (otherwise it goes to bottom)",source,game);
           }
         }
  while (!playerList.getNext(game).getId().equals(game.getActivePlayerId()));

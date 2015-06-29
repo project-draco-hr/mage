@@ -7,7 +7,7 @@
   newTarget.clearChosen();
   for (  UUID targetId : target.getTargets()) {
     String targetNames=getNamesOftargets(targetId,game);
-    if (targetNames != null && (forceChange || targetController.chooseUse(mode.getEffects().get(0).getOutcome(),"Change this target: " + targetNames + "?",game))) {
+    if (targetNames != null && (forceChange || targetController.chooseUse(mode.getEffects().get(0).getOutcome(),"Change this target: " + targetNames + "?",ability,game))) {
       Set<UUID> possibleTargets=target.possibleTargets(this.getSourceId(),getControllerId(),game);
       if (forceChange && possibleTargets != null && possibleTargets.size() > 1) {
         int iteration=0;
@@ -44,7 +44,7 @@
           again=false;
           tempTarget.clearChosen();
           if (!tempTarget.chooseTarget(mode.getEffects().get(0).getOutcome(),getControllerId(),ability,game)) {
-            if (targetController.chooseUse(Outcome.Benefit,"No target object selected. Reset to original target?",game)) {
+            if (targetController.chooseUse(Outcome.Benefit,"No target object selected. Reset to original target?",ability,game)) {
               newTarget.addTarget(targetId,target.getTargetAmount(targetId),ability,game,false);
             }
  else {

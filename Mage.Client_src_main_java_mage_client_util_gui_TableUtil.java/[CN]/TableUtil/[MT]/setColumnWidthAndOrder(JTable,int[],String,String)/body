@@ -6,9 +6,14 @@
     if (widths != null && widths.length > i) {
       width=widths[i];
     }
-    TableColumn column=table.getColumnModel().getColumn(i++);
-    column.setWidth(width);
-    column.setPreferredWidth(width);
+    if (table.getColumnModel().getColumnCount() >= i) {
+      TableColumn column=table.getColumnModel().getColumn(i++);
+      column.setWidth(width);
+      column.setPreferredWidth(width);
+    }
+ else {
+      break;
+    }
   }
   int[] order=getIntArrayFromString(PreferencesDialog.getCachedValue(orderPrefKey,null));
   if (order != null && order.length == table.getColumnCount()) {

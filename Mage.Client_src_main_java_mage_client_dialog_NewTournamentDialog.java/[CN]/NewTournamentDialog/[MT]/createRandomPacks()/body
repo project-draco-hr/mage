@@ -1,51 +1,38 @@
 {
   if (pnlRandomPacks.getComponentCount() == 0) {
-    DefaultListModel randomListModel=new DefaultListModel();
-    randomList=new JList(randomListModel);
-    randomList.setToolTipText(randomDraftDescription);
-    ExpansionInfo[] allExpansions=ExpansionRepository.instance.getWithBoostersSortedByReleaseDate();
-    for (    ExpansionInfo expansion : allExpansions) {
-      String exp=expansion.getCode() + " - " + expansion.getName();
-      randomListModel.addElement(exp);
+    if (randomPackSelector == null) {
+      randomPackSelector=new RandomPacksSelectorDialog();
     }
-    randomList.setSelectionModel(new DefaultListSelectionModel(){
-      private boolean mGestureStarted;
-      @Override public void setSelectionInterval(      int index0,      int index1){
-        if (!mGestureStarted) {
-          if (isSelectedIndex(index0)) {
-            super.removeSelectionInterval(index0,index1);
-          }
+    txtRandomPacks=new JTextArea();
+    txtRandomPacks.setEnabled(false);
+    txtRandomPacks.setLineWrap(true);
+    String randomPrefs=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PACKS_RANDOM_DRAFT,"");
+    if (randomPrefs.length() > 0) {
+      txtRandomPacks.setText(randomPrefs);
+      ArrayList<String> theList=new ArrayList<>();
+      theList.addAll(Arrays.asList(randomPrefs.split(";")));
+      randomPackSelector.setSelectedPacks(theList);
+    }
  else {
-            if (getSelectionMode() == SINGLE_SELECTION) {
-              super.setSelectionInterval(index0,index1);
-            }
- else {
-              super.addSelectionInterval(index0,index1);
-            }
-          }
-        }
-        mGestureStarted=getValueIsAdjusting();
+      ExpansionInfo[] allExpansions=ExpansionRepository.instance.getWithBoostersSortedByReleaseDate();
+      StringBuilder packList=new StringBuilder();
+      for (      ExpansionInfo exp : allExpansions) {
+        packList.append(exp.getCode());
+        packList.append(";");
       }
-      @Override public void setValueIsAdjusting(      boolean isAdjusting){
-        super.setValueIsAdjusting(isAdjusting);
-        if (isAdjusting == false) {
-          mGestureStarted=false;
-        }
+      txtRandomPacks.setText(packList.toString());
+    }
+    pnlRandomPacks.add(txtRandomPacks);
+    JButton btnSelectRandomPacks=new JButton();
+    btnSelectRandomPacks.setText("Select packs to be included in the pool");
+    btnSelectRandomPacks.setToolTipText(RandomPacksSelectorDialog.randomDraftDescription);
+    btnSelectRandomPacks.addActionListener(new java.awt.event.ActionListener(){
+      @Override public void actionPerformed(      java.awt.event.ActionEvent evt){
+        showRandomPackSelectorDialog();
       }
     }
 );
-    String randomPrefs=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_TOURNAMENT_PACKS_RANDOM_DRAFT,"");
-    if (randomPrefs.length() > 0) {
-      for (      String exp : randomPrefs.split(";")) {
-        randomList.setSelectedValue(exp,false);
-      }
-    }
- else {
-      randomList.setSelectionInterval(0,randomListModel.size() - 1);
-    }
-    JScrollPane list1scr=new JScrollPane(randomList);
-    randomList.setVisibleRowCount(4);
-    pnlRandomPacks.add(list1scr);
+    pnlRandomPacks.add(btnSelectRandomPacks);
   }
   this.pack();
   this.revalidate();

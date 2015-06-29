@@ -1,0 +1,16 @@
+{
+  User user=UserManager.getInstance().findUser(userName);
+  if (user != null) {
+    if (user.getUserData() == null || user.getUserData().getGroupId() == UserGroup.DEFAULT.getGroupId()) {
+      user.setUserData(userData);
+    }
+ else {
+      user.getUserData().update(userData);
+    }
+    if (user.getUserData().getAvatarId() == 51) {
+      user.getUserData().setAvatarId(updateAvatar(user.getName()));
+    }
+    return true;
+  }
+  return false;
+}

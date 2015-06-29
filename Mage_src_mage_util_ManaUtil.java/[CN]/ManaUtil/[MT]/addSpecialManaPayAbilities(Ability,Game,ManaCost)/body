@@ -1,4 +1,8 @@
 {
+  MageObject baseObject=game.getPermanent(source.getSourceId());
+  if (baseObject == null) {
+    baseObject=game.getCard(source.getSourceId());
+  }
   MageObject mageObject=source.getSourceObject(game);
   if (mageObject instanceof Card) {
     for (    Ability ability : ((Card)mageObject).getAbilities(game)) {
@@ -6,7 +10,12 @@
         ((AlternateManaPaymentAbility)ability).addSpecialAction(source,game,unpaid);
       }
     }
-    return unpaid.getText() + "<div style='font-size:11pt'>" + mageObject.getLogName()+ "</div>";
+    if (baseObject == null) {
+      baseObject=mageObject;
+    }
+  }
+  if (baseObject != null) {
+    return unpaid.getText() + "<div style='font-size:11pt'>" + baseObject.getLogName()+ "</div>";
   }
  else {
     return unpaid.getText();

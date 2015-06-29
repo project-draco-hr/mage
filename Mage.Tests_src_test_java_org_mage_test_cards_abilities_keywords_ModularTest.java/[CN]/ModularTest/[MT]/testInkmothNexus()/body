@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Inkmoth Nexus");
+  addCard(Zone.HAND,playerA,"Arcbound Ravager");
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Arcbound Ravager");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{1}: {this} becomes");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Lightning Bolt","Arcbound Ravager");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerA,"Arcbound Ravager",1);
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertCounterCount("Inkmoth Nexus",CounterType.P1P1,1);
+}
