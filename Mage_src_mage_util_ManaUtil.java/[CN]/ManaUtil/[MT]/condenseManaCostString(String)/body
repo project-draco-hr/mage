@@ -1,0 +1,27 @@
+{
+  int total=0;
+  int index=0;
+  String[] splitCost=rawCost.replace("{","").replace("}"," ").split(" ");
+  Arrays.sort(splitCost);
+  for (  String c : splitCost) {
+    if (c.matches("\\d+")) {
+      total+=Integer.parseInt(c);
+    }
+ else {
+      break;
+    }
+    index++;
+  }
+  int splitCostLength=splitCost.length;
+  int shift=(total > 0) ? 1 : 0;
+  String[] finalCost=new String[shift + splitCostLength - index];
+  if (total > 0) {
+    finalCost[0]=String.valueOf(total);
+  }
+  System.arraycopy(splitCost,index,finalCost,shift,splitCostLength - index);
+  StringBuilder sb=new StringBuilder();
+  for (  String s : finalCost) {
+    sb.append("{" + s + "}");
+  }
+  return sb.toString();
+}

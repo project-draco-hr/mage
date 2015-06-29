@@ -1,0 +1,23 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Battlefield Thaumaturge");
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",4);
+  addCard(Zone.HAND,playerA,"Curse of the Swine");
+  String[] opponentsCreatures={"Fleecemane Lion","Sedge Scorpion","Boon Satyr","Bronze Sable"};
+  for (  String creature : opponentsCreatures) {
+    addCard(Zone.BATTLEFIELD,playerB,creature);
+  }
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Curse of the Swine");
+  setChoice(playerA,"X=4");
+  addTarget(playerA,createTargetingString(opponentsCreatures));
+  setStopAt(1,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  for (  String creature : opponentsCreatures) {
+    assertPermanentCount(playerB,creature,0);
+    assertGraveyardCount(playerB,creature,0);
+    assertExileCount(creature,1);
+  }
+  assertPermanentCount(playerB,"Boar",4);
+  assertTappedCount("Island",true,2);
+  assertTappedCount("Plains",false,4);
+}

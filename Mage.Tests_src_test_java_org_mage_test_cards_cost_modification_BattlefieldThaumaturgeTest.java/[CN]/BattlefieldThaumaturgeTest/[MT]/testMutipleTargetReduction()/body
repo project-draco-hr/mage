@@ -1,0 +1,28 @@
+{
+  String[] playerACreatures={"Battlefield Thaumaturge","Sedge Scorpion","Boon Satyr"};
+  String[] playerBCreatures={"Agent of Horizons","Blood-Toll Harpy","Anvilwrought Raptor"};
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",4);
+  for (  String creature : playerACreatures) {
+    addCard(Zone.BATTLEFIELD,playerA,creature);
+  }
+  addCard(Zone.HAND,playerA,"Descent of the Dragons");
+  for (  String creature : playerBCreatures) {
+    addCard(Zone.BATTLEFIELD,playerB,creature);
+  }
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Descent of the Dragons",createTargetingString(playerACreatures) + "^" + createTargetingString(playerBCreatures));
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  for (  String creature : playerACreatures) {
+    assertPermanentCount(playerA,creature,0);
+    assertGraveyardCount(playerA,creature,1);
+  }
+  for (  String creature : playerBCreatures) {
+    assertPermanentCount(playerB,creature,0);
+    assertGraveyardCount(playerB,creature,1);
+  }
+  assertPermanentCount(playerA,"Dragon",3);
+  assertPermanentCount(playerB,"Dragon",3);
+  assertTappedCount("Mountain",true,2);
+  assertTappedCount("Swamp",false,4);
+}

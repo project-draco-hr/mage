@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Battlefield Thaumaturge");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",5);
+  addCard(Zone.HAND,playerA,"Spectra Ward");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Spectra Ward","Battlefield Thaumaturge");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Battlefield Thaumaturge",1);
+  assertPermanentCount(playerA,"Spectra Ward",1);
+  Permanent battlefieldThaumaturge=getPermanent("Battlefield Thaumaturge",playerA.getId());
+  Assert.assertTrue("Battlefield Thaumaturge must have hexproof",battlefieldThaumaturge.getAbilities().contains(HexproofAbility.getInstance()));
+  assertTappedCount("Plains",true,5);
+}
