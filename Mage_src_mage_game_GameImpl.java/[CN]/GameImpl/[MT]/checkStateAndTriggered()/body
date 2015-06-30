@@ -1,15 +1,13 @@
 {
-  boolean trigger=!getTurn().isEndTurnRequested();
   boolean somethingHappened=false;
   while (!isPaused() && !gameOver(null)) {
     if (!checkStateBasedActions()) {
-      if (trigger) {
-        state.handleSimultaneousEvent(this);
-      }
-      if (isPaused() || gameOver(null) || !trigger|| !checkTriggered()) {
+      state.handleSimultaneousEvent(this);
+      if (isPaused() || gameOver(null) || getTurn().isEndTurnRequested()|| !checkTriggered()) {
         break;
       }
     }
+    state.handleSimultaneousEvent(this);
     applyEffects();
     somethingHappened=true;
   }
