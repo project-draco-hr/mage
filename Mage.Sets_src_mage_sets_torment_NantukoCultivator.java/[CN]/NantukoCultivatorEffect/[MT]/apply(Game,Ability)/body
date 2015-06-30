@@ -1,0 +1,20 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    TargetCardInHand toDiscard=new TargetCardInHand(0,Integer.MAX_VALUE,new FilterLandCard());
+    if (player.chooseTarget(Outcome.Discard,toDiscard,source,game)) {
+      int count=0;
+      for (      UUID targetId : toDiscard.getTargets()) {
+        player.discard(game.getCard(targetId),source,game);
+        count++;
+      }
+      Permanent permanent=game.getPermanent(source.getSourceId());
+      if (permanent != null) {
+        permanent.addCounters(CounterType.P1P1.createInstance(count),game);
+      }
+      player.drawCards(count,game);
+    }
+    return true;
+  }
+  return false;
+}

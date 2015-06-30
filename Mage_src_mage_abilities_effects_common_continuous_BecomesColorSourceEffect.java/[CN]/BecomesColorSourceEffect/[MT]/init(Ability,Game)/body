@@ -1,0 +1,25 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return;
+  }
+  if (setColor == null) {
+    ChoiceColor choice=new ChoiceColor();
+    while (!choice.isChosen()) {
+      controller.choose(Outcome.PutManaInPool,choice,game);
+      if (!controller.isInGame()) {
+        return;
+      }
+    }
+    if (choice.getColor() != null) {
+      setColor=choice.getColor();
+    }
+ else {
+      return;
+    }
+    if (!game.isSimulation()) {
+      game.informPlayers(controller.getLogName() + " has chosen the color: " + setColor.toString());
+    }
+  }
+  super.init(source,game);
+}
