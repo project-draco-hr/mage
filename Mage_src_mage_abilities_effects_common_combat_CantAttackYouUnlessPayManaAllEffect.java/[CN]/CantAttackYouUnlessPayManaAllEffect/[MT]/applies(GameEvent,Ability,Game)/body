@@ -1,0 +1,18 @@
+{
+  if (filterCreaturePermanent != null) {
+    Permanent permanent=game.getPermanent(event.getSourceId());
+    if (!filterCreaturePermanent.match(permanent,source.getSourceId(),source.getControllerId(),game)) {
+      return false;
+    }
+  }
+  if (source.getControllerId().equals(event.getTargetId())) {
+    return true;
+  }
+  if (payAlsoForAttackingPlaneswalker) {
+    Permanent permanent=game.getPermanent(event.getTargetId());
+    if (permanent != null && permanent.getCardType().contains(CardType.PLANESWALKER) && permanent.getControllerId().equals(source.getControllerId())) {
+      return true;
+    }
+  }
+  return false;
+}

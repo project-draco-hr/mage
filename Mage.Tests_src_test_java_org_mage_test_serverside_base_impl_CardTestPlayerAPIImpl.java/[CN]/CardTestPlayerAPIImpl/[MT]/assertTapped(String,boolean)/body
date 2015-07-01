@@ -2,7 +2,13 @@
   Permanent found=null;
   for (  Permanent permanent : currentGame.getBattlefield().getAllActivePermanents()) {
     if (permanent.getName().equals(cardName)) {
-      found=permanent;
+      if (found == null) {
+        found=permanent;
+      }
+ else       if (tapped != found.isTapped()) {
+        found=permanent;
+        break;
+      }
     }
   }
   Assert.assertNotNull("There is no such permanent on the battlefield, cardName=" + cardName,found);
