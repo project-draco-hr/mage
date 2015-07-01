@@ -9,6 +9,9 @@
           UUID attackingCreatureId=requirementEntry.getKey().mustBlockAttacker(ability,game);
           Player defender=game.getPlayer(possibleBlocker.getControllerId());
           if (attackingCreatureId != null && defender != null && possibleBlocker.canBlock(attackingCreatureId,game)) {
+            if (game.getContinuousEffects().checkIfThereArePayCostToAttackBlockEffects(GameEvent.getEvent(GameEvent.EventType.DECLARE_BLOCKER,attackingCreatureId,possibleBlocker.getId(),possibleBlocker.getControllerId()),game)) {
+              continue;
+            }
             if (creatureMustBlockAttackers.containsKey(possibleBlocker.getId())) {
               creatureMustBlockAttackers.get(possibleBlocker.getId()).add(attackingCreatureId);
             }
