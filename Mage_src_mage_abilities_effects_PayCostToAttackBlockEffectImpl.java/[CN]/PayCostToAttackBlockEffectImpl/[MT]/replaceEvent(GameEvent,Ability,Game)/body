@@ -1,23 +1,11 @@
 {
-  Player player=game.getPlayer(event.getPlayerId());
-  Cost attackBlockTax=getCostToPay(event,source,game);
-  if (player != null && attackBlockTax != null) {
-    String chooseText;
-    if (event.getType().equals(GameEvent.EventType.DECLARE_ATTACKER)) {
-      chooseText="Pay " + attackBlockTax.getText() + " to attack?";
-    }
- else {
-      chooseText="Pay " + attackBlockTax.getText() + " to block?";
-    }
-    if (attackBlockTax.canPay(source,source.getSourceId(),player.getId(),game) && player.chooseUse(Outcome.Neutral,chooseText,source,game)) {
-      if (attackBlockTax instanceof ManaCostImpl) {
-        ManaCostsImpl manaCosts=new ManaCostsImpl(attackBlockTax.getText());
-        if (manaCosts.payOrRollback(source,game,source.getSourceId(),event.getPlayerId())) {
-          return false;
-        }
-      }
-    }
-    return true;
+  ManaCosts attackBlockManaTax=getManaCostToPay(event,source,game);
+  if (attackBlockManaTax != null) {
+    return handleManaCosts(attackBlockManaTax,event,source,game);
+  }
+  Cost attackBlockOtherTax=getOtherCostToPay(event,source,game);
+  if (attackBlockOtherTax != null) {
+    return handleOtherCosts(attackBlockOtherTax,event,source,game);
   }
   return false;
 }

@@ -18,21 +18,33 @@
       }
     }
     if (mustAttack) {
-      creaturesForcedToAttack.put(creature.getId(),defendersForcedToAttack);
-      if (defendersForcedToAttack.isEmpty()) {
-        if (defenders.size() == 1) {
-          player.declareAttacker(creature.getId(),defenders.iterator().next(),game,false);
-        }
- else {
-          TargetDefender target=new TargetDefender(defenders,creature.getId());
-          target.setRequired(true);
-          if (player.chooseTarget(Outcome.Damage,target,null,game)) {
-            player.declareAttacker(creature.getId(),target.getFirstTarget(),game,false);
-          }
+      HashSet<UUID> defendersCostlessAttackable=new HashSet<>();
+      defendersCostlessAttackable.addAll(defenders);
+      for (      UUID defenderId : defenders) {
+        if (game.getContinuousEffects().checkIfThereArePayCostToAttackBlockEffects(GameEvent.getEvent(GameEvent.EventType.DECLARE_ATTACKER,defenderId,creature.getId(),creature.getControllerId()),game)) {
+          defendersCostlessAttackable.remove(defenderId);
+          defendersForcedToAttack.remove(defenderId);
         }
       }
+      if (!defendersCostlessAttackable.isEmpty()) {
+        if (defendersForcedToAttack.isEmpty()) {
+          creaturesForcedToAttack.put(creature.getId(),defendersForcedToAttack);
+          if (defendersForcedToAttack.isEmpty()) {
+            if (defendersCostlessAttackable.size() == 1) {
+              player.declareAttacker(creature.getId(),defenders.iterator().next(),game,false);
+            }
+          }
  else {
-        player.declareAttacker(creature.getId(),defendersForcedToAttack.iterator().next(),game,false);
+            TargetDefender target=new TargetDefender(defendersCostlessAttackable,creature.getId());
+            target.setRequired(true);
+            if (player.chooseTarget(Outcome.Damage,target,null,game)) {
+              player.declareAttacker(creature.getId(),target.getFirstTarget(),game,false);
+            }
+          }
+        }
+ else {
+          player.declareAttacker(creature.getId(),defendersForcedToAttack.iterator().next(),game,false);
+        }
       }
     }
   }
