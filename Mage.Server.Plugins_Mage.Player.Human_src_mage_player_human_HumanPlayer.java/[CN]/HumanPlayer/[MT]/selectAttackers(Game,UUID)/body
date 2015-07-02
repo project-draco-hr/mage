@@ -14,9 +14,28 @@
       }
     }
     options.put(Constants.Option.POSSIBLE_ATTACKERS,(Serializable)possibleAttackers);
+    if (possibleAttackers.size() > 0) {
+      options.put(Constants.Option.SPECIAL_BUTTON,(Serializable)"All attack");
+    }
     game.fireSelectEvent(playerId,"Select attackers",options);
     waitForResponse(game);
-    if (response.getBoolean() != null) {
+    if (response.getString() != null && response.getString().equals("special")) {
+      setStoredBookmark(game.bookmarkState());
+      UUID attackedDefender=null;
+      if (game.getCombat().getDefenders().size() > 1) {
+        attackedDefender=selectDefenderForAllAttack(game.getCombat().getDefenders(),game);
+      }
+ else       if (game.getCombat().getDefenders().size() == 1) {
+        attackedDefender=game.getCombat().getDefenders().iterator().next();
+      }
+      for (      Permanent attacker : game.getBattlefield().getAllActivePermanents(filterCreatureForCombat,getId(),game)) {
+        if (game.getContinuousEffects().checkIfThereArePayCostToAttackBlockEffects(GameEvent.getEvent(GameEvent.EventType.DECLARE_ATTACKER,attackedDefender,attacker.getId(),attacker.getControllerId()),game)) {
+          continue;
+        }
+        declareAttacker(attacker.getId(),attackedDefender,game,true);
+      }
+    }
+ else     if (response.getBoolean() != null) {
       if (!game.getCombat().getCreaturesForcedToAttack().isEmpty()) {
         if (!game.getCombat().getAttackers().containsAll(game.getCombat().getCreaturesForcedToAttack().keySet())) {
           int forcedAttackers=0;
