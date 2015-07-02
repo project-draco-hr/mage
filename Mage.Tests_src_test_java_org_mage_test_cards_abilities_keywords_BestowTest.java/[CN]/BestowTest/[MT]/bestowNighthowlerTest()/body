@@ -1,0 +1,21 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",4);
+  addCard(Zone.HAND,playerA,"Chandra's Outrage");
+  addCard(Zone.HAND,playerB,"Nighthowler");
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  addCard(Zone.GRAVEYARD,playerB,"Pillarfield Ox");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Nighthowler using bestow","Silvercoat Lion");
+  attack(2,playerB,"Silvercoat Lion");
+  castSpell(2,PhaseStep.POSTCOMBAT_MAIN,playerA,"Chandra's Outrage","Silvercoat Lion");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerB,18);
+  assertLife(playerA,17);
+  assertGraveyardCount(playerA,"Chandra's Outrage",1);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+  assertPermanentCount(playerB,"Nighthowler",1);
+  assertPowerToughness(playerB,"Nighthowler",2,2);
+  Permanent nighthowler=getPermanent("Nighthowler",playerB);
+  Assert.assertEquals("Nighthowler has to be a creature",true,nighthowler.getCardType().contains(CardType.CREATURE));
+}
