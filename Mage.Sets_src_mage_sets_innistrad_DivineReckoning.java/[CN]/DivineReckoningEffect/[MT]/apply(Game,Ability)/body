@@ -2,9 +2,9 @@
   List<Card> chosen=new ArrayList<>();
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    for (    UUID playerId : controller.getInRange()) {
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
       Player player=game.getPlayer(playerId);
-      Target target=new TargetControlledPermanent(1,1,new FilterControlledCreaturePermanent(),false);
+      Target target=new TargetControlledPermanent(1,1,new FilterControlledCreaturePermanent(),true);
       if (target.canChoose(player.getId(),game)) {
         while (player.isInGame() && !target.isChosen() && target.canChoose(player.getId(),game)) {
           player.chooseTarget(Outcome.Benefit,target,source,game);
