@@ -3,8 +3,9 @@
   if (controller != null) {
     Permanent permanent=game.getPermanent(source.getSourceId());
     if (permanent != null) {
+      int zcc=game.getState().getZoneChangeCounter(permanent.getId());
       if (controller.moveCardToExileWithInfo(permanent,source.getSourceId(),permanent.getIdName(),source.getSourceId(),game,Zone.BATTLEFIELD,true)) {
-        AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Zone.BATTLEFIELD));
+        AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnToBattlefieldUnderOwnerControlSourceEffect(false,zcc + 1));
         delayedAbility.setSourceId(source.getSourceId());
         delayedAbility.setControllerId(source.getControllerId());
         delayedAbility.setSourceObject(source.getSourceObject(game),game);

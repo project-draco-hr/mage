@@ -2,17 +2,7 @@
   Player player=game.getPlayer(source.getControllerId());
   if (player != null) {
     if (player.flipCoin(game)) {
-      Permanent perm=game.getPermanent(source.getSourceId());
-      if (perm != null) {
-        UUID exileZoneId=UUID.randomUUID();
-        perm.moveToExile(exileZoneId,perm.getName(),source.getSourceId(),game);
-        AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(exileZoneId,Zone.BATTLEFIELD));
-        delayedAbility.setSourceId(source.getSourceId());
-        delayedAbility.setControllerId(source.getControllerId());
-        delayedAbility.setSourceObject(source.getSourceObject(game),game);
-        game.addDelayedTriggeredAbility(delayedAbility);
-      }
-      return true;
+      return new ExileReturnToBattlefieldOwnerNextEndStepEffect().apply(game,source);
     }
  else {
       Permanent perm=game.getPermanent(source.getSourceId());
