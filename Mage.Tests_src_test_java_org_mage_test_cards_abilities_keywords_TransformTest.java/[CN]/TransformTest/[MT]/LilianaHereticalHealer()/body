@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.HAND,playerA,"Liliana, Heretical Healer");
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Liliana, Heretical Healer");
+  castSpell(1,PhaseStep.BEGIN_COMBAT,playerB,"Lightning Bolt","Silvercoat Lion");
+  setStopAt(1,PhaseStep.DECLARE_ATTACKERS);
+  execute();
+  assertGraveyardCount(playerA,"Silvercoat Lion",1);
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertPermanentCount(playerA,"Liliana, Heretical Healer",0);
+  assertPermanentCount(playerA,"Liliana, Defiant Necromancer",1);
+  assertCounterCount("Liliana, Defiant Necromancer",CounterType.LOYALTY,3);
+}

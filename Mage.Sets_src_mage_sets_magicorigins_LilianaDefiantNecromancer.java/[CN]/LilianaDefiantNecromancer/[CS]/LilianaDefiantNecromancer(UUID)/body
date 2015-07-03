@@ -1,0 +1,14 @@
+{
+  super(ownerId,106,"Liliana, Defiant Necromancer",Rarity.MYTHIC,new CardType[]{CardType.PLANESWALKER},"");
+  this.expansionSetCode="ORI";
+  this.subtype.add("Liliana");
+  this.color.setBlack(true);
+  this.nightCard=true;
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.LOYALTY.createInstance(3)),false));
+  this.addAbility(new LoyaltyAbility(new DiscardEachPlayerEffect(1,false),2));
+  Ability ability=new LoyaltyAbility(new ReturnFromGraveyardToBattlefieldTargetEffect());
+  ability2Id=ability.getOriginalId();
+  ability.addTarget(new TargetCardInYourGraveyard(filter));
+  this.addAbility(ability);
+  this.addAbility(new LoyaltyAbility(new GetEmblemEffect(new LilianaDefiantNecromancerEmblem()),-8));
+}
