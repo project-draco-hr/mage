@@ -1,0 +1,12 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment != null && enchantment.getAttachedTo() != null) {
+    if (event.getType().equals(EventType.DECLARE_ATTACKER)) {
+      return event.getSourceId().equals(enchantment.getAttachedTo());
+    }
+    if (event.getType().equals(EventType.DECLARE_BLOCKER)) {
+      return event.getSourceId().equals(enchantment.getAttachedTo());
+    }
+  }
+  return false;
+}

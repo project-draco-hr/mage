@@ -1,0 +1,13 @@
+{
+  Player player=game.getPlayer(event.getPlayerId());
+  if (player != null) {
+    attackBlockOtherTax.clearPaid();
+    if (attackBlockOtherTax.canPay(source,source.getSourceId(),event.getPlayerId(),game) && player.chooseUse(Outcome.Neutral,attackBlockOtherTax.getText() + " to " + (event.getType().equals(EventType.DECLARE_ATTACKER) ? "attack?" : "block?"),source,game)) {
+      if (attackBlockOtherTax.pay(source,game,source.getSourceId(),event.getPlayerId(),false)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,24 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Possibility Storm",1);
+  addCard(Zone.HAND,playerA,"Izzet Charm");
+  addCard(Zone.HAND,playerA,"Remand");
+  addCard(Zone.LIBRARY,playerA,"Cryptic Command");
+  addCard(Zone.LIBRARY,playerA,"Pact of Negation");
+  skipInitShuffling();
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Izzet Charm");
+  setModeChoice(playerA,"3");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Remand","Izzet Charm","Whenever a player casts");
+  setChoice(playerA,"No");
+  setChoice(playerA,"Yes");
+  setModeChoice(playerA,"3");
+  setModeChoice(playerA,"4");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertExileCount(playerA,0);
+  assertGraveyardCount(playerA,"Cryptic Command",1);
+  assertTapped("Silvercoat Lion",true);
+  assertHandCount(playerA,1);
+}

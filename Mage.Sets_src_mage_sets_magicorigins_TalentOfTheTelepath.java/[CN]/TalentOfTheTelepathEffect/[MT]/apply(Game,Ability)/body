@@ -1,0 +1,42 @@
+{
+  Cards cardsToCast=new CardsImpl();
+  Player targetOpponent=game.getPlayer(targetPointer.getFirst(game,source));
+  MageObject sourceObject=source.getSourceObject(game);
+  if (targetOpponent != null && sourceObject != null) {
+    List<Card> allCards=targetOpponent.getLibrary().getTopCards(game,7);
+    Cards cards=new CardsImpl(Zone.LIBRARY,allCards);
+    targetOpponent.revealCards(sourceObject.getIdName() + " - " + targetOpponent.getName()+ "'s top library cards",cards,game);
+    for (    Card card : allCards) {
+      if (filter.match(card,game)) {
+        cardsToCast.add(card);
+      }
+    }
+    if (cardsToCast.size() > 0) {
+      int numberOfSpells=1;
+      if (SpellMasteryCondition.getInstance().apply(game,source)) {
+        numberOfSpells++;
+      }
+      Player controller=game.getPlayer(source.getControllerId());
+      if (controller != null) {
+        TargetCard target=new TargetCard(Zone.LIBRARY,filter);
+        target.setNotTarget(true);
+        while (numberOfSpells > 0 && cardsToCast.size() > 0 && controller.chooseUse(outcome,"Cast an instant or sorcery card from among them for free?",source,game) && controller.choose(outcome,cardsToCast,target,game)) {
+          Card card=cardsToCast.get(target.getFirstTarget(),game);
+          if (card != null) {
+            controller.cast(card.getSpellAbility(),game,true);
+            numberOfSpells--;
+            cardsToCast.remove(card);
+            allCards.remove(card);
+          }
+          if (!controller.isInGame()) {
+            return false;
+          }
+          target.clearChosen();
+        }
+      }
+      targetOpponent.moveCards(allCards,Zone.LIBRARY,Zone.GRAVEYARD,source,game);
+    }
+    return true;
+  }
+  return false;
+}

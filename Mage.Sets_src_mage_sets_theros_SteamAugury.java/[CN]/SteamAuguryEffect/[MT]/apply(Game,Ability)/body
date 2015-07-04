@@ -6,7 +6,7 @@
   }
   Cards cards=new CardsImpl();
   cards.addAll(controller.getLibrary().getTopCards(game,5));
-  controller.revealCards(sourceObject.getName(),cards,game);
+  controller.revealCards(sourceObject.getIdName(),cards,game);
   Player opponent;
   Set<UUID> opponents=game.getOpponents(controller.getId());
   if (opponents.size() == 1) {
@@ -41,7 +41,7 @@
         pile2CardsIds.add(card.getId());
       }
     }
-    boolean choice=opponent.choosePile(Outcome.Detriment,new StringBuilder("Choose a pile to put into ").append(controller.getLogName()).append("'s hand.").toString(),pile1,pile2,game);
+    boolean choice=opponent.choosePile(Outcome.Detriment,"Choose a pile to put into " + controller.getName() + "'s hand.",pile1,pile2,game);
     Zone pile1Zone=Zone.GRAVEYARD;
     Zone pile2Zone=Zone.HAND;
     if (choice) {
@@ -54,7 +54,7 @@
       i++;
       Card card=game.getCard(cardUuid);
       if (card != null) {
-        sb.append(card.getName());
+        sb.append(GameLog.getColoredObjectName(card));
         if (i < pile1CardsIds.size()) {
           sb.append(", ");
         }
@@ -68,7 +68,7 @@
       Card card=game.getCard(cardUuid);
       if (card != null) {
         i++;
-        sb.append(" ").append(card.getName());
+        sb.append(" ").append(GameLog.getColoredObjectName(card));
         if (i < pile2CardsIds.size()) {
           sb.append(", ");
         }

@@ -1,6 +1,7 @@
 {
   Player controller=game.getPlayer(source.getFirstTarget());
-  if (controller != null) {
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
     ChoiceColor choice=new ChoiceColor();
     while (!choice.isChosen()) {
       controller.choose(outcome,choice,game);
@@ -12,7 +13,7 @@
       return false;
     }
     Cards hand=controller.getHand();
-    controller.revealCards("Persecute",hand,game);
+    controller.revealCards(sourceObject.getIdName(),hand,game);
     Set<Card> cards=hand.getCards(game);
     for (    Card card : cards) {
       if (card != null && card.getColor(game).shares(choice.getColor())) {

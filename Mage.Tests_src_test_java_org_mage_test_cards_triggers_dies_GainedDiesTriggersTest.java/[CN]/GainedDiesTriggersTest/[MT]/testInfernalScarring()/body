@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",3);
+  addCard(Zone.HAND,playerA,"Infernal Scarring",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  addCard(Zone.HAND,playerB,"Lightning Bolt",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Infernal Scarring","Silvercoat Lion");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Lightning Bolt","Silvercoat Lion");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerA,"Silvercoat Lion",1);
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertHandCount(playerA,1);
+}
