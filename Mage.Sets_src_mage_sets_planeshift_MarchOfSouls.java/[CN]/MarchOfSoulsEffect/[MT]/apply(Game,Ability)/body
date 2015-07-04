@@ -1,0 +1,11 @@
+{
+  List<Permanent> creatures=game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),source.getSourceId(),game);
+  for (  Permanent p : creatures) {
+    UUID controllerId=p.getControllerId();
+    if (p.destroy(source.getSourceId(),game,true)) {
+      SpiritWhiteToken token=new SpiritWhiteToken();
+      token.putOntoBattlefield(1,game,source.getSourceId(),controllerId);
+    }
+  }
+  return true;
+}
