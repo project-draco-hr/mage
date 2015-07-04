@@ -6,11 +6,16 @@ case WhileOnBattlefield:
 case WhileOnStack:
 case WhileInGraveyard:
       HashSet<Ability> abilities=layeredEffects.getAbility(effect.getId());
-    for (    Ability ability : abilities) {
-      if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,null,null)) {
-        layerEffects.add(effect);
-        break;
+    if (abilities != null) {
+      for (      Ability ability : abilities) {
+        if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,null,null)) {
+          layerEffects.add(effect);
+          break;
+        }
       }
+    }
+ else {
+      logger.error("No abilities for continuous effect: " + effect.toString());
     }
   break;
 default :
