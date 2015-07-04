@@ -1,10 +1,17 @@
 {
   Card card=game.getCard(source.getSourceId());
   if (card != null) {
-    Zone currentZone=game.getState().getZone(card.getId());
-    if (card.putOntoBattlefield(game,currentZone,source.getSourceId(),card.getOwnerId(),tapped)) {
-      return true;
-    }
-  }
-  return false;
+switch (game.getState().getZone(card.getId())) {
+case EXILED:
+case COMMAND:
+case GRAVEYARD:
+      if (zoneChangeCounter < 0 || game.getState().getZoneChangeCounter(card.getId()) == zoneChangeCounter) {
+        Zone currentZone=game.getState().getZone(card.getId());
+        card.putOntoBattlefield(game,currentZone,source.getSourceId(),card.getOwnerId(),tapped);
+      }
+    break;
+}
+return true;
+}
+return false;
 }

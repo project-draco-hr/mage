@@ -1,19 +1,20 @@
 {
-  if (getTargetPointer().getFirst(game,source) != null) {
-    Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
-    Card card=game.getCard(getTargetPointer().getFirst(game,source));
-    if (permanent != null) {
-      if (permanent.moveToExile(source.getSourceId(),"Voidwalk",source.getSourceId(),game)) {
-        if (card != null) {
-          AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Zone.BATTLEFIELD));
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    if (getTargetPointer().getFirst(game,source) != null) {
+      Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+      if (permanent != null) {
+        int zcc=game.getState().getZoneChangeCounter(permanent.getId());
+        if (permanent.moveToExile(null,"",source.getSourceId(),game)) {
+          AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnToBattlefieldUnderOwnerControlSourceEffect(false,zcc + 1));
           delayedAbility.setSourceId(source.getSourceId());
-          delayedAbility.setControllerId(card.getOwnerId());
+          delayedAbility.setControllerId(source.getControllerId());
           delayedAbility.setSourceObject(source.getSourceObject(game),game);
           game.addDelayedTriggeredAbility(delayedAbility);
-          return true;
         }
       }
     }
+    return true;
   }
   return false;
 }

@@ -13,58 +13,75 @@ case TypeChangingEffects_4:
               }
             }
           }
-          if (loseOther) {
+switch (loseType) {
+case ALL:
+case ALL_BUT_COLOR:
             permanent.getCardType().clear();
-          }
-          if (token.getCardType().size() > 0) {
-            for (            CardType t : token.getCardType()) {
-              if (!permanent.getCardType().contains(t)) {
-                permanent.getCardType().add(t);
-              }
-            }
-          }
-          if (loseOther) {
-            permanent.getSubtype().clear();
-          }
-          if (token.getSubtype().size() > 0) {
-            for (            String t : token.getSubtype()) {
-              if (!permanent.getSubtype().contains(t)) {
-                permanent.getSubtype().add(t);
-              }
-            }
+          break;
+      }
+      if (token.getCardType().size() > 0) {
+        for (        CardType t : token.getCardType()) {
+          if (!permanent.getCardType().contains(t)) {
+            permanent.getCardType().add(t);
           }
         }
+      }
+switch (loseType) {
+case ALL:
+case ALL_BUT_COLOR:
+        permanent.getSubtype().clear();
       break;
-case ColorChangingEffects_5:
-    if (sublayer == SubLayer.NA) {
-      if (loseOther) {
-        permanent.getColor(game).setBlack(false);
-        permanent.getColor(game).setGreen(false);
-        permanent.getColor(game).setBlue(false);
-        permanent.getColor(game).setWhite(false);
-        permanent.getColor(game).setRed(false);
-      }
-      if (token.getColor(game).hasColor()) {
-        permanent.getColor(game).setColor(token.getColor(game));
-      }
-    }
-  break;
-case AbilityAddingRemovingEffects_6:
-if (sublayer == SubLayer.NA) {
-  if (loseOther) {
-    permanent.removeAllAbilities(source.getSourceId(),game);
   }
-  if (token.getAbilities().size() > 0) {
-    for (    Ability ability : token.getAbilities()) {
-      permanent.addAbility(ability,source.getSourceId(),game);
+  if (token.getSubtype().size() > 0) {
+    for (    String t : token.getSubtype()) {
+      if (!permanent.getSubtype().contains(t)) {
+        permanent.getSubtype().add(t);
+      }
     }
   }
 }
 break;
+case ColorChangingEffects_5:
+if (sublayer == SubLayer.NA) {
+if (loseType.equals(LoseType.ALL)) {
+permanent.getColor(game).setBlack(false);
+permanent.getColor(game).setGreen(false);
+permanent.getColor(game).setBlue(false);
+permanent.getColor(game).setWhite(false);
+permanent.getColor(game).setRed(false);
+}
+if (token.getColor(game).hasColor()) {
+permanent.getColor(game).setColor(token.getColor(game));
+}
+}
+break;
+case AbilityAddingRemovingEffects_6:
+if (sublayer == SubLayer.NA) {
+switch (loseType) {
+case ALL:
+case ALL_BUT_COLOR:
+case ABILITIES:
+case ABILITIES_AND_PT:
+permanent.removeAllAbilities(source.getSourceId(),game);
+break;
+}
+if (token.getAbilities().size() > 0) {
+for (Ability ability : token.getAbilities()) {
+permanent.addAbility(ability,source.getSourceId(),game);
+}
+}
+}
+break;
 case PTChangingEffects_7:
 if (sublayer == SubLayer.SetPT_7b) {
+switch (loseType) {
+case ALL:
+case ALL_BUT_COLOR:
+case ABILITIES_AND_PT:
 permanent.getPower().setValue(token.getPower().getValue());
 permanent.getToughness().setValue(token.getToughness().getValue());
+break;
+}
 }
 }
 }
