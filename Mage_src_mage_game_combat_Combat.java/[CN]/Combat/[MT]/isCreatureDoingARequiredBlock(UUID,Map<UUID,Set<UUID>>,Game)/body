@@ -1,0 +1,24 @@
+{
+  Permanent possibleBlocker=game.getPermanent(possibleBlockerId);
+  if (possibleBlocker != null) {
+    if (possibleBlocker.getBlocking() == 0) {
+      return possibleBlocker.getIdName() + " does not block, but could block creatures with requirement to be blocked.";
+    }
+    Set<UUID> forcingAttackers=creatureMustBlockAttackers.get(possibleBlockerId);
+    if (forcingAttackers == null) {
+      if (possibleBlocker.getBlocking() > 0) {
+        CombatGroup combatGroupOfPossibleBlocker=findGroupOfBlocker(possibleBlockerId);
+        for (        UUID blockedAttackerId : combatGroupOfPossibleBlocker.getAttackers()) {
+          if (mustBeBlockedByAtLeastOne.containsKey(blockedAttackerId)) {
+            if (combatGroupOfPossibleBlocker.getBlockers().size() == 1) {
+              return null;
+            }
+            Permanent blockedAttacker=game.getPermanent(blockedAttackerId);
+            return possibleBlocker.getIdName() + " blocks with other creatures " + blockedAttacker.getIdName()+ ", which has to be blocked by only one creature. ";
+          }
+        }
+      }
+    }
+  }
+  return null;
+}

@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerB,"Forest",6);
+  addCard(Zone.HAND,playerB,"Joraga Invocation");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox");
+  addCard(Zone.BATTLEFIELD,playerA,"Bog Wraith");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Joraga Invocation");
+  attack(2,playerB,"Silvercoat Lion");
+  attack(2,playerB,"Pillarfield Ox");
+  block(2,playerA,"Bog Wraith","Pillarfield Ox");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertLife(playerA,15);
+  assertGraveyardCount(playerB,"Joraga Invocation",1);
+  assertPowerToughness(playerB,"Silvercoat Lion",5,5);
+  assertPowerToughness(playerB,"Pillarfield Ox",5,7);
+  assertGraveyardCount(playerA,"Bog Wraith",1);
+}
