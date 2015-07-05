@@ -1,7 +1,10 @@
 {
+  if (event.getType() == GameEvent.EventType.CREATE_TOKEN) {
+    return true;
+  }
   if (((ZoneChangeEvent)event).getToZone() == Zone.BATTLEFIELD) {
     Card card=game.getCard(event.getTargetId());
-    if (card.getCardType().contains(CardType.CREATURE)) {
+    if (card != null && card.getCardType().contains(CardType.CREATURE)) {
       CreatureWasCastWatcher watcher=(CreatureWasCastWatcher)game.getState().getWatchers().get("CreatureWasCast");
       if (watcher != null && !watcher.wasCreatureCastThisTurn(event.getTargetId())) {
         return true;
