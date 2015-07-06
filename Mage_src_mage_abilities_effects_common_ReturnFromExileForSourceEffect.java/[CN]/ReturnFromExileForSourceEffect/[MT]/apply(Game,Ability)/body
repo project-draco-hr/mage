@@ -1,22 +1,24 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null) {
-    int zoneChangeCounter=source.getSourceObjectZoneChangeCounter() - (previousZone ? 1 : 0);
-    UUID exileId=CardUtil.getExileZoneId(game,source.getSourceId(),zoneChangeCounter);
-    ExileZone exile=game.getExile().getExileZone(exileId);
+  MageObject sourceObject=source.getSourceObject(game);
+  if (sourceObject != null && controller != null) {
+    int zoneChangeCounter=source.getSourceObjectZoneChangeCounter();
+    if (zoneChangeCounter > 0 && previousZone && !(sourceObject instanceof PermanentToken)) {
+      zoneChangeCounter--;
+    }
+    ExileZone exile=game.getExile().getExileZone(CardUtil.getExileZoneId(game,source.getSourceId(),zoneChangeCounter));
     if (exile != null) {
-      LinkedList<UUID> cards=new LinkedList<>(exile);
-      for (      UUID cardId : cards) {
-        Card card=game.getCard(cardId);
-        if (card == null) {
-          return false;
+      if (returnToZone.equals(Zone.BATTLEFIELD)) {
+        for (        Card card : exile.getCards(game)) {
+          Player owner=game.getPlayer(card.getOwnerId());
+          if (owner != null) {
+            owner.putOntoBattlefieldWithInfo(card,game,Zone.EXILED,source.getSourceId());
+          }
         }
-        if (!game.isSimulation()) {
-          game.informPlayers(controller.getLogName() + " moves " + card.getLogName()+ " from exile to "+ returnToZone.toString().toLowerCase());
-        }
-        card.moveToZone(returnToZone,source.getSourceId(),game,tapped);
       }
-      exile.clear();
+ else {
+        controller.moveCards(exile,Zone.EXILED,returnToZone,source,game);
+      }
     }
     return true;
   }
