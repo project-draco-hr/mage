@@ -1,0 +1,12 @@
+{
+  Effect effect=new ReturnToHandTargetEffect();
+  effect.setText("return the dashed creature from the battlefield to its owner's hand");
+  effect.setTargetPointer(new FixedTarget(source.getSourceId()));
+  effect.getTargetPointer().init(game,source);
+  DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect);
+  delayedAbility.setSourceId(source.getSourceId());
+  delayedAbility.setControllerId(source.getControllerId());
+  delayedAbility.setSourceObject(source.getSourceObject(game),game);
+  game.addDelayedTriggeredAbility(delayedAbility);
+  return false;
+}
