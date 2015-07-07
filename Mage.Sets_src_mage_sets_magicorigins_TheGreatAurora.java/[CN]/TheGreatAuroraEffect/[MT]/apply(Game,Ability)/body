@@ -1,0 +1,49 @@
+{
+  Map<UUID,List<Permanent>> permanentsOwned=new HashMap<>();
+  Collection<Permanent> permanents=game.getBattlefield().getAllPermanents();
+  for (  Permanent permanent : permanents) {
+    List<Permanent> list=permanentsOwned.get(permanent.getOwnerId());
+    if (list == null) {
+      list=new ArrayList<>();
+    }
+    list.add(permanent);
+    permanentsOwned.put(permanent.getOwnerId(),list);
+  }
+  Map<UUID,Integer> permanentsCount=new HashMap<>();
+  for (  UUID playerId : game.getState().getPlayersInRange(source.getControllerId(),game)) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      int handCards=player.getHand().size();
+      player.moveCards(player.getHand(),Zone.HAND,Zone.LIBRARY,source,game);
+      List<Permanent> list=permanentsOwned.remove(player.getId());
+      permanentsCount.put(playerId,handCards + (list != null ? list.size() : 0));
+      for (      Permanent permanent : list) {
+        permanent.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
+      }
+      player.getLibrary().shuffle();
+    }
+  }
+  for (  UUID playerId : game.getState().getPlayersInRange(source.getControllerId(),game)) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      int count=permanentsCount.get(playerId);
+      if (count > 0) {
+        player.drawCards(count,game);
+      }
+    }
+  }
+  for (  UUID playerId : game.getState().getPlayersInRange(source.getControllerId(),game)) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      TargetCard target=new TargetCardInHand(0,Integer.MAX_VALUE,new FilterLandCard("put any number of land cards from your hand onto the battlefield"));
+      player.chooseTarget(Outcome.PutLandInPlay,player.getHand(),target,source,game);
+      for (      UUID cardId : target.getTargets()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          player.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId(),true);
+        }
+      }
+    }
+  }
+  return true;
+}

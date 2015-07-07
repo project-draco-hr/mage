@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",6);
+  addCard(Zone.HAND,playerA,"Rhox Maulers");
+  addCard(Zone.HAND,playerA,"Cloudshift");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Rhox Maulers");
+  castSpell(5,PhaseStep.POSTCOMBAT_MAIN,playerA,"Cloudshift","Rhox Maulers");
+  attack(3,playerA,"Rhox Maulers");
+  attack(5,playerA,"Rhox Maulers");
+  attack(7,playerA,"Rhox Maulers");
+  setStopAt(7,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,6);
+  assertPowerToughness(playerA,"Rhox Maulers",6,6);
+  Permanent rhoxMaulers=getPermanent("Rhox Maulers",playerA);
+  Assert.assertEquals("may not be renown",true,rhoxMaulers.isRenowned());
+}

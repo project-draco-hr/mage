@@ -96,50 +96,25 @@
         if (controller.isHuman()) {
           Permanent toBeBlockedCreature=game.getPermanent(toBeBlockedCreatureId);
           if (toBeBlockedCreature != null) {
-            boolean possibleBlockerAvailable=false;
             for (            UUID possibleBlockerId : mustBeBlockedByAtLeastOne.get(toBeBlockedCreatureId)) {
-              Set<UUID> forcingAttackers=creatureMustBlockAttackers.get(possibleBlockerId);
-              if (forcingAttackers == null) {
-                possibleBlockerAvailable=true;
-                break;
+              String blockRequiredMessage=isCreatureDoingARequiredBlock(possibleBlockerId,mustBeBlockedByAtLeastOne,game);
+              if (blockRequiredMessage != null) {
+                game.informPlayer(controller,blockRequiredMessage + "It's a requirement to block " + toBeBlockedCreature.getIdName());
+                return false;
               }
-              List<UUID> blockedAttackers=null;
-              for (              CombatGroup combatGroupToCheck : game.getCombat().getGroups()) {
-                if (combatGroupToCheck.getBlockers().contains(possibleBlockerId)) {
-                  blockedAttackers=combatGroupToCheck.getAttackers();
-                  break;
-                }
-              }
-              if (blockedAttackers == null) {
-                possibleBlockerAvailable=true;
-                break;
-              }
-              possibleBlockerAvailable=true;
-              for (              UUID blockedAttackerId : blockedAttackers) {
-                if (creatureMustBlockAttackers.get(possibleBlockerId).contains(blockedAttackerId)) {
-                  possibleBlockerAvailable=false;
-                  break;
-                }
-              }
-              if (possibleBlockerAvailable) {
-                break;
-              }
-            }
-            if (possibleBlockerAvailable) {
-              if (!game.isSimulation()) {
-                game.informPlayer(controller,new StringBuilder(toBeBlockedCreature.getLogName()).append(" has to be blocked by at least one creature.").toString());
-              }
-              return false;
             }
           }
         }
  else {
-          UUID blockingCreatureId=mustBeBlockedByAtLeastOne.get(toBeBlockedCreatureId).iterator().next();
-          Permanent blockingCreature=game.getPermanent(blockingCreatureId);
-          if (blockingCreature != null) {
-            Player defender=game.getPlayer(blockingCreature.getControllerId());
-            if (defender != null) {
-              defender.declareBlocker(defender.getId(),blockingCreatureId,toBeBlockedCreatureId,game);
+          for (          UUID possibleBlockerId : mustBeBlockedByAtLeastOne.get(toBeBlockedCreatureId)) {
+            String blockRequiredMessage=isCreatureDoingARequiredBlock(possibleBlockerId,mustBeBlockedByAtLeastOne,game);
+            if (blockRequiredMessage != null) {
+              Permanent possibleBlocker=game.getPermanent(possibleBlockerId);
+              Player defender=game.getPlayer(possibleBlocker.getControllerId());
+              if (defender != null) {
+                defender.declareBlocker(defender.getId(),possibleBlockerId,toBeBlockedCreatureId,game);
+              }
+              break;
             }
           }
         }

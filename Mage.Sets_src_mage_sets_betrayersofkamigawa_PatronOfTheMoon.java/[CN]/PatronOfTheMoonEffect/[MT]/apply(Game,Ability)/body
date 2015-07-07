@@ -1,7 +1,9 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    for (    UUID cardId : targetPointer.getTargets(game,source)) {
+    TargetCard target=new TargetCardInHand(0,2,new FilterLandCard("up to two land cards to put onto the battlefield tapped"));
+    controller.chooseTarget(outcome,controller.getHand(),target,source,game);
+    for (    UUID cardId : target.getTargets()) {
       Card card=game.getCard(cardId);
       if (card != null) {
         controller.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId(),true);

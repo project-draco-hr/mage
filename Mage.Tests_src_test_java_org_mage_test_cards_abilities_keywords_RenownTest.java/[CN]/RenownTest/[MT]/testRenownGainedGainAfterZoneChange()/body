@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.HAND,playerA,"Goblin Glory Chaser");
+  addCard(Zone.HAND,playerA,"Cloudshift");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Goblin Glory Chaser");
+  castSpell(5,PhaseStep.POSTCOMBAT_MAIN,playerA,"Cloudshift","Goblin Glory Chaser");
+  attack(3,playerA,"Goblin Glory Chaser");
+  attack(5,playerA,"Goblin Glory Chaser");
+  attack(7,playerA,"Goblin Glory Chaser");
+  attack(9,playerA,"Goblin Glory Chaser");
+  setStopAt(9,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  Permanent goblin=getPermanent("Goblin Glory Chaser",playerA);
+  Assert.assertEquals("has has renown",true,goblin.isRenowned());
+  assertAbility(playerA,"Goblin Glory Chaser",new MenaceAbility(),true);
+  assertPowerToughness(playerA,"Goblin Glory Chaser",2,2);
+  assertLife(playerA,20);
+  assertLife(playerB,14);
+}

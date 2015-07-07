@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerB,"Willbreaker",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Blinding Souleater",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerB,"{WP},{T}: Tap target creature","Silvercoat Lion");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Silvercoat Lion",0);
+  assertTapped("Silvercoat Lion",true);
+  assertPermanentCount(playerB,"Silvercoat Lion",1);
+  assertPermanentCount(playerB,"Willbreaker",1);
+  assertPermanentCount(playerB,"Blinding Souleater",1);
+}
