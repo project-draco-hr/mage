@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(controllerId);
+  if (controller != null) {
+    if (targets.choose(Outcome.ReturnToHand,controllerId,sourceId,game)) {
+      for (      UUID targetId : targets.get(0).getTargets()) {
+        mage.cards.Card targetCard=game.getCard(targetId);
+        if (targetCard == null) {
+          return false;
+        }
+        paid|=controller.moveCardToHandWithInfo(targetCard,sourceId,game,Zone.HAND);
+      }
+    }
+  }
+  return paid;
+}
