@@ -1,0 +1,18 @@
+{
+  Map<String,Integer> manaCounts=new HashMap<>();
+  for (  final ColoredManaSymbol color : ColoredManaSymbol.values()) {
+    manaCounts.put(color.toString(),0);
+  }
+  for (  Card land : deckLands) {
+    for (    Ability landAbility : land.getAbilities()) {
+      for (      ColoredManaSymbol symbol : allowedColors) {
+        String abilityString=landAbility.getRule();
+        if (landTapsForAllowedColor(abilityString,symbol.toString())) {
+          Integer count=manaCounts.get(symbol.toString());
+          manaCounts.put(symbol.toString(),count + 1);
+        }
+      }
+    }
+  }
+  return manaCounts;
+}

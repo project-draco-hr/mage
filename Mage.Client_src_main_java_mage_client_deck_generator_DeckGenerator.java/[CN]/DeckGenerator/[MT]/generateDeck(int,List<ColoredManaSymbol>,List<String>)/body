@@ -1,0 +1,23 @@
+{
+  genPool=new DeckGeneratorPool(deckSize,allowedColors,genDialog.isSingleton());
+  final String[] sets=setsToUse.toArray(new String[setsToUse.size()]);
+  final CardCriteria creatureCriteria=new CardCriteria();
+  creatureCriteria.setCodes(sets);
+  creatureCriteria.notTypes(CardType.LAND);
+  creatureCriteria.types(CardType.CREATURE);
+  if (!(genDialog.useArtifacts()))   creatureCriteria.notTypes(CardType.ARTIFACT);
+  final CardCriteria nonCreatureCriteria=new CardCriteria();
+  nonCreatureCriteria.setCodes(sets);
+  nonCreatureCriteria.notTypes(CardType.LAND);
+  nonCreatureCriteria.notTypes(CardType.CREATURE);
+  if (!(genDialog.useArtifacts()))   nonCreatureCriteria.notTypes(CardType.ARTIFACT);
+  final CardCriteria nonBasicLandCriteria=new CardCriteria();
+  nonBasicLandCriteria.setCodes(sets);
+  nonBasicLandCriteria.types(CardType.LAND);
+  nonBasicLandCriteria.notSupertypes("Basic");
+  Map<String,List<CardInfo>> basicLands=generateBasicLands(setsToUse);
+  generateSpells(creatureCriteria,genPool.getCreatureCount());
+  generateSpells(nonCreatureCriteria,genPool.getNonCreatureCount());
+  generateLands(nonBasicLandCriteria,genPool.getLandCount(),basicLands);
+  return genPool.getDeck();
+}
