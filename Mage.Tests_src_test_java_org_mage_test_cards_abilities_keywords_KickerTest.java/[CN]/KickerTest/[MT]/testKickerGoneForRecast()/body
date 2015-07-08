@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",5);
+  addCard(Zone.HAND,playerA,"Gatekeeper of Malakir",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Birds of Paradise",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.HAND,playerB,"Boomerang",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Gatekeeper of Malakir");
+  addTarget(playerA,playerB);
+  setChoice(playerA,"Yes");
+  castSpell(1,PhaseStep.BEGIN_COMBAT,playerB,"Boomerang","Gatekeeper of Malakir");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Gatekeeper of Malakir");
+  setChoice(playerA,"No");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerB,"Boomerang",1);
+  assertGraveyardCount(playerB,"Birds of Paradise",1);
+  assertPermanentCount(playerB,"Birds of Paradise",1);
+  assertPermanentCount(playerA,"Gatekeeper of Malakir",1);
+}
