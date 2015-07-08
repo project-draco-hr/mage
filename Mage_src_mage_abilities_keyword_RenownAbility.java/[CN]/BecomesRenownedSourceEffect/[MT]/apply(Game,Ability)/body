@@ -1,0 +1,15 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null && source instanceof RenownAbility) {
+    game.informPlayers(permanent.getLogName() + " is now renowned");
+    int renownValue=((RenownAbility)source).getRenownValue();
+    if (renownValue == Integer.MAX_VALUE) {
+      renownValue=source.getManaCostsToPay().getX();
+    }
+    new AddCountersSourceEffect(CounterType.P1P1.createInstance(renownValue),true).apply(game,source);
+    permanent.setRenowned(true);
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.BECOMES_RENOWNED,source.getSourceId(),source.getSourceId(),source.getControllerId(),renownValue));
+    return true;
+  }
+  return false;
+}
