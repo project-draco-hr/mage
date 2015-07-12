@@ -1,5 +1,4 @@
 {
-  Player player=game.getPlayer(attackerId);
   for (  CombatGroup group : groups) {
     for (    UUID attacker : group.getAttackers()) {
       game.fireEvent(GameEvent.getEvent(GameEvent.EventType.ATTACKER_DECLARED,group.defenderId,attacker,attackerId));
@@ -7,6 +6,9 @@
   }
   game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_ATTACKERS,attackerId,attackerId));
   if (!game.isSimulation()) {
-    game.informPlayers(new StringBuilder(player.getLogName()).append(" attacks with ").append(groups.size()).append(groups.size() == 1 ? " creature" : " creatures").toString());
+    Player player=game.getPlayer(attackerId);
+    if (player != null) {
+      game.informPlayers(player.getLogName() + " attacks with " + groups.size()+ (groups.size() == 1 ? " creature" : " creatures"));
+    }
   }
 }
