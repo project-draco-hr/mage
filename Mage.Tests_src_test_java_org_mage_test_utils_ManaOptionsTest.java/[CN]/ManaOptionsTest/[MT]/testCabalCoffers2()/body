@@ -1,0 +1,11 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Cabal Coffers",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",2);
+  setStopAt(1,PhaseStep.UPKEEP);
+  execute();
+  ManaOptions manaOptions=playerA.getAvailableManaTest(currentGame);
+  Assert.assertEquals("mana variations don't fit",2,manaOptions.size());
+  Assert.assertEquals("{W}{B}{B}",getManaOption(0,manaOptions));
+  Assert.assertEquals("{B}{B}{B}",getManaOption(1,manaOptions));
+}
