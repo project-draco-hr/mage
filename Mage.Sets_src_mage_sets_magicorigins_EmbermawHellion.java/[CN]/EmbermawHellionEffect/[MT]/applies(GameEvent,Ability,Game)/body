@@ -1,7 +1,14 @@
 {
   if (source.getControllerId().equals(game.getControllerId(event.getSourceId()))) {
-    Card card=game.getCard(event.getSourceId());
-    return card != null && card.getColor(game).isRed() && !card.getId().equals(source.getSourceId());
+    MageObject sourceObject;
+    Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(event.getSourceId());
+    if (sourcePermanent == null) {
+      sourceObject=game.getObject(event.getSourceId());
+    }
+ else {
+      sourceObject=sourcePermanent;
+    }
+    return sourceObject != null && sourceObject.getColor(game).isRed() && !sourceObject.getId().equals(source.getSourceId());
   }
   return false;
 }
