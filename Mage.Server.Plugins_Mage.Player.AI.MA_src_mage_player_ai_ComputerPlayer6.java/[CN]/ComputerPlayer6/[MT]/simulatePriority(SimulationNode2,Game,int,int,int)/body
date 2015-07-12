@@ -10,9 +10,10 @@
   List<Ability> allActions=currentPlayer.simulatePriority(game);
   optimize(game,allActions);
   if (logger.isInfoEnabled() && allActions.size() > 0 && depth == maxDepth) {
-    logger.info("Sim Prio [" + depth + "] player "+ currentPlayer.getName()+ " adding "+ allActions.size()+ " actions:"+ allActions);
+    logger.info("ADDED ACTIONS (" + allActions.size() + ") "+ " "+ allActions);
   }
   int counter=0;
+  int bestValSubNodes=Integer.MIN_VALUE;
   for (  Ability action : allActions) {
     counter++;
     if (ALLOW_INTERRUPT && Thread.interrupted()) {
@@ -45,8 +46,8 @@
  else {
         val=addActions(newNode,depth - 1,alpha,beta);
       }
-      logger.debug("Sim Prio " + BLANKS.substring(0,2 + (maxDepth - depth) * 3) + "["+ depth+ "]#"+ counter+ " <"+ val+ "> - ("+ action.toString()+ ") "+ newNode.hashCode()+ " parent node "+ node.hashCode());
-      if (logger.isInfoEnabled() && depth == maxDepth) {
+      logger.debug("Sim Prio " + BLANKS.substring(0,2 + (maxDepth - depth) * 3) + "["+ depth+ "]#"+ counter+ " <"+ val+ "> - ("+ action.toString()+ ") ");
+      if (logger.isInfoEnabled() && depth >= maxDepth) {
         StringBuilder sb=new StringBuilder("Sim Prio [").append(depth).append("] #").append(counter).append(" <").append(val).append("> (").append(action).append(action.isModal() ? " Mode = " + action.getModes().getMode().toString() : "").append(listTargets(game,action.getTargets())).append(")").append(logger.isTraceEnabled() ? " #" + newNode.hashCode() : "");
         SimulationNode2 logNode=newNode;
         while (logNode.getChildren() != null && logNode.getChildren().size() > 0) {
@@ -58,6 +59,9 @@
         logger.info(sb);
       }
       if (currentPlayer.getId().equals(playerId)) {
+        if (val > bestValSubNodes) {
+          bestValSubNodes=val;
+        }
         if (depth == maxDepth && action instanceof PassAbility) {
           val=val - PASSIVITY_PENALTY;
         }
@@ -69,7 +73,7 @@
             bestNode.setCombat(newNode.getChildren().get(0).getCombat());
           }
           if (depth == maxDepth) {
-            logger.info(new StringBuilder("Sim Prio [").append(depth).append("] -- Saved best node yet <").append(bestNode.getScore()).append("> ").append(bestNode.getAbilities().toString()).toString());
+            logger.info("Sim Prio [" + depth + "] -- Saved best node yet <"+ bestNode.getScore()+ "> "+ bestNode.getAbilities().toString());
             node.children.clear();
             node.children.add(bestNode);
             node.setScore(bestNode.getScore());
@@ -115,7 +119,7 @@
     }
   }
   if (currentPlayer.getId().equals(playerId)) {
-    return alpha;
+    return bestValSubNodes;
   }
  else {
     return beta;

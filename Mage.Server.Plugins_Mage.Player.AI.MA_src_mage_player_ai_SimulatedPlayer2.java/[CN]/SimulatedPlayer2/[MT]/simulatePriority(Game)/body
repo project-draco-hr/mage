@@ -11,11 +11,17 @@
   }
   if (logger.isTraceEnabled()) {
     for (    Ability a : allActions) {
-      logger.trace("ability==" + a);
+      logger.info("ability==" + a);
       if (a.getTargets().size() > 0) {
-        Player player=game.getPlayer(a.getFirstTarget());
-        if (player != null) {
-          logger.trace("   target=" + player.getName());
+        MageObject mageObject=game.getObject(a.getFirstTarget());
+        if (mageObject != null) {
+          logger.info("   target=" + mageObject.getName());
+        }
+ else {
+          Player player=game.getPlayer(a.getFirstTarget());
+          if (player != null) {
+            logger.info("   target=" + player.getName());
+          }
         }
       }
     }
