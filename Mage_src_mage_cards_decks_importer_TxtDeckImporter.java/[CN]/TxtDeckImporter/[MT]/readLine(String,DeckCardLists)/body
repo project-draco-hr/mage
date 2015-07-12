@@ -27,11 +27,14 @@
   if (lineName.contains("//") && !lineName.contains(" // ")) {
     lineName=lineName.replace("//"," // ");
   }
-  if (IGNORE_NAMES.contains(lineName)) {
+  if (lineName.contains(" / ")) {
+    lineName=lineName.replace(" / "," // ");
+  }
+  if (IGNORE_NAMES.contains(lineName) || IGNORE_NAMES.contains(lineNum)) {
     return;
   }
   try {
-    int num=Integer.parseInt(lineNum);
+    int num=Integer.parseInt(lineNum.replaceAll("\\D+",""));
     List<CardInfo> cards=CardRepository.instance.findCards(lineName);
     if (cards.isEmpty()) {
       sbMessage.append("Could not find card: '").append(lineName).append("' at line ").append(lineCount).append("\n");
