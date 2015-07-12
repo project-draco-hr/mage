@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerB,"Whip of Erebos");
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",4);
+  addCard(Zone.GRAVEYARD,playerB,"Swamp",5);
+  addCard(Zone.GRAVEYARD,playerB,"Jace, Vryn's Prodigy");
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerB,"{2}{B}{B},{T}: Return target creature","Jace, Vryn's Prodigy");
+  activateAbility(2,PhaseStep.BEGIN_COMBAT,playerB,"{T}: Draw a card, then discard a card. If there are five or more cards in your graveyard");
+  activateAbility(2,PhaseStep.POSTCOMBAT_MAIN,playerB,"+1: Up to one target creature gets -2/-0 until your next turn");
+  setStopAt(3,PhaseStep.UNTAP);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerB,"Jace, Vryn's Prodigy",0);
+  assertPermanentCount(playerB,"Jace, Telepath Unbound",1);
+  assertCounterCount("Jace, Telepath Unbound",CounterType.LOYALTY,6);
+}
