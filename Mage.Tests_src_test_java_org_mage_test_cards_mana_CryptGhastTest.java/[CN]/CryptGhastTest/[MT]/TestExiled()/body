@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Crypt Ghast",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Mimic Vat",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Badlands",1);
+  addCard(Zone.HAND,playerA,"Erebos's Titan",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Nin, the Pain Artist",1);
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerB,"{X}{U}{R},{T}: {this} deals X damage to target creature","Crypt Ghast");
+  setChoice(playerB,"X=2");
+  activateManaAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Add {R} to your mana pool");
+  activateManaAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Add {B} to your mana pool");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Erebos's Titan");
+  setStopAt(3,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerA,"Erebos's Titan",0);
+  assertTapped("Nin, the Pain Artist",true);
+  assertExileCount("Crypt Ghast",1);
+}
