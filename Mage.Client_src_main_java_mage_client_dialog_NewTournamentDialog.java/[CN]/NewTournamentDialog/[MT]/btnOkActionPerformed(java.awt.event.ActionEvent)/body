@@ -28,7 +28,19 @@
     }
  else     if (tournamentType.isRandom()) {
       tOptions.getLimitedOptions().getSetCodes().clear();
-      tOptions.getLimitedOptions().getSetCodes().addAll(randomPackSelector.getSelectedPacks());
+      ArrayList<String> selected=randomPackSelector.getSelectedPacks();
+      int maxPacks=3 * (players.size() + 1);
+      if (selected.size() > maxPacks) {
+        StringBuilder infoString=new StringBuilder("More sets were selected than needed. ");
+        infoString.append(maxPacks);
+        infoString.append(" sets will be randomly chosen.");
+        JOptionPane.showMessageDialog(MageFrame.getDesktop(),infoString,"Information",JOptionPane.INFORMATION_MESSAGE);
+        Collections.shuffle(selected);
+        tOptions.getLimitedOptions().getSetCodes().addAll(selected.subList(0,maxPacks));
+      }
+ else {
+        tOptions.getLimitedOptions().getSetCodes().addAll(selected);
+      }
     }
  else {
       for (      JComboBox pack : packs) {
