@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",8);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Zone.HAND,playerA,"Geistflame",2);
+  addCard(Zone.LIBRARY,playerA,"Grapeshot",2);
+  skipInitShuffling();
+  addCard(Zone.HAND,playerA,"Sleight of Hand");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Sleight of Hand");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Geistflame",playerB);
+  activateAbility(1,PhaseStep.BEGIN_COMBAT,playerA,"Flashback {3}{R}");
+  addTarget(playerA,playerB);
+  castSpell(1,PhaseStep.END_COMBAT,playerA,"Geistflame",playerB);
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Grapeshot",playerB);
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertExileCount("Geistflame",1);
+  assertGraveyardCount(playerA,"Geistflame",1);
+  assertGraveyardCount(playerA,"Grapeshot",1);
+  assertLife(playerB,12);
+}
