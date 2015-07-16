@@ -1,7 +1,7 @@
 {
   if (!isPaused() && !gameOver(null)) {
-    PlayerList players=state.getPlayerList(nextPlayerId);
-    Player playerByOrder=getPlayer(players.get());
+    playerList=state.getPlayerList(nextPlayerId);
+    Player playerByOrder=getPlayer(playerList.get());
     while (!isPaused() && !gameOver(null)) {
       playExtraTurns();
       GameEvent event=new GameEvent(GameEvent.EventType.PLAY_TURN,null,null,playerByOrder.getId());
@@ -12,7 +12,7 @@
         state.setTurnNum(state.getTurnNum() + 1);
       }
       playExtraTurns();
-      playerByOrder=players.getNext(this);
+      playerByOrder=playerList.getNext(this);
     }
   }
   if (gameOver(null) && !isSimulation()) {
