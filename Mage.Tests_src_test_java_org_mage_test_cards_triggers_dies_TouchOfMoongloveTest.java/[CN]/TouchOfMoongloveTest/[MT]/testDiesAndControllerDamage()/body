@@ -1,0 +1,21 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.HAND,playerA,"Cleric of the Forward Order",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Guardian Automaton",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",1);
+  addCard(Zone.HAND,playerB,"Touch of Moonglove");
+  addCard(Zone.BATTLEFIELD,playerB,"Pharika's Disciple",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Cleric of the Forward Order");
+  attack(2,playerB,"Pharika's Disciple");
+  block(2,playerA,"Cleric of the Forward Order","Pharika's Disciple");
+  block(2,playerA,"Guardian Automaton","Pharika's Disciple");
+  castSpell(2,PhaseStep.DECLARE_BLOCKERS,playerB,"Touch of Moonglove","Pharika's Disciple");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertGraveyardCount(playerB,"Touch of Moonglove",1);
+  assertGraveyardCount(playerA,"Cleric of the Forward Order",1);
+  assertGraveyardCount(playerB,"Pharika's Disciple",1);
+  assertGraveyardCount(playerA,"Guardian Automaton",1);
+  assertLife(playerA,21);
+  assertLife(playerB,20);
+}
