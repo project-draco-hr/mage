@@ -1,0 +1,29 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",10);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.HAND,playerA,"Wheel of Fortune",1);
+  addCard(Zone.LIBRARY,playerA,"Mox Emerald",1);
+  addCard(Zone.LIBRARY,playerA,"Turnabout",1);
+  addCard(Zone.LIBRARY,playerA,"Yawgmoth's Will",1);
+  skipInitShuffling();
+  addCard(Zone.HAND,playerA,"Palinchron",1);
+  addCard(Zone.HAND,playerA,"Mind's Desire",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Wheel of Fortune");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Mox Emerald");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Turnabout");
+  setChoice(playerA,"Land");
+  setChoice(playerA,"Untap");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Yawgmoth's Will");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Palinchron");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Mind's Desire");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Wheel of Fortune",1);
+  assertPermanentCount(playerA,"Mox Emerald",1);
+  assertGraveyardCount(playerA,"Turnabout",1);
+  assertPermanentCount(playerA,"Palinchron",1);
+  assertExileCount("Yawgmoth's Will",1);
+  assertExileCount("Mind's Desire",1);
+  assertExileCount(playerA,8);
+}
