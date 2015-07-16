@@ -95,11 +95,21 @@
     }
     for (    Permanent permanent : targets) {
       if (((TargetPermanent)target).canTarget(abilityControllerId,permanent.getId(),null,game) && !target.getTargets().contains(permanent.getId())) {
+        if (target.getNumberOfTargets() == target.getTargets().size()) {
+          if (outcome.isGood() && hasOpponent(permanent.getControllerId(),game)) {
+            return true;
+          }
+          if (!outcome.isGood() && !hasOpponent(permanent.getControllerId(),game)) {
+            return true;
+          }
+        }
         target.add(permanent.getId(),game);
-        return true;
+        if (target.doneChosing()) {
+          return true;
+        }
       }
     }
-    return false;
+    return target.isChosen();
   }
   if (target instanceof TargetCardInHand) {
     List<Card> cards=new ArrayList<>();
