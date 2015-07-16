@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",6);
+  addCard(Zone.BATTLEFIELD,playerA,"Fireshrieker",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",2);
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  int tappedLands=0;
+  for (  Permanent permanent : currentGame.getBattlefield().getAllActivePermanents(new FilterLandPermanent(),playerA.getId(),currentGame)) {
+    if (permanent.isTapped()) {
+      tappedLands++;
+    }
+  }
+  Assert.assertEquals("AI should only used Equipment once",2,tappedLands);
+}
