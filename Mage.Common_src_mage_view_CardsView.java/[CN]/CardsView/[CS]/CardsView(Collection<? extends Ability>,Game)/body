@@ -29,6 +29,11 @@ sourceObject=game.getObject(ability.getSourceId());
 if (sourceObject instanceof Emblem) {
 Card planeswalkerCard=game.getCard(((Emblem)sourceObject).getSourceId());
 if (planeswalkerCard != null) {
+if (!planeswalkerCard.getCardType().contains(CardType.PLANESWALKER)) {
+if (planeswalkerCard.getSecondCardFace() != null) {
+planeswalkerCard=planeswalkerCard.getSecondCardFace();
+}
+}
 abilityView=new AbilityView(ability,"Emblem " + planeswalkerCard.getName(),new CardView(new EmblemView((Emblem)sourceObject,planeswalkerCard)));
 abilityView.setName("Emblem " + planeswalkerCard.getName());
 abilityView.setExpansionSetCode(planeswalkerCard.getExpansionSetCode());
