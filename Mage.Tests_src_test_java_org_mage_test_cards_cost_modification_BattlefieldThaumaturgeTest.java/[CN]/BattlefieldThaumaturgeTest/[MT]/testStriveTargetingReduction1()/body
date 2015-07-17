@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Battlefield Thaumaturge");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Pharika's Chosen");
+  addCard(Zone.HAND,playerA,"Silence the Believers");
+  addCard(Zone.BATTLEFIELD,playerB,"Battlewise Hoplite");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerA,"Silence the Believers","Pharika's Chosen^Battlewise Hoplite");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertExileCount("Pharika's Chosen",1);
+  assertExileCount("Battlewise Hoplite",1);
+  assertPermanentCount(playerA,"Pharika's Chosen",0);
+  assertPermanentCount(playerB,"Battlewise Hoplite",0);
+  assertGraveyardCount(playerA,"Pharika's Chosen",0);
+  assertGraveyardCount(playerB,"Battlewise Hoplite",0);
+  assertTappedCount("Swamp",true,3);
+  assertTappedCount("Forest",true,2);
+  assertTappedCount("Forest",false,2);
+}
