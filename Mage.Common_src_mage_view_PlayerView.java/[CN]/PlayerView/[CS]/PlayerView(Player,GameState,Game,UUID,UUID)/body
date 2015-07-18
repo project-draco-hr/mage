@@ -40,6 +40,11 @@
       if (emblem.getControllerId().equals(this.playerId)) {
         Card sourceCard=game.getCard(((CommandObject)emblem).getSourceId());
         if (sourceCard != null) {
+          if (!sourceCard.getCardType().contains(CardType.PLANESWALKER)) {
+            if (sourceCard.getSecondCardFace() != null) {
+              sourceCard=sourceCard.getSecondCardFace();
+            }
+          }
           commandList.add(new EmblemView(emblem,sourceCard));
         }
       }
