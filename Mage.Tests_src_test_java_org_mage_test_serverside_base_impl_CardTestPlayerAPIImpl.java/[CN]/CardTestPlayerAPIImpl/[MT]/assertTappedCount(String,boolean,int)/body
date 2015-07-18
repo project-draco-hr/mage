@@ -1,0 +1,14 @@
+{
+  int tappedAmount=0;
+  Permanent found=null;
+  for (  Permanent permanent : currentGame.getBattlefield().getAllActivePermanents()) {
+    if (permanent.getName().equals(cardName)) {
+      if (permanent.isTapped() == tapped) {
+        tappedAmount++;
+      }
+      found=permanent;
+    }
+  }
+  Assert.assertNotNull("There is no such permanent on the battlefield, cardName=" + cardName,found);
+  Assert.assertEquals("(Battlefield) " + count + " permanents ("+ cardName+ ") are not "+ ((tapped) ? "" : "un")+ "tapped.",count,tappedAmount);
+}

@@ -1,0 +1,26 @@
+{
+  String[] creatures={"Battlefield Thaumaturge","Agent of Horizons","Blood-Toll Harpy","Anvilwrought Raptor","Fleshmad Steed"};
+  for (  String creature : creatures) {
+    addCard(Zone.BATTLEFIELD,playerA,creature);
+  }
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",5);
+  addCard(Zone.HAND,playerA,"Launch the Fleet");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Launch the Fleet",createTargetingString(creatures));
+  for (  String creature : creatures) {
+    attack(3,playerA,creature);
+  }
+  setStopAt(3,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerA,16);
+  for (  String creature : creatures) {
+    assertPermanentCount(playerA,creature,1);
+  }
+  assertPermanentCount(playerA,"Soldier",5);
+  Permanent battlefieldThaumaturge=getPermanent("Battlefield Thaumaturge",playerA.getId());
+  Assert.assertTrue("Battlefield Thaumaturge must have hexproof",battlefieldThaumaturge.getAbilities().contains(HexproofAbility.getInstance()));
+  assertLife(playerA,20);
+  assertLife(playerB,4);
+  assertTappedCount("Plains",true,1);
+  assertTappedCount("Island",false,5);
+}
