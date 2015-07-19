@@ -1,22 +1,65 @@
 {
   List<TargetImpl> options=new ArrayList<>();
-  Set<UUID> possibleTargets=possibleTargets(source.getSourceId(),source.getControllerId(),game);
+  List<UUID> possibleTargets=new ArrayList<>();
+  possibleTargets.addAll(possibleTargets(source.getSourceId(),source.getControllerId(),game));
   possibleTargets.removeAll(getTargets());
-  Iterator<UUID> it=possibleTargets.iterator();
-  while (it.hasNext()) {
-    UUID targetId=it.next();
+  int N=possibleTargets.size();
+  if (N < getNumberOfTargets()) {
+    return options;
+  }
+  if (N == 0) {
     TargetImpl target=this.copy();
-    target.clearChosen();
-    target.addTarget(targetId,source,game,true);
-    if (!target.isChosen()) {
-      Iterator<UUID> it2=possibleTargets.iterator();
-      while (it2.hasNext() && !target.isChosen()) {
-        UUID nextTargetId=it2.next();
-        target.addTarget(nextTargetId,source,game,true);
-      }
+    options.add(target);
+    return options;
+  }
+  int maxK=getMaxNumberOfTargets() - getTargets().size();
+  if (maxK > 5) {
+    maxK=5;
+    if (N > 10) {
+      maxK=4;
     }
-    if (target.isChosen()) {
-      options.add(target);
+    if (N > 20) {
+      maxK=3;
+    }
+  }
+  if (N < maxK) {
+    maxK=N;
+  }
+  int minK=getNumberOfTargets();
+  if (getNumberOfTargets() == 0) {
+    TargetImpl target=this.copy();
+    options.add(target);
+    minK=1;
+  }
+  for (int K=minK; K <= maxK; K++) {
+    int combination[]=new int[K];
+    int r=0;
+    int index=0;
+    while (r >= 0) {
+      if (index <= (N + (r - K))) {
+        combination[r]=index;
+        if (r == K - 1) {
+          TargetImpl target=this.copy();
+          for (int i=0; i < combination.length; i++) {
+            target.addTarget(possibleTargets.get(combination[i]),source,game,true);
+          }
+          options.add(target);
+          index++;
+        }
+ else {
+          index=combination[r] + 1;
+          r++;
+        }
+      }
+ else {
+        r--;
+        if (r > 0) {
+          index=combination[r] + 1;
+        }
+ else {
+          index=combination[0] + 1;
+        }
+      }
     }
   }
   return options;
