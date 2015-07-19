@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Omniscience");
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox");
+  addCard(Zone.HAND,playerA,"Far // Away");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"fused Far // Away","Silvercoat Lion^targetPlayer=PlayerB");
+  playerB.addTarget("Pillarfield Ox");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertHandCount(playerA,1);
+  assertHandCount(playerB,0);
+  assertGraveyardCount(playerA,"Far // Away",1);
+  assertPermanentCount(playerB,"Pillarfield Ox",0);
+  assertGraveyardCount(playerB,"Pillarfield Ox",1);
+}
