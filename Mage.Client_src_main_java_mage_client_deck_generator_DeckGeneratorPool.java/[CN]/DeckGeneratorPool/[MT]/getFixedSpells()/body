@@ -5,11 +5,11 @@
   if (spellSize < nonLandSize) {
     int spellsNeeded=nonLandSize - spellSize;
     List<Card> spellsToAdd=new ArrayList<>(spellsNeeded);
-    for (int i=0; i < spellsNeeded - 1; i++)     spellsToAdd.add(reserveSpells.get(i));
-    for (int j=spellsNeeded + 1; j < reserveSpells.size() - 1; j++) {
-      int index=random.nextInt(j);
-      Card randomCard=reserveSpells.get(index);
-      if (index < j && isValidSpellCard(randomCard)) {
+    for (int i=0; i < spellsNeeded; i++)     spellsToAdd.add(reserveSpells.get(i));
+    for (int i=spellsNeeded + 1; i < reserveSpells.size() - 1; i++) {
+      int j=random.nextInt(i);
+      Card randomCard=reserveSpells.get(j);
+      if (isValidSpellCard(randomCard) && j < spellsToAdd.size()) {
         spellsToAdd.set(j,randomCard);
       }
     }
