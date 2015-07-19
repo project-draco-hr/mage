@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Zone.HAND,playerA,"Rewind");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",4);
+  addCard(Zone.HAND,playerB,"Kytheon's Irregulars",1);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Kytheon's Irregulars");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerB,"Kytheon's Irregulars",0);
+  assertGraveyardCount(playerB,"Kytheon's Irregulars",1);
+  assertGraveyardCount(playerA,"Rewind",1);
+  assertTappedCount("Island",true,0);
+}

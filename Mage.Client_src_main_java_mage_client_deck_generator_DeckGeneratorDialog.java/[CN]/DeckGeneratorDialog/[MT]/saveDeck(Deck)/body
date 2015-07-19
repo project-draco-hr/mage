@@ -1,8 +1,10 @@
 {
   try {
-    File tmp=File.createTempFile("tempDeck" + UUID.randomUUID().toString(),".dck");
+    String tempDir=System.getProperty("java.io.tmpdir");
+    String deckName="Generated-Deck-" + dateFormat.format(new Date());
+    File tmp=new File(tempDir + File.separator + deckName+ ".dck");
     tmp.createNewFile();
-    deck.setName("Generated-Deck-" + UUID.randomUUID());
+    deck.setName(deckName);
     Sets.saveDeck(tmp.getAbsolutePath(),deck.getDeckCardLists());
     DeckGeneratorDialog.cleanUp();
     return tmp.getAbsolutePath();
