@@ -1,0 +1,22 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    Cards revealedCards=new CardsImpl();
+    while (controller.getLibrary().size() > 0) {
+      Card card=controller.getLibrary().removeFromTop(game);
+      if (card.getCardType().contains(CardType.CREATURE)) {
+        controller.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+        break;
+      }
+      revealedCards.add(card);
+    }
+    controller.revealCards("ThicketElemental",revealedCards,game);
+    for (    Card card : revealedCards.getCards(game)) {
+      card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
+    }
+    controller.shuffleLibrary(game);
+    return true;
+  }
+  return false;
+}
