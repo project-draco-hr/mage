@@ -7,7 +7,9 @@
   this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
   Ability ability=new EnchantAbility(auraTarget.getTargetName());
   this.addAbility(ability);
-  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new PredatoryUrgeEffect(),new TapSourceCost());
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageEachOtherEffect(),new TapSourceCost());
   ability.addTarget(new TargetCreaturePermanent());
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(ability,AttachmentType.AURA)));
+  Effect effect=new GainAbilityAttachedEffect(ability,AttachmentType.AURA);
+  effect.setText("Enchanted creature has \"{T}: This creature deals damage equal to its power to target creature. That creature deals damage equal to its power to this creature.\"");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
 }

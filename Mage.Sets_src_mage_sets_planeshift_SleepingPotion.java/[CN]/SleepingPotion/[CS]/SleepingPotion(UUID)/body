@@ -1,0 +1,15 @@
+{
+  super(ownerId,34,"Sleeping Potion",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{1}{U}");
+  this.expansionSetCode="PLS";
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Detriment));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new TapEnchantedEffect()));
+  Effect effect=new DontUntapInControllersUntapStepEnchantedEffect();
+  effect.setText("Enchanted creature doesn't untap during its controller's untap step");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  this.addAbility(new BecomesTargetAttachedTriggeredAbility(new SacrificeSourceEffect()));
+}
