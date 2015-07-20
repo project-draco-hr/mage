@@ -7,14 +7,15 @@
     Set<Card> cards=player.getGraveyard().getCards(filter,game);
     for (    Card card : cards) {
       if (card != null) {
-        player.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId());
-        Effect exileEffect=new ExileTargetEffect("Exile those creatures at the beginning of your next upkeep");
-        exileEffect.setTargetPointer(new FixedTarget(card.getId()));
-        DelayedTriggeredAbility delayedAbility=new AtTheBeginOfYourNextUpkeepDelayedTriggeredAbility(exileEffect);
-        delayedAbility.setSourceId(source.getSourceId());
-        delayedAbility.setControllerId(source.getControllerId());
-        delayedAbility.setSourceObject(source.getSourceObject(game),game);
-        game.addDelayedTriggeredAbility(delayedAbility);
+        if (player.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId())) {
+          Effect exileEffect=new ExileTargetEffect("Exile those creatures at the beginning of your next upkeep");
+          exileEffect.setTargetPointer(new FixedTarget(card.getId(),card.getZoneChangeCounter(game)));
+          DelayedTriggeredAbility delayedAbility=new AtTheBeginOfYourNextUpkeepDelayedTriggeredAbility(exileEffect);
+          delayedAbility.setSourceId(source.getSourceId());
+          delayedAbility.setControllerId(source.getControllerId());
+          delayedAbility.setSourceObject(source.getSourceObject(game),game);
+          game.addDelayedTriggeredAbility(delayedAbility);
+        }
       }
     }
     return true;

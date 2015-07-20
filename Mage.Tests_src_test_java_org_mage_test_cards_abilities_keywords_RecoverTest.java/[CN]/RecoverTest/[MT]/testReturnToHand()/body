@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",4);
+  addCard(Zone.HAND,playerA,"Sun's Bounty");
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  addCard(Zone.HAND,playerB,"Lightning Bolt",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Sun's Bounty");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Lightning Bolt","Silvercoat Lion");
+  setChoice(playerA,"Yes");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertHandCount(playerA,"Sun's Bounty",1);
+  assertGraveyardCount(playerA,"Silvercoat Lion",1);
+  assertLife(playerA,24);
+  assertTappedCount("Plains",true,4);
+}
