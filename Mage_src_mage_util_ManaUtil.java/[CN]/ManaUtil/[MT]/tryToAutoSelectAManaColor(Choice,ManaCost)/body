@@ -1,0 +1,38 @@
+{
+  String colorToAutoPay=null;
+  if (unpaid.containsColor(ColoredManaSymbol.W) && choice.getChoices().contains("White")) {
+    colorToAutoPay="White";
+  }
+  if (unpaid.containsColor(ColoredManaSymbol.R) && choice.getChoices().contains("Red")) {
+    if (colorToAutoPay != null) {
+      return false;
+    }
+    colorToAutoPay="Red";
+  }
+  if (unpaid.containsColor(ColoredManaSymbol.G) && choice.getChoices().contains("Green")) {
+    if (colorToAutoPay != null) {
+      return false;
+    }
+    colorToAutoPay="Green";
+  }
+  if (unpaid.containsColor(ColoredManaSymbol.U) && choice.getChoices().contains("Blue")) {
+    if (colorToAutoPay != null) {
+      return false;
+    }
+    colorToAutoPay="Blue";
+  }
+  if (unpaid.containsColor(ColoredManaSymbol.B) && choice.getChoices().contains("Black")) {
+    if (colorToAutoPay != null) {
+      return false;
+    }
+    colorToAutoPay="Black";
+  }
+  if (unpaid.getMana().getDifferentColors() == 0) {
+    colorToAutoPay=choice.getChoices().iterator().next();
+  }
+  if (colorToAutoPay != null) {
+    choice.setChoice(colorToAutoPay);
+    return true;
+  }
+  return false;
+}
