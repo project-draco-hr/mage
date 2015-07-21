@@ -7,5 +7,7 @@
   this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
   Ability ability=new EnchantAbility(auraTarget.getTargetName());
   this.addAbility(ability);
-  this.addAbility(new DruidsCallTriggeredAbility());
+  Effect effect=new CreateTokenTargetEffect(new SquirrelToken(),new NumericSetToEffectValues("that much","damage"));
+  effect.setText("its controller puts that many 1/1 green Squirrel creature tokens onto the battlefield");
+  this.addAbility(new DamageDealtToAttachedTriggeredAbility(Zone.BATTLEFIELD,effect,false,SetTargetPointer.PLAYER));
 }
