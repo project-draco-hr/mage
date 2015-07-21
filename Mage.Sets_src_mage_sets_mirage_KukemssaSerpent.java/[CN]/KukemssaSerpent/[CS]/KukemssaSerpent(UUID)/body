@@ -1,0 +1,13 @@
+{
+  super(ownerId,72,"Kukemssa Serpent",Rarity.COMMON,new CardType[]{CardType.CREATURE},"{3}{U}");
+  this.expansionSetCode="MIR";
+  this.subtype.add("Serpent");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(3);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new CantAttackUnlessDefenderControllsPermanent(new FilterLandPermanent("Island","an Island"))));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BecomesBasicLandTargetEffect(Duration.EndOfTurn,"Island"),new ManaCostsImpl("{U}"));
+  ability.addCost(new SacrificeTargetCost(new TargetControlledPermanent(1,1,filterControlledLand,true)));
+  ability.addTarget(new TargetLandPermanent(filterOpponentLand));
+  this.addAbility(ability);
+  this.addAbility(new KukemssaSerpentTriggeredAbility());
+}
