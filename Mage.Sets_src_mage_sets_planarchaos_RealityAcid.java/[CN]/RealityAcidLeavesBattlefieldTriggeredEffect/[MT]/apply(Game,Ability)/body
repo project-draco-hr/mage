@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (controller != null && sourcePermanent != null) {
+    if (sourcePermanent.getAttachedTo() != null) {
+      Permanent attachedTo=game.getPermanent(sourcePermanent.getAttachedTo());
+      if (attachedTo != null) {
+        attachedTo.sacrifice(source.getSourceId(),game);
+      }
+    }
+    return true;
+  }
+  return false;
+}
