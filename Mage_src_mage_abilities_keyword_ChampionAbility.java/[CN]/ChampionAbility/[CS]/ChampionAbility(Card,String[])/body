@@ -3,20 +3,27 @@
   this.subtypes=subtypes;
   StringBuilder sb=new StringBuilder("another ");
   ArrayList<Predicate<MageObject>> subtypesPredicates=new ArrayList<>();
-  int i=0;
-  for (  String subtype : this.subtypes) {
-    subtypesPredicates.add(new SubtypePredicate(subtype));
-    if (i == 0) {
-      sb.append(subtype);
-    }
+  if (subtypes != null) {
+    int i=0;
+    for (    String subtype : this.subtypes) {
+      subtypesPredicates.add(new SubtypePredicate(subtype));
+      if (i == 0) {
+        sb.append(subtype);
+      }
  else {
-      sb.append(" or ").append(subtype);
+        sb.append(" or ").append(subtype);
+      }
+      i++;
     }
-    i++;
+  }
+ else {
+    sb.append("creature");
   }
   this.objectDescription=sb.toString();
   FilterControlledPermanent filter=new FilterControlledPermanent(objectDescription);
-  filter.add(Predicates.or(subtypesPredicates));
+  if (subtypes != null) {
+    filter.add(Predicates.or(subtypesPredicates));
+  }
   filter.add(new AnotherPredicate());
   Ability ability1=new EntersBattlefieldTriggeredAbility(new SacrificeSourceUnlessPaysEffect(new ChampionExileCost(filter,new StringBuilder(card.getName()).append(" championed permanents").toString())),false);
   ability1.setRuleVisible(false);
