@@ -1,0 +1,19 @@
+{
+  Permanent enchantment=game.getPermanent(sourceId);
+  UUID targetId=event.getTargetId();
+  if (enchantment != null && enchantment.getAttachedTo() != null && targetId.equals(enchantment.getAttachedTo())) {
+    for (    Effect effect : this.getEffects()) {
+      effect.setValue("damage",event.getAmount());
+switch (setTargetPointer) {
+case PERMANENT:
+        effect.setTargetPointer(new FixedTarget(targetId));
+      break;
+case PLAYER:
+    effect.setTargetPointer(new FixedTarget(game.getPermanentOrLKIBattlefield(targetId).getControllerId()));
+  break;
+}
+}
+return true;
+}
+return false;
+}
