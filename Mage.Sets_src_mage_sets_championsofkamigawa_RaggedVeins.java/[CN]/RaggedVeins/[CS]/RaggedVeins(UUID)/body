@@ -5,7 +5,9 @@
   this.addAbility(FlashAbility.getInstance());
   TargetPermanent auraTarget=new TargetCreaturePermanent();
   this.getSpellAbility().addTarget(auraTarget);
-  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Detriment));
   this.addAbility(new EnchantAbility(auraTarget.getTargetName()));
-  this.addAbility(new RaggedVeinsTriggeredAbility());
+  Effect effect=new LoseLifeTargetEffect(new NumericSetToEffectValues("that much","damage"));
+  effect.setText("its controller loses that much life");
+  this.addAbility(new DamageDealtToAttachedTriggeredAbility(Zone.BATTLEFIELD,effect,false,SetTargetPointer.PLAYER));
 }
