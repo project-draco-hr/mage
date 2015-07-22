@@ -3,10 +3,7 @@
   Permanent permanent=game.getPermanent(source.getSourceId());
   if (player != null && permanent != null) {
     int domainValueReduction=new DomainValue(2).calculate(game,source,this);
-    if (domainValueReduction >= MAX_DOMAIN_VALUE) {
-      return true;
-    }
-    int count=(MAX_DOMAIN_VALUE - domainValueReduction);
+    int count=MAX_DOMAIN_VALUE - domainValueReduction;
     if (player.chooseUse(Outcome.Benefit,"Pay {" + count + "}? Or "+ permanent.getName()+ " will be sacrificed.",source,game)) {
       GenericManaCost cost=new GenericManaCost(count);
       if (cost.pay(source,game,source.getSourceId(),source.getControllerId(),false)) {
