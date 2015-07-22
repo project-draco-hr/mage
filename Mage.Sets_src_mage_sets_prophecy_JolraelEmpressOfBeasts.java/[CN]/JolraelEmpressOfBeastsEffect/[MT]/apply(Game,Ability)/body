@@ -1,0 +1,10 @@
+{
+  Player targetPlayer=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (targetPlayer != null) {
+    FilterPermanent filter=new FilterPermanent();
+    filter.add(new PlayerIdPredicate(targetPlayer.getId()));
+    game.addEffect(new BecomesCreatureAllEffect(new JolraelLandsToken(),"lands",filter,Duration.EndOfTurn),source);
+    return true;
+  }
+  return false;
+}
