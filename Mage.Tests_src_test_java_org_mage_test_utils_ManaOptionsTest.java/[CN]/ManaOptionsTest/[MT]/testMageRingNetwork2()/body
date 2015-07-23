@@ -1,0 +1,11 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mage-Ring Network",1);
+  addCounters(1,PhaseStep.UPKEEP,playerA,"Mage-Ring Network",CounterType.STORAGE,4);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",1);
+  setStopAt(1,PhaseStep.DRAW);
+  execute();
+  ManaOptions manaOptions=playerA.getAvailableManaTest(currentGame);
+  Assert.assertEquals("mana variations don't fit",1,manaOptions.size());
+  Assert.assertEquals("{4}{W}{B}",getManaOption(0,manaOptions));
+}
