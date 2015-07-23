@@ -1,6 +1,12 @@
 {
   this.computedMana.clear();
-  int count=amount.calculate(game,source,this);
+  int count;
+  if (netMana && netAmount != null) {
+    count=netAmount.calculate(game,source,this);
+  }
+ else {
+    count=amount.calculate(game,source,this);
+  }
   if (mana.getBlack() > 0) {
     computedMana.setBlack(count);
   }

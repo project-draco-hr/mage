@@ -1,4 +1,5 @@
 {
+  int errorContinueCounter=0;
   int bookmark=0;
   clearAllBookmarks();
   try {
@@ -65,11 +66,20 @@
         }
  catch (        Exception ex) {
           logger.fatal("Game exception gameId: " + getId(),ex);
-          ex.printStackTrace();
           this.fireErrorEvent("Game exception occurred: ",ex);
           restoreState(bookmark,"");
           bookmark=0;
-          continue;
+          Player activePlayer=this.getPlayer(getActivePlayerId());
+          if (errorContinueCounter > 15) {
+            throw new MageException("Iterated player priority after game exception too often, game ends!");
+          }
+          if (activePlayer != null && !activePlayer.isTestMode()) {
+            errorContinueCounter++;
+            continue;
+          }
+ else {
+            throw new MageException("Error in testclass");
+          }
         }
         state.getPlayerList().getNext();
       }
@@ -78,6 +88,7 @@
  catch (  Exception ex) {
     logger.fatal("Game exception ",ex);
     this.fireErrorEvent("Game exception occurred: ",ex);
+    this.end();
   }
  finally {
     resetLKI();

@@ -1,7 +1,8 @@
 {
   Permanent permanent=game.getPermanent(source.getSourceId());
-  if (permanent != null) {
-    if (permanent.moveToExile(source.getSourceId(),"Argent Sphinx Exile",source.getSourceId(),game)) {
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (permanent != null && sourceObject != null) {
+    if (permanent.moveToExile(source.getSourceId(),sourceObject.getIdName(),source.getSourceId(),game)) {
       AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Zone.BATTLEFIELD));
       delayedAbility.setSourceId(source.getSourceId());
       delayedAbility.setControllerId(source.getControllerId());

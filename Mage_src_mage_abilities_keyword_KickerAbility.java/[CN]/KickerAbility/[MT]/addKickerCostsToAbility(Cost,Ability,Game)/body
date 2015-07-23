@@ -1,0 +1,18 @@
+{
+  if (cost instanceof ManaCostsImpl) {
+    @SuppressWarnings("unchecked") List<VariableManaCost> varCosts=((ManaCostsImpl)cost).getVariableCosts();
+    if (!varCosts.isEmpty()) {
+      xManaValue=game.getPlayer(this.controllerId).announceXMana(varCosts.get(0).getMinX(),Integer.MAX_VALUE,"Announce kicker value for " + varCosts.get(0).getText(),game,this);
+      if (!game.isSimulation()) {
+        game.informPlayers(game.getPlayer(this.controllerId).getLogName() + " announced a value of " + xManaValue+ " for "+ " kicker X ");
+      }
+      ability.getManaCostsToPay().add(new GenericManaCost(xManaValue));
+    }
+ else {
+      ability.getManaCostsToPay().add((ManaCostsImpl)cost.copy());
+    }
+  }
+ else {
+    ability.getCosts().add(cost.copy());
+  }
+}
