@@ -5,9 +5,7 @@
       Card card=(Card)game.getObject(permanent.getId());
       if (card != null) {
         Effect effect=new GraveBetrayalEffect();
-        effect.setTargetPointer(new FixedTarget(card.getId()));
-        Integer zoneChanges=card.getZoneChangeCounter(game);
-        effect.setValue("zoneChanges",zoneChanges);
+        effect.setTargetPointer(new FixedTarget(card.getId(),card.getZoneChangeCounter(game)));
         DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect);
         delayedAbility.setSourceId(this.getSourceId());
         delayedAbility.setControllerId(this.getControllerId());
