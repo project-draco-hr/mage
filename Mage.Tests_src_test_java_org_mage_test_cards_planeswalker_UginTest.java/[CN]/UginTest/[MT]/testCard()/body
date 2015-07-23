@@ -1,0 +1,26 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Ugin, the Spirit Dragon");
+  addCard(Zone.BATTLEFIELD,playerA,"Quest for the Gravelord");
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.LIBRARY,playerB,"Forest",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Forest",6);
+  addCard(Zone.HAND,playerB,"Nissa, Vastwood Seer");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"+2: {source} deals 3 damage to target creature or player.",playerB);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Nissa, Vastwood Seer");
+  playLand(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Forest");
+  activateAbility(2,PhaseStep.POSTCOMBAT_MAIN,playerB,"-2: Put a legendary 4/4 green Elemental creature token named Ashaya, the Awoken World onto the battlefield.");
+  attack(3,playerA,"Silvercoat Lion");
+  block(3,playerB,"Ashaya, the Awoken World","Silvercoat Lion");
+  activateAbility(3,PhaseStep.POSTCOMBAT_MAIN,playerA,"-X: Exile each permanent with converted mana cost X or less that's one or more colors");
+  setChoice(playerA,"X=0");
+  setStopAt(3,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Ugin, the Spirit Dragon",1);
+  assertCounterCount("Ugin, the Spirit Dragon",CounterType.LOYALTY,9);
+  assertGraveyardCount(playerA,"Silvercoat Lion",1);
+  assertPermanentCount(playerB,"Ashaya, the Awoken World",0);
+  assertExileCount("Nissa, Vastwood Seer",1);
+  assertCounterCount("Quest for the Gravelord",CounterType.QUEST,1);
+  assertLife(playerA,20);
+  assertLife(playerB,17);
+}
