@@ -1,0 +1,25 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp");
+  addCard(Zone.HAND,playerA,"Order of the Stars");
+  addCard(Zone.HAND,playerA,"Reanimate");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",4);
+  addCard(Zone.HAND,playerB,"Seismic Shudder",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Order of the Stars");
+  setChoice(playerA,"White");
+  attack(2,playerB,"Silvercoat Lion");
+  block(2,playerA,"Order of the Stars","Silvercoat Lion");
+  castSpell(2,PhaseStep.POSTCOMBAT_MAIN,playerB,"Seismic Shudder");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Reanimate","Order of the Stars");
+  setChoice(playerA,"Red");
+  castSpell(3,PhaseStep.POSTCOMBAT_MAIN,playerB,"Seismic Shudder");
+  setStopAt(3,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerB,"Seismic Shudder",2);
+  assertGraveyardCount(playerA,"Reanimate",1);
+  assertPermanentCount(playerA,"Order of the Stars",1);
+  assertPermanentCount(playerB,"Silvercoat Lion",1);
+  assertLife(playerA,19);
+  assertLife(playerB,20);
+}
