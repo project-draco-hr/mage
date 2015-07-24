@@ -1,0 +1,23 @@
+{
+  Permanent attachement=game.getPermanent(source.getSourceId());
+  if (attachement != null && attachement.getAttachedTo() != null) {
+    ObjectColor color=(ObjectColor)game.getState().getValue(attachement.getId() + "_color");
+    if (color != null && (protectionAbility == null || !color.equals(chosenColor))) {
+      chosenColor=color;
+      FilterObject protectionFilter=new FilterObject(chosenColor.getDescription());
+      protectionFilter.add(new ColorPredicate(chosenColor));
+      protectionAbility=new ProtectionAbility(protectionFilter);
+      if (notRemoveItself) {
+        protectionAbility.setAuraIdNotToBeRemoved(source.getSourceId());
+      }
+    }
+    if (protectionAbility != null) {
+      Permanent attachedTo=game.getPermanent(attachement.getAttachedTo());
+      if (attachedTo != null) {
+        attachement.addAbility(protectionAbility,source.getSourceId(),game);
+      }
+      return true;
+    }
+  }
+  return false;
+}
