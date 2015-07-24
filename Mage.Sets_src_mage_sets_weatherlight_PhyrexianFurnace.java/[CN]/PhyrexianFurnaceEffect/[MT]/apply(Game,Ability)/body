@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player != null) {
+    Card bottomCard=null;
+    for (    Card card : player.getGraveyard().getCards(game)) {
+      bottomCard=card;
+      break;
+    }
+    if (bottomCard != null) {
+      return player.moveCardToExileWithInfo(bottomCard,null,"",source.getSourceId(),game,Zone.GRAVEYARD,true);
+    }
+    return true;
+  }
+  return false;
+}

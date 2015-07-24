@@ -1,0 +1,14 @@
+{
+  super(ownerId,130,"Krosan Restorer",Rarity.COMMON,new CardType[]{CardType.CREATURE},"{2}{G}");
+  this.expansionSetCode="TOR";
+  this.subtype.add("Human");
+  this.subtype.add("Druid");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(2);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new UntapTargetEffect(),new TapSourceCost());
+  ability.addTarget(new TargetLandPermanent());
+  this.addAbility(ability);
+  ability=new ConditionalActivatedAbility(Zone.BATTLEFIELD,new UntapTargetEffect(),new TapSourceCost(),new CardsInControllerGraveCondition(7),"<i>Threshold</i> - {T}: Untap up to three target lands. Activate this ability only if seven or more cards are in your graveyard.");
+  ability.addTarget(new TargetLandPermanent(0,3,new FilterLandPermanent(),false));
+  this.addAbility(ability);
+}
