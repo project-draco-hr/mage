@@ -1,6 +1,6 @@
 {
   Mana mana=manaToAdd.copy();
-  if (!game.replaceEvent(new ManaEvent(EventType.ADD_MANA,source.getId(),source.getSourceId(),source.getControllerId(),mana))) {
+  if (!game.replaceEvent(new ManaEvent(EventType.ADD_MANA,source.getId(),source.getSourceId(),playerId,mana))) {
     if (mana instanceof ConditionalMana) {
       ManaPoolItem item=new ManaPoolItem((ConditionalMana)mana,source.getSourceId(),source.getOriginalId());
       if (emptyOnTurnsEnd) {
@@ -15,8 +15,8 @@
       }
       this.manaItems.add(item);
     }
-    GameEvent event=GameEvent.getEvent(GameEvent.EventType.MANA_ADDED,source.getId(),source.getSourceId(),source.getControllerId());
-    event.setData(mana.toString());
-    game.fireEvent(event);
+    ManaEvent manaEvent=new ManaEvent(EventType.MANA_ADDED,source.getId(),source.getSourceId(),playerId,mana);
+    manaEvent.setData(mana.toString());
+    game.fireEvent(manaEvent);
   }
 }
