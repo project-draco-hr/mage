@@ -1,0 +1,14 @@
+{
+  Permanent licid=(Permanent)source.getSourceObjectIfItStillExists(game);
+  if (licid != null) {
+    UUID messageId=UUID.randomUUID();
+    LicidContinuousEffect effect=new LicidContinuousEffect(messageId);
+    effect.setTargetPointer(new FixedTarget(licid.getId()));
+    game.addEffect(effect,source);
+    new AttachEffect(Outcome.Neutral).apply(game,source);
+    SpecialAction specialAction=new LicidSpecialAction(this.specialActionCost,messageId,licid.getIdName());
+    new CreateSpecialActionEffect(specialAction).apply(game,source);
+    return true;
+  }
+  return false;
+}
