@@ -7,8 +7,8 @@
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
   this.addAbility(new LevelUpAbility(new ManaCostsImpl("{4}")));
-  Abilities<Ability> levelAbilities=new AbilitiesImpl<Ability>();
-  levelAbilities.add(ZulaportEnforcerAbility.getInstance());
-  this.addAbilities(LevelerCardBuilder.construct(new LevelerCardBuilder.LevelAbility(1,2,new AbilitiesImpl<Ability>(),3,3),new LevelerCardBuilder.LevelAbility(3,-1,levelAbilities,5,5)));
+  Abilities<Ability> levelAbilities=new AbilitiesImpl<>();
+  levelAbilities.add(new SimpleEvasionAbility(new CantBeBlockedByCreaturesSourceEffect(notBlackCreatures,Duration.WhileOnBattlefield)));
+  this.addAbilities(LevelerCardBuilder.construct(new LevelerCardBuilder.LevelAbility(1,2,new AbilitiesImpl<>(),3,3),new LevelerCardBuilder.LevelAbility(3,-1,levelAbilities,5,5)));
   setMaxLevelCounters(3);
 }
