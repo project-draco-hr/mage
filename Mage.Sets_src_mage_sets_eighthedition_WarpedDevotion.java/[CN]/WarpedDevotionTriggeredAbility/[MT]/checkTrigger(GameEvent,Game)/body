@@ -1,0 +1,13 @@
+{
+  ZoneChangeEvent zce=(ZoneChangeEvent)event;
+  if (zce.getFromZone() == Zone.BATTLEFIELD && zce.getToZone() == Zone.HAND) {
+    Card card=game.getCard(event.getTargetId());
+    if (card != null) {
+      for (      Effect effect : getEffects()) {
+        effect.setTargetPointer(new FixedTarget(card.getOwnerId()));
+      }
+      return true;
+    }
+  }
+  return false;
+}
