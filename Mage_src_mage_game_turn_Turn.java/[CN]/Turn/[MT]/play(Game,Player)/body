@@ -2,18 +2,20 @@
   activePlayer.becomesActivePlayer();
   this.setDeclareAttackersStepStarted(false);
   if (game.isPaused() || game.gameOver(null)) {
-    return;
+    return false;
   }
   if (game.getState().getTurnMods().skipTurn(activePlayer.getId())) {
-    return;
+    game.informPlayers(activePlayer.getLogName() + " skips his or her turn.");
+    return true;
   }
+  logStartOfTurn(game,activePlayer);
   checkTurnIsControlledByOtherPlayer(game,activePlayer.getId());
   this.activePlayerId=activePlayer.getId();
   resetCounts();
   game.getPlayer(activePlayer.getId()).beginTurn(game);
   for (  Phase phase : phases) {
     if (game.isPaused() || game.gameOver(null)) {
-      return;
+      return false;
     }
     if (!isEndTurnRequested() || phase.getType().equals(TurnPhase.END)) {
       currentPhase=phase;
@@ -21,7 +23,7 @@
       if (!game.getState().getTurnMods().skipPhase(activePlayer.getId(),currentPhase.getType())) {
         if (phase.play(game,activePlayer.getId())) {
           if (game.executingRollback()) {
-            return;
+            return false;
           }
           game.emptyManaPools();
           game.saveState(false);
@@ -31,4 +33,5 @@
       }
     }
   }
+  return false;
 }

@@ -1,9 +1,9 @@
 {
-  StringBuilder sb=new StringBuilder("Turn ").append(state.getTurnNum()).append(" ");
+  StringBuilder sb=new StringBuilder("Turn ").append(game.getState().getTurnNum()).append(" ");
   sb.append(player.getLogName());
   sb.append(" (");
-  int delimiter=this.getPlayers().size() - 1;
-  for (  Player gamePlayer : this.getPlayers().values()) {
+  int delimiter=game.getPlayers().size() - 1;
+  for (  Player gamePlayer : game.getPlayers().values()) {
     sb.append(gamePlayer.getLife());
     int poison=gamePlayer.getCounters().getCount(CounterType.POISON);
     if (poison > 0) {
@@ -15,5 +15,5 @@
     }
   }
   sb.append(")");
-  fireStatusEvent(sb.toString(),true);
+  game.fireStatusEvent(sb.toString(),true);
 }
