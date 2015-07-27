@@ -1,0 +1,21 @@
+{
+  removeAllCardsFromLibrary(playerA);
+  skipInitShuffling();
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",4);
+  addCard(Zone.HAND,playerA,"Surging Dementia",2);
+  addCard(Zone.LIBRARY,playerA,"Surging Dementia",1);
+  addCard(Zone.LIBRARY,playerA,"Swamp",2);
+  addCard(Zone.LIBRARY,playerA,"Surging Dementia",1);
+  addCard(Zone.LIBRARY,playerA,"Swamp",2);
+  addCard(Zone.HAND,playerB,"Island",3);
+  addCard(Zone.LIBRARY,playerB,"Island",3);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Surging Dementia",playerB);
+  setChoice(playerA,"Yes");
+  addTarget(playerA,playerB);
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertHandCount(playerB,1);
+  assertHandCount(playerA,1);
+  assertGraveyardCount(playerA,"Surging Dementia",3);
+  assertGraveyardCount(playerB,"Island",3);
+}

@@ -1,0 +1,41 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (player != null) {
+    if (!player.chooseUse(Outcome.Neutral,"Reveal " + rippleNumber + " cards from the top of your library?",source,game)) {
+      return true;
+    }
+    Cards cards=new CardsImpl();
+    cards.addAll(player.getLibrary().getTopCards(game,rippleNumber));
+    player.revealCards(sourceObject.getIdName(),cards,game);
+    String cardNameToRipple;
+    if (isTargetSelf) {
+      cardNameToRipple=sourceObject.getName();
+    }
+ else {
+      Spell spellOnStack=game.getStack().getSpell(targetPointer.getFirst(game,source));
+      if (spellOnStack == null) {
+        spellOnStack=(Spell)game.getLastKnownInformation(targetPointer.getFirst(game,source),Zone.STACK);
+      }
+      if (spellOnStack == null) {
+        return true;
+      }
+      cardNameToRipple=spellOnStack.getName();
+    }
+    FilterCard sameNameFilter=new FilterCard("card(s) with the name: \"" + cardNameToRipple + "\" to cast without paying their mana cost");
+    sameNameFilter.add(new NamePredicate(cardNameToRipple));
+    TargetCard target1=new TargetCard(Zone.LIBRARY,sameNameFilter);
+    target1.setRequired(false);
+    while (player.isInGame() && cards.count(sameNameFilter,game) > 0 && player.choose(Outcome.PlayForFree,cards,target1,game)) {
+      Card card=cards.get(target1.getFirstTarget(),game);
+      if (card != null) {
+        player.cast(card.getSpellAbility(),game,true);
+        cards.remove(card);
+      }
+      target1.clearChosen();
+    }
+    player.putCardsOnBottomOfLibrary(cards,game,source,true);
+    return true;
+  }
+  return false;
+}
