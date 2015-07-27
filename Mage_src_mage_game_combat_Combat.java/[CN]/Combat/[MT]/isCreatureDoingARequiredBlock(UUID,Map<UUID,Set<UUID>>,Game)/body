@@ -8,13 +8,15 @@
     if (forcingAttackers == null) {
       if (possibleBlocker.getBlocking() > 0) {
         CombatGroup combatGroupOfPossibleBlocker=findGroupOfBlocker(possibleBlockerId);
-        for (        UUID blockedAttackerId : combatGroupOfPossibleBlocker.getAttackers()) {
-          if (mustBeBlockedByAtLeastOne.containsKey(blockedAttackerId)) {
-            if (combatGroupOfPossibleBlocker.getBlockers().size() == 1) {
-              return null;
+        if (combatGroupOfPossibleBlocker != null) {
+          for (          UUID blockedAttackerId : combatGroupOfPossibleBlocker.getAttackers()) {
+            if (mustBeBlockedByAtLeastOne.containsKey(blockedAttackerId)) {
+              if (combatGroupOfPossibleBlocker.getBlockers().size() == 1) {
+                return null;
+              }
+              Permanent blockedAttacker=game.getPermanent(blockedAttackerId);
+              return possibleBlocker.getIdName() + " blocks with other creatures " + blockedAttacker.getIdName()+ ", which has to be blocked by only one creature. ";
             }
-            Permanent blockedAttacker=game.getPermanent(blockedAttackerId);
-            return possibleBlocker.getIdName() + " blocks with other creatures " + blockedAttacker.getIdName()+ ", which has to be blocked by only one creature. ";
           }
         }
       }

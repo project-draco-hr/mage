@@ -76,13 +76,18 @@ game.addPermanent(permanent);
 game.setZone(objectId,Zone.BATTLEFIELD);
 game.setScopeRelevant(true);
 game.applyEffects();
-permanent.entersBattlefield(sourceId,game,event.getFromZone(),true);
+boolean entered=permanent.entersBattlefield(sourceId,game,event.getFromZone(),true);
 game.setScopeRelevant(false);
 game.applyEffects();
+if (entered) {
 if (flag) {
 permanent.setTapped(true);
 }
 event.setTarget(permanent);
+}
+ else {
+return false;
+}
 break;
 default :
 Card sourceCard=game.getCard(sourceId);
