@@ -3,7 +3,13 @@
   this.expansionSetCode="ZEN";
   this.getSpellAbility().addTarget(new TargetCreaturePermanent());
   this.getSpellAbility().addEffect(new GainControlTargetEffect(Duration.EndOfTurn));
-  this.getSpellAbility().addEffect(new AddCountersTargetEffect(CounterType.P1P1.createInstance()));
-  this.getSpellAbility().addEffect(new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn));
-  this.getSpellAbility().addEffect(new UntapTargetEffect());
+  Effect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance());
+  effect.setText("Put a +1/+1 counter on it");
+  this.getSpellAbility().addEffect(effect);
+  effect=new UntapTargetEffect();
+  effect.setText("and untap it");
+  this.getSpellAbility().addEffect(effect);
+  effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("That creature gains haste until end of turn. <i>(It can {T} attack and this turn.)</i>");
+  this.getSpellAbility().addEffect(effect);
 }

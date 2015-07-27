@@ -1,0 +1,29 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Iterable<UUID> affectedPlayers;
+switch (who) {
+case ANY:
+      affectedPlayers=controller.getInRange();
+    break;
+case OPPONENT:
+  affectedPlayers=game.getOpponents(source.getControllerId());
+break;
+case YOU:
+ArrayList tmp=new ArrayList<UUID>();
+tmp.add(source.getControllerId());
+affectedPlayers=tmp;
+break;
+default :
+return false;
+}
+for (UUID playerID : affectedPlayers) {
+Player player=game.getPlayer(playerID);
+if (player != null) {
+player.revealCards(player.getName() + "'s hand cards",player.getHand(),game,false);
+}
+}
+return true;
+}
+return false;
+}
