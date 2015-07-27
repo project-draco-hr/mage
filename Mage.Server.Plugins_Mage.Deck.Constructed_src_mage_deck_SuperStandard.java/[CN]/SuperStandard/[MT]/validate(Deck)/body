@@ -1,0 +1,64 @@
+{
+  Map<String,String> leastInvalid=null;
+  boolean valid=false;
+  for (  String[] sets : standards) {
+    invalid.clear();
+    setCodes=new ArrayList<>(Arrays.asList(sets));
+    if (setCodes.contains("MRD") || setCodes.contains("SOM")) {
+      banned.add("Darksteel Citadel");
+      banned.add("Stoneforge Mystic");
+    }
+ else {
+      banned.remove("Darksteel Citadel");
+      banned.remove("Stoneforge Mystic");
+    }
+    if (super.validate(deck)) {
+      valid=true;
+      break;
+    }
+    if (leastInvalid == null) {
+      leastInvalid=new HashMap<>(this.getInvalid());
+      continue;
+    }
+    if (leastInvalid.size() > this.getInvalid().size()) {
+      leastInvalid=new HashMap<>(this.getInvalid());
+    }
+  }
+  GregorianCalendar start=new GregorianCalendar(2006,Calendar.SEPTEMBER,1);
+  GregorianCalendar end=new GregorianCalendar(2008,Calendar.SEPTEMBER,1);
+  GregorianCalendar current=new GregorianCalendar();
+  while (end.before(current) && !valid) {
+    setCodes.clear();
+    invalid.clear();
+    start.set(Calendar.YEAR,start.get(Calendar.YEAR) + 1);
+    end.set(Calendar.YEAR,start.get(Calendar.YEAR) + 2);
+    for (    ExpansionSet set : Sets.getInstance().values()) {
+      if (set.getReleaseDate().after(start.getTime()) && set.getReleaseDate().before(end.getTime()) && (set.getSetType() == SetType.CORE || set.getSetType() == SetType.EXPANSION)) {
+        setCodes.add(set.getCode());
+      }
+    }
+    if (setCodes.contains("MRD") || setCodes.contains("SOM")) {
+      banned.add("Darksteel Citadel");
+      banned.add("Stoneforge Mystic");
+    }
+ else {
+      banned.remove("Darksteel Citadel");
+      banned.remove("Stoneforge Mystic");
+    }
+    if (super.validate(deck)) {
+      invalid.clear();
+      valid=true;
+      break;
+    }
+    if (leastInvalid == null) {
+      leastInvalid=new HashMap<>(this.getInvalid());
+    }
+ else     if (leastInvalid.size() > this.getInvalid().size()) {
+      leastInvalid=new HashMap<>(this.getInvalid());
+    }
+  }
+  if (!valid) {
+    this.invalid=new HashMap<>(leastInvalid);
+  }
+  return valid;
+}
