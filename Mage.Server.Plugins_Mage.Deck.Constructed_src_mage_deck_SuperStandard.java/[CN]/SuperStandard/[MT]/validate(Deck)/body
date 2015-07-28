@@ -1,16 +1,20 @@
 {
   Map<String,String> leastInvalid=null;
   boolean valid=false;
+  Map<String,Integer> counts=new HashMap<>();
+  countCards(counts,deck.getCards());
+  countCards(counts,deck.getSideboard());
+  if (counts.containsKey("Stoneforge Mystic") && counts.containsKey("Batterskull")) {
+    return false;
+  }
   for (  String[] sets : standards) {
     invalid.clear();
     setCodes=new ArrayList<>(Arrays.asList(sets));
     if (setCodes.contains("MRD") || setCodes.contains("SOM")) {
       banned.add("Darksteel Citadel");
-      banned.add("Stoneforge Mystic");
     }
  else {
       banned.remove("Darksteel Citadel");
-      banned.remove("Stoneforge Mystic");
     }
     if (super.validate(deck)) {
       valid=true;
@@ -39,11 +43,9 @@
     }
     if (setCodes.contains("MRD") || setCodes.contains("SOM")) {
       banned.add("Darksteel Citadel");
-      banned.add("Stoneforge Mystic");
     }
  else {
       banned.remove("Darksteel Citadel");
-      banned.remove("Stoneforge Mystic");
     }
     if (super.validate(deck)) {
       invalid.clear();
