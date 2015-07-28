@@ -76,8 +76,11 @@ PermanentCard permanent=new PermanentCard(card,card.getOwnerId(),game);
 game.getBattlefield().addPermanent(permanent);
 card.setZone(Zone.BATTLEFIELD,game);
 game.applyEffects();
-permanent.entersBattlefield(event.getSourceId(),game,fromZone,true);
+boolean entered=permanent.entersBattlefield(event.getSourceId(),game,fromZone,true);
 game.applyEffects();
+if (!entered) {
+return false;
+}
 game.fireEvent(new ZoneChangeEvent(permanent,controllerId,fromZone,Zone.BATTLEFIELD));
 if (targetCard != null) {
 permanent.attachTo(targetCard.getId(),game);

@@ -1,0 +1,19 @@
+{
+  int parleyValue=0;
+  MageObject sourceObject=game.getObject(sourceAbility.getSourceId());
+  if (sourceObject != null) {
+    for (    UUID playerId : game.getState().getPlayerList(sourceAbility.getControllerId())) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        Card card=player.getLibrary().getFromTop(game);
+        if (card != null) {
+          if (!card.getCardType().contains(CardType.LAND)) {
+            parleyValue++;
+          }
+          player.revealCards(sourceObject.getIdName() + " (" + player.getName()+ ")",new CardsImpl(card),game);
+        }
+      }
+    }
+  }
+  return parleyValue;
+}

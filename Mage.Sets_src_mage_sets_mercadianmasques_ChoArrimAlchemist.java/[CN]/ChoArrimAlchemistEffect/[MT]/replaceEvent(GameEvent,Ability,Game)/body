@@ -1,0 +1,12 @@
+{
+  PreventionEffectData preventionData=preventDamageAction(event,source,game);
+  this.used=true;
+  this.discard();
+  if (preventionData.getPreventedDamage() > 0) {
+    Player player=game.getPlayer(source.getControllerId());
+    if (player != null) {
+      player.gainLife(preventionData.getPreventedDamage(),game);
+    }
+  }
+  return true;
+}
