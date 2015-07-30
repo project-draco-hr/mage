@@ -1,0 +1,36 @@
+{
+  if (cards.isEmpty()) {
+    return true;
+  }
+  game.fireEvent(new ZoneChangeGroupEvent(cards,source == null ? null : source.getSourceId(),this.getId(),fromZone,toZone));
+switch (toZone) {
+case EXILED:
+    boolean result=false;
+  for (  Card card : cards) {
+    result|=moveCardToExileWithInfo(card,null,"",source == null ? null : source.getSourceId(),game,fromZone,withName);
+  }
+return result;
+case GRAVEYARD:
+return moveCardsToGraveyardWithInfo(cards,source,game,fromZone);
+case HAND:
+result=false;
+for (Card card : cards) {
+result|=moveCardToHandWithInfo(card,source == null ? null : source.getSourceId(),game,fromZone,withName);
+}
+return result;
+case BATTLEFIELD:
+result=false;
+for (Card card : cards) {
+result|=putOntoBattlefieldWithInfo(card,game,fromZone,source == null ? null : source.getSourceId(),false,!withName);
+}
+return result;
+case LIBRARY:
+result=false;
+for (Card card : cards) {
+result|=moveCardToLibraryWithInfo(card,source == null ? null : source.getSourceId(),game,fromZone,true,withName);
+}
+return result;
+default :
+throw new UnsupportedOperationException("to Zone not supported yet");
+}
+}

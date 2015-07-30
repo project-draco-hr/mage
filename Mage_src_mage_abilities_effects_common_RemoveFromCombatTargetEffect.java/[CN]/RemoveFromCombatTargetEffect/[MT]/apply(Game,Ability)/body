@@ -1,7 +1,9 @@
 {
-  Permanent permanent=game.getPermanent(targetPointer.getFirst(game,source));
-  if (permanent != null) {
-    permanent.removeFromCombat(game);
+  for (  UUID targetId : getTargetPointer().getTargets(game,source)) {
+    Permanent permanent=game.getPermanent(targetId);
+    if (permanent != null) {
+      permanent.removeFromCombat(game);
+    }
   }
-  return false;
+  return true;
 }

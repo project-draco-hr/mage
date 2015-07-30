@@ -1,39 +1,15 @@
 {
-  boolean result=true;
   Player controller=game.getPlayer(source.getControllerId());
   if (controller == null) {
     return false;
   }
+  Cards cardsToHand=new CardsImpl();
+  Zone fromZone=game.getState().getZone(targetPointer.getFirst(game,source));
   for (  UUID targetId : targetPointer.getTargets(game,source)) {
-switch (game.getState().getZone(targetId)) {
-case BATTLEFIELD:
-      Permanent permanent=game.getPermanent(targetId);
-    if (permanent != null) {
-      controller.moveCardToHandWithInfo((Card)permanent,source.getSourceId(),game,Zone.BATTLEFIELD,withName);
+    MageObject mageObject=game.getObject(targetId);
+    if (mageObject instanceof Card) {
+      cardsToHand.add((Card)mageObject);
     }
- else {
-      result=false;
-    }
-  break;
-case GRAVEYARD:
-Card card=game.getCard(targetId);
-if (card != null) {
-controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.GRAVEYARD,withName);
-}
- else {
-result=false;
-}
-break;
-case EXILED:
-card=game.getCard(targetId);
-if (card != null) {
-controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.EXILED,withName);
-}
- else {
-result=false;
-}
-break;
-}
-}
-return result;
+  }
+  return controller.moveCards(cardsToHand,fromZone,Zone.HAND,source,game);
 }
