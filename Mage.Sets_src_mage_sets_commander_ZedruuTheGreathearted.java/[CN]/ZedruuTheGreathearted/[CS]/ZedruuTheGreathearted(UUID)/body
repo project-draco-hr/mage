@@ -1,0 +1,16 @@
+{
+  super(ownerId,240,"Zedruu the Greathearted",Rarity.MYTHIC,new CardType[]{CardType.CREATURE},"{1}{R}{W}{U}");
+  this.expansionSetCode="CMD";
+  this.supertype.add("Legendary");
+  this.subtype.add("Minotaur");
+  this.subtype.add("Monk");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(4);
+  Ability ability=new BeginningOfUpkeepTriggeredAbility(new GainLifeEffect(new PermanentsYouOwnThatOpponentsControlCount()),TargetController.YOU,false);
+  ability.addEffect(new DrawCardSourceControllerEffect(new PermanentsYouOwnThatOpponentsControlCount()));
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ZedruuTheGreatheartedEffect(),new ManaCostsImpl("{R}{W}{U}"));
+  ability.addTarget(new TargetOpponent());
+  ability.addTarget(new TargetControlledPermanent());
+  this.addAbility(ability);
+}

@@ -1,0 +1,20 @@
+{
+  if (sourceAbility != null) {
+    Player controller=game.getPlayer(sourceAbility.getControllerId());
+    if (controller != null) {
+      UUID controllerId=controller.getId();
+      Set<UUID> opponentIds=game.getOpponents(controllerId);
+      int count=0;
+      for (      UUID opponentId : opponentIds) {
+        List<Permanent> opponentPermanents=game.getBattlefield().getAllActivePermanents(opponentId);
+        for (        Permanent opponentPermanent : opponentPermanents) {
+          if (opponentPermanent.getOwnerId().equals(controllerId)) {
+            count++;
+          }
+        }
+      }
+      return count;
+    }
+  }
+  return 0;
+}
