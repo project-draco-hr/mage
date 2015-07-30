@@ -6,8 +6,12 @@
   this.subtype.add("Monk");
   this.power=new MageInt(2);
   this.toughness=new MageInt(4);
-  Ability ability=new BeginningOfUpkeepTriggeredAbility(new GainLifeEffect(new PermanentsYouOwnThatOpponentsControlCount()),TargetController.YOU,false);
-  ability.addEffect(new DrawCardSourceControllerEffect(new PermanentsYouOwnThatOpponentsControlCount()));
+  Effect effect=new GainLifeEffect(new PermanentsYouOwnThatOpponentsControlCount());
+  effect.setText("you gain X life");
+  Ability ability=new BeginningOfUpkeepTriggeredAbility(effect,TargetController.YOU,false);
+  effect=new DrawCardSourceControllerEffect(new PermanentsYouOwnThatOpponentsControlCount());
+  effect.setText("and draw X cards, where X is the number of permanents you own that your opponents control");
+  ability.addEffect(effect);
   this.addAbility(ability);
   ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ZedruuTheGreatheartedEffect(),new ManaCostsImpl("{R}{W}{U}"));
   ability.addTarget(new TargetOpponent());
