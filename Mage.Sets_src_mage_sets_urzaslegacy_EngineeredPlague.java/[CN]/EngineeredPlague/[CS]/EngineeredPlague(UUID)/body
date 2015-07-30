@@ -2,5 +2,7 @@
   super(ownerId,51,"Engineered Plague",Rarity.UNCOMMON,new CardType[]{CardType.ENCHANTMENT},"{2}{B}");
   this.expansionSetCode="ULG";
   this.addAbility(new AsEntersBattlefieldAbility(new ChooseCreatureTypeEffect(Outcome.UnboostCreature)));
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostAllEffect(-1,-1,Duration.WhileOnBattlefield,new FilterEngineeredPlague(),false)));
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("All creatures of the chosen type");
+  filter.add(new ChosenSubtypePredicate(this.getId()));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostAllEffect(-1,-1,Duration.WhileOnBattlefield,filter,false)));
 }
