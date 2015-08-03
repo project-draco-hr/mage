@@ -1,0 +1,16 @@
+{
+  Permanent enchantment=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (enchantment == null) {
+    return false;
+  }
+  Permanent enchanted=game.getPermanentOrLKIBattlefield(enchantment.getAttachedTo());
+  if (enchanted == null) {
+    return false;
+  }
+  Player player=game.getPlayer(enchanted.getControllerId());
+  if (player != null) {
+    player.damage(amount,source.getSourceId(),game,false,true);
+    return true;
+  }
+  return false;
+}

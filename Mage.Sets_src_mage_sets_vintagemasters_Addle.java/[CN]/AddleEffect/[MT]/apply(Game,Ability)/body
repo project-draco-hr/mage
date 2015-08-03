@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    ChoiceColor choice=new ChoiceColor();
+    controller.choose(outcome,choice,game);
+    ObjectColor color=choice.getColor();
+    if (color != null) {
+      game.informPlayers(new StringBuilder(controller.getLogName()).append(" chooses ").append(color).toString());
+      FilterCard filter=new FilterCard();
+      filter.add(new ColorPredicate(color));
+      Effect effect=new DiscardCardYouChooseTargetEffect(filter);
+      return effect.apply(game,source);
+    }
+  }
+  return false;
+}
