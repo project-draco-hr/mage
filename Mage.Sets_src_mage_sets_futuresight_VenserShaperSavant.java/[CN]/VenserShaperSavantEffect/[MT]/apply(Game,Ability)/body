@@ -3,7 +3,7 @@
   if (controller != null) {
     Permanent permanent=game.getPermanent(this.getTargetPointer().getFirst(game,source));
     if (permanent != null) {
-      return controller.moveCardToHandWithInfo(permanent,source.getSourceId(),game,Zone.BATTLEFIELD);
+      return controller.moveCards(permanent,null,Zone.HAND,source,game);
     }
     Spell spell=game.getStack().getSpell(this.getTargetPointer().getFirst(game,source));
     if (spell != null) {
@@ -13,7 +13,7 @@
       }
       game.getStack().remove(spell);
       if (card != null) {
-        controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.STACK);
+        controller.moveCards(card,null,Zone.HAND,source,game);
       }
       return true;
     }

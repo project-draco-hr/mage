@@ -7,6 +7,7 @@ switch (toZone) {
 case EXILED:
     boolean result=false;
   for (  Card card : cards) {
+    fromZone=game.getState().getZone(card.getId());
     result|=moveCardToExileWithInfo(card,null,"",source == null ? null : source.getSourceId(),game,fromZone,withName);
   }
 return result;
@@ -15,18 +16,21 @@ return moveCardsToGraveyardWithInfo(cards,source,game,fromZone);
 case HAND:
 result=false;
 for (Card card : cards) {
-result|=moveCardToHandWithInfo(card,source == null ? null : source.getSourceId(),game,fromZone,withName);
+fromZone=game.getState().getZone(card.getId());
+result|=moveCardToHandWithInfo(card,source == null ? null : source.getSourceId(),game,withName);
 }
 return result;
 case BATTLEFIELD:
 result=false;
 for (Card card : cards) {
+fromZone=game.getState().getZone(card.getId());
 result|=putOntoBattlefieldWithInfo(card,game,fromZone,source == null ? null : source.getSourceId(),false,!withName);
 }
 return result;
 case LIBRARY:
 result=false;
 for (Card card : cards) {
+fromZone=game.getState().getZone(card.getId());
 result|=moveCardToLibraryWithInfo(card,source == null ? null : source.getSourceId(),game,fromZone,true,withName);
 }
 return result;

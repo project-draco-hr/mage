@@ -9,9 +9,11 @@
  else {
       filter.add(new NamePredicate(permanent.getName()));
     }
+    Cards cardsToHand=new CardsImpl();
     for (    Permanent perm : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
-      controller.moveCardToHandWithInfo(perm,source.getSourceId(),game,Zone.BATTLEFIELD);
+      cardsToHand.add(perm);
     }
+    controller.moveCards(cardsToHand,null,Zone.HAND,source,game);
     return true;
   }
   return true;

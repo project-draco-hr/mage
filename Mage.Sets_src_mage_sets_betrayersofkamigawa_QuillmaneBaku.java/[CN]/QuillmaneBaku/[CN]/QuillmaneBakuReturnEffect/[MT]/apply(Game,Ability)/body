@@ -1,12 +1,11 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player == null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
     return false;
   }
   Permanent permanent=game.getPermanent(this.getTargetPointer().getFirst(game,source));
   if (permanent != null) {
-    player.moveCardToHandWithInfo((Card)permanent,source.getSourceId(),game,Zone.BATTLEFIELD);
-    return true;
+    controller.moveCards(permanent,null,Zone.HAND,source,game);
   }
-  return false;
+  return true;
 }

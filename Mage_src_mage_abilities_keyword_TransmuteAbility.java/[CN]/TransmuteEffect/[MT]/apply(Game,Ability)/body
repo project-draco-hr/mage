@@ -1,24 +1,18 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  Card sourceCard=game.getCard(source.getSourceId());
-  if (sourceCard != null && player != null) {
-    FilterCard filter=new FilterCard("card with converted mana cost " + sourceCard.getManaCost().convertedManaCost());
-    filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,sourceCard.getManaCost().convertedManaCost()));
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (sourceObject != null && controller != null) {
+    FilterCard filter=new FilterCard("card with converted mana cost " + sourceObject.getManaCost().convertedManaCost());
+    filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,sourceObject.getManaCost().convertedManaCost()));
     TargetCardInLibrary target=new TargetCardInLibrary(1,filter);
-    if (player.searchLibrary(target,game)) {
+    if (controller.searchLibrary(target,game)) {
       if (target.getTargets().size() > 0) {
-        Cards revealed=new CardsImpl();
-        for (        UUID cardId : target.getTargets()) {
-          Card card=player.getLibrary().remove(cardId,game);
-          if (card != null) {
-            player.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
-            revealed.add(card);
-          }
-        }
-        player.revealCards("Search",revealed,game);
+        Cards revealed=new CardsImpl(target.getTargets());
+        controller.revealCards(sourceObject.getIdName(),revealed,game);
+        controller.moveCards(revealed,null,Zone.HAND,source,game);
       }
     }
-    player.shuffleLibrary(game);
+    controller.shuffleLibrary(game);
     return true;
   }
   return false;
