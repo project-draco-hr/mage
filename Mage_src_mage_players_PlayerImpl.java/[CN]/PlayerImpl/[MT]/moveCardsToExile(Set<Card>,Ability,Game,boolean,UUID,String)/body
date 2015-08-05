@@ -1,0 +1,12 @@
+{
+  if (cards.isEmpty()) {
+    return true;
+  }
+  game.fireEvent(new ZoneChangeGroupEvent(cards,source == null ? null : source.getSourceId(),this.getId(),null,Zone.EXILED));
+  boolean result=false;
+  for (  Card card : cards) {
+    Zone fromZone=game.getState().getZone(card.getId());
+    result|=moveCardToExileWithInfo(card,exileId,exileZoneName,source == null ? null : source.getSourceId(),game,fromZone,withName);
+  }
+  return result;
+}

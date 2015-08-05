@@ -1,16 +1,13 @@
 {
-  Player targetOpponent=game.getPlayer(source.getFirstTarget());
   Player controller=game.getPlayer(source.getControllerId());
-  Cards revealed=new CardsImpl();
-  int amount;
-  if (controller == null) {
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller == null || sourceObject == null) {
     return false;
   }
-  amount=(Math.min(10,controller.getLibrary().size()));
-  for (int i=0; i < amount; i++) {
-    revealed.add(controller.getLibrary().removeFromTop(game));
-  }
-  controller.revealCards("Sanity Grinding",revealed,game);
+  Cards revealed=new CardsImpl();
+  revealed.addAll(controller.getLibrary().getTopCards(game,10));
+  controller.revealCards(sourceObject.getIdName(),revealed,game);
+  Player targetOpponent=game.getPlayer(source.getFirstTarget());
   if (targetOpponent != null) {
     targetOpponent.moveCards(targetOpponent.getLibrary().getTopCards(game,new ChromaSanityGrindingCount(revealed).calculate(game,source,this)),Zone.LIBRARY,Zone.GRAVEYARD,source,game);
   }
