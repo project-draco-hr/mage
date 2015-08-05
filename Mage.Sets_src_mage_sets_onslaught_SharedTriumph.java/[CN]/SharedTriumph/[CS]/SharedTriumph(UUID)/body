@@ -2,5 +2,7 @@
   super(ownerId,53,"Shared Triumph",Rarity.RARE,new CardType[]{CardType.ENCHANTMENT},"{1}{W}");
   this.expansionSetCode="ONS";
   this.addAbility(new AsEntersBattlefieldAbility(new ChooseCreatureTypeEffect(Outcome.BoostCreature)));
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostAllEffect(1,1,Duration.WhileOnBattlefield,new FilterSharedTriumph(),false)));
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("Creatures of the chosen type");
+  filter.add(new ChosenSubtypePredicate(this.getId()));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostAllEffect(1,1,Duration.WhileOnBattlefield,filter,false)));
 }

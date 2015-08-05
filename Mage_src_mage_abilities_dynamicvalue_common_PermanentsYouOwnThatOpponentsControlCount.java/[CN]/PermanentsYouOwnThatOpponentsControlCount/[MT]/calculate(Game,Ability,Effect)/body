@@ -1,0 +1,12 @@
+{
+  Set<UUID> opponentIds=game.getOpponents(sourceAbility.getControllerId());
+  int count=0;
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(sourceAbility.getControllerId(),game)) {
+    if (!permanent.getOwnerId().equals(permanent.getControllerId()) && permanent.getOwnerId().equals(sourceAbility.getControllerId())) {
+      if (opponentIds.contains(permanent.getControllerId())) {
+        count++;
+      }
+    }
+  }
+  return count;
+}

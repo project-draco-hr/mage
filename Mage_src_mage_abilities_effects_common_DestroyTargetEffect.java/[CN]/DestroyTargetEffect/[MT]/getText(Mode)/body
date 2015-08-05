@@ -6,16 +6,25 @@
   if (mode.getTargets().size() == 0) {
     sb.append("destroy that creature");
   }
- else   if (mode.getTargets().get(0).getNumberOfTargets() == 1) {
-    String targetName=mode.getTargets().get(0).getTargetName();
-    sb.append("destroy ");
-    if (!targetName.startsWith("another")) {
-      sb.append("target ");
-    }
-    sb.append(targetName);
-  }
  else {
-    sb.append("Destroy ").append(CardUtil.numberToText(mode.getTargets().get(0).getNumberOfTargets())).append(" target ").append(mode.getTargets().get(0).getTargetName());
+    Target target;
+    if (targetPointer instanceof SecondTargetPointer && mode.getTargets().size() > 1) {
+      target=mode.getTargets().get(1);
+    }
+ else {
+      target=mode.getTargets().get(0);
+    }
+    if (target.getNumberOfTargets() == 1) {
+      String targetName=target.getTargetName();
+      sb.append("destroy ");
+      if (!targetName.startsWith("another")) {
+        sb.append("target ");
+      }
+      sb.append(targetName);
+    }
+ else {
+      sb.append("Destroy ").append(CardUtil.numberToText(target.getNumberOfTargets())).append(" target ").append(target.getTargetName());
+    }
   }
   if (noRegen) {
     sb.append(". It can't be regenerated");

@@ -14,12 +14,7 @@
           filter.add(new SubtypePredicate(typeChoice.getChoice()));
           Target target=new TargetCardInYourGraveyard(0,Integer.MAX_VALUE,filter);
           player.chooseTarget(outcome,target,source,game);
-          for (          UUID cardId : target.getTargets()) {
-            Card card=game.getCard(cardId);
-            if (card != null) {
-              player.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.GRAVEYARD);
-            }
-          }
+          player.moveCards(new CardsImpl(target.getTargets()),null,Zone.HAND,source,game);
         }
       }
     }

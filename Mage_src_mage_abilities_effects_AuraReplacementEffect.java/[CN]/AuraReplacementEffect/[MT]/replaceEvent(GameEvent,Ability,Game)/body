@@ -27,7 +27,7 @@
   if (targetId == null) {
     Target target=card.getSpellAbility().getTargets().get(0);
     enchantCardInGraveyard=target instanceof TargetCardInGraveyard;
-    if (enchantCardInGraveyard && target != null) {
+    if (target != null) {
       target.clearChosen();
     }
     Player player=game.getPlayer(card.getOwnerId());
@@ -76,8 +76,11 @@ PermanentCard permanent=new PermanentCard(card,card.getOwnerId(),game);
 game.getBattlefield().addPermanent(permanent);
 card.setZone(Zone.BATTLEFIELD,game);
 game.applyEffects();
-permanent.entersBattlefield(event.getSourceId(),game,fromZone,true);
+boolean entered=permanent.entersBattlefield(event.getSourceId(),game,fromZone,true);
 game.applyEffects();
+if (!entered) {
+return false;
+}
 game.fireEvent(new ZoneChangeEvent(permanent,controllerId,fromZone,Zone.BATTLEFIELD));
 if (targetCard != null) {
 permanent.attachTo(targetCard.getId(),game);

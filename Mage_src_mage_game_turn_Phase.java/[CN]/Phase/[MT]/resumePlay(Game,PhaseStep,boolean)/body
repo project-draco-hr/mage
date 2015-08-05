@@ -19,6 +19,9 @@
     currentStep=step;
     if (!game.getState().getTurnMods().skipStep(activePlayerId,currentStep.getType())) {
       playStep(game);
+      if (game.executingRollback()) {
+        return true;
+      }
     }
   }
   if (game.isPaused() || game.gameOver(null)) {

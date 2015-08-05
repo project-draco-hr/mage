@@ -1,5 +1,21 @@
 {
   this.player=player;
+  if (flagName == null) {
+    avatar.setText(this.player.getName());
+    if (!player.getUserData().getFlagName().equals(flagName)) {
+      flagName=player.getUserData().getFlagName();
+      this.avatar.setTopTextImage(CountryUtil.getCountryFlagIcon(flagName).getImage());
+    }
+    String countryname=CountryUtil.getCountryName(flagName);
+    if (countryname == null) {
+      countryname="Unknown";
+    }
+    String tooltip="<HTML>Name: " + player.getName() + "<br/>Country: "+ countryname;
+    avatar.setToolTipText(tooltip);
+    avatar.repaint();
+    this.btnPlayer.setText(player.getName());
+    this.btnPlayer.setToolTipText(tooltip);
+  }
   int playerLife=player.getLife();
   if (playerLife > 99) {
     Font font=lifeLabel.getFont();
@@ -80,15 +96,9 @@
       Image image=ImageHelper.getImageFromResources(path);
       Rectangle r=new Rectangle(80,80);
       BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
-      this.avatar.update("player",resized,resized,resized,resized,r);
-    }
-    if (!player.getUserData().getFlagName().equals(flagName)) {
-      flagName=player.getUserData().getFlagName();
-      this.avatarFlag.setIcon(CountryUtil.getCountryFlagIcon(flagName));
-      avatar.repaint();
+      this.avatar.update(this.player.getName(),resized,resized,resized,resized,r);
     }
   }
-  this.avatar.setText(player.getName());
   if (this.timer != null) {
     if (player.getPriorityTimeLeft() != Integer.MAX_VALUE) {
       String priorityTimeValue=getPriorityTimeLeftString(player);
@@ -103,8 +113,6 @@
       this.timer.pause();
     }
   }
-  this.btnPlayer.setText(player.getName());
-  this.btnPlayer.setToolTipText("Life: " + player.getLife());
   if (player.isActive()) {
     this.avatar.setBorder(greenBorder);
     this.btnPlayer.setBorder(greenBorder);

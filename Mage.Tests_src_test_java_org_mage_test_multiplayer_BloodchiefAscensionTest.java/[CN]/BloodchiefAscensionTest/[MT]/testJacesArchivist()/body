@@ -1,0 +1,27 @@
+{
+  skipInitShuffling();
+  addCard(Zone.LIBRARY,playerA,"Auramancer");
+  addCard(Zone.HAND,playerA,"Auramancer",2);
+  addCard(Zone.BATTLEFIELD,playerD,"Bloodchief Ascension");
+  addCounters(2,PhaseStep.UPKEEP,playerD,"Bloodchief Ascension",CounterType.QUEST,3);
+  addCard(Zone.BATTLEFIELD,playerD,"Island",1);
+  addCard(Zone.BATTLEFIELD,playerD,"Jace's Archivist",1);
+  addCard(Zone.LIBRARY,playerD,"Demolish");
+  addCard(Zone.HAND,playerD,"Demolish",1);
+  addCard(Zone.HAND,playerC,"Cobblebrute",4);
+  addCard(Zone.HAND,playerB,"Bellows Lizard",5);
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerD,"{U},{T}: Each player discards");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Auramancer",3);
+  assertGraveyardCount(playerD,"Demolish",2);
+  assertGraveyardCount(playerC,"Cobblebrute",4);
+  assertHandCount(playerA,4);
+  assertHandCount(playerD,4);
+  assertHandCount(playerC,4);
+  assertHandCount(playerB,"Bellows Lizard",5);
+  assertLife(playerA,14);
+  assertLife(playerD,34);
+  assertLife(playerC,12);
+  assertLife(playerB,20);
+}

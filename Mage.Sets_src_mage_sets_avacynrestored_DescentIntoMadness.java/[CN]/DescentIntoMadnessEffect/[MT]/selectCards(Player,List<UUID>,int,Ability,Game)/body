@@ -1,7 +1,7 @@
 {
   int amount=Math.min(count,player.getHand().size() + game.getBattlefield().getAllActivePermanents(player.getId()).size());
   int cardsFromHand=0;
-  while (player.isInGame() && amount > 0) {
+  while (player.canRespond() && amount > 0) {
     Target target;
     do {
       FilterControlledPermanent filter=new FilterControlledPermanent();
@@ -25,7 +25,7 @@
         }
       }
     }
- while (amount > 0 && !target.getTargets().isEmpty() && player.isInGame());
+ while (amount > 0 && !target.getTargets().isEmpty() && player.canRespond());
     if (amount > 0) {
       TargetCard targetInHand;
       do {
@@ -46,7 +46,7 @@
           }
         }
       }
- while (amount > 0 && !targetInHand.getTargets().isEmpty() && player.isInGame());
+ while (amount > 0 && !targetInHand.getTargets().isEmpty() && player.canRespond());
     }
   }
   if (cardsFromHand > 0) {

@@ -2,20 +2,21 @@
   Player controller=game.getPlayer(source.getControllerId());
   MageObject sourceObject=source.getSourceObject(game);
   if (sourceObject != null && controller != null) {
-    int numberCreatures=0;
     UUID exileId=CardUtil.getExileZoneId(game,source.getSourceId(),source.getSourceObjectZoneChangeCounter());
     for (    Permanent creature : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
       if (creature != null) {
+        int zcc=game.getState().getZoneChangeCounter(creature.getId());
         controller.moveCardToExileWithInfo(creature,exileId,sourceObject.getIdName(),source.getSourceId(),game,Zone.BATTLEFIELD,true);
-        numberCreatures++;
+        if (zcc == game.getState().getZoneChangeCounter(creature.getId()) - 1) {
+          Effect effect=new ReturnToBattlefieldUnderOwnerControlTargetEffect();
+          effect.setTargetPointer(new FixedTarget(creature.getId(),zcc + 1));
+          AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect);
+          delayedAbility.setSourceId(source.getSourceId());
+          delayedAbility.setControllerId(source.getControllerId());
+          delayedAbility.setSourceObject(source.getSourceObject(game),game);
+          game.addDelayedTriggeredAbility(delayedAbility);
+        }
       }
-    }
-    if (numberCreatures > 0) {
-      AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(exileId,Zone.BATTLEFIELD,false));
-      delayedAbility.setSourceId(source.getSourceId());
-      delayedAbility.setControllerId(source.getControllerId());
-      delayedAbility.setSourceObject(source.getSourceObject(game),game);
-      game.addDelayedTriggeredAbility(delayedAbility);
     }
     return true;
   }

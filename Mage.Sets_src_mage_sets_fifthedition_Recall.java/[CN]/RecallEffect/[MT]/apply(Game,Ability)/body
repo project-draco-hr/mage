@@ -1,16 +1,12 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
-    int amount=source.getManaCostsToPay().getX();
-    int discarded=Math.min(amount,player.getHand().size());
-    player.discard(amount,false,source,game);
-    TargetCardInYourGraveyard target=new TargetCardInYourGraveyard(discarded,new FilterCard());
-    target.choose(Outcome.ReturnToHand,player.getId(),source.getSourceId(),game);
-    for (    UUID targetId : target.getTargets()) {
-      Card card=game.getCard(targetId);
-      if (card != null) {
-        player.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.GRAVEYARD);
-      }
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards cardsDiscarded=controller.discard(source.getManaCostsToPay().getX(),false,source,game);
+    if (!cardsDiscarded.isEmpty()) {
+      TargetCardInYourGraveyard target=new TargetCardInYourGraveyard(cardsDiscarded.size(),new FilterCard());
+      target.setNotTarget(true);
+      target.choose(Outcome.ReturnToHand,controller.getId(),source.getSourceId(),game);
+      controller.moveCards(new CardsImpl(target.getTargets()),null,Zone.HAND,source,game);
     }
     return true;
   }

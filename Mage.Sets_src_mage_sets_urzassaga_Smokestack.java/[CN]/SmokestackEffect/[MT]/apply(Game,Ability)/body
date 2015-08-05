@@ -7,7 +7,7 @@
       int amount=Math.min(count,game.getBattlefield().countAll(new FilterControlledPermanent(),activePlayer.getId(),game));
       Target target=new TargetControlledPermanent(amount,amount,new FilterControlledPermanent(),false);
       if (target.canChoose(activePlayer.getId(),game)) {
-        while (!target.isChosen() && target.canChoose(activePlayer.getId(),game) && activePlayer.isInGame()) {
+        while (!target.isChosen() && target.canChoose(activePlayer.getId(),game) && activePlayer.canRespond()) {
           activePlayer.choose(Outcome.Sacrifice,target,source.getSourceId(),game);
         }
         for (int idx=0; idx < target.getTargets().size(); idx++) {
