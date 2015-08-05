@@ -5,9 +5,11 @@
     FilterPermanent creatureFilter=new FilterCreaturePermanent();
     creatureFilter.add(new ControllerPredicate(TargetController.OPPONENT));
     creatureFilter.add(new ToughnessPredicate(Filter.ComparisonType.LessThan,islands + 1));
+    Cards cardsToHand=new CardsImpl();
     for (    Permanent permanent : game.getBattlefield().getActivePermanents(creatureFilter,source.getControllerId(),source.getSourceId(),game)) {
-      controller.moveCardToHandWithInfo(permanent,source.getSourceId(),game,Zone.BATTLEFIELD);
+      cardsToHand.add(permanent);
     }
+    controller.moveCards(cardsToHand,null,Zone.HAND,source,game);
     return true;
   }
   return false;

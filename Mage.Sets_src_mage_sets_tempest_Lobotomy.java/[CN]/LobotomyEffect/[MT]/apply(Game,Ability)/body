@@ -17,10 +17,11 @@
  else {
       filterNamedCards.add(new NamePredicate("----"));
     }
+    Cards cardsToExile=new CardsImpl();
     if (chosenCard != null) {
       for (      Card checkCard : targetPlayer.getGraveyard().getCards(game)) {
         if (checkCard.getName().equals(chosenCard.getName())) {
-          controller.moveCardToExileWithInfo(checkCard,null,"",source.getSourceId(),game,Zone.GRAVEYARD,true);
+          cardsToExile.add(checkCard);
         }
       }
       TargetCardInHand targetCardsHand=new TargetCardInHand(0,Integer.MAX_VALUE,filterNamedCards);
@@ -28,7 +29,7 @@
       for (      UUID cardId : targetCardsHand.getTargets()) {
         Card card=game.getCard(cardId);
         if (card != null) {
-          controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.HAND,true);
+          cardsToExile.add(card);
         }
       }
     }
@@ -38,11 +39,14 @@
       for (      UUID cardId : targetCardsLibrary.getTargets()) {
         Card card=game.getCard(cardId);
         if (card != null) {
-          controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.LIBRARY,true);
+          cardsToExile.add(card);
         }
       }
-      targetPlayer.shuffleLibrary(game);
     }
+    if (!cardsToExile.isEmpty()) {
+      controller.moveCards(cardsToExile,null,Zone.EXILED,source,game,true);
+    }
+    targetPlayer.shuffleLibrary(game);
     return true;
   }
   return false;

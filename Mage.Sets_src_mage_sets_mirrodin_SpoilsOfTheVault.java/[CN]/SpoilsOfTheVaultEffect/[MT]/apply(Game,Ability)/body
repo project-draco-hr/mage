@@ -5,24 +5,23 @@
   if (sourceObject == null || controller == null || cardName == null || cardName.isEmpty()) {
     return false;
   }
-  Cards cards=new CardsImpl();
+  Cards cardsToReveal=new CardsImpl();
+  Cards cardsToExile=new CardsImpl();
   while (controller.getLibrary().size() > 0) {
     Card card=controller.getLibrary().removeFromTop(game);
     if (card != null) {
-      cards.add(card);
+      cardsToReveal.add(card);
       if (card.getName().equals(cardName)) {
-        controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
+        controller.moveCards(card,null,Zone.HAND,source,game);
         break;
       }
  else {
-        controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.LIBRARY,true);
+        cardsToExile.add(card);
       }
     }
- else {
-      break;
-    }
   }
-  controller.revealCards(sourceObject.getName(),cards,game);
-  controller.loseLife(cards.size(),game);
+  controller.revealCards(sourceObject.getIdName(),cardsToReveal,game);
+  controller.moveCards(cardsToExile,null,Zone.EXILED,source,game);
+  controller.loseLife(cardsToExile.size(),game);
   return true;
 }

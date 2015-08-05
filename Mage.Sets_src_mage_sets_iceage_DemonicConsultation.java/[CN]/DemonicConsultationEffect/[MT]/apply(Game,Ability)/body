@@ -1,37 +1,33 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
     Choice choice=new ChoiceImpl();
     choice.setChoices(CardRepository.instance.getNames());
-    while (!player.choose(Outcome.Benefit,choice,game)) {
-      if (!player.canRespond()) {
+    while (!controller.choose(Outcome.Benefit,choice,game)) {
+      if (!controller.canRespond()) {
         return false;
       }
     }
     String name=choice.getChoice();
     game.informPlayers("Card named: " + name);
-    int num=Math.min(6,player.getLibrary().size());
-    for (int i=0; i < num; i++) {
-      Card card=player.getLibrary().removeFromTop(game);
+    controller.moveCards(controller.getLibrary().getTopCards(game,6),null,Zone.EXILED,source,game);
+    Cards cardsToReaveal=new CardsImpl();
+    Card cardToHand=null;
+    while (controller.getLibrary().size() > 0) {
+      Card card=controller.getLibrary().removeFromTop(game);
       if (card != null) {
-        player.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.LIBRARY,true);
-      }
-    }
-    Cards cards=new CardsImpl(Zone.LIBRARY);
-    while (player.getLibrary().size() > 0) {
-      Card card=player.getLibrary().removeFromTop(game);
-      if (card != null) {
-        cards.add(card);
+        cardsToReaveal.add(card);
         if (card.getName().equals(name)) {
-          player.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
+          cardToHand=card;
           break;
         }
- else {
-          player.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.LIBRARY,true);
-        }
       }
     }
-    player.revealCards("Demonic Consultation",cards,game);
+    controller.moveCards(cardToHand,null,Zone.HAND,source,game);
+    controller.revealCards(sourceObject.getIdName(),cardsToReaveal,game);
+    cardsToReaveal.remove(cardToHand);
+    controller.moveCards(cardsToReaveal,null,Zone.EXILED,source,game);
     return true;
   }
   return false;

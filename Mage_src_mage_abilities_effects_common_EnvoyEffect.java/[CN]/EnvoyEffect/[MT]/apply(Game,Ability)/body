@@ -6,13 +6,15 @@
   }
   Cards cards=new CardsImpl();
   cards.addAll(controller.getLibrary().getTopCards(game,numCards));
-  controller.revealCards(sourceObject.getName(),cards,game);
+  controller.revealCards(sourceObject.getIdName(),cards,game);
+  Cards cardsToHand=new CardsImpl();
   for (  Card card : cards.getCards(game)) {
     if (filter.match(card,game)) {
-      controller.moveCardToHandWithInfo(card,source.getSourceId(),game,Zone.LIBRARY);
-      cards.remove(card);
+      cardsToHand.add(card);
     }
   }
+  cards.removeAll(cardsToHand);
+  controller.moveCards(cardsToHand,null,Zone.HAND,source,game);
   controller.putCardsOnBottomOfLibrary(cards,game,source,true);
   return true;
 }
