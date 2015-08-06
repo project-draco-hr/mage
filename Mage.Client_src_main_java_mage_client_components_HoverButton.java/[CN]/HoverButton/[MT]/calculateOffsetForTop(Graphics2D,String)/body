@@ -2,7 +2,9 @@
   if (topTextOffsetX == -1) {
     FontRenderContext frc=g2d.getFontRenderContext();
     int textWidth=(int)textFont.getStringBounds(text,frc).getWidth();
-    topTextOffsetX=(imageSize.width - textWidth) / 2;
+    int neededImageWidth=(topTextImage == null ? 0 : topTextImage.getWidth(this));
+    int availableXWidth=imageSize.width - neededImageWidth;
+    topTextOffsetX=(availableXWidth - textWidth) / 2 + neededImageWidth;
   }
   return topTextOffsetX;
 }
