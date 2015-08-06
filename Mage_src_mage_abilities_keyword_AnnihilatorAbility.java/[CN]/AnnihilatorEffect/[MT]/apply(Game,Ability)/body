@@ -6,13 +6,13 @@
   }
   if (player != null) {
     int amount=Math.min(count,game.getBattlefield().countAll(filter,player.getId(),game));
-    Target target=new TargetControlledPermanent(amount,amount,filter,false);
+    Target target=new TargetControlledPermanent(amount,amount,filter,true);
     if (target.canChoose(player.getId(),game)) {
       while (!target.isChosen() && target.canChoose(player.getId(),game) && player.canRespond()) {
         player.choose(Outcome.Sacrifice,target,source.getSourceId(),game);
       }
       for (int idx=0; idx < target.getTargets().size(); idx++) {
-        Permanent permanent=game.getPermanent((UUID)target.getTargets().get(idx));
+        Permanent permanent=game.getPermanent(target.getTargets().get(idx));
         if (permanent != null) {
           permanent.sacrifice(source.getSourceId(),game);
         }
