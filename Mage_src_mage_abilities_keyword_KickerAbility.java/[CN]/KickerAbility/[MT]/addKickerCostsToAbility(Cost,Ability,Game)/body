@@ -7,6 +7,12 @@
         game.informPlayers(game.getPlayer(this.controllerId).getLogName() + " announced a value of " + xManaValue+ " for "+ " kicker X ");
       }
       ability.getManaCostsToPay().add(new GenericManaCost(xManaValue));
+      ManaCostsImpl<ManaCost> kickerManaCosts=(ManaCostsImpl)cost;
+      for (      ManaCost manaCost : kickerManaCosts) {
+        if (!(manaCost instanceof VariableManaCost)) {
+          ability.getManaCostsToPay().add(manaCost.copy());
+        }
+      }
     }
  else {
       ability.getManaCostsToPay().add((ManaCostsImpl)cost.copy());
