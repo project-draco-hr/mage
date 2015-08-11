@@ -12,14 +12,12 @@
   String lineName=line.substring(delim).trim();
   try {
     int num=Integer.parseInt(lineNum);
-    List<CardInfo> cards=CardRepository.instance.findCards(lineName);
-    if (cards.isEmpty()) {
+    CardInfo cardInfo=CardRepository.instance.findPreferedCoreExpansionCard(lineName);
+    if (cardInfo == null) {
       sbMessage.append("Could not find card: '").append(lineName).append("' at line ").append(lineCount).append("\n");
     }
  else {
-      Random random=new Random();
       for (int i=0; i < num; i++) {
-        CardInfo cardInfo=cards.get(random.nextInt(cards.size()));
         if (!sideboard) {
           deckList.getCards().add(new DeckCardInfo(cardInfo.getName(),cardInfo.getCardNumber(),cardInfo.getSetCode()));
         }
