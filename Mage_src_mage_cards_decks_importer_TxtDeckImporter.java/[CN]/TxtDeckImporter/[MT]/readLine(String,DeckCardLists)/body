@@ -1,4 +1,8 @@
 {
+  if (line.toLowerCase().contains("sideboard")) {
+    sideboard=true;
+    return;
+  }
   if (line.startsWith("//")) {
     return;
   }
@@ -11,10 +15,6 @@
   }
  else {
     emptyLinesInARow=0;
-  }
-  if (line.toLowerCase().startsWith("sideboard")) {
-    sideboard=true;
-    return;
   }
   line=line.replace("\t"," ");
   int delim=line.indexOf(' ');
@@ -35,36 +35,17 @@
   }
   try {
     int num=Integer.parseInt(lineNum.replaceAll("\\D+",""));
-    List<CardInfo> cards=CardRepository.instance.findCards(lineName);
-    if (cards.isEmpty()) {
+    CardInfo cardInfo=CardRepository.instance.findPreferedCoreExpansionCard(lineName);
+    if (cardInfo == null) {
       sbMessage.append("Could not find card: '").append(lineName).append("' at line ").append(lineCount).append("\n");
     }
  else {
-      Date lastReleaseDate=new GregorianCalendar(1900,1,1).getTime();
-      Date lastExpansionDate=new GregorianCalendar(1900,1,1).getTime();
-      CardInfo cardToUse=null;
-      for (      CardInfo cardinfo : cards) {
-        ExpansionInfo set=ExpansionRepository.instance.getSetByCode(cardinfo.getSetCode());
-        if (set != null) {
-          if ((set.getType().equals(SetType.EXPANSION) || set.getType().equals(SetType.CORE)) && (lastExpansionDate == null || set.getReleaseDate().after(lastExpansionDate))) {
-            cardToUse=cardinfo;
-            lastExpansionDate=set.getReleaseDate();
-          }
-          if (lastExpansionDate == null && (lastReleaseDate == null || set.getReleaseDate().after(lastReleaseDate))) {
-            cardToUse=cardinfo;
-            lastReleaseDate=set.getReleaseDate();
-          }
-        }
-      }
-      if (cardToUse == null) {
-        cardToUse=cards.get(0);
-      }
       for (int i=0; i < num; i++) {
         if (!sideboard) {
-          deckList.getCards().add(new DeckCardInfo(cardToUse.getName(),cardToUse.getCardNumber(),cardToUse.getSetCode()));
+          deckList.getCards().add(new DeckCardInfo(cardInfo.getName(),cardInfo.getCardNumber(),cardInfo.getSetCode()));
         }
  else {
-          deckList.getSideboard().add(new DeckCardInfo(cardToUse.getName(),cardToUse.getCardNumber(),cardToUse.getSetCode()));
+          deckList.getSideboard().add(new DeckCardInfo(cardInfo.getName(),cardInfo.getCardNumber(),cardInfo.getSetCode()));
         }
       }
     }
