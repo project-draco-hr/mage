@@ -1,5 +1,11 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
+  Player player;
+  if (useTargetController) {
+    player=game.getPlayer(getTargetPointer().getFirst(game,source));
+  }
+ else {
+    player=game.getPlayer(source.getControllerId());
+  }
   String choiceText="Put " + filter.getMessage() + " from your hand onto the battlefield?";
   if (player == null || !player.chooseUse(Outcome.PutCardInPlay,choiceText,source,game)) {
     return false;
