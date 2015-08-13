@@ -7,6 +7,10 @@
     object=state.getBattlefield().getPermanent(objectId);
     return object;
   }
+  object=getLastKnownInformation(objectId,Zone.BATTLEFIELD);
+  if (object != null) {
+    return object;
+  }
   for (  CommandObject commandObject : state.getCommand()) {
     if (commandObject instanceof Commander && commandObject.getId().equals(objectId)) {
       return commandObject;
@@ -19,7 +23,6 @@
         return commandObject;
       }
     }
-    object=getLastKnownInformation(objectId,Zone.BATTLEFIELD);
   }
   return object;
 }

@@ -1,0 +1,14 @@
+{
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.HAND,playerA,"Canopy Cover");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Canopy Cover","Silvercoat Lion");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Lightning Bolt","Silvercoat Lion");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Canopy Cover",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertHandCount(playerB,"Lightning Bolt",1);
+}

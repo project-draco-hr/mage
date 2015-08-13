@@ -1,7 +1,17 @@
 {
   if (getTargetPointer().getTargets(game,source).contains(event.getTargetId())) {
-    StackObject sourceObject=game.getStack().getStackObject(event.getSourceId());
-    if (sourceObject != null && filterSource.match(sourceObject,source.getControllerId(),game)) {
+    if (targetController.equals(TargetController.OPPONENT) && !game.getOpponents(source.getControllerId()).contains(event.getPlayerId())) {
+      return false;
+    }
+    StackObject stackObject=game.getStack().getStackObject(event.getSourceId());
+    MageObject sourceObject;
+    if (stackObject instanceof StackAbility) {
+      sourceObject=((StackAbility)stackObject).getSourceObject(game);
+    }
+ else {
+      sourceObject=stackObject;
+    }
+    if (sourceObject != null && filterSource.match(sourceObject,game)) {
       return true;
     }
   }
