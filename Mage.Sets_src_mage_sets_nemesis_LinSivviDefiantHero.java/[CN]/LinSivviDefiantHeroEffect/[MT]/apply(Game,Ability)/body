@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  int xCost=source.getManaCostsToPay().getX();
+  FilterPermanentCard filter=new FilterPermanentCard(new StringBuilder("Rebel permanent card with converted mana cost ").append(xCost).append(" or less").toString());
+  filter.add(new ConvertedManaCostPredicate(ComparisonType.LessThan,xCost + 1));
+  filter.add(new SubtypePredicate("Rebel"));
+  TargetCardInLibrary target=new TargetCardInLibrary(filter);
+  if (player.searchLibrary(target,game)) {
+    Card card=player.getLibrary().getCard(target.getFirstTarget(),game);
+    if (card != null) {
+      player.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+    }
+    player.shuffleLibrary(game);
+    return true;
+  }
+  player.shuffleLibrary(game);
+  return false;
+}
