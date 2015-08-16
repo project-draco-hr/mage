@@ -36,8 +36,9 @@
   }
   if (target instanceof TargetDiscard || target instanceof TargetCardInHand) {
     if (outcome.isGood()) {
-      ArrayList<Card> cardsInHand=new ArrayList<>(hand.getCards(game));
-      while (!target.isChosen() && !cardsInHand.isEmpty() && target.getMaxNumberOfTargets() > target.getTargets().size()) {
+      Cards cards=new CardsImpl(target.possibleTargets(source.getSourceId(),getId(),game));
+      ArrayList<Card> cardsInHand=new ArrayList<>(cards.getCards(game));
+      while (!target.isChosen() && target.possibleTargets(source.getSourceId(),getId(),game).size() > 0 && target.getMaxNumberOfTargets() > target.getTargets().size()) {
         Card card=pickBestCard(cardsInHand,null,target,source,game);
         if (card != null) {
           if (target.canTarget(getId(),card.getId(),source,game)) {
@@ -191,17 +192,6 @@
       Card card=pickTarget(cards,outcome,target,source,game);
       if (card != null) {
         target.addTarget(card.getId(),source,game);
-      }
-    }
-    return target.isChosen();
-  }
-  if (target instanceof TargetCardInHand) {
-    List<Card> cards=new ArrayList<>();
-    cards.addAll(this.hand.getCards(game));
-    while (!target.isChosen() && !cards.isEmpty()) {
-      Card pick=pickTarget(cards,outcome,target,source,game);
-      if (pick != null) {
-        target.addTarget(pick.getId(),source,game);
       }
     }
     return target.isChosen();
