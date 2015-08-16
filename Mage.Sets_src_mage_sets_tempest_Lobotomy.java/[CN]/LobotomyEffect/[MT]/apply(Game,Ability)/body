@@ -3,16 +3,17 @@
   Player controller=game.getPlayer(source.getControllerId());
   MageObject sourceObject=game.getObject(source.getSourceId());
   if (targetPlayer != null && sourceObject != null && controller != null) {
-    targetPlayer.revealCards(sourceObject.getName(),targetPlayer.getHand(),game);
-    TargetCardInHand target=new TargetCardInHand(filter);
+    targetPlayer.revealCards(sourceObject.getIdName(),targetPlayer.getHand(),game);
+    TargetCard target=new TargetCard(Zone.HAND,filter);
     target.setNotTarget(true);
     Card chosenCard=null;
-    if (controller.choose(Outcome.Benefit,targetPlayer.getHand(),target,game)) {
+    if (controller.chooseTarget(Outcome.Benefit,targetPlayer.getHand(),target,source,game)) {
       chosenCard=game.getCard(target.getFirstTarget());
     }
     FilterCard filterNamedCards=new FilterCard();
     if (chosenCard != null) {
       filterNamedCards.add(new NamePredicate(chosenCard.getName()));
+      filterNamedCards.setMessage("cards named " + chosenCard.getName());
     }
  else {
       filterNamedCards.add(new NamePredicate("----"));
@@ -24,8 +25,8 @@
           cardsToExile.add(checkCard);
         }
       }
-      TargetCardInHand targetCardsHand=new TargetCardInHand(0,Integer.MAX_VALUE,filterNamedCards);
-      controller.chooseTarget(outcome,targetPlayer.getGraveyard(),targetCardsHand,source,game);
+      TargetCard targetCardsHand=new TargetCard(0,Integer.MAX_VALUE,Zone.HAND,filterNamedCards);
+      controller.chooseTarget(outcome,targetPlayer.getHand(),targetCardsHand,source,game);
       for (      UUID cardId : targetCardsHand.getTargets()) {
         Card card=game.getCard(cardId);
         if (card != null) {
