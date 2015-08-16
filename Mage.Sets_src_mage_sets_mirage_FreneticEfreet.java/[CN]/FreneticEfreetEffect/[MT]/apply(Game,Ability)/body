@@ -1,0 +1,14 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && permanent != null) {
+    if (controller.flipCoin(game)) {
+      return permanent.phaseOut(game);
+    }
+ else {
+      permanent.sacrifice(source.getSourceId(),game);
+      return true;
+    }
+  }
+  return false;
+}
