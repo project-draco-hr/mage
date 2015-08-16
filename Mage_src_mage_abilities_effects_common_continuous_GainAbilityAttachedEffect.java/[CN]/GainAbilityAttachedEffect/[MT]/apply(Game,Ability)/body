@@ -1,16 +1,20 @@
 {
-  Permanent creature=null;
-  if (fixedTarget) {
-    creature=game.getPermanent(targetPointer.getFirst(game,source));
+  Permanent permanent=null;
+  if (affectedObjectsSet) {
+    permanent=game.getPermanent(targetPointer.getFirst(game,source));
+    if (permanent == null) {
+      discard();
+      return true;
+    }
   }
  else {
     Permanent equipment=game.getPermanent(source.getSourceId());
     if (equipment != null && equipment.getAttachedTo() != null) {
-      creature=game.getPermanent(equipment.getAttachedTo());
+      permanent=game.getPermanent(equipment.getAttachedTo());
     }
   }
-  if (creature != null) {
-    creature.addAbility(ability,source.getSourceId(),game,false);
+  if (permanent != null) {
+    permanent.addAbility(ability,source.getSourceId(),game,false);
   }
   return true;
 }
