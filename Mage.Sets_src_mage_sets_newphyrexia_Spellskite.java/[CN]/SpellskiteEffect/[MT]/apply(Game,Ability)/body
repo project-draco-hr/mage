@@ -2,21 +2,23 @@
   StackObject stackObject=game.getStack().getStackObject(source.getFirstTarget());
   MageObject sourceObject=game.getObject(source.getSourceId());
   if (stackObject != null && sourceObject != null) {
-    Targets targets;
+    Targets targets=new Targets();
     Ability sourceAbility;
     MageObject oldTarget=null;
     if (stackObject instanceof Spell) {
       Spell spell=(Spell)stackObject;
       sourceAbility=spell.getSpellAbility();
-      targets=spell.getSpellAbility().getTargets();
     }
  else     if (stackObject instanceof StackAbility) {
       StackAbility stackAbility=(StackAbility)stackObject;
       sourceAbility=stackAbility;
-      targets=stackAbility.getTargets();
     }
  else {
       return false;
+    }
+    for (    UUID modeId : sourceAbility.getModes().getSelectedModes()) {
+      sourceAbility.getModes().setActiveMode(modeId);
+      targets.addAll(sourceAbility.getTargets());
     }
     boolean twoTimesTarget=false;
     if (targets.size() == 1 && targets.get(0).getTargets().size() == 1) {
@@ -38,13 +40,13 @@
             name=targetPlayer.getLogName();
           }
  else {
-            name=object.getName();
+            name=object.getLogName();
           }
           if (!targetId.equals(source.getSourceId()) && target.getTargets().contains(source.getSourceId())) {
             twoTimesTarget=true;
             continue;
           }
-          if (name != null && player.chooseUse(Outcome.Neutral,new StringBuilder("Change target from ").append(name).append(" to ").append(sourceObject.getName()).append("?").toString(),source,game)) {
+          if (name != null && player.chooseUse(Outcome.Neutral,"Change target from " + name + " to "+ sourceObject.getLogName()+ "?",source,game)) {
             if (target.canTarget(stackObject.getControllerId(),source.getSourceId(),sourceAbility,game)) {
               oldTarget=game.getObject(targets.getFirstTarget());
               target.remove(targetId);
@@ -60,10 +62,10 @@
     }
  else {
       if (twoTimesTarget) {
-        game.informPlayers(sourceObject.getLogName() + ": Target not changed to " + sourceObject.getLogName()+ " because its not valid to target it twice for "+ stackObject.getName());
+        game.informPlayers(sourceObject.getLogName() + ": Target not changed to " + sourceObject.getLogName()+ " because its not valid to target it twice for "+ stackObject.getLogName());
       }
  else {
-        game.informPlayers(sourceObject.getLogName() + ": Target not changed to " + sourceObject.getLogName()+ " because its no valid target for "+ stackObject.getName());
+        game.informPlayers(sourceObject.getLogName() + ": Target not changed to " + sourceObject.getLogName()+ " because its no valid target for "+ stackObject.getLogName());
       }
     }
     return true;

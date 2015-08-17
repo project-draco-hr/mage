@@ -10,9 +10,9 @@
   Cards revealed=new CardsImpl();
   Card artifactCard=null;
   Cards nonArtifactCards=new CardsImpl();
-  Player player=game.getPlayer(sourcePermanent.getControllerId());
-  while (artifactCard == null && player.getLibrary().size() > 0) {
-    Card card=player.getLibrary().removeFromTop(game);
+  Player targetController=game.getPlayer(sourcePermanent.getControllerId());
+  while (artifactCard == null && targetController.getLibrary().size() > 0) {
+    Card card=targetController.getLibrary().removeFromTop(game);
     revealed.add(card);
     if (card.getCardType().contains(CardType.ARTIFACT)) {
       artifactCard=card;
@@ -21,13 +21,11 @@
       nonArtifactCards.add(card);
     }
   }
-  player.revealCards("Shape Anew",revealed,game);
+  targetController.revealCards(sourcePermanent.getIdName(),revealed,game);
   if (artifactCard != null) {
-    artifactCard.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),player.getId());
+    artifactCard.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),targetController.getId());
   }
-  for (  Card cardToMove : nonArtifactCards.getCards(game)) {
-    cardToMove.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
-  }
-  player.shuffleLibrary(game);
+  targetController.moveCards(nonArtifactCards,null,Zone.LIBRARY,source,game);
+  targetController.shuffleLibrary(game);
   return true;
 }
