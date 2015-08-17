@@ -1,11 +1,21 @@
 {
-  Permanent enchantment=game.getPermanent(source.getSourceId());
-  if (enchantment != null && enchantment.getAttachedTo() != null) {
-    Permanent creature=game.getPermanent(enchantment.getAttachedTo());
-    if (creature != null) {
-      creature.addPower(power.calculate(game,source,this));
-      creature.addToughness(toughness.calculate(game,source,this));
+  Permanent permanent=null;
+  if (affectedObjectsSet) {
+    permanent=game.getPermanent(targetPointer.getFirst(game,source));
+    if (permanent == null) {
+      discard();
+      return true;
     }
+  }
+ else {
+    Permanent equipment=game.getPermanent(source.getSourceId());
+    if (equipment != null && equipment.getAttachedTo() != null) {
+      permanent=game.getPermanent(equipment.getAttachedTo());
+    }
+  }
+  if (permanent != null) {
+    permanent.addPower(power.calculate(game,source,this));
+    permanent.addToughness(toughness.calculate(game,source,this));
   }
   return true;
 }

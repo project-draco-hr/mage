@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.HAND,playerA,"Firebreathing");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.HAND,playerB,"Boomerang");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Firebreathing","Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Boomerang","Firebreathing");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{R}: Enchanted creature",NO_TARGET,"Boomerang");
+  setStopAt(1,PhaseStep.END_COMBAT);
+  execute();
+  assertHandCount(playerA,"Firebreathing",1);
+  assertGraveyardCount(playerB,"Boomerang",1);
+  assertPowerToughness(playerA,"Silvercoat Lion",3,2);
+}
