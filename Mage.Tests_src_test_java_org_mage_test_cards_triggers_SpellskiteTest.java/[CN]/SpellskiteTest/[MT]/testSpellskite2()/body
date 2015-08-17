@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Zone.HAND,playerA,"Cryptic Command");
+  addCard(Zone.BATTLEFIELD,playerB,"Spellskite",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",1);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerA,"Cryptic Command","mode=2Silvercoat Lion");
+  setModeChoice(playerA,"2");
+  setModeChoice(playerA,"3");
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerB,"{UP}: Change a target of target spell or ability to {this}.","Cryptic Command");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Cryptic Command",1);
+  assertHandCount(playerB,"Spellskite",1);
+  assertPermanentCount(playerB,"Silvercoat Lion",1);
+  assertTapped("Silvercoat Lion",true);
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+}
