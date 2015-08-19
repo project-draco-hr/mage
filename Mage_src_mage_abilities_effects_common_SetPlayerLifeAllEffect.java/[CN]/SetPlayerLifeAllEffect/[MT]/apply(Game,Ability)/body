@@ -1,0 +1,22 @@
+{
+  Player sourcePlayer=game.getPlayer(source.getControllerId());
+switch (targetController) {
+case ANY:
+    for (    UUID playerId : sourcePlayer.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        player.setLife(amount.calculate(game,source,this),game);
+      }
+    }
+  break;
+case OPPONENT:
+for (UUID playerId : game.getOpponents(sourcePlayer.getId())) {
+  Player player=game.getPlayer(playerId);
+  if (player != null) {
+    player.setLife(amount.calculate(game,source,this),game);
+  }
+}
+break;
+}
+return true;
+}
