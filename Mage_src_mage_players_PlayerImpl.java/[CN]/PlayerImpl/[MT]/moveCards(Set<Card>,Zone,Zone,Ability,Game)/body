@@ -1,3 +1,50 @@
 {
-  return moveCards(cards,fromZone,toZone,source,game,true);
+  if (cards.isEmpty()) {
+    return true;
+  }
+  Set<Card> successfulMovedCards=new LinkedHashSet<>();
+switch (toZone) {
+case EXILED:
+    for (    Card card : cards) {
+      fromZone=game.getState().getZone(card.getId());
+      boolean withName=(fromZone.equals(Zone.BATTLEFIELD) || fromZone.equals(Zone.STACK)) || !card.isFaceDown(game);
+      if (moveCardToExileWithInfo(card,null,"",source == null ? null : source.getSourceId(),game,fromZone,withName)) {
+        successfulMovedCards.add(card);
+      }
+    }
+  break;
+case GRAVEYARD:
+successfulMovedCards=moveCardsToGraveyardWithInfo(cards,source,game,fromZone);
+break;
+case HAND:
+for (Card card : cards) {
+fromZone=game.getState().getZone(card.getId());
+boolean hideCard=fromZone.equals(Zone.LIBRARY) || (card.isFaceDown(game) && !fromZone.equals(Zone.STACK) && !fromZone.equals(Zone.BATTLEFIELD));
+if (moveCardToHandWithInfo(card,source == null ? null : source.getSourceId(),game,!hideCard)) {
+successfulMovedCards.add(card);
+}
+}
+break;
+case BATTLEFIELD:
+for (Card card : cards) {
+fromZone=game.getState().getZone(card.getId());
+if (putOntoBattlefieldWithInfo(card,game,fromZone,source == null ? null : source.getSourceId(),false,!card.isFaceDown(game))) {
+successfulMovedCards.add(card);
+}
+}
+break;
+case LIBRARY:
+for (Card card : cards) {
+fromZone=game.getState().getZone(card.getId());
+boolean withName=fromZone.equals(Zone.BATTLEFIELD) || !card.isFaceDown(game);
+if (moveCardToLibraryWithInfo(card,source == null ? null : source.getSourceId(),game,fromZone,true,withName)) {
+successfulMovedCards.add(card);
+}
+}
+break;
+default :
+throw new UnsupportedOperationException("to Zone not supported yet");
+}
+game.fireEvent(new ZoneChangeGroupEvent(successfulMovedCards,source == null ? null : source.getSourceId(),this.getId(),fromZone,toZone));
+return successfulMovedCards.size() > 0;
 }

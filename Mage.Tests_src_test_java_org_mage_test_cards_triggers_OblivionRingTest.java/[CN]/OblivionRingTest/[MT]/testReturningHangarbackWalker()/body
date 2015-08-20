@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",4);
+  addCard(Zone.HAND,playerA,"Hangarback Walker");
+  addCard(Zone.HAND,playerA,"Naturalize");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",3);
+  addCard(Zone.HAND,playerB,"Oblivion Ring");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Hangarback Walker");
+  setChoice(playerA,"X=2");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Oblivion Ring");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Naturalize","Oblivion Ring");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerB,"Oblivion Ring",0);
+  assertGraveyardCount(playerB,"Oblivion Ring",1);
+  assertPermanentCount(playerA,"Hangarback Walker",0);
+  assertGraveyardCount(playerA,"Hangarback Walker",1);
+}

@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",4);
+  addCard(Zone.HAND,playerA,"Sidisi, Brood Tyrant");
+  addCard(Zone.LIBRARY,playerA,"Silvercoat Lion",1);
+  addCard(Zone.LIBRARY,playerA,"Swamp",1);
+  addCard(Zone.LIBRARY,playerA,"Silvercoat Lion",1);
+  skipInitShuffling();
+  addCard(Zone.BATTLEFIELD,playerB,"Anafenza, the Foremost");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Sidisi, Brood Tyrant");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Sidisi, Brood Tyrant",1);
+  assertGraveyardCount(playerA,"Swamp",1);
+  assertGraveyardCount(playerA,"Silvercoat Lion",0);
+  assertExileCount("Silvercoat Lion",2);
+  assertPermanentCount(playerA,"Zombie",0);
+}

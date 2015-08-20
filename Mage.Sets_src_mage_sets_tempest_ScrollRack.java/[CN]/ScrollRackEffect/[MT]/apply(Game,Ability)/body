@@ -22,7 +22,11 @@
       }
     }
     if (amountExiled > 0) {
-      controller.moveCards(controller.getLibrary().getTopCards(game,amountExiled),null,Zone.HAND,source,game,false);
+      Set<Card> cards=controller.getLibrary().getTopCards(game,amountExiled);
+      for (      Card card : cards) {
+        card.setFaceDown(true,game);
+      }
+      controller.moveCards(cards,null,Zone.HAND,source,game);
     }
     controller.putCardsOnTopOfLibrary(game.getExile().getExileZone(source.getSourceId()),game,source,true);
     return true;

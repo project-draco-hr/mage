@@ -8,8 +8,8 @@
           Permanent permanent=game.getPermanent(source.getSourceId());
           if (permanent != null) {
             permanent.changeControllerId(source.getControllerId(),game);
-            Effect effect=new SacrificeTargetEffect("Sacrifice those creatures at the beginning of the next end step");
-            effect.setTargetPointer(new FixedTarget(permanent.getId()));
+            Effect effect=new SacrificeTargetEffect("Sacrifice those creatures at the beginning of the next end step",source.getControllerId());
+            effect.setTargetPointer(new FixedTarget(permanent,game));
             DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect);
             delayedAbility.setSourceId(source.getSourceId());
             delayedAbility.setControllerId(source.getControllerId());

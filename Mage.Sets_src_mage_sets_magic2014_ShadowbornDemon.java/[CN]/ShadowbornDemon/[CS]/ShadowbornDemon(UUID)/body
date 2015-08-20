@@ -9,9 +9,5 @@
   Target target=new TargetCreaturePermanent(filter);
   ability.addTarget(target);
   this.addAbility(ability);
-  TriggeredAbility triggeredAbility=new BeginningOfUpkeepTriggeredAbility(new SacrificeTargetEffect(),TargetController.YOU,false);
-  target=new TargetControlledCreaturePermanent();
-  target.setNotTarget(false);
-  triggeredAbility.addTarget(target);
-  this.addAbility(new ConditionalTriggeredAbility(triggeredAbility,new InvertCondition(new CreatureCardsInControllerGraveCondition(6)),"At the beginning of your upkeep, if there are fewer than six creature cards in your graveyard, sacrifice a creature"));
+  this.addAbility(new ConditionalTriggeredAbility(new BeginningOfUpkeepTriggeredAbility(new SacrificeControllerEffect(new FilterCreaturePermanent(),1,""),TargetController.YOU,false),new InvertCondition(new CreatureCardsInControllerGraveCondition(6)),"At the beginning of your upkeep, if there are fewer than six creature cards in your graveyard, sacrifice a creature"));
 }

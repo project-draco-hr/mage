@@ -1,24 +1,17 @@
 {
   boolean result=false;
   Zone fromZone=game.getState().getZone(card.getId());
+  if (fromZone.equals(Zone.BATTLEFIELD) && !(card instanceof Permanent)) {
+    card=game.getPermanent(card.getId());
+  }
   if (card.moveToZone(Zone.HAND,sourceId,game,false)) {
     if (card instanceof PermanentCard) {
       card=game.getCard(card.getId());
     }
     if (!game.isSimulation()) {
-      StringBuilder sb=new StringBuilder(this.getLogName()).append(" puts ").append(withName ? card.getLogName() : (card.isFaceDown(game) ? "a face down card" : "a card"));
-switch (fromZone) {
-case EXILED:
-        sb.append(" from exile zone ");
-      break;
-default :
-    sb.append(fromZone != null ? new StringBuilder(" from ").append(fromZone.toString().toLowerCase(Locale.ENGLISH)).append(" ") : "");
-  break;
-}
-sb.append(card.getOwnerId().equals(this.getId()) ? "into his or her hand" : "into its owner's hand");
-game.informPlayers(sb.toString());
-}
-result=true;
-}
-return result;
+      game.informPlayers(this.getLogName() + " puts " + (withName ? card.getLogName() : (card.isFaceDown(game) ? "a face down card" : "a card"))+ " from "+ fromZone.toString().toLowerCase(Locale.ENGLISH)+ " "+ (card.getOwnerId().equals(this.getId()) ? "into his or her hand" : "into its owner's hand"));
+    }
+    result=true;
+  }
+  return result;
 }

@@ -6,12 +6,9 @@
   this.power=new MageInt(10);
   this.toughness=new MageInt(4);
   Ability ability=new EntersBattlefieldTriggeredAbility(new LoseLifeSourceControllerEffect(2),false);
-  ability.addEffect(new SacrificeTargetEffect(", you sacrifice two creatures"));
-  Target target=new TargetControlledCreaturePermanent(2,2,new FilterControlledCreaturePermanent(),true);
-  ability.addTarget(target);
+  ability.addEffect(new SacrificeControllerEffect(new FilterControlledCreaturePermanent("creatures"),2,"you"));
   Effect effect=new DrawCardTargetEffect(2);
   effect.setText(", and target opponent draws two cards");
-  effect.setTargetPointer(new SecondTargetPointer());
   ability.addEffect(effect);
   ability.addTarget(new TargetOpponent());
   this.addAbility(ability);
