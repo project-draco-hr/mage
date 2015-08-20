@@ -3,7 +3,7 @@
   Permanent permanent=game.getPermanent(source.getSourceId());
   if (controller != null && permanent != null) {
     Object obj=getValue(EntersBattlefieldEffect.SOURCE_CAST_SPELL_ABILITY);
-    if (obj != null && obj instanceof SpellAbility) {
+    if (obj != null && obj instanceof SpellAbility && permanent.getZoneChangeCounter(game) - 1 == ((SpellAbility)obj).getSourceObjectZoneChangeCounter()) {
       int cmc=0;
       for (      Cost cost : ((SpellAbility)obj).getCosts()) {
         if (cost instanceof DiscardCardCost && ((DiscardCardCost)cost).getCards().size() > 0) {

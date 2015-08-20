@@ -2,8 +2,7 @@
   Permanent permanent=game.getPermanent(source.getSourceId());
   if (permanent != null) {
     Object obj=getValue(mage.abilities.effects.EntersBattlefieldEffect.SOURCE_CAST_SPELL_ABILITY);
-    if (obj != null && obj instanceof SpellAbility) {
-      setValue(mage.abilities.effects.EntersBattlefieldEffect.SOURCE_CAST_SPELL_ABILITY,null);
+    if (obj != null && obj instanceof SpellAbility && permanent.getZoneChangeCounter(game) - 1 == ((SpellAbility)obj).getSourceObjectZoneChangeCounter()) {
       int amount=((Ability)obj).getManaCostsToPay().getX();
       if (amount > 0) {
         permanent.addCounters(CounterType.P1P1.createInstance(amount),game);
