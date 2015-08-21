@@ -1,0 +1,9 @@
+{
+  if (ability instanceof SpellAbility) {
+    ability.getTargets().clear();
+    int xValue=ability.getManaCostsToPay().getX();
+    FilterArtifactOrEnchantmentPermanent filter=new FilterArtifactOrEnchantmentPermanent("artifact or enchantment with converted mana cost X");
+    filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,xValue));
+    ability.addTarget(new TargetPermanent(filter));
+  }
+}
