@@ -1,0 +1,19 @@
+{
+  return new Listener<Event>(){
+    @Override public void event(    Event event){
+      if (event.getEventName().equals("show-popup-menu")) {
+        if (event.getComponent() != null && event.getComponent() instanceof CardPanel) {
+          JPopupMenu menu=((CardPanel)event.getComponent()).getPopupMenu();
+          if (menu != null) {
+            cardViewPopupMenu=((CardView)event.getSource());
+            menu.show(event.getComponent(),event.getxPos(),event.getyPos());
+          }
+        }
+      }
+      if (event.getEventName().equals("action-consumed")) {
+        dialog.hideDialog();
+      }
+    }
+  }
+;
+}

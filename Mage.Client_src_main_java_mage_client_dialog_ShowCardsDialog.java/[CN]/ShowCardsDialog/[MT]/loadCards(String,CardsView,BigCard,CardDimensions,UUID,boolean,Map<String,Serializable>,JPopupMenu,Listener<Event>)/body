@@ -1,0 +1,48 @@
+{
+  this.title=name;
+  this.setTitelBarToolTip(name);
+  cardArea.clearCardEventListeners();
+  cardArea.loadCards(showCards,bigCard,dimension,gameId);
+  if (options != null) {
+    if (options.containsKey("chosen")) {
+      java.util.List<UUID> chosenCards=(java.util.List<UUID>)options.get("chosen");
+      cardArea.selectCards(chosenCards);
+    }
+    if (options.containsKey("choosable")) {
+      java.util.List<UUID> choosableCards=(java.util.List<UUID>)options.get("choosable");
+      cardArea.markCards(choosableCards);
+    }
+    if (options.containsKey("queryType") && QueryType.PICK_ABILITY.equals(options.get("queryType"))) {
+      cardArea.setPopupMenu(popupMenu);
+    }
+  }
+  if (popupMenu != null) {
+    this.cardArea.setPopupMenu(popupMenu);
+  }
+  if (eventListener != null) {
+    this.cardArea.addCardEventListener(eventListener);
+  }
+  if (getParent() != MageFrame.getDesktop()) {
+    MageFrame.getDesktop().add(this,JLayeredPane.DEFAULT_LAYER);
+  }
+  pack();
+  this.revalidate();
+  this.repaint();
+  this.setModal(modal);
+  SwingUtilities.invokeLater(new Runnable(){
+    @Override public void run(){
+      if (!positioned) {
+        int width=ShowCardsDialog.this.getWidth();
+        int height=ShowCardsDialog.this.getHeight();
+        if (width > 0 && height > 0) {
+          Point centered=SettingsManager.getInstance().getComponentPosition(width,height);
+          ShowCardsDialog.this.setLocation(centered.x,centered.y);
+          positioned=true;
+          GuiDisplayUtil.keepComponentInsideScreen(centered.x,centered.y,ShowCardsDialog.this);
+        }
+      }
+      ShowCardsDialog.this.setVisible(true);
+    }
+  }
+);
+}
