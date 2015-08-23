@@ -1,3 +1,15 @@
 {
-  return game.getOpponents(controllerId).contains(event.getPlayerId());
+  if (game.getOpponents(controllerId).contains(event.getPlayerId())) {
+switch (setTargetPointer) {
+case PLAYER:
+      for (      Effect effect : getEffects()) {
+        effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
+      }
+    break;
+default :
+  throw new UnsupportedOperationException(setTargetPointer.toString() + " not supported for this ability.");
+}
+return true;
+}
+return false;
 }
