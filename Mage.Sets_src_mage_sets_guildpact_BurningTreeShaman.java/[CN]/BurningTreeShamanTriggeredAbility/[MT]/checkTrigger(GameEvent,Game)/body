@@ -1,7 +1,9 @@
 {
   StackAbility stackAbility=(StackAbility)game.getStack().getStackObject(event.getSourceId());
   if (stackAbility != null && stackAbility.getAbilityType() == AbilityType.ACTIVATED) {
-    this.getTargets().get(0).add(event.getPlayerId(),game);
+    for (    Effect effect : getEffects()) {
+      effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
+    }
     return true;
   }
   return false;
