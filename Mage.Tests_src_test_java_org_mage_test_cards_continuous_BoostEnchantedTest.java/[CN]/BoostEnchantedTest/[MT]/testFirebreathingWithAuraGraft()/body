@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.HAND,playerA,"Firebreathing");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox",1);
+  addCard(Zone.HAND,playerB,"Aura Graft");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Firebreathing","Silvercoat Lion");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{R}: Enchanted creature");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Aura Graft","Firebreathing");
+  setChoice(playerB,"Pillarfield Ox");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Aura Graft",1);
+  assertPermanentCount(playerB,"Firebreathing",1);
+  assertPowerToughness(playerA,"Silvercoat Lion",2,2);
+  assertPowerToughness(playerB,"Pillarfield Ox",3,4);
+}

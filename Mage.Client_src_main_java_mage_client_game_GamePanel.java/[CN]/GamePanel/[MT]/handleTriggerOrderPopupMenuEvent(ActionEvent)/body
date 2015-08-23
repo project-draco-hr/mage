@@ -1,0 +1,31 @@
+{
+  UUID abilityId=null;
+  String abilityRuleText=null;
+  if (cardViewPopupMenu instanceof CardView && cardViewPopupMenu.getAbility() != null) {
+    abilityId=cardViewPopupMenu.getAbility().getId();
+    if (!cardViewPopupMenu.getAbility().getRules().isEmpty() && !cardViewPopupMenu.getAbility().getRules().equals("")) {
+      abilityRuleText=cardViewPopupMenu.getAbility().getRules().get(0);
+    }
+  }
+switch (e.getActionCommand()) {
+case CMD_AUTO_ORDER_FIRST:
+    session.sendPlayerAction(TRIGGER_AUTO_ORDER_ABILITY_FIRST,gameId,abilityId);
+  break;
+case CMD_AUTO_ORDER_LAST:
+session.sendPlayerAction(TRIGGER_AUTO_ORDER_ABILITY_LAST,gameId,abilityId);
+break;
+case CMD_AUTO_ORDER_NAME_FIRST:
+if (abilityRuleText != null) {
+session.sendPlayerAction(TRIGGER_AUTO_ORDER_NAME_FIRST,gameId,abilityRuleText);
+}
+break;
+case CMD_AUTO_ORDER_NAME_LAST:
+if (abilityRuleText != null) {
+session.sendPlayerAction(TRIGGER_AUTO_ORDER_NAME_LAST,gameId,abilityRuleText);
+}
+break;
+case CMD_AUTO_ORDER_RESET_ALL:
+session.sendPlayerAction(TRIGGER_AUTO_ORDER_RESET_ALL,gameId,null);
+break;
+}
+}

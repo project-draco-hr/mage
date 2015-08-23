@@ -114,7 +114,7 @@
   imagePanel.setScalingType(ScalingType.nearestNeighbor);
   imagePanel.setScalingMultiPassType(MultipassType.none);
   String cardType=getType(newGameCard);
-  popupText.setText(getText(cardType,newGameCard));
+  tooltipText.setText(getText(cardType,newGameCard));
   Util.threadPool.submit(new Runnable(){
     @Override public void run(){
       try {
@@ -141,10 +141,10 @@
         setText(gameCard);
       }
  catch (      Exception e) {
-        e.printStackTrace();
+        logger.fatal("Problem during image animation",e);
       }
 catch (      Error err) {
-        err.printStackTrace();
+        logger.error("Problem during image animation",err);
       }
     }
   }

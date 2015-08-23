@@ -1,0 +1,40 @@
+{
+  if (playerAction.equals(TRIGGER_AUTO_ORDER_RESET_ALL)) {
+    triggerAutoOrderAbilityFirst.clear();
+    triggerAutoOrderAbilityLast.clear();
+    triggerAutoOrderNameFirst.clear();
+    triggerAutoOrderNameLast.clear();
+    return;
+  }
+  if (data instanceof UUID) {
+    UUID abilityId=(UUID)data;
+    UUID originalId=null;
+    for (    TriggeredAbility ability : game.getState().getTriggered(getId())) {
+      if (ability.getId().equals(abilityId)) {
+        originalId=ability.getOriginalId();
+        break;
+      }
+    }
+    if (originalId != null) {
+switch (playerAction) {
+case TRIGGER_AUTO_ORDER_ABILITY_FIRST:
+        triggerAutoOrderAbilityFirst.add(originalId);
+      break;
+case TRIGGER_AUTO_ORDER_ABILITY_LAST:
+    triggerAutoOrderAbilityFirst.add(originalId);
+  break;
+}
+}
+}
+ else if (data instanceof String) {
+String abilityName=(String)data;
+switch (playerAction) {
+case TRIGGER_AUTO_ORDER_NAME_FIRST:
+triggerAutoOrderNameFirst.add(abilityName);
+break;
+case TRIGGER_AUTO_ORDER_NAME_LAST:
+triggerAutoOrderNameLast.add(abilityName);
+break;
+}
+}
+}
