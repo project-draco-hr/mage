@@ -1,11 +1,4 @@
 {
-  Permanent permanent=game.getPermanent(event.getSourceId());
-  if (permanent == null) {
-    permanent=(Permanent)game.getLastKnownInformation(event.getSourceId(),Zone.BATTLEFIELD);
-  }
-  if (permanent != null && permanent.getSubtype().contains("Swamp") && permanent.getControllerId().equals(this.controllerId)) {
-    getEffects().get(0).setTargetPointer(new FixedTarget(permanent.getId()));
-    return true;
-  }
-  return false;
+  Permanent land=game.getPermanent(event.getTargetId());
+  return land != null && filter.match(land,this.getSourceId(),this.getControllerId(),game);
 }
