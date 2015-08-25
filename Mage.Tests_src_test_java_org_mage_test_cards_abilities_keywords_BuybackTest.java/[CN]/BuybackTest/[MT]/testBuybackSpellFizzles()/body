@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",5);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.HAND,playerA,"Elvish Fury",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.HAND,playerB,"Boomerang",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Elvish Fury","Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Boomerang","Silvercoat Lion","Elvish Fury");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Boomerang",1);
+  assertHandCount(playerA,"Silvercoat Lion",1);
+  assertHandCount(playerA,"Elvish Fury",0);
+  assertGraveyardCount(playerA,"Elvish Fury",1);
+}
