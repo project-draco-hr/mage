@@ -1,9 +1,13 @@
 {
+  Mana mana=null;
   if (condition.apply(game,source)) {
-    return effect.getMana();
+    mana=effect.getMana();
   }
  else   if (otherwiseEffect != null) {
-    return otherwiseEffect.getMana();
+    mana=otherwiseEffect.getMana();
   }
-  return null;
+  if (mana != null) {
+    checkToFirePossibleEvents(mana,game,source);
+  }
+  return mana;
 }

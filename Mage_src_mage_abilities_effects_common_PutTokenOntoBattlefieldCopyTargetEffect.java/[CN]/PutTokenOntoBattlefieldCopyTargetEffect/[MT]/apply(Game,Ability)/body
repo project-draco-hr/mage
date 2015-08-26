@@ -26,21 +26,24 @@
       token.addAbility(HasteAbility.getInstance());
     }
     token.putOntoBattlefield(1,game,source.getSourceId(),playerId == null ? source.getControllerId() : playerId);
-    addedTokenPermanent=game.getPermanent(token.getLastAddedToken());
-    if (addedTokenPermanent != null) {
-      game.copyPermanent(copyFromPermanent,addedTokenPermanent,source,applier);
-      if (additionalCardType != null) {
-        ContinuousEffect effect=new AddCardTypeTargetEffect(additionalCardType,Duration.Custom);
-        effect.setTargetPointer(new FixedTarget(addedTokenPermanent.getId()));
-        game.addEffect(effect,source);
+    for (    UUID tokenId : token.getLastAddedTokenIds()) {
+      Permanent tokenPermanent=game.getPermanent(tokenId);
+      if (tokenPermanent != null) {
+        addedTokenPermanents.add(tokenPermanent);
+        game.copyPermanent(copyFromPermanent,tokenPermanent,source,applier);
+        if (additionalCardType != null) {
+          ContinuousEffect effect=new AddCardTypeTargetEffect(additionalCardType,Duration.Custom);
+          effect.setTargetPointer(new FixedTarget(tokenPermanent,game));
+          game.addEffect(effect,source);
+        }
+        if (gainsHaste) {
+          ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.Custom);
+          effect.setTargetPointer(new FixedTarget(tokenPermanent,game));
+          game.addEffect(effect,source);
+        }
       }
-      if (gainsHaste) {
-        ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.Custom);
-        effect.setTargetPointer(new FixedTarget(addedTokenPermanent.getId()));
-        game.addEffect(effect,source);
-      }
-      return true;
     }
+    return true;
   }
   return false;
 }
