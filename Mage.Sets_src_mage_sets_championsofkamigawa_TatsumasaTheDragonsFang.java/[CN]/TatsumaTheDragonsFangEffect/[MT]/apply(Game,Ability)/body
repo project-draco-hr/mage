@@ -1,11 +1,18 @@
 {
   CreateTokenEffect effect=new CreateTokenEffect(new TatsumaDragonToken());
   effect.apply(game,source);
-  FixedTarget fixedTarget=new FixedTarget(effect.getLastAddedTokenId());
-  DelayedTriggeredAbility delayedAbility=new TatsumaTheDragonsFangTriggeredAbility(fixedTarget);
-  delayedAbility.setSourceId(source.getSourceId());
-  delayedAbility.setControllerId(source.getControllerId());
-  delayedAbility.setSourceObject(source.getSourceObject(game),game);
-  game.addDelayedTriggeredAbility(delayedAbility);
+  for (  UUID tokenId : effect.getLastAddedTokenIds()) {
+    Permanent tokenPermanent=game.getPermanent(tokenId);
+    if (tokenPermanent != null) {
+      FixedTarget fixedTarget=new FixedTarget(tokenPermanent,game);
+      Effect returnEffect=new ReturnToBattlefieldUnderOwnerControlTargetEffect();
+      returnEffect.setTargetPointer(new FixedTarget(source.getSourceId(),game.getState().getZoneChangeCounter(source.getSourceId())));
+      DelayedTriggeredAbility delayedAbility=new TatsumaTheDragonsFangTriggeredAbility(fixedTarget,returnEffect);
+      delayedAbility.setSourceId(source.getSourceId());
+      delayedAbility.setControllerId(source.getControllerId());
+      delayedAbility.setSourceObject(source.getSourceObject(game),game);
+      game.addDelayedTriggeredAbility(delayedAbility);
+    }
+  }
   return true;
 }
