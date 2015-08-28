@@ -1,6 +1,18 @@
 {
+  if (source != null) {
+    Boolean answer=requestAutoAnswerId.get(source.getOriginalId() + "#" + message);
+    if (answer != null) {
+      return answer;
+    }
+ else {
+      answer=requestAutoAnswerText.get(message);
+      if (answer != null) {
+        return answer;
+      }
+    }
+  }
   updateGameStatePriority("chooseUse",game);
-  game.fireAskPlayerEvent(playerId,addSecondLineWithObjectName(message,source == null ? null : source.getSourceId(),game));
+  game.fireAskPlayerEvent(playerId,new MessageToClient(message,getRelatedObjectName(source,game)),source);
   waitForBooleanResponse(game);
   if (!abort) {
     return response.getBoolean();

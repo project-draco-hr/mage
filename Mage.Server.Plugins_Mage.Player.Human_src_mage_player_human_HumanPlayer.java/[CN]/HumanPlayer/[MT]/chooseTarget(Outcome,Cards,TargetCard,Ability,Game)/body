@@ -26,7 +26,7 @@
     if (!choosable.isEmpty()) {
       options.put("choosable",(Serializable)choosable);
     }
-    game.fireSelectTargetEvent(playerId,addSecondLineWithObjectName(target.getMessage(),source == null ? null : source.getSourceId(),game),cards,required,options);
+    game.fireSelectTargetEvent(playerId,new MessageToClient(target.getMessage(),getRelatedObjectName(source,game)),cards,required,options);
     waitForResponse(game);
     if (response.getUUID() != null) {
       if (target.getTargets().contains(response.getUUID())) {
