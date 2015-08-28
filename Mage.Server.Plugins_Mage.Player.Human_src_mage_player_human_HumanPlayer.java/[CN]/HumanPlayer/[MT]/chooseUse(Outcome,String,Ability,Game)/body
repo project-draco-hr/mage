@@ -12,8 +12,11 @@
     }
   }
   updateGameStatePriority("chooseUse",game);
-  game.fireAskPlayerEvent(playerId,new MessageToClient(message,getRelatedObjectName(source,game)),source);
-  waitForBooleanResponse(game);
+  do {
+    game.fireAskPlayerEvent(playerId,new MessageToClient(message,getRelatedObjectName(source,game)),source);
+    waitForResponse(game);
+  }
+ while (response.getBoolean() == null && !abort);
   if (!abort) {
     return response.getBoolean();
   }
