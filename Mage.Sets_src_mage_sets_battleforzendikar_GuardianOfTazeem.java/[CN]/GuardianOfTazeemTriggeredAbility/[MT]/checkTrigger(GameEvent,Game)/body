@@ -1,9 +1,10 @@
 {
   Permanent permanent=game.getPermanent(event.getTargetId());
-  if (permanent != null && permanent.getCardType().contains(CardType.LAND) && permanent.getControllerId().equals(this.controllerId)) {
-    addEffect(new TapTargetEffect());
-    if (permanent.hasSubtype("Island")) {
-      addEffect(new DontUntapInControllersNextUntapStepTargetEffect("that creature"));
+  if (permanent != null && permanent.getCardType().contains(CardType.LAND) && permanent.getControllerId().equals(getControllerId())) {
+    for (    Effect effect : getEffects()) {
+      if (effect instanceof GuardianOfTazeemEffect) {
+        effect.setTargetPointer(new FixedTarget(permanent,game));
+      }
     }
     return true;
   }
