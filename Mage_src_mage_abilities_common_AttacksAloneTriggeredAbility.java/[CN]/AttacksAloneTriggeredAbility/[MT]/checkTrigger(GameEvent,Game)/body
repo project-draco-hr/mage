@@ -1,0 +1,17 @@
+{
+  if (game.getActivePlayerId().equals(this.controllerId)) {
+    UUID creatureId=this.getSourceId();
+    if (creatureId != null) {
+      if (game.getCombat().attacksAlone() && creatureId == game.getCombat().getAttackers().get(0)) {
+        UUID defender=game.getCombat().getDefenderId(creatureId);
+        if (defender != null) {
+          for (          Effect effect : getEffects()) {
+            effect.setTargetPointer(new FixedTarget(defender));
+          }
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}
