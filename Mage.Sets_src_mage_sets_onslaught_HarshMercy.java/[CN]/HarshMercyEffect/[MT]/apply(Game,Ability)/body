@@ -1,0 +1,31 @@
+{
+  Player controller=game.getPlayer(ability.getControllerId());
+  MageObject sourceObject=game.getObject(ability.getSourceId());
+  if (controller != null) {
+    Set<String> chosenTypes=new HashSet<>();
+    for (    UUID playerId : controller.getInRange()) {
+      Player player=game.getPlayer(playerId);
+      Choice typeChoice=new ChoiceImpl(true);
+      typeChoice.setMessage("Choose a creature type");
+      typeChoice.setChoices(CardRepository.instance.getCreatureTypes());
+      while (!player.choose(Outcome.DestroyPermanent,typeChoice,game)) {
+        if (!player.canRespond()) {
+          break;
+        }
+      }
+      String chosenType=typeChoice.getChoice();
+      if (chosenType != null) {
+        game.informPlayers(sourceObject.getName() + ": " + player.getLogName()+ " has chosen "+ chosenType);
+        chosenTypes.add(chosenType);
+      }
+    }
+    List<SubtypePredicate> predicates=new ArrayList<>();
+    for (    String type : chosenTypes) {
+      predicates.add((SubtypePredicate)Predicates.not(new SubtypePredicate(type)));
+    }
+    FilterPermanent filter=new FilterCreaturePermanent("creatures");
+    filter.add(Predicates.or(predicates));
+    return (new DestroyAllEffect(filter,true)).apply(game,ability);
+  }
+  return false;
+}
