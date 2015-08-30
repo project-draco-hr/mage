@@ -1,7 +1,22 @@
 {
+  if (source != null) {
+    Boolean answer=requestAutoAnswerId.get(source.getOriginalId() + "#" + message);
+    if (answer != null) {
+      return answer;
+    }
+ else {
+      answer=requestAutoAnswerText.get(message);
+      if (answer != null) {
+        return answer;
+      }
+    }
+  }
   updateGameStatePriority("chooseUse",game);
-  game.fireAskPlayerEvent(playerId,addSecondLineWithObjectName(message,source == null ? null : source.getSourceId(),game));
-  waitForBooleanResponse(game);
+  do {
+    game.fireAskPlayerEvent(playerId,new MessageToClient(message,getRelatedObjectName(source,game)),source);
+    waitForResponse(game);
+  }
+ while (response.getBoolean() == null && !abort);
   if (!abort) {
     return response.getBoolean();
   }

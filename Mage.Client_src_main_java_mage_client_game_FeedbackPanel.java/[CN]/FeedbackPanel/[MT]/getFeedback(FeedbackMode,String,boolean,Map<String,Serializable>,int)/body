@@ -6,61 +6,43 @@ synchronized (this) {
     }
     this.lastMessageId=messageId;
   }
-  this.lblMessage.setText(message);
-  this.helper.setMessage(message);
+  this.helper.setBasicMessage(message);
+  this.helper.setOriginalId(null);
+  String lblText=addAdditionalText(message,options);
+  this.helper.setTextArea(lblText);
+  this.lblMessage.setText(lblText);
   this.mode=mode;
 switch (this.mode) {
 case INFORM:
-    this.btnLeft.setVisible(false);
-  this.btnRight.setVisible(false);
-this.helper.setState("",false,"",false);
-break;
+    setButtonState("","",mode);
+  break;
 case QUESTION:
-this.btnLeft.setVisible(true);
-this.btnLeft.setText("Yes");
-this.btnRight.setVisible(true);
-this.btnRight.setText("No");
-this.helper.setState("Yes",true,"No",true);
+setButtonState("Yes","No",mode);
+if (options != null && options.containsKey(ORIGINAL_ID)) {
+this.helper.setOriginalId((UUID)options.get(ORIGINAL_ID));
+}
 break;
 case CONFIRM:
-this.btnLeft.setVisible(true);
-this.btnLeft.setText("OK");
-this.btnRight.setVisible(true);
-this.btnRight.setText("Cancel");
-this.helper.setState("Ok",true,"Cancel",true);
+setButtonState("OK","Cancel",mode);
 break;
 case CANCEL:
-this.btnLeft.setVisible(false);
-this.btnRight.setVisible(true);
-this.btnRight.setText("Cancel");
-this.helper.setState("",false,"Cancel",true);
+setButtonState("","Cancel",mode);
 this.helper.setUndoEnabled(false);
 break;
 case SELECT:
-this.btnLeft.setVisible(false);
-this.btnRight.setVisible(true);
-this.btnRight.setText("Done");
-this.helper.setState("",false,"Done",true);
+setButtonState("","Done",mode);
 break;
 case END:
-this.btnLeft.setVisible(false);
-this.btnRight.setVisible(true);
-this.btnRight.setText("Close game");
-this.helper.setState("",false,"Close game",true);
+setButtonState("","Close game",mode);
 ArrowBuilder.getBuilder().removeAllArrows(gameId);
 endWithTimeout();
 break;
 }
-if (options != null && options.containsKey(Constants.Option.SPECIAL_BUTTON)) {
-String specialText=(String)options.get(Constants.Option.SPECIAL_BUTTON);
-this.btnSpecial.setVisible(true);
-this.btnSpecial.setText(specialText);
-this.helper.setSpecial(specialText,true);
+if (options != null && options.containsKey(SPECIAL_BUTTON)) {
+this.setSpecial((String)options.get(SPECIAL_BUTTON),true);
 }
  else {
-this.btnSpecial.setVisible(special);
-this.btnSpecial.setText("Special");
-this.helper.setSpecial("Special",special);
+this.setSpecial("Special",special);
 }
 requestFocusIfPossible();
 handleOptions(options);

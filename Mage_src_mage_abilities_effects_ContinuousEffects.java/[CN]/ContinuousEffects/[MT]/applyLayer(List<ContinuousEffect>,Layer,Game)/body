@@ -1,0 +1,27 @@
+{
+  List<ContinuousEffect> layer=filterLayeredEffects(activeLayerEffects,currentLayer);
+  if (!layer.isEmpty()) {
+    int numberOfEffects=layer.size();
+    Set<UUID> appliedEffects=new HashSet<>();
+    Map<ContinuousEffect,Set<UUID>> waitingEffects=new LinkedHashMap<>();
+    for (    ContinuousEffect effect : layer) {
+      if (numberOfEffects > 1) {
+        Set<UUID> dependentTo=effect.isDependentTo(layer);
+        if (dependentTo != null && !appliedEffects.containsAll(dependentTo)) {
+          waitingEffects.put(effect,dependentTo);
+          continue;
+        }
+      }
+      applyContinuousEffect(effect,currentLayer,game);
+      appliedEffects.add(effect.getId());
+      if (!waitingEffects.isEmpty()) {
+        for (        Entry<ContinuousEffect,Set<UUID>> entry : waitingEffects.entrySet()) {
+          if (appliedEffects.containsAll(entry.getValue())) {
+            applyContinuousEffect(entry.getKey(),currentLayer,game);
+            appliedEffects.add(entry.getKey().getId());
+          }
+        }
+      }
+    }
+  }
+}

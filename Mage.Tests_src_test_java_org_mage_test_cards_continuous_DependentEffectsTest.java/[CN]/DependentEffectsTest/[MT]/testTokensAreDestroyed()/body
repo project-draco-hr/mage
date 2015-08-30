@@ -1,0 +1,23 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Opalescence",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",9);
+  addCard(Zone.HAND,playerA,"Rite of Replication",1);
+  addCard(Zone.HAND,playerA,"Enchanted Evening");
+  addCard(Zone.BATTLEFIELD,playerB,"Cobblebrute",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",2);
+  addCard(Zone.HAND,playerB,"Raise the Alarm");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Rite of Replication","Cobblebrute");
+  setChoice(playerA,"No");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Raise the Alarm");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Enchanted Evening");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerA,"Rite of Replication",1);
+  assertGraveyardCount(playerB,"Raise the Alarm",1);
+  assertPowerToughness(playerA,"Enchanted Evening",5,5);
+  assertPowerToughness(playerB,"Cobblebrute",4,4);
+  assertPowerToughness(playerA,"Cobblebrute",4,4);
+  assertPermanentCount(playerB,"Soldier",0);
+  assertPermanentCount(playerA,"Island",0);
+  assertPermanentCount(playerB,"Plains",0);
+}
