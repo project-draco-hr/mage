@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Sigiled Paladin",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",5);
+  addCard(Zone.HAND,playerB,"Followed Footsteps",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Cryptoplasm",1);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Followed Footsteps");
+  addTarget(playerB,"Sigiled Paladin[only copy]");
+  setStopAt(4,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerB,"Followed Footsteps",1);
+  assertPermanentCount(playerB,"Cryptoplasm",0);
+  assertPermanentCount(playerB,"Sigiled Paladin",2);
+}
