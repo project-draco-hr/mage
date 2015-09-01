@@ -1,0 +1,11 @@
+{
+  Permanent permanent=game.getPermanent(event.getTargetId());
+  if (permanent != null && permanent.getCardType().contains(CardType.LAND) && permanent.getControllerId().equals(this.controllerId)) {
+    addEffect(new TapTargetEffect());
+    if (permanent.hasSubtype("Island")) {
+      addEffect(new DontUntapInControllersNextUntapStepTargetEffect("that creature"));
+    }
+    return true;
+  }
+  return false;
+}
