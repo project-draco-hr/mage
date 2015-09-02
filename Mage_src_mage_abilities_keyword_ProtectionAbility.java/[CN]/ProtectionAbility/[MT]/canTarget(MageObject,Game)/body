@@ -5,17 +5,19 @@
     }
     return true;
   }
-  if (filter instanceof FilterSpell) {
-    if (source instanceof Spell) {
-      return !filter.match(source,game);
-    }
-    return true;
-  }
   if (filter instanceof FilterCard) {
     if (source instanceof Card) {
       return !filter.match(source,game);
     }
     return true;
+  }
+  if (filter instanceof FilterSpell) {
+    if (source instanceof Spell) {
+      return !filter.match(source,game);
+    }
+    if (source instanceof StackObject || (!source.getCardType().contains(CardType.INSTANT) && !source.getCardType().contains(CardType.SORCERY))) {
+      return true;
+    }
   }
   if (filter instanceof FilterObject) {
     return !filter.match(source,game);
