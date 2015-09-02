@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerA,"Chain of Vapor",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Chain of Vapor","Pillarfield Ox");
+  setChoice(playerB,"Yes");
+  addTarget(playerB,"Silvercoat Lion");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Island",1);
+  assertHandCount(playerB,"Pillarfield Ox",1);
+  assertHandCount(playerA,"Silvercoat Lion",1);
+}
