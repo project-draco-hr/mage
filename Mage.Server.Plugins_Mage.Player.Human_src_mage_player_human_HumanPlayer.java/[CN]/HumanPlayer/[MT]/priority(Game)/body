@@ -1,6 +1,18 @@
 {
   passed=false;
   if (!abort) {
+    if (getJustActivatedType() != null) {
+      if (userData.isPassPriorityCast() && getJustActivatedType().equals(AbilityType.SPELL)) {
+        setJustActivatedType(null);
+        pass(game);
+        return false;
+      }
+      if (userData.isPassPriorityActivation() && getJustActivatedType().equals(AbilityType.ACTIVATED)) {
+        setJustActivatedType(null);
+        pass(game);
+        return false;
+      }
+    }
     if (passedAllTurns) {
       if (passWithManaPoolCheck(game)) {
         return false;

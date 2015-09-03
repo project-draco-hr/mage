@@ -1,4 +1,6 @@
 {
+  String autoOrderRuleText=null;
+  boolean autoOrderUse=getUserData().isAutoOrderTrigger();
   while (!abort) {
     List<TriggeredAbility> abilitiesWithNoOrderSet=new ArrayList<>();
     TriggeredAbility abilityOrderLast=null;
@@ -17,12 +19,20 @@
         abilityOrderLast=ability;
         continue;
       }
+      if (autoOrderUse) {
+        if (autoOrderRuleText == null) {
+          autoOrderRuleText=ability.getRule();
+        }
+ else         if (!ability.getRule().equals(autoOrderRuleText)) {
+          autoOrderUse=false;
+        }
+      }
       abilitiesWithNoOrderSet.add(ability);
     }
     if (abilitiesWithNoOrderSet.isEmpty()) {
       return abilityOrderLast;
     }
-    if (abilitiesWithNoOrderSet.size() == 1) {
+    if (abilitiesWithNoOrderSet.size() == 1 || autoOrderUse) {
       return abilitiesWithNoOrderSet.iterator().next();
     }
     updateGameStatePriority("chooseTriggeredAbility",game);
