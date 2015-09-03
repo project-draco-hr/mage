@@ -8,7 +8,8 @@
   this.toughness=new MageInt(2);
   FilterPermanent filter=new FilterPermanent("{this} or another Ally");
   filter.add(Predicates.or(new CardIdPredicate(this.getId()),new SubtypePredicate("Ally")));
-  Ability ability=new AllyEntersBattlefieldTriggeredAbility(new GainAbilityAllEffect(LifelinkAbility.getInstance(),Duration.EndOfTurn,new FilterControlledCreaturePermanent()),false);
-  ability.setAbilityWord(AbilityWord.RALLY);
+  Effect effect=new GainAbilityAllEffect(LifelinkAbility.getInstance(),Duration.EndOfTurn,new FilterControlledCreaturePermanent());
+  effect.setText("creatures you control gain lifelink until end of turn");
+  Ability ability=new AllyEntersBattlefieldTriggeredAbility(effect,false);
   this.addAbility(ability);
 }
