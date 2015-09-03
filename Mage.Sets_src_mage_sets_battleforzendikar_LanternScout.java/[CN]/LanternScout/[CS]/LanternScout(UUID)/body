@@ -1,0 +1,14 @@
+{
+  super(ownerId,37,"Lantern Scout",Rarity.RARE,new CardType[]{CardType.CREATURE},"{2}{W}");
+  this.expansionSetCode="BFZ";
+  this.subtype.add("Human");
+  this.subtype.add("Scout");
+  this.subtype.add("Ally");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(2);
+  FilterPermanent filter=new FilterPermanent("{this} or another Ally");
+  filter.add(Predicates.or(new CardIdPredicate(this.getId()),new SubtypePredicate("Ally")));
+  Ability ability=new AllyEntersBattlefieldTriggeredAbility(new GainAbilityAllEffect(LifelinkAbility.getInstance(),Duration.EndOfTurn,new FilterControlledCreaturePermanent()),false);
+  ability.setAbilityWord(AbilityWord.RALLY);
+  this.addAbility(ability);
+}
