@@ -1,14 +1,14 @@
 {
   response.clear();
-  log.debug("Waiting response from player: " + getId());
+  logger.debug("Waiting response from player: " + getId());
   game.resumeTimer(getTurnControlledBy());
 synchronized (response) {
     try {
       response.wait();
-      log.debug("Got response from player: " + getId());
+      logger.debug("Got response from player: " + getId());
     }
  catch (    InterruptedException ex) {
-      ex.printStackTrace();
+      logger.error("Response error for player " + getName() + " gameId: "+ game.getId(),ex);
     }
  finally {
       game.pauseTimer(getTurnControlledBy());

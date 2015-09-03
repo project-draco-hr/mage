@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerA,"Opalescence",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",9);
+  addCard(Zone.BATTLEFIELD,playerA,"War Horn",1);
+  addCard(Zone.HAND,playerA,"Enchanted Evening");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Opalescence");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Enchanted Evening");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPowerToughness(playerA,"Enchanted Evening",5,5);
+  assertPowerToughness(playerA,"War Horn",3,3);
+  assertPermanentCount(playerA,"Island",0);
+  assertPermanentCount(playerB,"Plains",0);
+}

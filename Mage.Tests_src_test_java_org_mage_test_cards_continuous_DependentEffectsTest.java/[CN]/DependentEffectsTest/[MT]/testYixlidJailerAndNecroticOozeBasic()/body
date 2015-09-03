@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Necrotic Ooze",1);
+  addCard(Zone.GRAVEYARD,playerA,"Akroan Jailer",1);
+  addCard(Zone.GRAVEYARD,playerB,"Anointer of Champions",1);
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  Permanent necroticOoze=getPermanent("Necrotic Ooze",playerA);
+  int numberOfActivatedAbilities=0;
+  for (  Ability ability : necroticOoze.getAbilities(currentGame)) {
+    if (ability.getAbilityType().equals(AbilityType.ACTIVATED)) {
+      numberOfActivatedAbilities++;
+    }
+  }
+  Assert.assertEquals("Two abilities for Necrotic Ooze",2,numberOfActivatedAbilities);
+}

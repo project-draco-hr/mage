@@ -1,4 +1,5 @@
 {
+  initPopupMenuTriggerOrder();
   setBackground(new Color(0,0,0,100));
   setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
   setOpaque(false);
@@ -28,69 +29,37 @@
   btnUndo=new JButton("Undo");
   btnUndo.setVisible(false);
   container.add(btnUndo);
-  btnLeft.addActionListener(new java.awt.event.ActionListener(){
+  MouseListener checkPopupAdapter=new MouseAdapter(){
+    @Override public void mousePressed(    MouseEvent me){
+      checkPopupMenu(me);
+    }
+    @Override public void mouseReleased(    MouseEvent me){
+      checkPopupMenu(me);
+    }
+  }
+;
+  btnLeft.addMouseListener(checkPopupAdapter);
+  btnLeft.addActionListener(new ActionListener(){
     @Override public void actionPerformed(    java.awt.event.ActionEvent evt){
       if (linkLeft != null) {
-{
-          Thread worker=new Thread(){
-            @Override public void run(){
-              SwingUtilities.invokeLater(new Runnable(){
-                @Override public void run(){
-                  setState("",false,"",false);
-                  setSpecial("",false);
-                  linkLeft.doClick();
-                }
-              }
-);
-            }
-          }
-;
-          worker.start();
-        }
+        clickButton(linkLeft);
       }
     }
   }
 );
-  btnRight.addActionListener(new java.awt.event.ActionListener(){
+  btnRight.addMouseListener(checkPopupAdapter);
+  btnRight.addActionListener(new ActionListener(){
     @Override public void actionPerformed(    java.awt.event.ActionEvent evt){
       if (linkRight != null) {
-        Thread worker=new Thread(){
-          @Override public void run(){
-            SwingUtilities.invokeLater(new Runnable(){
-              @Override public void run(){
-                setState("",false,"",false);
-                setSpecial("",false);
-                linkRight.doClick();
-              }
-            }
-);
-          }
-        }
-;
-        worker.start();
+        clickButton(linkRight);
       }
     }
   }
 );
-  btnSpecial.addActionListener(new java.awt.event.ActionListener(){
+  btnSpecial.addActionListener(new ActionListener(){
     @Override public void actionPerformed(    java.awt.event.ActionEvent evt){
       if (linkSpecial != null) {
-{
-          Thread worker=new Thread(){
-            @Override public void run(){
-              SwingUtilities.invokeLater(new Runnable(){
-                @Override public void run(){
-                  setState("",false,"",false);
-                  setSpecial("",false);
-                  linkSpecial.doClick();
-                }
-              }
-);
-            }
-          }
-;
-          worker.start();
-        }
+        clickButton(linkSpecial);
       }
     }
   }

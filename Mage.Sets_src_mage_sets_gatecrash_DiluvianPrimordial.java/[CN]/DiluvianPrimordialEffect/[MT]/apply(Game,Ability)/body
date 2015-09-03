@@ -6,10 +6,11 @@
         Card targetCard=game.getCard(target.getFirstTarget());
         if (targetCard != null) {
           if (controller.chooseUse(outcome,"Cast " + targetCard.getLogName() + "?",source,game)) {
-            ContinuousEffect effect=new DiluvianPrimordialReplacementEffect();
-            effect.setTargetPointer(new FixedTarget(targetCard.getId()));
-            game.addEffect(effect,source);
-            controller.cast(targetCard.getSpellAbility(),game,true);
+            if (controller.cast(targetCard.getSpellAbility(),game,true)) {
+              ContinuousEffect effect=new DiluvianPrimordialReplacementEffect();
+              effect.setTargetPointer(new FixedTarget(targetCard.getId(),game.getState().getZoneChangeCounter(targetCard.getId())));
+              game.addEffect(effect,source);
+            }
           }
         }
       }

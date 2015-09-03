@@ -1,7 +1,10 @@
 {
   updateGameStatePriority("choosePile",game);
-  game.fireChoosePileEvent(playerId,message,pile1,pile2);
-  waitForBooleanResponse(game);
+  do {
+    game.fireChoosePileEvent(playerId,message,pile1,pile2);
+    waitForResponse(game);
+  }
+ while (response.getBoolean() == null && !abort);
   if (!abort) {
     return response.getBoolean();
   }

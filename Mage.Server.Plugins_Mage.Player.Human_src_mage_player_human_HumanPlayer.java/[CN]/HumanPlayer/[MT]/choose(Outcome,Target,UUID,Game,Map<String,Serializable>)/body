@@ -18,7 +18,7 @@
     }
     List<UUID> chosen=target.getTargets();
     options.put("chosen",(Serializable)chosen);
-    game.fireSelectTargetEvent(getId(),addSecondLineWithObjectName(target.getMessage(),sourceId,game),targetIds,required,getOptions(target,options));
+    game.fireSelectTargetEvent(getId(),new MessageToClient(target.getMessage(),getRelatedObjectName(sourceId,game)),targetIds,required,getOptions(target,options));
     waitForResponse(game);
     if (response.getUUID() != null) {
       if (!targetIds.contains(response.getUUID())) {

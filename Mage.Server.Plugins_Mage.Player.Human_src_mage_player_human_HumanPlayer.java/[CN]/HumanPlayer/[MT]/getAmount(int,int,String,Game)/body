@@ -1,7 +1,10 @@
 {
   updateGameStatePriority("getAmount",game);
-  game.fireGetAmountEvent(playerId,message,min,max);
-  waitForIntegerResponse(game);
+  do {
+    game.fireGetAmountEvent(playerId,message,min,max);
+    waitForResponse(game);
+  }
+ while (response.getInteger() == null && !abort);
   if (response != null && response.getInteger() != null) {
     return response.getInteger();
   }
