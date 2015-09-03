@@ -45,13 +45,14 @@
  else {
     return;
   }
+  int startingHandSize=7;
   for (  UUID playerId : state.getPlayerList(startingPlayerId)) {
     Player player=getPlayer(playerId);
     if (!gameOptions.testMode || player.getLife() == 0) {
       player.initLife(this.getLife());
     }
     if (!gameOptions.testMode) {
-      player.drawCards(7,this);
+      player.drawCards(startingHandSize,this);
     }
   }
   List<UUID> keepPlayers=new ArrayList<>();
@@ -93,6 +94,14 @@
     saveState(false);
   }
  while (!mulliganPlayers.isEmpty());
+  for (  UUID playerId : state.getPlayerList(startingPlayerId)) {
+    Player player=getPlayer(playerId);
+    if (player != null && player.getHand().size() < startingHandSize) {
+      if (player.chooseUse(Outcome.Benefit,new MessageToClient("Scry 1?","Look at the top card of your library. You may put that card on the bottom of your library."),null,this)) {
+        player.scry(1,null,this);
+      }
+    }
+  }
   getState().setChoosingPlayerId(null);
   Watchers watchers=state.getWatchers();
   for (  UUID playerId : state.getPlayerList(startingPlayerId)) {

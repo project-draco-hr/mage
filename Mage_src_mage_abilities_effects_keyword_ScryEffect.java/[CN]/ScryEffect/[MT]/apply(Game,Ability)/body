@@ -1,31 +1,7 @@
 {
   Player player=game.getPlayer(source.getControllerId());
   if (player != null) {
-    boolean revealed=player.isTopCardRevealed();
-    player.setTopCardRevealed(false);
-    Cards cards=new CardsImpl();
-    int count=Math.min(scryNumber,player.getLibrary().size());
-    if (count == 0) {
-      return true;
-    }
-    for (int i=0; i < count; i++) {
-      Card card=player.getLibrary().removeFromTop(game);
-      cards.add(card);
-    }
-    TargetCard target1=new TargetCard(Zone.LIBRARY,filter1);
-    target1.setRequired(false);
-    while (player.canRespond() && cards.size() > 0 && player.choose(Outcome.Detriment,cards,target1,game)) {
-      Card card=cards.get(target1.getFirstTarget(),game);
-      if (card != null) {
-        cards.remove(card);
-        player.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.LIBRARY,false,false);
-      }
-      target1.clearChosen();
-    }
-    player.putCardsOnTopOfLibrary(cards,game,source,true);
-    game.fireEvent(new GameEvent(GameEvent.EventType.SCRY,source.getControllerId(),source.getSourceId(),source.getControllerId()));
-    player.setTopCardRevealed(revealed);
-    return true;
+    return player.scry(scryNumber,source,game);
   }
   return false;
 }
