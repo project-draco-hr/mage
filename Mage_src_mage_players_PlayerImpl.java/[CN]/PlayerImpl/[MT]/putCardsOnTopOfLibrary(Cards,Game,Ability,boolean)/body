@@ -2,9 +2,10 @@
   Cards cards=new CardsImpl(cardsToLibrary);
   cards.addAll(cardsToLibrary);
   if (cards.size() != 0) {
+    UUID sourceId=(source == null ? null : source.getSourceId());
     if (!anyOrder) {
       for (      UUID cardId : cards) {
-        moveObjectToLibrary(cardId,source.getSourceId(),game,true,false);
+        moveObjectToLibrary(cardId,sourceId,game,true,false);
       }
     }
  else {
@@ -14,11 +15,11 @@
         this.choose(Outcome.Neutral,cards,target,game);
         UUID targetObjectId=target.getFirstTarget();
         cards.remove(targetObjectId);
-        moveObjectToLibrary(targetObjectId,source.getSourceId(),game,true,false);
+        moveObjectToLibrary(targetObjectId,sourceId,game,true,false);
         target.clearChosen();
       }
       if (cards.size() == 1) {
-        moveObjectToLibrary(cards.iterator().next(),source.getSourceId(),game,true,false);
+        moveObjectToLibrary(cards.iterator().next(),sourceId,game,true,false);
       }
     }
   }
