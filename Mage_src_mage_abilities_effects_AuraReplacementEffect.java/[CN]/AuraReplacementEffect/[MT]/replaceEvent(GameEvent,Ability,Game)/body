@@ -24,6 +24,7 @@
       targetId=stackAbility.getEffects().get(0).getTargetPointer().getFirst(game,stackAbility);
     }
   }
+  game.applyEffects();
   if (targetId == null) {
     Target target=card.getSpellAbility().getTargets().get(0);
     enchantCardInGraveyard=target instanceof TargetCardInGraveyard;
@@ -75,7 +76,6 @@ game.rememberLKI(card.getId(),fromZone,card);
 PermanentCard permanent=new PermanentCard(card,card.getOwnerId(),game);
 game.getBattlefield().addPermanent(permanent);
 card.setZone(Zone.BATTLEFIELD,game);
-game.applyEffects();
 boolean entered=permanent.entersBattlefield(event.getSourceId(),game,fromZone,true);
 game.applyEffects();
 if (!entered) {
