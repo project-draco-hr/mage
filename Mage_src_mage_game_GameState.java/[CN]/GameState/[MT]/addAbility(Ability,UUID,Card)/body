@@ -11,7 +11,8 @@
  else   if (ability instanceof TriggeredAbility) {
     this.triggers.add((TriggeredAbility)ability,sourceId,attachedTo);
   }
-  for (  Watcher watcher : ability.getWatchers()) {
+  List<Watcher> watcherList=new ArrayList<>(ability.getWatchers());
+  for (  Watcher watcher : watcherList) {
     watcher.setControllerId(attachedTo == null ? ability.getControllerId() : attachedTo.getOwnerId());
     watcher.setSourceId(attachedTo == null ? ability.getSourceId() : attachedTo.getId());
     watchers.add(watcher);
