@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",7);
+  addCard(Zone.BATTLEFIELD,playerA,"Flameshadow Conjuring",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Nantuko Husk",1);
+  addCard(Zone.HAND,playerA,"Wurmcoil Engine",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Wurmcoil Engine");
+  setChoice(playerA,"Yes");
+  attack(1,playerA,"Wurmcoil Engine");
+  attack(1,playerA,"Nantuko Husk");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Sacrifice a creature");
+  setChoice(playerA,"Wurmcoil Engine[only copy]");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Wurmcoil Engine",1);
+  assertPowerToughness(playerA,"Nantuko Husk",4,4);
+  assertLife(playerB,12);
+  assertLife(playerA,26);
+  assertPermanentCount(playerA,"Wurm",2);
+}
