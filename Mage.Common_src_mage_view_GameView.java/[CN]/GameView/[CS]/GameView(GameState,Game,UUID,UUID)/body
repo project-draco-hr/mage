@@ -48,10 +48,15 @@
           checkPaid(stackObject.getId(),((StackAbility)stackObject));
         }
  else {
-          StackAbility stackAbility=((StackAbility)object);
-          stackAbility.newId();
-          stack.put(stackObject.getId(),new CardView(((StackAbility)stackObject)));
-          checkPaid(stackObject.getId(),((StackAbility)stackObject));
+          if (object instanceof StackAbility) {
+            StackAbility stackAbility=((StackAbility)object);
+            stackAbility.newId();
+            stack.put(stackObject.getId(),new CardView(((StackAbility)stackObject)));
+            checkPaid(stackObject.getId(),((StackAbility)stackObject));
+          }
+ else {
+            logger.fatal("Object can't be cast to StackAbility: " + object.getName() + " "+ object.toString());
+          }
         }
       }
  else {
