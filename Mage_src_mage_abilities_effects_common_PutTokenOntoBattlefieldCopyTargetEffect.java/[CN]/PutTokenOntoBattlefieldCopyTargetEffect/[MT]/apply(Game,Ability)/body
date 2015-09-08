@@ -19,6 +19,7 @@
     }
     EmptyToken token=new EmptyToken();
     CardUtil.copyTo(token).from(copyFromPermanent);
+    applier.apply(game,token);
     if (additionalCardType != null && !token.getCardType().contains(additionalCardType)) {
       token.getCardType().add(additionalCardType);
     }
@@ -30,17 +31,6 @@
       Permanent tokenPermanent=game.getPermanent(tokenId);
       if (tokenPermanent != null) {
         addedTokenPermanents.add(tokenPermanent);
-        game.copyPermanent(copyFromPermanent,tokenPermanent,source,applier);
-        if (additionalCardType != null) {
-          ContinuousEffect effect=new AddCardTypeTargetEffect(additionalCardType,Duration.Custom);
-          effect.setTargetPointer(new FixedTarget(tokenPermanent,game));
-          game.addEffect(effect,source);
-        }
-        if (gainsHaste) {
-          ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.Custom);
-          effect.setTargetPointer(new FixedTarget(tokenPermanent,game));
-          game.addEffect(effect,source);
-        }
       }
     }
     return true;
