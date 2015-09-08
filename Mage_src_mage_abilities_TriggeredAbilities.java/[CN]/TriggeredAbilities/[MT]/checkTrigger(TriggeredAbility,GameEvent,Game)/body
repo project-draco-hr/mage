@@ -1,0 +1,34 @@
+{
+  MageObject object=game.getObject(ability.getSourceId());
+  if (ability.isInUseableZone(game,object,event)) {
+    if (event == null || !game.getContinuousEffects().preventedByRuleModification(event,ability,game,false)) {
+      if (object != null) {
+        boolean controllerSet=false;
+        if (!ability.getZone().equals(Zone.COMMAND) && event != null && event.getTargetId() != null && event.getTargetId().equals(ability.getSourceId()) && (event.getType().equals(EventType.ZONE_CHANGE) || event.getType().equals(EventType.DESTROYED_PERMANENT))) {
+          Permanent permanent=(Permanent)game.getLastKnownInformation(ability.getSourceId(),Zone.BATTLEFIELD,ability.getSourceObjectZoneChangeCounter() - 1);
+          if (permanent != null) {
+            if (!ability.getWorksFaceDown() && permanent.isFaceDown(game)) {
+              return;
+            }
+            controllerSet=true;
+            ability.setControllerId(permanent.getControllerId());
+          }
+        }
+        if (!controllerSet) {
+          if (object instanceof Permanent) {
+            ability.setControllerId(((Permanent)object).getControllerId());
+          }
+ else           if (object instanceof Spell) {
+            ability.setControllerId(((Spell)object).getControllerId());
+          }
+ else           if (object instanceof Card) {
+            ability.setControllerId(((Card)object).getOwnerId());
+          }
+        }
+      }
+      if (ability.checkTrigger(event,game)) {
+        ability.trigger(game,ability.getControllerId());
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Acidic Slime",1);
+  addCard(Zone.HAND,playerB,"Forest",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Omnath, Locus of Rage",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Anafenza, the Foremost");
+  playLand(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Forest");
+  playLand(4,PhaseStep.PRECOMBAT_MAIN,playerB,"Forest");
+  attack(5,playerA,"Acidic Slime");
+  block(5,playerB,"Elemental","Acidic Slime");
+  attack(5,playerA,"Anafenza, the Foremost");
+  block(5,playerB,"Elemental","Anafenza, the Foremost");
+  addTarget(playerB,playerA);
+  setStopAt(5,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertExileCount(playerA,0);
+  assertExileCount(playerB,0);
+  assertPermanentCount(playerB,"Elemental",1);
+  assertGraveyardCount(playerA,"Acidic Slime",1);
+  assertGraveyardCount(playerA,"Anafenza, the Foremost",0);
+  assertCommandZoneCount(playerA,"Anafenza, the Foremost",1);
+  assertHandCount(playerA,2);
+  assertHandCount(playerB,2);
+  assertLife(playerA,37);
+  assertLife(playerB,40);
+}
