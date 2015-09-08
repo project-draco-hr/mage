@@ -1,0 +1,14 @@
+{
+  Card card=game.getCard(targetPointer.getFirst(game,source));
+  if (card != null) {
+    Zone currentZone=game.getState().getZone(card.getId());
+    if (card.putOntoBattlefield(game,currentZone,source.getSourceId(),source.getControllerId())) {
+      Permanent creature=game.getPermanent(card.getId());
+      ContinuousEffect effect=new LimDulTheNecromancerContiniousEffect();
+      effect.setTargetPointer(new FixedTarget(creature.getId()));
+      game.addEffect(effect,source);
+      return true;
+    }
+  }
+  return false;
+}
