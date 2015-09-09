@@ -1,0 +1,17 @@
+{
+  super(ownerId,119,"Ob Nixilis Reignited",Rarity.MYTHIC,new CardType[]{CardType.PLANESWALKER},"{3}{B}{B}");
+  this.expansionSetCode="BFZ";
+  this.subtype.add("Nixilis");
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.LOYALTY.createInstance(5)),false));
+  LoyaltyAbility ability1=new LoyaltyAbility(new DrawCardSourceControllerEffect(1),1);
+  ability1.addEffect(new LoseLifeSourceControllerEffect(1));
+  this.addAbility(ability1);
+  LoyaltyAbility ability2=new LoyaltyAbility(new DestroyTargetEffect(),-3);
+  ability2.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability2);
+  Effect effect=new GetEmblemTargetPlayerEffect(new ObNixilisReignitedEmblem());
+  effect.setText("Target opponent gets an emblem with \"Whenever a player draws a card, you lose 2 life.\"");
+  LoyaltyAbility ability3=new LoyaltyAbility(effect,-8);
+  ability3.addTarget(new TargetOpponent());
+  this.addAbility(ability3);
+}
