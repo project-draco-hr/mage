@@ -1,19 +1,25 @@
 {
   Player player=game.getPlayer(source.getControllerId());
-  Permanent permanent=game.getPermanent(source.getSourceId());
+  Card card=game.getCard(source.getSourceId());
   String chosenType="";
-  if (player != null && permanent != null) {
+  if (player != null && card != null) {
     Choice typeChoice=new ChoiceImpl(true);
-    typeChoice.setMessage("Choose creature type other than Wall");
+    String msg="Choose a creature type";
+    if (nonWall) {
+      msg+=" other than Wall";
+    }
+    typeChoice.setMessage(msg);
     Set<String> types=CardRepository.instance.getCreatureTypes();
-    types.remove("Wall");
+    if (nonWall) {
+      types.remove("Wall");
+    }
     typeChoice.setChoices(types);
     while (!player.choose(Outcome.BoostCreature,typeChoice,game)) {
       if (!player.canRespond()) {
         return false;
       }
     }
-    game.informPlayers(permanent.getName() + ": " + player.getLogName()+ " has chosen "+ typeChoice.getChoice());
+    game.informPlayers(card.getName() + ": " + player.getLogName()+ " has chosen "+ typeChoice.getChoice());
     chosenType=typeChoice.getChoice();
     if (chosenType != null && !chosenType.isEmpty()) {
       ContinuousEffect effect=new BecomesSubtypeTargetEffect(Duration.EndOfTurn,chosenType);
