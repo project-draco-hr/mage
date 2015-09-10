@@ -26,9 +26,10 @@
   }
   game.applyEffects();
   if (targetId == null) {
-    Target target=card.getSpellAbility().getTargets().get(0);
+    Target target=card.getSpellAbility().getTargets().get(0).copy();
     enchantCardInGraveyard=target instanceof TargetCardInGraveyard;
     if (target != null) {
+      target.setNotTarget(true);
       target.clearChosen();
     }
     Player player=game.getPlayer(card.getOwnerId());
