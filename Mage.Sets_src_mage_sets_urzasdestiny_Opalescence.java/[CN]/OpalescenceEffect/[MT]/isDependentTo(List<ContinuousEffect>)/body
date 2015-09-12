@@ -1,11 +1,13 @@
 {
   Set<UUID> dependentTo=null;
   for (  ContinuousEffect effect : allEffectsInLayer) {
-    if (EnchantedEvening.class.equals(effect.getClass().getEnclosingClass())) {
-      if (dependentTo == null) {
-        dependentTo=new HashSet<>();
+    for (    DependencyType dependencyType : effect.getDependencyTypes()) {
+      if (checkDependencyTypes.contains(dependencyType)) {
+        if (dependentTo == null) {
+          dependentTo=new HashSet<>();
+        }
+        dependentTo.add(effect.getId());
       }
-      dependentTo.add(effect.getId());
     }
   }
   return dependentTo;
