@@ -7,8 +7,12 @@
     abilities=input.getAbilities();
   }
   for (  Ability ability : abilities) {
-    if (abilityClass.equals(ability.getClass())) {
-      return true;
+    if ((ability instanceof ActivatedAbilityImpl) && ability.getCosts().size() > 0) {
+      for (      Cost cost : ability.getCosts()) {
+        if (cost instanceof TapSourceCost) {
+          return true;
+        }
+      }
     }
   }
   return false;
