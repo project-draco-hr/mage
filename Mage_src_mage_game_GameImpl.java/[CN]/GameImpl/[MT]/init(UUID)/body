@@ -23,28 +23,52 @@
   Player choosingPlayer=null;
   if (choosingPlayerId != null) {
     choosingPlayer=this.getPlayer(choosingPlayerId);
+    if (choosingPlayer != null && !choosingPlayer.isInGame()) {
+      choosingPlayer=null;
+    }
   }
   if (choosingPlayer == null) {
     choosingPlayerId=pickChoosingPlayer();
+    if (choosingPlayerId == null) {
+      return;
+    }
     choosingPlayer=getPlayer(choosingPlayerId);
+  }
+  if (choosingPlayer == null) {
+    return;
   }
   getState().setChoosingPlayerId(choosingPlayerId);
   if (choosingPlayer != null && choosingPlayer.choose(Outcome.Benefit,targetPlayer,null,this)) {
     startingPlayerId=targetPlayer.getTargets().get(0);
-    Player startingPlayer=state.getPlayer(startingPlayerId);
-    StringBuilder message=new StringBuilder(choosingPlayer.getLogName()).append(" chooses that ");
-    if (choosingPlayer.getId().equals(startingPlayerId)) {
-      message.append("he or she");
-    }
- else {
-      message.append(startingPlayer.getLogName());
-    }
-    message.append(" takes the first turn");
-    this.informPlayers(message.toString());
   }
- else {
+ else   if (getState().getPlayers().size() < 3) {
     return;
   }
+  if (startingPlayerId == null) {
+    for (    Player player : state.getPlayers().values()) {
+      if (player.isInGame()) {
+        startingPlayerId=player.getId();
+        break;
+      }
+    }
+    if (startingPlayerId == null) {
+      return;
+    }
+  }
+  Player startingPlayer=state.getPlayer(startingPlayerId);
+  if (startingPlayer == null) {
+    logger.debug("Starting player not found. playerId:" + startingPlayerId);
+    return;
+  }
+  StringBuilder message=new StringBuilder(choosingPlayer.getLogName()).append(" chooses that ");
+  if (choosingPlayer.getId().equals(startingPlayerId)) {
+    message.append("he or she");
+  }
+ else {
+    message.append(startingPlayer.getLogName());
+  }
+  message.append(" takes the first turn");
+  this.informPlayers(message.toString());
   int startingHandSize=7;
   for (  UUID playerId : state.getPlayerList(startingPlayerId)) {
     Player player=getPlayer(playerId);
