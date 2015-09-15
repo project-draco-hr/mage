@@ -5,27 +5,14 @@
     return false;
   }
   if (controller.searchLibrary(target,game)) {
-    List<Card> cards=new ArrayList<>();
-    for (    UUID cardId : target.getTargets()) {
-      Card card=controller.getLibrary().remove(cardId,game);
-      if (card != null) {
-        cards.add(card);
-      }
-    }
-    Cards foundCards=new CardsImpl();
-    foundCards.addAll(target.getTargets());
-    if (reveal) {
+    Cards foundCards=new CardsImpl(target.getTargets());
+    if (reveal && !foundCards.isEmpty()) {
       controller.revealCards(sourceObject.getIdName(),foundCards,game);
     }
     if (forceShuffle) {
       controller.shuffleLibrary(game);
     }
-    if (cards.size() > 0 && !game.isSimulation()) {
-      game.informPlayers(controller.getLogName() + " moves " + cards.size()+ " card"+ (cards.size() == 1 ? " " : "s ")+ "on top of his or her library");
-    }
-    for (    Card card : cards) {
-      card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
-    }
+    controller.putCardsOnTopOfLibrary(foundCards,game,source,reveal);
     return true;
   }
   if (forceShuffle) {

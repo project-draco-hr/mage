@@ -1,0 +1,13 @@
+{
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent targetCreature=game.getPermanent(getTargetPointer().getFirst(game,source));
+  if (controller != null && sourceObject != null) {
+    int colors=new ColorsOfManaSpentToCastCount().calculate(game,source,this);
+    if (targetCreature.getPower().getValue() <= colors) {
+      game.addEffect(new GainControlTargetEffect(Duration.Custom,true),source);
+    }
+    return true;
+  }
+  return false;
+}
