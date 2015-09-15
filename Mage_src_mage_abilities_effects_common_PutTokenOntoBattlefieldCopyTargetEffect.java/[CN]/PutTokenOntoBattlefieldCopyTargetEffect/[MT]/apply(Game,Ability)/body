@@ -1,8 +1,9 @@
 {
   Permanent permanent=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
+  Card copyFrom;
+  ApplyToPermanent applier=new EmptyApplyToPermanent();
   if (permanent != null) {
     Permanent copyFromPermanent=permanent;
-    ApplyToPermanent applier=new EmptyApplyToPermanent();
     for (    Effect effect : game.getState().getContinuousEffects().getLayeredEffects(game)) {
       if (effect instanceof CopyEffect) {
         CopyEffect copyEffect=(CopyEffect)effect;
@@ -17,23 +18,34 @@
         }
       }
     }
-    EmptyToken token=new EmptyToken();
-    CardUtil.copyTo(token).from(copyFromPermanent);
-    applier.apply(game,token);
-    if (additionalCardType != null && !token.getCardType().contains(additionalCardType)) {
-      token.getCardType().add(additionalCardType);
-    }
-    if (gainsHaste) {
-      token.addAbility(HasteAbility.getInstance());
-    }
-    token.putOntoBattlefield(1,game,source.getSourceId(),playerId == null ? source.getControllerId() : playerId);
-    for (    UUID tokenId : token.getLastAddedTokenIds()) {
-      Permanent tokenPermanent=game.getPermanent(tokenId);
-      if (tokenPermanent != null) {
-        addedTokenPermanents.add(tokenPermanent);
-      }
-    }
-    return true;
+    copyFrom=copyFromPermanent;
   }
-  return false;
+ else {
+    copyFrom=game.getCard(getTargetPointer().getFirst(game,source));
+  }
+  if (permanent == null && copyFrom == null) {
+    return false;
+  }
+  EmptyToken token=new EmptyToken();
+  CardUtil.copyTo(token).from(copyFrom);
+  applier.apply(game,token);
+  if (additionalCardType != null && !token.getCardType().contains(additionalCardType)) {
+    token.getCardType().add(additionalCardType);
+  }
+  if (gainsHaste) {
+    token.addAbility(HasteAbility.getInstance());
+  }
+  if (additionalSubType != null) {
+    if (token.getSubtype().contains(additionalSubType)) {
+      token.getSubtype().add(additionalSubType);
+    }
+  }
+  token.putOntoBattlefield(number,game,source.getSourceId(),playerId == null ? source.getControllerId() : playerId);
+  for (  UUID tokenId : token.getLastAddedTokenIds()) {
+    Permanent tokenPermanent=game.getPermanent(tokenId);
+    if (tokenPermanent != null) {
+      addedTokenPermanents.add(tokenPermanent);
+    }
+  }
+  return true;
 }

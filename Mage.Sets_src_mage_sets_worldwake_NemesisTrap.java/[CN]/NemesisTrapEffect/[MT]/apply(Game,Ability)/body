@@ -2,11 +2,19 @@
   Permanent targetedCreature=game.getPermanentOrLKIBattlefield(source.getFirstTarget());
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null && targetedCreature != null) {
-    controller.moveCardToExileWithInfo(targetedCreature,null,null,source.getSourceId(),game,Zone.BATTLEFIELD,true);
-    EmptyToken token=new EmptyToken();
-    CardUtil.copyTo(token).from(targetedCreature);
-    token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
-    token.addAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ExileSourceEffect()));
+    controller.moveCards(targetedCreature,null,Zone.EXILED,source,game);
+    PutTokenOntoBattlefieldCopyTargetEffect effect=new PutTokenOntoBattlefieldCopyTargetEffect();
+    effect.setTargetPointer(new FixedTarget(targetedCreature,game));
+    effect.apply(game,source);
+    for (    Permanent addedToken : effect.getAddedPermanent()) {
+      Effect exileEffect=new ExileTargetEffect("Exile " + addedToken.getName() + " at the beginning of the next end step");
+      exileEffect.setTargetPointer(new FixedTarget(addedToken,game));
+      DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(exileEffect);
+      delayedAbility.setSourceId(source.getSourceId());
+      delayedAbility.setControllerId(source.getControllerId());
+      delayedAbility.setSourceObject(source.getSourceObject(game),game);
+      game.addDelayedTriggeredAbility(delayedAbility);
+    }
     return true;
   }
   return false;

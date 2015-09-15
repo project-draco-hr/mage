@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Chimeric Idol");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",3);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Anafenza, the Foremost");
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerB,"{0}: Tap all lands you control");
+  attack(2,playerB,"Chimeric Idol");
+  block(2,playerA,"Anafenza, the Foremost","Chimeric Idol");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertLife(playerA,40);
+  assertLife(playerB,40);
+  assertExileCount("Chimeric Idol",1);
+  assertGraveyardCount(playerB,"Chimeric Idol",0);
+  assertPermanentCount(playerB,"Chimeric Idol",0);
+  assertTappedCount("Mountain",true,3);
+}

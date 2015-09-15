@@ -5,9 +5,9 @@
     if (soulFoundry != null && soulFoundry.getImprinted() != null && !soulFoundry.getImprinted().isEmpty()) {
       Card imprinted=game.getCard(soulFoundry.getImprinted().get(0));
       if (imprinted != null && game.getState().getZone(imprinted.getId()).equals(Zone.EXILED)) {
-        EmptyToken token=new EmptyToken();
-        CardUtil.copyTo(token).from(imprinted);
-        return token.putOntoBattlefield(1,game,source.getSourceId(),controller.getId());
+        PutTokenOntoBattlefieldCopyTargetEffect effect=new PutTokenOntoBattlefieldCopyTargetEffect();
+        effect.setTargetPointer(new FixedTarget(imprinted.getId(),imprinted.getZoneChangeCounter(game)));
+        return effect.apply(game,source);
       }
     }
   }

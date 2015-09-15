@@ -8,22 +8,24 @@
       if (triggerAutoOrderAbilityFirst.contains(ability.getOriginalId())) {
         return ability;
       }
-      if (triggerAutoOrderNameFirst.contains(ability.getRule())) {
+      MageObject object=game.getObject(ability.getSourceId());
+      String rule=ability.getRule(object != null ? object.getName() : null);
+      if (triggerAutoOrderNameFirst.contains(rule)) {
         return ability;
       }
       if (triggerAutoOrderAbilityLast.contains(ability.getOriginalId())) {
         abilityOrderLast=ability;
         continue;
       }
-      if (triggerAutoOrderNameLast.contains(ability.getRule())) {
+      if (triggerAutoOrderNameLast.contains(rule)) {
         abilityOrderLast=ability;
         continue;
       }
       if (autoOrderUse) {
         if (autoOrderRuleText == null) {
-          autoOrderRuleText=ability.getRule();
+          autoOrderRuleText=rule;
         }
- else         if (!ability.getRule().equals(autoOrderRuleText)) {
+ else         if (!rule.equals(autoOrderRuleText)) {
           autoOrderUse=false;
         }
       }

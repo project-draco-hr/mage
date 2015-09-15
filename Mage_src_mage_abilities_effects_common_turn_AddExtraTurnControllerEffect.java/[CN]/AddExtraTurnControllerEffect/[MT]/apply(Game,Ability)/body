@@ -1,7 +1,15 @@
 {
   Player player=game.getPlayer(source.getControllerId());
   if (player != null) {
-    game.getState().getTurnMods().add(new TurnMod(player.getId(),false));
+    TurnMod extraTurn=new TurnMod(player.getId(),false);
+    game.getState().getTurnMods().add(extraTurn);
+    if (loseGameAtEnd) {
+      LoseGameDelayedTriggeredAbility delayedTriggeredAbility=new LoseGameDelayedTriggeredAbility();
+      delayedTriggeredAbility.setSourceId(source.getSourceId());
+      delayedTriggeredAbility.setControllerId(source.getControllerId());
+      delayedTriggeredAbility.setConnectedTurnMod(extraTurn.getId());
+      game.addDelayedTriggeredAbility(delayedTriggeredAbility);
+    }
   }
   return true;
 }

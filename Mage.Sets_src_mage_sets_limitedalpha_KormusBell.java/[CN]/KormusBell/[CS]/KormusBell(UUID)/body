@@ -1,5 +1,7 @@
 {
   super(ownerId,256,"Kormus Bell",Rarity.RARE,new CardType[]{CardType.ARTIFACT},"{4}");
   this.expansionSetCode="LEA";
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BecomesCreatureAllEffect(new KormusBellToken(),"lands",new FilterPermanent("Swamp","Swamps"),Duration.WhileOnBattlefield)));
+  ContinuousEffect effect=new BecomesCreatureAllEffect(new KormusBellToken(),"lands",new FilterPermanent("Swamp","Swamps"),Duration.WhileOnBattlefield);
+  effect.getDependencyTypes().add(DependencyType.BecomeSwamp);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
 }

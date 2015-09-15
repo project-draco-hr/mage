@@ -1,0 +1,21 @@
+{
+  if (this.size() > 0) {
+    if (!canChoose(source.getSourceId(),playerId,game)) {
+      return false;
+    }
+    while (!isChosen()) {
+      Target target=this.getUnchosen().get(0);
+      UUID targetController=playerId;
+      if (target.getTargetController() != null) {
+        targetController=target.getTargetController();
+      }
+      if (noMana) {
+        target.setRequired(true);
+      }
+      if (!target.chooseTarget(outcome,targetController,source,game)) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
