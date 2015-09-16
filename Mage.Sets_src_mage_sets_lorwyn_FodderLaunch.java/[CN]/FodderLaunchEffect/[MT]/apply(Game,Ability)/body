@@ -1,0 +1,13 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    Permanent targetCreature=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (targetCreature != null) {
+      Player controllerOfTargetCreature=game.getPlayer(targetCreature.getControllerId());
+      controllerOfTargetCreature.damage(5,source.getSourceId(),game,false,true);
+      return true;
+    }
+    return false;
+  }
+}
