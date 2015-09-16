@@ -6,7 +6,9 @@
       if (spellAbility.getSourceId().equals(source.getSourceId())) {
         int amount=spellAbility.getManaCostsToPay().getX();
         if (amount > 0) {
-          permanent.addCounters(CounterType.P1P1.createInstance(amount),game);
+          Counter counterToAdd=counter.copy();
+          counterToAdd.add(amount - counter.getCount());
+          permanent.addCounters(counterToAdd,game);
         }
       }
     }
