@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Target target=new TargetCardInExile(1,1,filter,null);
+    if (target.canChoose(source.getSourceId(),source.getControllerId(),game)) {
+      if (controller.chooseTarget(outcome,target,source,game)) {
+        Cards cardsToGraveyard=new CardsImpl(target.getTargets());
+        controller.moveCards(cardsToGraveyard,null,Zone.GRAVEYARD,source,game);
+        game.addEffect(new BoostTargetEffect(-3,-3,Duration.EndOfTurn),source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

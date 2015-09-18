@@ -9,7 +9,19 @@
       this.zoneChangeCounter=0;
     }
  else {
-      throw new IllegalArgumentException("The provided sourceId is not connected to an object in the game");
+      logger.error("The provided sourceId is not connected to an object in the game id:" + sourceId);
+      for (      StackObject stackObject : game.getStack()) {
+        logger.error("StackObject: " + stackObject.getId() + " sourceId"+ stackObject.getSourceId()+ " name"+ stackObject.getName());
+      }
+      mageObject=game.getLastKnownInformation(sourceId,Zone.STACK);
+      if (mageObject != null) {
+        this.zoneChangeCounter=mageObject.getZoneChangeCounter(game);
+        logger.error("SourceId found in LKI");
+      }
+ else {
+        logger.error("SourceId NOT found in LKI");
+        this.zoneChangeCounter=0;
+      }
     }
   }
 }

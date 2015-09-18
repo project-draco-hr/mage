@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Vedalken Shackles",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",3);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Mutavault",1);
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerB,"{1}: Until end of turn {this} becomes");
+  activateAbility(2,PhaseStep.POSTCOMBAT_MAIN,playerA,"{2},{T}: Gain control","Mutavault");
+  setChoice(playerA,"No");
+  setStopAt(3,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerB,"Mutavault",0);
+  assertPermanentCount(playerA,"Mutavault",1);
+}

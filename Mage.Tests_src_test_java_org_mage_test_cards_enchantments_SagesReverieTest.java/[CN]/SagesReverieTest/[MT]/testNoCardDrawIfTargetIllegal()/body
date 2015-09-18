@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",5);
+  addCard(Zone.BATTLEFIELD,playerA,"Sage's Reverie",1);
+  addCard(Zone.HAND,playerA,"Lifelink",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Pillarfield Ox",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",3);
+  addCard(Zone.HAND,playerB,"Hero's Downfall");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lifelink","Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Sage's Reverie","Pillarfield Ox");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Hero's Downfall","Pillarfield Ox");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Lifelink",1);
+  assertGraveyardCount(playerB,"Hero's Downfall",1);
+  assertGraveyardCount(playerA,"Pillarfield Ox",1);
+  assertGraveyardCount(playerA,"Sage's Reverie",1);
+  assertHandCount(playerA,0);
+}

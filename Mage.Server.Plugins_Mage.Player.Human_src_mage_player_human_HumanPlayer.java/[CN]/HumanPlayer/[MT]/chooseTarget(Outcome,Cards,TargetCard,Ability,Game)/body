@@ -1,7 +1,13 @@
 {
   updateGameStatePriority("chooseTarget(5)",game);
   while (!abort) {
-    boolean required=target.isRequired(source);
+    boolean required;
+    if (target.isRequiredExplicitlySet()) {
+      required=target.isRequired();
+    }
+ else {
+      required=target.isRequired(source);
+    }
     if (cards == null) {
       required=false;
     }
