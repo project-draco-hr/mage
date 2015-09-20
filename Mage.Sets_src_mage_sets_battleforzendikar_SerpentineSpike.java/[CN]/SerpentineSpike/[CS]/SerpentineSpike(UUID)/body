@@ -1,0 +1,15 @@
+{
+  super(ownerId,133,"Serpentine Spike",Rarity.RARE,new CardType[]{CardType.SORCERY},"{5}{R}{R}");
+  this.expansionSetCode="BFZ";
+  Ability ability=new DevoidAbility(this.color);
+  ability.setRuleAtTheTop(true);
+  this.addAbility(ability);
+  this.getSpellAbility().addEffect(new SerpentineSpikeEffect());
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent(new FilterCreaturePermanent("creature (2 damage)")));
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent(new FilterCreaturePermanent("creature (3 damage)")));
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent(new FilterCreaturePermanent("creature (4 damage)")));
+  Effect effect=new DealtDamageToCreatureBySourceDies(this,Duration.EndOfTurn);
+  effect.setText("If a creature dealt damage this way would die this turn, exile it instead");
+  this.getSpellAbility().addEffect(effect);
+  this.getSpellAbility().addWatcher(new DamagedByWatcher());
+}

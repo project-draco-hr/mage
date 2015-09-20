@@ -1,0 +1,21 @@
+{
+  Permanent equipment=game.getPermanentOrLKIBattlefield((this.getSourceId()));
+  if (equipment != null && equipment.getAttachedTo() != null) {
+    Permanent equippedPermanent=game.getPermanentOrLKIBattlefield((equipment.getAttachedTo()));
+    if (equippedPermanent != null) {
+      if (equippedPermanent.isAttacking()) {
+        for (        CombatGroup group : game.getCombat().getGroups()) {
+          if (group.getAttackers().contains(equippedPermanent.getId())) {
+            for (            UUID blockerId : group.getBlockers()) {
+              Permanent blocker=game.getPermanent(blockerId);
+              if (blocker != null && blocker.getColor(game).isColorless()) {
+                return true;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
