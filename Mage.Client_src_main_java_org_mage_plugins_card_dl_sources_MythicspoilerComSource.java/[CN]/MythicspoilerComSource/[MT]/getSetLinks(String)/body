@@ -33,8 +33,10 @@
         doc=Jsoup.parse(String.valueOf(tmp));
       }
       Elements cardsImages=doc.select("img[src^=cards/]");
-      for (      String text : aliasesStart) {
-        cardsImages.addAll(doc.select("img[src^=" + text + "]"));
+      if (!aliasesStart.isEmpty()) {
+        for (        String text : aliasesStart) {
+          cardsImages.addAll(doc.select("img[src^=" + text + "]"));
+        }
       }
       if (cardsImages.isEmpty()) {
         break;
