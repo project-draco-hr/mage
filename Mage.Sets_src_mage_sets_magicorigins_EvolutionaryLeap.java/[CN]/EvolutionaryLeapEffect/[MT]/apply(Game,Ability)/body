@@ -13,16 +13,21 @@
     }
  while (library.size() > 0 && card != null && !filter.match(card,game));
     if (!cards.isEmpty()) {
-      controller.revealCards(sourceObject.getName(),cards,game);
-    }
-    controller.moveCards(card,Zone.LIBRARY,Zone.HAND,source,game);
-    cards.remove(card);
-    while (cards.size() > 0) {
-      card=cards.getRandom(game);
-      if (card != null) {
+      controller.revealCards(sourceObject.getIdName(),cards,game);
+      if (filter.match(card,game)) {
+        controller.moveCards(card,Zone.LIBRARY,Zone.HAND,source,game);
         cards.remove(card);
-        controller.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.HAND,false,false);
       }
+      Cards randomOrder=new CardsImpl();
+      while (cards.size() > 0) {
+        card=cards.getRandom(game);
+        if (card != null) {
+          cards.remove(card);
+          randomOrder.add(card);
+          controller.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.HAND,false,false);
+        }
+      }
+      controller.putCardsOnBottomOfLibrary(randomOrder,game,source,false);
     }
     return true;
   }

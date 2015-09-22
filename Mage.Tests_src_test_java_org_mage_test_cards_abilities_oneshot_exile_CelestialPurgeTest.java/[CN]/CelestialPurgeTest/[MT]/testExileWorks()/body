@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.HAND,playerA,"Celestial Purge");
+  addCard(Zone.BATTLEFIELD,playerB,"Bitterblossom");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerA,"Celestial Purge","Bitterblossom");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,19);
+  assertGraveyardCount(playerA,"Celestial Purge",1);
+  assertExileCount("Bitterblossom",1);
+  assertPermanentCount(playerB,"Faerie Rogue",1);
+}
