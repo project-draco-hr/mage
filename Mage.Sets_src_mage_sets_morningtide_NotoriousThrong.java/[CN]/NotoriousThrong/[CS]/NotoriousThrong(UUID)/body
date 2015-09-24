@@ -5,5 +5,7 @@
   this.addAbility(new ProwlAbility(this,"{5}{U}"));
   this.getSpellAbility().addEffect(new NotoriousThrongEffect());
   this.getSpellAbility().addWatcher(new AmountOfDamageAPlayerReceivedThisTurnWatcher());
-  this.getSpellAbility().addEffect(new ConditionalOneShotEffect(new AddExtraTurnControllerEffect(),ProwlCondition.getInstance()));
+  Effect effect=new ConditionalOneShotEffect(new AddExtraTurnControllerEffect(),ProwlCondition.getInstance());
+  effect.setText("If {this}'s prowl cost was paid, take an extra turn after this one.");
+  this.getSpellAbility().addEffect(effect);
 }
