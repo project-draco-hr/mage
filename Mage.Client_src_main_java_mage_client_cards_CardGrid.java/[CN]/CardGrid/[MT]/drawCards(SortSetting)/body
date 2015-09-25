@@ -5,7 +5,7 @@
   int curRow=0;
   if (cards.size() > 0) {
     Rectangle rectangle=new Rectangle(Config.dimensions.frameWidth,Config.dimensions.frameHeight);
-    List<MageCard> sortedCards=new ArrayList<MageCard>(cards.values());
+    List<MageCard> sortedCards=new ArrayList<>(cards.values());
 switch (sortSetting.getSortBy()) {
 case NAME:
       Collections.sort(sortedCards,new CardNameComparator());
@@ -16,8 +16,8 @@ break;
 case COLOR:
 Collections.sort(sortedCards,new CardColorComparator());
 break;
-case COLOR_DETAILED:
-Collections.sort(sortedCards,new CardColorDetailedComparator());
+case COLOR_IDENTITY:
+Collections.sort(sortedCards,new CardColorDetailedIdentity());
 break;
 case CASTING_COST:
 Collections.sort(sortedCards,new CardCostComparator());
@@ -48,8 +48,8 @@ curColumn++;
 curRow=0;
 }
 break;
-case COLOR_DETAILED:
-if (cardImg.getOriginal().getColor().hashCode() != lastCard.getOriginal().getColor().hashCode()) {
+case COLOR_IDENTITY:
+if (CardUtil.getColorIdentitySortValue(cardImg.getOriginal().getManaCost(),cardImg.getOriginal().getColor(),cardImg.getOriginal().getRules()) != CardUtil.getColorIdentitySortValue(lastCard.getOriginal().getManaCost(),lastCard.getOriginal().getColor(),lastCard.getOriginal().getRules())) {
 curColumn++;
 curRow=0;
 }
