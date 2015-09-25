@@ -33,7 +33,9 @@
   justActivatedType=null;
   if (result) {
     if (isHuman() && (ability.getAbilityType().equals(AbilityType.SPELL) || ability.getAbilityType().equals(AbilityType.ACTIVATED))) {
-      setJustActivatedType(ability.getAbilityType());
+      if (ability.isUsesStack()) {
+        setJustActivatedType(ability.getAbilityType());
+      }
     }
     game.getPlayers().resetPassed();
   }
