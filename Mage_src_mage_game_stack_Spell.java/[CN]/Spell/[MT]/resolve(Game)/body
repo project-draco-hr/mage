@@ -4,10 +4,14 @@
     int index=0;
     result=false;
     boolean legalParts=false;
+    boolean notTargeted=true;
     for (    SpellAbility spellAbility : this.spellAbilities) {
-      legalParts|=spellAbilityHasLegalParts(spellAbility,game);
+      if (hasTargets(spellAbility,game)) {
+        notTargeted=false;
+        legalParts|=spellAbilityHasLegalParts(spellAbility,game);
+      }
     }
-    if (legalParts) {
+    if (notTargeted || legalParts) {
       for (      SpellAbility spellAbility : this.spellAbilities) {
         if (spellAbilityHasLegalParts(spellAbility,game)) {
           for (          UUID modeId : spellAbility.getModes().getSelectedModes()) {
