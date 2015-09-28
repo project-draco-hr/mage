@@ -1,10 +1,14 @@
 {
-  if (targetPointer != null) {
+  Player targetPlayer=game.getPlayer(targetPointer.getFirst(game,source));
+  if (targetPlayer != null && targetPlayer.isInGame()) {
     for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(new FilterLandPermanent(),targetPointer.getFirst(game,source),game)) {
       if (permanent != null) {
         permanent.changeControllerId(source.getControllerId(),game);
       }
     }
   }
-  return false;
+ else {
+    discard();
+  }
+  return true;
 }
