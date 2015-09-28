@@ -1,12 +1,14 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
+    Set<UUID> playersShuffle=new LinkedHashSet<>();
+    playersShuffle.add(controller.getId());
     TargetCardInLibrary target=new TargetCardInLibrary(new FilterLandCard());
     if (controller.searchLibrary(target,game)) {
       for (      UUID cardId : target.getTargets()) {
         Card card=game.getCard(cardId);
         if (card != null) {
-          card.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),controller.getId());
+          controller.moveCards(card,null,Zone.BATTLEFIELD,source,game);
         }
       }
     }
@@ -17,11 +19,12 @@
         if (opponent.chooseUse(outcome,"Search your library for a land card and put it onto the battlefield?",source,game)) {
           target.clearChosen();
           opponentsUsedSearch++;
+          playersShuffle.add(playerId);
           if (opponent.searchLibrary(target,game)) {
             for (            UUID cardId : target.getTargets()) {
               Card card=game.getCard(cardId);
               if (card != null) {
-                card.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),opponent.getId());
+                opponent.moveCards(card,null,Zone.BATTLEFIELD,source,game);
               }
             }
           }
@@ -34,9 +37,15 @@
         for (        UUID cardId : target.getTargets()) {
           Card card=game.getCard(cardId);
           if (card != null) {
-            card.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),controller.getId());
+            controller.moveCards(card,null,Zone.BATTLEFIELD,source,game);
           }
         }
+      }
+    }
+    for (    UUID playerId : playersShuffle) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        player.shuffleLibrary(game);
       }
     }
     return true;
