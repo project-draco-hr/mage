@@ -4,7 +4,7 @@
   Set<UUID> lands=new HashSet<>();
   if (controller != null && sourcePermanent != null) {
     for (    String landName : new String[]{"Forest","Island","Mountain","Plains","Swamp"}) {
-      FilterLandPermanent filter=new FilterLandPermanent(new StringBuilder(landName).append(" to destroy").toString());
+      FilterLandPermanent filter=new FilterLandPermanent(landName + " to destroy");
       filter.add(new SubtypePredicate(landName));
       Target target=new TargetLandPermanent(1,1,filter,true);
       if (target.canChoose(source.getSourceId(),source.getControllerId(),game)) {
@@ -22,8 +22,9 @@
           }
         }
       }
-      game.informPlayers(new StringBuilder(sourcePermanent.getName()).append(": ").append(destroyedLands).append(destroyedLands > 1 ? " lands were destroyed" : "land was destroyed").toString());
+      game.informPlayers(sourcePermanent.getLogName() + ": " + destroyedLands+ (destroyedLands > 1 ? " lands were" : "land was")+ " destroyed");
     }
+    return true;
   }
   return false;
 }
