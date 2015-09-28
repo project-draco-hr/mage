@@ -1,14 +1,15 @@
 {
-  if (event.getType() == GameEvent.EventType.SPELL_CAST && event.getPlayerId() == controllerId) {
+switch (event.getType()) {
+case SPELL_CAST:
+case CAST_SPELL:
     Spell spell=(Spell)game.getObject(event.getTargetId());
-    if (spell != null) {
-      spellCount++;
-      if (spellCount == 1) {
-        condition=true;
-      }
- else {
-        condition=false;
-      }
+  if (spell != null && !playerFirstSpellCast.containsKey(spell.getControllerId())) {
+    if (event.getType().equals(EventType.SPELL_CAST)) {
+      playerFirstSpellCast.put(spell.getControllerId(),spell.getId());
+    }
+ else     if (event.getType().equals(EventType.CAST_SPELL)) {
+      playerFirstCastSpell.put(spell.getControllerId(),spell.getId());
     }
   }
+}
 }
