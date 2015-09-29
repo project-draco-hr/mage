@@ -3,6 +3,12 @@
     Permanent permanent=game.getPermanent(target);
     if (permanent != null) {
       permanent.tap(game);
+      if (connectSource) {
+        Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+        if (sourcePermanent != null) {
+          sourcePermanent.addConnectedCard(sourcePermanent.getName(),permanent.getId());
+        }
+      }
     }
   }
   return true;
