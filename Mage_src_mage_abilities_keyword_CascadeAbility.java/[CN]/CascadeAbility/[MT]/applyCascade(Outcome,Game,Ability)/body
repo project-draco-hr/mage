@@ -11,21 +11,25 @@
     if (card == null) {
       break;
     }
-    player.moveCardToExileWithInfo(card,exile.getId(),exile.getName(),source.getSourceId(),game,Zone.LIBRARY,true);
+    player.moveCardsToExile(card,source,game,true,exile.getId(),exile.getName());
   }
  while (player.isInGame() && card.getCardType().contains(CardType.LAND) || card.getManaCost().convertedManaCost() >= sourceCost);
   player.getLibrary().reset();
   if (card != null) {
-    if (player.chooseUse(outcome,"Use cascade effect on " + card.getName() + "?",source,game)) {
+    if (player.chooseUse(outcome,"Use cascade effect on " + card.getLogName() + "?",source,game)) {
       if (player.cast(card.getSpellAbility(),game,true)) {
         exile.remove(card.getId());
       }
     }
   }
-  while (exile.size() > 0) {
-    card=exile.getRandom(game);
-    exile.remove(card.getId());
-    player.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.EXILED,false,false);
+  Cards cardsFromExile=new CardsImpl();
+  Cards cardsToLibrary=new CardsImpl();
+  cardsFromExile.addAll(exile);
+  while (cardsFromExile.size() > 0) {
+    card=cardsFromExile.getRandom(game);
+    cardsFromExile.remove(card.getId());
+    cardsToLibrary.add(card);
   }
+  player.putCardsOnBottomOfLibrary(cardsToLibrary,game,source,true);
   return true;
 }

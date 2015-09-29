@@ -1,0 +1,17 @@
+{
+  addCard(Zone.HAND,playerA,"Angelic Blessing",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Zada, Hedron Grinder",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Pillarfield Ox",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Angelic Blessing","Zada, Hedron Grinder");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Angelic Blessing",1);
+  assertPowerToughness(playerA,"Pillarfield Ox",5,7);
+  assertAbility(playerA,"Pillarfield Ox",FlyingAbility.getInstance(),true);
+  assertPowerToughness(playerA,"Zada, Hedron Grinder",6,6);
+  assertAbility(playerA,"Zada, Hedron Grinder",FlyingAbility.getInstance(),true);
+  assertPowerToughness(playerB,"Silvercoat Lion",2,2);
+  assertAbility(playerB,"Silvercoat Lion",FlyingAbility.getInstance(),false);
+}
