@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    StackObject stackObject : game.getStack()) {
+      if ((stackObject instanceof Spell) && !stackObject.isCopy() && stackObject.getControllerId().equals(source.getControllerId())) {
+        Spell spell=(Spell)stackObject;
+        FirstSpellCastThisTurnWatcher watcher=(FirstSpellCastThisTurnWatcher)game.getState().getWatchers().get("FirstSpellCastThisTurn");
+        if (watcher != null && spell.getId().equals(watcher.getIdOfFirstCastSpell(source.getControllerId()))) {
+          game.getState().addOtherAbility(spell.getCard(),cascadeAbility);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

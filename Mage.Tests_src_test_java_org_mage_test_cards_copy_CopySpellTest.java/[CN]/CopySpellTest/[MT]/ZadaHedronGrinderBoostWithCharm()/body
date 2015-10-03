@@ -1,0 +1,17 @@
+{
+  addCard(Zone.HAND,playerA,"Cryptic Command",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Zada, Hedron Grinder",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Pillarfield Ox",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Cryptic Command","mode=2Zada, Hedron Grinder");
+  setModeChoice(playerA,"2");
+  setModeChoice(playerA,"4");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPowerToughness(playerB,"Silvercoat Lion",2,2);
+  assertGraveyardCount(playerA,"Cryptic Command",1);
+  assertPermanentCount(playerA,"Zada, Hedron Grinder",0);
+  assertPermanentCount(playerA,"Pillarfield Ox",0);
+  assertHandCount(playerA,4);
+}

@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Jace, Telepath Unbound");
+  addCard(Zone.GRAVEYARD,playerA,"Magmatic Insight");
+  addCard(Zone.HAND,playerA,"Plains");
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"-3: You may cast target instant","Magmatic Insight");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Magmatic Insight");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Jace, Telepath Unbound",1);
+  assertCounterCount("Jace, Telepath Unbound",CounterType.LOYALTY,2);
+  assertExileCount("Magmatic Insight",1);
+  assertHandCount(playerA,2);
+}

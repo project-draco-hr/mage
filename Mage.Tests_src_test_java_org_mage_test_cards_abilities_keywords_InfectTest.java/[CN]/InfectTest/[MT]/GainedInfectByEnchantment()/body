@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerB,"Phyrexian Obliterator");
+  addCard(Zone.HAND,playerA,"Corrupted Conscience");
+  addCard(Zone.HAND,playerA,"Enslave");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",9);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Corrupted Conscience","Phyrexian Obliterator");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Enslave","Phyrexian Obliterator");
+  setStopAt(3,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerA,"Phyrexian Obliterator",1);
+  assertPermanentCount(playerA,"Corrupted Conscience",1);
+  assertPermanentCount(playerA,"Enslave",1);
+  assertAbility(playerA,"Phyrexian Obliterator",InfectAbility.getInstance(),true);
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertCounterCount(playerB,CounterType.POISON,1);
+}

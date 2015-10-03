@@ -5,12 +5,16 @@
     Cards allCards=new CardsImpl();
     allCards.addAll(controller.getLibrary().getTopCards(game,4));
     controller.lookAtCards(sourceObject.getIdName(),allCards,game);
-    Cards allyCards=new CardsImpl();
-    allyCards.addAll(allCards.getCards(filter,source.getSourceId(),source.getControllerId(),game));
-    if (!allyCards.isEmpty()) {
-      controller.revealCards(sourceObject.getIdName(),allyCards,game,true);
-      allCards.removeAll(allyCards);
-      controller.putCardsOnTopOfLibrary(allyCards,game,source,true);
+    if (!allCards.isEmpty()) {
+      Cards cardsToReveal=new CardsImpl();
+      TargetCard target=new TargetCard(0,Integer.MAX_VALUE,Zone.LIBRARY,filter);
+      controller.chooseTarget(outcome,allCards,target,source,game);
+      cardsToReveal.addAll(target.getTargets());
+      if (!cardsToReveal.isEmpty()) {
+        controller.revealCards(sourceObject.getIdName(),cardsToReveal,game,true);
+        allCards.removeAll(cardsToReveal);
+      }
+      controller.putCardsOnTopOfLibrary(cardsToReveal,game,source,true);
     }
     if (!allCards.isEmpty()) {
       controller.putCardsOnBottomOfLibrary(allCards,game,source,true);
