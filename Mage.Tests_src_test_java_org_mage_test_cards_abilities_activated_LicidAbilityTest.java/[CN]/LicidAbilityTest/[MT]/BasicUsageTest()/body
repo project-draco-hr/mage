@@ -1,0 +1,12 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Pillarfield Ox");
+  addCard(Zone.BATTLEFIELD,playerA,"Enraging Licid");
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain");
+  activateAbility(1,PhaseStep.UPKEEP,playerA,"{R},","Pillarfield Ox");
+  setStopAt(1,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertAbility(playerA,"Pillarfield Ox",HasteAbility.getInstance(),true);
+  assertAbility(playerA,"Enraging Licid",new LicidAbility(new ColoredManaCost(ColoredManaSymbol.R),new ColoredManaCost(ColoredManaSymbol.R)),false);
+  assertType("Enraging Licid",CardType.ENCHANTMENT,true);
+  assertType("Enraging Licid",CardType.CREATURE,false);
+}
