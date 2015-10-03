@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int attackingCreatures=game.getBattlefield().count(new FilterAttackingCreature(),controller.getId(),controller.getId(),game);
+    if (attackingCreatures > 1) {
+      for (      Permanent permanent : game.getBattlefield().getAllActivePermanents(new FilterAttackingCreature(),controller.getId(),game)) {
+        ContinuousEffect effect=new BoostTargetEffect(attackingCreatures - 1,0,Duration.EndOfTurn);
+        effect.setTargetPointer(new FixedTarget(permanent,game));
+        game.addEffect(effect,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}
