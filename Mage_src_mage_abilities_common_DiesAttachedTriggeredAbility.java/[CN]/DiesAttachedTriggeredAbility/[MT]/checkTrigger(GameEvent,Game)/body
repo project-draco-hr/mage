@@ -1,7 +1,17 @@
 {
   if (((ZoneChangeEvent)event).isDiesEvent()) {
     ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    boolean triggered=false;
     if (zEvent.getTarget().getAttachments().contains(this.getSourceId())) {
+      triggered=true;
+    }
+ else {
+      Permanent attachment=game.getPermanentOrLKIBattlefield(getSourceId());
+      if (attachment != null && attachment.getAttachedTo().equals(zEvent.getTargetId()) && attachment.getAttachedToZoneChangeCounter() == zEvent.getTarget().getZoneChangeCounter(game)) {
+        triggered=true;
+      }
+    }
+    if (triggered) {
       for (      Effect effect : getEffects()) {
         effect.setValue("attachedTo",zEvent.getTarget());
       }
