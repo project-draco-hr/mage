@@ -1,0 +1,30 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (controller != null && targetPlayer != null) {
+    Cards cards=new CardsImpl(source.getTargets().get(1).getTargets());
+    cards.addAll(source.getTargets().get(1).getTargets());
+    if (!cards.isEmpty()) {
+      TargetCard target=new TargetCard(Zone.PICK,new FilterCard("card to put on the top of the library (last one chosen will be topmost)"));
+      target.setRequired(true);
+      while (controller.isInGame() && cards.size() > 1) {
+        controller.choose(Outcome.Neutral,cards,target,game);
+        UUID targetId=target.getFirstTarget();
+        cards.remove(targetId);
+        target.clearChosen();
+        Card card=targetPlayer.getGraveyard().get(targetId,game);
+        if (card != null) {
+          controller.moveCards(card,Zone.GRAVEYARD,Zone.LIBRARY,source,game);
+        }
+      }
+      if (cards.size() == 1) {
+        Card card=targetPlayer.getGraveyard().get(cards.iterator().next(),game);
+        if (card != null) {
+          controller.moveCards(card,Zone.GRAVEYARD,Zone.LIBRARY,source,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
