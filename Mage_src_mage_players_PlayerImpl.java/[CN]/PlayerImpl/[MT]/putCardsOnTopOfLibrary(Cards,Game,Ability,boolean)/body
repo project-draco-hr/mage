@@ -1,7 +1,6 @@
 {
-  Cards cards=new CardsImpl(cardsToLibrary);
-  cards.addAll(cardsToLibrary);
-  if (!cards.isEmpty()) {
+  if (!cardsToLibrary.isEmpty()) {
+    Cards cards=new CardsImpl(cardsToLibrary);
     UUID sourceId=(source == null ? null : source.getSourceId());
     if (!anyOrder) {
       for (      UUID cardId : cards) {
@@ -9,7 +8,7 @@
       }
     }
  else {
-      TargetCard target=new TargetCard(Zone.PICK,new FilterCard("card to put on the top of your library (last one chosen will be topmost)"));
+      TargetCard target=new TargetCard(Zone.LIBRARY,new FilterCard("card to put on the top of your library (last one chosen will be topmost)"));
       target.setRequired(true);
       while (isInGame() && cards.size() > 1) {
         this.choose(Outcome.Neutral,cards,target,game);
