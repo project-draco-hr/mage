@@ -1,0 +1,17 @@
+{
+  Spell spell=game.getStack().getSpell(this.getEffects().get(0).getTargetPointer().getFirst(game,this));
+  if (spell != null) {
+    String spellName=spell.getName();
+    Permanent sourcePermanent=game.getPermanent(this.getSourceId());
+    if (sourcePermanent != null) {
+      for (      UUID imprintId : sourcePermanent.getImprinted()) {
+        Card card=game.getCard(imprintId);
+        if (card != null && card.getName().equals(spellName)) {
+          ((SpellweaverHelixCastEffect)this.getEffects().get(0)).setSpellName(spellName);
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",10);
+  addCard(Zone.BATTLEFIELD,playerA,"Raging Goblin",2);
+  addCard(Zone.HAND,playerA,"Wort, the Raidmother");
+  addCard(Zone.HAND,playerA,"Burn Trail");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Wort, the Raidmother");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Burn Trail",playerB);
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"Yes");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Wort, the Raidmother",1);
+  assertLife(playerB,11);
+  assertLife(playerA,20);
+  assertGraveyardCount(playerA,"Burn Trail",1);
+}

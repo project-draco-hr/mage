@@ -1,0 +1,35 @@
+{
+  if (game.getBattlefield().contains(filterFlying,source.getControllerId(),1,game)) {
+    game.addEffect(new GainAbilityAllEffect(FlyingAbility.getInstance(),Duration.EndOfTurn),source);
+  }
+  if (game.getBattlefield().contains(filterFear,source.getControllerId(),1,game)) {
+    game.addEffect(new GainAbilityAllEffect(FearAbility.getInstance(),Duration.EndOfTurn),source);
+  }
+  if (game.getBattlefield().contains(filterFirstStrike,source.getControllerId(),1,game)) {
+    game.addEffect(new GainAbilityAllEffect(FirstStrikeAbility.getInstance(),Duration.EndOfTurn),source);
+  }
+  if (game.getBattlefield().contains(filterDoubleStrike,source.getControllerId(),1,game)) {
+    game.addEffect(new GainAbilityAllEffect(DoubleStrikeAbility.getInstance(),Duration.EndOfTurn),source);
+  }
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(filterLandwalk,source.getControllerId(),game)) {
+    for (    Ability ability : permanent.getAbilities(game)) {
+      if (ability instanceof LandwalkAbility) {
+        game.addEffect(new GainAbilityAllEffect(ability,Duration.EndOfTurn),source);
+      }
+    }
+  }
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(filterProtection,source.getControllerId(),game)) {
+    for (    Ability ability : permanent.getAbilities(game)) {
+      if (ability instanceof ProtectionAbility) {
+        game.addEffect(new GainAbilityAllEffect(ability,Duration.EndOfTurn),source);
+      }
+    }
+  }
+  if (game.getBattlefield().contains(filterTrample,source.getControllerId(),1,game)) {
+    game.addEffect(new GainAbilityAllEffect(TrampleAbility.getInstance(),Duration.EndOfTurn),source);
+  }
+  if (game.getBattlefield().contains(filterVigilance,source.getControllerId(),1,game)) {
+    game.addEffect(new GainAbilityAllEffect(VigilanceAbility.getInstance(),Duration.EndOfTurn),source);
+  }
+  return true;
+}

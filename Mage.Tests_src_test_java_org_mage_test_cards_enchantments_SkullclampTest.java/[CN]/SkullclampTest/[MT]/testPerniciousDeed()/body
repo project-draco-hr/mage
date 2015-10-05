@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Skullclamp",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Pillarfield Ox",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Pernicious Deed");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Equip","Silvercoat Lion");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"{X},Sacrifice");
+  setChoice(playerB,"X=2");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerA,"Skullclamp",1);
+  assertGraveyardCount(playerA,"Silvercoat Lion",1);
+  assertGraveyardCount(playerB,"Pernicious Deed",1);
+  assertPermanentCount(playerA,"Pillarfield Ox",1);
+  assertHandCount(playerA,2);
+}
