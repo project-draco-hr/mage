@@ -1,13 +1,6 @@
 {
   if (ability instanceof SpellAbility) {
     ability.getTargets().clear();
-    for (    UUID opponentId : game.getOpponents(ability.getControllerId())) {
-      Player opponent=game.getPlayer(opponentId);
-      if (opponent != null) {
-        FilterPermanent filter=new FilterPermanent("permanent controlled by " + opponent.getName());
-        filter.add(new ControllerIdPredicate(opponentId));
-        ability.addTarget(new TargetPermanent(filter));
-      }
-    }
+    ability.addTarget(new BlatantThieveryTarget(game.getOpponents(ability.getControllerId()).size()));
   }
 }
