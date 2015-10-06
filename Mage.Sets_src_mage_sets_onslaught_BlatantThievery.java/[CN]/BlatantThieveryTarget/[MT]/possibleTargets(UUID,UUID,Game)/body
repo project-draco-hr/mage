@@ -1,0 +1,25 @@
+{
+  Set<UUID> opponents=new HashSet<>();
+  for (  UUID targetId : getTargets()) {
+    Permanent oldTargets=game.getPermanent(targetId);
+    if (oldTargets != null) {
+      opponents.add(oldTargets.getControllerId());
+    }
+  }
+  Set<UUID> possibleTargets=new HashSet<>();
+  MageObject mageObject=game.getObject(sourceId);
+  if (mageObject == null) {
+    return possibleTargets;
+  }
+  for (  UUID opponentId : game.getOpponents(sourceControllerId)) {
+    if (opponents.contains(opponentId)) {
+      continue;
+    }
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(opponentId)) {
+      if (permanent.canBeTargetedBy(mageObject,sourceControllerId,game)) {
+        possibleTargets.add(permanent.getId());
+      }
+    }
+  }
+  return possibleTargets;
+}
