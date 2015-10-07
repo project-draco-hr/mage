@@ -1,12 +1,13 @@
 {
-  Player sourcePlayer=game.getPlayer(source.getControllerId());
-  for (  UUID playerId : sourcePlayer.getInRange()) {
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller == null || sourceObject == null) {
+    return false;
+  }
+  for (  UUID playerId : controller.getInRange()) {
     Player player=game.getPlayer(playerId);
     if (player != null) {
-      int amount=Math.min(3,player.getLibrary().size());
-      for (int i=0; i < amount; i++) {
-        player.getLibrary().removeFromTop(game).moveToExile(source.getSourceId(),"Knowledge Pool Exile",source.getSourceId(),game);
-      }
+      player.moveCardsToExile(player.getLibrary().getTopCards(game,3),source,game,true,CardUtil.getObjectExileZoneId(game,sourceObject),sourceObject.getIdName() + " (" + sourceObject.getZoneChangeCounter(game)+ ")");
     }
   }
   return true;
