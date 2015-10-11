@@ -4,5 +4,8 @@
   this.subtype.add("Scarecrow");
   this.power=new MageInt(6);
   this.toughness=new MageInt(6);
-  this.addAbility(new AttacksOrBlocksTriggeredAbility(new WickerWarcrawlerEffect(),false));
+  Effect effect=new AddCountersSourceEffect(CounterType.M1M1.createInstance(),true);
+  effect.setText("put a -1/-1 counter on it at end of combat");
+  DelayedTriggeredAbility ability=new AtTheEndOfCombatDelayedTriggeredAbility(effect);
+  this.addAbility(new AttacksOrBlocksTriggeredAbility(new CreateDelayedTriggeredAbilityEffect(ability,false,false),false));
 }
