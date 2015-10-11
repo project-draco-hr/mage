@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",4);
+  addCard(Zone.HAND,playerA,"Noxious Hatchling",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Ruin Processor",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",2);
+  addCard(Zone.HAND,playerB,"Fate Transfer",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Noxious Hatchling");
+  castSpell(1,PhaseStep.BEGIN_COMBAT,playerB,"Fate Transfer","Noxious Hatchling^Ruin Processor");
+  setStopAt(1,PhaseStep.END_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Fate Transfer",1);
+  assertPowerToughness(playerA,"Noxious Hatchling",6,6);
+  assertPowerToughness(playerA,"Ruin Processor",3,4);
+}
