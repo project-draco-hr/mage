@@ -7,55 +7,26 @@
     if (facedown) {
       this.setFaceDown(false,game);
     }
-    if (fromZone != null) {
-      boolean removed=false;
-switch (fromZone) {
-case GRAVEYARD:
-        removed=game.getPlayer(ownerId).removeFromGraveyard(this,game);
-      break;
-case HAND:
-    removed=game.getPlayer(ownerId).removeFromHand(this,game);
-  break;
-case LIBRARY:
-removed=game.getPlayer(ownerId).removeFromLibrary(this,game);
-break;
-case EXILED:
-game.getExile().removeCard(this,game);
-removed=true;
-break;
-case COMMAND:
-removed=true;
-break;
-case PICK:
-removed=true;
-break;
-default :
-logger.warn("putOntoBattlefield, not fully implemented: fromZone=" + fromZone);
-}
-game.rememberLKI(objectId,event.getFromZone(),this);
-if (!removed) {
-logger.warn("Couldn't find card in fromZone, card=" + getName() + ", fromZone="+ fromZone);
-}
-}
-updateZoneChangeCounter(game);
-PermanentCard permanent=new PermanentCard(this,event.getPlayerId(),game);
-game.getContinuousEffects().setController(objectId,event.getPlayerId());
-game.addPermanent(permanent);
-setZone(Zone.BATTLEFIELD,game);
-checkForCountersToAdd(permanent,game);
-game.setScopeRelevant(true);
-permanent.setTapped(tapped);
-permanent.setFaceDown(facedown,game);
-boolean entered=permanent.entersBattlefield(sourceId,game,event.getFromZone(),true);
-game.setScopeRelevant(false);
-game.applyEffects();
-if (entered) {
-game.addSimultaneousEvent(new ZoneChangeEvent(permanent,event.getPlayerId(),fromZone,Zone.BATTLEFIELD));
-return true;
-}
-}
-if (facedown) {
-this.setFaceDown(false,game);
-}
-return false;
+    removeFromZone(game,fromZone,sourceId);
+    updateZoneChangeCounter(game);
+    PermanentCard permanent=new PermanentCard(this,event.getPlayerId(),game);
+    game.getContinuousEffects().setController(objectId,event.getPlayerId());
+    game.addPermanent(permanent);
+    setZone(Zone.BATTLEFIELD,game);
+    checkForCountersToAdd(permanent,game);
+    game.setScopeRelevant(true);
+    permanent.setTapped(tapped);
+    permanent.setFaceDown(facedown,game);
+    boolean entered=permanent.entersBattlefield(sourceId,game,event.getFromZone(),true);
+    game.setScopeRelevant(false);
+    game.applyEffects();
+    if (entered) {
+      game.addSimultaneousEvent(new ZoneChangeEvent(permanent,event.getPlayerId(),fromZone,Zone.BATTLEFIELD));
+      return true;
+    }
+  }
+  if (facedown) {
+    this.setFaceDown(false,game);
+  }
+  return false;
 }

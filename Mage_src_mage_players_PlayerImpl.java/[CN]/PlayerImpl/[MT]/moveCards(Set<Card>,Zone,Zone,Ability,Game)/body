@@ -19,12 +19,6 @@ break;
 case HAND:
 for (Card card : cards) {
 fromZone=game.getState().getZone(card.getId());
-if (fromZone == Zone.STACK) {
-Spell spell=game.getStack().getSpell(card.getId());
-if (spell != null) {
-  game.getStack().remove(spell);
-}
-}
 boolean hideCard=fromZone.equals(Zone.LIBRARY) || (card.isFaceDown(game) && !fromZone.equals(Zone.STACK) && !fromZone.equals(Zone.BATTLEFIELD));
 if (moveCardToHandWithInfo(card,source == null ? null : source.getSourceId(),game,!hideCard)) {
 successfulMovedCards.add(card);
