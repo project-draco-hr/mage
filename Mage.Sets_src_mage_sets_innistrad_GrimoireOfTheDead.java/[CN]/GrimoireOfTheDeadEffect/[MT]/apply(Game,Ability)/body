@@ -1,11 +1,17 @@
 {
-  for (  Player player : game.getPlayers().values()) {
-    for (    Card card : player.getGraveyard().getCards(game)) {
-      if (card.getCardType().contains(CardType.CREATURE)) {
-        card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),source.getControllerId());
-        game.addEffect(new GrimoireOfTheDeadEffect2(card.getId()),source);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Set<Card> creatureCards=new LinkedHashSet<>();
+    for (    Player player : game.getPlayers().values()) {
+      for (      Card card : player.getGraveyard().getCards(game)) {
+        if (card.getCardType().contains(CardType.CREATURE)) {
+          creatureCards.add(card);
+          game.addEffect(new GrimoireOfTheDeadEffect2(card.getId()),source);
+        }
       }
     }
+    controller.moveCards(creatureCards,Zone.BATTLEFIELD,source,game,false,false,true,null);
+    return true;
   }
-  return true;
+  return false;
 }

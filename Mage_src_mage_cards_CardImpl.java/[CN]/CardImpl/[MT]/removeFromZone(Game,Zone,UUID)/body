@@ -1,0 +1,65 @@
+{
+  boolean removed=false;
+  MageObject lkiObject=null;
+switch (fromZone) {
+case GRAVEYARD:
+    removed=game.getPlayer(ownerId).removeFromGraveyard(this,game);
+  break;
+case HAND:
+removed=game.getPlayer(ownerId).removeFromHand(this,game);
+break;
+case LIBRARY:
+removed=game.getPlayer(ownerId).removeFromLibrary(this,game);
+break;
+case EXILED:
+if (game.getExile().getCard(getId(),game) != null) {
+game.getExile().removeCard(this,game);
+removed=true;
+}
+break;
+case STACK:
+StackObject stackObject=game.getStack().getSpell(getSpellAbility().getId());
+if (stackObject == null && (this instanceof SplitCard)) {
+stackObject=game.getStack().getSpell(((SplitCard)this).getLeftHalfCard().getId());
+if (stackObject == null) {
+stackObject=game.getStack().getSpell(((SplitCard)this).getRightHalfCard().getId());
+}
+}
+if (stackObject == null) {
+stackObject=game.getStack().getSpell(getId());
+}
+if (stackObject != null) {
+removed=game.getStack().remove(stackObject);
+lkiObject=stackObject;
+}
+break;
+case COMMAND:
+lkiObject=(Commander)game.getObject(objectId);
+if (lkiObject != null) {
+removed=game.getState().getCommand().remove((Commander)game.getObject(objectId));
+}
+break;
+case OUTSIDE:
+if (isCopy()) {
+removed=true;
+}
+ else if (game.getPlayer(ownerId).getSideboard().contains(this.getId())) {
+game.getPlayer(ownerId).getSideboard().remove(this.getId());
+removed=true;
+}
+break;
+case PICK:
+case BATTLEFIELD:
+removed=true;
+break;
+default :
+MageObject sourceObject=game.getObject(sourceId);
+logger.fatal("Invalid from zone [" + fromZone + "] for card ["+ this.getIdName()+ "] source ["+ (sourceObject != null ? sourceObject.getName() : "null")+ "]");
+break;
+}
+game.rememberLKI(objectId,fromZone,lkiObject != null ? lkiObject : this);
+if (!removed) {
+logger.warn("Couldn't find card in fromZone, card=" + getIdName() + ", fromZone="+ fromZone);
+}
+return removed;
+}

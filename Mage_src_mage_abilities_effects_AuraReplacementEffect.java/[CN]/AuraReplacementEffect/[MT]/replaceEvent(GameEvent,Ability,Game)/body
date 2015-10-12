@@ -13,11 +13,6 @@
   UUID targetId=null;
   MageObject sourceObject=game.getObject(sourceId);
   boolean enchantCardInGraveyard=false;
-  if (sourceObject instanceof Spell) {
-    if (fromZone.equals(Zone.EXILED)) {
-      return false;
-    }
-  }
   if (sourceObject instanceof StackAbility) {
     StackAbility stackAbility=(StackAbility)sourceObject;
     if (!stackAbility.getEffects().isEmpty()) {
@@ -26,24 +21,32 @@
   }
   game.applyEffects();
   if (targetId == null) {
-    Target target=card.getSpellAbility().getTargets().get(0).copy();
+    SpellAbility spellAbility=card.getSpellAbility();
+    if (spellAbility.getTargets().isEmpty()) {
+      for (      Ability ability : card.getAbilities(game)) {
+        if ((ability instanceof SpellAbility) && SpellAbilityType.BASE_ALTERNATE.equals(((SpellAbility)ability).getSpellAbilityType()) && !ability.getTargets().isEmpty()) {
+          spellAbility=(SpellAbility)ability;
+          break;
+        }
+      }
+    }
+    if (spellAbility.getTargets().isEmpty()) {
+      return false;
+    }
+    Target target=spellAbility.getTargets().get(0).copy();
+    Outcome auraOutcome=Outcome.BoostCreature;
+    for (    Effect effect : spellAbility.getEffects()) {
+      if (effect instanceof AttachEffect) {
+        auraOutcome=effect.getOutcome();
+        break;
+      }
+    }
     enchantCardInGraveyard=target instanceof TargetCardInGraveyard;
     if (target != null) {
       target.setNotTarget(true);
       target.clearChosen();
     }
     Player player=game.getPlayer(card.getOwnerId());
-    Outcome auraOutcome=Outcome.BoostCreature;
-    Ability:     for (    Ability ability : card.getAbilities()) {
-      if (ability instanceof SpellAbility) {
-        for (        Effect effect : ability.getEffects()) {
-          if (effect instanceof AttachEffect) {
-            auraOutcome=effect.getOutcome();
-            break Ability;
-          }
-        }
-      }
-    }
     if (target != null && player != null && player.choose(auraOutcome,target,card.getId(),game)) {
       targetId=target.getFirstTarget();
     }
@@ -58,40 +61,25 @@
   }
   Player targetPlayer=game.getPlayer(targetId);
   if (targetCard != null || targetPermanent != null || targetPlayer != null) {
-switch (fromZone) {
-case EXILED:
-      game.getExile().removeCard(card,game);
-    break;
-case GRAVEYARD:
-  game.getPlayer(card.getOwnerId()).removeFromGraveyard(card,game);
-break;
-case HAND:
-game.getPlayer(card.getOwnerId()).removeFromHand(card,game);
-break;
-case LIBRARY:
-game.getPlayer(card.getOwnerId()).removeFromLibrary(card,game);
-break;
-default :
-}
-game.rememberLKI(card.getId(),fromZone,card);
-PermanentCard permanent=new PermanentCard(card,card.getOwnerId(),game);
-game.getBattlefield().addPermanent(permanent);
-card.setZone(Zone.BATTLEFIELD,game);
-boolean entered=permanent.entersBattlefield(event.getSourceId(),game,fromZone,true);
-game.applyEffects();
-if (!entered) {
-return false;
-}
-game.fireEvent(new ZoneChangeEvent(permanent,controllerId,fromZone,Zone.BATTLEFIELD));
-if (targetCard != null) {
-permanent.attachTo(targetCard.getId(),game);
-}
-if (targetPermanent != null) {
-targetPermanent.addAttachment(permanent.getId(),game);
-}
-if (targetPlayer != null) {
-targetPlayer.addAttachment(permanent.getId(),game);
-}
-}
-return true;
+    card.removeFromZone(game,fromZone,sourceId);
+    card.updateZoneChangeCounter(game);
+    PermanentCard permanent=new PermanentCard(card,card.getOwnerId(),game);
+    game.getBattlefield().addPermanent(permanent);
+    card.setZone(Zone.BATTLEFIELD,game);
+    if (permanent.entersBattlefield(event.getSourceId(),game,fromZone,true)) {
+      if (targetCard != null) {
+        permanent.attachTo(targetCard.getId(),game);
+      }
+ else       if (targetPermanent != null) {
+        targetPermanent.addAttachment(permanent.getId(),game);
+      }
+ else       if (targetPlayer != null) {
+        targetPlayer.addAttachment(permanent.getId(),game);
+      }
+      game.applyEffects();
+      game.fireEvent(new ZoneChangeEvent(permanent,controllerId,fromZone,Zone.BATTLEFIELD));
+      return true;
+    }
+  }
+  return false;
 }
