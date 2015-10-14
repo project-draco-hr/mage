@@ -7,17 +7,7 @@
     if (exileZone != null) {
       ExileZone exile=game.getExile().getExileZone(exileZone);
       if (exile != null) {
-        LinkedList<UUID> cards=new LinkedList<>(exile);
-        for (        UUID cardId : cards) {
-          Card card=game.getCard(cardId);
-          if (card != null) {
-            Player owner=game.getPlayer(card.getOwnerId());
-            if (owner != null && owner.isInGame()) {
-              owner.putOntoBattlefieldWithInfo(card,game,Zone.EXILED,source.getSourceId());
-            }
-          }
-        }
-        exile.clear();
+        controller.moveCards(new LinkedHashSet<>(exile.getCards(game)),Zone.EXILED,source,game,false,false,true,null);
       }
       return true;
     }
