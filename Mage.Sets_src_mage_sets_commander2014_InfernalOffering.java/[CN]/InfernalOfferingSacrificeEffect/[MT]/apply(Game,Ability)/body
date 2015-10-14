@@ -7,7 +7,7 @@
     if (opponent != null) {
       Map<UUID,UUID> toSacrifice=new HashMap<>(2);
       for (      UUID playerId : player.getInRange()) {
-        if (playerId == player.getId() || playerId == opponent.getId()) {
+        if (playerId.equals(player.getId()) || playerId.equals(opponent.getId())) {
           target=new TargetControlledCreaturePermanent(1,1,new FilterControlledCreaturePermanent(),true);
           if (target.choose(Outcome.Sacrifice,playerId,source.getControllerId(),game)) {
             toSacrifice.put(playerId,target.getFirstTarget());

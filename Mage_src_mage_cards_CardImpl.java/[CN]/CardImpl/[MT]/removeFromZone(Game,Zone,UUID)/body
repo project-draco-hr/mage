@@ -13,8 +13,7 @@ removed=game.getPlayer(ownerId).removeFromLibrary(this,game);
 break;
 case EXILED:
 if (game.getExile().getCard(getId(),game) != null) {
-game.getExile().removeCard(this,game);
-removed=true;
+removed=game.getExile().removeCard(this,game);
 }
 break;
 case STACK:
@@ -57,8 +56,10 @@ MageObject sourceObject=game.getObject(sourceId);
 logger.fatal("Invalid from zone [" + fromZone + "] for card ["+ this.getIdName()+ "] source ["+ (sourceObject != null ? sourceObject.getName() : "null")+ "]");
 break;
 }
+if (removed) {
 game.rememberLKI(objectId,fromZone,lkiObject != null ? lkiObject : this);
-if (!removed) {
+}
+ else {
 logger.warn("Couldn't find card in fromZone, card=" + getIdName() + ", fromZone="+ fromZone);
 }
 return removed;
