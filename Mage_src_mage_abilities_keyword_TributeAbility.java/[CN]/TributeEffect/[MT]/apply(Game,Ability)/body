@@ -1,6 +1,6 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  Permanent sourcePermanent=(Permanent)getValue(EntersBattlefieldEffect.ENTERING_PERMANENT);
   if (controller != null && sourcePermanent != null) {
     UUID opponentId;
     if (game.getOpponents(controller.getId()).size() == 1) {
@@ -19,12 +19,16 @@
         sb.append(" (add ").append(CardUtil.numberToText(tributeValue)).append(" +1/+1 counter");
         sb.append(tributeValue > 1 ? "s" : "").append(" to it)?");
         if (opponent.chooseUse(outcome,sb.toString(),source,game)) {
-          if (!game.isSimulation())           game.informPlayers(opponent.getLogName() + " pays tribute to " + sourcePermanent.getLogName());
+          if (!game.isSimulation()) {
+            game.informPlayers(opponent.getLogName() + " pays tribute to " + sourcePermanent.getLogName());
+          }
           game.getState().setValue("tributeValue" + source.getSourceId(),"yes");
           return new AddCountersSourceEffect(CounterType.P1P1.createInstance(tributeValue),true).apply(game,source);
         }
  else {
-          if (!game.isSimulation())           game.informPlayers(opponent.getLogName() + " does not pay tribute to " + sourcePermanent.getLogName());
+          if (!game.isSimulation()) {
+            game.informPlayers(opponent.getLogName() + " does not pay tribute to " + sourcePermanent.getLogName());
+          }
           game.getState().setValue("tributeValue" + source.getSourceId(),"no");
         }
         return true;

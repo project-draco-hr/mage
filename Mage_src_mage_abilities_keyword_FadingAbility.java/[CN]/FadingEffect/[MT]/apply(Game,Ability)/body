@@ -1,12 +1,12 @@
 {
-  Permanent p=game.getPermanent(source.getSourceId());
-  if (p != null) {
-    int amount=p.getCounters().getCount(CounterType.FADE);
+  Permanent permanent=(Permanent)getValue(EntersBattlefieldEffect.ENTERING_PERMANENT);
+  if (permanent != null) {
+    int amount=permanent.getCounters().getCount(CounterType.FADE);
     if (amount > 0) {
-      p.removeCounters(CounterType.FADE.createInstance(),game);
+      permanent.removeCounters(CounterType.FADE.createInstance(),game);
     }
  else {
-      p.sacrifice(source.getSourceId(),game);
+      permanent.sacrifice(source.getSourceId(),game);
     }
     return true;
   }

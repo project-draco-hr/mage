@@ -1,0 +1,19 @@
+{
+  Set<UUID> possibleTargets=new HashSet<>();
+  for (  StackObject stackObject : game.getStack()) {
+    if ((stackObject instanceof Spell) || (stackObject instanceof StackAbility)) {
+      Targets objectTargets=stackObject.getStackAbility().getTargets();
+      if (!objectTargets.isEmpty()) {
+        for (        Target target : objectTargets) {
+          for (          UUID targetId : target.getTargets()) {
+            Permanent targetedPermanent=game.getPermanentOrLKIBattlefield(targetId);
+            if (targetedPermanent != null && targetedPermanent.getControllerId().equals(sourceControllerId)) {
+              possibleTargets.add(stackObject.getId());
+            }
+          }
+        }
+      }
+    }
+  }
+  return possibleTargets;
+}
