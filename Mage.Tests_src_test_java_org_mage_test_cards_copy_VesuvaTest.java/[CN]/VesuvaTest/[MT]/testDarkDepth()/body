@@ -5,10 +5,12 @@
   setChoice(playerA,"Dark Depths");
   setStopAt(1,PhaseStep.BEGIN_COMBAT);
   execute();
-  assertPermanentCount(playerA,"Dark Depths",1);
   assertPermanentCount(playerB,"Dark Depths",1);
+  assertPermanentCount(playerA,"Vesuva",0);
+  assertPermanentCount(playerA,"Dark Depths",1);
   Permanent darkDepth=getPermanent("Dark Depths",playerA);
   if (darkDepth != null) {
-    Assert.assertEquals(darkDepth.getCounters().getCount("ice"),10);
+    Assert.assertEquals(10,darkDepth.getCounters().getCount("ice"));
   }
+  assertTappedCount("Dark Depths",true,1);
 }
