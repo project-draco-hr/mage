@@ -2,13 +2,16 @@
   super(ownerId,147,"Surestrike Trident",Rarity.UNCOMMON,new CardType[]{CardType.ARTIFACT},"{2}");
   this.expansionSetCode="DST";
   this.subtype.add("Equipment");
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(FirstStrikeAbility.getInstance(),AttachmentType.EQUIPMENT)));
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(FirstStrikeAbility.getInstance(),AttachmentType.EQUIPMENT));
   DynamicValue xValue=new SourcePermanentPowerCount();
   Effect effect=new DamageTargetEffect(xValue);
   effect.setText("This creature deals damage equal to its power to target player");
-  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new TapSourceCost());
-  ability.addTarget(new TargetPlayer());
-  ability.addCost(new SurestrikeTridentUnattachCost());
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(ability,AttachmentType.EQUIPMENT,Duration.WhileOnBattlefield)));
+  Ability gainedAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new TapSourceCost());
+  gainedAbility.addTarget(new TargetPlayer());
+  gainedAbility.addCost(new SurestrikeTridentUnattachCost(getName(),getId()));
+  effect=new GainAbilityAttachedEffect(gainedAbility,AttachmentType.EQUIPMENT);
+  effect.setText("and \"{T}, Unattach {this}: This creature deals damage equal to its power to target player.\"");
+  ability.addEffect(effect);
+  this.addAbility(ability);
   this.addAbility(new EquipAbility(Outcome.Benefit,new GenericManaCost(4)));
 }
