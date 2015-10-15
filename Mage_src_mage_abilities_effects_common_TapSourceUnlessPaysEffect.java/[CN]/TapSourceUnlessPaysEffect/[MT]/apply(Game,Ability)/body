@@ -1,6 +1,9 @@
 {
   Player player=game.getPlayer(source.getControllerId());
   Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent == null) {
+    permanent=(Permanent)getValue(EntersBattlefieldEffect.ENTERING_PERMANENT);
+  }
   if (player != null && permanent != null) {
     if (cost.canPay(source,source.getSourceId(),source.getControllerId(),game) && player.chooseUse(Outcome.Benefit,cost.getText() + "? (otherwise " + permanent.getName()+ " becomes tapped)",source,game)) {
       cost.clearPaid();

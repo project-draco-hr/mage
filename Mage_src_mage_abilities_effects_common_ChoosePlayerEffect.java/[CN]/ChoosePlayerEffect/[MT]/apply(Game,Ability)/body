@@ -1,14 +1,19 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  Permanent permanent=game.getPermanent(source.getSourceId());
-  if (player != null && permanent != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject mageObject=(Permanent)getValue(EntersBattlefieldEffect.ENTERING_PERMANENT);
+  if (mageObject == null) {
+    mageObject=game.getObject(source.getSourceId());
+  }
+  if (controller != null && mageObject != null) {
     TargetPlayer target=new TargetPlayer(1,1,true);
-    if (player.choose(this.outcome,target,source.getSourceId(),game)) {
+    if (controller.choose(this.outcome,target,source.getSourceId(),game)) {
       Player chosenPlayer=game.getPlayer(target.getFirstTarget());
       if (chosenPlayer != null) {
-        game.informPlayers(permanent.getName() + ": " + player.getLogName()+ " has chosen "+ chosenPlayer.getLogName());
-        game.getState().setValue(permanent.getId() + "_player",target.getFirstTarget());
-        permanent.addInfo("chosen player",CardUtil.addToolTipMarkTags("Chosen player: " + chosenPlayer.getLogName()),game);
+        game.informPlayers(mageObject.getName() + ": " + controller.getLogName()+ " has chosen "+ chosenPlayer.getLogName());
+        game.getState().setValue(mageObject.getId() + "_player",target.getFirstTarget());
+        if (mageObject instanceof Permanent) {
+          ((Permanent)mageObject).addInfo("chosen player",CardUtil.addToolTipMarkTags("Chosen player: " + chosenPlayer.getLogName()),game);
+        }
         return true;
       }
     }
