@@ -5,7 +5,7 @@
     if (controller == null || object == null) {
       return false;
     }
-    if (!controller.chooseUse(outcome,new StringBuilder("Use effect of ").append(object.getLogName()).append("?").toString(),source,game)) {
+    if (!controller.chooseUse(outcome,"Use effect of " + object.getLogName() + "?",source,game)) {
       return false;
     }
   }
@@ -25,6 +25,7 @@
         if (spell != null) {
           effect.setValue(SOURCE_CAST_SPELL_ABILITY,spell.getSpellAbility());
         }
+        effect.setValue(ENTERING_PERMANENT,((EntersTheBattlefieldEvent)event).getTarget());
         effect.apply(game,source);
       }
     }
