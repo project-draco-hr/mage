@@ -1,0 +1,22 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject mageObject=(Permanent)getValue(EntersBattlefieldEffect.ENTERING_PERMANENT);
+  if (mageObject == null) {
+    mageObject=game.getObject(source.getSourceId());
+  }
+  if (controller != null && mageObject != null) {
+    TargetOpponent target=new TargetOpponent(true);
+    if (controller.choose(this.outcome,target,source.getSourceId(),game)) {
+      Player chosenPlayer=game.getPlayer(target.getFirstTarget());
+      if (chosenPlayer != null) {
+        game.informPlayers(mageObject.getName() + ": " + controller.getLogName()+ " has chosen "+ chosenPlayer.getLogName());
+        game.getState().setValue(mageObject.getId() + VALUE_KEY,target.getFirstTarget());
+        if (mageObject instanceof Permanent) {
+          ((Permanent)mageObject).addInfo("chosen opponent",CardUtil.addToolTipMarkTags("Chosen player: " + chosenPlayer.getLogName()),game);
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}

@@ -1,7 +1,10 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  MageObject sourceObject=source.getSourceObject(game);
-  if (sourceObject != null && controller != null) {
+  MageObject mageObject=(Permanent)getValue(EntersBattlefieldEffect.ENTERING_PERMANENT);
+  if (mageObject == null) {
+    mageObject=game.getObject(source.getSourceId());
+  }
+  if (mageObject != null && controller != null) {
     ChoiceImpl choices=new ChoiceImpl(true);
     choices.setMessage("Choose a spell type");
     choices.getChoices().add(CardType.ARTIFACT.toString());
@@ -10,8 +13,11 @@
     choices.getChoices().add(CardType.INSTANT.toString());
     choices.getChoices().add(CardType.SORCERY.toString());
     if (controller.choose(Outcome.Neutral,choices,game)) {
-      game.informPlayers(sourceObject.getLogName() + ": chosen spell type is " + choices.getChoice());
+      game.informPlayers(mageObject.getLogName() + ": chosen spell type is " + choices.getChoice());
       game.getState().setValue(source.getSourceId().toString() + "_CloudKey",choices.getChoice());
+      if (mageObject instanceof Permanent) {
+        ((Permanent)mageObject).addInfo("chosenCardType",CardUtil.addToolTipMarkTags("Chosen card type: " + choices.getChoice()),game);
+      }
       return true;
     }
   }
