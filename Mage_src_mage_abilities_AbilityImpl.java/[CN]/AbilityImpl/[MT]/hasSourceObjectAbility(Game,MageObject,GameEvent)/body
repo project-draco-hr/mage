@@ -8,6 +8,10 @@
       return false;
     }
  else {
+      Permanent permanent=game.getPermanentEntering(getSourceId());
+      if (permanent != null && permanent.getAbilities().contains(this)) {
+        return true;
+      }
       Abilities<Ability> otherAbilities=game.getState().getAllOtherAbilities(this.getSourceId());
       if (otherAbilities == null || !otherAbilities.contains(this)) {
         return false;

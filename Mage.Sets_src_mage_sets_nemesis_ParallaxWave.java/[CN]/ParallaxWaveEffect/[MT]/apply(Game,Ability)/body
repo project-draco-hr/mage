@@ -1,18 +1,13 @@
 {
   MageObject sourceObject=source.getSourceObject(game);
-  if (sourceObject != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (sourceObject != null && controller != null) {
     int zoneChangeCounter=(sourceObject instanceof PermanentToken) ? source.getSourceObjectZoneChangeCounter() : source.getSourceObjectZoneChangeCounter() - 1;
     UUID exileZoneId=CardUtil.getExileZoneId(game,source.getSourceId(),zoneChangeCounter);
     if (exileZoneId != null) {
       ExileZone exileZone=game.getExile().getExileZone(exileZoneId);
       if (exileZone != null) {
-        for (        Card card : exileZone.getCards(game)) {
-          Player player=game.getPlayer(card.getOwnerId());
-          if (player != null) {
-            player.putOntoBattlefieldWithInfo(card,game,Zone.EXILED,source.getSourceId());
-          }
-        }
-        exileZone.clear();
+        return controller.moveCards(exileZone.getCards(game),Zone.BATTLEFIELD,source,game,false,false,true,null);
       }
       return true;
     }

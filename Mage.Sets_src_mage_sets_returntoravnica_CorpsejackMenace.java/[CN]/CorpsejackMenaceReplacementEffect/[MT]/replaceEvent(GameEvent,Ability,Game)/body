@@ -1,7 +1,10 @@
 {
-  Permanent p=game.getPermanent(event.getTargetId());
-  if (p != null) {
-    p.addCounters(CounterType.P1P1.createInstance(event.getAmount() * 2),game,event.getAppliedEffects());
+  Permanent permanent=game.getPermanent(event.getTargetId());
+  if (permanent == null) {
+    permanent=game.getPermanentEntering(event.getTargetId());
+  }
+  if (permanent != null) {
+    permanent.addCounters(CounterType.P1P1.createInstance(event.getAmount() * 2),game,event.getAppliedEffects());
   }
   return true;
 }

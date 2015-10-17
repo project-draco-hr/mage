@@ -24,8 +24,8 @@
     }
  else {
       Permanent permanent=game.getPermanent(source.getSourceId());
-      if (permanent == null) {
-        permanent=(Permanent)getValue(EntersBattlefieldEffect.ENTERING_PERMANENT);
+      if (permanent == null && source.getAbilityType().equals(AbilityType.STATIC)) {
+        permanent=game.getPermanentEntering(source.getSourceId());
       }
       if (permanent != null) {
         if (counter != null) {

@@ -24,8 +24,7 @@
     return false;
   }
   if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.PLAY_LAND,card.getId(),card.getId(),playerId))) {
-    Zone zone=game.getState().getZone(card.getId());
-    if (card.putOntoBattlefield(game,zone,null,playerId)) {
+    if (moveCards(card,Zone.BATTLEFIELD,playLandAbility,game,false,false,false,null)) {
       landsPlayed++;
       game.fireEvent(GameEvent.getEvent(GameEvent.EventType.LAND_PLAYED,card.getId(),card.getId(),playerId));
       game.fireInformEvent(getLogName() + " plays " + card.getLogName());

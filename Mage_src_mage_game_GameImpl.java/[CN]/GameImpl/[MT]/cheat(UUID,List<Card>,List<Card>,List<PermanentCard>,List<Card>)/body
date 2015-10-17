@@ -20,8 +20,10 @@
       card.setZone(Zone.BATTLEFIELD,this);
       card.setOwnerId(ownerId);
       PermanentCard permanent=new PermanentCard(card.getCard(),ownerId,this);
-      getBattlefield().addPermanent(permanent);
+      getPermanentsEntering().put(permanent.getId(),permanent);
       permanent.entersBattlefield(permanent.getId(),this,Zone.OUTSIDE,false);
+      getBattlefield().addPermanent(permanent);
+      getPermanentsEntering().remove(permanent.getId());
       ((PermanentImpl)permanent).removeSummoningSickness();
       if (card.isTapped()) {
         permanent.setTapped(true);

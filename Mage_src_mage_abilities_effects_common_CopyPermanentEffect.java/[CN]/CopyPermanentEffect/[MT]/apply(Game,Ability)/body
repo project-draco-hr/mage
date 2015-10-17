@@ -1,6 +1,9 @@
 {
   Player player=game.getPlayer(source.getControllerId());
-  MageObject sourceObject=game.getObject(source.getSourceId());
+  MageObject sourceObject=game.getPermanentEntering(source.getSourceId());
+  if (sourceObject == null) {
+    sourceObject=game.getObject(source.getSourceId());
+  }
   if (player != null && sourceObject != null) {
     Permanent copyFromPermanent=null;
     if (useTargetOfAbility) {
