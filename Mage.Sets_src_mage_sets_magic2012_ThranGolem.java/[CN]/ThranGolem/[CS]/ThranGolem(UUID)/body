@@ -4,13 +4,10 @@
   this.subtype.add("Golem");
   this.power=new MageInt(3);
   this.toughness=new MageInt(3);
-  Condition enchanted=new EnchantedCondition();
-  ConditionalContinuousEffect effect1=new ConditionalContinuousEffect(new BoostSourceEffect(2,2,Duration.WhileOnBattlefield),enchanted,rule1);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect1));
-  ConditionalContinuousEffect effect2=new ConditionalContinuousEffect(new GainAbilitySourceEffect(FlyingAbility.getInstance()),enchanted,rule2);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect2));
-  ConditionalContinuousEffect effect3=new ConditionalContinuousEffect(new GainAbilitySourceEffect(FirstStrikeAbility.getInstance()),enchanted,rule3);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect3));
-  ConditionalContinuousEffect effect4=new ConditionalContinuousEffect(new GainAbilitySourceEffect(TrampleAbility.getInstance()),enchanted,rule4);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect4));
+  EnchantedCondition enchanted=new EnchantedCondition();
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new BoostSourceEffect(2,2,Duration.WhileOnBattlefield),enchanted,"As long as {this} is enchanted, it gets +2/+2"));
+  ability.addEffect(new ConditionalContinuousEffect(new GainAbilitySourceEffect(FlyingAbility.getInstance()),enchanted,"and has flying"));
+  ability.addEffect(new ConditionalContinuousEffect(new GainAbilitySourceEffect(FirstStrikeAbility.getInstance()),enchanted,", first strike"));
+  ability.addEffect(new ConditionalContinuousEffect(new GainAbilitySourceEffect(TrampleAbility.getInstance()),enchanted,", and trample."));
+  this.addAbility(ability);
 }
