@@ -5,12 +5,10 @@
   this.subtype.add("Warrior");
   this.power=new MageInt(2);
   this.toughness=new MageInt(2);
-  SimpleActivatedAbility grantedAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostSourceEffect(1,0,Duration.EndOfTurn),new ManaCostsImpl("{R}"));
-  Condition enchanted=new EnchantedCondition();
-  ConditionalContinuousEffect effect1=new ConditionalContinuousEffect(new BoostSourceEffect(2,2,Duration.WhileOnBattlefield),enchanted,rule1);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect1));
-  ConditionalContinuousEffect effect2=new ConditionalContinuousEffect(new GainAbilitySourceEffect(TrampleAbility.getInstance()),enchanted,rule2);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect2));
-  ConditionalContinuousEffect effect3=new ConditionalContinuousEffect(new GainAbilitySourceEffect(grantedAbility),enchanted,rule3);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect3));
+  EnchantedCondition enchanted=new EnchantedCondition();
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new BoostSourceEffect(2,2,Duration.WhileOnBattlefield),enchanted,"As long as {this} is enchanted, it gets +2/+2"));
+  ability.addEffect(new ConditionalContinuousEffect(new GainAbilitySourceEffect(TrampleAbility.getInstance()),enchanted,", has trample"));
+  Ability grantedAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostSourceEffect(1,0,Duration.EndOfTurn),new ManaCostsImpl("{R}"));
+  ability.addEffect(new ConditionalContinuousEffect(new GainAbilitySourceEffect(grantedAbility),enchanted,", and has \"{R}: {this} gets +1/+0 until end of turn.\""));
+  this.addAbility(ability);
 }
