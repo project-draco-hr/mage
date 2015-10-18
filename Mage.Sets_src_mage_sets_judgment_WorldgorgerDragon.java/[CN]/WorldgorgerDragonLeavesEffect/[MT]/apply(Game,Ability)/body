@@ -5,14 +5,7 @@
     int zoneChangeCounter=(sourceObject instanceof PermanentToken) ? source.getSourceObjectZoneChangeCounter() : source.getSourceObjectZoneChangeCounter() - 1;
     ExileZone exile=game.getExile().getExileZone(CardUtil.getExileZoneId(game,source.getSourceId(),zoneChangeCounter));
     if (exile != null) {
-      exile=exile.copy();
-      for (      UUID cardId : exile) {
-        Card card=game.getCard(cardId);
-        if (card != null) {
-          controller.moveCards(card,Zone.EXILED,source,game);
-        }
-      }
-      return true;
+      return controller.moveCards(exile.getCards(game),Zone.BATTLEFIELD,source,game,false,false,true,null);
     }
   }
   return false;

@@ -1,6 +1,6 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player == null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
     return false;
   }
   int xValue=source.getManaCostsToPay().getX() + 1;
@@ -9,16 +9,16 @@
   filter.add(new CardTypePredicate(CardType.CREATURE));
   filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.LessThan,xValue));
   TargetCardInLibrary target=new TargetCardInLibrary(filter);
-  if (player.searchLibrary(target,game)) {
+  if (controller.searchLibrary(target,game)) {
     if (target.getTargets().size() > 0) {
-      Card card=player.getLibrary().getCard(target.getFirstTarget(),game);
+      Card card=controller.getLibrary().getCard(target.getFirstTarget(),game);
       if (card != null) {
-        player.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+        controller.moveCards(card,Zone.BATTLEFIELD,source,game);
       }
     }
-    player.shuffleLibrary(game);
+    controller.shuffleLibrary(game);
     return true;
   }
-  player.shuffleLibrary(game);
+  controller.shuffleLibrary(game);
   return false;
 }

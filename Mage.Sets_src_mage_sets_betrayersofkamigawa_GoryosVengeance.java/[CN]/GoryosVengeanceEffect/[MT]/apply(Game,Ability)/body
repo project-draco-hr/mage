@@ -3,11 +3,11 @@
   if (controller != null) {
     Card card=game.getCard(targetPointer.getFirst(game,source));
     if (card != null) {
-      if (controller.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId())) {
+      if (controller.moveCards(card,Zone.BATTLEFIELD,source,game)) {
         Permanent permanent=game.getPermanent(card.getId());
         if (permanent != null) {
           ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.Custom);
-          effect.setTargetPointer(new FixedTarget(permanent.getId()));
+          effect.setTargetPointer(new FixedTarget(permanent,game));
           game.addEffect(effect,source);
           Effect exileEffect=new ExileTargetEffect("Exile " + permanent.getName() + " at the beginning of the next end step");
           exileEffect.setTargetPointer(new FixedTarget(permanent,game));

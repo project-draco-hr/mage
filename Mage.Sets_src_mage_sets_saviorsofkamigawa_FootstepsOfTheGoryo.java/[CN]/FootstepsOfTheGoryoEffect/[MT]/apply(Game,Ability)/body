@@ -3,7 +3,7 @@
   if (controller != null) {
     Card card=game.getCard(getTargetPointer().getFirst(game,source));
     if (card != null) {
-      if (controller.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId())) {
+      if (controller.moveCards(card,Zone.BATTLEFIELD,source,game)) {
         Permanent permanent=game.getPermanent(card.getId());
         if (permanent != null) {
           Effect sacrificeEffect=new SacrificeTargetEffect("Sacrifice that creature at the beginning of next end step",source.getControllerId());
@@ -13,10 +13,10 @@
           delayedAbility.setControllerId(source.getControllerId());
           delayedAbility.setSourceObject(source.getSourceObject(game),game);
           game.addDelayedTriggeredAbility(delayedAbility);
-          return true;
         }
       }
     }
+    return true;
   }
   return false;
 }

@@ -11,7 +11,8 @@
  else {
       return true;
     }
-    for (    UUID playerId : controller.getInRange()) {
+    Cards cardsToBringIntoPlay=new CardsImpl();
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
       Player player=game.getPlayer(playerId);
       if (player != null) {
         String exileKey=playerId.toString() + CardUtil.getExileZoneId(game,source.getSourceId(),source.getSourceObjectZoneChangeCounter()).toString();
@@ -22,13 +23,14 @@
             for (            Card card : exileZone.getCards(game)) {
               card.setFaceDown(false,game);
               if (CardUtil.isPermanentCard(card)) {
-                player.moveCards(card,Zone.EXILED,source,game);
+                cardsToBringIntoPlay.add(card);
               }
             }
           }
         }
       }
     }
+    controller.moveCards(cardsToBringIntoPlay.getCards(game),Zone.BATTLEFIELD,source,game,false,false,true,null);
     return true;
   }
   return false;

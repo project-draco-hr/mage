@@ -1,6 +1,6 @@
 {
   CardsImpl cardsInExile=new CardsImpl();
-  TargetCard target=new TargetCard(Zone.PICK,new FilterCard());
+  TargetCard target=new TargetCard(Zone.EXILED,new FilterCreatureCard());
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
     ExileZone exile=game.getExile().getExileZone(exileId);
@@ -12,7 +12,7 @@
       }
       if (controller.choose(Outcome.PutCreatureInPlay,cardsInExile,target,game)) {
         Card chosenCard=game.getCard(target.getFirstTarget());
-        return controller.moveCards(chosenCard,Zone.EXILED,source,game);
+        return controller.moveCards(chosenCard,Zone.BATTLEFIELD,source,game);
       }
     }
   }

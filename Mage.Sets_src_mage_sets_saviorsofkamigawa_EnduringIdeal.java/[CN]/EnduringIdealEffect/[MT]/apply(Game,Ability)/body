@@ -1,16 +1,16 @@
 {
   boolean applied=false;
-  Player you=game.getPlayer(source.getControllerId());
-  if (you != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
     TargetCardInLibrary target=new TargetCardInLibrary(filter);
-    you.searchLibrary(target,game);
+    controller.searchLibrary(target,game);
     Card targetCard=game.getCard(target.getFirstTarget());
     if (targetCard == null) {
       applied=false;
     }
  else {
-      applied=you.putOntoBattlefieldWithInfo(targetCard,game,Zone.LIBRARY,source.getSourceId());
-      you.shuffleLibrary(game);
+      applied=controller.moveCards(targetCard,Zone.BATTLEFIELD,source,game);
+      controller.shuffleLibrary(game);
     }
   }
   return applied;

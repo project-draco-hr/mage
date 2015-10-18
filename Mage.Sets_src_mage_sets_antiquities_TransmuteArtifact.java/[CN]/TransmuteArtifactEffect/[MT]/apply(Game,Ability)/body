@@ -22,15 +22,15 @@
         Card card=controller.getLibrary().getCard(cardId,game);
         if (card != null) {
           if (card.getManaCost().convertedManaCost() <= convertedManaCost) {
-            controller.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+            controller.moveCards(card,Zone.BATTLEFIELD,source,game);
           }
  else {
             GenericManaCost cost=new GenericManaCost(card.getManaCost().convertedManaCost() - convertedManaCost);
             if (cost.pay(source,game,source.getSourceId(),source.getControllerId(),false)) {
-              controller.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+              controller.moveCards(card,Zone.BATTLEFIELD,source,game);
             }
  else {
-              controller.moveCards(card,Zone.LIBRARY,Zone.GRAVEYARD,source,game);
+              controller.moveCards(card,Zone.GRAVEYARD,source,game);
             }
           }
         }
