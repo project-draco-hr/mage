@@ -2,11 +2,11 @@
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
     controller.drawCards(2,game);
-    CardsDrawnThisTurnWatcher watcher=(CardsDrawnThisTurnWatcher)game.getState().getWatchers().get("CardsDrawnThisTurnWatcher",source.getControllerId());
+    CardsDrawnThisTurnWatcher watcher=(CardsDrawnThisTurnWatcher)game.getState().getWatchers().get("CardsDrawnThisTurnWatcher");
     if (watcher != null) {
       Cards cards=new CardsImpl();
       for (      UUID cardId : controller.getHand()) {
-        if (watcher.getCardsDrawnThisTurn().contains(cardId)) {
+        if (watcher.getCardsDrawnThisTurn(controller.getId()).contains(cardId)) {
           Card card=game.getCard(cardId);
           if (card != null) {
             cards.add(card);
