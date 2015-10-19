@@ -4,11 +4,9 @@
   if (controller != null) {
     UUID exileId=CardUtil.getExileZoneId(game,source.getSourceId(),source.getSourceObjectZoneChangeCounter());
     if (exileId != null) {
-      for (      Permanent permanent : game.getBattlefield().getAllActivePermanents(filter,source.getControllerId(),game)) {
-        if (!permanent.getId().equals(source.getSourceId())) {
-          controller.moveCardToExileWithInfo(permanent,exileId,sourceObject.getIdName(),source.getSourceId(),game,Zone.BATTLEFIELD,true);
-        }
-      }
+      Set<Card> cardsToExile=new LinkedHashSet<>();
+      cardsToExile.addAll(game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game));
+      controller.moveCardsToExile(cardsToExile,source,game,true,exileId,sourceObject.getIdName());
       return true;
     }
   }

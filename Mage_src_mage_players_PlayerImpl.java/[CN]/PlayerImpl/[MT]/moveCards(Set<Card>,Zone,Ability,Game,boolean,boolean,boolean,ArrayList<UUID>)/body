@@ -5,32 +5,40 @@
   Set<Card> successfulMovedCards=new LinkedHashSet<>();
   Zone fromZone=null;
 switch (toZone) {
+case GRAVEYARD:
+    fromZone=game.getState().getZone(cards.iterator().next().getId());
+  successfulMovedCards=moveCardsToGraveyardWithInfo(cards,source,game,fromZone);
+break;
 case BATTLEFIELD:
-    List<Permanent> permanents=new ArrayList<>();
-  List<Permanent> permanentsEntered=new ArrayList<>();
+List<Permanent> permanents=new ArrayList<>();
+List<Permanent> permanentsEntered=new ArrayList<>();
 for (Card card : cards) {
-  UUID controllingPlayerId=byOwner ? card.getOwnerId() : source.getControllerId();
-  fromZone=game.getState().getZone(card.getId());
-  if (faceDown) {
-    card.setFaceDown(true,game);
-  }
-  ZoneChangeEvent event=new ZoneChangeEvent(card.getId(),source.getSourceId(),controllingPlayerId,fromZone,Zone.BATTLEFIELD,appliedEffects,tapped);
-  if (!game.replaceEvent(event)) {
-    Permanent permanent=new PermanentCard(card,event.getPlayerId(),game);
-    permanents.add(permanent);
-    card.checkForCountersToAdd(permanent,game);
-    permanent.setTapped(tapped);
-    permanent.setFaceDown(faceDown,game);
-  }
-  if (faceDown) {
-    card.setFaceDown(false,game);
-  }
+UUID controllingPlayerId=byOwner ? card.getOwnerId() : getId();
+fromZone=game.getState().getZone(card.getId());
+if (faceDown) {
+card.setFaceDown(true,game);
+}
+ZoneChangeEvent event=new ZoneChangeEvent(card.getId(),source.getSourceId(),controllingPlayerId,fromZone,Zone.BATTLEFIELD,appliedEffects,tapped);
+if (!game.replaceEvent(event)) {
+Permanent permanent=new PermanentCard(card,event.getPlayerId(),game);
+permanents.add(permanent);
+game.getPermanentsEntering().put(permanent.getId(),permanent);
+card.checkForCountersToAdd(permanent,game);
+permanent.setTapped(tapped);
+permanent.setFaceDown(faceDown,game);
+}
+if (faceDown) {
+card.setFaceDown(false,game);
+}
 }
 game.setScopeRelevant(true);
 for (Permanent permanent : permanents) {
 fromZone=game.getState().getZone(permanent.getId());
 if (permanent.entersBattlefield(source.getSourceId(),game,fromZone,true)) {
 permanentsEntered.add(permanent);
+}
+ else {
+game.getPermanentsEntering().remove(permanent.getId());
 }
 }
 game.setScopeRelevant(false);
@@ -41,9 +49,16 @@ permanent.updateZoneChangeCounter(game);
 game.getContinuousEffects().setController(permanent.getId(),permanent.getControllerId());
 game.addPermanent(permanent);
 permanent.setZone(Zone.BATTLEFIELD,game);
+game.getPermanentsEntering().remove(permanent.getId());
 game.setScopeRelevant(true);
 successfulMovedCards.add(permanent);
 game.addSimultaneousEvent(new ZoneChangeEvent(permanent,permanent.getControllerId(),fromZone,Zone.BATTLEFIELD));
+if (!game.isSimulation()) {
+game.informPlayers(this.getLogName() + " puts " + (faceDown ? "a card face down " : permanent.getLogName())+ " from "+ fromZone.toString().toLowerCase(Locale.ENGLISH)+ " onto the Battlefield");
+}
+}
+ else {
+game.getPermanentsEntering().remove(permanent.getId());
 }
 }
 game.applyEffects();
@@ -57,8 +72,26 @@ successfulMovedCards.add(card);
 }
 }
 break;
+case EXILED:
+for (Card card : cards) {
+fromZone=game.getState().getZone(card.getId());
+boolean withName=(fromZone.equals(Zone.BATTLEFIELD) || fromZone.equals(Zone.STACK)) || !card.isFaceDown(game);
+if (moveCardToExileWithInfo(card,null,"",source == null ? null : source.getSourceId(),game,fromZone,withName)) {
+successfulMovedCards.add(card);
+}
+}
+break;
+case LIBRARY:
+for (Card card : cards) {
+fromZone=game.getState().getZone(card.getId());
+boolean hideCard=fromZone.equals(Zone.HAND) || fromZone.equals(Zone.LIBRARY);
+if (moveCardToLibraryWithInfo(card,source == null ? null : source.getSourceId(),game,fromZone,true,!hideCard)) {
+successfulMovedCards.add(card);
+}
+}
+break;
 default :
-throw new UnsupportedOperationException("to Zone not supported yet");
+throw new UnsupportedOperationException("to Zone" + toZone.toString() + " not supported yet");
 }
 game.fireEvent(new ZoneChangeGroupEvent(successfulMovedCards,source == null ? null : source.getSourceId(),this.getId(),fromZone,toZone));
 return successfulMovedCards.size() > 0;

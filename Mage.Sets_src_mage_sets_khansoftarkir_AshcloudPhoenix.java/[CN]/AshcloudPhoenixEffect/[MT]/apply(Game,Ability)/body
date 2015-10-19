@@ -1,11 +1,11 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
     Card card=game.getCard(source.getSourceId());
     if (card != null) {
       Player owner=game.getPlayer(card.getOwnerId());
       if (owner != null && owner.getGraveyard().contains(card.getId())) {
-        player.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId(),false,true);
+        controller.moveCards(card,Zone.BATTLEFIELD,source,game,false,true,false,null);
       }
     }
     return true;

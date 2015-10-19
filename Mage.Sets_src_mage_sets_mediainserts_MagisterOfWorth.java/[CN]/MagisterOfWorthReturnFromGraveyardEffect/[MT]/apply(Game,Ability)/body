@@ -5,9 +5,7 @@
     for (    UUID playerId : controller.getInRange()) {
       Player player=game.getPlayer(playerId);
       if (player != null) {
-        for (        Card card : player.getGraveyard().getCards(new FilterCreatureCard(),game)) {
-          player.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId());
-        }
+        player.moveCards(player.getGraveyard().getCards(new FilterCreatureCard(),game),Zone.BATTLEFIELD,source,game);
       }
     }
     return true;

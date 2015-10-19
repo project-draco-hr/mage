@@ -1,28 +1,18 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
-    LinkedList<Card> enchantments=new LinkedList<Card>();
-    LinkedList<Card> artifacts=new LinkedList<Card>();
-    Set<UUID> playerIds=player.getInRange();
-    playerIds.add(player.getId());
-    for (    UUID playerId : playerIds) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    LinkedHashSet<Card> cardsToReturn=new LinkedHashSet<>();
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
       Cards graveyard=game.getPlayer(playerId).getGraveyard();
       for (      UUID cardId : graveyard) {
         Card card=game.getCard(cardId);
-        if (card != null && card.getCardType().contains(CardType.ENCHANTMENT)) {
-          enchantments.add(card);
-        }
-        if (card != null && card.getCardType().contains(CardType.ARTIFACT)) {
-          artifacts.add(card);
+        if (card != null && (card.getCardType().contains(CardType.ENCHANTMENT) || card.getCardType().contains(CardType.ARTIFACT))) {
+          cardsToReturn.add(card);
         }
       }
     }
-    for (    Card card : enchantments) {
-      card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),card.getOwnerId());
-    }
-    for (    Card card : artifacts) {
-      card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),card.getOwnerId());
-    }
+    controller.moveCards(cardsToReturn,Zone.BATTLEFIELD,source,game,false,false,true,null);
+    return true;
   }
   return false;
 }

@@ -17,26 +17,19 @@
       }
     }
     game.getState().handleSimultaneousEvent(game);
+    Cards toBattlefield=new CardsImpl();
+    Set<Player> playersToShuffle=new LinkedHashSet<>();
     for (    Map.Entry<Player,Integer> entry : sacrificedLands.entrySet()) {
       if (entry.getKey().chooseUse(Outcome.PutLandInPlay,"Search your library for up to " + entry.getValue() + " basic lands?",source,game)) {
         Target target=new TargetCardInLibrary(0,entry.getValue(),new FilterBasicLandCard());
         entry.getKey().chooseTarget(outcome,target,source,game);
-        for (        UUID targetId : target.getTargets()) {
-          Card card=game.getCard(targetId);
-          if (card != null) {
-            entry.getKey().putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId(),true);
-          }
-        }
-        entry.getKey().shuffleLibrary(game);
-      }
- else {
-        entry.setValue(0);
+        toBattlefield.addAll(target.getTargets());
+        playersToShuffle.add(entry.getKey());
       }
     }
-    for (    Map.Entry<Player,Integer> entry : sacrificedLands.entrySet()) {
-      if (entry.getValue() > 0) {
-        entry.getKey().shuffleLibrary(game);
-      }
+    controller.moveCards(toBattlefield.getCards(game),Zone.BATTLEFIELD,source,game,true,false,true,null);
+    for (    Player player : playersToShuffle) {
+      player.shuffleLibrary(game);
     }
     return true;
   }

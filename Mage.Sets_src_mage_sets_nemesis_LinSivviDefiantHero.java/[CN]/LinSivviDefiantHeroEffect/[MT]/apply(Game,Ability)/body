@@ -1,6 +1,6 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player == null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
     return false;
   }
   int xCost=source.getManaCostsToPay().getX();
@@ -8,14 +8,14 @@
   filter.add(new ConvertedManaCostPredicate(ComparisonType.LessThan,xCost + 1));
   filter.add(new SubtypePredicate("Rebel"));
   TargetCardInLibrary target=new TargetCardInLibrary(filter);
-  if (player.searchLibrary(target,game)) {
-    Card card=player.getLibrary().getCard(target.getFirstTarget(),game);
+  if (controller.searchLibrary(target,game)) {
+    Card card=controller.getLibrary().getCard(target.getFirstTarget(),game);
     if (card != null) {
-      player.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+      controller.moveCards(card,Zone.BATTLEFIELD,source,game);
     }
-    player.shuffleLibrary(game);
+    controller.shuffleLibrary(game);
     return true;
   }
-  player.shuffleLibrary(game);
+  controller.shuffleLibrary(game);
   return false;
 }

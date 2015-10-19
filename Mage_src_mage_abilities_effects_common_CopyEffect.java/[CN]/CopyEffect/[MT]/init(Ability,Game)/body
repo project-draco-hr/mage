@@ -3,4 +3,15 @@
   if (!(copyFromObject instanceof Permanent) && (copyFromObject instanceof Card)) {
     this.copyFromObject=new PermanentCard((Card)copyFromObject,source.getControllerId(),game);
   }
+  Permanent permanent=game.getPermanent(copyToObjectId);
+  if (permanent != null) {
+    affectedObjectList.add(new MageObjectReference(permanent,game));
+  }
+ else   if (source.getAbilityType().equals(AbilityType.STATIC)) {
+    permanent=game.getPermanentEntering(copyToObjectId);
+    if (permanent != null) {
+      copyToPermanent(permanent,game,source);
+      affectedObjectList.add(new MageObjectReference(permanent.getId(),game.getState().getZoneChangeCounter(copyToObjectId) + 1,game));
+    }
+  }
 }
