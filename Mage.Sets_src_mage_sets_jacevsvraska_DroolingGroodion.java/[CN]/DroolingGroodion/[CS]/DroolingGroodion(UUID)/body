@@ -6,7 +6,13 @@
   this.toughness=new MageInt(3);
   Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DroolingGroodionEffect(),new ManaCostsImpl("{2}{B}{G}"));
   ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,new FilterControlledCreaturePermanent(),true)));
-  ability.addTarget(new TargetCreaturePermanent(new FilterCreaturePermanent("creature (first target)")));
-  ability.addTarget(new TargetOtherCreaturePermanent(new FilterCreaturePermanent("creature (second target)")));
+  TargetCreaturePermanent target=new TargetCreaturePermanent(new FilterCreaturePermanent("creature (first target)"));
+  target.setTargetTag(1);
+  ability.addTarget(target);
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("another target creature (second target");
+  filter.add(new AnotherTargetPredicate(2));
+  target=new TargetCreaturePermanent(filter);
+  target.setTargetTag(2);
+  ability.addTarget(target);
   this.addAbility(ability);
 }
