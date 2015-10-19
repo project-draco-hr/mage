@@ -16,15 +16,21 @@
         }
       }
     }
-    ManaOptions abilityOptions=copy.getManaCostsToPay().getOptions();
-    if (abilityOptions.size() == 0) {
-      return true;
+    boolean canBeCastRegularly=true;
+    if (copy instanceof SpellAbility && copy.getManaCosts().isEmpty() && copy.getCosts().isEmpty()) {
+      canBeCastRegularly=false;
     }
+    if (canBeCastRegularly) {
+      ManaOptions abilityOptions=copy.getManaCostsToPay().getOptions();
+      if (abilityOptions.size() == 0) {
+        return true;
+      }
  else {
-      for (      Mana mana : abilityOptions) {
-        for (        Mana avail : available) {
-          if (mana.enough(avail)) {
-            return true;
+        for (        Mana mana : abilityOptions) {
+          for (          Mana avail : available) {
+            if (mana.enough(avail)) {
+              return true;
+            }
           }
         }
       }
