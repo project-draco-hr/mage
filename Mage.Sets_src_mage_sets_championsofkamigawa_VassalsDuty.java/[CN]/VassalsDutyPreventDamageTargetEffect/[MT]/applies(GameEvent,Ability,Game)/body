@@ -1,8 +1,9 @@
 {
-  if (!this.used && super.applies(event,source,game)) {
-    if (event.getTargetId().equals(getTargetPointer().getFirst(game,source))) {
-      return game.getPermanent(event.getTargetId()) != null;
-    }
+  if (event.getTargetId().equals(getTargetPointer().getFirst(game,source))) {
+    TargetPlayer target=new TargetPlayer();
+    target.add(source.getControllerId(),game);
+    redirectTarget=target;
+    return true;
   }
   return false;
 }
