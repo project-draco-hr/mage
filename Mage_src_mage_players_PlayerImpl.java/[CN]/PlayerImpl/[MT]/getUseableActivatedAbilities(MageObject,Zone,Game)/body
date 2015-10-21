@@ -1,11 +1,12 @@
 {
   LinkedHashMap<UUID,ActivatedAbility> useable=new LinkedHashMap<>();
   boolean canUse=!(object instanceof Permanent) || ((Permanent)object).canUseActivatedAbilities(game);
+  ManaOptions availableMana=null;
   for (  Ability ability : object.getAbilities()) {
     if (canUse || ability.getAbilityType().equals(AbilityType.SPECIAL_ACTION)) {
       if (ability.getZone().match(zone)) {
         if (ability instanceof ActivatedAbility) {
-          if (((ActivatedAbility)ability).canActivate(playerId,game)) {
+          if (canPlay(((ActivatedAbility)ability),availableMana,object,game)) {
             useable.put(ability.getId(),(ActivatedAbility)ability);
           }
         }
