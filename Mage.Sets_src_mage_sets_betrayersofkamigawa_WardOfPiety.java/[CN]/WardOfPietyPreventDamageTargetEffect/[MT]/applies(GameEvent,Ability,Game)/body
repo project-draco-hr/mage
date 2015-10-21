@@ -1,7 +1,8 @@
 {
-  if (super.applies(event,source,game)) {
-    Permanent enchantment=game.getPermanent(source.getSourceId());
-    if (enchantment != null && event.getTargetId().equals(enchantment.getAttachedTo())) {
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment != null && event.getTargetId().equals(enchantment.getAttachedTo())) {
+    if (redirectToObject.equals(new MageObjectReference(source.getTargets().get(0).getFirstTarget(),game))) {
+      redirectTarget=source.getTargets().get(0);
       return true;
     }
   }
