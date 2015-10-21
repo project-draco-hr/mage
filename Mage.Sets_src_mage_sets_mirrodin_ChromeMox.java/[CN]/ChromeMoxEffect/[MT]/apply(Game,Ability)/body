@@ -1,17 +1,25 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player.getHand().size() > 0) {
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
     TargetCard target=new TargetCard(Zone.HAND,filter);
-    player.choose(Outcome.Benefit,target,source.getSourceId(),game);
-    Card card=player.getHand().get(target.getFirstTarget(),game);
-    if (card != null) {
-      card.moveToExile(getId(),"Chrome Mox (Imprint)",source.getSourceId(),game);
-      Permanent permanent=game.getPermanent(source.getSourceId());
-      if (permanent != null) {
-        permanent.imprint(card.getId(),game);
-      }
-      return true;
+    target.setNotTarget(true);
+    Card cardToImprint=null;
+    Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+    if (controller.getHand().size() > 0 && controller.choose(Outcome.Benefit,target,source.getSourceId(),game)) {
+      cardToImprint=controller.getHand().get(target.getFirstTarget(),game);
     }
+    if (sourcePermanent != null) {
+      if (cardToImprint != null) {
+        controller.moveCardsToExile(cardToImprint,source,game,true,source.getSourceId(),sourceObject.getIdName() + " (Imprint)");
+        sourcePermanent.imprint(cardToImprint.getId(),game);
+        sourcePermanent.addInfo("imprint",CardUtil.addToolTipMarkTags("[Imprinted card - " + GameLog.getColoredObjectIdNameForTooltip(cardToImprint) + "]"),game);
+      }
+ else {
+        sourcePermanent.addInfo("imprint",CardUtil.addToolTipMarkTags("[Imprinted card - None]"),game);
+      }
+    }
+    return true;
   }
-  return true;
+  return false;
 }
