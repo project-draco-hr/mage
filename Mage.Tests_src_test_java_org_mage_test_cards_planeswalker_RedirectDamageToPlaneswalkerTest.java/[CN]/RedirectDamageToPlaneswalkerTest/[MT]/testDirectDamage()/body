@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Jace, the Mind Sculptor");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"+2:",playerB);
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Lightning Bolt",playerA);
+  setChoice(playerB,"Yes");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Jace, the Mind Sculptor",1);
+  assertCounterCount("Jace, the Mind Sculptor",CounterType.LOYALTY,2);
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+}
