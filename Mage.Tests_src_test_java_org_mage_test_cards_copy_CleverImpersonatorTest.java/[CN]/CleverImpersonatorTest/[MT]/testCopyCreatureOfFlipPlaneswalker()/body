@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Jace, Vryn's Prodigy",1);
+  addCard(Zone.HAND,playerA,"Clever Impersonator",1);
+  addCard(Zone.GRAVEYARD,playerA,"Mountain",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Clever Impersonator");
+  setChoice(playerA,"Jace, Vryn's Prodigy");
+  addTarget(playerA,"Jace, Vryn's Prodigy[only copy]");
+  activateAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Draw a card");
+  setChoice(playerA,"Pillarfield Ox");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Jace, Vryn's Prodigy",1);
+  assertPermanentCount(playerA,"Pillarfield Ox",1);
+}

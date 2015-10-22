@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Alesha, Who Smiles at Death",1);
+  addCard(Zone.GRAVEYARD,playerA,"Clever Impersonator",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Liliana, Defiant Necromancer",1);
+  attack(1,playerA,"Alesha, Who Smiles at Death");
+  addTarget(playerA,"Clever Impersonator");
+  setChoice(playerA,"Liliana, Defiant Necromancer");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertTapped("Alesha, Who Smiles at Death",true);
+  assertLife(playerB,17);
+  assertGraveyardCount(playerA,"Clever Impersonator",0);
+  assertCounterCount(playerB,"Liliana, Defiant Necromancer",CounterType.LOYALTY,3);
+  assertPermanentCount(playerB,"Liliana, Defiant Necromancer",1);
+  assertPermanentCount(playerA,"Liliana, Defiant Necromancer",1);
+  assertCounterCount(playerA,"Liliana, Defiant Necromancer",CounterType.LOYALTY,5);
+}
