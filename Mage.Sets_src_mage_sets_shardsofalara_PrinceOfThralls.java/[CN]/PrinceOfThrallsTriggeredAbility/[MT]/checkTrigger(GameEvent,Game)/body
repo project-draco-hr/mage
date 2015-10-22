@@ -5,7 +5,7 @@
       Permanent permanent=(Permanent)game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
       if (game.getOpponents(this.getControllerId()).contains(permanent.getControllerId())) {
         for (        Effect effect : getEffects()) {
-          effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+          effect.setTargetPointer(new FixedTarget(event.getTargetId(),game.getState().getZoneChangeCounter(event.getTargetId())));
         }
         return true;
       }
