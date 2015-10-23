@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (controller != null) {
+    FilterCard filter=new FilterCreatureCard();
+    TargetCardInHand target=new TargetCardInHand(0,1,filter);
+    if (controller.choose(Outcome.PutCardInPlay,target,source.getSourceId(),game)) {
+      Card creatureInHand=game.getCard(target.getFirstTarget());
+      if (creatureInHand != null) {
+        game.getState().setValue("attachTo:" + sourcePermanent.getId(),game.getPermanent(creatureInHand.getId()));
+        if (controller.moveCards(creatureInHand,Zone.BATTLEFIELD,source,game) && sourcePermanent != null) {
+          game.getPermanent(creatureInHand.getId()).addAttachment(sourcePermanent.getId(),game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
