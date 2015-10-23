@@ -3,6 +3,8 @@
   addCard(Zone.HAND,playerA,"Isochron Scepter");
   addCard(Zone.HAND,playerA,"Angel's Grace");
   addCard(Zone.BATTLEFIELD,playerB,"Dross Crocodile",4);
+  addCard(Zone.HAND,playerB,"Lightning Bolt",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",2);
   castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Isochron Scepter");
   addTarget(playerA,"Angel's Grace");
   attack(2,playerB,"Dross Crocodile");
@@ -12,11 +14,16 @@
   activateAbility(2,PhaseStep.DECLARE_BLOCKERS,playerA,"{2},{T}:");
   setChoice(playerA,"Yes");
   setChoice(playerA,"Yes");
-  setStopAt(2,PhaseStep.END_COMBAT);
+  castSpell(2,PhaseStep.POSTCOMBAT_MAIN,playerB,"Lightning Bolt",playerA);
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Bolt","Dross Crocodile");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
   execute();
-  assertPermanentCount(playerA,"Isochron Scepter",1);
   assertExileCount("Angel's Grace",1);
   assertGraveyardCount(playerA,"Angel's Grace",0);
   assertLife(playerA,1);
   assertLife(playerB,20);
+  assertGraveyardCount(playerB,"Lightning Bolt",2);
+  assertGraveyardCount(playerB,"Dross Crocodile",1);
+  assertPermanentCount(playerB,"Dross Crocodile",3);
+  assertPermanentCount(playerA,"Isochron Scepter",1);
 }
