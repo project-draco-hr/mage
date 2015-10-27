@@ -34,10 +34,12 @@ card.setFaceDown(false,game);
 game.setScopeRelevant(true);
 for (Permanent permanent : permanents) {
 fromZone=game.getState().getZone(permanent.getId());
+game.getContinuousEffects().setController(permanent.getId(),permanent.getControllerId());
 if (permanent.entersBattlefield(source.getSourceId(),game,fromZone,true)) {
 permanentsEntered.add(permanent);
 }
  else {
+game.getContinuousEffects().setController(permanent.getId(),permanent.getOwnerId());
 game.getPermanentsEntering().remove(permanent.getId());
 }
 }
@@ -46,7 +48,6 @@ for (Permanent permanent : permanentsEntered) {
 fromZone=game.getState().getZone(permanent.getId());
 if (((Card)permanent).removeFromZone(game,fromZone,source.getSourceId())) {
 permanent.updateZoneChangeCounter(game);
-game.getContinuousEffects().setController(permanent.getId(),permanent.getControllerId());
 game.addPermanent(permanent);
 permanent.setZone(Zone.BATTLEFIELD,game);
 game.getPermanentsEntering().remove(permanent.getId());
