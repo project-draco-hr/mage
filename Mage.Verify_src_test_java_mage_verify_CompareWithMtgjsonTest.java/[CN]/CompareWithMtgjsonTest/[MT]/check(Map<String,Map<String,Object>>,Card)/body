@@ -1,0 +1,17 @@
+{
+  String name=card.getName();
+  Map<String,Object> ref=reference.get(name);
+  if (ref == null) {
+    name=name.replaceFirst("\\bA[Ee]","??");
+    ref=reference.get(name);
+  }
+  if (ref == null) {
+    name=name.replace("'","\"");
+    ref=reference.get(name);
+  }
+  if (ref == null) {
+    System.out.println("Missing card reference for " + card);
+    return;
+  }
+  checkAll(card,ref);
+}
