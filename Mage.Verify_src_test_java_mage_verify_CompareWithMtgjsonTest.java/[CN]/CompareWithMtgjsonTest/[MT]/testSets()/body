@@ -15,13 +15,14 @@
   }
   for (  ExpansionSet set : sets) {
     for (    ExpansionSet.SetCardInfo setInfo : set.getSetCardInfo()) {
+      Set<String> tokens=findSourceTokens(setInfo.getCardClass());
       Card card=CardImpl.createCard(setInfo.getCardClass(),new CardSetInfo(setInfo.getName(),set.getCode(),setInfo.getCardNumber(),setInfo.getRarity(),setInfo.getGraphicInfo()));
       if (card.isSplitCard()) {
-        check(reference,((SplitCard)card).getLeftHalfCard());
-        check(reference,((SplitCard)card).getRightHalfCard());
+        check(reference,((SplitCard)card).getLeftHalfCard(),null);
+        check(reference,((SplitCard)card).getRightHalfCard(),null);
       }
  else {
-        check(reference,card);
+        check(reference,card,tokens);
       }
     }
   }

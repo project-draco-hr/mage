@@ -1,0 +1,16 @@
+{
+  String path="../Mage.Sets/src/" + c.getName().replace(".","/") + ".java";
+  try {
+    String source=new String(Files.readAllBytes(Paths.get(path)),StandardCharsets.UTF_8);
+    Matcher matcher=SHORT_JAVA_STRING.matcher(source);
+    Set<String> tokens=new HashSet<>();
+    while (matcher.find()) {
+      tokens.add(matcher.group());
+    }
+    return tokens;
+  }
+ catch (  NoSuchFileException e) {
+    System.out.println("failed to read " + path);
+    return Collections.emptySet();
+  }
+}
