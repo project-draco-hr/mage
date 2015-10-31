@@ -11,7 +11,12 @@
             game.getExile().add(source.getSourceId(),"",copiedCard);
             game.getState().setZone(copiedCard.getId(),Zone.EXILED);
             if (controller.chooseUse(outcome,"Cast the copied card without paying mana cost?",source,game)) {
-              controller.cast(copiedCard.getSpellAbility(),game,true);
+              if (copiedCard.getSpellAbility() != null) {
+                controller.cast(copiedCard.getSpellAbility(),game,true);
+              }
+ else {
+                Logger.getLogger(IsochronScepterCopyEffect.class).error("Isochron Scepter: spell ability == null " + copiedCard.getName());
+              }
             }
           }
         }
