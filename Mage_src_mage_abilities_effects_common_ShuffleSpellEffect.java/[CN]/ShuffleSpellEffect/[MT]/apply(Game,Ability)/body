@@ -1,13 +1,11 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    Spell spell=game.getStack().getSpell(source.getSourceId());
+    Spell spell=game.getStack().getSpell(source.getId());
     if (spell != null) {
-      Card spellCard=spell.getCard();
-      if (spellCard != null) {
-        Player owner=game.getPlayer(spellCard.getOwnerId());
+      if (controller.moveCards(spell,Zone.LIBRARY,source,game) && !spell.isCopy()) {
+        Player owner=game.getPlayer(spell.getCard().getOwnerId());
         if (owner != null) {
-          controller.moveCardToLibraryWithInfo(spellCard,source.getSourceId(),game,Zone.STACK,true,true);
           owner.shuffleLibrary(game);
         }
       }

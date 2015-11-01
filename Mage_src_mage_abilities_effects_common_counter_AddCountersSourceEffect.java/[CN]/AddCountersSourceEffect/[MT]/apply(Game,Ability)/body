@@ -15,7 +15,7 @@
           if (informPlayers && !game.isSimulation()) {
             Player player=game.getPlayer(source.getControllerId());
             if (player != null) {
-              game.informPlayers(new StringBuilder(player.getLogName()).append(" puts ").append(newCounter.getCount()).append(" ").append(newCounter.getName().toLowerCase()).append(" counter on ").append(card.getLogName()).toString());
+              game.informPlayers(player.getLogName() + " puts " + newCounter.getCount()+ " "+ newCounter.getName().toLowerCase()+ " counter on "+ card.getLogName());
             }
           }
         }
@@ -24,6 +24,9 @@
     }
  else {
       Permanent permanent=game.getPermanent(source.getSourceId());
+      if (permanent == null && source.getAbilityType().equals(AbilityType.STATIC)) {
+        permanent=game.getPermanentEntering(source.getSourceId());
+      }
       if (permanent != null) {
         if (counter != null) {
           Counter newCounter=counter.copy();

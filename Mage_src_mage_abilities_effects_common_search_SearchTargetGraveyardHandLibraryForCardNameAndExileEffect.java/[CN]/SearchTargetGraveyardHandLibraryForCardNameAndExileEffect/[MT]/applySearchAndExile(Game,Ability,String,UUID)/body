@@ -10,28 +10,14 @@
         filter.setMessage("card named " + cardName + " in the graveyard of "+ targetPlayer.getLogName());
         TargetCard target=new TargetCard((graveyardExileOptional ? 0 : cardsCount),cardsCount,Zone.GRAVEYARD,filter);
         if (controller.choose(Outcome.Exile,targetPlayer.getGraveyard(),target,game)) {
-          List<UUID> targets=target.getTargets();
-          for (          UUID targetId : targets) {
-            Card targetCard=targetPlayer.getGraveyard().get(targetId,game);
-            if (targetCard != null) {
-              targetPlayer.getGraveyard().remove(targetCard);
-              controller.moveCardToExileWithInfo(targetCard,null,null,source.getSourceId(),game,Zone.GRAVEYARD,true);
-            }
-          }
+          controller.moveCards(new CardsImpl(target.getTargets()),Zone.EXILED,source,game);
         }
       }
       cardsCount=(cardName.isEmpty() ? 0 : targetPlayer.getHand().count(filter,game));
       filter.setMessage("card named " + cardName + " in the hand of "+ targetPlayer.getLogName());
       TargetCard target=new TargetCard(0,cardsCount,Zone.HAND,filter);
       if (controller.choose(Outcome.Exile,targetPlayer.getHand(),target,game)) {
-        List<UUID> targets=target.getTargets();
-        for (        UUID targetId : targets) {
-          Card targetCard=targetPlayer.getHand().get(targetId,game);
-          if (targetCard != null) {
-            targetPlayer.getHand().remove(targetCard);
-            controller.moveCardToExileWithInfo(targetCard,null,null,source.getSourceId(),game,Zone.HAND,true);
-          }
-        }
+        controller.moveCards(new CardsImpl(target.getTargets()),Zone.EXILED,source,game);
       }
       Cards cardsInLibrary=new CardsImpl(Zone.LIBRARY);
       cardsInLibrary.addAll(targetPlayer.getLibrary().getCards(game));
@@ -39,13 +25,7 @@
       filter.setMessage("card named " + cardName + " in the library of "+ targetPlayer.getLogName());
       TargetCardInLibrary targetLib=new TargetCardInLibrary(0,cardsCount,filter);
       if (controller.choose(Outcome.Exile,cardsInLibrary,targetLib,game)) {
-        List<UUID> targets=targetLib.getTargets();
-        for (        UUID targetId : targets) {
-          Card targetCard=targetPlayer.getLibrary().remove(targetId,game);
-          if (targetCard != null) {
-            controller.moveCardToExileWithInfo(targetCard,null,null,source.getSourceId(),game,Zone.LIBRARY,true);
-          }
-        }
+        controller.moveCards(new CardsImpl(targetLib.getTargets()),Zone.EXILED,source,game);
       }
       targetPlayer.shuffleLibrary(game);
     }

@@ -6,7 +6,10 @@
   }
   finally {
     if (top != null) {
-      this.remove(top);
+      if (contains(top)) {
+        logger.warn("StackObject was still on the stack after resoving" + top.getName());
+        this.remove(top);
+      }
     }
   }
 }

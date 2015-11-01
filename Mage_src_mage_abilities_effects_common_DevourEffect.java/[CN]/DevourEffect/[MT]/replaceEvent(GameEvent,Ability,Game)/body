@@ -1,5 +1,5 @@
 {
-  Permanent creature=game.getPermanent(event.getTargetId());
+  Permanent creature=((EntersTheBattlefieldEvent)event).getTarget();
   Player controller=game.getPlayer(source.getControllerId());
   if (creature != null && controller != null) {
     Target target=new TargetControlledCreaturePermanent(1,Integer.MAX_VALUE,filter,true);
@@ -12,7 +12,9 @@
       if (target.getTargets().size() > 0) {
         List<ArrayList<String>> cardSubtypes=new ArrayList<>();
         int devouredCreatures=target.getTargets().size();
-        if (!game.isSimulation())         game.informPlayers(new StringBuilder(creature.getName()).append(" devours ").append(devouredCreatures).append(" creatures").toString());
+        if (!game.isSimulation()) {
+          game.informPlayers(creature.getLogName() + " devours " + devouredCreatures+ " creatures");
+        }
         for (        UUID targetId : target.getTargets()) {
           Permanent targetCreature=game.getPermanent(targetId);
           if (targetCreature != null) {

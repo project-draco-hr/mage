@@ -103,12 +103,21 @@ somethingHappened=true;
 }
 }
  else {
+SpellAbility spellAbility=perm.getSpellAbility();
 if (perm.getSpellAbility().getTargets().isEmpty()) {
+for (Ability ability : perm.getAbilities(this)) {
+if ((ability instanceof SpellAbility) && SpellAbilityType.BASE_ALTERNATE.equals(((SpellAbility)ability).getSpellAbilityType()) && !ability.getTargets().isEmpty()) {
+spellAbility=(SpellAbility)ability;
+break;
+}
+}
+}
+if (spellAbility.getTargets().isEmpty()) {
 Permanent enchanted=this.getPermanent(perm.getAttachedTo());
 logger.error("Aura without target: " + perm.getName() + " attached to "+ (enchanted == null ? " null" : enchanted.getName()));
 }
  else {
-Target target=perm.getSpellAbility().getTargets().get(0);
+Target target=spellAbility.getTargets().get(0);
 if (target instanceof TargetPermanent) {
 Permanent attachedTo=getPermanent(perm.getAttachedTo());
 if (attachedTo == null || !attachedTo.getAttachments().contains(perm.getId())) {
@@ -125,7 +134,7 @@ if (movePermanentToGraveyardWithInfo(perm)) {
 }
 }
  else {
-Filter auraFilter=perm.getSpellAbility().getTargets().get(0).getFilter();
+Filter auraFilter=spellAbility.getTargets().get(0).getFilter();
 if (auraFilter instanceof FilterControlledCreaturePermanent) {
 if (!((FilterControlledCreaturePermanent)auraFilter).match(attachedTo,perm.getId(),perm.getControllerId(),this) || attachedTo.cantBeEnchantedBy(perm,this)) {
   if (movePermanentToGraveyardWithInfo(perm)) {
@@ -158,7 +167,7 @@ somethingHappened=true;
 }
 }
  else {
-Filter auraFilter=perm.getSpellAbility().getTargets().get(0).getFilter();
+Filter auraFilter=spellAbility.getTargets().get(0).getFilter();
 if (!auraFilter.match(attachedToPlayer,this) || attachedToPlayer.hasProtectionFrom(perm,this)) {
 if (movePermanentToGraveyardWithInfo(perm)) {
   somethingHappened=true;
@@ -252,7 +261,7 @@ if (getBattlefield().contains(filterLegendName,legend.getControllerId(),this,2))
 Player controller=this.getPlayer(legend.getControllerId());
 if (controller != null) {
 Target targetLegendaryToKeep=new TargetPermanent(filterLegendName);
-targetLegendaryToKeep.setTargetName(new StringBuilder(legend.getName()).append(" to keep (Legendary Rule)?").toString());
+targetLegendaryToKeep.setTargetName(legend.getName() + " to keep (Legendary Rule)?");
 controller.chooseTarget(Outcome.Benefit,targetLegendaryToKeep,null,this);
 for (Permanent dupLegend : getBattlefield().getActivePermanents(filterLegendName,legend.getControllerId(),this)) {
 if (!targetLegendaryToKeep.getTargets().contains(dupLegend.getId())) {

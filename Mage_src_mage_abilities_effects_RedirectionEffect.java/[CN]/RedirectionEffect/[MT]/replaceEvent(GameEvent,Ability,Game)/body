@@ -1,14 +1,30 @@
 {
+  String sourceLogName=source != null ? game.getObject(source.getSourceId()).getLogName() + ": " : "";
   DamageEvent damageEvent=(DamageEvent)event;
+  int restDamage=0;
+  int damageToRedirect=event.getAmount();
+  if (damageEvent.getAmount() > amountToRedirect) {
+    restDamage=damageEvent.getAmount() - amountToRedirect;
+    damageToRedirect=amountToRedirect;
+  }
+  if (damageToRedirect > 0 && oneUsage) {
+    this.discard();
+  }
   Permanent permanent=game.getPermanent(redirectTarget.getFirstTarget());
   if (permanent != null) {
-    permanent.damage(damageEvent.getAmount(),event.getSourceId(),game,damageEvent.isCombatDamage(),damageEvent.isPreventable(),event.getAppliedEffects());
-    return true;
+    permanent.damage(damageToRedirect,event.getSourceId(),game,damageEvent.isCombatDamage(),damageEvent.isPreventable(),event.getAppliedEffects());
+    game.informPlayers(sourceLogName + "Redirected " + damageToRedirect+ " damage to "+ permanent.getLogName());
   }
-  Player player=game.getPlayer(redirectTarget.getFirstTarget());
-  if (player != null) {
-    player.damage(damageEvent.getAmount(),event.getSourceId(),game,damageEvent.isCombatDamage(),damageEvent.isPreventable(),event.getAppliedEffects());
-    return true;
+ else {
+    Player player=game.getPlayer(redirectTarget.getFirstTarget());
+    if (player != null) {
+      player.damage(damageToRedirect,event.getSourceId(),game,damageEvent.isCombatDamage(),damageEvent.isPreventable(),event.getAppliedEffects());
+      game.informPlayers(sourceLogName + "Redirected " + damageToRedirect+ " damage to "+ player.getLogName());
+    }
   }
-  return false;
+  if (restDamage > 0) {
+    damageEvent.setAmount(restDamage);
+    return false;
+  }
+  return true;
 }

@@ -7,43 +7,5 @@
       return false;
     }
   }
-  permanent.setCopy(true);
-  permanent.setName(target.getName());
-  permanent.getColor(game).setColor(target.getColor(game));
-  permanent.getManaCost().clear();
-  permanent.getManaCost().add(target.getManaCost());
-  permanent.getCardType().clear();
-  for (  CardType type : target.getCardType()) {
-    permanent.getCardType().add(type);
-  }
-  permanent.getSubtype().clear();
-  for (  String type : target.getSubtype()) {
-    permanent.getSubtype().add(type);
-  }
-  permanent.getSupertype().clear();
-  for (  String type : target.getSupertype()) {
-    permanent.getSupertype().add(type);
-  }
-  permanent.removeAllAbilities(source.getSourceId(),game);
-  for (  Ability ability : target.getAbilities()) {
-    permanent.addAbility(ability,getSourceId(),game,false);
-  }
-  permanent.getPower().setValue(target.getPower().getValue());
-  permanent.getToughness().setValue(target.getToughness().getValue());
-  if (target instanceof Permanent) {
-    Permanent targetPermanent=(Permanent)target;
-    permanent.setTransformed(targetPermanent.isTransformed());
-    permanent.setSecondCardFace(targetPermanent.getSecondCardFace());
-    permanent.setFlipCard(targetPermanent.isFlipCard());
-    permanent.setFlipCardName(targetPermanent.getFlipCardName());
-  }
-  if (target instanceof PermanentCard) {
-    permanent.setCardNumber(((PermanentCard)target).getCard().getCardNumber());
-    permanent.setExpansionSetCode(((PermanentCard)target).getCard().getExpansionSetCode());
-  }
- else   if (target instanceof PermanentToken || target instanceof Card) {
-    permanent.setCardNumber(((Card)target).getCardNumber());
-    permanent.setExpansionSetCode(((Card)target).getExpansionSetCode());
-  }
-  return true;
+  return copyToPermanent(permanent,game,source);
 }
