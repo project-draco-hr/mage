@@ -1,11 +1,14 @@
 {
-  MageObject mageObject=source.getSourceObject(game);
   Permanent permanent=game.getPermanent(source.getSourceId());
-  if (permanent != null && mageObject == null && new MageObjectReference(permanent,game).refersTo(mageObject,game)) {
-    discard();
-    return false;
+  int zcc=game.getState().getZoneChangeCounter(source.getSourceId());
+  if (permanent == null) {
+    permanent=game.getPermanentEntering(source.getSourceId());
+    zcc++;
   }
-  UUID exileId=CardUtil.getExileZoneId(game,source.getSourceId(),source.getSourceObjectZoneChangeCounter());
+  if (permanent == null) {
+    return true;
+  }
+  UUID exileId=CardUtil.getExileZoneId(game,source.getSourceId(),zcc);
   if (exileId != null) {
     ExileZone exileZone=game.getExile().getExileZone(exileId);
     if (exileZone == null) {

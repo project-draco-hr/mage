@@ -3,12 +3,7 @@
   if (controller != null) {
     SacrificeTargetCost cost=new SacrificeTargetCost(new TargetControlledCreaturePermanent(new FilterControlledCreaturePermanent("a creature")));
     if (cost.pay(source,game,source.getSourceId(),source.getControllerId(),false)) {
-      for (      UUID targetId : getTargetPointer().getTargets(game,source)) {
-        Card card=game.getCard(targetId);
-        if (card != null) {
-          controller.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId(),true);
-        }
-      }
+      controller.moveCards(new CardsImpl(getTargetPointer().getTargets(game,source)).getCards(game),Zone.BATTLEFIELD,source,game,true,false,false,null);
     }
     return true;
   }

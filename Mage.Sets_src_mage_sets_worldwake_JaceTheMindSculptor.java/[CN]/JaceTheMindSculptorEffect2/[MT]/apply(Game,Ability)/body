@@ -1,9 +1,13 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
-    player.drawCards(3,game);
-    putOnLibrary(player,source,game);
-    putOnLibrary(player,source,game);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    controller.drawCards(3,game);
+    TargetCardInHand target=new TargetCardInHand(2,2,new FilterCard());
+    controller.chooseTarget(Outcome.Detriment,target,source,game);
+    Cards cardsToLibrary=new CardsImpl(target.getTargets());
+    if (!cardsToLibrary.isEmpty()) {
+      controller.putCardsOnTopOfLibrary(cardsToLibrary,game,source,true);
+    }
     return true;
   }
   return false;

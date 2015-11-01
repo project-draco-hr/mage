@@ -11,11 +11,10 @@
   if (owner.getLibrary().size() > 0) {
     Card card=owner.getLibrary().getFromTop(game);
     if (card != null) {
-      Cards cards=new CardsImpl();
-      cards.add(card);
-      owner.revealCards(sourceObject.getName(),cards,game);
+      Cards cards=new CardsImpl(card);
+      owner.revealCards(sourceObject.getIdName(),cards,game);
       if (new FilterPermanentCard().match(card,game)) {
-        owner.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+        owner.moveCards(card,Zone.BATTLEFIELD,source,game);
       }
     }
   }

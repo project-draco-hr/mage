@@ -1,0 +1,11 @@
+{
+  for (  StackObject stackObject : game.getStack()) {
+    if ((stackObject instanceof Spell) && !stackObject.isCopy() && stackObject.getControllerId().equals(source.getControllerId())) {
+      Spell spell=(Spell)stackObject;
+      if (filter.match(stackObject,game)) {
+        game.getState().addOtherAbility(spell.getCard(),conspireAbility);
+      }
+    }
+  }
+  return true;
+}

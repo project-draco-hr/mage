@@ -1,12 +1,11 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
     TargetCardInHand target=new TargetCardInHand();
-    player.chooseTarget(Outcome.ReturnToHand,target,source,game);
-    Card card=player.getHand().get(target.getFirstTarget(),game);
+    controller.chooseTarget(Outcome.ReturnToHand,target,source,game);
+    Card card=controller.getHand().get(target.getFirstTarget(),game);
     if (card != null) {
-      player.getHand().remove(card);
-      card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
+      controller.putCardsOnTopOfLibrary(new CardsImpl(card),game,source,false);
     }
     return true;
   }

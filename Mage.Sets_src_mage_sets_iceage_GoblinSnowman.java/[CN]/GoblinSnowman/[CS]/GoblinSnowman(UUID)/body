@@ -4,11 +4,16 @@
   this.subtype.add("Goblin");
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
-  this.addAbility(new BlocksTriggeredAbility(new PreventCombatDamageBySourceEffect(Duration.EndOfTurn),false));
-  this.addAbility(new BlocksTriggeredAbility(new PreventCombatDamageToSourceEffect(Duration.EndOfTurn),false));
+  Effect effect=new PreventCombatDamageBySourceEffect(Duration.EndOfTurn);
+  effect.setText("prevent all combat damage that would be dealt to");
+  Ability ability=new BlocksTriggeredAbility(effect,false);
+  effect=new PreventCombatDamageToSourceEffect(Duration.EndOfTurn);
+  effect.setText("and dealt by it this turn");
+  ability.addEffect(effect);
+  this.addAbility(ability);
   FilterAttackingCreature filter=new FilterAttackingCreature("creature it's blocking");
-  filter.add(new BlockingByPredicate(this.getId()));
-  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new TapSourceCost());
+  filter.add(new BlockedByIdPredicate(this.getId()));
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new TapSourceCost());
   ability.addTarget(new TargetCreaturePermanent(filter));
-  this.addAbility(ability,new BlockedByWatcher());
+  this.addAbility(ability);
 }

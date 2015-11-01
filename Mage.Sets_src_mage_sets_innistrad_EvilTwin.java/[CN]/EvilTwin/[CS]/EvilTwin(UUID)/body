@@ -4,5 +4,7 @@
   this.subtype.add("Shapeshifter");
   this.power=new MageInt(0);
   this.toughness=new MageInt(0);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new EntersBattlefieldEffect(new CopyPermanentEffect(new EvilTwinApplyToPermanent()),"You may have {this} enter the battlefield as a copy of any creature on the battlefield except it gains \"{U}{B}, {T}: Destroy target creature with the same name as this creature\"",true)));
+  Effect effect=new CopyPermanentEffect(new FilterCreaturePermanent(),new EvilTwinApplyToPermanent());
+  effect.setText("a copy of any creature on the battlefield except it gains \"{U}{B}, {T}: Destroy target creature with the same name as this creature.\"");
+  this.addAbility(new EntersBattlefieldAbility(effect,true));
 }

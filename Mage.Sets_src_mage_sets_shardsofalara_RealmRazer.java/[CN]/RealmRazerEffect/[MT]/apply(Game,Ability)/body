@@ -1,12 +1,9 @@
 {
-  ExileZone exZone=game.getExile().getExileZone(source.getSourceId());
-  if (exZone != null) {
-    for (    Card card : exZone.getCards(game)) {
-      if (card != null) {
-        if (card.putOntoBattlefield(game,Zone.EXILED,source.getSourceId(),card.getOwnerId())) {
-          game.getPermanent(card.getId()).setTapped(true);
-        }
-      }
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    ExileZone exZone=game.getExile().getExileZone(source.getSourceId());
+    if (exZone != null) {
+      return controller.moveCards(exZone.getCards(game),Zone.BATTLEFIELD,source,game,true,false,false,null);
     }
     return true;
   }

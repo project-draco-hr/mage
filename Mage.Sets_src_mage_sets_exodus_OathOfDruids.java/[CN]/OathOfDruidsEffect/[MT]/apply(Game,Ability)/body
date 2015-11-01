@@ -1,14 +1,14 @@
 {
   MageObject sourceObject=game.getObject(source.getSourceId());
-  Player player=game.getPlayer(source.getControllerId());
-  if (player == null || sourceObject == null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null || sourceObject == null) {
     return false;
   }
   Cards revealed=new CardsImpl();
   Card creatureCard=null;
   Cards nonCreatureCards=new CardsImpl();
-  while (creatureCard == null && player.getLibrary().size() > 0) {
-    Card card=player.getLibrary().removeFromTop(game);
+  while (creatureCard == null && controller.getLibrary().size() > 0) {
+    Card card=controller.getLibrary().removeFromTop(game);
     revealed.add(card);
     if (card.getCardType().contains(CardType.CREATURE)) {
       creatureCard=card;
@@ -17,10 +17,10 @@
       nonCreatureCards.add(card);
     }
   }
-  player.revealCards(sourceObject.getName(),revealed,game);
+  controller.revealCards(sourceObject.getIdName(),revealed,game);
   if (creatureCard != null) {
-    player.putOntoBattlefieldWithInfo(creatureCard,game,Zone.LIBRARY,source.getSourceId());
+    controller.moveCards(creatureCard,Zone.BATTLEFIELD,source,game);
   }
-  player.moveCards(nonCreatureCards,Zone.LIBRARY,Zone.GRAVEYARD,source,game);
+  controller.moveCards(nonCreatureCards,Zone.GRAVEYARD,source,game);
   return true;
 }

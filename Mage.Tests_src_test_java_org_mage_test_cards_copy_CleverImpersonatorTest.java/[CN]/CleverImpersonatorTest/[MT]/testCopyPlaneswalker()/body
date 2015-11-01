@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Zone.HAND,playerA,"Clever Impersonator",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Liliana, Defiant Necromancer",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Clever Impersonator");
+  setChoice(playerA,"Liliana, Defiant Necromancer");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"+2: Each player discards a card");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertHandCount(playerA,"Clever Impersonator",0);
+  assertCounterCount(playerB,"Liliana, Defiant Necromancer",CounterType.LOYALTY,3);
+  assertPermanentCount(playerB,"Liliana, Defiant Necromancer",1);
+  assertPermanentCount(playerA,"Liliana, Defiant Necromancer",1);
+  assertCounterCount(playerA,"Liliana, Defiant Necromancer",CounterType.LOYALTY,5);
+}

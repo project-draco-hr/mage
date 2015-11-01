@@ -3,12 +3,8 @@
   StackObject card=game.getStack().getStackObject(eventObject);
   Player controller=game.getPlayer(source.getControllerId());
   if (card != null && controller != null) {
-    if (card instanceof Spell) {
-      game.rememberLKI(card.getId(),Zone.STACK,(Spell)card);
-    }
     if (card instanceof Card) {
-      controller.moveCardToExileWithInfo((Card)card,null,"",source.getSourceId(),game,game.getState().getZone(event.getTargetId()),true);
-      return true;
+      return controller.moveCards((Card)card,null,Zone.EXILED,source,game);
     }
   }
   return false;

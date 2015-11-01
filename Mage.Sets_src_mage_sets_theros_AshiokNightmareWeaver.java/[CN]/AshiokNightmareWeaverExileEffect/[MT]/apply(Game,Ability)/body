@@ -3,14 +3,9 @@
   Player controller=game.getPlayer(source.getControllerId());
   MageObject sourceObject=source.getSourceObject(game);
   if (sourceObject != null && opponent != null && controller != null) {
-    UUID exileZone=CardUtil.getObjectExileZoneId(game,sourceObject);
+    UUID exileZone=CardUtil.getExileZoneId(game,source.getSourceId(),source.getSourceObjectZoneChangeCounter());
     if (exileZone != null) {
-      for (int i=0; i < 3; i++) {
-        Card card=opponent.getLibrary().getFromTop(game);
-        if (card != null) {
-          controller.moveCardToExileWithInfo(card,exileZone,sourceObject.getIdName(),source.getSourceId(),game,Zone.LIBRARY,true);
-        }
-      }
+      controller.moveCardsToExile(opponent.getLibrary().getTopCards(game,3),source,game,true,exileZone,sourceObject.getIdName());
       return true;
     }
   }

@@ -23,12 +23,18 @@
     player.getLibrary().clear();
     for (    Card card : game.getCards()) {
       if (card.getOwnerId().equals(player.getId()) && !card.isCopy() && !player.getSideboard().contains(card.getId())&& !cards.contains(card)) {
-        player.getLibrary().putOnTop(card,game);
+        if (card.getId().equals(player.getCommanderId())) {
+          card.moveToZone(Zone.COMMAND,null,game,true);
+        }
+ else {
+          player.getLibrary().putOnTop(card,game);
+        }
       }
     }
     player.init(game);
   }
   for (  Card card : cards) {
+    game.getState().setZone(card.getId(),Zone.EXILED);
     if (CardUtil.isPermanentCard(card) && !card.getSubtype().contains("Aura")) {
       game.getExile().add(exileId,sourceObject.getIdName(),card);
     }

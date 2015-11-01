@@ -1,0 +1,21 @@
+{
+  addCard(Zone.HAND,playerA,"Villainous Wealth");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",3);
+  addCard(Zone.LIBRARY,playerB,"Sylvan Library");
+  skipInitShuffling();
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Villainous Wealth",playerB);
+  setChoice(playerA,"X=3");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Sylvan Library");
+  setStopAt(3,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertGraveyardCount(playerA,"Villainous Wealth",1);
+  assertExileCount(playerB,2);
+  assertExileCount("Sylvan Library",0);
+  assertPermanentCount(playerA,"Sylvan Library",1);
+  assertHandCount(playerB,1);
+  assertHandCount(playerA,3);
+  assertLife(playerA,12);
+  assertLife(playerB,20);
+}

@@ -1,26 +1,24 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
+  Player controller=game.getPlayer(source.getControllerId());
   int permanentsCount=game.getBattlefield().getAllActivePermanents(source.getControllerId()).size();
-  if (player == null || permanentsCount < 1) {
+  if (controller == null || permanentsCount < 1) {
     return false;
   }
   TargetControlledPermanent permanentsTarget=new TargetControlledPermanent(Math.min(permanentsCount,5));
-  player.choose(Outcome.Benefit,permanentsTarget,source.getSourceId(),game);
-  List<Card> chosenCards=new ArrayList<Card>();
-  List<String> namesFiltered=new ArrayList<String>();
+  controller.choose(Outcome.Benefit,permanentsTarget,source.getSourceId(),game);
+  Set<Card> chosenCards=new LinkedHashSet<>();
+  List<String> namesFiltered=new ArrayList<>();
   List<UUID> permanents=permanentsTarget.getTargets();
   for (  UUID permanentId : permanents) {
     Permanent permanent=game.getPermanent(permanentId);
     final String cardName=permanent.getName();
     if (!namesFiltered.contains(cardName)) {
-      StringBuilder sb=new StringBuilder();
-      sb.append("Search for ").append(cardName).append(" in your library?");
-      if (player.chooseUse(Outcome.PutCardInPlay,sb.toString(),source,game)) {
+      if (controller.chooseUse(Outcome.PutCardInPlay,"Search for " + cardName + " in your library?",source,game)) {
         FilterCard filter=new FilterCard("card named " + cardName);
         filter.add(new NamePredicate(cardName));
         TargetCardInLibrary target=new TargetCardInLibrary(filter);
-        if (player.searchLibrary(target,game)) {
-          Card card=player.getLibrary().getCard(target.getFirstTarget(),game);
+        if (controller.searchLibrary(target,game)) {
+          Card card=controller.getLibrary().getCard(target.getFirstTarget(),game);
           if (card != null) {
             chosenCards.add(card);
           }
@@ -31,13 +29,7 @@
       }
     }
   }
-  for (  Card card : chosenCards) {
-    card.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),source.getControllerId());
-    Permanent permanent=game.getPermanent(card.getId());
-    if (permanent != null) {
-      permanent.setTapped(true);
-    }
-  }
-  player.shuffleLibrary(game);
+  controller.moveCards(chosenCards,Zone.BATTLEFIELD,source,game,true,false,false,null);
+  controller.shuffleLibrary(game);
   return true;
 }
