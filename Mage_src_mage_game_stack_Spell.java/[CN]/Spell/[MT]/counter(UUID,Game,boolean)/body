@@ -1,0 +1,14 @@
+{
+  this.countered=true;
+  if (!isCopiedSpell() && moveToGraveyard) {
+    Player player=game.getPlayer(getControllerId());
+    if (player != null) {
+      Ability counteringAbility=null;
+      MageObject counteringObject=game.getObject(sourceId);
+      if (counteringObject instanceof StackObject) {
+        counteringAbility=((StackObject)counteringObject).getStackAbility();
+      }
+      player.moveCards(card,Zone.GRAVEYARD,counteringAbility,game);
+    }
+  }
+}
