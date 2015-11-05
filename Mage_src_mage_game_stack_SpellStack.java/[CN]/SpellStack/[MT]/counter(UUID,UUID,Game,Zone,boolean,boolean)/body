@@ -17,6 +17,9 @@
       counteredObjectName="Ability (" + stackObject.getStackAbility().getRule(targetSourceName) + ") of "+ targetSourceName;
     }
     if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.COUNTER,objectId,sourceId,stackObject.getControllerId()))) {
+      if (!(stackObject instanceof Spell)) {
+        this.remove(stackObject);
+      }
       stackObject.counter(sourceId,game,zone,owner,onTop);
       if (!game.isSimulation()) {
         game.informPlayers(counteredObjectName + " is countered by " + sourceObject.getLogName());
