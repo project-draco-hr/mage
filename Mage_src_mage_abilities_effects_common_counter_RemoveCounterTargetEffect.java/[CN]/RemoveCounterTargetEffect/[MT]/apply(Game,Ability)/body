@@ -1,12 +1,15 @@
 {
   Permanent p=game.getPermanent(targetPointer.getFirst(game,source));
-  if (p != null && p.getCounters().getCount(counter.getName()) >= counter.getCount()) {
-    p.removeCounters(counter.getName(),counter.getCount(),game);
-    if (!game.isSimulation())     game.informPlayers(new StringBuilder("Removed ").append(counter.getCount()).append(" ").append(counter.getName()).append(" counter from ").append(p.getName()).toString());
-    return true;
+  if (p != null) {
+    Counter toRemove=(counter == null ? selectCounterType(game,source,p) : counter);
+    if (toRemove != null && p.getCounters().getCount(toRemove.getName()) >= toRemove.getCount()) {
+      p.removeCounters(toRemove.getName(),toRemove.getCount(),game);
+      if (!game.isSimulation())       game.informPlayers("Removed " + toRemove.getCount() + " "+ toRemove.getName()+ " counter from "+ p.getName());
+      return true;
+    }
   }
   Card c=game.getCard(targetPointer.getFirst(game,source));
-  if (c != null && c.getCounters(game).getCount(counter.getName()) >= counter.getCount()) {
+  if (c != null && counter != null && c.getCounters(game).getCount(counter.getName()) >= counter.getCount()) {
     c.removeCounters(counter.getName(),counter.getCount(),game);
     if (!game.isSimulation())     game.informPlayers(new StringBuilder("Removed ").append(counter.getCount()).append(" ").append(counter.getName()).append(" counter from ").append(c.getName()).append(" (").append(c.getCounters(game).getCount(counter.getName())).append(" left)").toString());
     return true;
