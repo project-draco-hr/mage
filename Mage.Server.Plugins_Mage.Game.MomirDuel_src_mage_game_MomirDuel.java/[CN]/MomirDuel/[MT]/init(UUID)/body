@@ -1,20 +1,9 @@
 {
-  Map<Integer,List<Card>> available=new HashMap<>();
-  CardCriteria criteria=new CardCriteria().types(CardType.CREATURE);
-  List<CardInfo> cards=CardRepository.instance.findCards(criteria);
-  for (  CardInfo card : cards) {
-    List<Card> options=available.get(card.getConvertedManaCost());
-    if (options == null) {
-      options=new ArrayList<>();
-      available.put(card.getConvertedManaCost(),options);
-    }
-    options.add(card.getCard());
-  }
   Ability ability=new SimpleStaticAbility(Zone.COMMAND,new InfoEffect("Vanguard effects"));
   for (  UUID playerId : state.getPlayerList(startingPlayerId)) {
     Player player=getPlayer(playerId);
     if (player != null) {
-      addEmblem(new MomirEmblem(available),ability,playerId);
+      addEmblem(new MomirEmblem(),ability,playerId);
     }
   }
   getState().addAbility(ability,null);
