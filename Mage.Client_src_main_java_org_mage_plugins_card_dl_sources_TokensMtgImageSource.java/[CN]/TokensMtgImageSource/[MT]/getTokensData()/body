@@ -1,0 +1,61 @@
+{
+  if (tokensData == null) {
+synchronized (tokensDataSync) {
+      if (tokensData == null) {
+        tokensData=new ArrayList<TokenData>();
+        InputStream inputStream=null;
+        try {
+          inputStream=this.getClass().getResourceAsStream("/tokens-mtg-onl-list.csv");
+          List<TokenData> fileTokensData=parseTokensData(inputStream);
+          tokensData.addAll(fileTokensData);
+        }
+ catch (        Exception exception) {
+          logger.warn("Failed to get tokens description from resource file tokens-mtg-onl-list.csv",exception);
+        }
+ finally {
+          if (inputStream != null) {
+            try {
+              inputStream.close();
+            }
+ catch (            Exception e) {
+              logger.error("Input stream close failed:",e);
+            }
+          }
+        }
+        try {
+          URL url=new URL("http://tokens.mtg.onl/data/SetsWithTokens.csv");
+          inputStream=url.openStream();
+          List<TokenData> siteTokensData=parseTokensData(inputStream);
+          List<TokenData> newTokensData=new ArrayList<TokenData>();
+          for (          TokenData siteData : siteTokensData) {
+            boolean isNew=true;
+            for (            TokenData fileData : tokensData) {
+              if (siteData.getName().equalsIgnoreCase(fileData.getName()) && siteData.getNumber().equalsIgnoreCase(fileData.getNumber()) && siteData.getExpansionSetCode().equalsIgnoreCase(fileData.getExpansionSetCode())) {
+                isNew=false;
+                break;
+              }
+            }
+            if (isNew) {
+              newTokensData.add(siteData);
+            }
+          }
+          tokensData.addAll(newTokensData);
+        }
+ catch (        Exception exception) {
+          logger.warn("Failed to get tokens description from tokens.mtg.onl",exception);
+        }
+ finally {
+          if (inputStream != null) {
+            try {
+              inputStream.close();
+            }
+ catch (            Exception e) {
+              logger.error("Input stream close failed:",e);
+            }
+          }
+        }
+      }
+    }
+  }
+  return tokensData;
+}
