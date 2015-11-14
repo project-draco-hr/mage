@@ -5,6 +5,7 @@
       if (action.getAction().startsWith("activate:")) {
         String command=action.getAction();
         command=command.substring(command.indexOf("activate:") + 9);
+        groupsForTargetHandling=null;
         String[] groups=command.split("\\$");
         if (groups.length > 2 && !checkExecuteCondition(groups,game)) {
           break;
@@ -14,12 +15,11 @@
             int bookmark=game.bookmarkState();
             Ability newAbility=ability.copy();
             if (groups.length > 1 && !groups[1].equals("target=NO_TARGET")) {
-              if (!addTargets(newAbility,groups,game)) {
-                break;
-              }
+              groupsForTargetHandling=groups;
             }
             if (computerPlayer.activateAbility((ActivatedAbility)newAbility,game)) {
               actions.remove(action);
+              groupsForTargetHandling=null;
               return true;
             }
  else {
