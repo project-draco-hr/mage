@@ -7,7 +7,12 @@
   this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
   Ability ability=new EnchantAbility(auraTarget.getTargetName());
   this.addAbility(ability);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(2,2,Duration.WhileOnBattlefield)));
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(FlyingAbility.getInstance(),AttachmentType.AURA)));
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(VigilanceAbility.getInstance(),AttachmentType.AURA)));
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(2,2));
+  Effect effect=new GainAbilityAttachedEffect(FlyingAbility.getInstance(),AttachmentType.AURA);
+  effect.setText("and has flying");
+  ability.addEffect(effect);
+  effect=new GainAbilityAttachedEffect(VigilanceAbility.getInstance(),AttachmentType.AURA);
+  effect.setText("and vigilance");
+  ability.addEffect(effect);
+  this.addAbility(ability);
 }
