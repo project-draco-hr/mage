@@ -10,19 +10,24 @@
       card.cast(game,fromZone,ability,playerId);
       Spell spell=game.getStack().getSpell(ability.getId());
       if (ability.getSourceId().equals(getCastSourceIdWithAlternateMana())) {
-        ManaCosts alternateCosts=getCastSourceIdManaCosts();
         Ability spellAbility=spell.getSpellAbility();
+        ManaCosts alternateCosts=getCastSourceIdManaCosts();
+        Costs<Cost> costs=getCastSourceIdCosts();
         if (alternateCosts == null) {
           noMana=true;
         }
  else {
           spellAbility.getManaCosts().clear();
-          spellAbility.getManaCosts().add(alternateCosts.copy());
           spellAbility.getManaCostsToPay().clear();
+          spellAbility.getManaCosts().add(alternateCosts.copy());
           spellAbility.getManaCostsToPay().add(alternateCosts.copy());
         }
+        spellAbility.getCosts().clear();
+        if (costs != null) {
+          spellAbility.getCosts().addAll(costs);
+        }
       }
-      setCastSourceIdWithAlternateMana(null,null);
+      setCastSourceIdWithAlternateMana(null,null,null);
       GameEvent event=GameEvent.getEvent(GameEvent.EventType.CAST_SPELL,spell.getSpellAbility().getId(),spell.getSpellAbility().getSourceId(),playerId);
       game.fireEvent(event);
       if (spell.activate(game,noMana)) {

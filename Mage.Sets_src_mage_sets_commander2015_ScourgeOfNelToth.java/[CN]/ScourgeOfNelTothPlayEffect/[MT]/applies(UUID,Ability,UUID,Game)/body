@@ -3,7 +3,9 @@
     if (game.getState().getZone(source.getSourceId()) == Zone.GRAVEYARD) {
       Player player=game.getPlayer(affectedControllerId);
       if (player != null) {
-        player.setCastSourceIdWithAlternateMana(sourceId,new ManaCostsImpl<>("{W}{U}{B}{R}{G}"),null);
+        Costs<Cost> costs=new CostsImpl<>();
+        costs.add(new SacrificeTargetCost(new TargetControlledCreaturePermanent(2)));
+        player.setCastSourceIdWithAlternateMana(sourceId,new ManaCostsImpl<>("{B}{B}"),costs);
         return true;
       }
     }
