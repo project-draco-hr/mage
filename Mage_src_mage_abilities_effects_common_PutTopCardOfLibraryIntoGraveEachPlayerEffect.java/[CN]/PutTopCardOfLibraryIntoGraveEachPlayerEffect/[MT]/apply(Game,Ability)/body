@@ -8,12 +8,12 @@ case OPPONENT:
       }
     break;
 case ANY:
-  for (  UUID playerId : player.getInRange()) {
+  for (  UUID playerId : game.getState().getPlayersInRange(source.getControllerId(),game)) {
     putCardsToGravecard(playerId,source,game);
   }
 break;
 case NOT_YOU:
-for (UUID playerId : player.getInRange()) {
+for (UUID playerId : game.getState().getPlayersInRange(source.getControllerId(),game)) {
 if (!playerId.equals(source.getSourceId())) {
   putCardsToGravecard(playerId,source,game);
 }
