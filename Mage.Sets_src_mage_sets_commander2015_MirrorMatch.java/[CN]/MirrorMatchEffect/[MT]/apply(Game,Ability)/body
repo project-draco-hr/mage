@@ -1,0 +1,32 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID attackerId : game.getCombat().getAttackers()) {
+      Permanent attacker=game.getPermanent(attackerId);
+      if (attacker != null) {
+        if (source.getControllerId().equals(game.getCombat().getDefendingPlayerId(attackerId,game))) {
+          PutTokenOntoBattlefieldCopyTargetEffect effect=new PutTokenOntoBattlefieldCopyTargetEffect(source.getControllerId(),null,false);
+          effect.setTargetPointer(new FixedTarget(attacker,game));
+          effect.apply(game,source);
+          for (          Permanent addedToken : effect.getAddedPermanent()) {
+            if (addedToken.getCardType().contains(CardType.CREATURE)) {
+              CombatGroup group=game.getCombat().findGroup(attacker.getId());
+              if (group != null) {
+                group.addBlockerToGroup(addedToken.getId(),attackerId,game);
+              }
+            }
+            ExileTargetEffect sacrificeEffect=new ExileTargetEffect("Exile the token at end of combat");
+            sacrificeEffect.setTargetPointer(new FixedTarget(addedToken,game));
+            DelayedTriggeredAbility delayedAbility=new AtTheEndOfCombatDelayedTriggeredAbility(sacrificeEffect);
+            delayedAbility.setSourceId(source.getSourceId());
+            delayedAbility.setControllerId(source.getControllerId());
+            delayedAbility.setSourceObject(source.getSourceObject(game),game);
+            game.addDelayedTriggeredAbility(delayedAbility);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
