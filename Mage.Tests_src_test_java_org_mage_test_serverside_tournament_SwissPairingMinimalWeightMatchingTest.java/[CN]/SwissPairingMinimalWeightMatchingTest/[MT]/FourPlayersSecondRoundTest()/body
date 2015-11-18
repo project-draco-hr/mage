@@ -1,0 +1,28 @@
+{
+  TournamentPlayer player1=new TournamentPlayer(new PlayerStub(),null);
+  TournamentPlayer player2=new TournamentPlayer(new PlayerStub(),null);
+  TournamentPlayer player3=new TournamentPlayer(new PlayerStub(),null);
+  TournamentPlayer player4=new TournamentPlayer(new PlayerStub(),null);
+  List<TournamentPlayer> players=new ArrayList<>();
+  players.add(player4);
+  players.add(player2);
+  players.add(player3);
+  players.add(player1);
+  player1.setPoints(3);
+  player2.setPoints(3);
+  player3.setPoints(0);
+  player4.setPoints(0);
+  List<Round> rounds=new ArrayList<>();
+  Round round=new Round(1,new TournamentStub());
+  TournamentPairing pair1=new TournamentPairing(player1,player3);
+  round.addPairing(pair1);
+  TournamentPairing pair2=new TournamentPairing(player4,player2);
+  round.addPairing(pair2);
+  rounds.add(round);
+  SwissPairingMinimalWeightMatching swissPairing=new SwissPairingMinimalWeightMatching(players,rounds);
+  RoundPairings roundPairings=swissPairing.getRoundPairings();
+  Assert.assertEquals(2,roundPairings.getPairings().size());
+  Assert.assertEquals(0,roundPairings.getPlayerByes().size());
+  CheckPair(roundPairings.getPairings(),player1,player2);
+  CheckPair(roundPairings.getPairings(),player3,player4);
+}
