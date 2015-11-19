@@ -1,8 +1,9 @@
 {
   List<TournamentPlayer> roundPlayers=getActivePlayers();
+  boolean isLastRound=(rounds.size() + 1 == getNumberRounds());
   RoundPairings roundPairings;
   if (roundPlayers.size() <= 16) {
-    SwissPairingMinimalWeightMatching swissPairing=new SwissPairingMinimalWeightMatching(roundPlayers,rounds);
+    SwissPairingMinimalWeightMatching swissPairing=new SwissPairingMinimalWeightMatching(roundPlayers,rounds,isLastRound);
     roundPairings=swissPairing.getRoundPairings();
   }
  else {
@@ -16,7 +17,7 @@
   }
   for (  TournamentPlayer playerBye : roundPairings.getPlayerByes()) {
     round.getPlayerByes().add(playerBye);
-    if (round.getRoundNumber() == getNumberRounds()) {
+    if (isLastRound) {
       playerBye.setState(TournamentPlayerState.FINISHED);
     }
  else {
