@@ -1,28 +1,31 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null && player.getLibrary().size() > 0) {
-    CardsImpl cards=new CardsImpl();
-    Library library=player.getLibrary();
-    Card card=null;
-    do {
-      card=library.removeFromTop(game);
-      if (card != null) {
-        cards.add(card);
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    CardsImpl toReveal=new CardsImpl();
+    boolean nonLandFound=false;
+    Card nonLandCard=null;
+    while (nonLandFound && controller.getLibrary().size() > 0) {
+      nonLandCard=controller.getLibrary().removeFromTop(game);
+      toReveal.add(nonLandCard);
+      nonLandFound=nonLandCard.getCardType().contains(CardType.LAND);
+    }
+    if (!toReveal.isEmpty()) {
+      controller.revealCards(sourceObject.getIdName(),toReveal,game);
+    }
+    if (nonLandCard != null) {
+      Permanent targetCreature=game.getPermanent(this.getTargetPointer().getFirst(game,source));
+      if (targetCreature != null) {
+        targetCreature.damage(nonLandCard.getManaCost().convertedManaCost(),source.getSourceId(),game,false,true);
+      }
+ else {
+        Player targetPlayer=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+        if (targetPlayer != null) {
+          targetPlayer.damage(nonLandCard.getManaCost().convertedManaCost(),source.getSourceId(),game,false,true);
+        }
       }
     }
- while (library.size() > 0 && card != null && card.getCardType().contains(CardType.LAND));
-    if (!cards.isEmpty()) {
-      player.revealCards("Erratic Explosion",cards,game);
-    }
-    Permanent targetCreature=game.getPermanent(this.getTargetPointer().getFirst(game,source));
-    if (targetCreature != null) {
-      targetCreature.damage(card.getManaCost().convertedManaCost(),source.getSourceId(),game,false,true);
-    }
-    Player targetPlayer=game.getPlayer(this.getTargetPointer().getFirst(game,source));
-    if (targetPlayer != null) {
-      targetPlayer.damage(card.getManaCost().convertedManaCost(),source.getSourceId(),game,false,true);
-    }
-    return player.putCardsOnBottomOfLibrary(cards,game,source,true);
+    return controller.putCardsOnBottomOfLibrary(toReveal,game,source,true);
   }
   return false;
 }

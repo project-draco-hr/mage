@@ -1,18 +1,20 @@
 {
-  UUID exileId=source.getSourceId();
-  for (  Permanent dragon : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
-    if (dragon != null) {
-      dragon.sacrifice(source.getSourceId(),game);
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null) {
+    for (    Permanent dragon : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
+      if (dragon != null) {
+        dragon.sacrifice(source.getSourceId(),game);
+      }
     }
-  }
-  ExileZone exile=game.getExile().getExileZone(exileId);
-  if (exile != null) {
-    exile=exile.copy();
-    for (    UUID cardId : exile) {
-      Card card=game.getCard(cardId);
-      card.putOntoBattlefield(game,Zone.EXILED,source.getSourceId(),source.getControllerId());
+    int zoneChangeCounter=source.getSourceObjectZoneChangeCounter();
+    if (zoneChangeCounter > 0 && !(sourceObject instanceof PermanentToken)) {
+      zoneChangeCounter--;
     }
-    game.getExile().getExileZone(exileId).clear();
+    ExileZone exile=game.getExile().getExileZone(CardUtil.getExileZoneId(game,source.getSourceId(),zoneChangeCounter));
+    if (exile != null) {
+      controller.moveCards(exile,Zone.BATTLEFIELD,source,game);
+    }
     return true;
   }
   return false;
