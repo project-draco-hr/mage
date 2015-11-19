@@ -1,0 +1,14 @@
+{
+  Token token=new WallToken();
+  if (token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId())) {
+    SacrificeTargetEffect sacrificeEffect=new SacrificeTargetEffect();
+    sacrificeEffect.setTargetPointer(new FixedTarget(token.getLastAddedToken()));
+    DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(sacrificeEffect);
+    delayedAbility.setSourceId(source.getSourceId());
+    delayedAbility.setControllerId(source.getControllerId());
+    delayedAbility.setSourceObject(source.getSourceObject(game),game);
+    game.addDelayedTriggeredAbility(delayedAbility);
+    return true;
+  }
+  return false;
+}
