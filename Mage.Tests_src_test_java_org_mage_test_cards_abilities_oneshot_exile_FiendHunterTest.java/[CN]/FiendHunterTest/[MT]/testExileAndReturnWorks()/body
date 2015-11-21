@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",4);
+  addCard(Zone.HAND,playerA,"Fiend Hunter");
+  addCard(Zone.HAND,playerA,"Restoration Angel");
+  addCard(Zone.BATTLEFIELD,playerB,"Primeval Titan");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Fiend Hunter");
+  addTarget(playerA,"Primeval Titan");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Restoration Angel");
+  addTarget(playerA,"Fiend Hunter");
+  setStopAt(4,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertExileCount("Silvercoat Lion",1);
+  assertPermanentCount(playerB,"Primeval Titan",1);
+  assertPermanentCount(playerA,"Fiend Hunter",1);
+  assertPermanentCount(playerA,"Restoration Angel",1);
+}
