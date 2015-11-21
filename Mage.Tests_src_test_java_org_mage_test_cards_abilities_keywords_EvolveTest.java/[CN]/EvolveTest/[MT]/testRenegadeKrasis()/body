@@ -1,0 +1,23 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Renegade Krasis",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Ivy Lane Denizen",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",9);
+  addCard(Zone.HAND,playerA,"Ivy Lane Denizen",1);
+  addCard(Zone.HAND,playerA,"Adaptive Snapjaw",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Ivy Lane Denizen");
+  addTarget(playerA,"Ivy Lane Denizen");
+  setChoice(playerA,"Evolve");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Adaptive Snapjaw");
+  addTarget(playerA,"Adaptive Snapjaw");
+  addTarget(playerA,"Adaptive Snapjaw");
+  setChoice(playerA,"Whenever {this} evolves");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Renegade Krasis",1);
+  assertPermanentCount(playerA,"Ivy Lane Denizen",2);
+  assertPermanentCount(playerA,"Adaptive Snapjaw",1);
+  assertPowerToughness(playerA,"Adaptive Snapjaw",9,5);
+  assertPowerToughness(playerA,"Renegade Krasis",5,4);
+  assertPowerToughness(playerA,"Ivy Lane Denizen",2,3,Filter.ComparisonScope.Any);
+  assertPowerToughness(playerA,"Ivy Lane Denizen",5,6,Filter.ComparisonScope.Any);
+}

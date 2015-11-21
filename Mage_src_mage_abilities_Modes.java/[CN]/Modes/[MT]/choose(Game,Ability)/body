@@ -9,14 +9,14 @@
         }
       }
     }
-    if (this.size() == this.getMinModes()) {
+    if (this.size() == this.getMinModes() && !isEachModeMoreThanOnce()) {
       Set<UUID> onceSelectedModes=null;
       if (isEachModeOnlyOnce()) {
         onceSelectedModes=getAlreadySelectedModes(source,game);
       }
       for (      Mode mode : this.values()) {
         if ((!isEachModeOnlyOnce() || onceSelectedModes == null || !onceSelectedModes.contains(mode.getId())) && mode.getTargets().canChoose(source.getSourceId(),source.getControllerId(),game)) {
-          this.selectedModes.add(mode.getId());
+          this.selectedModes.add(mode.copy());
         }
       }
       if (isEachModeOnlyOnce()) {
@@ -38,6 +38,7 @@
       return false;
     }
     Player player=game.getPlayer(playerId);
+    this.mode=null;
     while (this.selectedModes.size() < this.getMaxModes()) {
       Mode choice=player.chooseMode(this,source,game);
       if (choice == null) {
@@ -46,15 +47,22 @@
         }
         return this.selectedModes.size() >= this.getMinModes();
       }
-      setMode(choice);
+      this.selectedModes.add(choice.copy());
+      if (mode == null) {
+        mode=choice;
+      }
     }
     if (isEachModeOnlyOnce()) {
       setAlreadySelectedModes(selectedModes,source,game);
     }
     return true;
   }
-  this.modeId=this.values().iterator().next().getId();
-  this.selectedModes.add(modeId);
+  if (mode == null) {
+    this.selectedModes.clear();
+    Mode copiedMode=this.values().iterator().next().copy();
+    this.selectedModes.add(copiedMode);
+    this.setActiveMode(copiedMode);
+  }
   if (isEachModeOnlyOnce()) {
     setAlreadySelectedModes(selectedModes,source,game);
   }

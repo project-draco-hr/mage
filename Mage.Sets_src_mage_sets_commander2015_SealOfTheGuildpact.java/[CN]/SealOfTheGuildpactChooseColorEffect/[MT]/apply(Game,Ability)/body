@@ -1,0 +1,47 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject mageObject=game.getPermanentEntering(source.getSourceId());
+  if (controller != null && mageObject != null) {
+    ChoiceColor choice1=new ChoiceColor();
+    while (!choice1.isChosen()) {
+      controller.choose(Outcome.Benefit,choice1,game);
+      if (!controller.canRespond()) {
+        return false;
+      }
+    }
+    String color1=choice1.getChoice();
+    Set<String> choices2=new HashSet<>();
+    if (!color1.equals("White")) {
+      choices2.add("White");
+    }
+    if (!color1.equals("Blue")) {
+      choices2.add("Blue");
+    }
+    if (!color1.equals("Black")) {
+      choices2.add("Black");
+    }
+    if (!color1.equals("Red")) {
+      choices2.add("Red");
+    }
+    if (!color1.equals("Green")) {
+      choices2.add("Green");
+    }
+    ChoiceColor choice2=new ChoiceColor();
+    choice2.setChoices(choices2);
+    while (!choice2.isChosen()) {
+      controller.choose(Outcome.Benefit,choice2,game);
+      if (!controller.canRespond()) {
+        return false;
+      }
+    }
+    String color2=choice2.getChoice();
+    if (!game.isSimulation()) {
+      game.informPlayers(mageObject.getLogName() + ": " + controller.getLogName()+ " has chosen "+ color1+ " and "+ color2+ ".");
+    }
+    game.getState().setValue(mageObject.getId() + "_color1",choice1.getColor());
+    game.getState().setValue(mageObject.getId() + "_color2",choice2.getColor());
+    ((Card)mageObject).addInfo("chosen colors",CardUtil.addToolTipMarkTags("Chosen colors: " + color1 + " and "+ color2),game);
+    return true;
+  }
+  return false;
+}

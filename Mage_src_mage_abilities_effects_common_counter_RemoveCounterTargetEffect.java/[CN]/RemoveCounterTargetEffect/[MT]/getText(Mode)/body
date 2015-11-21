@@ -2,10 +2,14 @@
   if (staticText != null && !staticText.isEmpty()) {
     return staticText;
   }
-  StringBuilder sb=new StringBuilder("remove ");
-  sb.append(CardUtil.numberToText(counter.getCount(),"a"));
-  sb.append(" ").append(counter.getName());
-  sb.append(counter.getCount() > 1 ? " counters from " : " counter from ");
-  sb.append(mode.getTargets().get(0).getTargetName());
-  return sb.toString();
+  String text="remove ";
+  if (counter == null) {
+    text+="a counter";
+  }
+ else {
+    text+=CardUtil.numberToText(counter.getCount(),"a") + " " + counter.getName();
+    text+=counter.getCount() > 1 ? " counters" : " counter";
+  }
+  text+=" from target " + mode.getTargets().get(0).getTargetName();
+  return text;
 }

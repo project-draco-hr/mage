@@ -1,0 +1,25 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int numberOfCards=source.getManaCostsToPay().getX();
+    if (numberOfCards > 0) {
+      int numberOfCreatureCards=0;
+      for (      UUID playerId : game.getState().getPlayersInRange(source.getControllerId(),game)) {
+        Player player=game.getPlayer(playerId);
+        if (player != null) {
+          Set<Card> movedCards=player.moveCardsToGraveyardWithInfo(player.getLibrary().getTopCards(game,numberOfCards),source,game,Zone.LIBRARY);
+          for (          Card card : movedCards) {
+            if (card.getCardType().contains(CardType.CREATURE)) {
+              numberOfCreatureCards++;
+            }
+          }
+        }
+      }
+      if (numberOfCreatureCards > 0) {
+        return new CreateTokenEffect(new ZombieToken(),numberOfCreatureCards,true,false).apply(game,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

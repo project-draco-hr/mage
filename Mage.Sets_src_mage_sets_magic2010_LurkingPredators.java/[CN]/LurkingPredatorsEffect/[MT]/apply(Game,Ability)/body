@@ -1,22 +1,21 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player == null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller == null || sourceObject == null) {
     return false;
   }
-  if (player.getLibrary().size() > 0) {
-    Card card=player.getLibrary().getFromTop(game);
-    Cards cards=new CardsImpl();
-    cards.add(card);
-    player.revealCards("Lurking Predators",cards,game);
+  if (controller.getLibrary().size() > 0) {
+    Card card=controller.getLibrary().getFromTop(game);
+    Cards cards=new CardsImpl(card);
+    controller.revealCards(sourceObject.getIdName(),cards,game);
     if (card != null) {
       if (card.getCardType().contains(CardType.CREATURE)) {
-        card=player.getLibrary().removeFromTop(game);
-        card.putOntoBattlefield(game,Zone.HAND,source.getSourceId(),source.getControllerId());
+        controller.moveCards(card,Zone.BATTLEFIELD,source,game);
       }
- else       if (player.chooseUse(Outcome.Neutral,"Put " + card.getName() + " on the bottom of your library?",source,game)) {
-        card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,false);
+ else       if (controller.chooseUse(Outcome.Neutral,"Put " + card.getIdName() + " on the bottom of your library?",source,game)) {
+        controller.putCardsOnBottomOfLibrary(cards,game,source,false);
       }
     }
   }
-  return false;
+  return true;
 }

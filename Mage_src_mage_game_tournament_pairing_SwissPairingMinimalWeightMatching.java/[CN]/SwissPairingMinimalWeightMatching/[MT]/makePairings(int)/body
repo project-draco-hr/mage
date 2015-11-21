@@ -1,0 +1,29 @@
+{
+  if (t >= n) {
+    if (minCost < 0 || minCost > weight) {
+      minCost=weight;
+      System.arraycopy(pairs,0,result,0,n);
+    }
+    return;
+  }
+  if (!used[t]) {
+    for (int i=t + 1; i < n; i++) {
+      if (!used[i]) {
+        pairs[t]=i;
+        pairs[i]=t;
+        used[t]=true;
+        used[i]=true;
+        weight+=w[t][i];
+        makePairings(t + 1);
+        pairs[t]=-1;
+        pairs[i]=-1;
+        used[t]=false;
+        used[i]=false;
+        weight-=w[t][i];
+      }
+    }
+  }
+ else {
+    makePairings(t + 1);
+  }
+}

@@ -1,0 +1,31 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    CardsImpl toReveal=new CardsImpl();
+    boolean nonLandFound=false;
+    Card nonLandCard=null;
+    while (nonLandFound && controller.getLibrary().size() > 0) {
+      nonLandCard=controller.getLibrary().removeFromTop(game);
+      toReveal.add(nonLandCard);
+      nonLandFound=nonLandCard.getCardType().contains(CardType.LAND);
+    }
+    if (!toReveal.isEmpty()) {
+      controller.revealCards(sourceObject.getIdName(),toReveal,game);
+    }
+    if (nonLandCard != null) {
+      Permanent targetCreature=game.getPermanent(this.getTargetPointer().getFirst(game,source));
+      if (targetCreature != null) {
+        targetCreature.damage(nonLandCard.getManaCost().convertedManaCost(),source.getSourceId(),game,false,true);
+      }
+ else {
+        Player targetPlayer=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+        if (targetPlayer != null) {
+          targetPlayer.damage(nonLandCard.getManaCost().convertedManaCost(),source.getSourceId(),game,false,true);
+        }
+      }
+    }
+    return controller.putCardsOnBottomOfLibrary(toReveal,game,source,true);
+  }
+  return false;
+}

@@ -8,7 +8,7 @@ switch (toZone) {
 case GRAVEYARD:
     fromZone=game.getState().getZone(cards.iterator().next().getId());
   successfulMovedCards=moveCardsToGraveyardWithInfo(cards,source,game,fromZone);
-break;
+return successfulMovedCards.size() > 0;
 case BATTLEFIELD:
 List<Permanent> permanents=new ArrayList<>();
 List<Permanent> permanentsEntered=new ArrayList<>();
@@ -51,7 +51,6 @@ permanent.updateZoneChangeCounter(game);
 game.addPermanent(permanent);
 permanent.setZone(Zone.BATTLEFIELD,game);
 game.getPermanentsEntering().remove(permanent.getId());
-game.setScopeRelevant(true);
 successfulMovedCards.add(permanent);
 game.addSimultaneousEvent(new ZoneChangeEvent(permanent,permanent.getControllerId(),fromZone,Zone.BATTLEFIELD));
 if (!game.isSimulation()) {

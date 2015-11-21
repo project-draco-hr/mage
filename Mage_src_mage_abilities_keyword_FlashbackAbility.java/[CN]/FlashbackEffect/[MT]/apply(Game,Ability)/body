@@ -6,17 +6,23 @@
       SpellAbility spellAbility;
 switch (((FlashbackAbility)source).getSpellAbilityType()) {
 case SPLIT_LEFT:
-        spellAbility=((SplitCard)card).getLeftHalfCard().getSpellAbility();
+        spellAbility=((SplitCard)card).getLeftHalfCard().getSpellAbility().copy();
       break;
 case SPLIT_RIGHT:
-    spellAbility=((SplitCard)card).getRightHalfCard().getSpellAbility();
+    spellAbility=((SplitCard)card).getRightHalfCard().getSpellAbility().copy();
   break;
 default :
-spellAbility=card.getSpellAbility();
+spellAbility=card.getSpellAbility().copy();
 }
 spellAbility.clear();
 spellAbility.getManaCostsToPay().clear();
 spellAbility.getManaCostsToPay().addAll(source.getManaCostsToPay());
+spellAbility.getCosts().clear();
+for (Cost cost : source.getCosts()) {
+if (!(cost instanceof VariableCost)) {
+spellAbility.getCosts().add(cost);
+}
+}
 if (!game.isSimulation()) {
 game.informPlayers(controller.getLogName() + " flashbacks " + card.getLogName());
 }

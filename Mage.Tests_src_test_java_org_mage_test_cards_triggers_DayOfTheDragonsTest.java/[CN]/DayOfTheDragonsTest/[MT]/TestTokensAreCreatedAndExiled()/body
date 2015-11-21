@@ -1,0 +1,21 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Pillarfield Ox",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",7);
+  addCard(Zone.HAND,playerA,"Day of the Dragons");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Shivan Dragon");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",2);
+  addCard(Zone.HAND,playerB,"Disenchant");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Day of the Dragons");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Disenchant","Day of the Dragons");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerA,"Day of the Dragons",1);
+  assertGraveyardCount(playerB,"Disenchant",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertPermanentCount(playerA,"Pillarfield Ox",1);
+  assertPermanentCount(playerA,"Dragon",0);
+  assertPermanentCount(playerB,"Silvercoat Lion",1);
+  assertPermanentCount(playerB,"Shivan Dragon",1);
+}
