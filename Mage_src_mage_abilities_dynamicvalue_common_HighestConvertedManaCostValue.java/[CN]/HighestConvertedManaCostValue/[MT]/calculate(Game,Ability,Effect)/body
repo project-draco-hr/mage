@@ -1,0 +1,15 @@
+{
+  int highCMC=0;
+  Player controller=game.getPlayer(sourceAbility.getControllerId());
+  if (controller != null) {
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(controller.getId())) {
+      if (permanent.getSpellAbility() != null) {
+        int cmc=permanent.getSpellAbility().getManaCosts().convertedManaCost();
+        if (cmc > highCMC) {
+          highCMC=cmc;
+        }
+      }
+    }
+  }
+  return highCMC;
+}
