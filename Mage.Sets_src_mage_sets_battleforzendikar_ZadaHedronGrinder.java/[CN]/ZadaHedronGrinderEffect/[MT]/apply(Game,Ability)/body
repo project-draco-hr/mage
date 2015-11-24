@@ -23,10 +23,12 @@
         Spell copy=spell.copySpell();
         setTarget:         for (        Mode mode : spell.getSpellAbility().getModes().getSelectedModes()) {
           for (          Target target : mode.getTargets()) {
-            if (target.getClass().equals(usedTarget.getClass()) && target.getMessage().equals(usedTarget.getMessage())) {
+            if (target.getClass().equals(usedTarget.getClass())) {
               target.clearChosen();
-              target.add(creature.getId(),game);
-              break setTarget;
+              if (target.getMessage().equals(usedTarget.getMessage())) {
+                target.add(creature.getId(),game);
+                break setTarget;
+              }
             }
           }
         }
