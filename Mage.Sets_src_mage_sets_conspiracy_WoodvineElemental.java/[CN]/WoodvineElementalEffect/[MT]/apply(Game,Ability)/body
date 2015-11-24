@@ -1,0 +1,11 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int parley=ParleyCount.getInstance().calculate(game,source,this);
+    if (parley > 0) {
+      game.addEffect(new BoostControlledEffect(parley,parley,Duration.EndOfTurn,new FilterAttackingCreature("Attacking creatures"),false),source);
+    }
+    return true;
+  }
+  return false;
+}
