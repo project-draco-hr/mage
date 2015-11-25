@@ -1,0 +1,26 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",9);
+  addCard(Zone.HAND,playerA,"Spelltwine");
+  addCard(Zone.GRAVEYARD,playerA,"Impulse");
+  addCard(Zone.GRAVEYARD,playerA,"Night's Whisper");
+  addCard(Zone.GRAVEYARD,playerB,"Blasphemous Act");
+  addCard(Zone.GRAVEYARD,playerB,"Divination");
+  addCard(Zone.BATTLEFIELD,playerA,"Mirari",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Spelltwine");
+  addTarget(playerA,"Impulse");
+  addTarget(playerA,"Blasphemous Act");
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"Yes");
+  addTarget(playerA,"Night's Whisper");
+  addTarget(playerA,"Divination");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertExileCount("Impulse",1);
+  assertExileCount("Blasphemous Act",1);
+  assertExileCount("Spelltwine",1);
+  assertExileCount("Night's Whisper",1);
+  assertExileCount("Divination",1);
+  assertHandCount(playerA,5);
+  assertLife(playerA,18);
+  assertLife(playerB,20);
+}
