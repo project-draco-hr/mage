@@ -1,0 +1,22 @@
+{
+  UUID defendingPlayerId;
+  Player defender=game.getPlayer(defenderId);
+  if (defender == null) {
+    Permanent permanent=game.getPermanent(defenderId);
+    if (permanent != null) {
+      defendingPlayerId=permanent.getControllerId();
+    }
+ else {
+      return false;
+    }
+  }
+ else {
+    defendingPlayerId=defenderId;
+  }
+  if (defendingPlayerId != null) {
+    return game.getBattlefield().countAll(new FilterControlledCreaturePermanent(),source.getControllerId(),game) > game.getBattlefield().countAll(new FilterControlledCreaturePermanent(),defendingPlayerId,game);
+  }
+ else {
+    return true;
+  }
+}
