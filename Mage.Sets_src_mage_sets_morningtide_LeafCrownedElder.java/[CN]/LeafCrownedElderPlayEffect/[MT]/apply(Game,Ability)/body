@@ -1,16 +1,9 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
+  Player controller=game.getPlayer(source.getControllerId());
   Card card=game.getCard(getTargetPointer().getFirst(game,source));
-  if (player != null && card != null) {
-    if (player.chooseUse(Outcome.PlayForFree,"Play " + card.getName() + " without paying its mana cost?",source,game)) {
-      if (card.getCardType().contains(CardType.LAND)) {
-        if (game.getActivePlayerId().equals(player.getId()) && player.canPlayLand()) {
-          player.playLand(card,game);
-        }
-      }
- else {
-        player.cast(card.getSpellAbility(),game,true);
-      }
+  if (controller != null && card != null) {
+    if (controller.chooseUse(Outcome.PlayForFree,"Play " + card.getIdName() + " without paying its mana cost?",source,game)) {
+      controller.playCard(card,game,true,true);
     }
     return true;
   }

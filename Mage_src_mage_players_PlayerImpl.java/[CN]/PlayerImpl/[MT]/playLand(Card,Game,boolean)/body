@@ -23,6 +23,14 @@
   if (!playLandAbility.canActivate(this.playerId,game)) {
     return false;
   }
+  if (ignoreTiming) {
+    if (!game.getActivePlayerId().equals(playerId)) {
+      return false;
+    }
+  }
+ else   if (!game.canPlaySorcery(playerId)) {
+    return false;
+  }
   if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.PLAY_LAND,card.getId(),card.getId(),playerId))) {
     if (moveCards(card,Zone.BATTLEFIELD,playLandAbility,game,false,false,false,null)) {
       landsPlayed++;
