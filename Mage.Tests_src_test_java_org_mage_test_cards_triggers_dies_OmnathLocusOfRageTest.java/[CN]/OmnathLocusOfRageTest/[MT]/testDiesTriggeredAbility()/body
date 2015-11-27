@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Omnath, Locus of Rage",1);
+  addCard(Zone.HAND,playerB,"Diabolic Edict",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Diabolic Edict",playerA);
+  addTarget(playerA,playerB);
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Diabolic Edict",1);
+  assertGraveyardCount(playerA,"Omnath, Locus of Rage",1);
+  assertLife(playerA,20);
+  assertLife(playerB,17);
+}
