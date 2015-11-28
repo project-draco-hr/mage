@@ -6,33 +6,9 @@
   if (target.getAbilityController() != null) {
     abilityControllerId=target.getAbilityController();
   }
-  UUID opponentId=game.getOpponents(abilityControllerId).iterator().next();
+  UUID randomOpponentId=getRandomOpponent(abilityControllerId,game);
   if (target instanceof TargetPlayer) {
-    if (outcome.isGood()) {
-      if (target.canTarget(abilityControllerId,abilityControllerId,source,game)) {
-        target.addTarget(playerId,source,game);
-        return true;
-      }
-      if (target.isRequired(source)) {
-        if (target.canTarget(abilityControllerId,opponentId,source,game)) {
-          target.addTarget(opponentId,source,game);
-          return true;
-        }
-      }
-    }
- else {
-      if (target.canTarget(abilityControllerId,opponentId,source,game)) {
-        target.addTarget(opponentId,source,game);
-        return true;
-      }
-      if (target.isRequired(source)) {
-        if (target.canTarget(abilityControllerId,abilityControllerId,source,game)) {
-          target.addTarget(abilityControllerId,source,game);
-          return true;
-        }
-      }
-    }
-    return false;
+    return setTargetPlayer(outcome,target,source,source.getSourceId(),abilityControllerId,randomOpponentId,game);
   }
   if (target instanceof TargetDiscard || target instanceof TargetCardInHand) {
     if (outcome.isGood()) {
@@ -99,7 +75,7 @@
       targets=threats(abilityControllerId,source == null ? null : source.getSourceId(),((TargetPermanent)target).getFilter(),game,target.getTargets());
     }
  else {
-      targets=threats(opponentId,source == null ? null : source.getSourceId(),((TargetPermanent)target).getFilter(),game,target.getTargets());
+      targets=threats(randomOpponentId,source == null ? null : source.getSourceId(),((TargetPermanent)target).getFilter(),game,target.getTargets());
     }
     if (targets.isEmpty() && target.isRequired(source)) {
       targets=threats(null,source == null ? null : source.getSourceId(),((TargetPermanent)target).getFilter(),game,target.getTargets());
@@ -123,7 +99,7 @@
       targets=threats(abilityControllerId,source.getSourceId(),((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
     }
  else {
-      targets=threats(opponentId,source.getSourceId(),((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
+      targets=threats(randomOpponentId,source.getSourceId(),((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
     }
     if (targets.isEmpty()) {
       if (outcome.isGood()) {
@@ -133,8 +109,8 @@
         }
       }
  else {
-        if (target.canTarget(getId(),opponentId,source,game)) {
-          target.addTarget(opponentId,source,game);
+        if (target.canTarget(getId(),randomOpponentId,source,game)) {
+          target.addTarget(randomOpponentId,source,game);
           return true;
         }
       }
@@ -158,8 +134,8 @@
       }
     }
  else {
-      if (target.canTarget(getId(),opponentId,source,game)) {
-        target.addTarget(opponentId,source,game);
+      if (target.canTarget(getId(),randomOpponentId,source,game)) {
+        target.addTarget(randomOpponentId,source,game);
         return true;
       }
     }
@@ -216,7 +192,7 @@
       targets=threats(abilityControllerId,source == null ? null : source.getSourceId(),((TargetSpellOrPermanent)target).getPermanentFilter(),game,target.getTargets());
     }
  else {
-      targets=threats(opponentId,source == null ? null : source.getSourceId(),((TargetSpellOrPermanent)target).getPermanentFilter(),game,target.getTargets());
+      targets=threats(randomOpponentId,source == null ? null : source.getSourceId(),((TargetSpellOrPermanent)target).getPermanentFilter(),game,target.getTargets());
     }
     if (targets.isEmpty() && target.isRequired(source)) {
       targets=threats(null,source == null ? null : source.getSourceId(),((TargetSpellOrPermanent)target).getPermanentFilter(),game,target.getTargets());
@@ -262,7 +238,7 @@
   }
   if (target instanceof TargetDefender) {
     List<Permanent> targets;
-    targets=game.getBattlefield().getActivePermanents(new FilterPlaneswalkerPermanent(),opponentId,game);
+    targets=game.getBattlefield().getActivePermanents(new FilterPlaneswalkerPermanent(),randomOpponentId,game);
     if (targets != null && !targets.isEmpty()) {
       for (      Permanent planeswalker : targets) {
         if (target.canTarget(getId(),planeswalker.getId(),source,game)) {
@@ -274,8 +250,8 @@
       }
     }
     if (!target.isChosen()) {
-      if (target.canTarget(getId(),opponentId,source,game)) {
-        target.addTarget(opponentId,source,game);
+      if (target.canTarget(getId(),randomOpponentId,source,game)) {
+        target.addTarget(randomOpponentId,source,game);
       }
     }
     return target.isChosen();

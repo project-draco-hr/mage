@@ -6,33 +6,9 @@
   if (target.getTargetController() != null && target.getAbilityController() != null) {
     abilityControllerId=target.getAbilityController();
   }
-  UUID opponentId=game.getOpponents(abilityControllerId).iterator().next();
+  UUID randomOpponentId=getRandomOpponent(abilityControllerId,game);
   if (target instanceof TargetPlayer) {
-    if (outcome.isGood()) {
-      if (target.canTarget(abilityControllerId,game)) {
-        target.add(abilityControllerId,game);
-        return true;
-      }
-      if (target.isRequired(sourceId,game)) {
-        if (target.canTarget(opponentId,game)) {
-          target.add(opponentId,game);
-          return true;
-        }
-      }
-    }
- else {
-      if (target.canTarget(opponentId,game)) {
-        target.add(opponentId,game);
-        return true;
-      }
-      if (target.isRequired(sourceId,game)) {
-        if (target.canTarget(abilityControllerId,game)) {
-          target.add(abilityControllerId,game);
-          return true;
-        }
-      }
-    }
-    return false;
+    return setTargetPlayer(outcome,target,null,sourceId,abilityControllerId,randomOpponentId,game);
   }
   if (target instanceof TargetDiscard) {
     findPlayables(game);
@@ -82,14 +58,14 @@
         targets=threats(abilityControllerId,sourceId,((TargetPermanent)target).getFilter(),game,target.getTargets());
       }
  else {
-        targets=threats(opponentId,sourceId,((TargetPermanent)target).getFilter(),game,target.getTargets());
+        targets=threats(randomOpponentId,sourceId,((TargetPermanent)target).getFilter(),game,target.getTargets());
       }
       if (targets.isEmpty() && target.isRequired()) {
         if (!outcome.isGood()) {
           targets=threats(abilityControllerId,sourceId,((TargetPermanent)target).getFilter(),game,target.getTargets());
         }
  else {
-          targets=threats(opponentId,sourceId,((TargetPermanent)target).getFilter(),game,target.getTargets());
+          targets=threats(randomOpponentId,sourceId,((TargetPermanent)target).getFilter(),game,target.getTargets());
         }
       }
     }
@@ -135,7 +111,7 @@
       targets=threats(abilityControllerId,sourceId,((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
     }
  else {
-      targets=threats(opponentId,sourceId,((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
+      targets=threats(randomOpponentId,sourceId,((FilterCreatureOrPlayer)t.getFilter()).getCreatureFilter(),game,target.getTargets());
     }
     for (    Permanent permanent : targets) {
       List<UUID> alreadyTargetted=target.getTargets();
@@ -153,8 +129,8 @@
       }
     }
  else {
-      if (target.canTarget(opponentId,null,game)) {
-        target.add(opponentId,game);
+      if (target.canTarget(randomOpponentId,null,game)) {
+        target.add(randomOpponentId,game);
         return true;
       }
     }
@@ -166,8 +142,7 @@
     List<Permanent> targets;
     TargetPermanentOrPlayer t=((TargetPermanentOrPlayer)target);
     List<Permanent> ownedTargets=threats(abilityControllerId,sourceId,((FilterPermanentOrPlayer)t.getFilter()).getPermanentFilter(),game,target.getTargets());
-    ;
-    List<Permanent> opponentTargets=threats(opponentId,sourceId,((FilterPermanentOrPlayer)t.getFilter()).getPermanentFilter(),game,target.getTargets());
+    List<Permanent> opponentTargets=threats(randomOpponentId,sourceId,((FilterPermanentOrPlayer)t.getFilter()).getPermanentFilter(),game,target.getTargets());
     if (outcome.isGood()) {
       targets=ownedTargets;
     }
@@ -190,16 +165,16 @@
       }
     }
  else {
-      if (target.canTarget(opponentId,null,game)) {
-        target.add(opponentId,game);
+      if (target.canTarget(randomOpponentId,null,game)) {
+        target.add(randomOpponentId,game);
         return true;
       }
     }
     if (!target.isRequired(sourceId,game) || target.getNumberOfTargets() == 0) {
       return false;
     }
-    if (target.canTarget(opponentId,null,game)) {
-      target.add(opponentId,game);
+    if (target.canTarget(randomOpponentId,null,game)) {
+      target.add(randomOpponentId,game);
       return true;
     }
     if (target.canTarget(abilityControllerId,null,game)) {
