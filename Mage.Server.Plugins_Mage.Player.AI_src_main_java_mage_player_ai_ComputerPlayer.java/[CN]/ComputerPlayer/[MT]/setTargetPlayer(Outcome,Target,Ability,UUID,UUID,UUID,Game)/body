@@ -1,0 +1,87 @@
+{
+  if (target instanceof TargetOpponent) {
+    if (source == null) {
+      if (((TargetOpponent)target).canTarget(randomOpponentId,game)) {
+        target.add(randomOpponentId,game);
+        return true;
+      }
+    }
+ else {
+      if (((TargetOpponent)target).canTarget(randomOpponentId,source,game)) {
+        target.add(randomOpponentId,game);
+        return true;
+      }
+    }
+    for (    UUID currentId : game.getOpponents(abilityControllerId)) {
+      if (source == null) {
+        if (((TargetOpponent)target).canTarget(currentId,game)) {
+          target.add(currentId,game);
+          return true;
+        }
+      }
+ else {
+        if (((TargetOpponent)target).canTarget(currentId,source,game)) {
+          target.add(currentId,game);
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  if (target instanceof TargetPlayer) {
+    if (outcome.isGood()) {
+      if (source == null) {
+        if (target.canTarget(abilityControllerId,game)) {
+          target.add(abilityControllerId,game);
+          return true;
+        }
+        if (target.isRequired(sourceId,game)) {
+          if (target.canTarget(randomOpponentId,game)) {
+            target.add(randomOpponentId,game);
+            return true;
+          }
+        }
+      }
+ else {
+        if (target.canTarget(abilityControllerId,abilityControllerId,source,game)) {
+          target.addTarget(playerId,source,game);
+          return true;
+        }
+        if (target.isRequired(sourceId,game)) {
+          if (target.canTarget(randomOpponentId,game)) {
+            target.add(randomOpponentId,game);
+            return true;
+          }
+        }
+      }
+    }
+ else {
+      if (source == null) {
+        if (target.canTarget(randomOpponentId,game)) {
+          target.add(randomOpponentId,game);
+          return true;
+        }
+        if (target.isRequired(sourceId,game)) {
+          if (target.canTarget(abilityControllerId,game)) {
+            target.add(abilityControllerId,game);
+            return true;
+          }
+        }
+      }
+ else {
+        if (target.canTarget(randomOpponentId,game)) {
+          target.add(randomOpponentId,game);
+          return true;
+        }
+        if (target.isRequired(sourceId,game)) {
+          if (target.canTarget(abilityControllerId,game)) {
+            target.add(abilityControllerId,game);
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+  return false;
+}

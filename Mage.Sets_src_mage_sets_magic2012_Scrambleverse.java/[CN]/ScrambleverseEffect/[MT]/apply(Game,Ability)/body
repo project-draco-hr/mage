@@ -1,14 +1,12 @@
 {
   Random random=new Random();
-  PlayerList players=game.getPlayerList();
+  PlayerList players=game.getState().getPlayersInRange(source.getControllerId(),game);
   int count=players.size();
-  if (count > 1) {
-    FilterNonlandPermanent nonLand=new FilterNonlandPermanent();
-    for (    Permanent permanent : game.getBattlefield().getActivePermanents(nonLand,source.getControllerId(),source.getSourceId(),game)) {
-      ContinuousEffect effect=new ScrambleverseControlEffect(players.get(random.nextInt(count)));
-      effect.setTargetPointer(new FixedTarget(permanent.getId()));
-      game.addEffect(effect,source);
-    }
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(new FilterNonlandPermanent(),source.getControllerId(),source.getSourceId(),game)) {
+    ContinuousEffect effect=new GainControlTargetEffect(Duration.Custom,true,players.get(random.nextInt(count)));
+    effect.setTargetPointer(new FixedTarget(permanent.getId()));
+    game.addEffect(effect,source);
+    permanent.untap(game);
   }
   return true;
 }

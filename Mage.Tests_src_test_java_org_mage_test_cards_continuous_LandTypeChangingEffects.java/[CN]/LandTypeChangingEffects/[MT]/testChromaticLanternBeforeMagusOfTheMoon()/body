@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerA,"Magus of the Moon");
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
+  addCard(Zone.BATTLEFIELD,playerB,"Canopy Vista",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",2);
+  addCard(Zone.HAND,playerB,"Chromatic Lantern");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Chromatic Lantern");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Magus of the Moon");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerB,"Chromatic Lantern",1);
+  assertPermanentCount(playerA,"Magus of the Moon",1);
+  assertType("Canopy Vista",CardType.LAND,"Mountain");
+  assertAbility(playerB,"Canopy Vista",new AnyColorManaAbility(),true);
+}

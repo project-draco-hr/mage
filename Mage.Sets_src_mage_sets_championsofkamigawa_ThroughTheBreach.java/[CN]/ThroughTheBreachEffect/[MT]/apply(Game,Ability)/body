@@ -6,14 +6,14 @@
       if (controller.choose(Outcome.PutCreatureInPlay,target,source.getSourceId(),game)) {
         Card card=game.getCard(target.getFirstTarget());
         if (card != null) {
-          if (controller.putOntoBattlefieldWithInfo(card,game,Zone.HAND,source.getSourceId())) {
+          if (controller.moveCards(card,Zone.BATTLEFIELD,source,game)) {
             Permanent permanent=game.getPermanent(card.getId());
             if (permanent != null) {
               ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.Custom);
-              effect.setTargetPointer(new FixedTarget(permanent.getId()));
+              effect.setTargetPointer(new FixedTarget(permanent,game));
               game.addEffect(effect,source);
-              SacrificeTargetEffect sacrificeEffect=new SacrificeTargetEffect("sacrifice " + card.getName());
-              sacrificeEffect.setTargetPointer(new FixedTarget(card.getId()));
+              SacrificeTargetEffect sacrificeEffect=new SacrificeTargetEffect("sacrifice " + card.getName(),source.getControllerId());
+              sacrificeEffect.setTargetPointer(new FixedTarget(permanent,game));
               DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(sacrificeEffect);
               delayedAbility.setSourceId(source.getSourceId());
               delayedAbility.setControllerId(source.getControllerId());

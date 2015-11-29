@@ -1,6 +1,7 @@
 {
   Player targetController=game.getPlayer(targetControllerId);
   if (targetController != null) {
+    StringBuilder oldTargetDescription=new StringBuilder();
     StringBuilder newTargetDescription=new StringBuilder();
     Abilities<Ability> objectAbilities=new AbilitiesImpl<>();
     if (this instanceof Spell) {
@@ -10,8 +11,9 @@
       objectAbilities.addAll(getAbilities());
     }
     for (    Ability ability : objectAbilities) {
-      for (      UUID modeId : ability.getModes().getSelectedModes()) {
-        Mode mode=ability.getModes().get(modeId);
+      for (      Mode mode : ability.getModes().getSelectedModes()) {
+        ability.getModes().setActiveMode(mode);
+        oldTargetDescription.append(ability.getTargetDescription(mode.getTargets(),game));
         for (        Target target : mode.getTargets()) {
           Target newTarget=chooseNewTarget(targetController,ability,mode,target,forceChange,filterNewTarget,game);
           target.clearChosen();
@@ -22,7 +24,7 @@
         newTargetDescription.append(ability.getTargetDescription(mode.getTargets(),game));
       }
     }
-    if (newTargetDescription.length() > 0 && !game.isSimulation()) {
+    if (!newTargetDescription.toString().equals(oldTargetDescription.toString()) && !game.isSimulation()) {
       game.informPlayers(this.getLogName() + " is now " + newTargetDescription.toString());
     }
     return true;

@@ -1,19 +1,18 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
-    player.revealCards("Manabond",player.getHand(),game);
-    Cards hand=player.getHand().copy();
-    for (    UUID uuid : hand) {
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    controller.revealCards(sourceObject.getIdName(),controller.getHand(),game);
+    Set<Card> toBattlefield=new LinkedHashSet<>();
+    for (    UUID uuid : controller.getHand()) {
       Card card=game.getCard(uuid);
-      if (card != null) {
-        if (card.getCardType().contains(CardType.LAND)) {
-          card.moveToZone(Zone.BATTLEFIELD,source.getSourceId(),game,false);
-        }
- else {
-          player.discard(card,source,game);
-        }
+      if (card != null && card.getCardType().contains(CardType.LAND)) {
+        toBattlefield.add(card);
       }
     }
+    controller.moveCards(toBattlefield,Zone.BATTLEFIELD,source,game,false,false,true,null);
+    controller.discard(controller.getHand().size(),false,source,game);
+    return true;
   }
   return false;
 }

@@ -1,0 +1,21 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",5);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.HAND,playerA,"Stormfront Riders");
+  addCard(Zone.HAND,playerA,"Lab Rats");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.HAND,playerB,"Boomerang",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Stormfront Riders");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lab Rats");
+  setChoice(playerA,"No");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Boomerang","Rat");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Stormfront Riders",1);
+  assertHandCount(playerA,"Silvercoat Lion",2);
+  assertGraveyardCount(playerA,"Lab Rats",1);
+  assertGraveyardCount(playerB,"Boomerang",1);
+  assertPermanentCount(playerA,"Soldier",3);
+  assertPermanentCount(playerA,"Rat",0);
+}

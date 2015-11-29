@@ -1,0 +1,29 @@
+{
+  addCard(Zone.GRAVEYARD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",5);
+  addCard(Zone.BATTLEFIELD,playerB,"Kiki-Jiki, Mirror Breaker",1);
+  addCard(Zone.HAND,playerB,"Body Double",1);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Body Double");
+  setChoice(playerB,"Silvercoat Lion");
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerB,"{T}: Put a token that's a copy of target nonlegendary creature you control onto the battlefield. That token has haste. Sacrifice it at the beginning of the next end step.");
+  attack(2,playerB,"Silvercoat Lion");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertGraveyardCount(playerA,"Silvercoat Lion",1);
+  assertPermanentCount(playerB,"Silvercoat Lion",2);
+  Permanent kikiCopy=null;
+  for (  Permanent permanent : currentGame.getState().getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),currentGame)) {
+    if (permanent.getName().equals("Silvercoat Lion") && (permanent instanceof PermanentToken)) {
+      kikiCopy=permanent;
+      break;
+    }
+  }
+  if (kikiCopy != null) {
+    Assert.assertEquals("Has to have haste",kikiCopy.getAbilities(currentGame).containsClass(HasteAbility.class),true);
+  }
+ else {
+    Assert.assertEquals("Silvercoat Lion copied by Kiki is missing",kikiCopy != null,true);
+  }
+  assertLife(playerA,18);
+  assertLife(playerB,20);
+}

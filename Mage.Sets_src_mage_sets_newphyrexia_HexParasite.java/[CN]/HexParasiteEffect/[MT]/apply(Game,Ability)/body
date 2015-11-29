@@ -10,6 +10,7 @@
       if (player.chooseUse(Outcome.Neutral,"Do you want to remove " + counterName + " counters?",source,game)) {
         if (permanent.getCounters().get(counterName).getCount() == 1 || toRemove == 1) {
           permanent.getCounters().removeCounter(counterName,1);
+          removed++;
         }
  else {
           int amount=player.getAmount(1,Math.min(permanent.getCounters().get(counterName).getCount(),toRemove - removed),"How many?",game);
@@ -19,7 +20,9 @@
           }
         }
       }
-      if (removed >= toRemove)       break;
+      if (removed >= toRemove) {
+        break;
+      }
     }
     game.addEffect(new BoostSourceEffect(removed,0,Duration.EndOfTurn),source);
     return true;

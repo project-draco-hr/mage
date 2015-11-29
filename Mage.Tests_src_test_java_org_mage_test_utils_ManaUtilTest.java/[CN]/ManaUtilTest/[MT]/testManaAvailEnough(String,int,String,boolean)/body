@@ -1,0 +1,12 @@
+{
+  ManaCost unpaid=new ManaCostsImpl(manaCostsToPay);
+  ManaCost costAvailable=new ManaCostsImpl(available);
+  Mana manaAvailable=costAvailable.getMana();
+  manaAvailable.setAny(availablyAny);
+  if (expected) {
+    Assert.assertTrue("The available Mana " + costAvailable.getText() + " should be enough to pay the costs "+ unpaid.getText(),unpaid.getMana().enough(manaAvailable));
+  }
+ else {
+    Assert.assertFalse("The available Mana " + costAvailable.getText() + " shouldn't be enough to pay the costs "+ unpaid.getText(),unpaid.getMana().enough(manaAvailable));
+  }
+}

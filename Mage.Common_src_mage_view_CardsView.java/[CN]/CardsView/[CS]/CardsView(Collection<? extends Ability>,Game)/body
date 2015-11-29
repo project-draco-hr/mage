@@ -9,8 +9,11 @@ case ALL:
 case EXILED:
 case GRAVEYARD:
       sourceObject=game.getCard(ability.getSourceId());
-    isCard=true;
-  break;
+    if (sourceObject == null) {
+      sourceObject=game.getPermanent(ability.getSourceId());
+    }
+  isCard=true;
+break;
 case BATTLEFIELD:
 sourceObject=game.getPermanent(ability.getSourceId());
 if (sourceObject == null) {
@@ -76,6 +79,9 @@ List<String> names=new ArrayList<>();
 for (UUID uuid : abilityTargets) {
 MageObject mageObject=game.getObject(uuid);
 if (mageObject != null) {
+if ((mageObject instanceof Card) && ((Card)mageObject).isFaceDown(game)) {
+continue;
+}
 names.add(GameLog.getColoredObjectIdNameForTooltip(mageObject));
 }
 }

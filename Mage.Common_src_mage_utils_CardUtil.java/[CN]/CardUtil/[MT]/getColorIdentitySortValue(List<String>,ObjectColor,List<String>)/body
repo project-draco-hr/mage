@@ -1,0 +1,28 @@
+{
+  ObjectColor color=new ObjectColor(originalColor);
+  for (  String rule : rules) {
+    rule=rule.replaceAll("(?i)<i.*?</i>","");
+    if (rule.matches(regexBlack)) {
+      color.setBlack(true);
+    }
+    if (rule.matches(regexBlue)) {
+      color.setBlue(true);
+    }
+    if (rule.matches(regexGreen)) {
+      color.setGreen(true);
+    }
+    if (rule.matches(regexRed)) {
+      color.setRed(true);
+    }
+    if (rule.matches(regexWhite)) {
+      color.setWhite(true);
+    }
+  }
+  int hash=3;
+  hash=23 * hash + (color.isWhite() || manaCost.contains("{W}") ? 1 : 0);
+  hash=23 * hash + (color.isBlue() || manaCost.contains("{U}") ? 1 : 0);
+  hash=23 * hash + (color.isBlack() || manaCost.contains("{B}") ? 1 : 0);
+  hash=23 * hash + (color.isRed() || manaCost.contains("{R}") ? 1 : 0);
+  hash=23 * hash + (color.isGreen() || manaCost.contains("{G}") ? 1 : 0);
+  return hash;
+}

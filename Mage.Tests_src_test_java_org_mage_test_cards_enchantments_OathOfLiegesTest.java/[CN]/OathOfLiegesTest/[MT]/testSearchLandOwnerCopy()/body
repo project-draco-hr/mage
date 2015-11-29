@@ -1,0 +1,25 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.HAND,playerA,"Oath of Lieges",1);
+  addCard(Zone.LIBRARY,playerA,"Plains",3);
+  addCard(Zone.HAND,playerA,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",3);
+  addCard(Zone.HAND,playerB,"Copy Enchantment",1);
+  addCard(Zone.LIBRARY,playerB,"Plains",3);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Oath of Lieges");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Copy Enchantment");
+  setChoice(playerB,"Oath of Lieges");
+  addTarget(playerA,playerB);
+  addTarget(playerA,"Plains");
+  addTarget(playerA,"Plains");
+  playLand(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Plains");
+  addTarget(playerB,playerA);
+  addTarget(playerB,"Plains");
+  addTarget(playerB,"Plains");
+  setStopAt(4,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerB,"Oath of Lieges",1);
+  assertPermanentCount(playerA,"Oath of Lieges",1);
+  assertPermanentCount(playerB,"Plains",1);
+  assertPermanentCount(playerA,"Plains",4);
+}

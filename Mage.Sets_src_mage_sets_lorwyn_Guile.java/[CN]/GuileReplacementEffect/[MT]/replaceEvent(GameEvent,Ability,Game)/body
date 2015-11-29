@@ -1,13 +1,15 @@
 {
   Spell spell=game.getStack().getSpell(event.getTargetId());
-  Player guileController=game.getPlayer(source.getControllerId());
-  if (spell != null && guileController != null) {
-    Card spellCard=spell.getCard();
-    guileController.moveCardToExileWithInfo(spellCard,null,"",source.getSourceId(),game,Zone.STACK,true);
-    if (guileController.chooseUse(Outcome.PlayForFree,"Cast that card for free?",source,game)) {
-      guileController.cast(spellCard.getSpellAbility(),game,true);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (spell != null && controller != null) {
+    controller.moveCards(spell,Zone.EXILED,source,game);
+    if (!spell.isCopy()) {
+      Card spellCard=spell.getCard();
+      if (spellCard != null && controller.chooseUse(Outcome.PlayForFree,"Cast " + spellCard.getIdName() + " for free?",source,game)) {
+        controller.playCard(spellCard,game,true,true);
+      }
+      return true;
     }
-    return true;
   }
   return false;
 }

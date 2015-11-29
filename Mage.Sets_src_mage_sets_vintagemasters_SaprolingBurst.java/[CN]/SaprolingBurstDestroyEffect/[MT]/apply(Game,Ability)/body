@@ -1,0 +1,13 @@
+{
+  Object object=game.getState().getValue(cardZoneString);
+  if (object != null) {
+    Set<UUID> tokensCreated=(Set<UUID>)object;
+    for (    UUID tokenId : tokensCreated) {
+      Permanent token=game.getPermanent(tokenId);
+      if (token != null) {
+        token.destroy(source.getSourceId(),game,true);
+      }
+    }
+  }
+  return true;
+}

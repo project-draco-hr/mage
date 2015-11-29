@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Phyrexian Devourer");
+  addCard(Zone.LIBRARY,playerA,"Phyrexian Devourer");
+  skipInitShuffling();
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  attack(2,playerB,"Silvercoat Lion");
+  block(2,playerA,"Phyrexian Devourer","Silvercoat Lion");
+  activateAbility(2,PhaseStep.DECLARE_BLOCKERS,playerA,"Exile the top card of your library");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertGraveyardCount(playerA,"Phyrexian Devourer",1);
+  assertExileCount("Phyrexian Devourer",1);
+  assertPermanentCount(playerB,"Silvercoat Lion",1);
+}

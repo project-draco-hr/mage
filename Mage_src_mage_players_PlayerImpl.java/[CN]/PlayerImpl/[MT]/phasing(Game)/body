@@ -1,6 +1,12 @@
 {
   List<Permanent> phasedOut=game.getBattlefield().getPhasedOut(playerId);
   for (  Permanent permanent : game.getBattlefield().getPhasedIn(playerId)) {
+    for (    UUID attachmentId : permanent.getAttachments()) {
+      Permanent attachment=game.getPermanent(attachmentId);
+      if (attachment != null) {
+        attachment.phaseOut(game);
+      }
+    }
     permanent.phaseOut(game);
   }
   for (  Permanent permanent : phasedOut) {

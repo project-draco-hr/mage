@@ -3,8 +3,13 @@
   if (modes.getMode() != null && modes.getMaxModes() == modes.getSelectedModes().size()) {
     return modes.getMode();
   }
-  for (  Mode mode : modes.getAvailableModes(source,game)) {
-    if (!modes.getSelectedModes().contains(mode.getId()) && mode.getTargets().canChoose(source.getSourceId(),source.getControllerId(),game)) {
+  AvailableMode:   for (  Mode mode : modes.getAvailableModes(source,game)) {
+    for (    Mode selectedMode : modes.getSelectedModes()) {
+      if (selectedMode.getId().equals(mode.getId())) {
+        continue AvailableMode;
+      }
+    }
+    if (mode.getTargets().canChoose(source.getSourceId(),source.getControllerId(),game)) {
       return mode;
     }
   }

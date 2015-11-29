@@ -1,0 +1,25 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",15);
+  addCard(Zone.HAND,playerA,"Kozilek, Butcher of Truth");
+  addCard(Zone.HAND,playerA,"Unholy Hunger");
+  addCard(Zone.GRAVEYARD,playerA,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",4);
+  addCard(Zone.HAND,playerB,"Control Magic",1);
+  addCard(Zone.GRAVEYARD,playerB,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Kozilek, Butcher of Truth");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Control Magic","Kozilek, Butcher of Truth");
+  castSpell(2,PhaseStep.POSTCOMBAT_MAIN,playerA,"Unholy Hunger","Kozilek, Butcher of Truth");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Kozilek, Butcher of Truth",0);
+  assertPermanentCount(playerB,"Kozilek, Butcher of Truth",0);
+  assertLife(playerA,20);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+  assertHandCount(playerB,"Control Magic",0);
+  assertGraveyardCount(playerB,"Control Magic",1);
+  assertGraveyardCount(playerA,"Kozilek, Butcher of Truth",0);
+  assertHandCount(playerA,"Kozilek, Butcher of Truth",0);
+  assertGraveyardCount(playerA,"Silvercoat Lion",0);
+  assertGraveyardCount(playerA,"Unholy Hunger",0);
+  assertHandCount(playerA,4);
+}

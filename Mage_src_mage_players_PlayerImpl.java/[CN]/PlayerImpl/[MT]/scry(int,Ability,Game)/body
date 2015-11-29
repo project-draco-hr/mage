@@ -1,0 +1,21 @@
+{
+  game.informPlayers(getLogName() + " scries " + value);
+  Cards cards=new CardsImpl();
+  cards.addAll(getLibrary().getTopCards(game,value));
+  if (!cards.isEmpty()) {
+    String text;
+    if (cards.size() == 1) {
+      text="card if you want to put it to the bottom of your library (Scry)";
+    }
+ else {
+      text="cards you want to put on the bottom of your library (Scry)";
+    }
+    TargetCard target=new TargetCard(0,cards.size(),Zone.LIBRARY,new FilterCard(text));
+    chooseTarget(Outcome.Benefit,cards,target,source,game);
+    putCardsOnBottomOfLibrary(new CardsImpl(target.getTargets()),game,source,true);
+    cards.removeAll(target.getTargets());
+    putCardsOnTopOfLibrary(cards,game,source,true);
+  }
+  game.fireEvent(new GameEvent(GameEvent.EventType.SCRY,getId(),source == null ? null : source.getSourceId(),getId(),value,true));
+  return true;
+}

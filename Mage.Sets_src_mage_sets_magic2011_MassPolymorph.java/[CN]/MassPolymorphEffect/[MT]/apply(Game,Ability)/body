@@ -1,31 +1,31 @@
 {
-  int count;
-  List<Permanent> creatures=game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game);
-  count=creatures.size();
-  for (  Permanent creature : creatures) {
-    creature.moveToExile(null,null,source.getSourceId(),game);
-  }
-  Cards revealed=new CardsImpl();
-  Cards creatureCards=new CardsImpl();
-  Cards nonCreatureCards=new CardsImpl();
-  Player player=game.getPlayer(source.getControllerId());
-  while (creatureCards.size() < count && player.getLibrary().size() > 0) {
-    Card card=player.getLibrary().removeFromTop(game);
-    revealed.add(card);
-    if (card.getCardType().contains(CardType.CREATURE)) {
-      creatureCards.add(card);
-    }
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    int count;
+    List<Permanent> creatures=game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game);
+    Set<Card> creaturesToExile=new HashSet<>();
+    creaturesToExile.addAll(creatures);
+    count=creatures.size();
+    controller.moveCards(creaturesToExile,Zone.HAND,source,game);
+    Cards revealed=new CardsImpl();
+    Set<Card> creatureCards=new LinkedHashSet<>();
+    Cards nonCreatureCards=new CardsImpl();
+    while (creatureCards.size() < count && controller.getLibrary().size() > 0) {
+      Card card=controller.getLibrary().removeFromTop(game);
+      revealed.add(card);
+      if (card.getCardType().contains(CardType.CREATURE)) {
+        creatureCards.add(card);
+      }
  else {
-      nonCreatureCards.add(card);
+        nonCreatureCards.add(card);
+      }
     }
+    controller.revealCards(sourceObject.getIdName(),revealed,game);
+    controller.moveCards(creatureCards,Zone.BATTLEFIELD,source,game,false,false,true,null);
+    controller.putCardsOnTopOfLibrary(nonCreatureCards,game,source,false);
+    controller.shuffleLibrary(game);
+    return true;
   }
-  player.revealCards("Mass Polymorph",revealed,game);
-  for (  Card creatureCard : creatureCards.getCards(game)) {
-    creatureCard.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),source.getControllerId());
-  }
-  for (  Card card : nonCreatureCards.getCards(game)) {
-    player.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.GRAVEYARD,true,true);
-  }
-  player.shuffleLibrary(game);
-  return true;
+  return false;
 }

@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Void Attendant");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",3);
+  addCard(Zone.HAND,playerA,"Stasis Snare",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Stasis Snare");
+  addTarget(playerA,"Silvercoat Lion");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{1}{G},",NO_TARGET,"");
+  addTarget(playerA,"Silvercoat Lion");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Stasis Snare",1);
+  assertPermanentCount(playerB,"Silvercoat Lion",0);
+  assertExileCount(playerB,0);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+  assertPermanentCount(playerA,"Eldrazi Scion",1);
+}

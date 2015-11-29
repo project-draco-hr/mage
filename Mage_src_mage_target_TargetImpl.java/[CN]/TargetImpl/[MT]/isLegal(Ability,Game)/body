@@ -19,8 +19,13 @@
   for (  UUID targetId : illegalTargets) {
     targets.remove(targetId);
   }
-  if (getNumberOfTargets() == 0 && targets.isEmpty()) {
-    return true;
+  if (targets.isEmpty()) {
+    if (!illegalTargets.isEmpty()) {
+      return false;
+    }
+    if (getNumberOfTargets() == 0) {
+      return true;
+    }
   }
   return targets.size() > 0;
 }

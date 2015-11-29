@@ -1,8 +1,18 @@
 {
   Permanent attachment=game.getPermanent(source.getSourceId());
   if (attachment != null && event.getTargetId().equals(attachment.getAttachedTo())) {
-    StackObject sourceObject=game.getStack().getStackObject(event.getSourceId());
-    if (sourceObject != null && filterSource.match(sourceObject,source.getControllerId(),game)) {
+    if (targetController.equals(TargetController.OPPONENT) && !game.getOpponents(source.getControllerId()).contains(event.getPlayerId())) {
+      return false;
+    }
+    MageObject mageObject=game.getObject(event.getSourceId());
+    MageObject sourceObject;
+    if (mageObject instanceof StackAbility) {
+      sourceObject=((StackAbility)mageObject).getSourceObject(game);
+    }
+ else {
+      sourceObject=mageObject;
+    }
+    if (mageObject != null && filterSource.match(sourceObject,game)) {
       return true;
     }
   }

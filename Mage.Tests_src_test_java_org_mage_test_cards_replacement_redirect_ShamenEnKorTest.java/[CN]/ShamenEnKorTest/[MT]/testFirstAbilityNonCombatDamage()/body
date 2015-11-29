@@ -1,0 +1,14 @@
+{
+  addCard(Zone.HAND,playerA,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain");
+  addCard(Zone.BATTLEFIELD,playerB,"Shaman en-Kor");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt","Shaman en-Kor");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerB,"{0}: The next 1 damage","Silvercoat Lion","Lightning Bolt");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerB,"{0}: The next 1 damage","Silvercoat Lion","Lightning Bolt");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Lightning Bolt",1);
+  assertPermanentCount(playerB,"Shaman en-Kor",1);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+}

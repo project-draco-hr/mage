@@ -2,10 +2,6 @@
   super(ownerId,178,"Nimbus Maze",Rarity.RARE,new CardType[]{CardType.LAND},"");
   this.expansionSetCode="FUT";
   this.addAbility(new ColorlessManaAbility());
-  Ability addW=new WhiteManaAbility();
-  addW.addCost(new FilterPermanentCost(controlIsland));
-  this.addAbility(addW);
-  Ability addU=new BlueManaAbility();
-  addU.addCost(new FilterPermanentCost(controlPlains));
-  this.addAbility(addU);
+  this.addAbility(new ActivateIfConditionManaAbility(Zone.BATTLEFIELD,new BasicManaEffect(Mana.WhiteMana),new TapSourceCost(),new PermanentsOnTheBattlefieldCondition(controlIsland)));
+  this.addAbility(new ActivateIfConditionManaAbility(Zone.BATTLEFIELD,new BasicManaEffect(Mana.BlueMana),new TapSourceCost(),new PermanentsOnTheBattlefieldCondition(controlPlains)));
 }

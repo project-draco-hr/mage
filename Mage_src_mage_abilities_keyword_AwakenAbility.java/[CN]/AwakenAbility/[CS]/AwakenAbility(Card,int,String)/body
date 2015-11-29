@@ -1,0 +1,13 @@
+{
+  super(new ManaCostsImpl<>(awakenCosts),card.getName() + " with awaken",Zone.HAND,SpellAbilityType.BASE_ALTERNATE);
+  this.getCosts().addAll(card.getSpellAbility().getCosts().copy());
+  this.getEffects().addAll(card.getSpellAbility().getEffects().copy());
+  this.getTargets().addAll(card.getSpellAbility().getTargets().copy());
+  this.getChoices().addAll(card.getSpellAbility().getChoices().copy());
+  this.spellAbilityType=SpellAbilityType.BASE_ALTERNATE;
+  this.timing=card.getSpellAbility().getTiming();
+  this.addTarget(new TargetControlledPermanent(new FilterControlledLandPermanent(filterMessage)));
+  this.addEffect(new AwakenEffect());
+  this.awakenValue=awakenValue;
+  rule="Awaken " + awakenValue + "&mdash;"+ awakenCosts+ " <i>(If you cast this spell for "+ awakenCosts+ ", also put "+ CardUtil.numberToText(awakenValue,"a")+ " +1/+1 counters on target land you control and it becomes a 0/0 Elemental creature with haste. It's still a land.)</i>";
+}

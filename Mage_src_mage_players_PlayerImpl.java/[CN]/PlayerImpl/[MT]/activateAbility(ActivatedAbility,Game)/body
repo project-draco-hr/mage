@@ -6,7 +6,7 @@
   }
   if (ability instanceof PlayLandAbility) {
     Card card=game.getCard(ability.getSourceId());
-    result=playLand(card,game);
+    result=playLand(card,game,false);
   }
  else {
     if (!ability.canActivate(this.playerId,game)) {
@@ -30,7 +30,13 @@
       result=playAbility(ability.copy(),game);
     }
   }
+  justActivatedType=null;
   if (result) {
+    if (isHuman() && (ability.getAbilityType().equals(AbilityType.SPELL) || ability.getAbilityType().equals(AbilityType.ACTIVATED))) {
+      if (ability.isUsesStack()) {
+        setJustActivatedType(ability.getAbilityType());
+      }
+    }
     game.getPlayers().resetPassed();
   }
   return result;

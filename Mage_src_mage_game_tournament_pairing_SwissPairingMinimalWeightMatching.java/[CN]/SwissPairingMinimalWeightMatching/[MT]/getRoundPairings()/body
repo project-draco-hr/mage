@@ -1,0 +1,21 @@
+{
+  List<TournamentPairing> pairings=new ArrayList<>();
+  List<TournamentPlayer> playerByes=new ArrayList<>();
+  Map<Integer,TournamentPlayer> map=new HashMap<>();
+  for (  PlayerInfo player : swissPlayers) {
+    map.put(player.id,player.tournamentPlayer);
+  }
+  if (n > playersCount) {
+    playerByes.add(map.get(result[n - 1]));
+    result[result[n - 1]]=-1;
+    result[n - 1]=-1;
+  }
+  for (int i=0; i < playersCount; i++) {
+    if (result[i] >= 0) {
+      pairings.add(new TournamentPairing(map.get(i),map.get(result[i])));
+      result[result[i]]=-1;
+      result[i]=-1;
+    }
+  }
+  return new RoundPairings(pairings,playerByes);
+}

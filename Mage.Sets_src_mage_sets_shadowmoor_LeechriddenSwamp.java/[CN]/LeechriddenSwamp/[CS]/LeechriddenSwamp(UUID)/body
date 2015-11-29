@@ -4,8 +4,7 @@
   this.subtype.add("Swamp");
   this.addAbility(new SimpleManaAbility(Zone.BATTLEFIELD,Mana.BlackMana,new TapSourceCost()));
   this.addAbility(new EntersBattlefieldTappedAbility());
-  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new LeechriddenSwampLoseLifeEffect(),new ManaCostsImpl("{B}"));
+  Ability ability=new ActivateIfConditionActivatedAbility(Zone.BATTLEFIELD,new LeechriddenSwampLoseLifeEffect(),new ManaCostsImpl("{B}"),new PermanentsOnTheBattlefieldCondition(filter,CountType.MORE_THAN,1));
   ability.addCost(new TapSourceCost());
-  ability.addCost(new ControlTwoOrMoreBlackPermanentsCost());
   this.addAbility(ability);
 }

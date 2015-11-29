@@ -5,14 +5,14 @@
   this.color.setBlue(true);
   this.nightCard=true;
   this.canTransform=true;
-  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.LOYALTY.createInstance(5)),false));
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(5));
   Effect effect=new BoostTargetEffect(-2,0,Duration.UntilYourNextTurn);
   effect.setText("Up to one target creature gets -2/-0 until your next turn");
   Ability ability=new LoyaltyAbility(effect,1);
   ability.addTarget(new TargetCreaturePermanent(0,1));
   this.addAbility(ability);
   ability=new LoyaltyAbility(new JaceTelepathUnboundEffect(),-3);
-  ability.addTarget(new TargetCardInGraveyard(new FilterInstantOrSorceryCard()));
+  ability.addTarget(new TargetCardInYourGraveyard(new FilterInstantOrSorceryCard()));
   this.addAbility(ability);
   this.addAbility(new LoyaltyAbility(new GetEmblemEffect(new JaceTelepathUnboundEmblem()),-9));
 }

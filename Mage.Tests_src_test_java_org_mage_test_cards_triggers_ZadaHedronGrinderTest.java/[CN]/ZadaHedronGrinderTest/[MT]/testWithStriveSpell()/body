@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Zada, Hedron Grinder",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.HAND,playerA,"Rouse the Mob",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Rouse the Mob","Zada, Hedron Grinder");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Rouse the Mob",1);
+  assertPowerToughness(playerA,"Zada, Hedron Grinder",5,3);
+  assertAbility(playerA,"Zada, Hedron Grinder",TrampleAbility.getInstance(),true);
+  assertPowerToughness(playerA,"Silvercoat Lion",4,2);
+  assertAbility(playerA,"Silvercoat Lion",TrampleAbility.getInstance(),true);
+}

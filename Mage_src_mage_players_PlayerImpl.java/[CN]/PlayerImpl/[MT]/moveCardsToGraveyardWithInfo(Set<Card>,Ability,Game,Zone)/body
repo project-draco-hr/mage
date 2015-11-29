@@ -1,6 +1,6 @@
 {
-  boolean result=true;
   UUID sourceId=source == null ? null : source.getSourceId();
+  Set<Card> movedCards=new LinkedHashSet<>();
   while (!allCards.isEmpty()) {
     Cards cards=new CardsImpl();
     UUID ownerId=null;
@@ -38,20 +38,28 @@
           cards.remove(targetObjectId);
           if (card != null) {
             fromZone=game.getState().getZone(card.getId());
-            result&=choosingPlayer.moveCardToGraveyardWithInfo(card,sourceId,game,fromZone);
+            if (choosingPlayer.moveCardToGraveyardWithInfo(card,sourceId,game,fromZone)) {
+              movedCards.add(card);
+            }
           }
           target.clearChosen();
         }
         if (cards.size() == 1) {
-          result&=choosingPlayer.moveCardToGraveyardWithInfo(cards.getCards(game).iterator().next(),sourceId,game,fromZone);
+          Card card=cards.getCards(game).iterator().next();
+          if (card != null && choosingPlayer.moveCardToGraveyardWithInfo(card,sourceId,game,fromZone)) {
+            movedCards.add(card);
+          }
         }
       }
  else {
         for (        Card card : cards.getCards(game)) {
-          result&=choosingPlayer.moveCardToGraveyardWithInfo(card,sourceId,game,fromZone);
+          if (choosingPlayer.moveCardToGraveyardWithInfo(card,sourceId,game,fromZone)) {
+            movedCards.add(card);
+          }
         }
       }
     }
   }
-  return result;
+  game.fireEvent(new ZoneChangeGroupEvent(movedCards,source == null ? null : source.getSourceId(),this.getId(),fromZone,Zone.GRAVEYARD));
+  return movedCards;
 }

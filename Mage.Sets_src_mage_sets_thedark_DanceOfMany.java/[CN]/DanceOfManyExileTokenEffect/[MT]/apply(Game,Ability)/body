@@ -1,9 +1,15 @@
 {
-  Permanent tokenPermanent=(Permanent)game.getState().getValue(source.getSourceId() + "_token");
-  if (tokenPermanent != null) {
-    Effect effect=new ExileTargetEffect();
-    effect.setTargetPointer(new FixedTarget(tokenPermanent.getId()));
-    return effect.apply(game,source);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    List<Permanent> tokenPermanents=(List<Permanent>)game.getState().getValue(source.getSourceId() + "_token");
+    if (tokenPermanents != null) {
+      Cards cards=new CardsImpl();
+      for (      Permanent permanent : tokenPermanents) {
+        cards.add(permanent);
+      }
+      controller.moveCards(cards,null,Zone.EXILED,source,game);
+      return true;
+    }
   }
   return false;
 }

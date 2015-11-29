@@ -7,17 +7,23 @@
       reduceMax=2;
     }
     if (reduceMax > 0) {
-      ChoiceImpl choice=new ChoiceImpl(true);
-      Set<String> set=new LinkedHashSet<>();
-      for (int i=0; i <= reduceMax; i++) {
-        set.add(String.valueOf(i));
+      int reduce=0;
+      if (abilityToModify.getAbilityType().equals(AbilityType.ACTIVATED) && ((ActivatedAbility)abilityToModify).isCheckPlayableMode()) {
+        reduce=reduceMax;
       }
-      choice.setChoices(set);
-      choice.setMessage("Reduce cycling cost");
-      if (controller.choose(Outcome.Benefit,choice,game)) {
-        int reduce=Integer.parseInt(choice.getChoice());
-        CardUtil.reduceCost(abilityToModify,reduce);
+ else {
+        ChoiceImpl choice=new ChoiceImpl(true);
+        Set<String> set=new LinkedHashSet<>();
+        for (int i=0; i <= reduceMax; i++) {
+          set.add(String.valueOf(i));
+        }
+        choice.setChoices(set);
+        choice.setMessage("Reduce cycling cost");
+        if (controller.choose(Outcome.Benefit,choice,game)) {
+          reduce=Integer.parseInt(choice.getChoice());
+        }
       }
+      CardUtil.reduceCost(abilityToModify,reduce);
     }
     return true;
   }

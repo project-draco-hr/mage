@@ -1,10 +1,47 @@
 {
-  updateGameStatePriority("chooseTriggeredAbility",game);
+  String autoOrderRuleText=null;
+  boolean autoOrderUse=getUserData().isAutoOrderTrigger();
   while (!abort) {
-    game.fireSelectTargetEvent(playerId,"Pick triggered ability (goes to the stack first)",abilities);
+    List<TriggeredAbility> abilitiesWithNoOrderSet=new ArrayList<>();
+    TriggeredAbility abilityOrderLast=null;
+    for (    TriggeredAbility ability : abilities) {
+      if (triggerAutoOrderAbilityFirst.contains(ability.getOriginalId())) {
+        return ability;
+      }
+      MageObject object=game.getObject(ability.getSourceId());
+      String rule=ability.getRule(object != null ? object.getName() : null);
+      if (triggerAutoOrderNameFirst.contains(rule)) {
+        return ability;
+      }
+      if (triggerAutoOrderAbilityLast.contains(ability.getOriginalId())) {
+        abilityOrderLast=ability;
+        continue;
+      }
+      if (triggerAutoOrderNameLast.contains(rule)) {
+        abilityOrderLast=ability;
+        continue;
+      }
+      if (autoOrderUse) {
+        if (autoOrderRuleText == null) {
+          autoOrderRuleText=rule;
+        }
+ else         if (!rule.equals(autoOrderRuleText)) {
+          autoOrderUse=false;
+        }
+      }
+      abilitiesWithNoOrderSet.add(ability);
+    }
+    if (abilitiesWithNoOrderSet.isEmpty()) {
+      return abilityOrderLast;
+    }
+    if (abilitiesWithNoOrderSet.size() == 1 || autoOrderUse) {
+      return abilitiesWithNoOrderSet.iterator().next();
+    }
+    updateGameStatePriority("chooseTriggeredAbility",game);
+    game.fireSelectTargetTriggeredAbilityEvent(playerId,"Pick triggered ability (goes to the stack first)",abilitiesWithNoOrderSet);
     waitForResponse(game);
     if (response.getUUID() != null) {
-      for (      TriggeredAbility ability : abilities) {
+      for (      TriggeredAbility ability : abilitiesWithNoOrderSet) {
         if (ability.getId().equals(response.getUUID())) {
           return ability;
         }

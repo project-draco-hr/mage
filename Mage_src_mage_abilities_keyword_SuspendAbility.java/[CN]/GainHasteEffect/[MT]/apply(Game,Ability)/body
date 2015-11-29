@@ -2,15 +2,18 @@
   if (suspendController == null) {
     suspendController=source.getControllerId();
   }
-  Permanent permanent=game.getPermanent(source.getSourceId());
+  Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
   if (permanent != null) {
     if (suspendController.equals(source.getControllerId())) {
       permanent.addAbility(HasteAbility.getInstance(),source.getSourceId(),game);
-      return true;
     }
  else {
       this.discard();
     }
+    return true;
+  }
+  if (game.getState().getZoneChangeCounter(((FixedTarget)getTargetPointer()).getTarget()) >= ((FixedTarget)getTargetPointer()).getZoneChangeCounter()) {
+    this.discard();
   }
   return false;
 }

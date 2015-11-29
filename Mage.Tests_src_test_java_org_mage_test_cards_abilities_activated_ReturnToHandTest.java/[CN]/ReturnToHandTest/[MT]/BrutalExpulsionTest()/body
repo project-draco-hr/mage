@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",2);
+  addCard(Zone.HAND,playerA,"Brutal Expulsion");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",4);
+  addCard(Zone.HAND,playerB,"Pillarfield Ox",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Pillarfield Ox");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerA,"Brutal Expulsion","mode=1Pillarfield Ox^mode=2Silvercoat Lion","Pillarfield Ox");
+  setModeChoice(playerA,"1");
+  setModeChoice(playerA,"2");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Brutal Expulsion",1);
+  assertExileCount("Silvercoat Lion",1);
+  assertPermanentCount(playerB,"Pillarfield Ox",0);
+  assertHandCount(playerB,"Pillarfield Ox",1);
+}

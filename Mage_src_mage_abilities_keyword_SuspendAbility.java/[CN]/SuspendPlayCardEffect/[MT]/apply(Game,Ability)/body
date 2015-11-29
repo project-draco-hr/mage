@@ -18,7 +18,14 @@
       }
       card.getAbilities().removeAll(abilitiesToRemove);
     }
-    return player.cast(card.getSpellAbility(),game,true);
+    if (player.cast(card.getSpellAbility(),game,true)) {
+      if (card.getCardType().contains(CardType.CREATURE)) {
+        ContinuousEffect effect=new GainHasteEffect();
+        effect.setTargetPointer(new FixedTarget(card.getId(),card.getZoneChangeCounter(game) + 1));
+        game.addEffect(effect,source);
+      }
+      return true;
+    }
   }
   return false;
 }

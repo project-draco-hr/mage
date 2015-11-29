@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Trading Post",1);
+  addCard(Zone.HAND,playerA,"Act of Treason");
+  addCard(Zone.GRAVEYARD,playerA,"Helm of Possession");
+  addCard(Zone.BATTLEFIELD,playerB,"Savannah Lions");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Act of Treason","Savannah Lions");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{1},{T}, Sacrifice a creature","Helm of Possession","Act of Treason",StackClause.WHILE_NOT_ON_STACK);
+  setChoice(playerA,"Savannah Lions");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Act of Treason",1);
+  assertPermanentCount(playerB,"Savannah Lions",0);
+  assertGraveyardCount(playerB,"Savannah Lions",1);
+  assertTapped("Trading Post",true);
+  assertHandCount(playerA,1);
+}

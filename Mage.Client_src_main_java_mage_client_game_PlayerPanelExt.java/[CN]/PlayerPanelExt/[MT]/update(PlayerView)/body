@@ -1,21 +1,6 @@
 {
   this.player=player;
-  if (flagName == null) {
-    avatar.setText(this.player.getName());
-    if (!player.getUserData().getFlagName().equals(flagName)) {
-      flagName=player.getUserData().getFlagName();
-      this.avatar.setTopTextImage(CountryUtil.getCountryFlagIcon(flagName).getImage());
-    }
-    String countryname=CountryUtil.getCountryName(flagName);
-    if (countryname == null) {
-      countryname="Unknown";
-    }
-    String tooltip="<HTML>Name: " + player.getName() + "<br/>Country: "+ countryname;
-    avatar.setToolTipText(tooltip);
-    avatar.repaint();
-    this.btnPlayer.setText(player.getName());
-    this.btnPlayer.setToolTipText(tooltip);
-  }
+  updateAvatar();
   int playerLife=player.getLife();
   if (playerLife > 99) {
     Font font=lifeLabel.getFont();
@@ -80,8 +65,8 @@
   exileLabel.setText(Integer.toString(exileCards));
   if (!MageFrame.isLite()) {
     int id=player.getUserData().getAvatarId();
-    if (id <= 0) {
-      id=PreferencesDialog.DEFAULT_AVATAR_ID;
+    if (!(id >= 1000) && (id <= 0 || (id <= MIN_AVATAR_ID && id > MAX_AVATAR_ID))) {
+      id=DEFAULT_AVATAR_ID;
     }
     if (id != avatarId) {
       avatarId=id;

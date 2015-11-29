@@ -1,11 +1,10 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null) {
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
     Target target=new TargetCardInGraveyard(new FilterCreatureCard());
     target.setNotTarget(true);
-    if (target.canChoose(source.getSourceId(),source.getControllerId(),game) && player.chooseTarget(outcome,target,source,game)) {
-      Card card=game.getCard(target.getFirstTarget());
-      player.putOntoBattlefieldWithInfo(card,game,Zone.GRAVEYARD,source.getSourceId());
+    if (target.canChoose(source.getSourceId(),source.getControllerId(),game) && controller.chooseTarget(outcome,target,source,game)) {
+      return controller.moveCards(game.getCard(target.getFirstTarget()),Zone.BATTLEFIELD,source,game);
     }
     return true;
   }

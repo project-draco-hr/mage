@@ -1,13 +1,12 @@
 {
   Player player=game.getPlayer(source.getControllerId());
-  Permanent permanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
-  MageObject sourceObject=source.getSourceObject(game);
-  if (sourceObject != null && player != null && permanent != null) {
+  Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (player != null && sourcePermanent != null) {
     StringBuilder sb=new StringBuilder(cost.getText()).append("?");
     if (!sb.toString().toLowerCase().startsWith("exile ") && !sb.toString().toLowerCase().startsWith("return ")) {
       sb.insert(0,"Pay ");
     }
-    String message=CardUtil.replaceSourceName(sb.toString(),sourceObject.getLogName());
+    String message=CardUtil.replaceSourceName(sb.toString(),sourcePermanent.getLogName());
     message=Character.toUpperCase(message.charAt(0)) + message.substring(1);
     if (player.chooseUse(Outcome.Benefit,message,source,game)) {
       cost.clearPaid();
@@ -15,7 +14,7 @@
         return true;
       }
     }
-    permanent.sacrifice(source.getSourceId(),game);
+    sourcePermanent.sacrifice(source.getSourceId(),game);
     return true;
   }
   return false;

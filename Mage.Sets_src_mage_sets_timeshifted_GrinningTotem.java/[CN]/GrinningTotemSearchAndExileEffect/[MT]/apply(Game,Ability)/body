@@ -1,17 +1,19 @@
 {
   Player you=game.getPlayer(source.getControllerId());
   Player targetOpponent=game.getPlayer(source.getFirstTarget());
-  MageObject sourcObject=game.getObject(source.getSourceId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
   if (you != null && targetOpponent != null) {
     if (targetOpponent.getLibrary().size() > 0) {
       TargetCardInLibrary targetCard=new TargetCardInLibrary();
       if (you.searchLibrary(targetCard,game,targetOpponent.getId())) {
         Card card=targetOpponent.getLibrary().remove(targetCard.getFirstTarget(),game);
         if (card != null) {
-          you.moveCardToExileWithInfo(card,CardUtil.getCardExileZoneId(game,source),sourcObject != null ? sourcObject.getIdName() : "",source.getSourceId(),game,Zone.LIBRARY,true);
+          UUID exileZoneId=CardUtil.getCardExileZoneId(game,source);
+          you.moveCardToExileWithInfo(card,exileZoneId,sourceObject != null ? sourceObject.getIdName() : "",source.getSourceId(),game,Zone.LIBRARY,true);
           ContinuousEffect effect=new GrinningTotemMayPlayEffect();
           effect.setTargetPointer(new FixedTarget(card.getId()));
           game.addEffect(effect,source);
+          game.addDelayedTriggeredAbility(new GrinningTotemDelayedTriggeredAbility(exileZoneId),source);
         }
       }
     }

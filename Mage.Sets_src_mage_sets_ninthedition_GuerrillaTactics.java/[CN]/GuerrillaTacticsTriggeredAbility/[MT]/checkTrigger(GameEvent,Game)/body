@@ -1,3 +1,9 @@
 {
-  return game.getOpponents(this.getControllerId()).contains(game.getControllerId(event.getSourceId())) && StackObject.class.isInstance(game.getObject(event.getSourceId())) && getSourceId().equals(event.getTargetId());
+  if (getSourceId().equals(event.getTargetId())) {
+    StackObject stackObject=game.getStack().getStackObject(event.getSourceId());
+    if (stackObject != null) {
+      return game.getOpponents(this.getControllerId()).contains(stackObject.getControllerId());
+    }
+  }
+  return false;
 }

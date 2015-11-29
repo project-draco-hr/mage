@@ -5,9 +5,11 @@
   this.subtype.add("Rogue");
   this.power=new MageInt(2);
   this.toughness=new MageInt(1);
-  SimpleActivatedAbility ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DestroyTargetEffect(),new ManaCostsImpl("{R}"));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DestroyTargetEffect(),new ManaCostsImpl("{R}"));
   ability.addCost(new SacrificeSourceCost());
+  Effect effect=new DamageTargetControllerEffect(2);
+  effect.setText("{this} deals 2 damage to that creature's controller");
+  ability.addEffect(effect);
   ability.addTarget(new TargetCreaturePermanent(filter));
-  ability.addEffect(new GrotageSiegeRunnerEffect());
   this.addAbility(ability);
 }

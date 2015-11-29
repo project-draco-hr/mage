@@ -1,11 +1,16 @@
 {
-  if (ability instanceof BeginningOfUpkeepTriggeredAbility) {
+  if (ability.getOriginalId().equals(originalId)) {
     Player activePlayer=game.getPlayer(game.getActivePlayerId());
     if (activePlayer != null) {
-      ability.setControllerId(activePlayer.getId());
       ability.getTargets().clear();
       TargetPlayer target=new TargetPlayer(1,1,false,filter);
+      target.setTargetController(activePlayer.getId());
       ability.getTargets().add(target);
+      for (      Effect effect : ability.getEffects()) {
+        if (effect instanceof SearchLibraryPutInPlayTargetPlayerEffect) {
+          effect.setTargetPointer(new FixedTarget(activePlayer.getId()));
+        }
+      }
     }
   }
 }

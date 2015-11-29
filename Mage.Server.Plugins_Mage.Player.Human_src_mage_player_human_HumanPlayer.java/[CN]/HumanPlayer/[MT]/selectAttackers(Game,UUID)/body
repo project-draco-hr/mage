@@ -32,6 +32,13 @@
         if (game.getContinuousEffects().checkIfThereArePayCostToAttackBlockEffects(GameEvent.getEvent(GameEvent.EventType.DECLARE_ATTACKER,attackedDefender,attacker.getId(),attacker.getControllerId()),game)) {
           continue;
         }
+        if (game.getCombat().getCreaturesForcedToAttack().containsKey(attacker.getId())) {
+          Set<UUID> possibleDefenders=game.getCombat().getCreaturesForcedToAttack().get(attacker.getId());
+          if (!possibleDefenders.isEmpty() && !possibleDefenders.contains(attackedDefender)) {
+            declareAttacker(attacker.getId(),possibleDefenders.iterator().next(),game,false);
+            continue;
+          }
+        }
         declareAttacker(attacker.getId(),attackedDefender,game,false);
       }
     }
@@ -54,12 +61,14 @@
  else {
               Permanent creature=game.getPermanent(creatureId);
               if (creature != null) {
-                sb.append(creature.getName()).append(" ");
+                sb.append(creature.getIdName()).append(" ");
               }
             }
           }
           if (game.getCombat().getMaxAttackers() > forcedAttackers) {
-            game.informPlayer(this,sb.insert(0," more attacker(s) that are forced to attack.\nCreatures forced to attack: ").insert(0,Math.min(game.getCombat().getMaxAttackers() - forcedAttackers,game.getCombat().getCreaturesForcedToAttack().size() - forcedAttackers)).insert(0,"You have to attack with ").toString());
+            int requireToAttack=Math.min(game.getCombat().getMaxAttackers() - forcedAttackers,game.getCombat().getCreaturesForcedToAttack().size() - forcedAttackers);
+            String message=(requireToAttack == 1 ? " more attacker that is " : " more attackers that are ") + "forced to attack.\nCreature" + (requireToAttack == 1 ? "" : "s")+ " forced to attack: ";
+            game.informPlayer(this,sb.insert(0,message).insert(0,requireToAttack).insert(0,"You have to attack with ").toString());
             continue;
           }
         }

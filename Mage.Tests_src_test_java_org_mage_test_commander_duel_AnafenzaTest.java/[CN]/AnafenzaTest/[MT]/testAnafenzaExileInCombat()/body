@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Runed Servitor",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Anafenza, the Foremost");
+  attack(3,playerA,"Anafenza, the Foremost");
+  block(3,playerB,"Runed Servitor","Anafenza, the Foremost");
+  block(3,playerB,"Runed Servitor","Anafenza, the Foremost");
+  setStopAt(3,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertLife(playerA,40);
+  assertLife(playerB,40);
+  assertExileCount("Runed Servitor",2);
+  assertCommandZoneCount(playerA,"Anafenza, the Foremost",1);
+  assertGraveyardCount(playerA,"Anafenza, the Foremost",0);
+  assertHandCount(playerA,1);
+  assertHandCount(playerB,1);
+}

@@ -1,6 +1,9 @@
 {
   CardPanel card=((CardPanel)transferData.component);
-  if (card.getZone() != null && card.getZone().equalsIgnoreCase("hand")) {
+  if (e.isPopupTrigger()) {
+    hideTooltipPopup();
+  }
+ else   if (card.getZone() != null && card.getZone().equalsIgnoreCase("hand")) {
     int maxXOffset=0;
     if (isDragging) {
       Point mouse=new Point(e.getX(),e.getY());
@@ -12,12 +15,14 @@
     if (maxXOffset < MIN_X_OFFSET_REQUIRED) {
       transferData.component.requestFocusInWindow();
       defaultCallback.mouseClicked(e,transferData.gameId,session,transferData.card);
-      hidePopup();
+      hideTooltipPopup();
     }
+    e.consume();
   }
  else {
     transferData.component.requestFocusInWindow();
     defaultCallback.mouseClicked(e,transferData.gameId,session,transferData.card);
-    hidePopup();
+    hideTooltipPopup();
+    e.consume();
   }
 }

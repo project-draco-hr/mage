@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",6);
+  addCard(Zone.HAND,playerA,"Oblivion Sower");
+  addCard(Zone.LIBRARY,playerB,"Canopy Vista",3);
+  addCard(Zone.LIBRARY,playerB,"Silvercoat Lion",1);
+  skipInitShuffling();
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Oblivion Sower");
+  addTarget(playerA,"Canopy Vista^Canopy Vista^Canopy Vista");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertHandCount(playerA,"Oblivion Sower",0);
+  assertPermanentCount(playerA,"Oblivion Sower",1);
+  assertExileCount("Silvercoat Lion",1);
+  assertPermanentCount(playerA,"Canopy Vista",3);
+  assertTappedCount("Canopy Vista",false,3);
+}

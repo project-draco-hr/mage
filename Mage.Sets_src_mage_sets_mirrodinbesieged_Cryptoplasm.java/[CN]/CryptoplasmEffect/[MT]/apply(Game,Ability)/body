@@ -1,0 +1,22 @@
+{
+  Permanent creatureToCopy=game.getPermanent(getTargetPointer().getFirst(game,source));
+  if (creatureToCopy != null) {
+    ApplyToPermanent applier=new ApplyToPermanent(){
+      @Override public Boolean apply(      Game game,      Permanent permanent){
+        Ability upkeepAbility=new BeginningOfUpkeepTriggeredAbility(new CryptoplasmEffect(),TargetController.YOU,true);
+        upkeepAbility.addTarget(new TargetCreaturePermanent());
+        permanent.addAbility(upkeepAbility,source.getSourceId(),game);
+        return true;
+      }
+      @Override public Boolean apply(      Game game,      MageObject mageObject){
+        Ability upkeepAbility=new BeginningOfUpkeepTriggeredAbility(new CryptoplasmEffect(),TargetController.YOU,true);
+        upkeepAbility.addTarget(new TargetCreaturePermanent());
+        mageObject.getAbilities().add(upkeepAbility);
+        return true;
+      }
+    }
+;
+    game.copyPermanent(creatureToCopy,source.getSourceId(),source,applier);
+  }
+  return true;
+}

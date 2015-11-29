@@ -1,10 +1,10 @@
 {
   if (ability instanceof SpellAbility) {
-    Player player=game.getPlayer(controllerId);
+    Player player=game.getPlayer(getControllerId());
     if (player != null) {
-      this.resetConspire();
-      if (player.chooseUse(Outcome.Benefit,new StringBuilder("Pay ").append(conspireCost.getText(false)).append(" ?").toString(),ability,game)) {
-        conspireCost.activate();
+      resetConspire(ability,game);
+      if (conspireCost.canPay(ability,getSourceId(),getControllerId(),game) && player.chooseUse(Outcome.Benefit,"Pay " + conspireCost.getText(false) + " ?",ability,game)) {
+        activateConspire(ability,game);
         for (Iterator it=((Costs)conspireCost).iterator(); it.hasNext(); ) {
           Cost cost=(Cost)it.next();
           ability.getCosts().add(cost.copy());

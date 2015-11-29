@@ -1,24 +1,24 @@
 {
-  Cards cards=new CardsImpl(cardsToLibrary);
-  cards.addAll(cardsToLibrary);
-  if (cards.size() != 0) {
+  if (!cardsToLibrary.isEmpty()) {
+    Cards cards=new CardsImpl(cardsToLibrary);
+    UUID sourceId=(source == null ? null : source.getSourceId());
     if (!anyOrder) {
       for (      UUID cardId : cards) {
-        moveObjectToLibrary(cardId,source.getSourceId(),game,true,false);
+        moveObjectToLibrary(cardId,sourceId,game,true,false);
       }
     }
  else {
-      TargetCard target=new TargetCard(Zone.PICK,new FilterCard("card to put on the top of your library (last one chosen will be topmost)"));
+      TargetCard target=new TargetCard(Zone.LIBRARY,new FilterCard("card to put on the top of your library (last one chosen will be topmost)"));
       target.setRequired(true);
       while (isInGame() && cards.size() > 1) {
         this.choose(Outcome.Neutral,cards,target,game);
         UUID targetObjectId=target.getFirstTarget();
         cards.remove(targetObjectId);
-        moveObjectToLibrary(targetObjectId,source.getSourceId(),game,true,false);
+        moveObjectToLibrary(targetObjectId,sourceId,game,true,false);
         target.clearChosen();
       }
       if (cards.size() == 1) {
-        moveObjectToLibrary(cards.iterator().next(),source.getSourceId(),game,true,false);
+        moveObjectToLibrary(cards.iterator().next(),sourceId,game,true,false);
       }
     }
   }

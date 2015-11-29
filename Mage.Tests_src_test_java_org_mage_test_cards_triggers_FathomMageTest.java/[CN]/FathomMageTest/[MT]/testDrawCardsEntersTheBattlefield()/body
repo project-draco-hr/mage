@@ -1,12 +1,14 @@
 {
   addCard(Zone.HAND,playerA,"Fathom Mage");
   addCard(Zone.BATTLEFIELD,playerA,"Master Biomancer",1);
-  addCard(Zone.BATTLEFIELD,playerA,"Forest",4);
-  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
   castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Fathom Mage");
   setStopAt(1,PhaseStep.END_TURN);
   execute();
   assertPermanentCount(playerA,"Fathom Mage",1);
   assertPowerToughness(playerA,"Fathom Mage",3,3);
+  Permanent fathomMage=getPermanent("Fathom Mage",playerA);
+  Assert.assertEquals("Fathom Mage has to be a Mutant",true,fathomMage.getSubtype().contains("Mutant"));
   assertHandCount(playerA,2);
 }

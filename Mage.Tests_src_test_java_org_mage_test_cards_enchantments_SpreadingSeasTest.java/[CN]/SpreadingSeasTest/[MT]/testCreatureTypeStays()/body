@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerA,"Spreading Seas",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Blinkmoth Nexus");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Spreading Seas","Blinkmoth Nexus");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerB,"{1}:",NO_TARGET,"Spreading Seas");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertHandCount(playerA,"Spreading Seas",0);
+  assertGraveyardCount(playerA,"Spreading Seas",0);
+  assertPowerToughness(playerB,"Blinkmoth Nexus",1,1);
+  assertPermanentCount(playerA,"Spreading Seas",1);
+  assertHandCount(playerA,1);
+}

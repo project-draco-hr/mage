@@ -1,14 +1,17 @@
 {
-  ExileZone exile=game.getExile().getExileZone(exileId);
-  if (exile != null) {
-    Cards cards=new CardsImpl();
-    cards.addAll(exile);
-    for (    Card card : cards.getCards(game)) {
-      card.putOntoBattlefield(game,Zone.EXILED,source.getSourceId(),source.getControllerId());
-      Permanent permanent=game.getPermanent(card.getId());
-      ((PermanentImpl)permanent).removeSummoningSickness();
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    ExileZone exile=game.getExile().getExileZone(exileId);
+    if (exile != null) {
+      Cards cards=new CardsImpl();
+      cards.addAll(exile);
+      controller.moveCards(cards,Zone.BATTLEFIELD,source,game);
+      for (      Card card : cards.getCards(game)) {
+        Permanent permanent=game.getPermanent(card.getId());
+        ((PermanentImpl)permanent).removeSummoningSickness();
+      }
+      return true;
     }
-    return true;
   }
   return false;
 }

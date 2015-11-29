@@ -1,0 +1,21 @@
+{
+  addCard(Zone.HAND,playerB,"Snapping Drake",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Rosheen Meanderer",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Candelabra of Tawnos",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",4);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Snapping Drake");
+  activateManaAbility(2,PhaseStep.POSTCOMBAT_MAIN,playerB,"{T}: Add {4}");
+  activateAbility(2,PhaseStep.POSTCOMBAT_MAIN,playerB,"{X},{T}: Untap");
+  setChoice(playerB,"X=4");
+  addTarget(playerB,"Island");
+  addTarget(playerB,"Island");
+  addTarget(playerB,"Island");
+  addTarget(playerB,"Island");
+  castSpell(2,PhaseStep.POSTCOMBAT_MAIN,playerB,"Snapping Drake");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertTappedCount("Island",true,4);
+  assertTappedCount("Rosheen Meanderer",true,1);
+  assertTappedCount("Candelabra of Tawnos",true,1);
+  assertPermanentCount(playerB,"Snapping Drake",2);
+}

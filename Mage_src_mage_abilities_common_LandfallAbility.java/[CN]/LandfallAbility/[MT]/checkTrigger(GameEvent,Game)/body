@@ -1,4 +1,13 @@
 {
   Permanent permanent=game.getPermanent(event.getTargetId());
-  return permanent != null && permanent.getCardType().contains(CardType.LAND) && permanent.getControllerId().equals(this.controllerId);
+  if (permanent != null && permanent.getCardType().contains(CardType.LAND) && permanent.getControllerId().equals(this.controllerId)) {
+    triggeringLand=permanent;
+    if (setTargetPointer.equals(SetTargetPointer.PERMANENT)) {
+      for (      Effect effect : getAllEffects()) {
+        effect.setTargetPointer(new FixedTarget(permanent,game));
+      }
+    }
+    return true;
+  }
+  return false;
 }

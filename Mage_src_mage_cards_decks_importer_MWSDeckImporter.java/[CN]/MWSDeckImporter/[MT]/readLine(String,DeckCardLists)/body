@@ -19,23 +19,25 @@
   String lineName=line.substring(delim + 1).trim();
   try {
     int num=Integer.parseInt(lineNum);
-    List<CardInfo> cards=null;
+    CardInfo cardInfo=null;
     if (!setCode.isEmpty()) {
       CardCriteria criteria=new CardCriteria();
       criteria.name(lineName);
       criteria.setCodes(setCode);
+      List<CardInfo> cards=null;
       cards=CardRepository.instance.findCards(criteria);
+      if (!cards.isEmpty()) {
+        cardInfo=cards.get(new Random().nextInt(cards.size()));
+      }
     }
-    if (cards == null || cards.isEmpty()) {
-      cards=CardRepository.instance.findCards(lineName);
+    if (cardInfo == null) {
+      cardInfo=CardRepository.instance.findPreferedCoreExpansionCard(lineName,true);
     }
-    if (cards.isEmpty()) {
+    if (cardInfo == null) {
       sbMessage.append("Could not find card: '").append(lineName).append("' at line ").append(lineCount).append("\n");
     }
  else {
-      Random random=new Random();
       for (int i=0; i < num; i++) {
-        CardInfo cardInfo=cards.get(random.nextInt(cards.size()));
         if (!sideboard) {
           deckList.getCards().add(new DeckCardInfo(cardInfo.getName(),cardInfo.getCardNumber(),cardInfo.getSetCode()));
         }

@@ -1,7 +1,10 @@
 {
   MageObject object=source;
   if (object == null) {
-    object=game.getObject(getSourceId());
+    object=game.getPermanentEntering(getSourceId());
+    if (object == null) {
+      object=game.getObject(getSourceId());
+    }
   }
   if (object != null && !object.getAbilities().contains(this)) {
     if (object instanceof Permanent) {

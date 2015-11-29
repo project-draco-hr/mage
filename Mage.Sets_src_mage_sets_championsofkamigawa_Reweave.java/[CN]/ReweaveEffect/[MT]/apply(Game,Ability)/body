@@ -1,6 +1,7 @@
 {
-  Permanent permanent=game.getPermanent(source.getTargets().getFirstTarget());
-  if (permanent != null) {
+  Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+  MageObject sourceObject=source.getSourceObject(game);
+  if (permanent != null && sourceObject != null) {
     if (permanent.sacrifice(source.getSourceId(),game)) {
       Player permanentController=game.getPlayer(permanent.getControllerId());
       if (permanentController != null) {
@@ -23,10 +24,10 @@
               }
             }
  while (!cardFound && library.size() > 0);
-            permanentController.putOntoBattlefieldWithInfo(card,game,Zone.LIBRARY,source.getSourceId());
+            permanentController.moveCards(card,Zone.BATTLEFIELD,source,game);
           }
           if (cards.size() > 0) {
-            permanentController.revealCards("Reweave",cards,game);
+            permanentController.revealCards(sourceObject.getIdName(),cards,game);
             if (cardFound && card != null) {
               cards.remove(card);
             }

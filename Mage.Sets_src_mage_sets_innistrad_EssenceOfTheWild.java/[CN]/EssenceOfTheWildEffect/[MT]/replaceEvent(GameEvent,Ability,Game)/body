@@ -1,10 +1,7 @@
 {
-  Permanent perm=game.getPermanent(source.getSourceId());
-  if (perm != null) {
-    perm=perm.copy();
-    perm.reset(game);
-    perm.assignNewId();
-    game.addEffect(new EssenceOfTheWildCopyEffect(perm,event.getTargetId()),source);
+  Permanent sourceObject=((EntersTheBattlefieldEvent)event).getTarget();
+  if (sourceObject != null) {
+    game.addEffect(new CopyEffect(Duration.Custom,sourceObject,event.getTargetId()),source);
   }
   return false;
 }

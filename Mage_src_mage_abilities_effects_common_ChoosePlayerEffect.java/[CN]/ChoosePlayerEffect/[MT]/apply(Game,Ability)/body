@@ -1,0 +1,22 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject mageObject=game.getPermanentEntering(source.getSourceId());
+  if (mageObject == null) {
+    mageObject=game.getObject(source.getSourceId());
+  }
+  if (controller != null && mageObject != null) {
+    TargetPlayer target=new TargetPlayer(1,1,true);
+    if (controller.choose(this.outcome,target,source.getSourceId(),game)) {
+      Player chosenPlayer=game.getPlayer(target.getFirstTarget());
+      if (chosenPlayer != null) {
+        game.informPlayers(mageObject.getName() + ": " + controller.getLogName()+ " has chosen "+ chosenPlayer.getLogName());
+        game.getState().setValue(mageObject.getId() + "_player",target.getFirstTarget());
+        if (mageObject instanceof Permanent) {
+          ((Permanent)mageObject).addInfo("chosen player",CardUtil.addToolTipMarkTags("Chosen player: " + chosenPlayer.getLogName()),game);
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}

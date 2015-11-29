@@ -1,0 +1,22 @@
+{
+  if (flagName == null) {
+    avatar.setText(this.player.getName());
+    if (!player.getUserData().getFlagName().equals(flagName)) {
+      flagName=player.getUserData().getFlagName();
+      this.avatar.setTopTextImage(CountryUtil.getCountryFlagIcon(flagName).getImage());
+    }
+    String countryname=CountryUtil.getCountryName(flagName);
+    if (countryname == null) {
+      countryname="Unknown";
+    }
+    basicTooltipText="<HTML>Name: " + player.getName() + "<br/>Country: "+ countryname+ "<br/>Deck hash code: "+ player.getDeckHashCode()+ "<br/>Wins: "+ player.getWins()+ " of "+ player.getWinsNeeded()+ " (to win the match)";
+  }
+  StringBuilder tooltipText=new StringBuilder(basicTooltipText);
+  if (player.getExperience() > 0) {
+    tooltipText.append("<br/>Experience counters: ").append(player.getExperience());
+  }
+  avatar.setToolTipText(tooltipText.toString());
+  avatar.repaint();
+  this.btnPlayer.setText(player.getName());
+  this.btnPlayer.setToolTipText(tooltipText.toString());
+}

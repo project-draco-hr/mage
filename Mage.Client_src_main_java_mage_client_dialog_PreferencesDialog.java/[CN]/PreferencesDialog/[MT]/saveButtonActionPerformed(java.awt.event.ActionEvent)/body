@@ -11,6 +11,7 @@
   save(prefs,dialog.cbConfirmEmptyManaPool,KEY_GAME_CONFIRM_EMPTY_MANA_POOL,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.cbAskMoveToGraveOrder,KEY_GAME_ASK_MOVE_TO_GRAVE_ORDER,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.cbGameLogAutoSave,KEY_GAME_LOG_AUTO_SAVE,"true","false",UPDATE_CACHE_POLICY);
+  save(prefs,dialog.cbDraftLogAutoSave,KEY_DRAFT_LOG_AUTO_SAVE,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.checkBoxUpkeepYou,UPKEEP_YOU);
   save(prefs,dialog.checkBoxDrawYou,DRAW_YOU);
   save(prefs,dialog.checkBoxMainYou,MAIN_YOU);
@@ -29,6 +30,9 @@
   save(prefs,dialog.cbStopBlock,KEY_STOP_BLOCK,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.cbStopOnAllMain,KEY_STOP_ALL_MAIN_PHASES,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.cbStopOnAllEnd,KEY_STOP_ALL_END_PHASES,"true","false",UPDATE_CACHE_POLICY);
+  save(prefs,dialog.cbPassPriorityCast,KEY_PASS_PRIORITY_CAST,"true","false",UPDATE_CACHE_POLICY);
+  save(prefs,dialog.cbPassPriorityActivation,KEY_PASS_PRIORITY_ACTIVATION,"true","false",UPDATE_CACHE_POLICY);
+  save(prefs,dialog.cbAutoOrderTrigger,KEY_AUTO_ORDER_TRIGGER,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.cbUseDefaultImageFolder,KEY_CARD_IMAGES_USE_DEFAULT,"true","false",UPDATE_CACHE_POLICY);
   saveImagesPath(prefs);
   save(prefs,dialog.cbCheckForNewImages,KEY_CARD_IMAGES_CHECK,"true","false",UPDATE_CACHE_POLICY);
@@ -53,10 +57,11 @@
     prefs.put(KEY_PROXY_PSWD,new String(input));
   }
   save(prefs,dialog.txtURLServerList,KEY_CONNECTION_URL_SERVER_LIST);
-  if (available_avatars.contains(selectedAvatarId)) {
-    prefs.put(KEY_AVATAR,String.valueOf(selectedAvatarId));
-    updateCache(KEY_AVATAR,String.valueOf(selectedAvatarId));
+  if (selectedAvatarId < MIN_AVATAR_ID || selectedAvatarId > MAX_AVATAR_ID) {
+    selectedAvatarId=DEFAULT_AVATAR_ID;
   }
+  prefs.put(KEY_AVATAR,String.valueOf(selectedAvatarId));
+  updateCache(KEY_AVATAR,String.valueOf(selectedAvatarId));
   try {
     MageFrame.getSession().updatePreferencesForServer(getUserData());
     prefs.flush();

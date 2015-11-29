@@ -1,7 +1,17 @@
 {
   super.init(source,game);
-  if (!(target instanceof Permanent) && (target instanceof Card)) {
-    this.target=new PermanentCard((Card)target,source.getControllerId(),game);
+  if (!(copyFromObject instanceof Permanent) && (copyFromObject instanceof Card)) {
+    this.copyFromObject=new PermanentCard((Card)copyFromObject,source.getControllerId(),game);
   }
-  affectedObjectList.add(new MageObjectReference(getSourceId(),game));
+  Permanent permanent=game.getPermanent(copyToObjectId);
+  if (permanent != null) {
+    affectedObjectList.add(new MageObjectReference(permanent,game));
+  }
+ else   if (source.getAbilityType().equals(AbilityType.STATIC)) {
+    permanent=game.getPermanentEntering(copyToObjectId);
+    if (permanent != null) {
+      copyToPermanent(permanent,game,source);
+      affectedObjectList.add(new MageObjectReference(permanent.getId(),game.getState().getZoneChangeCounter(copyToObjectId) + 1,game));
+    }
+  }
 }

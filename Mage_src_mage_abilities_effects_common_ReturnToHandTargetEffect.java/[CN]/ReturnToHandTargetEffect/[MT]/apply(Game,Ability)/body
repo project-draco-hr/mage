@@ -3,13 +3,12 @@
   if (controller == null) {
     return false;
   }
-  Cards cardsToHand=new CardsImpl();
-  Zone fromZone=game.getState().getZone(targetPointer.getFirst(game,source));
+  Set<Card> cards=new LinkedHashSet<>();
   for (  UUID targetId : targetPointer.getTargets(game,source)) {
     MageObject mageObject=game.getObject(targetId);
     if (mageObject instanceof Card) {
-      cardsToHand.add((Card)mageObject);
+      cards.add((Card)mageObject);
     }
   }
-  return controller.moveCards(cardsToHand,fromZone,Zone.HAND,source,game);
+  return controller.moveCards(cards,Zone.HAND,source,game);
 }

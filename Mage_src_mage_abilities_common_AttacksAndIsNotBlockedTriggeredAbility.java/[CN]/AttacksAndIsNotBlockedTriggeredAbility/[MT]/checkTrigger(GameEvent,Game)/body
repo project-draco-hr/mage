@@ -1,0 +1,16 @@
+{
+  Permanent sourcePermanent=game.getPermanent(getSourceId());
+  if (sourcePermanent.isAttacking()) {
+    for (    CombatGroup combatGroup : game.getCombat().getGroups()) {
+      if (combatGroup.getBlockers().isEmpty() && combatGroup.getAttackers().contains(getSourceId())) {
+        if (setTargetPointer) {
+          for (          Effect effect : this.getEffects()) {
+            effect.setTargetPointer(new FixedTarget(game.getCombat().getDefendingPlayerId(getSourceId(),game)));
+          }
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}

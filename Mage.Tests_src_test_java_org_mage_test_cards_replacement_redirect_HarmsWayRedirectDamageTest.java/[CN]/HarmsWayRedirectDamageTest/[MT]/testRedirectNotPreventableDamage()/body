@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain");
+  addCard(Zone.HAND,playerA,"Wild Slash");
+  addCard(Zone.BATTLEFIELD,playerA,"Serra Angel");
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.HAND,playerB,"Harm's Way");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains");
+  addCard(Zone.BATTLEFIELD,playerB,"Birds of Paradise");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Wild Slash","Birds of Paradise");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Harm's Way","Silvercoat Lion","Wild Slash");
+  setChoice(playerB,"Wild Slash");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Wild Slash",1);
+  assertGraveyardCount(playerB,"Harm's Way",1);
+  assertPermanentCount(playerB,"Birds of Paradise",1);
+  assertGraveyardCount(playerA,"Silvercoat Lion",1);
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+}

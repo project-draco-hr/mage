@@ -1,0 +1,27 @@
+{
+  this.countered=true;
+  if (!isCopiedSpell()) {
+    Player player=game.getPlayer(game.getControllerId(sourceId));
+    if (player == null) {
+      player=game.getPlayer(getControllerId());
+    }
+    if (player != null) {
+      Ability counteringAbility=null;
+      MageObject counteringObject=game.getObject(sourceId);
+      if (counteringObject instanceof StackObject) {
+        counteringAbility=((StackObject)counteringObject).getStackAbility();
+      }
+      if (zone.equals(Zone.LIBRARY)) {
+        if (top) {
+          player.putCardsOnTopOfLibrary(new CardsImpl(card),game,counteringAbility,false);
+        }
+ else {
+          player.putCardsOnBottomOfLibrary(new CardsImpl(card),game,counteringAbility,false);
+        }
+      }
+ else {
+        player.moveCards(card,zone,counteringAbility,game,false,false,owner,null);
+      }
+    }
+  }
+}

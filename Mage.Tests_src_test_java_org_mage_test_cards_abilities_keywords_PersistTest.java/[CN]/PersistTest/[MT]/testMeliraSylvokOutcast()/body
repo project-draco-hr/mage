@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Melira, Sylvok Outcast",1);
+  addCard(Zone.HAND,playerA,"Murderous Redcap",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",2);
+  addCard(Zone.HAND,playerB,"Lightning Bolt",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Murderous Redcap");
+  addTarget(playerA,"Silvercoat Lion");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Lightning Bolt","Murderous Redcap");
+  addTarget(playerA,"Silvercoat Lion");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertGraveyardCount(playerB,"Silvercoat Lion",2);
+  assertPowerToughness(playerA,"Murderous Redcap",2,2);
+}

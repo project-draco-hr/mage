@@ -1,6 +1,12 @@
 {
   super.init(source,game);
   if (affectedObjectsSet) {
-    affectedObjectList.add(new MageObjectReference(source.getSourceId(),game));
+    Permanent permanent=game.getPermanentEntering(source.getSourceId());
+    if (permanent != null) {
+      affectedObjectList.add(new MageObjectReference(source.getSourceId(),game.getState().getZoneChangeCounter(source.getSourceId()) + 1,game));
+    }
+ else {
+      affectedObjectList.add(new MageObjectReference(source.getSourceId(),game));
+    }
   }
 }

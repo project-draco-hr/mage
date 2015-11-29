@@ -1,5 +1,7 @@
 {
   super(ownerId,142,"Assemble the Legion",Rarity.RARE,new CardType[]{CardType.ENCHANTMENT},"{3}{R}{W}");
   this.expansionSetCode="GTC";
-  this.addAbility(new BeginningOfUpkeepTriggeredAbility(new AssembleTheLegionEffect(),TargetController.YOU,false));
+  Ability ability=new BeginningOfUpkeepTriggeredAbility(new AddCountersSourceEffect(CounterType.MUSTER.createInstance()),TargetController.YOU,false);
+  ability.addEffect(new CreateTokenEffect(new SoldierTokenWithHaste(),new CountersCount(CounterType.MUSTER)));
+  this.addAbility(ability);
 }

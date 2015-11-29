@@ -1,20 +1,19 @@
 {
-  Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
-  if (permanent == null) {
-    permanent=(Permanent)game.getLastKnownInformation(source.getFirstTarget(),Zone.BATTLEFIELD);
-  }
-  if (permanent != null) {
-    EmptyToken token=new EmptyToken();
-    CardUtil.copyTo(token).from(permanent);
-    token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
-    Permanent permanentToken=game.getPermanent(token.getLastAddedToken());
-    game.getState().setValue(source.getSourceId() + "_token",permanentToken);
-    Effect sacrificeEffect=new SacrificeTargetEffect("sacrifice Dance of Many");
-    sacrificeEffect.setTargetPointer(new FixedTarget(game.getPermanent(source.getSourceId()).getId()));
-    LeavesBattlefieldTriggeredAbility triggerAbility=new LeavesBattlefieldTriggeredAbility(sacrificeEffect,false);
-    ContinuousEffect effect=new GainAbilityTargetEffect(triggerAbility,Duration.WhileOnBattlefield);
-    effect.setTargetPointer(new FixedTarget(token.getLastAddedToken()));
-    game.addEffect(effect,source);
+  Permanent permanent=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
+  Permanent sourceObject=game.getPermanent(source.getSourceId());
+  if (permanent != null && sourceObject != null) {
+    PutTokenOntoBattlefieldCopyTargetEffect effect=new PutTokenOntoBattlefieldCopyTargetEffect();
+    effect.setTargetPointer(new FixedTarget(permanent,game));
+    effect.apply(game,source);
+    game.getState().setValue(source.getSourceId() + "_token",effect.getAddedPermanent());
+    for (    Permanent addedToken : effect.getAddedPermanent()) {
+      Effect sacrificeEffect=new SacrificeTargetEffect("sacrifice Dance of Many");
+      sacrificeEffect.setTargetPointer(new FixedTarget(sourceObject,game));
+      LeavesBattlefieldTriggeredAbility triggerAbility=new LeavesBattlefieldTriggeredAbility(sacrificeEffect,false);
+      ContinuousEffect continuousEffect=new GainAbilityTargetEffect(triggerAbility,Duration.WhileOnBattlefield);
+      continuousEffect.setTargetPointer(new FixedTarget(addedToken,game));
+      game.addEffect(continuousEffect,source);
+    }
     return true;
   }
   return false;

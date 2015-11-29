@@ -1,0 +1,17 @@
+{
+  if (game.getPhase().getType() == TurnPhase.COMBAT) {
+    MageObject object=game.getObject(event.getSourceId());
+    if (event.getType() == GameEvent.EventType.CAST_SPELL) {
+      if (object.getCardType().contains(CardType.INSTANT)) {
+        return true;
+      }
+    }
+    if (event.getType() == GameEvent.EventType.ACTIVATE_ABILITY) {
+      Ability ability=game.getAbility(event.getTargetId(),event.getSourceId());
+      if (ability != null && !(ability instanceof ManaAbility)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

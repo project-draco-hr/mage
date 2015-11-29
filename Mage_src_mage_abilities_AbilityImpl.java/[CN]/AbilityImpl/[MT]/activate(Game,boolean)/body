@@ -4,8 +4,13 @@
     return false;
   }
   game.applyEffects();
-  if (!modes.choose(game,this)) {
+  if (!getModes().choose(game,this)) {
     return false;
+  }
+  if (controller.isTestMode()) {
+    if (!controller.addTargets(this,game)) {
+      return false;
+    }
   }
   getSourceObject(game);
   if (this.abilityType.equals(AbilityType.SPELL)) {
@@ -14,9 +19,8 @@
   if (sourceObject != null) {
     sourceObject.adjustChoices(this,game);
   }
-  for (  UUID modeId : this.getModes().getSelectedModes()) {
-    this.getModes().setActiveMode(modeId);
-    if (getChoices().size() > 0 && getChoices().choose(game,this) == false) {
+  for (  Mode mode : this.getModes().getSelectedModes()) {
+    if (mode.getChoices().size() > 0 && mode.getChoices().choose(game,this) == false) {
       logger.debug("activate failed - choice");
       return false;
     }
@@ -40,12 +44,15 @@
   }
   VariableManaCost variableManaCost=handleManaXCosts(game,noMana,controller);
   String announceString=handleOtherXCosts(game,controller);
-  for (  UUID modeId : this.getModes().getSelectedModes()) {
-    this.getModes().setActiveMode(modeId);
+  if (game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.CAST_SPELL_LATE,getId(),getSourceId(),getControllerId()),this)) {
+    return false;
+  }
+  for (  Mode mode : this.getModes().getSelectedModes()) {
+    this.getModes().setActiveMode(mode);
     if (sourceObject != null && !this.getAbilityType().equals(AbilityType.TRIGGERED)) {
       sourceObject.adjustTargets(this,game);
     }
-    if (getTargets().size() > 0 && getTargets().chooseTargets(getEffects().get(0).getOutcome(),this.controllerId,this,game) == false) {
+    if (mode.getTargets().size() > 0 && mode.getTargets().chooseTargets(getEffects().get(0).getOutcome(),this.controllerId,this,noMana,game) == false) {
       if ((variableManaCost != null || announceString != null) && !game.isSimulation()) {
         game.informPlayer(controller,(sourceObject != null ? sourceObject.getIdName() : "") + ": no valid targets with this value of X");
       }
@@ -106,7 +113,7 @@
     }
     if (variableManaCost != null) {
       int xValue=getManaCostsToPay().getX();
-      game.informPlayers(new StringBuilder(controller.getLogName()).append(" announces a value of ").append(xValue).append(" for ").append(variableManaCost.getText()).toString());
+      game.informPlayers(controller.getLogName() + " announces a value of " + xValue+ " for "+ variableManaCost.getText());
     }
   }
   activated=true;

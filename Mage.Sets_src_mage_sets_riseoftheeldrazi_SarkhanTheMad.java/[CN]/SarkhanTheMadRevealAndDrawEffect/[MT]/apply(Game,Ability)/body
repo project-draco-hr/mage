@@ -1,16 +1,15 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null && player.getLibrary().size() > 0) {
-    Card card=player.getLibrary().removeFromTop(game);
-    Permanent permanent=game.getPermanent(source.getSourceId());
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    Card card=controller.getLibrary().getFromTop(game);
+    Permanent sourcePermanent=game.getPermanent(source.getSourceId());
     if (card != null) {
-      card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
-      permanent.damage(card.getManaCost().convertedManaCost(),this.getId(),game,false,false);
-      Cards cards=new CardsImpl();
-      cards.add(card);
-      player.revealCards("Sarkhan the Mad",cards,game);
-      return true;
+      controller.moveCards(card,null,Zone.HAND,source,game);
+      sourcePermanent.damage(card.getManaCost().convertedManaCost(),source.getSourceId(),game,false,false);
+      controller.revealCards(sourceObject.getIdName(),new CardsImpl(card),game);
     }
+    return true;
   }
   return false;
 }
