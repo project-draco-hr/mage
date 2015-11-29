@@ -1,0 +1,46 @@
+{
+switch (messageType) {
+case TALK:
+case WHISPER:
+case USER_INFO:
+    super.receiveMessage(username,message,time,messageType,color);
+  return;
+}
+StringBuilder text=new StringBuilder();
+if (time != null) {
+text.append(getColoredText(TIMESTAMP_COLOR,time + ": "));
+}
+String userColor;
+String textColor;
+String userSeparator=" ";
+switch (messageType) {
+case STATUS:
+textColor=STATUS_COLOR;
+userColor=STATUS_COLOR;
+break;
+case USER_INFO:
+textColor=USER_INFO_COLOR;
+userColor=USER_INFO_COLOR;
+break;
+default :
+if (parentChatRef != null) {
+userColor=parentChatRef.session.getUserName().equals(username) ? MY_COLOR : OPPONENT_COLOR;
+}
+ else {
+userColor=session.getUserName().equals(username) ? MY_COLOR : OPPONENT_COLOR;
+}
+textColor=MESSAGE_COLOR;
+userSeparator=": ";
+}
+if (color.equals(ChatMessage.MessageColor.ORANGE)) {
+textColor="Orange";
+}
+if (color.equals(ChatMessage.MessageColor.YELLOW)) {
+textColor="Yellow";
+}
+if (username != null && !username.isEmpty()) {
+text.append(getColoredText(userColor,username + userSeparator));
+}
+text.append(getColoredText(textColor,ManaSymbols.replaceSymbolsWithHTML(message,ManaSymbols.Type.PAY)));
+this.systemMessagesPane.append(text.toString());
+}
