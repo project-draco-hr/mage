@@ -3,12 +3,9 @@
   if (controller != null) {
     int cardsHand=controller.getHand().size();
     if (cardsHand > 0) {
-      for (      Card card : controller.getHand().getCards(game)) {
-        if (card != null) {
-          controller.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.HAND,true,false);
-        }
-      }
+      controller.moveCards(controller.getHand(),Zone.LIBRARY,source,game);
       controller.shuffleLibrary(game);
+      game.applyEffects();
       controller.drawCards(cardsHand,game);
     }
     return true;
