@@ -1,0 +1,66 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID creatureId : this.getTargetPointer().getTargets(game,source)) {
+      Permanent perm=game.getPermanent(creatureId);
+      if (perm == null) {
+        continue;
+      }
+      String manaName;
+      if (!perm.isTapped() && perm.tap(game)) {
+        ManaPool manaPool=controller.getManaPool();
+        Choice chooseManaType=buildChoice(perm.getColor(game),unpaid.getMana());
+        if (chooseManaType.getChoices().size() > 0) {
+          if (chooseManaType.getChoices().size() > 1) {
+            chooseManaType.getChoices().add("Colorless");
+            chooseManaType.setMessage("Choose mana color to reduce from " + perm.getName());
+            while (!chooseManaType.isChosen()) {
+              controller.choose(Outcome.Benefit,chooseManaType,game);
+              if (!controller.canRespond()) {
+                return false;
+              }
+            }
+          }
+ else {
+            chooseManaType.setChoice(chooseManaType.getChoices().iterator().next());
+          }
+          if (chooseManaType.getChoice().equals("Black")) {
+            manaPool.addMana(Mana.BlackMana(1),game,source);
+            manaPool.unlockManaType(ManaType.BLACK);
+          }
+          if (chooseManaType.getChoice().equals("Blue")) {
+            manaPool.addMana(Mana.BlueMana(1),game,source);
+            manaPool.unlockManaType(ManaType.BLUE);
+          }
+          if (chooseManaType.getChoice().equals("Green")) {
+            manaPool.addMana(Mana.GreenMana(1),game,source);
+            manaPool.unlockManaType(ManaType.GREEN);
+          }
+          if (chooseManaType.getChoice().equals("White")) {
+            manaPool.addMana(Mana.WhiteMana(1),game,source);
+            manaPool.unlockManaType(ManaType.WHITE);
+          }
+          if (chooseManaType.getChoice().equals("Red")) {
+            manaPool.addMana(Mana.RedMana(1),game,source);
+            manaPool.unlockManaType(ManaType.RED);
+          }
+          if (chooseManaType.getChoice().equals("Colorless")) {
+            manaPool.addMana(Mana.ColorlessMana(1),game,source);
+            manaPool.unlockManaType(ManaType.COLORLESS);
+          }
+          manaName=chooseManaType.getChoice().toLowerCase();
+        }
+ else {
+          manaPool.addMana(Mana.ColorlessMana(1),game,source);
+          manaPool.unlockManaType(ManaType.COLORLESS);
+          manaName="colorless";
+        }
+        if (!game.isSimulation()) {
+          game.informPlayers("Convoke: " + controller.getLogName() + " taps "+ perm.getLogName()+ " to pay one "+ manaName+ " mana");
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

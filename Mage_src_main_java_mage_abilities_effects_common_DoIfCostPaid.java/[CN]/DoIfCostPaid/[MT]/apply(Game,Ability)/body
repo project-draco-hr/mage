@@ -1,0 +1,37 @@
+{
+  Player player=getPayingPlayer(game,source);
+  MageObject mageObject=game.getObject(source.getSourceId());
+  if (player != null && mageObject != null) {
+    String message;
+    if (chooseUseText == null) {
+      String effectText=executingEffects.getText(source.getModes().getMode());
+      if (effectText.length() > 0 && effectText.charAt(effectText.length() - 1) == '.') {
+        effectText=effectText.substring(0,effectText.length() - 1);
+      }
+      message=getCostText() + " and " + effectText+ "?";
+      message=Character.toUpperCase(message.charAt(0)) + message.substring(1);
+    }
+ else {
+      message=chooseUseText;
+    }
+    message=CardUtil.replaceSourceName(message,mageObject.getLogName());
+    boolean result=true;
+    if (cost.canPay(source,source.getSourceId(),player.getId(),game) && (optional && player.chooseUse(executingEffects.get(0).getOutcome(),message,source,game))) {
+      cost.clearPaid();
+      if (cost.pay(source,game,source.getSourceId(),player.getId(),false)) {
+        for (        Effect effect : executingEffects) {
+          effect.setTargetPointer(this.targetPointer);
+          if (effect instanceof OneShotEffect) {
+            result&=effect.apply(game,source);
+          }
+ else {
+            game.addEffect((ContinuousEffect)effect,source);
+          }
+        }
+        player.resetStoredBookmark(game);
+      }
+    }
+    return result;
+  }
+  return false;
+}

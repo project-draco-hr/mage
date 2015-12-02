@@ -1,0 +1,86 @@
+{
+  boolean result;
+  Player controller=game.getPlayer(getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  if (this.getCardType().contains(CardType.INSTANT) || this.getCardType().contains(CardType.SORCERY)) {
+    int index=0;
+    result=false;
+    boolean legalParts=false;
+    boolean notTargeted=true;
+    for (    SpellAbility spellAbility : this.spellAbilities) {
+      if (hasTargets(spellAbility,game)) {
+        notTargeted=false;
+        legalParts|=spellAbilityHasLegalParts(spellAbility,game);
+      }
+    }
+    if (notTargeted || legalParts) {
+      for (      SpellAbility spellAbility : this.spellAbilities) {
+        if (spellAbilityHasLegalParts(spellAbility,game)) {
+          for (          Mode mode : spellAbility.getModes().getSelectedModes()) {
+            spellAbility.getModes().setActiveMode(mode);
+            if (mode.getTargets().stillLegal(spellAbility,game)) {
+              if (!spellAbility.getSpellAbilityType().equals(SpellAbilityType.SPLICE)) {
+                updateOptionalCosts(index);
+              }
+              result|=spellAbility.resolve(game);
+            }
+          }
+          index++;
+        }
+      }
+      if (game.getState().getZone(card.getMainCard().getId()) == Zone.STACK) {
+        if (!isCopy()) {
+          controller.moveCards(card,Zone.GRAVEYARD,ability,game);
+        }
+      }
+      return result;
+    }
+    if (!game.isSimulation()) {
+      game.informPlayers(getName() + " has been fizzled.");
+    }
+    counter(null,game);
+    return false;
+  }
+ else   if (this.getCardType().contains(CardType.ENCHANTMENT) && this.getSubtype().contains("Aura")) {
+    if (ability.getTargets().stillLegal(ability,game)) {
+      updateOptionalCosts(0);
+      boolean bestow=ability instanceof BestowAbility;
+      if (bestow) {
+        card.getCardType().remove(CardType.CREATURE);
+        card.getSubtype().add("Aura");
+      }
+      if (controller.moveCards(card,Zone.BATTLEFIELD,ability,game,false,faceDown,false,null)) {
+        if (bestow) {
+          Permanent permanent=game.getPermanent(card.getId());
+          if (permanent != null && permanent instanceof PermanentCard) {
+            permanent.setSpellAbility(ability);
+            ((PermanentCard)permanent).getCard().getCardType().add(CardType.CREATURE);
+            ((PermanentCard)permanent).getCard().getSubtype().remove("Aura");
+          }
+        }
+        return ability.resolve(game);
+      }
+      if (bestow) {
+        card.getCardType().add(CardType.CREATURE);
+      }
+      return false;
+    }
+    if (this.getSpellAbility() instanceof BestowAbility) {
+      updateOptionalCosts(0);
+      return controller.moveCards(card,Zone.BATTLEFIELD,ability,game,false,faceDown,false,null);
+    }
+ else {
+      if (!game.isSimulation()) {
+        game.informPlayers(getName() + " has been fizzled.");
+      }
+      counter(null,game);
+      return false;
+    }
+  }
+ else {
+    updateOptionalCosts(0);
+    return controller.moveCards(card,Zone.BATTLEFIELD,ability,game,false,faceDown,false,null);
+  }
+}

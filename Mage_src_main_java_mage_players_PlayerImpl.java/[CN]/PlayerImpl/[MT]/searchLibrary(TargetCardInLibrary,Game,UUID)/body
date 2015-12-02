@@ -1,0 +1,46 @@
+{
+  Library searchedLibrary=null;
+  String searchInfo=null;
+  if (targetPlayerId.equals(playerId)) {
+    searchInfo=getLogName() + " searches his or her library";
+    searchedLibrary=library;
+  }
+ else {
+    Player targetPlayer=game.getPlayer(targetPlayerId);
+    if (targetPlayer != null) {
+      searchInfo=getLogName() + " searches the library of " + targetPlayer.getLogName();
+      searchedLibrary=targetPlayer.getLibrary();
+    }
+  }
+  if (searchedLibrary == null) {
+    return false;
+  }
+  GameEvent event=GameEvent.getEvent(GameEvent.EventType.SEARCH_LIBRARY,targetPlayerId,playerId,playerId,Integer.MAX_VALUE);
+  if (!game.replaceEvent(event)) {
+    if (!game.isSimulation()) {
+      game.informPlayers(searchInfo);
+    }
+    TargetCardInLibrary newTarget=target.copy();
+    int count;
+    int librarySearchLimit=event.getAmount();
+    if (librarySearchLimit == Integer.MAX_VALUE) {
+      count=searchedLibrary.count(target.getFilter(),game);
+    }
+ else {
+      newTarget.setCardLimit(librarySearchLimit);
+      count=Math.min(searchedLibrary.count(target.getFilter(),game),librarySearchLimit);
+    }
+    if (count < target.getNumberOfTargets()) {
+      newTarget.setMinNumberOfTargets(count);
+    }
+    if (newTarget.choose(Outcome.Neutral,playerId,targetPlayerId,game)) {
+      target.getTargets().clear();
+      for (      UUID targetId : newTarget.getTargets()) {
+        target.add(targetId,game);
+      }
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.LIBRARY_SEARCHED,targetPlayerId,playerId));
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Spell spell=game.getStack().getSpell(source.getId());
+    if (spell != null && !spell.isCopiedSpell()) {
+      Card spellCard=spell.getCard();
+      if (spellCard != null) {
+        controller.moveCards(spellCard,Zone.EXILED,source,game);
+      }
+    }
+    return true;
+  }
+  return false;
+}

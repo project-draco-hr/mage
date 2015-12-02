@@ -1,0 +1,29 @@
+{
+  if (objectId == null) {
+    return null;
+  }
+  MageObject object=getObject(objectId);
+  if (object != null) {
+    if (object instanceof StackObject) {
+      return ((StackObject)object).getControllerId();
+    }
+ else     if (object instanceof Permanent) {
+      return ((Permanent)object).getControllerId();
+    }
+ else     if (object instanceof CommandObject) {
+      return ((CommandObject)object).getControllerId();
+    }
+    UUID controllerId=getContinuousEffects().getControllerOfSourceId(objectId);
+    if (controllerId != null) {
+      return controllerId;
+    }
+    Player player=getPlayer(objectId);
+    if (player != null) {
+      return player.getId();
+    }
+    if (object instanceof Card) {
+      return ((Card)object).getOwnerId();
+    }
+  }
+  return null;
+}

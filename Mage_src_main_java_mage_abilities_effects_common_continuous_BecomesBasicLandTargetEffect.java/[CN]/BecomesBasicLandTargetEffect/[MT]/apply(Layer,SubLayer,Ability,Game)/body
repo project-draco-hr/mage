@@ -1,0 +1,39 @@
+{
+  for (  UUID targetPermanent : targetPointer.getTargets(game,source)) {
+    Permanent land=game.getPermanent(targetPermanent);
+    if (land != null) {
+switch (layer) {
+case TypeChangingEffects_4:
+        if (!land.getCardType().contains(CardType.LAND)) {
+          land.getCardType().add(CardType.LAND);
+        }
+      land.removeAllAbilities(source.getSourceId(),game);
+    land.getSubtype().removeAll(CardRepository.instance.getLandTypes());
+  land.getSubtype().addAll(landTypes);
+break;
+case AbilityAddingRemovingEffects_6:
+for (String landType : landTypes) {
+switch (landType) {
+case "Swamp":
+  land.addAbility(new BlackManaAbility(),source.getSourceId(),game);
+break;
+case "Mountain":
+land.addAbility(new RedManaAbility(),source.getSourceId(),game);
+break;
+case "Forest":
+land.addAbility(new GreenManaAbility(),source.getSourceId(),game);
+break;
+case "Island":
+land.addAbility(new BlueManaAbility(),source.getSourceId(),game);
+break;
+case "Plains":
+land.addAbility(new WhiteManaAbility(),source.getSourceId(),game);
+break;
+}
+}
+break;
+}
+}
+}
+return true;
+}

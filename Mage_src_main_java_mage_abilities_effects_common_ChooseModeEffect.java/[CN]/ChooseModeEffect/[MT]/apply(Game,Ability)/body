@@ -1,0 +1,27 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (sourcePermanent == null) {
+    sourcePermanent=game.getPermanentEntering(source.getSourceId());
+  }
+  if (controller != null) {
+    Choice choice=new ChoiceImpl(true);
+    choice.setMessage(choiceMessage);
+    choice.getChoices().addAll(modes);
+    while (!choice.isChosen()) {
+      if (!controller.canRespond()) {
+        return false;
+      }
+      controller.choose(Outcome.Neutral,choice,game);
+    }
+    if (choice.isChosen()) {
+      if (!game.isSimulation()) {
+        game.informPlayers(sourcePermanent.getLogName() + ": " + controller.getLogName()+ " has chosen "+ choice.getChoice());
+      }
+      game.getState().setValue(source.getSourceId() + "_modeChoice",choice.getChoice());
+      sourcePermanent.addInfo("_modeChoice","<font color = 'blue'>Chosen mode: " + choice.getChoice() + "</font>",game);
+    }
+    return true;
+  }
+  return false;
+}

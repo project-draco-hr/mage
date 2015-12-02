@@ -1,0 +1,34 @@
+{
+  boolean result=true;
+  if (checkIfClause(game)) {
+    for (    Effect effect : getEffects()) {
+      if (effect instanceof OneShotEffect) {
+        boolean effectResult=effect.apply(game,this);
+        result&=effectResult;
+        if (logger.isDebugEnabled()) {
+          if (!this.getAbilityType().equals(AbilityType.MANA)) {
+            if (!effectResult) {
+              if (this.getSourceId() != null) {
+                MageObject mageObject=game.getObject(this.getSourceId());
+                if (mageObject != null) {
+                  logger.debug("AbilityImpl.resolve: object: " + mageObject.getName());
+                }
+              }
+              logger.debug("AbilityImpl.resolve: effect returned false -" + effect.getText(this.getModes().getMode()));
+            }
+          }
+        }
+      }
+ else {
+        game.addEffect((ContinuousEffect)effect,this);
+      }
+      game.getState().handleSimultaneousEvent(game);
+      game.resetShortLivingLKI();
+      if (effect.applyEffectsAfter()) {
+        game.applyEffects();
+        game.getState().getTriggers().checkStateTriggers(game);
+      }
+    }
+  }
+  return result;
+}

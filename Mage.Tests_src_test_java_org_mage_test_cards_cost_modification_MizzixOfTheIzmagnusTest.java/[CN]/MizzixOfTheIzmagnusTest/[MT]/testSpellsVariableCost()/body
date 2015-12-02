@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Mizzix of the Izmagnus");
+  addCard(Zone.HAND,playerA,"Blaze",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Blaze",playerB);
+  setChoice(playerA,"X=1");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Blaze",playerB);
+  setChoice(playerA,"X=2");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Blaze",2);
+  assertCounterCount(playerA,CounterType.EXPERIENCE,2);
+  assertLife(playerA,20);
+  assertLife(playerB,17);
+}

@@ -1,0 +1,33 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  target.clearChosen();
+  if (controller.searchLibrary(target,game)) {
+    if (target.getTargets().size() > 0) {
+      Cards cards=new CardsImpl();
+      for (      UUID cardId : target.getTargets()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          cards.add(card);
+        }
+      }
+      controller.moveCards(cards,null,Zone.HAND,source,game);
+      if (revealCards) {
+        String name="Reveal";
+        Card sourceCard=game.getCard(source.getSourceId());
+        if (sourceCard != null) {
+          name=sourceCard.getIdName();
+        }
+        controller.revealCards(name,cards,game);
+      }
+    }
+    controller.shuffleLibrary(game);
+    return true;
+  }
+  if (forceShuffle) {
+    controller.shuffleLibrary(game);
+  }
+  return false;
+}

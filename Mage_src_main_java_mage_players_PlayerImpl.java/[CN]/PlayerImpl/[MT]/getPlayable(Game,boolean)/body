@@ -1,0 +1,109 @@
+{
+  List<Ability> playable=new ArrayList<>();
+  if (!shouldSkipGettingPlayable(game)) {
+    ManaOptions availableMana=getManaAvailable(game);
+    availableMana.addMana(manaPool.getMana());
+    if (hidden) {
+      for (      Card card : hand.getUniqueCards(game)) {
+        for (        Ability ability : card.getAbilities(game)) {
+          if (ability.getZone().match(Zone.HAND)) {
+            if (ability instanceof ActivatedAbility) {
+              if (!(ability instanceof PlayLandAbility) || !game.getContinuousEffects().preventedByRuleModification(GameEvent.getEvent(GameEvent.EventType.PLAY_LAND,ability.getSourceId(),ability.getSourceId(),playerId),ability,game,true)) {
+                if (canPlay((ActivatedAbility)ability,availableMana,card,game)) {
+                  playable.add(ability);
+                }
+              }
+            }
+ else             if (card.getCardType().contains(CardType.LAND) && ability instanceof AlternativeSourceCosts) {
+              if (canLandPlayAlternateSourceCostsAbility(card,availableMana,ability,game)) {
+                playable.add(ability);
+              }
+            }
+          }
+        }
+      }
+    }
+    for (    Card card : graveyard.getUniqueCards(game)) {
+      boolean asThoughtCast=game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.PLAY_FROM_NOT_OWN_HAND_ZONE,this.getId(),game);
+      for (      ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.ALL)) {
+        boolean possible=false;
+        if (ability.getZone().match(Zone.GRAVEYARD)) {
+          possible=true;
+        }
+ else         if (ability.getZone().match(Zone.HAND) && (ability instanceof SpellAbility || ability instanceof PlayLandAbility)) {
+          if (asThoughtCast || canPlayCardsFromGraveyard()) {
+            possible=true;
+          }
+        }
+        if (possible && canPlay(ability,availableMana,card,game)) {
+          playable.add(ability);
+        }
+      }
+      LinkedHashMap<UUID,ActivatedAbility> useable=new LinkedHashMap<>();
+      getOtherUseableActivatedAbilities(card,Zone.GRAVEYARD,game,useable);
+      for (      Ability ability : useable.values()) {
+        playable.add(ability);
+      }
+    }
+    for (    ExileZone exile : game.getExile().getExileZones()) {
+      for (      Card card : exile.getCards(game)) {
+        if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.PLAY_FROM_NOT_OWN_HAND_ZONE,this.getId(),game)) {
+          for (          Ability ability : card.getAbilities()) {
+            if (ability.getZone().match(Zone.HAND)) {
+              ability.setControllerId(this.getId());
+              if (ability instanceof ActivatedAbility) {
+                if (((ActivatedAbility)ability).canActivate(playerId,game)) {
+                  playable.add(ability);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    for (    Cards cards : game.getState().getRevealed().values()) {
+      for (      Card card : cards.getCards(game)) {
+        if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.PLAY_FROM_NOT_OWN_HAND_ZONE,this.getId(),game)) {
+          for (          ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
+            if (ability instanceof SpellAbility || ability instanceof PlayLandAbility) {
+              playable.add(ability);
+            }
+          }
+        }
+      }
+    }
+    for (    UUID playerInRangeId : game.getState().getPlayersInRange(getId(),game)) {
+      Player player=game.getPlayer(playerInRangeId);
+      if (player != null) {
+        if (player.isTopCardRevealed() && player.getLibrary().size() > 0) {
+          Card card=player.getLibrary().getFromTop(game);
+          if (game.getContinuousEffects().asThough(card.getId(),AsThoughEffectType.PLAY_FROM_NOT_OWN_HAND_ZONE,getId(),game)) {
+            for (            ActivatedAbility ability : card.getAbilities().getActivatedAbilities(Zone.HAND)) {
+              if (ability instanceof SpellAbility || ability instanceof PlayLandAbility) {
+                playable.add(ability);
+              }
+            }
+          }
+        }
+      }
+    }
+    Map<String,Ability> playableActivated=new HashMap<>();
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
+      LinkedHashMap<UUID,ActivatedAbility> useableAbilities=getUseableActivatedAbilities(permanent,Zone.BATTLEFIELD,game);
+      for (      ActivatedAbility ability : useableAbilities.values()) {
+        if (!playableActivated.containsKey(ability.toString())) {
+          playableActivated.put(ability.toString(),ability);
+        }
+      }
+    }
+    for (    CommandObject commandObject : game.getState().getCommand()) {
+      for (      ActivatedAbility ability : commandObject.getAbilities().getActivatedAbilities(Zone.COMMAND)) {
+        if (ability.getControllerId().equals(getId()) && ability instanceof ActivatedAbility && canPlay(ability,availableMana,game.getObject(ability.getSourceId()),game)) {
+          playableActivated.put(ability.toString(),ability);
+        }
+      }
+    }
+    playable.addAll(playableActivated.values());
+  }
+  return playable;
+}

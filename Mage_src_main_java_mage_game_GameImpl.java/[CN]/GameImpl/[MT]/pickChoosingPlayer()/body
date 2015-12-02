@@ -1,0 +1,14 @@
+{
+  UUID[] players=getPlayers().keySet().toArray(new UUID[0]);
+  UUID playerId;
+  while (!hasEnded()) {
+    playerId=players[rnd.nextInt(players.length)];
+    Player player=getPlayer(playerId);
+    if (player != null && player.isInGame()) {
+      fireInformEvent(state.getPlayer(playerId).getLogName() + " won the toss");
+      return player.getId();
+    }
+  }
+  logger.debug("Game was not possible to pick a choosing player.  GameId:" + getId());
+  return null;
+}

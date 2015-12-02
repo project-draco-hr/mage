@@ -6,9 +6,8 @@
   Player controller=game.getPlayer(source.getControllerId());
   if (spell != null && controller != null) {
     Target usedTarget=null;
-    setUsedTarget:     for (    UUID modeId : spell.getSpellAbility().getModes().getSelectedModes()) {
-      spell.getSpellAbility().getModes().setActiveMode(modeId);
-      for (      Target target : spell.getSpellAbility().getTargets()) {
+    setUsedTarget:     for (    Mode mode : spell.getSpellAbility().getModes().getSelectedModes()) {
+      for (      Target target : mode.getTargets()) {
         if (target.getFirstTarget().equals(source.getSourceId())) {
           usedTarget=target.copy();
           usedTarget.clearChosen();
@@ -22,13 +21,14 @@
     for (    Permanent creature : game.getState().getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game)) {
       if (!creature.getId().equals(source.getSourceId()) && usedTarget.canTarget(source.getControllerId(),creature.getId(),source,game)) {
         Spell copy=spell.copySpell();
-        setTarget:         for (        UUID modeId : spell.getSpellAbility().getModes().getSelectedModes()) {
-          copy.getSpellAbility().getModes().setActiveMode(modeId);
-          for (          Target target : copy.getSpellAbility().getTargets()) {
-            if (target.getClass().equals(usedTarget.getClass()) && target.getMessage().equals(usedTarget.getMessage())) {
+        setTarget:         for (        Mode mode : spell.getSpellAbility().getModes().getSelectedModes()) {
+          for (          Target target : mode.getTargets()) {
+            if (target.getClass().equals(usedTarget.getClass())) {
               target.clearChosen();
-              target.add(creature.getId(),game);
-              break setTarget;
+              if (target.getMessage().equals(usedTarget.getMessage())) {
+                target.add(creature.getId(),game);
+                break setTarget;
+              }
             }
           }
         }

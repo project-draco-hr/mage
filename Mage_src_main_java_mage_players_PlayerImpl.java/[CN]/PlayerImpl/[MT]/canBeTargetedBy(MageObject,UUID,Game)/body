@@ -1,0 +1,19 @@
+{
+  if (this.hasLost() || this.hasLeft()) {
+    return false;
+  }
+  if (source != null) {
+    if (abilities.containsKey(ShroudAbility.getInstance().getId())) {
+      return false;
+    }
+    if (abilities.containsKey(HexproofAbility.getInstance().getId())) {
+      if (sourceControllerId != null && this.hasOpponent(sourceControllerId,game) && !game.getContinuousEffects().asThough(this.getId(),AsThoughEffectType.HEXPROOF,this.getId(),game)) {
+        return false;
+      }
+    }
+    if (hasProtectionFrom(source,game)) {
+      return false;
+    }
+  }
+  return true;
+}

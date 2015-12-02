@@ -1,0 +1,31 @@
+{
+  Set<UUID> opponents=game.getOpponents(attackerId);
+  PlayerList players;
+switch (game.getAttackOption()) {
+case LEFT:
+    players=game.getState().getPlayerList(attackerId);
+  while (true) {
+    Player opponent=players.getNext(game);
+    if (opponents.contains(opponent.getId())) {
+      addDefender(opponent.getId(),game);
+      break;
+    }
+  }
+break;
+case RIGHT:
+players=game.getState().getPlayerList(attackerId);
+while (true) {
+Player opponent=players.getPrevious(game);
+if (opponents.contains(opponent.getId())) {
+addDefender(opponent.getId(),game);
+break;
+}
+}
+break;
+case MULTIPLE:
+for (UUID opponentId : game.getOpponents(attackerId)) {
+addDefender(opponentId,game);
+}
+break;
+}
+}

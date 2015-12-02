@@ -1,0 +1,30 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Set<Card> cardsToExile=controller.getGraveyard().getCards(new FilterInstantOrSorceryCard(),source.getId(),source.getControllerId(),game);
+    if (!cardsToExile.isEmpty()) {
+      if (controller.moveCards(cardsToExile,Zone.EXILED,source,game)) {
+        Cards copiedCards=new CardsImpl();
+        for (        Card card : cardsToExile) {
+          copiedCards.add(game.copyCard(card,source,source.getControllerId()));
+        }
+        boolean continueCasting=true;
+        while (continueCasting) {
+          TargetCard targetCard=new TargetCard(0,1,Zone.EXILED,new FilterCard("copied card to cast without paying its mana cost?"));
+          targetCard.setNotTarget(true);
+          if (controller.choose(outcome,copiedCards,targetCard,game)) {
+            Card selectedCard=game.getCard(targetCard.getFirstTarget());
+            if (selectedCard != null && selectedCard.getSpellAbility().canChooseTarget(game)) {
+              if (controller.cast(selectedCard.getSpellAbility(),game,true)) {
+                copiedCards.remove(selectedCard);
+              }
+            }
+          }
+          continueCasting=copiedCards.size() > 0 && controller.chooseUse(outcome,"Cast one of the copied cards without paying its mana cost?",source,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

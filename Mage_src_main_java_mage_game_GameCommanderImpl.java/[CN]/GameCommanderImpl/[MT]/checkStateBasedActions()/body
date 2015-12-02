@@ -1,0 +1,17 @@
+{
+  for (  Player player : getPlayers().values()) {
+    CommanderInfoWatcher damageWatcher=(CommanderInfoWatcher)getState().getWatchers().get("CommanderCombatDamageWatcher",player.getCommanderId());
+    if (damageWatcher == null) {
+      continue;
+    }
+    for (    Map.Entry<UUID,Integer> entrySet : damageWatcher.getDamageToPlayer().entrySet()) {
+      if (entrySet.getValue() > 20) {
+        Player opponent=getPlayer(entrySet.getKey());
+        if (opponent != null && !opponent.hasLost() && player.isInGame()) {
+          opponent.lost(this);
+        }
+      }
+    }
+  }
+  return super.checkStateBasedActions();
+}

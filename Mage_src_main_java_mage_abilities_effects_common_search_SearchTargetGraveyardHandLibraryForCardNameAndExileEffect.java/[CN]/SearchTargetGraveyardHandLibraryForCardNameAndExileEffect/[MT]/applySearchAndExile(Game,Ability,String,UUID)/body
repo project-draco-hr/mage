@@ -1,0 +1,35 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (cardName != null && controller != null) {
+    Player targetPlayer=game.getPlayer(targetPlayerId);
+    if (targetPlayer != null) {
+      FilterCard filter=new FilterCard("card named " + cardName);
+      filter.add(new NamePredicate(cardName));
+      int cardsCount=(cardName.isEmpty() ? 0 : targetPlayer.getGraveyard().count(filter,game));
+      if (cardsCount > 0) {
+        filter.setMessage("card named " + cardName + " in the graveyard of "+ targetPlayer.getLogName());
+        TargetCard target=new TargetCard((graveyardExileOptional ? 0 : cardsCount),cardsCount,Zone.GRAVEYARD,filter);
+        if (controller.choose(Outcome.Exile,targetPlayer.getGraveyard(),target,game)) {
+          controller.moveCards(new CardsImpl(target.getTargets()),Zone.EXILED,source,game);
+        }
+      }
+      cardsCount=(cardName.isEmpty() ? 0 : targetPlayer.getHand().count(filter,game));
+      filter.setMessage("card named " + cardName + " in the hand of "+ targetPlayer.getLogName());
+      TargetCard target=new TargetCard(0,cardsCount,Zone.HAND,filter);
+      if (controller.choose(Outcome.Exile,targetPlayer.getHand(),target,game)) {
+        controller.moveCards(new CardsImpl(target.getTargets()),Zone.EXILED,source,game);
+      }
+      Cards cardsInLibrary=new CardsImpl(Zone.LIBRARY);
+      cardsInLibrary.addAll(targetPlayer.getLibrary().getCards(game));
+      cardsCount=(cardName.isEmpty() ? 0 : cardsInLibrary.count(filter,game));
+      filter.setMessage("card named " + cardName + " in the library of "+ targetPlayer.getLogName());
+      TargetCardInLibrary targetLib=new TargetCardInLibrary(0,cardsCount,filter);
+      if (controller.choose(Outcome.Exile,cardsInLibrary,targetLib,game)) {
+        controller.moveCards(new CardsImpl(targetLib.getTargets()),Zone.EXILED,source,game);
+      }
+      targetPlayer.shuffleLibrary(game);
+    }
+    return true;
+  }
+  return false;
+}

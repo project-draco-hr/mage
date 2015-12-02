@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    if (controller.flipCoin(game)) {
+      new CreateTokenEffect(new WireflyToken()).apply(game,source);
+      return true;
+    }
+ else {
+      FilterPermanent filter=new FilterPermanent("permanents named Wirefly");
+      filter.add(new NamePredicate("Wirefly"));
+      new DestroyAllEffect(filter).apply(game,source);
+      return true;
+    }
+  }
+  return false;
+}

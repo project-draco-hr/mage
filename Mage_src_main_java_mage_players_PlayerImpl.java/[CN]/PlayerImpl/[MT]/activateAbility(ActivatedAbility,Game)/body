@@ -1,0 +1,43 @@
+{
+  boolean result;
+  if (ability instanceof PassAbility) {
+    pass(game);
+    return true;
+  }
+  if (ability instanceof PlayLandAbility) {
+    Card card=game.getCard(ability.getSourceId());
+    result=playLand(card,game,false);
+  }
+ else {
+    if (!ability.canActivate(this.playerId,game)) {
+      return false;
+    }
+    if (ability.getAbilityType().equals(AbilityType.SPECIAL_ACTION)) {
+      result=specialAction((SpecialAction)ability.copy(),game);
+    }
+ else     if (ability.getAbilityType().equals(AbilityType.MANA)) {
+      result=playManaAbility((ManaAbility)ability.copy(),game);
+    }
+ else     if (ability.getAbilityType().equals(AbilityType.SPELL)) {
+      if (ability instanceof FlashbackAbility) {
+        result=playAbility(ability.copy(),game);
+      }
+ else {
+        result=cast((SpellAbility)ability,game,false);
+      }
+    }
+ else {
+      result=playAbility(ability.copy(),game);
+    }
+  }
+  justActivatedType=null;
+  if (result) {
+    if (isHuman() && (ability.getAbilityType().equals(AbilityType.SPELL) || ability.getAbilityType().equals(AbilityType.ACTIVATED))) {
+      if (ability.isUsesStack()) {
+        setJustActivatedType(ability.getAbilityType());
+      }
+    }
+    game.getPlayers().resetPassed();
+  }
+  return result;
+}

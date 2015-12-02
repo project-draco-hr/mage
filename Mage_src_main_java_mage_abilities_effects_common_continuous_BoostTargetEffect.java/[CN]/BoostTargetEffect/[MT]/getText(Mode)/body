@@ -1,0 +1,62 @@
+{
+  if (staticText != null && !staticText.isEmpty()) {
+    return staticText;
+  }
+  if (mode == null || mode.getTargets().size() == 0) {
+    return "no target";
+  }
+  Target target=mode.getTargets().get(0);
+  StringBuilder sb=new StringBuilder();
+  if (target.getMaxNumberOfTargets() > 1) {
+    if (target.getNumberOfTargets() < target.getNumberOfTargets()) {
+      sb.append("up to ");
+    }
+    sb.append(CardUtil.numberToText(target.getMaxNumberOfTargets())).append(" target ").append(target.getTargetName()).append(" get ");
+  }
+ else {
+    if (!target.getTargetName().toUpperCase().startsWith("ANOTHER")) {
+      sb.append("target ");
+    }
+    sb.append(target.getTargetName()).append(" gets ");
+  }
+  String p=power.toString();
+  if (!p.startsWith("-")) {
+    sb.append("+");
+  }
+  sb.append(p).append("/");
+  String t=toughness.toString();
+  if (!t.startsWith("-")) {
+    if (t.equals("0") && p.startsWith("-")) {
+      sb.append("-");
+    }
+ else {
+      sb.append("+");
+    }
+  }
+  sb.append(t);
+  if (duration != Duration.WhileOnBattlefield) {
+    sb.append(" ").append(duration.toString());
+  }
+  String message=null;
+  String fixedPart=null;
+  if (t.contains("X")) {
+    message=toughness.getMessage();
+    fixedPart=", where X is ";
+  }
+ else   if (p.contains("X")) {
+    message=power.getMessage();
+    fixedPart=", where X is ";
+  }
+ else   if (!power.getMessage().isEmpty()) {
+    message=power.getMessage();
+    fixedPart=" for each ";
+  }
+ else   if (!toughness.getMessage().isEmpty()) {
+    message=toughness.getMessage();
+    fixedPart=" for each ";
+  }
+  if (message != null && !message.isEmpty() && fixedPart != null) {
+    sb.append(fixedPart).append(message);
+  }
+  return sb.toString();
+}

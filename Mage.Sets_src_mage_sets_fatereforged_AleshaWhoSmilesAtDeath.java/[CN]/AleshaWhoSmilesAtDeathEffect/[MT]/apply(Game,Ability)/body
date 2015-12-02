@@ -3,9 +3,8 @@
   if (controller != null) {
     Card card=game.getCard(getTargetPointer().getFirst(game,source));
     if (card != null) {
-      if (card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),source.getControllerId(),true)) {
-        Permanent permanent=game.getPermanent(card.getId());
-        game.getCombat().addAttackingCreature(permanent.getId(),game);
+      if (controller.moveCards(card,Zone.BATTLEFIELD,source,game,true,false,false,null)) {
+        game.getCombat().addAttackingCreature(card.getId(),game);
       }
     }
     return true;

@@ -9,12 +9,17 @@
     controller.searchLibrary(target,game);
     Card card=controller.getLibrary().getCard(target.getFirstTarget(),game);
     if (card != null) {
-      controller.moveCards(card,null,Zone.EXILED,source,game);
+      controller.moveCards(card,Zone.EXILED,source,game);
     }
     controller.shuffleLibrary(game);
     if (card != null) {
       if (controller.chooseUse(outcome,"Cast " + card.getName() + " without paying its mana cost?",source,game)) {
-        controller.cast(card.getSpellAbility(),game,true);
+        if (card.getSpellAbility() != null) {
+          controller.cast(card.getSpellAbility(),game,true);
+        }
+ else {
+          Logger.getLogger(BringToLightEffect.class).error("Bring to Light: spellAbility == null " + card.getName());
+        }
       }
     }
     return true;

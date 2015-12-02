@@ -1,0 +1,58 @@
+{
+  Player controller=game.getPlayer(controllerId);
+  if (controller == null) {
+    return false;
+  }
+  lastAddedTokenIds.clear();
+  Card source=game.getCard(sourceId);
+  if (!expansionSetCodeChecked) {
+    expansionSetCodeChecked=this.updateExpansionSetCode(source);
+  }
+  String setCode;
+  if (this.getOriginalExpansionSetCode() != null && !this.getOriginalExpansionSetCode().isEmpty()) {
+    setCode=this.getOriginalExpansionSetCode();
+  }
+ else {
+    setCode=source != null ? source.getExpansionSetCode() : null;
+  }
+  GameEvent event=new GameEvent(EventType.CREATE_TOKEN,null,sourceId,controllerId,amount,this.getCardType().contains(CardType.CREATURE));
+  if (!game.replaceEvent(event)) {
+    amount=event.getAmount();
+    List<Permanent> permanents=new ArrayList<>();
+    List<Permanent> permanentsEntered=new ArrayList<>();
+    for (int i=0; i < amount; i++) {
+      PermanentToken newToken=new PermanentToken(this,event.getPlayerId(),setCode,game);
+      game.getState().addCard(newToken);
+      permanents.add(newToken);
+      game.getPermanentsEntering().put(newToken.getId(),newToken);
+      newToken.setTapped(tapped);
+    }
+    game.setScopeRelevant(true);
+    for (    Permanent permanent : permanents) {
+      if (permanent.entersBattlefield(sourceId,game,Zone.OUTSIDE,true)) {
+        permanentsEntered.add(permanent);
+      }
+ else {
+        game.getPermanentsEntering().remove(permanent.getId());
+      }
+    }
+    game.setScopeRelevant(false);
+    for (    Permanent permanent : permanentsEntered) {
+      game.addPermanent(permanent);
+      permanent.setZone(Zone.BATTLEFIELD,game);
+      game.getPermanentsEntering().remove(permanent.getId());
+      this.lastAddedTokenIds.add(permanent.getId());
+      this.lastAddedTokenId=permanent.getId();
+      game.addSimultaneousEvent(new ZoneChangeEvent(permanent,permanent.getControllerId(),Zone.OUTSIDE,Zone.BATTLEFIELD));
+      if (attacking && game.getCombat() != null) {
+        game.getCombat().addAttackingCreature(permanent.getId(),game,attackedPlayer);
+      }
+      if (!game.isSimulation()) {
+        game.informPlayers(controller.getLogName() + " puts a " + permanent.getLogName()+ " token onto the battlefield");
+      }
+    }
+    game.applyEffects();
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,39 @@
+{
+  ActivatedAbility playLandAbility=null;
+  boolean found=false;
+  for (  Ability ability : card.getAbilities()) {
+    if ((ability instanceof AlternativeSourceCosts) || (ability instanceof OptionalAdditionalSourceCosts)) {
+      found=true;
+    }
+    if (ability instanceof PlayLandAbility) {
+      playLandAbility=(ActivatedAbility)ability;
+    }
+  }
+  if (found) {
+    SpellAbility spellAbility=new SpellAbility(null,"",game.getState().getZone(card.getId()),SpellAbilityType.FACE_DOWN_CREATURE);
+    spellAbility.setControllerId(this.getId());
+    spellAbility.setSourceId(card.getId());
+    if (cast(spellAbility,game,false)) {
+      return true;
+    }
+  }
+  if (playLandAbility == null) {
+    return false;
+  }
+  if (!playLandAbility.canActivate(this.playerId,game)) {
+    return false;
+  }
+  if (!ignoreTiming && !game.canPlaySorcery(playerId)) {
+    return false;
+  }
+  if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.PLAY_LAND,card.getId(),card.getId(),playerId))) {
+    if (moveCards(card,Zone.BATTLEFIELD,playLandAbility,game,false,false,false,null)) {
+      landsPlayed++;
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.LAND_PLAYED,card.getId(),card.getId(),playerId));
+      game.fireInformEvent(getLogName() + " plays " + card.getLogName());
+      resetStoredBookmark(game);
+      return true;
+    }
+  }
+  return true;
+}

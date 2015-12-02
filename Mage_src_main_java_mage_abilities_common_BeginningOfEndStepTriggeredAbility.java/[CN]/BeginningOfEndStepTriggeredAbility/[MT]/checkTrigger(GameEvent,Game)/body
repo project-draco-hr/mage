@@ -1,0 +1,46 @@
+{
+switch (targetController) {
+case YOU:
+    boolean yours=event.getPlayerId().equals(this.controllerId);
+  if (yours) {
+    if (getTargets().size() == 0) {
+      for (      Effect effect : this.getEffects()) {
+        effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
+      }
+    }
+  }
+return yours;
+case OPPONENT:
+if (game.getPlayer(this.controllerId).hasOpponent(event.getPlayerId(),game)) {
+if (getTargets().size() == 0) {
+  for (  Effect effect : this.getEffects()) {
+    effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
+  }
+}
+return true;
+}
+break;
+case ANY:
+case NEXT:
+if (getTargets().size() == 0) {
+for (Effect effect : this.getEffects()) {
+effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
+}
+}
+return true;
+case CONTROLLER_ATTACHED_TO:
+Permanent attachment=game.getPermanent(sourceId);
+if (attachment != null && attachment.getAttachedTo() != null) {
+Permanent attachedTo=game.getPermanent(attachment.getAttachedTo());
+if (attachedTo != null && attachedTo.getControllerId().equals(event.getPlayerId())) {
+if (getTargets().size() == 0) {
+for (Effect effect : this.getEffects()) {
+effect.setTargetPointer(new FixedTarget(event.getPlayerId()));
+}
+}
+return true;
+}
+}
+}
+return false;
+}

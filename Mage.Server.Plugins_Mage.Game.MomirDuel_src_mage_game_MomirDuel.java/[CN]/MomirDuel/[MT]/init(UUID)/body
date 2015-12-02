@@ -1,0 +1,12 @@
+{
+  Ability ability=new SimpleStaticAbility(Zone.COMMAND,new InfoEffect("Vanguard effects"));
+  for (  UUID playerId : state.getPlayerList(startingPlayerId)) {
+    Player player=getPlayer(playerId);
+    if (player != null) {
+      addEmblem(new MomirEmblem(),ability,playerId);
+    }
+  }
+  getState().addAbility(ability,null);
+  super.init(choosingPlayerId);
+  state.getTurnMods().add(new TurnMod(startingPlayerId,PhaseStep.DRAW));
+}

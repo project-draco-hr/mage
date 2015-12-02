@@ -1,0 +1,34 @@
+{
+  if (((ZoneChangeEvent)event).isDiesEvent()) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    boolean triggered=false;
+    if (zEvent.getTarget().getAttachments().contains(this.getSourceId())) {
+      triggered=true;
+    }
+ else {
+      Permanent attachment=game.getPermanentOrLKIBattlefield(getSourceId());
+      if (attachment != null && zEvent.getTargetId() != null && attachment.getAttachedTo() != null && zEvent.getTargetId().equals(attachment.getAttachedTo())) {
+        Permanent attachedTo=game.getPermanentOrLKIBattlefield(attachment.getAttachedTo());
+        if (attachedTo != null && attachment.getAttachedToZoneChangeCounter() == attachedTo.getZoneChangeCounter(game)) {
+          triggered=true;
+        }
+      }
+    }
+    if (triggered) {
+      for (      Effect effect : getEffects()) {
+        effect.setValue("attachedTo",zEvent.getTarget());
+        if (setTargetPointer.equals(SetTargetPointer.ATTACHED_TO_CONTROLLER)) {
+          Permanent attachment=game.getPermanentOrLKIBattlefield(getSourceId());
+          if (attachment != null && attachment.getAttachedTo() != null) {
+            Permanent attachedTo=(Permanent)game.getLastKnownInformation(attachment.getAttachedTo(),Zone.BATTLEFIELD,attachment.getAttachedToZoneChangeCounter());
+            if (attachedTo != null) {
+              effect.setTargetPointer(new FixedTarget(attachedTo.getControllerId()));
+            }
+          }
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,29 @@
+{
+  if (source == null) {
+    logger.warn("Null source in triggerAbility method");
+    throw new IllegalArgumentException("source TriggeredAbility  must not be null");
+  }
+  int bookmark=game.bookmarkState();
+  TriggeredAbility ability=source.copy();
+  MageObject sourceObject=ability.getSourceObject(game);
+  if (sourceObject != null) {
+    sourceObject.adjustTargets(ability,game);
+  }
+  if (ability.canChooseTarget(game)) {
+    if (ability.isUsesStack()) {
+      game.getStack().push(new StackAbility(ability,playerId));
+    }
+    if (ability.activate(game,false)) {
+      if ((ability.isUsesStack() || ability.getRuleVisible()) && !game.isSimulation()) {
+        game.informPlayers(ability.getGameLogMessage(game));
+      }
+      if (!ability.isUsesStack()) {
+        ability.resolve(game);
+      }
+      game.removeBookmark(bookmark);
+      return true;
+    }
+  }
+  restoreState(bookmark,source.getRule(),game);
+  return false;
+}

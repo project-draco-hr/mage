@@ -1,0 +1,15 @@
+{
+  if (super.checkTrigger(event,game)) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getTarget().canTransform()) {
+      if (!zEvent.getTarget().getAbilities().contains(this)) {
+        return false;
+      }
+    }
+    for (    Effect effect : getEffects()) {
+      effect.setValue("permanentLeftBattlefield",zEvent.getTarget());
+    }
+    return true;
+  }
+  return false;
+}

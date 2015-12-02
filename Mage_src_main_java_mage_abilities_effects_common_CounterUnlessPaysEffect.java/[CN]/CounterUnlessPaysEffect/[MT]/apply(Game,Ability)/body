@@ -1,0 +1,28 @@
+{
+  StackObject spell=game.getStack().getStackObject(targetPointer.getFirst(game,source));
+  if (spell != null) {
+    Player player=game.getPlayer(spell.getControllerId());
+    if (player != null) {
+      Cost costToPay;
+      if (cost != null) {
+        costToPay=cost.copy();
+      }
+ else {
+        costToPay=new GenericManaCost(genericMana.calculate(game,source,this));
+      }
+      String message;
+      if (costToPay instanceof ManaCost) {
+        message="Would you like to pay " + costToPay.getText() + " to prevent counter effect?";
+      }
+ else {
+        message=costToPay.getText() + " to prevent counter effect?";
+      }
+      costToPay.clearPaid();
+      if (!(player.chooseUse(Outcome.Benefit,message,source,game) && costToPay.pay(source,game,spell.getSourceId(),spell.getControllerId(),false))) {
+        return game.getStack().counter(spell.getId(),source.getSourceId(),game);
+      }
+      return true;
+    }
+  }
+  return false;
+}

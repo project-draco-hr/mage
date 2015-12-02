@@ -1,0 +1,60 @@
+{
+  Player player=getPlayer(playerId);
+  if (player == null || player.hasLeft()) {
+    logger.debug("Player already left " + (player != null ? player.getName() : playerId));
+    return;
+  }
+  logger.debug("Start leave game: " + player.getName());
+  player.leave();
+  if (checkIfGameIsOver()) {
+    return;
+  }
+  for (Iterator<Permanent> it=getBattlefield().getAllPermanents().iterator(); it.hasNext(); ) {
+    Permanent perm=it.next();
+    if (perm.getOwnerId().equals(playerId)) {
+      if (perm.getAttachedTo() != null) {
+        Permanent attachedTo=getPermanent(perm.getAttachedTo());
+        if (attachedTo != null) {
+          attachedTo.removeAttachment(perm.getId(),this);
+        }
+ else {
+          Player attachedToPlayer=getPlayer(perm.getAttachedTo());
+          if (attachedToPlayer != null) {
+            attachedToPlayer.removeAttachment(perm,this);
+          }
+        }
+      }
+      if (perm.getCardType().contains(CardType.CREATURE) && this.getCombat() != null) {
+        perm.removeFromCombat(this,true);
+      }
+      it.remove();
+    }
+  }
+  this.getState().getContinuousEffects().removeInactiveEffects(this);
+  for (Iterator<StackObject> it=getStack().iterator(); it.hasNext(); ) {
+    StackObject object=it.next();
+    if (object.getControllerId().equals(playerId)) {
+      it.remove();
+    }
+  }
+  List<Permanent> permanents=this.getBattlefield().getAllActivePermanents(playerId);
+  for (  Permanent permanent : permanents) {
+    permanent.moveToExile(null,"",null,this);
+  }
+  for (  ExileZone exile : this.getExile().getExileZones()) {
+    for (Iterator<UUID> it=exile.iterator(); it.hasNext(); ) {
+      Card card=this.getCard(it.next());
+      if (card != null && card.getOwnerId().equals(playerId)) {
+        it.remove();
+      }
+    }
+  }
+  Iterator it=gameCards.entrySet().iterator();
+  while (it.hasNext()) {
+    Entry<UUID,Card> entry=(Entry<UUID,Card>)it.next();
+    Card card=entry.getValue();
+    if (card.getOwnerId().equals(playerId)) {
+      it.remove();
+    }
+  }
+}

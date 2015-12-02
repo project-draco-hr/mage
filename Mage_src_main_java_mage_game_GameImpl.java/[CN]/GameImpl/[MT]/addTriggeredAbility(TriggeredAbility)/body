@@ -1,0 +1,15 @@
+{
+  if (ability instanceof TriggeredManaAbility || ability instanceof DelayedTriggeredManaAbility) {
+    Ability manaAbiltiy=ability.copy();
+    manaAbiltiy.activate(this,false);
+    manaAbiltiy.resolve(this);
+  }
+ else {
+    TriggeredAbility newAbility=ability.copy();
+    newAbility.newId();
+    for (    Effect effect : newAbility.getEffects()) {
+      effect.getTargetPointer().init(this,newAbility);
+    }
+    state.addTriggeredAbility(newAbility);
+  }
+}

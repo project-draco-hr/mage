@@ -1,0 +1,23 @@
+{
+  if (ability instanceof StaticAbility) {
+    for (    Mode mode : ability.getModes().getSelectedModes()) {
+      for (      Effect effect : mode.getEffects()) {
+        if (effect instanceof ContinuousEffect) {
+          addEffect((ContinuousEffect)effect,sourceId,ability);
+        }
+      }
+    }
+  }
+ else   if (ability instanceof TriggeredAbility) {
+    this.triggers.add((TriggeredAbility)ability,sourceId,attachedTo);
+  }
+  List<Watcher> watcherList=new ArrayList<>(ability.getWatchers());
+  for (  Watcher watcher : watcherList) {
+    watcher.setControllerId(attachedTo == null ? ability.getControllerId() : attachedTo.getOwnerId());
+    watcher.setSourceId(attachedTo == null ? ability.getSourceId() : attachedTo.getId());
+    watchers.add(watcher);
+  }
+  for (  Ability sub : ability.getSubAbilities()) {
+    addAbility(sub,sourceId,attachedTo);
+  }
+}

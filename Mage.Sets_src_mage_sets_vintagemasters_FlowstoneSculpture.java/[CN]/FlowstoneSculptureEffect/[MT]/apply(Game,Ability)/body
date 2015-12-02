@@ -1,0 +1,32 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Choice choice=new ChoiceImpl(true);
+    choice.setMessage("Choose ability to add");
+    choice.setChoices(choices);
+    while (!controller.choose(outcome,choice,game)) {
+      if (controller.canRespond()) {
+        return false;
+      }
+    }
+    String chosen=choice.getChoice();
+    if (chosen.equals("+1/+1 counter")) {
+      return new AddCountersSourceEffect(CounterType.P1P1.createInstance()).apply(game,source);
+    }
+ else {
+      Ability gainedAbility;
+      if (chosen.equals("Flying")) {
+        gainedAbility=FlyingAbility.getInstance();
+      }
+ else       if (chosen.equals("First strike")) {
+        gainedAbility=FirstStrikeAbility.getInstance();
+      }
+ else {
+        gainedAbility=TrampleAbility.getInstance();
+      }
+      game.addEffect(new GainAbilitySourceEffect(gainedAbility,Duration.WhileOnBattlefield),source);
+      return true;
+    }
+  }
+  return false;
+}

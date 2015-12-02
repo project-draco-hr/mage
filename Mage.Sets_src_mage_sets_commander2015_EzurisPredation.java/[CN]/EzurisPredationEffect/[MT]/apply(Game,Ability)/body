@@ -1,0 +1,26 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    FilterCreaturePermanent filterCreature=new FilterCreaturePermanent();
+    filterCreature.add(new ControllerPredicate(TargetController.OPPONENT));
+    List<Permanent> creaturesOfOpponents=game.getBattlefield().getActivePermanents(filterCreature,source.getControllerId(),source.getSourceId(),game);
+    if (!creaturesOfOpponents.isEmpty()) {
+      CreateTokenEffect effect=new CreateTokenEffect(new BeastToken2(),creaturesOfOpponents.size());
+      effect.apply(game,source);
+      for (      UUID tokenId : effect.getLastAddedTokenIds()) {
+        Permanent token=game.getPermanent(tokenId);
+        if (token != null) {
+          if (creaturesOfOpponents.isEmpty()) {
+            break;
+          }
+          Permanent opponentCreature=creaturesOfOpponents.iterator().next();
+          creaturesOfOpponents.remove(opponentCreature);
+          token.fight(opponentCreature,source,game);
+          game.informPlayers(token.getLogName() + " fights " + opponentCreature.getLogName());
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

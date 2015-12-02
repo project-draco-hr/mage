@@ -1,15 +1,16 @@
 {
-  StackObject stackObject=game.getStack().getStackObject(source.getFirstTarget());
-  Player player=null;
+  UUID targetId=getTargetPointer().getFirst(game,source);
+  StackObject stackObject=game.getStack().getStackObject(targetId);
+  Player spellController=null;
   if (stackObject != null) {
-    player=game.getPlayer(stackObject.getControllerId());
+    spellController=game.getPlayer(stackObject.getControllerId());
   }
-  if (game.getStack().counter(source.getFirstTarget(),source.getSourceId(),game)) {
+  if (game.getStack().counter(targetId,source.getSourceId(),game)) {
     TargetCardInHand target=new TargetCardInHand(new FilterCreatureCard());
-    if (player != null && player.chooseUse(Outcome.Neutral,"Put a creature card from your hand in play?",source,game) && player.choose(Outcome.PutCreatureInPlay,target,source.getSourceId(),game)) {
+    if (spellController != null && target.canChoose(source.getSourceId(),source.getSourceId(),game) && spellController.chooseUse(Outcome.Neutral,"Put a creature card from your hand in play?",source,game) && spellController.choose(Outcome.PutCreatureInPlay,target,source.getSourceId(),game)) {
       Card card=game.getCard(target.getFirstTarget());
       if (card != null) {
-        card.putOntoBattlefield(game,Zone.HAND,source.getSourceId(),player.getId());
+        spellController.moveCards(card,Zone.BATTLEFIELD,source,game);
       }
     }
     return true;

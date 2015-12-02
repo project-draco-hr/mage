@@ -1,0 +1,23 @@
+{
+  Game game=getGame();
+  for (  MatchPlayer matchPlayer : this.players) {
+    Player player=game.getPlayer(matchPlayer.getPlayer().getId());
+    if (player != null) {
+      if (game.getPriorityTime() > 0) {
+        matchPlayer.setPriorityTimeLeft(player.getPriorityTimeLeft());
+      }
+      if (player.hasQuit()) {
+        matchPlayer.setQuit(true);
+      }
+      if (player.hasWon()) {
+        matchPlayer.addWin();
+      }
+    }
+  }
+  if (game.isADraw()) {
+    addDraw();
+  }
+  checkIfMatchEnds();
+  game.fireGameEndInfo();
+  gamesInfo.add(createGameInfo(game));
+}

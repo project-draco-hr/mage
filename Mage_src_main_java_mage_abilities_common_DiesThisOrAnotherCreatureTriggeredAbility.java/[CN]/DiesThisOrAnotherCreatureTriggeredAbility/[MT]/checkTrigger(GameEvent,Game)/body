@@ -1,0 +1,19 @@
+{
+  ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+  if (game.getPermanentOrLKIBattlefield(getSourceId()) == null) {
+    return false;
+  }
+  if (zEvent.getFromZone() == Zone.BATTLEFIELD && zEvent.getToZone() == Zone.GRAVEYARD) {
+    if (zEvent.getTarget() != null) {
+      if (zEvent.getTarget().getId().equals(this.getSourceId())) {
+        return true;
+      }
+ else {
+        if (filter.match(zEvent.getTarget(),sourceId,controllerId,game)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

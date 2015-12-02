@@ -1,0 +1,173 @@
+{
+  Set<UUID> opponents=game.getOpponents(attackerId);
+  Map<UUID,Set<UUID>> mustBeBlockedByAtLeastOne=new HashMap<>();
+  for (  Permanent creature : game.getBattlefield().getActivePermanents(new FilterControlledCreaturePermanent(),player.getId(),game)) {
+    if (opponents.contains(creature.getControllerId())) {
+      if (creature.getBlocking() > 0) {
+        for (        Map.Entry<RequirementEffect,HashSet<Ability>> entry : game.getContinuousEffects().getApplicableRequirementEffects(creature,game).entrySet()) {
+          RequirementEffect effect=entry.getKey();
+          for (          Ability ability : entry.getValue()) {
+            UUID toBeBlockedCreature=effect.mustBlockAttackerIfElseUnblocked(ability,game);
+            if (toBeBlockedCreature != null) {
+              Set<UUID> potentialBlockers;
+              if (mustBeBlockedByAtLeastOne.containsKey(toBeBlockedCreature)) {
+                potentialBlockers=mustBeBlockedByAtLeastOne.get(toBeBlockedCreature);
+              }
+ else {
+                potentialBlockers=new HashSet<>();
+                mustBeBlockedByAtLeastOne.put(toBeBlockedCreature,potentialBlockers);
+              }
+              potentialBlockers.add(creature.getId());
+            }
+          }
+        }
+      }
+      if (creature.getBlocking() == 0) {
+        for (        Map.Entry<RequirementEffect,HashSet<Ability>> entry : game.getContinuousEffects().getApplicableRequirementEffects(creature,game).entrySet()) {
+          RequirementEffect effect=entry.getKey();
+          for (          Ability ability : entry.getValue()) {
+            UUID toBeBlockedCreature=effect.mustBlockAttackerIfElseUnblocked(ability,game);
+            if (toBeBlockedCreature != null) {
+              Set<UUID> potentialBlockers;
+              if (mustBeBlockedByAtLeastOne.containsKey(toBeBlockedCreature)) {
+                potentialBlockers=mustBeBlockedByAtLeastOne.get(toBeBlockedCreature);
+              }
+ else {
+                potentialBlockers=new HashSet<>();
+                mustBeBlockedByAtLeastOne.put(toBeBlockedCreature,potentialBlockers);
+              }
+              potentialBlockers.add(creature.getId());
+            }
+          }
+          if (effect.mustBlockAny(game)) {
+            boolean mayBlock=false;
+            for (            UUID attackingCreatureId : getAttackers()) {
+              if (creature.canBlock(attackingCreatureId,game)) {
+                Permanent attackingCreature=game.getPermanent(attackingCreatureId);
+                if (attackingCreature != null) {
+                  if (attackingCreature.getMaxBlockedBy() != 0) {
+                    int alreadyBlockingCreatures=0;
+                    for (                    CombatGroup group : getGroups()) {
+                      if (group.getAttackers().contains(attackingCreatureId)) {
+                        alreadyBlockingCreatures=group.getBlockers().size();
+                        break;
+                      }
+                    }
+                    if (attackingCreature.getMaxBlockedBy() <= alreadyBlockingCreatures) {
+                      continue;
+                    }
+                  }
+                  if (attackingCreature.getMinBlockedBy() > 1) {
+                  }
+ else {
+                    mayBlock=true;
+                    break;
+                  }
+                }
+              }
+            }
+            if (mayBlock) {
+              if (controller.isHuman()) {
+                if (!game.isSimulation()) {
+                  game.informPlayer(controller,"Creature should block this turn: " + creature.getIdName());
+                }
+              }
+ else {
+                Player defender=game.getPlayer(creature.getControllerId());
+                if (defender != null) {
+                  for (                  UUID attackingCreatureId : getAttackers()) {
+                    if (creature.canBlock(attackingCreatureId,game)) {
+                      defender.declareBlocker(defender.getId(),creature.getId(),attackingCreatureId,game);
+                      break;
+                    }
+                  }
+                }
+              }
+              return false;
+            }
+          }
+        }
+      }
+    }
+  }
+  for (  UUID toBeBlockedCreatureId : mustBeBlockedByAtLeastOne.keySet()) {
+    for (    CombatGroup combatGroup : game.getCombat().getGroups()) {
+      if (combatGroup.getBlockers().isEmpty() && combatGroup.getAttackers().contains(toBeBlockedCreatureId)) {
+        if (controller.isHuman()) {
+          Permanent toBeBlockedCreature=game.getPermanent(toBeBlockedCreatureId);
+          if (toBeBlockedCreature != null) {
+            for (            UUID possibleBlockerId : mustBeBlockedByAtLeastOne.get(toBeBlockedCreatureId)) {
+              String blockRequiredMessage=isCreatureDoingARequiredBlock(possibleBlockerId,mustBeBlockedByAtLeastOne,game);
+              if (blockRequiredMessage != null) {
+                game.informPlayer(controller,blockRequiredMessage + "It's a requirement to block " + toBeBlockedCreature.getIdName());
+                return false;
+              }
+            }
+          }
+        }
+ else {
+          for (          UUID possibleBlockerId : mustBeBlockedByAtLeastOne.get(toBeBlockedCreatureId)) {
+            String blockRequiredMessage=isCreatureDoingARequiredBlock(possibleBlockerId,mustBeBlockedByAtLeastOne,game);
+            if (blockRequiredMessage != null) {
+              Permanent possibleBlocker=game.getPermanent(possibleBlockerId);
+              Player defender=game.getPlayer(possibleBlocker.getControllerId());
+              if (defender != null) {
+                defender.declareBlocker(defender.getId(),possibleBlockerId,toBeBlockedCreatureId,game);
+              }
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+  StringBuilder sb=new StringBuilder();
+  for (  Map.Entry<UUID,Set<UUID>> entry : creatureMustBlockAttackers.entrySet()) {
+    boolean blockIsValid;
+    Permanent creatureForcedToBlock=game.getPermanent(entry.getKey());
+    if (creatureForcedToBlock == null) {
+      break;
+    }
+    if (!creatureForcedToBlock.getControllerId().equals(player.getId())) {
+      continue;
+    }
+    if (creatureForcedToBlock.getBlocking() == 0) {
+      blockIsValid=false;
+    }
+ else {
+      blockIsValid=false;
+      CombatGroups:       for (      CombatGroup combatGroup : game.getCombat().getGroups()) {
+        if (combatGroup.getBlockers().contains(creatureForcedToBlock.getId())) {
+          for (          UUID forcingAttackerId : combatGroup.getAttackers()) {
+            if (entry.getValue().contains(forcingAttackerId)) {
+              blockIsValid=true;
+              break CombatGroups;
+            }
+ else {
+              if (combatGroup.getBlockers().size() == 1) {
+                if (mustBeBlockedByAtLeastOne.containsKey(forcingAttackerId)) {
+                  if (mustBeBlockedByAtLeastOne.get(forcingAttackerId).contains(creatureForcedToBlock.getId())) {
+                    blockIsValid=true;
+                    break CombatGroups;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    if (!blockIsValid) {
+      sb.append(" ").append(creatureForcedToBlock.getIdName());
+    }
+  }
+  if (sb.length() > 0) {
+    if (!game.isSimulation()) {
+      sb.insert(0,"Some creatures are forced to block certain attacker(s):\n");
+      sb.append("\nPlease block with each of these creatures an appropriate attacker.");
+      game.informPlayer(controller,sb.toString());
+    }
+    return false;
+  }
+  return true;
+}

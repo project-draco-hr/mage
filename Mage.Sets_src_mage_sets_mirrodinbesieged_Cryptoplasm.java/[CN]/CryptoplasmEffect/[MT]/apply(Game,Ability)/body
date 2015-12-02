@@ -1,8 +1,7 @@
 {
   Permanent creatureToCopy=game.getPermanent(getTargetPointer().getFirst(game,source));
   if (creatureToCopy != null) {
-    CopyEffect effect=new CopyEffect(creatureToCopy,source.getSourceId());
-    effect.setApplier(new ApplyToPermanent(){
+    ApplyToPermanent applier=new ApplyToPermanent(){
       @Override public Boolean apply(      Game game,      Permanent permanent){
         Ability upkeepAbility=new BeginningOfUpkeepTriggeredAbility(new CryptoplasmEffect(),TargetController.YOU,true);
         upkeepAbility.addTarget(new TargetCreaturePermanent());
@@ -16,8 +15,8 @@
         return true;
       }
     }
-);
-    game.addEffect(effect,source);
+;
+    game.copyPermanent(creatureToCopy,source.getSourceId(),source,applier);
   }
   return true;
 }

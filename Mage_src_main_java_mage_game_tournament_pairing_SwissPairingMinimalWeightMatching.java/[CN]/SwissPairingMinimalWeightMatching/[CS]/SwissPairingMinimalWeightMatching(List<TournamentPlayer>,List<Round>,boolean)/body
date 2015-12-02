@@ -1,0 +1,127 @@
+{
+  playersCount=players.size();
+  swissPlayers=new ArrayList<PlayerInfo>();
+  for (  TournamentPlayer tournamentPlayer : players) {
+    PlayerInfo swissPlayer=new PlayerInfo();
+    swissPlayer.tournamentPlayer=tournamentPlayer;
+    swissPlayer.points=tournamentPlayer.getPoints();
+    swissPlayers.add(swissPlayer);
+  }
+  Collections.shuffle(swissPlayers);
+  Map<TournamentPlayer,Integer> map=new HashMap<>();
+  for (int i=0; i < playersCount; i++) {
+    swissPlayers.get(i).id=i;
+    map.put(swissPlayers.get(i).tournamentPlayer,i);
+  }
+  for (  Round round : rounds) {
+    for (    TournamentPairing pairing : round.getPairs()) {
+      TournamentPlayer player1=pairing.getPlayer1();
+      TournamentPlayer player2=pairing.getPlayer2();
+      Integer id1=map.get(player1);
+      Integer id2=map.get(player2);
+      if (id1 != null) {
+        swissPlayers.get(id1).sosPoints+=player2.getPoints();
+      }
+      if (id2 != null) {
+        swissPlayers.get(id2).sosPoints+=player1.getPoints();
+      }
+    }
+  }
+  Collections.sort(swissPlayers,new Comparator<PlayerInfo>(){
+    @Override public int compare(    PlayerInfo p1,    PlayerInfo p2){
+      int result=p2.points - p1.points;
+      if (result != 0) {
+        return result;
+      }
+      return p2.sosPoints - p1.sosPoints;
+    }
+  }
+);
+  map.clear();
+  for (int i=0; i < playersCount; i++) {
+    swissPlayers.get(i).id=i;
+    map.put(swissPlayers.get(i).tournamentPlayer,i);
+  }
+  int[][] duels=new int[playersCount][playersCount];
+  int[] byes=new int[playersCount];
+  for (  Round round : rounds) {
+    for (    TournamentPairing pairing : round.getPairs()) {
+      TournamentPlayer player1=pairing.getPlayer1();
+      TournamentPlayer player2=pairing.getPlayer2();
+      Integer id1=map.get(player1);
+      Integer id2=map.get(player2);
+      if (id1 != null && id2 != null) {
+        duels[id1][id2]++;
+        duels[id2][id1]++;
+      }
+    }
+    for (    TournamentPlayer playerBye : round.getPlayerByes()) {
+      Integer id=map.get(playerBye);
+      if (id != null) {
+        byes[id]++;
+      }
+    }
+  }
+  n=(playersCount % 2 == 1 ? playersCount + 1 : playersCount);
+  w=new int[n][n];
+  int pointsDiffMultiplier=10;
+  if (isLastRound) {
+    for (int i=0; i < playersCount; i++) {
+      for (int j=0; j < i; j++) {
+        w[i][j]=Math.abs(i - j) + pointsDiffMultiplier * Math.abs(swissPlayers.get(i).points - swissPlayers.get(j).points);
+        w[j][i]=w[i][j];
+      }
+    }
+  }
+ else {
+    for (int i=0; i < playersCount; i++) {
+      PlayerInfo player=swissPlayers.get(i);
+      for (int p=player.points; p >= 0; p--) {
+        int first=-1;
+        int last=-1;
+        for (int j=0; j < playersCount; j++) {
+          if (swissPlayers.get(j).points == p) {
+            if (first < 0) {
+              first=j;
+            }
+            last=j;
+          }
+        }
+        if (first < 0) {
+          continue;
+        }
+        int self=(p == player.points ? i : first - 1);
+        int diff=pointsDiffMultiplier * (player.points - p);
+        for (int j=Math.max(first,i); j <= last; j++) {
+          w[i][j]=Math.abs(j - (last + first - self)) + diff;
+          w[j][i]=w[i][j];
+        }
+      }
+    }
+  }
+  for (int i=0; i < playersCount; i++) {
+    for (int j=0; j < i; j++) {
+      w[i][j]+=duels[i][j] * 500;
+      w[j][i]=w[i][j];
+    }
+  }
+  if (n > playersCount) {
+    for (int i=0; i < playersCount; i++) {
+      w[i][n - 1]=10 * (swissPlayers.get(i).points - swissPlayers.get(playersCount - 1).points) + (playersCount - i - 1);
+      w[i][n - 1]+=byes[i] * 2000;
+      w[n - 1][i]=w[i][n - 1];
+    }
+  }
+  for (int i=0; i < n; i++) {
+    for (int j=0; j < n; j++) {
+      w[i][j]*=w[i][j];
+    }
+  }
+  used=new boolean[n];
+  pairs=new int[n];
+  Arrays.fill(pairs,-1);
+  result=new int[n];
+  weight=0;
+  minCost=-1;
+  makePairings(0);
+}

@@ -1,0 +1,44 @@
+{
+  if (manaCostsToReduce != null) {
+    CardUtil.adjustCost((SpellAbility)abilityToModify,manaCostsToReduce,false);
+  }
+ else {
+    if (upTo) {
+      Mana mana=abilityToModify.getManaCostsToPay().getMana();
+      int reduceMax=mana.getColorless();
+      if (reduceMax > amount) {
+        reduceMax=amount;
+      }
+      if (reduceMax > 0) {
+        Player controller=game.getPlayer(abilityToModify.getControllerId());
+        if (controller == null) {
+          return false;
+        }
+        int reduce=reduceMax;
+        if (!(abilityToModify instanceof ActivatedAbility) || !((ActivatedAbility)abilityToModify).isCheckPlayableMode()) {
+          ChoiceImpl choice=new ChoiceImpl(false);
+          Set<String> set=new LinkedHashSet<>();
+          for (int i=0; i <= amount; i++) {
+            set.add(String.valueOf(i));
+          }
+          choice.setChoices(set);
+          MageObject mageObject=game.getObject(abilityToModify.getSourceId());
+          choice.setMessage("Reduce cost of " + (mageObject != null ? mageObject.getIdName() : filter.getMessage()));
+          if (controller.choose(Outcome.Benefit,choice,game)) {
+            reduce=Integer.parseInt(choice.getChoice());
+          }
+ else {
+            reduce=reduceMax;
+          }
+        }
+        if (reduce > 0) {
+          CardUtil.reduceCost(abilityToModify,reduce);
+        }
+      }
+    }
+ else {
+      CardUtil.reduceCost(abilityToModify,this.amount);
+    }
+  }
+  return true;
+}

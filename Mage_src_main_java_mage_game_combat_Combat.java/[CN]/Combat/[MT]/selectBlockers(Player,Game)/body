@@ -1,0 +1,37 @@
+{
+  Player attacker=game.getPlayer(attackerId);
+  game.getCombat().retrieveMustBlockAttackerRequirements(attacker,game);
+  Player controller;
+  for (  UUID defenderId : getPlayerDefenders(game)) {
+    Player defender=game.getPlayer(defenderId);
+    if (defender != null) {
+      boolean choose=true;
+      if (blockController == null) {
+        controller=defender;
+      }
+ else {
+        controller=blockController;
+      }
+      while (choose) {
+        controller.selectBlockers(game,defenderId);
+        if (game.isPaused() || game.gameOver(null) || game.executingRollback()) {
+          return;
+        }
+        if (!game.getCombat().checkBlockRestrictions(defender,game)) {
+          if (controller.isHuman()) {
+            continue;
+          }
+        }
+        choose=!game.getCombat().checkBlockRequirementsAfter(defender,controller,game);
+        if (!choose) {
+          choose=!game.getCombat().checkBlockRestrictionsAfter(defender,controller,game);
+        }
+      }
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_BLOCKERS,defenderId,defenderId));
+      if (!game.isSimulation()) {
+        game.getCombat().logBlockerInfo(defender,game);
+      }
+    }
+  }
+  TraceUtil.traceCombatIfNeeded(game,game.getCombat());
+}

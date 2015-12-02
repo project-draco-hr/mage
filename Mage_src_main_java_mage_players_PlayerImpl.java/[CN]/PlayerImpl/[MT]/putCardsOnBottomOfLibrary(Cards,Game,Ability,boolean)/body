@@ -1,0 +1,24 @@
+{
+  if (cards.size() != 0) {
+    if (!anyOrder) {
+      for (      UUID objectId : cards) {
+        moveObjectToLibrary(objectId,source == null ? null : source.getSourceId(),game,false,false);
+      }
+    }
+ else {
+      TargetCard target=new TargetCard(Zone.PICK,new FilterCard("card to put on the bottom of your library (last one chosen will be bottommost)"));
+      target.setRequired(true);
+      while (isInGame() && cards.size() > 1) {
+        this.choose(Outcome.Neutral,cards,target,game);
+        UUID targetObjectId=target.getFirstTarget();
+        cards.remove(targetObjectId);
+        moveObjectToLibrary(targetObjectId,source == null ? null : source.getSourceId(),game,false,false);
+        target.clearChosen();
+      }
+      if (cards.size() == 1) {
+        moveObjectToLibrary(cards.iterator().next(),source == null ? null : source.getSourceId(),game,false,false);
+      }
+    }
+  }
+  return true;
+}

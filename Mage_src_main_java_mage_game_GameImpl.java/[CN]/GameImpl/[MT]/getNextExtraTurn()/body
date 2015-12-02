@@ -1,0 +1,16 @@
+{
+  boolean checkForExtraTurn=true;
+  while (checkForExtraTurn) {
+    TurnMod extraTurn=getState().getTurnMods().getNextExtraTurn();
+    if (extraTurn != null) {
+      GameEvent event=new GameEvent(GameEvent.EventType.EXTRA_TURN,extraTurn.getId(),null,extraTurn.getPlayerId());
+      if (!replaceEvent(event)) {
+        return extraTurn;
+      }
+    }
+ else {
+      checkForExtraTurn=false;
+    }
+  }
+  return null;
+}

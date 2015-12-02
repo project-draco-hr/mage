@@ -1,0 +1,19 @@
+{
+  for (  Effect effect : effects) {
+    HashSet<Ability> abilities=effects.getAbility(effect.getId());
+    if (abilities != null) {
+      for (      Ability ability : abilities) {
+        if (ability.getSourceId() != null) {
+          if (ability.getSourceId().equals(sourceId)) {
+            ability.setControllerId(controllerId);
+          }
+        }
+ else {
+          if (!ability.getZone().equals(Zone.COMMAND)) {
+            logger.fatal("Continuous effect for ability with no sourceId Ability: " + ability);
+          }
+        }
+      }
+    }
+  }
+}

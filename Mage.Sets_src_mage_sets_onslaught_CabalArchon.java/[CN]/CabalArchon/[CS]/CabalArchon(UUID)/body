@@ -6,8 +6,10 @@
   this.power=new MageInt(2);
   this.toughness=new MageInt(2);
   Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new LoseLifeTargetEffect(2),new ManaCostsImpl("{B}"));
-  ability.addEffect(new GainLifeEffect(2));
-  ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filter,false)));
+  Effect effect=new GainLifeEffect(2);
+  effect.setText("and you gain 2 life");
+  ability.addEffect(effect);
+  ability.addCost(new SacrificeTargetCost(new TargetControlledPermanent(1,1,filter,false)));
   ability.addTarget(new TargetPlayer());
   this.addAbility(ability);
 }

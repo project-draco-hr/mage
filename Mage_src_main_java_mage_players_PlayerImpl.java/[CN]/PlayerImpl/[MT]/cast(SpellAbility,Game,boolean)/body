@@ -1,0 +1,48 @@
+{
+  if (!ability.getSpellAbilityType().equals(SpellAbilityType.BASE)) {
+    ability=chooseSpellAbilityForCast(ability,game,noMana);
+  }
+  Card card=game.getCard(ability.getSourceId());
+  if (card != null) {
+    if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.CAST_SPELL,ability.getId(),ability.getSourceId(),playerId),ability)) {
+      int bookmark=game.bookmarkState();
+      Zone fromZone=game.getState().getZone(card.getMainCard().getId());
+      card.cast(game,fromZone,ability,playerId);
+      Spell spell=game.getStack().getSpell(ability.getId());
+      if (ability.getSourceId().equals(getCastSourceIdWithAlternateMana())) {
+        Ability spellAbility=spell.getSpellAbility();
+        ManaCosts alternateCosts=getCastSourceIdManaCosts();
+        Costs<Cost> costs=getCastSourceIdCosts();
+        if (alternateCosts == null) {
+          noMana=true;
+        }
+ else {
+          spellAbility.getManaCosts().clear();
+          spellAbility.getManaCostsToPay().clear();
+          spellAbility.getManaCosts().add(alternateCosts.copy());
+          spellAbility.getManaCostsToPay().add(alternateCosts.copy());
+        }
+        spellAbility.getCosts().clear();
+        if (costs != null) {
+          spellAbility.getCosts().addAll(costs);
+        }
+      }
+      setCastSourceIdWithAlternateMana(null,null,null);
+      GameEvent event=GameEvent.getEvent(GameEvent.EventType.CAST_SPELL,spell.getSpellAbility().getId(),spell.getSpellAbility().getSourceId(),playerId);
+      game.fireEvent(event);
+      if (spell.activate(game,noMana)) {
+        event=GameEvent.getEvent(GameEvent.EventType.SPELL_CAST,spell.getSpellAbility().getId(),spell.getSpellAbility().getSourceId(),playerId);
+        event.setZone(fromZone);
+        game.fireEvent(event);
+        if (!game.isSimulation()) {
+          game.informPlayers(getLogName() + spell.getActivatedMessage(game));
+        }
+        game.removeBookmark(bookmark);
+        resetStoredBookmark(game);
+        return true;
+      }
+      restoreState(bookmark,ability.getRule(),game);
+    }
+  }
+  return false;
+}

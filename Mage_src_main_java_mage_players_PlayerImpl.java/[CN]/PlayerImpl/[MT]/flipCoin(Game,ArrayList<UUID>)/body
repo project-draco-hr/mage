@@ -1,0 +1,12 @@
+{
+  boolean result=rnd.nextBoolean();
+  if (!game.isSimulation()) {
+    game.informPlayers("[Flip a coin] " + getLogName() + (result ? " won (head)." : " lost (tail)."));
+  }
+  GameEvent event=new GameEvent(GameEvent.EventType.FLIP_COIN,playerId,null,playerId,0,result);
+  event.setAppliedEffects(appliedEffects);
+  if (!game.replaceEvent(event)) {
+    game.fireEvent(new GameEvent(GameEvent.EventType.COIN_FLIPPED,playerId,null,playerId,0,event.getFlag()));
+  }
+  return event.getFlag();
+}

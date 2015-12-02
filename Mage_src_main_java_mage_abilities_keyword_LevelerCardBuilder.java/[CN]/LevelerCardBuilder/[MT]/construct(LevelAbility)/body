@@ -1,0 +1,12 @@
+{
+  LevelerCardBuilder builder=new LevelerCardBuilder();
+  List<Ability> abilities=new ArrayList<>();
+  for (  LevelAbility levelAbility : levelAbilities) {
+    builder=builder.reset().setLevel1(levelAbility.getLevel1()).setLevel2(levelAbility.getLevel2() == -1 ? Integer.MAX_VALUE : levelAbility.getLevel2()).setPower(levelAbility.getPower()).setToughness(levelAbility.getToughness()).setRule(levelAbility.getRule());
+    for (    Ability addedAbility : levelAbility.getAbilities()) {
+      builder.addAbility(addedAbility);
+    }
+    abilities.addAll(builder.build());
+  }
+  return abilities;
+}

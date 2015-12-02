@@ -1,0 +1,30 @@
+{
+  MageObject mageObject=game.getPermanentEntering(source.getSourceId());
+  if (mageObject == null) {
+    if (duration.equals(Duration.Custom) || isTemporary()) {
+      mageObject=game.getPermanent(source.getSourceId());
+    }
+ else {
+      mageObject=game.getObject(source.getSourceId());
+    }
+  }
+  if (mageObject == null) {
+    discard();
+    return true;
+  }
+  if (amount != null) {
+    int value=amount.calculate(game,source,this);
+    mageObject.getPower().setValue(value);
+    mageObject.getToughness().setValue(value);
+    return true;
+  }
+ else {
+    if (power != Integer.MIN_VALUE) {
+      mageObject.getPower().setValue(power);
+    }
+    if (toughness != Integer.MIN_VALUE) {
+      mageObject.getToughness().setValue(toughness);
+    }
+  }
+  return true;
+}

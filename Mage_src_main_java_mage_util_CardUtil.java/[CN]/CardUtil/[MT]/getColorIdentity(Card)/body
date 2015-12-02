@@ -1,0 +1,27 @@
+{
+  FilterMana mana=new FilterMana();
+  mana.setBlack(card.getManaCost().getText().matches(regexBlack));
+  mana.setBlue(card.getManaCost().getText().matches(regexBlue));
+  mana.setGreen(card.getManaCost().getText().matches(regexGreen));
+  mana.setRed(card.getManaCost().getText().matches(regexRed));
+  mana.setWhite(card.getManaCost().getText().matches(regexWhite));
+  for (  String rule : card.getRules()) {
+    rule=rule.replaceAll("(?i)<i.*?</i>","");
+    if (rule.matches(regexBlack)) {
+      mana.setBlack(true);
+    }
+    if (rule.matches(regexBlue)) {
+      mana.setBlue(true);
+    }
+    if (rule.matches(regexGreen)) {
+      mana.setGreen(true);
+    }
+    if (rule.matches(regexRed)) {
+      mana.setRed(true);
+    }
+    if (rule.matches(regexWhite)) {
+      mana.setWhite(true);
+    }
+  }
+  return mana;
+}

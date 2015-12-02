@@ -1,0 +1,19 @@
+{
+  playerList=state.getPlayerList(state.getActivePlayerId());
+  Player player=getPlayer(playerList.get());
+  boolean wasPaused=state.isPaused();
+  state.resume();
+  if (!gameOver(null)) {
+    fireInformEvent("Turn " + state.getTurnNum());
+    if (checkStopOnTurnOption()) {
+      return;
+    }
+    state.getTurn().resumePlay(this,wasPaused);
+    if (!isPaused() && !gameOver(null)) {
+      endOfTurn();
+      player=playerList.getNext(this);
+      state.setTurnNum(state.getTurnNum() + 1);
+    }
+  }
+  play(player.getId());
+}

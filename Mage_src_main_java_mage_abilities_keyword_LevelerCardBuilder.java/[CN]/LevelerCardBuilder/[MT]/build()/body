@@ -1,0 +1,15 @@
+{
+  List<Ability> constructed=new ArrayList<>();
+  Condition condition=new SourceHasCounterCondition(CounterType.LEVEL,level1,level2);
+  for (  Ability ability : abilities) {
+    ContinuousEffect effect=new GainAbilitySourceEffect(ability);
+    ConditionalContinuousEffect abEffect=new ConditionalContinuousEffect(effect,condition,"");
+    Ability staticAbility=new SimpleStaticAbility(Zone.BATTLEFIELD,abEffect);
+    staticAbility.setRuleVisible(false);
+    constructed.add(staticAbility);
+  }
+  ContinuousEffect effect=new SetPowerToughnessSourceEffect(power,toughness,Duration.WhileOnBattlefield,SubLayer.SetPT_7b);
+  ConditionalContinuousEffect ptEffect=new ConditionalContinuousEffect(effect,condition,rule);
+  constructed.add(new SimpleStaticAbility(Zone.BATTLEFIELD,ptEffect));
+  return constructed;
+}

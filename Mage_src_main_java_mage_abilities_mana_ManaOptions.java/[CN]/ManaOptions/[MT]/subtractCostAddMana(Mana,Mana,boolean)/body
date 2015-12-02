@@ -1,0 +1,43 @@
+{
+  if (isEmpty()) {
+    this.add(new Mana());
+  }
+  boolean repeatable=false;
+  if (addMana.getAny() == 1 && addMana.count() == 1 && onlyManaCosts) {
+    repeatable=true;
+  }
+  List<Mana> copy=copy();
+  this.clear();
+  for (  Mana mana : copy) {
+    Mana oldMan=mana.copy();
+    if (mana.includesMana(cost)) {
+      if (cost.getColorless() > 0 && cost.getColorless() > mana.getColorless()) {
+        Mana coloredCost=cost.copy();
+        coloredCost.setColorless(0);
+        mana.subtract(coloredCost);
+        for (        Mana payCombination : getPossiblePayCombinations(cost.getColorless(),mana)) {
+          Mana newMana=mana.copy();
+          newMana.subtract(payCombination);
+          newMana.add(addMana);
+          if (oldMan.contains(newMana) && oldMan.count() > newMana.count()) {
+            newMana.setToMana(oldMan);
+          }
+          this.add(newMana);
+        }
+      }
+ else {
+        while (mana.includesMana(cost)) {
+          mana.subtractCost(cost);
+          mana.add(addMana);
+          if (!repeatable) {
+            break;
+          }
+        }
+        if (oldMan.contains(mana) && oldMan.count() > mana.count()) {
+          mana.setToMana(oldMan);
+        }
+        this.add(mana);
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  String superRule=super.getRule(true);
+  StringBuilder sb=new StringBuilder();
+  if (!superRule.isEmpty()) {
+    String ruleLow=superRule.toLowerCase();
+    if (isOptional()) {
+      if (ruleLow.startsWith("you ")) {
+        if (!ruleLow.startsWith("you may")) {
+          StringBuilder newRule=new StringBuilder(superRule);
+          newRule.insert(4,"may ");
+          superRule=newRule.toString();
+        }
+      }
+ else {
+        if (this.getTargets().isEmpty() || ruleLow.startsWith("exile") || ruleLow.startsWith("destroy")|| ruleLow.startsWith("return")|| ruleLow.startsWith("tap")|| ruleLow.startsWith("untap")|| ruleLow.startsWith("put")|| ruleLow.startsWith("remove")) {
+          sb.append("you may ");
+        }
+ else {
+          if (!ruleLow.startsWith("its controller may")) {
+            sb.append("you may have ");
+          }
+        }
+      }
+    }
+    sb.append(superRule);
+  }
+  return sb.toString();
+}

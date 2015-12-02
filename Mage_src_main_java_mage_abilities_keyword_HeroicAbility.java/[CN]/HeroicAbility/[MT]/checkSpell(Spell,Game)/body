@@ -1,0 +1,20 @@
+{
+  if (spell != null) {
+    SpellAbility sa=spell.getSpellAbility();
+    for (    Mode mode : sa.getModes().getSelectedModes()) {
+      for (      Target target : mode.getTargets()) {
+        if (!target.isNotTarget() && target.getTargets().contains(this.getSourceId())) {
+          return true;
+        }
+      }
+      for (      Effect effect : mode.getEffects()) {
+        for (        UUID targetId : effect.getTargetPointer().getTargets(game,sa)) {
+          if (targetId.equals(this.getSourceId())) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

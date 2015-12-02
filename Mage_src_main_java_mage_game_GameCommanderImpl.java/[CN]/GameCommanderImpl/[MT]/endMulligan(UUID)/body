@@ -1,0 +1,16 @@
+{
+  Player player=getPlayer(playerId);
+  if (player != null && mulliganedCards.containsKey(playerId)) {
+    for (    Card card : mulliganedCards.get(playerId).getCards(this)) {
+      if (card != null) {
+        getExile().removeCard(card,this);
+        player.getLibrary().putOnTop(card,this);
+        getState().setZone(card.getId(),Zone.LIBRARY);
+        card.setFaceDown(false,this);
+      }
+    }
+    if (mulliganedCards.get(playerId).size() > 0) {
+      player.shuffleLibrary(this);
+    }
+  }
+}

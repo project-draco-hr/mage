@@ -1,0 +1,14 @@
+{
+  for (  CombatGroup group : groups) {
+    for (    UUID attacker : group.getAttackers()) {
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.ATTACKER_DECLARED,group.defenderId,attacker,attackerId));
+    }
+  }
+  game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_ATTACKERS,attackerId,attackerId));
+  if (!game.isSimulation()) {
+    Player player=game.getPlayer(attackerId);
+    if (player != null) {
+      game.informPlayers(player.getLogName() + " attacks with " + groups.size()+ (groups.size() == 1 ? " creature" : " creatures"));
+    }
+  }
+}

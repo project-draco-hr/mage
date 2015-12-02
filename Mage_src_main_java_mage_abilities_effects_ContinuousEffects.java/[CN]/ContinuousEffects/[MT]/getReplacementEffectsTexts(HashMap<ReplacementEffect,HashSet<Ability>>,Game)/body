@@ -1,0 +1,20 @@
+{
+  Map<String,String> texts=new LinkedHashMap<>();
+  for (  Map.Entry<ReplacementEffect,HashSet<Ability>> entry : rEffects.entrySet()) {
+    if (entry.getValue() != null) {
+      for (      Ability ability : entry.getValue()) {
+        MageObject object=game.getObject(ability.getSourceId());
+        if (object != null) {
+          texts.put(ability.getId().toString() + "_" + entry.getKey().getId().toString(),object.getName() + ": " + ability.getRule(object.getName()));
+        }
+ else {
+          texts.put(ability.getId().toString() + "_" + entry.getKey().getId().toString(),entry.getKey().getText(null));
+        }
+      }
+    }
+ else {
+      logger.error("Replacement effect without ability: " + entry.getKey().toString());
+    }
+  }
+  return texts;
+}

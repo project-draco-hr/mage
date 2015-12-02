@@ -1,0 +1,22 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent hideawaySource=game.getPermanent(source.getSourceId());
+  if (hideawaySource == null || controller == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl(Zone.LIBRARY);
+  cards.addAll(controller.getLibrary().getTopCards(game,4));
+  if (cards.size() > 0) {
+    TargetCard target1=new TargetCard(Zone.LIBRARY,filter1);
+    if (controller.choose(Outcome.Detriment,cards,target1,game)) {
+      Card card=cards.get(target1.getFirstTarget(),game);
+      if (card != null) {
+        cards.remove(card);
+        controller.moveCardToExileWithInfo(card,CardUtil.getCardExileZoneId(game,source),"Hideaway (" + hideawaySource.getIdName() + ")",source.getSourceId(),game,Zone.LIBRARY,false);
+        card.setFaceDown(true,game);
+      }
+    }
+    controller.putCardsOnBottomOfLibrary(cards,game,source,true);
+  }
+  return true;
+}

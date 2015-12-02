@@ -1,0 +1,15 @@
+{
+  Set<UUID> playerDefenders=new HashSet<>();
+  for (  CombatGroup group : groups) {
+    if (group.defenderIsPlaneswalker) {
+      Permanent permanent=game.getPermanent(group.getDefenderId());
+      if (permanent != null) {
+        playerDefenders.add(permanent.getControllerId());
+      }
+    }
+ else {
+      playerDefenders.add(group.getDefenderId());
+    }
+  }
+  return playerDefenders;
+}

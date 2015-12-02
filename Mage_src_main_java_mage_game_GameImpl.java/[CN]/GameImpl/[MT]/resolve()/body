@@ -1,0 +1,18 @@
+{
+  StackObject top=null;
+  try {
+    top=state.getStack().peek();
+    top.resolve(this);
+  }
+  finally {
+    if (top != null) {
+      state.getStack().remove(top);
+      rememberLKI(top.getSourceId(),Zone.STACK,top);
+      if (!getTurn().isEndTurnRequested()) {
+        while (state.hasSimultaneousEvents()) {
+          state.handleSimultaneousEvent(this);
+        }
+      }
+    }
+  }
+}

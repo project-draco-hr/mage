@@ -1,0 +1,15 @@
+{
+  boolean valid=true;
+  if (deck.getCards().size() != 60) {
+    invalid.put("Deck","Must contain 60 cards: has " + deck.getCards().size() + " cards");
+    valid=false;
+  }
+  List<String> basicLandNames=new ArrayList<>(Arrays.asList("Forest","Island","Mountain","Swamp","Plains"));
+  for (  Card card : deck.getCards()) {
+    if (!basicLandNames.contains(card.getName())) {
+      invalid.put(card.getName(),"Only basic lands are allowed");
+      valid=false;
+    }
+  }
+  return valid;
+}

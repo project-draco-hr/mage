@@ -1,0 +1,300 @@
+{
+  boolean somethingHappened=false;
+  for (  Player player : state.getPlayers().values()) {
+    if (!player.hasLost() && ((player.getLife() <= 0 && player.canLoseByZeroOrLessLife()) || player.isEmptyDraw() || player.getCounters().getCount(CounterType.POISON) >= 10)) {
+      player.lost(this);
+    }
+  }
+  Iterator<Card> copiedCards=this.getState().getCopiedCards().iterator();
+  while (copiedCards.hasNext()) {
+    Card card=copiedCards.next();
+    if (card instanceof SplitCardHalf) {
+      continue;
+    }
+    Zone zone=state.getZone(card.getId());
+    if (zone != Zone.BATTLEFIELD && zone != Zone.STACK) {
+switch (zone) {
+case GRAVEYARD:
+        for (        Player player : getPlayers().values()) {
+          if (player.getGraveyard().contains(card.getId())) {
+            player.getGraveyard().remove(card);
+            break;
+          }
+        }
+      break;
+case HAND:
+    for (    Player player : getPlayers().values()) {
+      if (player.getHand().contains(card.getId())) {
+        player.getHand().remove(card);
+        break;
+      }
+    }
+  break;
+case LIBRARY:
+for (Player player : getPlayers().values()) {
+  if (player.getLibrary().getCard(card.getId(),this) != null) {
+    player.getLibrary().remove(card.getId(),this);
+    break;
+  }
+}
+break;
+case EXILED:
+getExile().removeCard(card,this);
+break;
+}
+copiedCards.remove();
+}
+}
+List<Permanent> planeswalkers=new ArrayList<>();
+List<Permanent> legendary=new ArrayList<>();
+List<Permanent> worldEnchantment=new ArrayList<>();
+for (Permanent perm : getBattlefield().getAllActivePermanents()) {
+if (perm.getCardType().contains(CardType.CREATURE)) {
+if (perm.getToughness().getValue() <= 0) {
+if (movePermanentToGraveyardWithInfo(perm)) {
+somethingHappened=true;
+continue;
+}
+}
+ else if (perm.getToughness().getValue() <= perm.getDamage() || perm.isDeathtouched()) {
+if (perm.destroy(null,this,false)) {
+somethingHappened=true;
+continue;
+}
+}
+if (perm.getPairedCard() != null) {
+Permanent paired=getPermanent(perm.getPairedCard());
+if (paired == null || !perm.getControllerId().equals(paired.getControllerId()) || paired.getPairedCard() == null) {
+perm.setPairedCard(null);
+if (paired != null) {
+paired.setPairedCard(null);
+}
+somethingHappened=true;
+}
+}
+}
+ else if (perm.getPairedCard() != null) {
+Permanent paired=getPermanent(perm.getPairedCard());
+perm.setPairedCard(null);
+if (paired != null) {
+paired.setPairedCard(null);
+}
+somethingHappened=true;
+}
+if (perm.getCardType().contains(CardType.PLANESWALKER)) {
+if (perm.getCounters().getCount(CounterType.LOYALTY) == 0) {
+if (movePermanentToGraveyardWithInfo(perm)) {
+somethingHappened=true;
+continue;
+}
+}
+planeswalkers.add(perm);
+}
+if (perm.getSupertype().contains("World")) {
+worldEnchantment.add(perm);
+}
+if (filterAura.match(perm,this)) {
+if (perm.getAttachedTo() == null) {
+Card card=this.getCard(perm.getId());
+if (card != null && !card.getCardType().contains(CardType.CREATURE)) {
+if (movePermanentToGraveyardWithInfo(perm)) {
+somethingHappened=true;
+}
+}
+}
+ else {
+SpellAbility spellAbility=perm.getSpellAbility();
+if (perm.getSpellAbility().getTargets().isEmpty()) {
+for (Ability ability : perm.getAbilities(this)) {
+if ((ability instanceof SpellAbility) && SpellAbilityType.BASE_ALTERNATE.equals(((SpellAbility)ability).getSpellAbilityType()) && !ability.getTargets().isEmpty()) {
+spellAbility=(SpellAbility)ability;
+break;
+}
+}
+}
+if (spellAbility.getTargets().isEmpty()) {
+Permanent enchanted=this.getPermanent(perm.getAttachedTo());
+logger.error("Aura without target: " + perm.getName() + " attached to "+ (enchanted == null ? " null" : enchanted.getName()));
+}
+ else {
+Target target=spellAbility.getTargets().get(0);
+if (target instanceof TargetPermanent) {
+Permanent attachedTo=getPermanent(perm.getAttachedTo());
+if (attachedTo == null || !attachedTo.getAttachments().contains(perm.getId())) {
+Card card=this.getCard(perm.getId());
+if (card != null && card.getCardType().contains(CardType.CREATURE)) {
+UUID wasAttachedTo=perm.getAttachedTo();
+perm.attachTo(null,this);
+fireEvent(new GameEvent(GameEvent.EventType.UNATTACHED,wasAttachedTo,perm.getId(),perm.getControllerId()));
+}
+ else {
+if (movePermanentToGraveyardWithInfo(perm)) {
+  somethingHappened=true;
+}
+}
+}
+ else {
+Filter auraFilter=spellAbility.getTargets().get(0).getFilter();
+if (auraFilter instanceof FilterControlledCreaturePermanent) {
+if (!((FilterControlledCreaturePermanent)auraFilter).match(attachedTo,perm.getId(),perm.getControllerId(),this) || attachedTo.cantBeEnchantedBy(perm,this)) {
+  if (movePermanentToGraveyardWithInfo(perm)) {
+    somethingHappened=true;
+  }
+}
+}
+ else {
+if (!auraFilter.match(attachedTo,this) || attachedTo.cantBeEnchantedBy(perm,this)) {
+  Card card=this.getCard(perm.getId());
+  if (card != null && card.getCardType().contains(CardType.CREATURE)) {
+    UUID wasAttachedTo=perm.getAttachedTo();
+    perm.attachTo(null,this);
+    fireEvent(new GameEvent(GameEvent.EventType.UNATTACHED,wasAttachedTo,perm.getId(),perm.getControllerId()));
+  }
+ else {
+    if (movePermanentToGraveyardWithInfo(perm)) {
+      somethingHappened=true;
+    }
+  }
+}
+}
+}
+}
+ else if (target instanceof TargetPlayer) {
+Player attachedToPlayer=getPlayer(perm.getAttachedTo());
+if (attachedToPlayer == null) {
+if (movePermanentToGraveyardWithInfo(perm)) {
+somethingHappened=true;
+}
+}
+ else {
+Filter auraFilter=spellAbility.getTargets().get(0).getFilter();
+if (!auraFilter.match(attachedToPlayer,this) || attachedToPlayer.hasProtectionFrom(perm,this)) {
+if (movePermanentToGraveyardWithInfo(perm)) {
+  somethingHappened=true;
+}
+}
+}
+}
+}
+}
+}
+if (this.getState().isLegendaryRuleActive() && filterLegendary.match(perm,this)) {
+legendary.add(perm);
+}
+if (filterEquipment.match(perm,this)) {
+if (perm.getAttachedTo() != null) {
+Permanent creature=getPermanent(perm.getAttachedTo());
+if (creature == null || !creature.getAttachments().contains(perm.getId())) {
+UUID wasAttachedTo=perm.getAttachedTo();
+perm.attachTo(null,this);
+fireEvent(new GameEvent(GameEvent.EventType.UNATTACHED,wasAttachedTo,perm.getId(),perm.getControllerId()));
+}
+ else if (!creature.getCardType().contains(CardType.CREATURE) || creature.hasProtectionFrom(perm,this)) {
+if (creature.removeAttachment(perm.getId(),this)) {
+somethingHappened=true;
+}
+}
+}
+}
+if (filterFortification.match(perm,this)) {
+if (perm.getAttachedTo() != null) {
+Permanent land=getPermanent(perm.getAttachedTo());
+if (land == null || !land.getAttachments().contains(perm.getId())) {
+perm.attachTo(null,this);
+}
+ else if (!land.getCardType().contains(CardType.LAND) || land.hasProtectionFrom(perm,this)) {
+if (land.removeAttachment(perm.getId(),this)) {
+somethingHappened=true;
+}
+}
+}
+}
+if (perm.getAttachments().size() > 0) {
+for (UUID attachmentId : perm.getAttachments()) {
+Permanent attachment=getPermanent(attachmentId);
+if (attachment != null && (attachment.getCardType().contains(CardType.CREATURE) || !(attachment.getSubtype().contains("Aura") || attachment.getSubtype().contains("Equipment") || attachment.getSubtype().contains("Fortification")))) {
+if (perm.removeAttachment(attachment.getId(),this)) {
+somethingHappened=true;
+break;
+}
+}
+}
+}
+if (perm.getCounters().containsKey(CounterType.P1P1) && perm.getCounters().containsKey(CounterType.M1M1)) {
+int p1p1=perm.getCounters().getCount(CounterType.P1P1);
+int m1m1=perm.getCounters().getCount(CounterType.M1M1);
+int min=Math.min(p1p1,m1m1);
+perm.getCounters().removeCounter(CounterType.P1P1,min);
+perm.getCounters().removeCounter(CounterType.M1M1,min);
+}
+}
+if (planeswalkers.size() > 1) {
+for (Permanent planeswalker : planeswalkers) {
+for (String planeswalkertype : planeswalker.getSubtype()) {
+FilterPlaneswalkerPermanent filterPlaneswalker=new FilterPlaneswalkerPermanent();
+filterPlaneswalker.add(new SubtypePredicate(planeswalkertype));
+filterPlaneswalker.add(new ControllerIdPredicate(planeswalker.getControllerId()));
+if (getBattlefield().contains(filterPlaneswalker,planeswalker.getControllerId(),this,2)) {
+Player controller=this.getPlayer(planeswalker.getControllerId());
+if (controller != null) {
+Target targetPlaneswalkerToKeep=new TargetPermanent(filterPlaneswalker);
+targetPlaneswalkerToKeep.setTargetName(new StringBuilder(planeswalker.getName()).append(" to keep?").toString());
+controller.chooseTarget(Outcome.Benefit,targetPlaneswalkerToKeep,null,this);
+for (Permanent dupPlaneswalker : this.getBattlefield().getActivePermanents(filterPlaneswalker,planeswalker.getControllerId(),this)) {
+if (!targetPlaneswalkerToKeep.getTargets().contains(dupPlaneswalker.getId())) {
+movePermanentToGraveyardWithInfo(dupPlaneswalker);
+}
+}
+}
+return true;
+}
+}
+}
+}
+if (legendary.size() > 1) {
+for (Permanent legend : legendary) {
+FilterPermanent filterLegendName=new FilterPermanent();
+filterLegendName.add(new SupertypePredicate("Legendary"));
+filterLegendName.add(new NamePredicate(legend.getName()));
+filterLegendName.add(new ControllerIdPredicate(legend.getControllerId()));
+if (getBattlefield().contains(filterLegendName,legend.getControllerId(),this,2)) {
+Player controller=this.getPlayer(legend.getControllerId());
+if (controller != null) {
+Target targetLegendaryToKeep=new TargetPermanent(filterLegendName);
+targetLegendaryToKeep.setTargetName(legend.getName() + " to keep (Legendary Rule)?");
+controller.chooseTarget(Outcome.Benefit,targetLegendaryToKeep,null,this);
+for (Permanent dupLegend : getBattlefield().getActivePermanents(filterLegendName,legend.getControllerId(),this)) {
+if (!targetLegendaryToKeep.getTargets().contains(dupLegend.getId())) {
+movePermanentToGraveyardWithInfo(dupLegend);
+}
+}
+}
+return true;
+}
+}
+}
+if (worldEnchantment.size() > 1) {
+int newestCard=-1;
+Permanent newestPermanent=null;
+for (Permanent permanent : worldEnchantment) {
+if (newestCard == -1) {
+newestCard=permanent.getCreateOrder();
+newestPermanent=permanent;
+}
+ else if (newestCard < permanent.getCreateOrder()) {
+newestCard=permanent.getCreateOrder();
+newestPermanent=permanent;
+}
+ else if (newestCard == permanent.getCreateOrder()) {
+newestPermanent=null;
+}
+}
+for (Permanent permanent : worldEnchantment) {
+if (newestPermanent != permanent) {
+movePermanentToGraveyardWithInfo(permanent);
+somethingHappened=true;
+}
+}
+}
+return somethingHappened;
+}

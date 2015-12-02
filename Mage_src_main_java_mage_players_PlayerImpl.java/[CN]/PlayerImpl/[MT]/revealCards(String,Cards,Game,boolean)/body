@@ -1,0 +1,20 @@
+{
+  if (postToLog) {
+    game.getState().getRevealed().add(name,cards);
+  }
+ else {
+    game.getState().getRevealed().update(name,cards);
+  }
+  if (postToLog && !game.isSimulation()) {
+    StringBuilder sb=new StringBuilder(getLogName()).append(" reveals ");
+    int current=0, last=cards.size();
+    for (    Card card : cards.getCards(game)) {
+      current++;
+      sb.append(GameLog.getColoredObjectName(card));
+      if (current < last) {
+        sb.append(", ");
+      }
+    }
+    game.informPlayers(sb.toString());
+  }
+}

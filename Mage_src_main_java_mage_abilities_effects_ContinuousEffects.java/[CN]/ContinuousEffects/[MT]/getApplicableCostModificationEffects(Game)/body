@@ -1,0 +1,15 @@
+{
+  List<CostModificationEffect> costEffects=new ArrayList<>();
+  for (  CostModificationEffect effect : costModificationEffects) {
+    HashSet<Ability> abilities=costModificationEffects.getAbility(effect.getId());
+    for (    Ability ability : abilities) {
+      if (!(ability instanceof StaticAbility) || ability.isInUseableZone(game,null,null)) {
+        if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
+          costEffects.add(effect);
+          break;
+        }
+      }
+    }
+  }
+  return costEffects;
+}

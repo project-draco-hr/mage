@@ -1,0 +1,16 @@
+{
+  addCard(Zone.HAND,playerA,"Kozilek, Butcher of Truth");
+  addCard(Zone.BATTLEFIELD,playerA,"Island",10);
+  addCard(Zone.GRAVEYARD,playerA,"Silvercoat Lion");
+  addCard(Zone.HAND,playerB,"Desertion");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",5);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Kozilek, Butcher of Truth");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Desertion","Kozilek, Butcher of Truth");
+  setStopAt(1,PhaseStep.CLEANUP);
+  execute();
+  assertGraveyardCount(playerB,"Desertion",1);
+  assertGraveyardCount(playerA,"Silvercoat Lion",1);
+  assertGraveyardCount(playerA,"Kozilek, Butcher of Truth",0);
+  assertHandCount(playerA,"Kozilek, Butcher of Truth",0);
+  assertPermanentCount(playerB,"Kozilek, Butcher of Truth",1);
+}

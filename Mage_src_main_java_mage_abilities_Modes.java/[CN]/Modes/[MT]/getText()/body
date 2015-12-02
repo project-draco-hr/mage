@@ -1,0 +1,36 @@
+{
+  if (this.size() <= 1) {
+    return this.getMode().getEffects().getText(this.getMode());
+  }
+  StringBuilder sb=new StringBuilder();
+  if (this.getMinModes() == 1 && this.getMaxModes() == 3) {
+    sb.append("choose one or more ");
+  }
+ else   if (this.getMinModes() == 1 && this.getMaxModes() == 2) {
+    sb.append("choose one or both ");
+  }
+ else   if (this.getMinModes() == 2 && this.getMaxModes() == 2) {
+    sb.append("choose two ");
+  }
+ else   if (this.getMinModes() == 3 && this.getMaxModes() == 3) {
+    sb.append("choose three ");
+  }
+ else {
+    sb.append("choose one ");
+  }
+  if (isEachModeOnlyOnce()) {
+    sb.append("that hasn't been chosen ");
+  }
+  if (isEachModeMoreThanOnce()) {
+    sb.append(". You may choose the same mode more than once.<br>");
+  }
+ else {
+    sb.append("&mdash;<br>");
+  }
+  for (  Mode mode : this.values()) {
+    sb.append("&bull  ");
+    sb.append(mode.getEffects().getTextStartingUpperCase(mode));
+    sb.append("<br>");
+  }
+  return sb.toString();
+}

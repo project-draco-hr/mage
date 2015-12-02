@@ -1,0 +1,16 @@
+{
+  if (card == null) {
+    return false;
+  }
+  boolean result;
+  if (card.getCardType().contains(CardType.LAND)) {
+    result=playLand(card,game,ignoreTiming);
+  }
+ else {
+    result=cast(card.getSpellAbility(),game,noMana);
+  }
+  if (result == false) {
+    game.informPlayer(this,"You can't play " + card.getIdName() + ".");
+  }
+  return result;
+}
