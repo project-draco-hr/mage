@@ -1,0 +1,26 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards cards=new CardsImpl();
+    cards.addAll(controller.getLibrary().getTopCards(game,7));
+    if (cards.size() > 0) {
+      controller.revealCards("Stomping Slabs",cards,game);
+      boolean stompingSlabsFound=false;
+      for (      UUID cardId : cards) {
+        Card card=game.getCard(cardId);
+        if (card != null && card.getName().equals("Stomping Slabs")) {
+          stompingSlabsFound=true;
+          break;
+        }
+      }
+      controller.putCardsOnBottomOfLibrary(cards,game,source,true);
+      if (stompingSlabsFound) {
+        Effect effect=new DamageTargetEffect(7);
+        effect.setTargetPointer(new FixedTarget(this.getTargetPointer().getFirst(game,source)));
+        effect.apply(game,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

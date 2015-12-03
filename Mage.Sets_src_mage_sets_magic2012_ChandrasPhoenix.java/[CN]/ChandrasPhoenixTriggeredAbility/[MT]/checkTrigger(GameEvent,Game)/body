@@ -1,9 +1,18 @@
 {
   if (game.getOpponents(this.controllerId).contains(event.getPlayerId())) {
-    Card c=game.getCard(event.getSourceId());
-    if (c != null) {
-      if (c.getColor(game).isRed() && (c.getCardType().contains(CardType.PLANESWALKER) || c.getCardType().contains(CardType.INSTANT) || c.getCardType().contains(CardType.SORCERY))) {
-        return true;
+    StackObject stackObject=game.getStack().getStackObject(event.getSourceId());
+    if (stackObject != null) {
+      MageObject sourceObjectDamage;
+      if (stackObject instanceof StackAbility) {
+        sourceObjectDamage=((StackAbility)stackObject).getSourceObject(game);
+      }
+ else {
+        sourceObjectDamage=stackObject;
+      }
+      if (sourceObjectDamage != null) {
+        if (sourceObjectDamage.getColor(game).isRed() && (sourceObjectDamage.getCardType().contains(CardType.PLANESWALKER) || sourceObjectDamage.getCardType().contains(CardType.INSTANT) || sourceObjectDamage.getCardType().contains(CardType.SORCERY))) {
+          return true;
+        }
       }
     }
   }
