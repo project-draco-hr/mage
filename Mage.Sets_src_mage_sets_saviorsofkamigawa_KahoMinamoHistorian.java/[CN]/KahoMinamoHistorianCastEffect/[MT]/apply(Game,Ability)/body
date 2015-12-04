@@ -1,10 +1,10 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    TargetCardInExile target=new TargetCardInExile(new FilterCard(),CardUtil.getCardExileZoneId(game,source));
     FilterCard filter=new FilterCard();
     filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,source.getManaCostsToPay().getX()));
-    Cards cards=new CardsImpl(Zone.EXILED,game.getExile().getExileZone(CardUtil.getCardExileZoneId(game,source)).getCards(filter,game));
+    TargetCardInExile target=new TargetCardInExile(filter,CardUtil.getCardExileZoneId(game,source));
+    Cards cards=game.getExile().getExileZone(CardUtil.getCardExileZoneId(game,source));
     if (cards.size() > 0 && controller.choose(Outcome.PlayForFree,cards,target,game)) {
       Card card=game.getCard(target.getFirstTarget());
       if (card != null) {

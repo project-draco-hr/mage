@@ -1,36 +1,22 @@
 {
-  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  Player player=game.getPlayer(this.getTargetPointer().getFirst(game,source));
   Player controller=game.getPlayer(source.getControllerId());
-  MageObject sourceObject=game.getObject(source.getSourceId());
   if (player != null && controller != null) {
     Choice cardChoice=new ChoiceImpl();
     cardChoice.setChoices(CardRepository.instance.getNonLandNames());
     cardChoice.clearChoice();
+    cardChoice.setMessage("Name a nonland card");
     while (!controller.choose(Outcome.Exile,cardChoice,game)) {
       if (!controller.canRespond()) {
         return false;
       }
     }
     String cardName=cardChoice.getChoice();
-    game.informPlayers(sourceObject.getLogName() + ", named card: [" + cardName+ "]");
-    for (    Card card : player.getGraveyard().getCards(game)) {
-      if (card.getName().equals(cardName)) {
-        controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.GRAVEYARD,true);
-      }
+    MageObject sourceObject=game.getObject(source.getSourceId());
+    if (sourceObject != null) {
+      game.informPlayers(sourceObject.getName() + " named card: [" + cardName+ "]");
     }
-    for (    Card card : player.getHand().getCards(game)) {
-      if (card.getName().equals(cardName)) {
-        controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.HAND,true);
-      }
-    }
-    for (    Card card : player.getLibrary().getCards(game)) {
-      if (card.getName().equals(cardName)) {
-        controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.LIBRARY,true);
-      }
-    }
-    controller.lookAtCards(sourceObject.getName() + " Hand",player.getHand(),game);
-    controller.lookAtCards(sourceObject.getName() + " Library",new CardsImpl(Zone.PICK,player.getLibrary().getCards(game)),game);
-    player.shuffleLibrary(game);
+    super.applySearchAndExile(game,source,cardName,player.getId());
   }
   return true;
 }

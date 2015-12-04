@@ -1,10 +1,11 @@
 {
-  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  Player player=game.getPlayer(this.getTargetPointer().getFirst(game,source));
   Player controller=game.getPlayer(source.getControllerId());
   if (player != null && controller != null) {
     Choice cardChoice=new ChoiceImpl();
     cardChoice.setChoices(CardRepository.instance.getNonLandNames());
     cardChoice.clearChoice();
+    cardChoice.setMessage("Name a nonland card");
     while (!controller.choose(Outcome.Exile,cardChoice,game)) {
       if (!controller.canRespond()) {
         return false;
@@ -15,24 +16,7 @@
     if (sourceObject != null) {
       game.informPlayers(sourceObject.getName() + " named card: [" + cardName+ "]");
     }
-    for (    Card card : player.getGraveyard().getCards(game)) {
-      if (card.getName().equals(cardName)) {
-        card.moveToExile(null,"",source.getSourceId(),game);
-      }
-    }
-    for (    Card card : player.getHand().getCards(game)) {
-      if (card.getName().equals(cardName)) {
-        card.moveToExile(null,"",source.getSourceId(),game);
-      }
-    }
-    for (    Card card : player.getLibrary().getCards(game)) {
-      if (card.getName().equals(cardName)) {
-        card.moveToExile(null,"",source.getSourceId(),game);
-      }
-    }
-    controller.lookAtCards("Memoricide Hand",player.getHand(),game);
-    controller.lookAtCards("Memoricide Library",new CardsImpl(Zone.PICK,player.getLibrary().getCards(game)),game);
-    player.shuffleLibrary(game);
+    super.applySearchAndExile(game,source,cardName,player.getId());
   }
   return true;
 }
