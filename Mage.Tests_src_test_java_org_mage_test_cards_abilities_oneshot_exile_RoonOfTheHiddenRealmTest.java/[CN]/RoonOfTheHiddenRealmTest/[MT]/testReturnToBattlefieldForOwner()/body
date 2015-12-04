@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Roon of the Hidden Realm");
+  addCard(Zone.BATTLEFIELD,playerA,"Perplexing Chimera");
+  addCard(Zone.HAND,playerB,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",2);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Silvercoat Lion");
+  setChoice(playerA,"Yes");
+  activateAbility(2,PhaseStep.POSTCOMBAT_MAIN,playerA,"{2}","Perplexing Chimera");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertTapped("Roon of the Hidden Realm",true);
+  assertPermanentCount(playerA,"Roon of the Hidden Realm",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertPermanentCount(playerB,"Perplexing Chimera",0);
+  assertPermanentCount(playerA,"Perplexing Chimera",1);
+}
