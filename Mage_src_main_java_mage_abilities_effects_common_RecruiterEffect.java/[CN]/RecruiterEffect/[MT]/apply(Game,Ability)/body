@@ -1,15 +1,14 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    TargetCardInLibrary targetGoblins=new TargetCardInLibrary(0,Integer.MAX_VALUE,goblinFilter);
+    TargetCardInLibrary targetCards=new TargetCardInLibrary(0,Integer.MAX_VALUE,filter);
     Cards cards=new CardsImpl();
-    if (controller.searchLibrary(targetGoblins,game)) {
-      cards.addAll(targetGoblins.getTargets());
+    if (controller.searchLibrary(targetCards,game)) {
+      cards.addAll(targetCards.getTargets());
     }
     controller.revealCards(staticText,cards,game);
     controller.shuffleLibrary(game);
-    int numberOfGoblins=cards.size();
-    if (numberOfGoblins > 0) {
+    if (cards.size() > 0) {
       controller.putCardsOnTopOfLibrary(cards,game,source,true);
     }
     return true;
