@@ -2,7 +2,11 @@
   Player controller=game.getPlayer(source.getControllerId());
   MageObject mageObject=game.getObject(source.getSourceId());
   if (controller != null) {
-    Cards cardsFromLibrary=new CardsImpl(Zone.LIBRARY,controller.getLibrary().getTopCards(game,5));
+    Set<Card> topCards=controller.getLibrary().getTopCards(game,5);
+    Cards cardsFromLibrary=new CardsImpl();
+    for (    Card card : topCards) {
+      cardsFromLibrary.add(card);
+    }
     controller.lookAtCards(mageObject.getIdName(),cardsFromLibrary,game);
     int max=0;
     for (    UUID playerId : controller.getInRange()) {
