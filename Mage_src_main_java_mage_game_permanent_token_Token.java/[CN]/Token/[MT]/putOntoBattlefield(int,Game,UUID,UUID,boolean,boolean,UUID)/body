@@ -4,16 +4,24 @@
     return false;
   }
   lastAddedTokenIds.clear();
-  Card source=game.getCard(sourceId);
-  if (!expansionSetCodeChecked) {
-    expansionSetCodeChecked=this.updateExpansionSetCode(source);
-  }
-  String setCode;
+  String setCode=null;
   if (this.getOriginalExpansionSetCode() != null && !this.getOriginalExpansionSetCode().isEmpty()) {
     setCode=this.getOriginalExpansionSetCode();
   }
  else {
-    setCode=source != null ? source.getExpansionSetCode() : null;
+    Card source=game.getCard(sourceId);
+    if (source != null) {
+      setCode=source.getExpansionSetCode();
+    }
+ else {
+      MageObject object=game.getObject(sourceId);
+      if (object instanceof PermanentToken) {
+        ((PermanentToken)object).getExpansionSetCode();
+      }
+    }
+  }
+  if (!expansionSetCodeChecked) {
+    expansionSetCodeChecked=this.updateExpansionSetCode(setCode);
   }
   GameEvent event=new GameEvent(EventType.CREATE_TOKEN,null,sourceId,controllerId,amount,this.getCardType().contains(CardType.CREATURE));
   if (!game.replaceEvent(event)) {
