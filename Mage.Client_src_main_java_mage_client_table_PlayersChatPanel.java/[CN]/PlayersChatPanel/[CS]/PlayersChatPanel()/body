@@ -7,26 +7,11 @@
   jTablePlayers.setRowSorter(new MageTableRowSorter(userTableModel));
   TableUtil.setColumnWidthAndOrder(jTablePlayers,defaultColumnsWidth,KEY_USERS_COLUMNS_WIDTH,KEY_USERS_COLUMNS_ORDER);
   jTablePlayers.setDefaultRenderer(Icon.class,new CountryCellRenderer());
-  systemMessagesPane=new ColorPane();
-  userChatPanel=new ChatPanelSeparated();
-  userChatPanel.setSystemMessagesPane(systemMessagesPane);
-  if (jTabbedPaneText != null) {
-    jTabbedPaneText.setBackground(new Color(0,0,0,CHAT_ALPHA));
-    if (userChatPanel != null) {
-      userChatPanel.setBackground(new Color(0,0,0,CHAT_ALPHA));
-      jTabbedPaneText.addTab("Talk",userChatPanel);
-    }
-    if (systemMessagesPane != null) {
-      systemMessagesPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(1,1,1,1));
-      systemMessagesPane.setFont(new java.awt.Font("Arial",0,14));
-      systemMessagesPane.setFocusCycleRoot(false);
-      systemMessagesPane.setMargin(new java.awt.Insets(2,2,2,2));
-      systemMessagesPane.setOpaque(false);
-      systemMessagesPane.setExtBackgroundColor(new Color(0,0,0,CHAT_ALPHA));
-      systemMessagesPane.setSelectionColor(Color.LIGHT_GRAY);
-      jTabbedPaneText.addTab("System",systemMessagesPane);
-    }
-  }
+  jScrollPaneTalk.setSystemMessagesPane(colorPaneSystem);
+  jScrollPaneTalk.setOpaque(false);
+  jScrollPaneSystem.getViewport().setOpaque(false);
+  colorPaneSystem.setExtBackgroundColor(new Color(0,0,0,CHAT_ALPHA));
+  colorPaneSystem.setBorder(new EmptyBorder(5,5,5,5));
   if (jScrollPanePlayers != null) {
     jScrollPanePlayers.setBackground(new Color(0,0,0,CHAT_ALPHA));
     jScrollPanePlayers.getViewport().setBackground(new Color(0,0,0,CHAT_ALPHA));

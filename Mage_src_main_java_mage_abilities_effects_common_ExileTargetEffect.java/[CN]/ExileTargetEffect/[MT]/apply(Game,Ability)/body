@@ -2,20 +2,44 @@
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
     Set<Card> toExile=new LinkedHashSet<>();
-    for (    UUID targetId : getTargetPointer().getTargets(game,source)) {
-      Permanent permanent=game.getPermanent(targetId);
-      if (permanent != null) {
-        Zone currentZone=game.getState().getZone(permanent.getId());
-        if (!currentZone.equals(Zone.EXILED) && (onlyFromZone == null || onlyFromZone.equals(Zone.BATTLEFIELD))) {
-          toExile.add(permanent);
+    if (multitargetHandling && source.getTargets().size() > 1 && targetPointer instanceof FirstTargetPointer) {
+      for (      Target target : source.getTargets()) {
+        for (        UUID targetId : target.getTargets()) {
+          Permanent permanent=game.getPermanent(targetId);
+          if (permanent != null) {
+            Zone currentZone=game.getState().getZone(permanent.getId());
+            if (!currentZone.equals(Zone.EXILED) && (onlyFromZone == null || onlyFromZone.equals(Zone.BATTLEFIELD))) {
+              toExile.add(permanent);
+            }
+          }
+ else {
+            Card card=game.getCard(targetId);
+            if (card != null) {
+              Zone currentZone=game.getState().getZone(card.getId());
+              if (!currentZone.equals(Zone.EXILED) && (onlyFromZone == null || onlyFromZone.equals(currentZone))) {
+                toExile.add(card);
+              }
+            }
+          }
         }
       }
+    }
  else {
-        Card card=game.getCard(targetId);
-        if (card != null) {
-          Zone currentZone=game.getState().getZone(card.getId());
-          if (!currentZone.equals(Zone.EXILED) && (onlyFromZone == null || onlyFromZone.equals(currentZone))) {
-            toExile.add(card);
+      for (      UUID targetId : getTargetPointer().getTargets(game,source)) {
+        Permanent permanent=game.getPermanent(targetId);
+        if (permanent != null) {
+          Zone currentZone=game.getState().getZone(permanent.getId());
+          if (!currentZone.equals(Zone.EXILED) && (onlyFromZone == null || onlyFromZone.equals(Zone.BATTLEFIELD))) {
+            toExile.add(permanent);
+          }
+        }
+ else {
+          Card card=game.getCard(targetId);
+          if (card != null) {
+            Zone currentZone=game.getState().getZone(card.getId());
+            if (!currentZone.equals(Zone.EXILED) && (onlyFromZone == null || onlyFromZone.equals(currentZone))) {
+              toExile.add(card);
+            }
           }
         }
       }
