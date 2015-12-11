@@ -6,11 +6,11 @@
   this.power=new MageInt(3);
   this.toughness=new MageInt(2);
   this.addAbility(new BestowAbility(this,"{4}{W}"));
-  this.addAbility(CantAttackAloneAbility.getInstance());
+  this.addAbility(new CantAttackAloneAbility());
   Effect effect=new BoostEnchantedEffect(3,2,Duration.WhileOnBattlefield);
   effect.setText("Enchanted creature gets +3/+2");
   Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,effect);
-  effect=new GainAbilityAttachedEffect(CantAttackAloneAbility.getInstance(),AttachmentType.AURA,Duration.WhileOnBattlefield);
+  effect=new CanAttackOnlyAloneEffect();
   effect.setText("and can't attack alone");
   ability.addEffect(effect);
   this.addAbility(ability);

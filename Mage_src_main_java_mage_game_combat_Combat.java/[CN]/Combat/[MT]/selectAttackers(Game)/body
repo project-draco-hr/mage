@@ -2,13 +2,17 @@
   if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_ATTACKERS,attackerId,attackerId))) {
     Player player=game.getPlayer(attackerId);
     game.getCombat().checkAttackRequirements(player,game);
-    if (!game.getPlayer(game.getActivePlayerId()).getAvailableAttackers(game).isEmpty()) {
-      player.selectAttackers(game,attackerId);
+    boolean firstTime=true;
+    do {
+      if (!firstTime || !game.getPlayer(game.getActivePlayerId()).getAvailableAttackers(game).isEmpty()) {
+        player.selectAttackers(game,attackerId);
+      }
+      firstTime=false;
+      if (game.isPaused() || game.gameOver(null) || game.executingRollback()) {
+        return;
+      }
     }
-    if (game.isPaused() || game.gameOver(null) || game.executingRollback()) {
-      return;
-    }
-    game.getCombat().checkAttackRestrictions(player,game);
+ while (!game.getCombat().checkAttackRestrictions(player,game));
     game.getCombat().resumeSelectAttackers(game);
   }
 }

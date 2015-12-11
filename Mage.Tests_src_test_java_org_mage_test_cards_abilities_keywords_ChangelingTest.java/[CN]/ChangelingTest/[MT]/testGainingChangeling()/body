@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",3);
+  addCard(Zone.HAND,playerA,"Prophet of Kruphix");
+  addCard(Zone.BATTLEFIELD,playerA,"Amoeboid Changeling");
+  addCard(Zone.BATTLEFIELD,playerA,"Hibernation Sliver");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Prophet of Kruphix");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"{T}: Target creature gains","Prophet of Kruphix");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertTapped("Amoeboid Changeling",true);
+  Permanent prophet=getPermanent("Prophet of Kruphix",playerA);
+  boolean abilityFound=false;
+  for (  Ability ability : prophet.getAbilities()) {
+    if (ability.getRule().startsWith("Pay 2 life")) {
+      abilityFound=true;
+    }
+  }
+  Assert.assertTrue("Prophet of Kruphix has to have the 'Pay 2 life: Return this permanent to its owner's hand.' ability, but has not.",abilityFound);
+}

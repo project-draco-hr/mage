@@ -1,41 +1,46 @@
 {
-  int count=0;
-  for (  CombatGroup group : groups) {
-    count+=group.getAttackers().size();
-  }
-  if (count > 1) {
-    List<UUID> tobeRemoved=new ArrayList<>();
+  boolean check=true;
+  int numberOfChecks=0;
+  UUID attackerToRemove=null;
+  Check:   while (check) {
+    check=false;
+    numberOfChecks++;
+    int numberAttackers=0;
     for (    CombatGroup group : groups) {
-      for (      UUID attackingCreatureId : group.getAttackers()) {
-        Permanent attacker=game.getPermanent(attackingCreatureId);
-        if (count > 1 && attacker != null && attacker.getAbilities().containsKey(CanAttackOnlyAloneAbility.getInstance().getId())) {
-          if (!game.isSimulation()) {
-            game.informPlayers(attacker.getLogName() + " can only attack alone. Removing it from combat.");
+      numberAttackers+=group.getAttackers().size();
+    }
+    Player attackingPlayer=game.getPlayer(attackerId);
+    if (attackerToRemove != null) {
+      removeAttacker(attackerToRemove,game);
+    }
+    for (    UUID attackingCreatureId : this.getAttackers()) {
+      Permanent attackingCreature=game.getPermanent(attackingCreatureId);
+      for (      Map.Entry<RestrictionEffect,HashSet<Ability>> entry : game.getContinuousEffects().getApplicableRestrictionEffects(attackingCreature,game).entrySet()) {
+        RestrictionEffect effect=entry.getKey();
+        for (        Ability ability : entry.getValue()) {
+          if (!effect.canAttackCheckAfter(numberAttackers,ability,game)) {
+            MageObject sourceObject=ability.getSourceObject(game);
+            if (attackingPlayer.isHuman()) {
+              game.informPlayer(attackingPlayer,attackingCreature.getIdName() + " can't attack this way (" + (sourceObject == null ? "null" : sourceObject.getIdName())+ ")");
+              return false;
+            }
+ else {
+              for (              CombatGroup combatGroup : this.getGroups()) {
+                if (combatGroup.getAttackers().contains(attackingCreatureId)) {
+                  attackerToRemove=attackingCreatureId;
+                }
+              }
+              check=true;
+              if (numberOfChecks > 50) {
+                logger.error("Seems to be an AI declare attacker lock (reached 50 check iterations) " + (sourceObject == null ? "null" : sourceObject.getIdName()));
+                return true;
+              }
+              continue Check;
+            }
           }
-          tobeRemoved.add(attackingCreatureId);
-          count--;
         }
       }
     }
-    for (    UUID attackingCreatureId : tobeRemoved) {
-      this.removeAttacker(attackingCreatureId,game);
-    }
   }
-  if (count == 1) {
-    List<UUID> tobeRemoved=new ArrayList<>();
-    for (    CombatGroup group : groups) {
-      for (      UUID attackingCreatureId : group.getAttackers()) {
-        Permanent attacker=game.getPermanent(attackingCreatureId);
-        if (attacker != null && attacker.getAbilities().containsKey(CantAttackAloneAbility.getInstance().getId())) {
-          if (!game.isSimulation()) {
-            game.informPlayers(attacker.getLogName() + " can't attack alone. Removing it from combat.");
-          }
-          tobeRemoved.add(attackingCreatureId);
-        }
-      }
-    }
-    for (    UUID attackingCreatureId : tobeRemoved) {
-      this.removeAttacker(attackingCreatureId,game);
-    }
-  }
+  return true;
 }
