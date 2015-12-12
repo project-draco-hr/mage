@@ -3,7 +3,13 @@
   ArrayList<CardDownloadData> allCardsUrls=new ArrayList<>();
   HashSet<String> ignoreUrls=SettingsManager.getIntance().getIgnoreUrls();
   Set<String> type2SetsFilter=new HashSet<>();
-  type2SetsFilter.addAll(ConstructedFormats.getSetsByFormat(ConstructedFormats.STANDARD));
+  List<String> constructedFormats=ConstructedFormats.getSetsByFormat(ConstructedFormats.STANDARD);
+  if (constructedFormats != null && !constructedFormats.isEmpty()) {
+    type2SetsFilter.addAll(constructedFormats);
+  }
+ else {
+    logger.warn("No formats defined. Try connecting to a server first!");
+  }
   int numberCardImages=allCards.size();
   try {
     offlineMode=true;

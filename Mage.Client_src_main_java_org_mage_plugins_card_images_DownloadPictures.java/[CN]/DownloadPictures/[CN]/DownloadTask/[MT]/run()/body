@@ -1,11 +1,13 @@
 {
+  StringBuilder filePath=new StringBuilder();
+  File temporaryFile=null;
+  TFile outputFile=null;
   try {
-    StringBuilder filePath=new StringBuilder();
-    filePath.append(Constants.IO.imageBaseDir).append(File.separator);
+    filePath.append(Constants.IO.imageBaseDir);
     filePath.append(card.hashCode()).append(".").append(card.getName().replace(":","").replace("//","-")).append(".jpg");
-    File temporaryFile=new File(filePath.toString());
+    temporaryFile=new File(filePath.toString());
     String imagePath=CardImageUtils.generateImagePath(card);
-    TFile outputFile=new TFile(imagePath);
+    outputFile=new TFile(imagePath);
     if (!outputFile.exists()) {
       outputFile.getParentFile().mkdirs();
     }
@@ -66,7 +68,6 @@ synchronized (sync) {
       }
  else {
         new TFile(temporaryFile).cp_rp(outputFile);
-        temporaryFile.delete();
       }
     }
  else {
@@ -76,8 +77,16 @@ synchronized (sync) {
       }
     }
   }
- catch (  Exception e) {
+ catch (  AccessDeniedException e) {
+    logger.error("The file " + (outputFile != null ? outputFile.toString() : "to add the image of " + card.getName() + "("+ card.getSet()+ ")") + " can't be accessed. Try rebooting your system to remove the file lock.");
+  }
+catch (  Exception e) {
     logger.error(e,e);
+  }
+ finally {
+    if (temporaryFile != null) {
+      temporaryFile.delete();
+    }
   }
 synchronized (sync) {
     update(cardIndex + 1,count);
