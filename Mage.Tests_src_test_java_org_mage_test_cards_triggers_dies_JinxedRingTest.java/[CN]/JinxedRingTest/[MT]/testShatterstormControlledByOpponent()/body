@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",6);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.HAND,playerA,"Legerdemain",1);
+  addCard(Zone.HAND,playerA,"Shatterstorm",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Jinxed Ring",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Bonded Construct",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Legerdemain","Jinxed Ring^Bonded Construct");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Shatterstorm");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Legerdemain",1);
+  assertGraveyardCount(playerA,"Shatterstorm",1);
+  assertGraveyardCount(playerA,"Jinxed Ring",1);
+  assertGraveyardCount(playerB,"Bonded Construct",2);
+  assertLife(playerA,20);
+  assertLife(playerB,18);
+}
