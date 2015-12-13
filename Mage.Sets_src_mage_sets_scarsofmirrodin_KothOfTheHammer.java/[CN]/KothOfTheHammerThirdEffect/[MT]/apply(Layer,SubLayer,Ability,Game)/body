@@ -2,10 +2,10 @@
 switch (layer) {
 case AbilityAddingRemovingEffects_6:
     if (sublayer == SubLayer.NA) {
-      for (      Permanent p : game.getBattlefield().getActivePermanents(KothOfTheHammer.filter,source.getControllerId(),game)) {
+      for (      Permanent permanent : game.getBattlefield().getActivePermanents(KothOfTheHammer.filterCount,source.getControllerId(),source.getSourceId(),game)) {
         Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new TapSourceCost());
         ability.addTarget(new TargetCreatureOrPlayer());
-        p.addAbility(ability,game);
+        permanent.addAbility(ability,source.getSourceId(),game);
       }
     }
   break;
