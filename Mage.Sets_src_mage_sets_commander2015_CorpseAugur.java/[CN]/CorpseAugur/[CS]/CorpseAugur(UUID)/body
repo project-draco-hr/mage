@@ -5,10 +5,11 @@
   this.subtype.add("Wizard");
   this.power=new MageInt(4);
   this.toughness=new MageInt(2);
-  Effect effect=new DrawCardSourceControllerEffect(new CardsInTargetPlayersGraveyardCount());
+  CardsInTargetPlayersGraveyardCount dynamicValue=new CardsInTargetPlayersGraveyardCount(new FilterCreatureCard("the number of creature cards"));
+  Effect effect=new DrawCardSourceControllerEffect(dynamicValue);
   effect.setText("You draw X cards");
   Ability ability=new DiesTriggeredAbility(effect,false);
-  effect=new LoseLifeSourceControllerEffect(new CardsInTargetPlayersGraveyardCount());
+  effect=new LoseLifeSourceControllerEffect(dynamicValue);
   effect.setText("and you lose X life, where X is the number of creature cards in target player's graveyard");
   ability.addEffect(effect);
   ability.addTarget(new TargetPlayer());

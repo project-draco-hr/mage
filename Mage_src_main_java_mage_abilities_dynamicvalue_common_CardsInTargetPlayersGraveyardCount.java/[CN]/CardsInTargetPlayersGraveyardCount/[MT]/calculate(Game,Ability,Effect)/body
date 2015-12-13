@@ -1,7 +1,12 @@
 {
   Player player=game.getPlayer(effect.getTargetPointer().getFirst(game,sourceAbility));
   if (player != null) {
-    return player.getGraveyard().size();
+    if (filter == null) {
+      return player.getGraveyard().size();
+    }
+ else {
+      return player.getGraveyard().count(filter,sourceAbility.getControllerId(),sourceAbility.getSourceId(),game);
+    }
   }
   return 0;
 }
