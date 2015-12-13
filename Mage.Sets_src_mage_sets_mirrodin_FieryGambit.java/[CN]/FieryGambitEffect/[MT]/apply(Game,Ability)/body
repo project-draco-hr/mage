@@ -1,6 +1,7 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null) {
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
     int flipsWon=0;
     boolean controllerStopped=false;
     while (controller.flipCoin(game)) {
@@ -24,7 +25,7 @@
       }
     }
  else {
-      game.informPlayers("Fiery Gambit had no effect");
+      game.informPlayers(sourceObject.getIdName() + " had no effect");
     }
     return true;
   }
