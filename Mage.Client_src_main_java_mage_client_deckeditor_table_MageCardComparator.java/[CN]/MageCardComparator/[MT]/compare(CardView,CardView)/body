@@ -2,8 +2,8 @@
   Comparable aCom=null;
   Comparable bCom=null;
   if (column == 0) {
-    aCom=Integer.valueOf(1);
-    bCom=Integer.valueOf(1);
+    aCom=1;
+    bCom=1;
   }
  else   if (column == 1) {
     aCom=a.getName();
@@ -26,10 +26,14 @@
     bCom=CardHelper.getType(b);
   }
  else   if (column == 5) {
-    aCom=new Float(-1);
-    bCom=new Float(-1);
-    if (CardHelper.isCreature(a))     aCom=new Float(a.getPower() + "." + a.getToughness());
-    if (CardHelper.isCreature(b))     bCom=new Float(b.getPower() + "." + b.getToughness());
+    aCom=(float)-1;
+    bCom=(float)-1;
+    if (CardHelper.isCreature(a)) {
+      aCom=new Float(a.getPower() + "." + (a.getToughness().startsWith("-") ? "0" : a.getToughness()));
+    }
+    if (CardHelper.isCreature(b)) {
+      bCom=new Float(b.getPower() + "." + (b.getToughness().startsWith("-") ? "0" : b.getToughness()));
+    }
   }
  else   if (column == 6) {
     aCom=a.getRarity().toString();
@@ -39,6 +43,10 @@
     aCom=a.getExpansionSetCode();
     bCom=b.getExpansionSetCode();
   }
-  if (ascending)   return aCom.compareTo(bCom);
- else   return bCom.compareTo(aCom);
+  if (ascending) {
+    return aCom.compareTo(bCom);
+  }
+ else {
+    return bCom.compareTo(aCom);
+  }
 }
