@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Bloodlord of Vaasgoth");
+  addCard(Zone.HAND,playerA,"Barony Vampire");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Barony Vampire");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Barony Vampire",1);
+  Permanent baron=getPermanent("Barony Vampire",playerA);
+  boolean bloodthirstFound=false;
+  for (  Ability ability : baron.getAbilities()) {
+    if (ability instanceof BloodthirstAbility) {
+      bloodthirstFound=true;
+      break;
+    }
+  }
+  Assert.assertTrue("Baron Vampire is missing the bloodthirst ability",bloodthirstFound);
+}
