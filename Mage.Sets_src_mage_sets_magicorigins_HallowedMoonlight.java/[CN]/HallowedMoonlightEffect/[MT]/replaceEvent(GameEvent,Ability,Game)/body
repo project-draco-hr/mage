@@ -1,8 +1,11 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null) {
-    EntersTheBattlefieldEvent entersTheBattlefieldEvent=(EntersTheBattlefieldEvent)event;
-    controller.moveCards(entersTheBattlefieldEvent.getTarget(),Zone.EXILED,source,game,false,false,false,null);
+  Card targetCard=game.getCard(event.getTargetId());
+  if (targetCard == null) {
+    targetCard=((EntersTheBattlefieldEvent)event).getTarget();
+  }
+  if (controller != null && targetCard != null) {
+    controller.moveCards(targetCard,Zone.EXILED,source,game,false,false,false,null);
     return true;
   }
   return false;

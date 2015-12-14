@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.HAND,playerA,"Hallowed Moonlight");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",6);
+  addCard(Zone.HAND,playerB,"Rally the Ancestors");
+  addCard(Zone.GRAVEYARD,playerB,"Pillarfield Ox");
+  addCard(Zone.GRAVEYARD,playerB,"Silvercoat Lion");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Rally the Ancestors");
+  setChoice(playerB,"X=4");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerA,"Hallowed Moonlight",NO_TARGET,"Rally the Ancestors");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerA,"Hallowed Moonlight",1);
+  assertExileCount("Rally the Ancestors",1);
+  assertExileCount("Pillarfield Ox",1);
+  assertExileCount("Silvercoat Lion",1);
+}
