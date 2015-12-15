@@ -1,7 +1,7 @@
 {
-  if (sourceAbility.getFirstTarget() != null) {
-    filter.add(new ControllerIdPredicate(sourceAbility.getFirstTarget()));
-    int value=game.getBattlefield().count(filter,sourceAbility.getSourceId(),sourceAbility.getControllerId(),game);
+  UUID targetOpponentId=effect.getTargetPointer().getFirst(game,sourceAbility);
+  if (targetOpponentId != null) {
+    int value=game.getBattlefield().countAll(filter,targetOpponentId,game);
     return multiplier * value;
   }
  else {
