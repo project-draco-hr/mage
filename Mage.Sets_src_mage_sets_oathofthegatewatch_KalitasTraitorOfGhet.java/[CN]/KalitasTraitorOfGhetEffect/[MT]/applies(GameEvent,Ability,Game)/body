@@ -1,0 +1,17 @@
+{
+  ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+  if (zEvent.getToZone() == Zone.GRAVEYARD) {
+    Permanent permanent=((ZoneChangeEvent)event).getTarget();
+    if (permanent != null && game.getOpponents(source.getControllerId()).contains(permanent.getControllerId()) && !(permanent instanceof PermanentToken)) {
+      if (zEvent.getTarget() != null) {
+        if (zEvent.getTarget().getCardType().contains(CardType.CREATURE)) {
+          return true;
+        }
+      }
+ else       if (permanent.getCardType().contains(CardType.CREATURE)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

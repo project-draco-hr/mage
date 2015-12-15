@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    if (((ZoneChangeEvent)event).getFromZone().equals(Zone.BATTLEFIELD)) {
+      Permanent permanent=((ZoneChangeEvent)event).getTarget();
+      if (permanent != null) {
+        controller.moveCardToExileWithInfo(permanent,null,null,source.getSourceId(),game,Zone.BATTLEFIELD,true);
+        new CreateTokenEffect(new ZombieToken()).apply(game,source);
+        return true;
+      }
+    }
+  }
+  return false;
+}
