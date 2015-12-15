@@ -1,0 +1,20 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    MageObject target=game.getObject(source.getSourceId());
+    if (target != null) {
+      HashSet<CardType> foundCardTypes=new HashSet<>();
+      for (      UUID playerId : controller.getInRange()) {
+        Player player=game.getPlayer(playerId);
+        if (player != null) {
+          for (          Card card : player.getGraveyard().getCards(game)) {
+            foundCardTypes.addAll(card.getCardType());
+          }
+        }
+      }
+      int number=foundCardTypes.size();
+      return number < 4;
+    }
+  }
+  return false;
+}
