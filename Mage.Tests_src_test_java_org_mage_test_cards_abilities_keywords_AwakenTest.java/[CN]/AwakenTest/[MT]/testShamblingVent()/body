@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",5);
+  addCard(Zone.BATTLEFIELD,playerA,"Chromatic Lantern",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Shambling Vent",1);
+  addCard(Zone.HAND,playerA,"Scatter to the Winds",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",2);
+  addCard(Zone.HAND,playerB,"Silvercoat Lion",1);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Silvercoat Lion");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerA,"Scatter to the Winds with awaken","Silvercoat Lion");
+  addTarget(playerA,"Shambling Vent");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Scatter to the Winds",1);
+  assertPowerToughness(playerA,"Shambling Vent",3,3);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+}
