@@ -1,0 +1,21 @@
+{
+  if (source.getTargets().size() > 0) {
+    Target multiTarget=source.getTargets().get(0);
+    for (    UUID target : multiTarget.getTargets()) {
+      Permanent permanent=game.getPermanent(target);
+      if (permanent != null) {
+        permanent.addCounters(counterType.createInstance(multiTarget.getTargetAmount(target)),game);
+      }
+    }
+    if (removeAtEndOfTurn) {
+      DelayedTriggeredAbility ability=new AtTheBeginOfNextCleanupDelayedTriggeredAbility(new RemoveCountersAtEndOfTurn(counterType));
+      ability.setSourceId(source.getSourceId());
+      ability.setControllerId(source.getControllerId());
+      ability.setSourceObject(source.getSourceObject(game),game);
+      ability.getTargets().addAll(source.getTargets());
+      game.addDelayedTriggeredAbility(ability);
+    }
+    return true;
+  }
+  return false;
+}
