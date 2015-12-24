@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",5);
+  addCard(Zone.BATTLEFIELD,playerA,"Kozilek, Butcher of Truth");
+  addCard(Zone.HAND,playerA,"Ixidron");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",4);
+  addCard(Zone.HAND,playerB,"Wrath of God",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Ixidron");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Wrath of God");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Ixidron",0);
+  assertGraveyardCount(playerB,"Wrath of God",1);
+  assertGraveyardCount(playerA,0);
+}
