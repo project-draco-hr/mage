@@ -1,0 +1,71 @@
+{
+  boolean changed=false;
+  for (Iterator<Entry<UUID,MageCard>> i=cards.entrySet().iterator(); i.hasNext(); ) {
+    Entry<UUID,MageCard> entry=i.next();
+    if (!cardsView.containsKey(entry.getKey())) {
+      removeCard(entry.getKey());
+      i.remove();
+      changed=true;
+    }
+  }
+  if (cardsView.size() == 0 && countCards() > 0) {
+    logger.fatal("Card object on the cards panel was not removed");
+    for (    Component comp : cardArea.getComponents()) {
+      if (comp instanceof Card) {
+        Card card=(Card)comp;
+        logger.fatal("Card name:" + card.getName() + " type:"+ card.getType(null));
+      }
+ else       if (comp instanceof MageCard) {
+        MageCard mageCard=(MageCard)comp;
+        logger.fatal("MageCard name:" + mageCard.getName() + " toolTiptext:"+ mageCard.getToolTipText());
+      }
+ else {
+        logger.fatal("Unknown object:" + comp.getName() + " className:"+ comp.getClass().getName());
+      }
+      cardArea.remove(comp);
+    }
+  }
+  java.util.List<CardView> orderedList=new ArrayList<>();
+  if (revertOrder) {
+    for (    CardView card : cardsView.values()) {
+      orderedList.add(0,card);
+    }
+  }
+ else {
+    orderedList.addAll(cardsView.values());
+  }
+  for (  CardView card : orderedList) {
+    if (dontDisplayTapped) {
+      if (card instanceof PermanentView) {
+        ((PermanentView)card).overrideTapped(false);
+      }
+    }
+    if (card instanceof StackAbilityView) {
+      CardView tmp=((StackAbilityView)card).getSourceCard();
+      tmp.overrideRules(card.getRules());
+      tmp.setIsAbility(true);
+      tmp.overrideTargets(card.getTargets());
+      tmp.overrideId(card.getId());
+      tmp.setAbilityType(((StackAbilityView)card).getAbilityType());
+      card=tmp;
+    }
+ else {
+      card.setAbilityType(null);
+    }
+    if (!cards.containsKey(card.getId())) {
+      addCard(card,bigCard,gameId);
+      changed=true;
+    }
+    cards.get(card.getId()).update(card);
+  }
+  if (changed) {
+    layoutCards();
+  }
+  if (!isVisibleIfEmpty) {
+    cardArea.setVisible(cards.size() > 0);
+  }
+  sizeCards(getCardDimension());
+  this.revalidate();
+  this.repaint();
+  return changed;
+}

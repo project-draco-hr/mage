@@ -3,15 +3,17 @@
 switch (event.getType()) {
 case ZONE_CHANGE:
 case DESTROYED_PERMANENT:
-      if (event.getType().equals(EventType.DESTROYED_PERMANENT)) {
-        source=game.getLastKnownInformation(getSourceId(),Zone.BATTLEFIELD);
-      }
- else {
-        if (((ZoneChangeEvent)event).getTarget() != null) {
-          source=((ZoneChangeEvent)event).getTarget();
+      if (isLeavesTheBattlefieldTrigger()) {
+        if (event.getType().equals(EventType.DESTROYED_PERMANENT)) {
+          source=game.getLastKnownInformation(getSourceId(),Zone.BATTLEFIELD);
         }
  else {
-          source=game.getLastKnownInformation(getSourceId(),((ZoneChangeEvent)event).getZone());
+          if (((ZoneChangeEvent)event).getTarget() != null) {
+            source=((ZoneChangeEvent)event).getTarget();
+          }
+ else {
+            source=game.getLastKnownInformation(getSourceId(),((ZoneChangeEvent)event).getZone());
+          }
         }
       }
 case PHASED_OUT:

@@ -1,0 +1,16 @@
+{
+  CastSpellLastTurnWatcher watcher=(CastSpellLastTurnWatcher)game.getState().getWatchers().get("CastSpellLastTurnWatcher");
+  if (watcher != null) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      for (      UUID playerToCheckId : game.getState().getPlayersInRange(playerId,game)) {
+        if (!player.hasOpponent(playerToCheckId,game)) {
+          if (watcher.getAmountOfSpellsPlayerCastOnCurrentTurn(playerToCheckId) > 0) {
+            return super.canActivate(playerId,game);
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
