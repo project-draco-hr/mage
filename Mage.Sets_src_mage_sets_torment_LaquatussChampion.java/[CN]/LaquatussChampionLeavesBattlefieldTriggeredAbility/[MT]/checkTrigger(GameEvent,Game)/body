@@ -1,0 +1,13 @@
+{
+  if (super.checkTrigger(event,game)) {
+    String key=CardUtil.getCardZoneString("targetPlayer",this.getSourceId(),game,true);
+    Object object=game.getState().getValue(key);
+    if (object instanceof UUID) {
+      for (      Effect effect : this.getEffects()) {
+        effect.setTargetPointer(new FixedTarget((UUID)object));
+      }
+      return true;
+    }
+  }
+  return false;
+}
