@@ -1,0 +1,12 @@
+{
+  if (super.activate(game,noMana)) {
+    ArrayList<Integer> surgeActivations=(ArrayList)game.getState().getValue(SURGE_ACTIVATION_VALUE_KEY + getSourceId());
+    if (surgeActivations == null) {
+      surgeActivations=new ArrayList<>();
+      game.getState().setValue(SURGE_ACTIVATION_VALUE_KEY + getSourceId(),surgeActivations);
+    }
+    surgeActivations.add(game.getState().getZoneChangeCounter(getSourceId()));
+    return true;
+  }
+  return false;
+}
