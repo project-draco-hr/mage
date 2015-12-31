@@ -2,9 +2,7 @@
   super(ownerId,131,"Nantuko Monastery",Rarity.UNCOMMON,new CardType[]{CardType.LAND},"");
   this.expansionSetCode="ARC";
   this.addAbility(new ColorlessManaAbility());
-  Effect effect=new BecomesCreatureSourceEffect(new NantukoMonasteryToken(),"land",Duration.Custom);
-  effect.setText("{this} becomes a 4/4 green and white Insect Monk creature");
-  Ability ability=new ConditionalActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl<>("{G}{W}"),new CardsInControllerGraveCondition(7),"<i>Threshold</i> - {G}{W}: Nantuko Monastery becomes a 4/4 green and white Insect Monk creature with first strike until end of turn. It's still a land. Activate this ability only if seven or more cards are in your graveyard.");
-  ability.addEffect(new GainAbilitySourceEffect(FirstStrikeAbility.getInstance(),Duration.EndOfTurn));
+  Ability ability=new ConditionalActivatedAbility(Zone.BATTLEFIELD,new BecomesCreatureSourceEffect(new NantukoMonasteryToken(),"land",Duration.EndOfTurn),new ManaCostsImpl<>("{G}{W}"),new CardsInControllerGraveCondition(7));
+  ability.setAbilityWord(AbilityWord.THRESHOLD);
   this.addAbility(ability);
 }

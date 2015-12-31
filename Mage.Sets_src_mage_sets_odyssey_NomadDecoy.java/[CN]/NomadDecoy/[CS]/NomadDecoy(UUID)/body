@@ -9,8 +9,9 @@
   ability.addTarget(new TargetCreaturePermanent());
   ability.addCost(new TapSourceCost());
   this.addAbility(ability);
-  Ability thresholdAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new TapTargetEffect(),new ManaCostsImpl("{W}{W}"));
-  thresholdAbility.addTarget(new TargetCreaturePermanent(2));
+  Ability thresholdAbility=new ConditionalActivatedAbility(Zone.BATTLEFIELD,new TapTargetEffect(),new ManaCostsImpl("{W}{W}"),new CardsInControllerGraveCondition(7));
   thresholdAbility.addCost(new TapSourceCost());
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new GainAbilitySourceEffect(thresholdAbility),new CardsInControllerGraveCondition(7),"<i>Threshold</i> - {W}{W}, {T}: Tap two target creatures. Activate this ability only if seven or more cards are in your graveyard.")));
+  thresholdAbility.addTarget(new TargetCreaturePermanent(2));
+  thresholdAbility.setAbilityWord(AbilityWord.THRESHOLD);
+  this.addAbility(thresholdAbility);
 }
