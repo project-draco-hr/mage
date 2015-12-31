@@ -1,0 +1,23 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",7);
+  addCard(Zone.HAND,playerA,"Yawgmoth's Will");
+  addCard(Zone.GRAVEYARD,playerA,"Silvercoat Lion");
+  addCard(Zone.GRAVEYARD,playerA,"Reviving Dose");
+  addCard(Zone.BATTLEFIELD,playerA,"Corpse Traders");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain");
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Yawgmoth's Will");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Reviving Dose");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Bolt","Silvercoat Lion");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertExileCount("Yawgmoth's Will",1);
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertExileCount("Reviving Dose",1);
+  assertExileCount("Silvercoat Lion",1);
+  assertHandCount(playerA,1);
+  assertLife(playerA,23);
+  assertLife(playerB,20);
+}

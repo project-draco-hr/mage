@@ -31,6 +31,9 @@
     if (Zone.GRAVEYARD.equals(zone) && canPlayCardsFromGraveyard()) {
       for (      ActivatedAbility ability : object.getAbilities().getPlayableAbilities(Zone.HAND)) {
         if (canUse || ability.getAbilityType().equals(AbilityType.SPECIAL_ACTION)) {
+          if (ability.getManaCosts().isEmpty() && ability.getCosts().isEmpty() && ability instanceof SpellAbility) {
+            continue;
+          }
           if (ability.canActivate(playerId,game)) {
             useable.put(ability.getId(),ability);
           }
