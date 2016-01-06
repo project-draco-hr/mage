@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",7);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.HAND,playerA,"Warden of the First Tree",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Warden of the First Tree");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{1}{W/B}:");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"{2}{W/B}{W/B}:");
+  activateAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"{3}{W/B}{W/B}{W/B}:");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPowerToughness(playerA,"Warden of the First Tree",8,8,Filter.ComparisonScope.Any);
+  assertType("Warden of the First Tree",CardType.CREATURE,"Human");
+  assertType("Warden of the First Tree",CardType.CREATURE,"Spirit");
+  assertType("Warden of the First Tree",CardType.CREATURE,"Warrior");
+  assertAbility(playerA,"Warden of the First Tree",TrampleAbility.getInstance(),true);
+  assertAbility(playerA,"Warden of the First Tree",LifelinkAbility.getInstance(),true);
+}

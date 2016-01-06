@@ -1,12 +1,12 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player != null && !player.getGraveyard().isEmpty()) {
-    Card card=player.getGraveyard().getRandom(game);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && !controller.getGraveyard().isEmpty()) {
+    Card card=controller.getGraveyard().getRandom(game);
     if (card != null) {
-      card.moveToZone(Zone.HAND,source.getSourceId(),game,true);
-      game.informPlayers(card.getName() + "returned to the hand of" + player.getLogName());
+      controller.moveCards(card,Zone.HAND,source,game);
       return true;
     }
+    controller.moveCards(controller.getGraveyard(),Zone.GRAVEYARD,source,game);
   }
   return false;
 }
