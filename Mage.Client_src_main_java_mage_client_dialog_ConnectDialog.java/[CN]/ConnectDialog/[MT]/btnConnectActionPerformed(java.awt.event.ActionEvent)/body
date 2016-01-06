@@ -1,14 +1,18 @@
 {
-  if (txtUserName.getText().isEmpty()) {
-    JOptionPane.showMessageDialog(rootPane,"Please provide a user name");
-    return;
-  }
   if (txtServer.getText().trim().isEmpty()) {
     JOptionPane.showMessageDialog(rootPane,"Please provide a server address");
     return;
   }
   if (txtPort.getText().trim().isEmpty()) {
     JOptionPane.showMessageDialog(rootPane,"Please provide a port number");
+    return;
+  }
+  if (txtUserName.getText().isEmpty()) {
+    JOptionPane.showMessageDialog(rootPane,"Please provide a user name");
+    return;
+  }
+  if (txtPassword.getText().isEmpty()) {
+    JOptionPane.showMessageDialog(rootPane,"Please provide a password");
     return;
   }
   if (Integer.valueOf(txtPort.getText()) < 1 || Integer.valueOf(txtPort.getText()) > 65535) {
@@ -23,6 +27,7 @@
     connection.setHost(this.txtServer.getText().trim());
     connection.setPort(Integer.valueOf(this.txtPort.getText().trim()));
     connection.setUsername(this.txtUserName.getText().trim());
+    connection.setPassword(this.txtPassword.getText().trim());
     connection.setForceDBComparison(this.chkForceUpdateDB.isSelected());
     MageFrame.getPreferences().put(KEY_CONNECT_FLAG,((CountryItemEditor)cbFlag.getEditor()).getImageItem());
     ProxyType configProxyType=Connection.ProxyType.valueByText(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_TYPE,"None"));

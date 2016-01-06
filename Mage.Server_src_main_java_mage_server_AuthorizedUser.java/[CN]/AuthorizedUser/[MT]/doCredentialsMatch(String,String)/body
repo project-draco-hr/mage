@@ -1,0 +1,7 @@
+{
+  HashedCredentialsMatcher matcher=new HashedCredentialsMatcher(this.hashAlgorithm);
+  matcher.setHashIterations(this.hashIterations);
+  AuthenticationToken token=new UsernamePasswordToken(name,password);
+  AuthenticationInfo info=new SimpleAuthenticationInfo(this.name,ByteSource.Util.bytes(Base64.decode(this.password)),ByteSource.Util.bytes(Base64.decode(this.salt)),"");
+  return matcher.doCredentialsMatch(token,info);
+}
