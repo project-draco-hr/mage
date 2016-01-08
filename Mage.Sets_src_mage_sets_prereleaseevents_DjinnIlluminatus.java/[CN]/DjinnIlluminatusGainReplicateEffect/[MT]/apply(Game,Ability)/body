@@ -1,0 +1,19 @@
+{
+  for (  StackObject stackObject : game.getStack()) {
+    if ((stackObject instanceof Spell) && !stackObject.isCopy() && stackObject.getControllerId().equals(source.getControllerId())) {
+      Spell spell=(Spell)stackObject;
+      if (filter.match(stackObject,game)) {
+        ReplicateAbility replicateAbility=replicateAbilities.get(spell.getId());
+        if (replicateAbility == null) {
+          replicateAbility=new ReplicateAbility(spell.getCard(),spell.getSpellAbility().getManaCosts().getText());
+          replicateAbilities.put(spell.getId(),replicateAbility);
+        }
+        game.getState().addOtherAbility(spell.getCard(),replicateAbility,false);
+      }
+    }
+  }
+  if (game.getStack().isEmpty()) {
+    replicateAbilities.clear();
+  }
+  return true;
+}

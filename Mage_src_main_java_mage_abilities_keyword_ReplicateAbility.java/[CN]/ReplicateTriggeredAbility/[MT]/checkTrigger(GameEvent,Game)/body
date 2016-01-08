@@ -2,9 +2,9 @@
   if (event.getSourceId().equals(this.sourceId)) {
     StackObject spell=game.getStack().getStackObject(this.sourceId);
     if (spell instanceof Spell) {
-      Card card=game.getCard(spell.getSourceId());
+      Card card=((Spell)spell).getCard();
       if (card != null) {
-        for (        Ability ability : card.getAbilities()) {
+        for (        Ability ability : card.getAbilities(game)) {
           if (ability instanceof ReplicateAbility) {
             if (((ReplicateAbility)ability).isActivated()) {
               for (              Effect effect : this.getEffects()) {
