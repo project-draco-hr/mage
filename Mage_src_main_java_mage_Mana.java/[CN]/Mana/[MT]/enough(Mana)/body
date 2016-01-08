@@ -37,8 +37,15 @@
     compare.white=0;
   }
   if (compare.colorless < 0) {
-    int remaining=compare.red + compare.green + compare.black+ compare.blue+ compare.white+ compare.any;
-    if (compare.colorless + remaining < 0) {
+    compare.any=compare.getAny() + compare.getColorless();
+    if (compare.any < 0) {
+      return false;
+    }
+    compare.colorless=0;
+  }
+  if (compare.generic < 0) {
+    int remaining=compare.red + compare.green + compare.black+ compare.blue+ compare.white+ compare.colorless+ compare.any;
+    if (compare.generic + remaining < 0) {
       return false;
     }
   }

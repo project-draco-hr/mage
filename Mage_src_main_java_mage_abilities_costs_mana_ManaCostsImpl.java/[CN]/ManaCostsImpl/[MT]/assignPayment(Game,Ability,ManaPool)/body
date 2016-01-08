@@ -2,13 +2,11 @@
   if (!pool.isAutoPayment() && pool.getUnlockedManaType() == null) {
     return;
   }
-  if (pool.getColorless() > 0) {
-    for (    ManaCost cost : this) {
-      if (!cost.isPaid() && cost instanceof ColorlessManaCost) {
-        cost.assignPayment(game,ability,pool);
-        if (pool.count() == 0) {
-          return;
-        }
+  for (  ManaCost cost : this) {
+    if (!cost.isPaid() && cost instanceof ColorlessManaCost) {
+      cost.assignPayment(game,ability,pool);
+      if (pool.count() == 0) {
+        return;
       }
     }
   }

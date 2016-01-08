@@ -26,17 +26,23 @@
     compare.any=compare.any - diff;
     compare.white=compare.white + diff;
   }
-  if (compare.colorless < 0) {
+  if (compare.colorless < 0 && compare.any > 0) {
+    int diff=Math.min(compare.any,Math.abs(compare.colorless));
+    compare.any=compare.any - diff;
+    compare.colorless=compare.colorless + diff;
+  }
+  if (compare.generic < 0) {
     int remaining=0;
     remaining+=Math.min(0,compare.red);
     remaining+=Math.min(0,compare.white);
     remaining+=Math.min(0,compare.green);
     remaining+=Math.min(0,compare.black);
     remaining+=Math.min(0,compare.blue);
+    remaining+=Math.min(0,compare.colorless);
     remaining+=Math.min(0,compare.any);
     if (remaining > 0) {
-      int diff=Math.min(remaining,Math.abs(compare.colorless));
-      compare.colorless=compare.colorless + diff;
+      int diff=Math.min(remaining,Math.abs(compare.generic));
+      compare.generic=compare.generic + diff;
     }
   }
   Mana needed=new Mana();
@@ -57,6 +63,9 @@
   }
   if (compare.colorless < 0) {
     needed.colorless=Math.abs(compare.colorless);
+  }
+  if (compare.generic < 0) {
+    needed.generic=Math.abs(compare.generic);
   }
   return needed;
 }
