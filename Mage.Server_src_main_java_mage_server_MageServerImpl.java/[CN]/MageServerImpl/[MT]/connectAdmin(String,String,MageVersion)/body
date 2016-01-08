@@ -1,0 +1,15 @@
+{
+  try {
+    if (version.compareTo(Main.getVersion()) != 0) {
+      throw new MageException("Wrong client version " + version + ", expecting version "+ Main.getVersion());
+    }
+    if (!adminPassword.equals(this.adminPassword)) {
+      throw new MageException("Wrong password");
+    }
+    return SessionManager.getInstance().connectAdmin(sessionId);
+  }
+ catch (  Exception ex) {
+    handleException(ex);
+  }
+  return false;
+}

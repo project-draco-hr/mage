@@ -30,27 +30,7 @@
     connection.setPassword(this.txtPassword.getText().trim());
     connection.setForceDBComparison(this.chkForceUpdateDB.isSelected());
     MageFrame.getPreferences().put(KEY_CONNECT_FLAG,((CountryItemEditor)cbFlag.getEditor()).getImageItem());
-    ProxyType configProxyType=Connection.ProxyType.valueByText(PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_TYPE,"None"));
-    if (configProxyType != null) {
-      connection.setProxyType(configProxyType);
-      if (!configProxyType.equals(ProxyType.NONE)) {
-        String host=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_ADDRESS,"");
-        String port=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_PORT,"");
-        if (!host.isEmpty() && !port.isEmpty()) {
-          connection.setProxyHost(host);
-          connection.setProxyPort(Integer.valueOf(port));
-          String username=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_USERNAME,"");
-          connection.setProxyUsername(username);
-          if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_REMEMBER,"false").equals("true")) {
-            String password=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_PROXY_PSWD,"");
-            connection.setProxyPassword(password);
-          }
-        }
- else {
-          logger.warn("host or\\and port are empty: host=" + host + ", port="+ port);
-        }
-      }
-    }
+    PreferencesDialog.setProxyInformation(connection);
     MageFrame.getInstance().setUserPrefsToConnection(connection);
     logger.debug("connecting: " + connection.getProxyType() + " "+ connection.getProxyHost()+ " "+ connection.getProxyPort());
     task=new ConnectTask();

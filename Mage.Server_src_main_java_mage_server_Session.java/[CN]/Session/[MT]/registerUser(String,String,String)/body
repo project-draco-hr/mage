@@ -1,0 +1,16 @@
+{
+synchronized (AuthorizedUserRepository.instance) {
+    String returnMessage=validateUserName(userName);
+    if (returnMessage != null) {
+      sendErrorMessageToClient(returnMessage);
+      return returnMessage;
+    }
+    returnMessage=validatePassword(password);
+    if (returnMessage != null) {
+      sendErrorMessageToClient(returnMessage);
+      return returnMessage;
+    }
+    AuthorizedUserRepository.instance.add(userName,password,email);
+    return null;
+  }
+}

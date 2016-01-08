@@ -1,0 +1,74 @@
+{
+  if (isConnected()) {
+    disconnect(true);
+  }
+  this.connection=connection;
+  this.canceled=false;
+  sessionState=SessionState.CONNECTING;
+  boolean result=handleRemotingTaskExceptions(new RemotingTask(){
+    @Override public boolean run() throws Throwable {
+      logger.info("Trying to connect to XMAGE server at " + connection.getHost() + ":"+ connection.getPort());
+      System.setProperty("http.nonProxyHosts","code.google.com");
+      System.setProperty("socksNonProxyHosts","code.google.com");
+      System.clearProperty("socksProxyHost");
+      System.clearProperty("socksProxyPort");
+      System.clearProperty("http.proxyHost");
+      System.clearProperty("http.proxyPort");
+switch (connection.getProxyType()) {
+case SOCKS:
+        System.setProperty("socksProxyHost",connection.getProxyHost());
+      System.setProperty("socksProxyPort",Integer.toString(connection.getProxyPort()));
+    break;
+case HTTP:
+  System.setProperty("http.proxyHost",connection.getProxyHost());
+System.setProperty("http.proxyPort",Integer.toString(connection.getProxyPort()));
+Authenticator.setDefault(new MageAuthenticator(connection.getProxyUsername(),connection.getProxyPassword()));
+break;
+}
+InvokerLocator clientLocator=new InvokerLocator(connection.getURI());
+Map<String,String> metadata=new HashMap<>();
+metadata.put(SocketWrapper.WRITE_TIMEOUT,"2000");
+metadata.put("generalizeSocketException","true");
+server=(MageServer)TransporterClient.createTransporterClient(clientLocator.getLocatorURI(),MageServer.class,metadata);
+Map<String,String> clientMetadata=new HashMap<>();
+clientMetadata.put(SocketWrapper.WRITE_TIMEOUT,"2000");
+clientMetadata.put("generalizeSocketException","true");
+clientMetadata.put(Client.ENABLE_LEASE,"true");
+clientMetadata.put("numberOfCallRetries","1");
+clientMetadata.put(Client.MAX_NUM_ONEWAY_THREADS,"10");
+clientMetadata.put(Remoting.USE_CLIENT_CONNECTION_IDENTITY,"true");
+callbackClient=new Client(clientLocator,"callback",clientMetadata);
+Map<String,String> listenerMetadata=new HashMap<>();
+if (debugMode) {
+listenerMetadata.put(ConnectionValidator.VALIDATOR_PING_PERIOD,"1000000");
+listenerMetadata.put(ConnectionValidator.VALIDATOR_PING_TIMEOUT,"900000");
+}
+ else {
+listenerMetadata.put(ConnectionValidator.VALIDATOR_PING_PERIOD,"15000");
+listenerMetadata.put(ConnectionValidator.VALIDATOR_PING_TIMEOUT,"13000");
+}
+callbackClient.connect(new ClientConnectionListener(),listenerMetadata);
+Map<String,String> callbackMetadata=new HashMap<>();
+callbackMetadata.put(Bisocket.IS_CALLBACK_SERVER,"true");
+if (callbackHandler == null) {
+callbackHandler=new CallbackHandler();
+}
+callbackClient.addListener(callbackHandler,callbackMetadata);
+Set callbackConnectors=callbackClient.getCallbackConnectors(callbackHandler);
+if (callbackConnectors.size() != 1) {
+logger.warn("There should be one callback Connector (number existing = " + callbackConnectors.size() + ")");
+}
+callbackClient.invoke(null);
+sessionId=callbackClient.getSessionId();
+sessionState=SessionState.CONNECTED;
+logger.info("Connected to MAGE server at " + connection.getHost() + ":"+ connection.getPort());
+return true;
+}
+}
+);
+if (result) {
+return true;
+}
+disconnect(false);
+return false;
+}

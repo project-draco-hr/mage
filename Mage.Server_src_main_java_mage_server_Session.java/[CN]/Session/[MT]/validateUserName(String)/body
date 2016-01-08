@@ -1,0 +1,21 @@
+{
+  if (userName.equals("Admin")) {
+    return "User name Admin already in use";
+  }
+  if (userName.length() > ConfigSettings.getInstance().getMaxUserNameLength()) {
+    return "User name may not be longer than " + ConfigSettings.getInstance().getMaxUserNameLength() + " characters";
+  }
+  if (userName.length() < ConfigSettings.getInstance().getMinUserNameLength()) {
+    return "User name may not be shorter than " + ConfigSettings.getInstance().getMinUserNameLength() + " characters";
+  }
+  Pattern p=Pattern.compile(ConfigSettings.getInstance().getUserNamePattern(),Pattern.CASE_INSENSITIVE);
+  Matcher m=p.matcher(userName);
+  if (m.find()) {
+    return "User name '" + userName + "' includes not allowed characters: use a-z, A-Z and 0-9";
+  }
+  AuthorizedUser authorizedUser=AuthorizedUserRepository.instance.get(userName);
+  if (authorizedUser != null) {
+    return "User name '" + userName + "' already in use";
+  }
+  return null;
+}
