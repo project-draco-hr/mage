@@ -1,0 +1,15 @@
+{
+  StackObject spell=game.getStack().getStackObject(event.getSourceId());
+  if (spell == null || !(spell instanceof Spell)) {
+    return false;
+  }
+ else {
+    if (event.getTargetId().equals(this.getSourceId()) && game.getOpponents(this.controllerId).contains(event.getPlayerId()) && spellCard.match(spell,getSourceId(),getControllerId(),game)) {
+      for (      Effect effect : getEffects()) {
+        effect.setTargetPointer(new FixedTarget(spell.getId()));
+      }
+      return true;
+    }
+  }
+  return false;
+}
