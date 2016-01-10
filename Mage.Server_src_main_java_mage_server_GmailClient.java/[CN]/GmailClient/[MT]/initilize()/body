@@ -1,0 +1,18 @@
+{
+  try {
+    dataStoreFactory=new FileDataStoreFactory(DATA_STORE_DIR);
+    httpTransport=GoogleNetHttpTransport.newTrustedTransport();
+    GoogleClientSecrets clientSecrets=GoogleClientSecrets.load(JSON_FACTORY,new FileReader("client_secrets.json"));
+    if (clientSecrets.getDetails().getClientId().startsWith("Enter") || clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
+      logger.error("client_secrets.json not found");
+      return false;
+    }
+    GoogleAuthorizationCodeFlow flow=new GoogleAuthorizationCodeFlow.Builder(httpTransport,JSON_FACTORY,clientSecrets,Collections.singleton(GmailScopes.GMAIL_COMPOSE)).setDataStoreFactory(dataStoreFactory).build();
+    credential=new AuthorizationCodeInstalledApp(flow,new LocalServerReceiver()).authorize("user");
+    return true;
+  }
+ catch (  IOException|GeneralSecurityException ex) {
+    logger.error("Error initializing GmailClient",ex);
+  }
+  return false;
+}

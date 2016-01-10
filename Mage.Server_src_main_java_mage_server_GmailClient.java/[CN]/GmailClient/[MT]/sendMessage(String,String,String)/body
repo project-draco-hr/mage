@@ -1,0 +1,19 @@
+{
+  try {
+    Gmail gmail=new Builder(httpTransport,JSON_FACTORY,credential).setApplicationName("XMage Server").build();
+    MimeMessage mimeMessage=new MimeMessage(Session.getDefaultInstance(new Properties()));
+    mimeMessage.addRecipient(javax.mail.Message.RecipientType.TO,new InternetAddress(email));
+    mimeMessage.setSubject(subject);
+    mimeMessage.setText(text);
+    ByteArrayOutputStream baos=new ByteArrayOutputStream();
+    mimeMessage.writeTo(baos);
+    Message message=new Message();
+    message.setRaw(Base64.encodeBase64URLSafeString(baos.toByteArray()));
+    gmail.users().messages().send(ConfigSettings.getInstance().getGoogleAccount() + "@gmail.com",message).execute();
+    return true;
+  }
+ catch (  MessagingException|IOException ex) {
+    logger.error("Error sending message",ex);
+  }
+  return false;
+}
