@@ -1,10 +1,11 @@
 {
-  Card card=game.getCard(targetPointer.getFirst(game,source));
-  if (card != null) {
-    Zone currentZone=game.getState().getZone(card.getId());
-    if (card.putOntoBattlefield(game,currentZone,source.getSourceId(),card.getOwnerId())) {
-      return true;
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Card card=game.getCard(targetPointer.getFirst(game,source));
+    if (card != null) {
+      controller.moveCards(card,Zone.BATTLEFIELD,source,game,tapped,false,true,null);
     }
+    return true;
   }
   return false;
 }
