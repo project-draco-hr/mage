@@ -9,7 +9,7 @@
     mimeMessage.writeTo(baos);
     Message message=new Message();
     message.setRaw(Base64.encodeBase64URLSafeString(baos.toByteArray()));
-    gmail.users().messages().send(ConfigSettings.getInstance().getGoogleAccount() + "@gmail.com",message).execute();
+    gmail.users().messages().send(ConfigSettings.getInstance().getGoogleAccount() + (ConfigSettings.getInstance().getGoogleAccount().endsWith("@gmail.com") ? "" : "@gmail.com"),message).execute();
     return true;
   }
  catch (  MessagingException|IOException ex) {
