@@ -1,0 +1,21 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",11);
+  addCard(Zone.GRAVEYARD,playerA,"Silvercoat Lion",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",4);
+  addCard(Zone.HAND,playerB,"Lightning Blast",3);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Karador, Ghost Chieftain");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Blast","Karador, Ghost Chieftain");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Karador, Ghost Chieftain");
+  castSpell(4,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Blast","Karador, Ghost Chieftain");
+  castSpell(5,PhaseStep.PRECOMBAT_MAIN,playerA,"Karador, Ghost Chieftain");
+  castSpell(6,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Blast","Karador, Ghost Chieftain");
+  castSpell(7,PhaseStep.PRECOMBAT_MAIN,playerA,"Karador, Ghost Chieftain");
+  setStopAt(7,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Lightning Blast",3);
+  assertPermanentCount(playerA,"Karador, Ghost Chieftain",1);
+  assertTappedCount("Island",true,9);
+}
