@@ -1,0 +1,15 @@
+{
+  AuthorizedUser authorizedUser=AuthorizedUserRepository.instance.getByEmail(email);
+  if (authorizedUser == null) {
+    sendErrorMessageToClient(sessionId,"No user was found with the email address " + email);
+    logger.info("Auth token is requested for " + email + " but there's no such user in DB");
+    return false;
+  }
+  String authToken=generateAuthToken();
+  activeAuthTokens.put(email,authToken);
+  if (!GmailClient.sendMessage(email,"XMage Password Reset Auth Token","Use this auth token to reset your password: " + authToken + "\n"+ "It's valid until the next server restart.")) {
+    sendErrorMessageToClient(sessionId,"There was an error inside the server while emailing an auth token");
+    return false;
+  }
+  return true;
+}

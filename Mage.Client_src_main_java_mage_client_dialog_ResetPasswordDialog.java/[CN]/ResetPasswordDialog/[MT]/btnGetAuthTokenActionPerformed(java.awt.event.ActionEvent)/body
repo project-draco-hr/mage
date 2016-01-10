@@ -1,0 +1,13 @@
+{
+  if (this.txtEmail.getText().length() == 0) {
+    MageFrame.getInstance().showError("Please enter an email address.");
+    return;
+  }
+  connection=new Connection();
+  connection.setHost(MageFrame.getPreferences().get("serverAddress",Config.serverName));
+  connection.setPort(Integer.valueOf(MageFrame.getPreferences().get("serverPort",Integer.toString(Config.port))));
+  PreferencesDialog.setProxyInformation(connection);
+  connection.setEmail(this.txtEmail.getText().trim());
+  getAuthTokenTask=new GetAuthTokenTask();
+  getAuthTokenTask.execute();
+}
