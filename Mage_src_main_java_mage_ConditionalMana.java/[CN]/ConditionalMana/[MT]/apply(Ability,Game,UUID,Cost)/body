@@ -1,0 +1,19 @@
+{
+  if (conditions.isEmpty()) {
+    throw new IllegalStateException("Conditional mana should contain at least one Condition");
+  }
+  for (  Condition condition : conditions) {
+    boolean applied=(condition instanceof ManaCondition) ? ((ManaCondition)condition).apply(game,ability,manaProducerId,costToPay) : condition.apply(game,ability);
+    if (!applied) {
+      if (scope.equals(Filter.ComparisonScope.All)) {
+        return false;
+      }
+    }
+ else {
+      if (scope.equals(Filter.ComparisonScope.Any)) {
+        return true;
+      }
+    }
+  }
+  return scope.equals(Filter.ComparisonScope.All);
+}

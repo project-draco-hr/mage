@@ -1,21 +1,3 @@
 {
-  if (this.size() == 0 || noMana) {
-    setPaid();
-    return true;
-  }
-  Player player=game.getPlayer(controllerId);
-  assignPayment(game,ability,player.getManaPool());
-  game.getState().getSpecialActions().removeManaActions();
-  while (!isPaid()) {
-    ManaCost unpaid=this.getUnpaid();
-    String promptText=ManaUtil.addSpecialManaPayAbilities(ability,game,unpaid);
-    if (player.playMana(ability,unpaid,promptText,game)) {
-      assignPayment(game,ability,player.getManaPool());
-    }
- else {
-      return false;
-    }
-    game.getState().getSpecialActions().removeManaActions();
-  }
-  return true;
+  return pay(ability,game,sourceId,controllerId,noMana,this);
 }
