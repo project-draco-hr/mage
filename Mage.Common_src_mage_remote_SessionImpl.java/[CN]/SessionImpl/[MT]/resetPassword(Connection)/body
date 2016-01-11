@@ -1,0 +1,13 @@
+{
+  return establishJBossRemotingConnection(connection) && handleRemotingTaskExceptions(new RemotingTask(){
+    @Override public boolean run() throws Throwable {
+      logger.info("Trying reset the password in XMAGE server at " + connection.getHost() + ":"+ connection.getPort());
+      boolean result=server.resetPassword(sessionId,connection.getEmail(),connection.getAuthToken(),connection.getPassword());
+      if (result) {
+        logger.info("Password is successfully reset in MAGE server at " + connection.getHost() + ":"+ connection.getPort());
+      }
+      return result;
+    }
+  }
+);
+}

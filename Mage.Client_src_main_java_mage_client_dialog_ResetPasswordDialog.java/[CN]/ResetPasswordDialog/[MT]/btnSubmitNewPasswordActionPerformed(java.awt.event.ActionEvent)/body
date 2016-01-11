@@ -1,0 +1,27 @@
+{
+  if (this.txtEmail.getText().length() == 0) {
+    MageFrame.getInstance().showError("Please enter an email address.");
+    return;
+  }
+  if (this.txtAuthToken.getText().length() == 0) {
+    MageFrame.getInstance().showError("Please enter an auth token.");
+    return;
+  }
+  if (this.txtPassword.getText().length() == 0) {
+    MageFrame.getInstance().showError("Please enter a new password.");
+    return;
+  }
+  if (!this.txtPassword.getText().equals(this.txtPasswordConfirmation.getText())) {
+    MageFrame.getInstance().showError("Passwords don't match.");
+    return;
+  }
+  connection=new Connection();
+  connection.setHost(MageFrame.getPreferences().get("serverAddress",Config.serverName));
+  connection.setPort(Integer.valueOf(MageFrame.getPreferences().get("serverPort",Integer.toString(Config.port))));
+  PreferencesDialog.setProxyInformation(connection);
+  connection.setEmail(this.txtEmail.getText().trim());
+  connection.setAuthToken(this.txtAuthToken.getText().trim());
+  connection.setPassword(this.txtPassword.getText().trim());
+  resetPasswordTask=new ResetPasswordTask();
+  resetPasswordTask.execute();
+}

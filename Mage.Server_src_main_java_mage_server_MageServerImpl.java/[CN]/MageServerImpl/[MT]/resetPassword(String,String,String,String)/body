@@ -1,0 +1,18 @@
+{
+  String storedAuthToken=activeAuthTokens.get(email);
+  if (storedAuthToken == null || !storedAuthToken.equals(authToken)) {
+    sendErrorMessageToClient(sessionId,"Invalid auth token");
+    logger.info("Invalid auth token " + authToken + " is sent for "+ email);
+    return false;
+  }
+  AuthorizedUser authorizedUser=AuthorizedUserRepository.instance.getByEmail(email);
+  if (authorizedUser == null) {
+    sendErrorMessageToClient(sessionId,"The user is no longer in the DB");
+    logger.info("Auth token is valid, but the user with email address " + email + " is no longer in the DB");
+    return false;
+  }
+  AuthorizedUserRepository.instance.remove(authorizedUser.getName());
+  AuthorizedUserRepository.instance.add(authorizedUser.getName(),password,email);
+  activeAuthTokens.remove(email);
+  return true;
+}

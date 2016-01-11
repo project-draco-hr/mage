@@ -2,27 +2,27 @@
   try {
     get(CONNECTION_TIMEOUT_MS,TimeUnit.MILLISECONDS);
     if (result) {
-      String message="Registration succeeded";
+      String message="Password is reset successfully.";
       lblStatus.setText(message);
       MageFrame.getInstance().showMessage(message);
       hideDialog();
     }
  else {
-      lblStatus.setText("Could not register");
+      lblStatus.setText("There was an issue while resetting password.");
     }
   }
  catch (  InterruptedException|ExecutionException ex) {
-    logger.fatal("Registration task error",ex);
+    logger.fatal("Reset Password Task error",ex);
   }
 catch (  CancellationException ex) {
-    logger.info("Registration was canceled");
-    lblStatus.setText("Registration was canceled (but an account might have been actually created)");
+    logger.info("Canceled");
+    lblStatus.setText("Canceled");
   }
 catch (  TimeoutException ex) {
-    logger.fatal("Registration timeout: ",ex);
+    logger.fatal("Timeout: ",ex);
   }
  finally {
     MageFrame.stopConnecting();
-    btnRegister.setEnabled(true);
+    enableButtons();
   }
 }
