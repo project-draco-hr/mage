@@ -2,14 +2,14 @@
   if (userName.equals("Admin")) {
     return "User name Admin already in use";
   }
-  if (userName.length() > ConfigSettings.getInstance().getMaxUserNameLength()) {
-    return "User name may not be longer than " + ConfigSettings.getInstance().getMaxUserNameLength() + " characters";
+  ConfigSettings config=ConfigSettings.getInstance();
+  if (userName.length() < config.getMinUserNameLength()) {
+    return "User name may not be shorter than " + config.getMinUserNameLength() + " characters";
   }
-  if (userName.length() < ConfigSettings.getInstance().getMinUserNameLength()) {
-    return "User name may not be shorter than " + ConfigSettings.getInstance().getMinUserNameLength() + " characters";
+  if (userName.length() > config.getMaxUserNameLength()) {
+    return "User name may not be longer than " + config.getMaxUserNameLength() + " characters";
   }
-  Pattern p=Pattern.compile(ConfigSettings.getInstance().getUserNamePattern(),Pattern.CASE_INSENSITIVE);
-  Matcher m=p.matcher(userName);
+  Matcher m=invalidUserNamePattern.matcher(userName);
   if (m.find()) {
     return "User name '" + userName + "' includes not allowed characters: use a-z, A-Z and 0-9";
   }

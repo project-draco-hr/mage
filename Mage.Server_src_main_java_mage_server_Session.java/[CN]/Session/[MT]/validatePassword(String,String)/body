@@ -1,0 +1,18 @@
+{
+  ConfigSettings config=ConfigSettings.getInstance();
+  if (password.length() < config.getMinPasswordLength()) {
+    return "Password may not be shorter than " + config.getMinPasswordLength() + " characters";
+  }
+  if (password.length() > config.getMaxPasswordLength()) {
+    return "Password may not be longer than " + config.getMaxPasswordLength() + " characters";
+  }
+  if (password.equals(userName)) {
+    return "Password may not be the same as your username";
+  }
+  Matcher alphabetsMatcher=alphabetsPattern.matcher(password);
+  Matcher digitsMatcher=digitsPattern.matcher(password);
+  if (!alphabetsMatcher.find() || !digitsMatcher.find()) {
+    return "Password has to include at least one alphabet (a-zA-Z) and also at least one digit (0-9)";
+  }
+  return null;
+}

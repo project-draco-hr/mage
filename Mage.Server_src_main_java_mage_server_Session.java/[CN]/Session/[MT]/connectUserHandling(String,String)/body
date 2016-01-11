@@ -1,8 +1,10 @@
 {
   this.isAdmin=false;
-  AuthorizedUser authorizedUser=AuthorizedUserRepository.instance.get(userName);
-  if (authorizedUser == null || !authorizedUser.doCredentialsMatch(userName,password)) {
-    return "Wrong username or password";
+  if (ConfigSettings.getInstance().isAuthenticationActivated()) {
+    AuthorizedUser authorizedUser=AuthorizedUserRepository.instance.get(userName);
+    if (authorizedUser == null || !authorizedUser.doCredentialsMatch(userName,password)) {
+      return "Wrong username or password";
+    }
   }
   User user=UserManager.getInstance().createUser(userName,host);
   boolean reconnect=false;

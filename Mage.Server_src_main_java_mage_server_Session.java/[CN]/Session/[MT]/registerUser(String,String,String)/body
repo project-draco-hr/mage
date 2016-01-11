@@ -1,11 +1,16 @@
 {
+  if (!ConfigSettings.getInstance().isAuthenticationActivated()) {
+    String returnMessage="Registration is disabled by the server config";
+    sendErrorMessageToClient(returnMessage);
+    return returnMessage;
+  }
 synchronized (AuthorizedUserRepository.instance) {
     String returnMessage=validateUserName(userName);
     if (returnMessage != null) {
       sendErrorMessageToClient(returnMessage);
       return returnMessage;
     }
-    returnMessage=validatePassword(password);
+    returnMessage=validatePassword(password,userName);
     if (returnMessage != null) {
       sendErrorMessageToClient(returnMessage);
       return returnMessage;
