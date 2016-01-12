@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",5);
+  addCard(Zone.HAND,playerA,"Clutch of Currents",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Clutch of Currents with awaken","Silvercoat Lion");
+  addTarget(playerA,"Island");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Clutch of Currents",1);
+  assertHandCount(playerB,"Silvercoat Lion",1);
+  assertPermanentCount(playerA,"Island",5);
+  assertPowerToughness(playerA,"Island",3,3,Filter.ComparisonScope.Any);
+}
