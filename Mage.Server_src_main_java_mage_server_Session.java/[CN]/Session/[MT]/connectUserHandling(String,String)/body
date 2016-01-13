@@ -10,7 +10,7 @@
   boolean reconnect=false;
   if (user == null) {
     user=UserManager.getInstance().findUser(userName);
-    if (user.getHost().equals(host)) {
+    if (ConfigSettings.getInstance().isAuthenticationActivated() || user.getHost().equals(host)) {
       user.updateLastActivity(null);
       this.userId=user.getId();
       if (user.getSessionId().isEmpty()) {
