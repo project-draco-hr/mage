@@ -1,4 +1,8 @@
 {
+  if (!ConfigSettings.getInstance().isAuthenticationActivated()) {
+    sendErrorMessageToClient(sessionId,"Registration is disabled by the server config");
+    return false;
+  }
   AuthorizedUser authorizedUser=AuthorizedUserRepository.instance.getByEmail(email);
   if (authorizedUser == null) {
     sendErrorMessageToClient(sessionId,"No user was found with the email address " + email);
