@@ -1,4 +1,8 @@
 {
+  if (!ConfigSettings.getInstance().isAuthenticationActivated()) {
+    sendErrorMessageToClient(sessionId,"Registration is disabled by the server config");
+    return false;
+  }
   String storedAuthToken=activeAuthTokens.get(email);
   if (storedAuthToken == null || !storedAuthToken.equals(authToken)) {
     sendErrorMessageToClient(sessionId,"Invalid auth token");
