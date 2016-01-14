@@ -4,6 +4,12 @@
     if (result) {
       String message="Registration succeeded";
       lblStatus.setText(message);
+      Preferences prefs=MageFrame.getPreferences();
+      prefs.put("serverAddress",connection.getHost());
+      prefs.put("serverPort",Integer.toString(connection.getPort()));
+      prefs.put(connection.getHost() + "/userName",connection.getUsername());
+      prefs.put(connection.getHost() + "/password",connection.getPassword());
+      prefs.put(connection.getHost() + "/email",connection.getEmail());
       MageFrame.getInstance().showMessage(message);
       hideDialog();
     }

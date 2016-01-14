@@ -2,6 +2,8 @@
   try {
     get(CONNECTION_TIMEOUT_MS,TimeUnit.MILLISECONDS);
     if (result) {
+      Preferences prefs=MageFrame.getPreferences();
+      prefs.put(connection.getHost() + "/email",connection.getEmail());
       String message="Auth token is emailed. Please check your inbox.";
       lblStatus.setText(message);
       MageFrame.getInstance().showMessage(message);
