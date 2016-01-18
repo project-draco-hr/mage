@@ -7,10 +7,7 @@
       boolean exiled=controller.moveCardToExileWithInfo(permanent,source.getSourceId(),permanent.getIdName(),source.getSourceId(),game,Zone.BATTLEFIELD,true);
       if (exiled || (returnAlways && (zcc == game.getState().getZoneChangeCounter(permanent.getId()) - 1))) {
         AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnToBattlefieldUnderOwnerControlSourceEffect(false,zcc + 1));
-        delayedAbility.setSourceId(source.getSourceId());
-        delayedAbility.setControllerId(source.getControllerId());
-        delayedAbility.setSourceObject(source.getSourceObject(game),game);
-        game.addDelayedTriggeredAbility(delayedAbility);
+        game.addDelayedTriggeredAbility(delayedAbility,source);
       }
     }
     return true;

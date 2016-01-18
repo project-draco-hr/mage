@@ -4,17 +4,13 @@
   if (controller != null && sourceObject != null) {
     if (getTargetPointer().getFirst(game,source) != null) {
       Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
-      Card card=game.getCard(getTargetPointer().getFirst(game,source));
       if (permanent != null) {
-        UUID exileId=UUID.randomUUID();
-        if (controller.moveCardToExileWithInfo(permanent,exileId,sourceObject.getIdName(),source.getSourceId(),game,Zone.BATTLEFIELD,true)) {
-          if (card != null) {
-            AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(exileId,Zone.BATTLEFIELD));
-            delayedAbility.setSourceId(source.getSourceId());
-            delayedAbility.setControllerId(card.getOwnerId());
-            delayedAbility.setSourceObject(source.getSourceObject(game),game);
-            game.addDelayedTriggeredAbility(delayedAbility);
-          }
+        int zcc=permanent.getZoneChangeCounter(game);
+        if (controller.moveCards(permanent,Zone.EXILED,source,game)) {
+          Effect effect=new ReturnToBattlefieldUnderOwnerControlTargetEffect();
+          effect.setTargetPointer(new FixedTarget(permanent.getId(),zcc + 1));
+          AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect);
+          game.addDelayedTriggeredAbility(delayedAbility,source);
         }
       }
     }

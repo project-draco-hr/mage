@@ -5,11 +5,8 @@
     UUID turnPlayer=affectedPlayersTurn ? getTargetPointer().getFirst(game,source) : source.getControllerId();
     effect.setTargetPointer(new FixedTarget(getTargetPointer().getFirst(game,source)));
     UnlessPaysDelayedEffectTriggeredAbility delayedAbility=new UnlessPaysDelayedEffectTriggeredAbility(turnPlayer,step,effect);
-    delayedAbility.setSourceId(source.getSourceId());
-    delayedAbility.setControllerId(source.getControllerId());
-    delayedAbility.setSourceObject(sourceObject,game);
     delayedAbility.setSpecialActionId(newAction.getId());
-    UUID delayedAbilityId=game.addDelayedTriggeredAbility(delayedAbility);
+    UUID delayedAbilityId=game.addDelayedTriggeredAbility(delayedAbility,source);
     newAction.addCost(cost);
     Effect removeEffect=new RemoveDelayedTriggeredAbilityEffect(delayedAbilityId);
     newAction.addEffect(removeEffect);

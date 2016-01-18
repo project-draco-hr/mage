@@ -9,11 +9,10 @@
         UUID exileId=UUID.randomUUID();
         if (controller.moveCardToExileWithInfo(permanent,exileId,sourceObject.getIdName(),source.getSourceId(),game,Zone.BATTLEFIELD,true)) {
           if (card != null) {
-            AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(exileId,Zone.BATTLEFIELD));
-            delayedAbility.setSourceId(source.getSourceId());
-            delayedAbility.setControllerId(card.getOwnerId());
-            delayedAbility.setSourceObject(source.getSourceObject(game),game);
-            game.addDelayedTriggeredAbility(delayedAbility);
+            Effect effect=new ReturnToBattlefieldUnderOwnerControlTargetEffect();
+            effect.setTargetPointer(new FixedTarget(card.getId(),game.getState().getZoneChangeCounter(card.getId())));
+            AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect);
+            game.addDelayedTriggeredAbility(delayedAbility,source);
           }
         }
       }
