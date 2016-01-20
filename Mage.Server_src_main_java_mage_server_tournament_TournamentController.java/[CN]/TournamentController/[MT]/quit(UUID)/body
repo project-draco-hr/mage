@@ -21,34 +21,37 @@
   tournamentSession.setKilled();
   if (tournamentPlayer.isInTournament()) {
     String info;
+    TourneyQuitStatus status;
     if (tournament.isDoneConstructing()) {
       info=new StringBuilder("during round ").append(tournament.getRounds().size()).toString();
       TableManager.getInstance().userQuitTournamentSubTables(tournament.getId(),userId);
+      status=TourneyQuitStatus.DURING_ROUND;
     }
+ else     if (tournamentPlayer.getState().equals(TournamentPlayerState.DRAFTING)) {
+      info="during Draft phase";
+      if (!checkToReplaceDraftPlayerByAi(userId,tournamentPlayer)) {
+        this.abortDraftTournament();
+      }
  else {
-      if (tournamentPlayer.getState().equals(TournamentPlayerState.DRAFTING)) {
-        info="during Draft phase";
-        if (!checkToReplaceDraftPlayerByAi(userId,tournamentPlayer)) {
-          this.abortDraftTournament();
-        }
- else {
-          DraftController draftController=DraftManager.getInstance().getController(tableId);
-          if (draftController != null) {
-            DraftSession draftSession=draftController.getDraftSession(playerId);
-            if (draftSession != null) {
-              DraftManager.getInstance().kill(draftSession.getDraftId(),userId);
-            }
+        DraftController draftController=DraftManager.getInstance().getController(tableId);
+        if (draftController != null) {
+          DraftSession draftSession=draftController.getDraftSession(playerId);
+          if (draftSession != null) {
+            DraftManager.getInstance().kill(draftSession.getDraftId(),userId);
           }
         }
       }
- else       if (tournamentPlayer.getState().equals(TournamentPlayerState.CONSTRUCTING)) {
-        info="during Construction phase";
-      }
- else {
-        info="";
-      }
+      status=TourneyQuitStatus.DURING_DRAFTING;
     }
-    tournamentPlayer.setQuit(info);
+ else     if (tournamentPlayer.getState().equals(TournamentPlayerState.CONSTRUCTING)) {
+      info="during Construction phase";
+      status=TourneyQuitStatus.DURING_CONSTRUCTION;
+    }
+ else {
+      info="";
+      status=TourneyQuitStatus.NO_TOURNEY_QUIT;
+    }
+    tournamentPlayer.setQuit(info,status);
     tournament.quit(playerId);
     tournamentSession.quit();
     ChatManager.getInstance().broadcast(chatId,"",tournamentPlayer.getPlayer().getLogName() + " has quit the tournament",MessageColor.BLACK,true,MessageType.STATUS,SoundToPlay.PlayerQuitTournament);
