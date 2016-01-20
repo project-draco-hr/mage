@@ -78,4 +78,10 @@
  catch (  Exception ex) {
     logger.fatal("Failed to start server - " + connection.toString(),ex);
   }
+  updateUserStatsTaskExecutor.scheduleAtFixedRate(new Runnable(){
+    @Override public void run(){
+      updateUserStats();
+    }
+  }
+,60,60,TimeUnit.SECONDS);
 }
