@@ -1,14 +1,11 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    Target target=new TargetCreaturePermanent(0,1,filter,true);
-    if (controller.choose(outcome,target,source.getSourceId(),game)) {
-      Permanent targetCreature=game.getPermanent(target.getFirstTarget());
-      if (targetCreature != null) {
-        for (        Permanent permanent : game.getBattlefield().getAllActivePermanents(filterWithCounter,controller.getId(),game)) {
-          if (permanent.getPower().getValue() > 0) {
-            targetCreature.damage(permanent.getPower().getValue(),permanent.getId(),game,false,true);
-          }
+    Permanent targetCreature=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (targetCreature != null) {
+      for (      Permanent permanent : game.getBattlefield().getAllActivePermanents(filterWithCounter,controller.getId(),game)) {
+        if (permanent.getPower().getValue() > 0) {
+          targetCreature.damage(permanent.getPower().getValue(),permanent.getId(),game,false,true);
         }
       }
     }
