@@ -1,9 +1,17 @@
 {
   for (  CombatGroup group : groups) {
     for (    UUID attacker : group.getAttackers()) {
+      if (attackersTappedByAttack.contains(attacker)) {
+        Permanent attackingPermanent=game.getPermanent(attacker);
+        if (attackingPermanent != null) {
+          attackingPermanent.setTapped(false);
+          attackingPermanent.tap(game);
+        }
+      }
       game.fireEvent(GameEvent.getEvent(GameEvent.EventType.ATTACKER_DECLARED,group.defenderId,attacker,attackerId));
     }
   }
+  attackersTappedByAttack.clear();
   game.fireEvent(GameEvent.getEvent(GameEvent.EventType.DECLARED_ATTACKERS,attackerId,attackerId));
   if (!game.isSimulation()) {
     Player player=game.getPlayer(attackerId);

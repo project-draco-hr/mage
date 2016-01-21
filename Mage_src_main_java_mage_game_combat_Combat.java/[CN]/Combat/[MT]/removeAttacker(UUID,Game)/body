@@ -9,7 +9,10 @@
       Permanent creature=game.getPermanent(attackerId);
       if (creature != null) {
         creature.setAttacking(false);
-        creature.setTapped(false);
+        if (attackersTappedByAttack.contains(creature.getId())) {
+          creature.setTapped(false);
+          attackersTappedByAttack.remove(creature.getId());
+        }
       }
       if (group.attackers.isEmpty()) {
         groups.remove(group);
