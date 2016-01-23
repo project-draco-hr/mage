@@ -4,5 +4,12 @@
   }
  else {
     this.userData=userData;
+    this.userStats=UserStatsRepository.instance.getUser(this.userName);
+    if (userStats != null) {
+      this.userData.setHistory(userStatsToString(userStats.getProto()));
+    }
+ else {
+      this.userData.setHistory("<new player>");
+    }
   }
 }
