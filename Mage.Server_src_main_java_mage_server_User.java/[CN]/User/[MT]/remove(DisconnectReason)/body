@@ -1,32 +1,32 @@
 {
-  logger.trace("REMOVE " + getName() + " Draft sessions "+ draftSessions.size());
+  LOGGER.trace("REMOVE " + getName() + " Draft sessions "+ draftSessions.size());
   for (  DraftSession draftSession : draftSessions.values()) {
     draftSession.setKilled();
   }
   draftSessions.clear();
-  logger.trace("REMOVE " + getName() + " Tournament sessions "+ userTournaments.size());
+  LOGGER.trace("REMOVE " + getName() + " Tournament sessions "+ userTournaments.size());
   for (  UUID tournamentId : userTournaments.values()) {
     TournamentManager.getInstance().quit(tournamentId,getId());
   }
   userTournaments.clear();
-  logger.trace("REMOVE " + getName() + " Tables "+ tables.size());
+  LOGGER.trace("REMOVE " + getName() + " Tables "+ tables.size());
   for (  Entry<UUID,Table> entry : tables.entrySet()) {
-    logger.debug("-- leave tableId: " + entry.getValue().getId());
+    LOGGER.debug("-- leave tableId: " + entry.getValue().getId());
     TableManager.getInstance().leaveTable(userId,entry.getValue().getId());
   }
   tables.clear();
-  logger.trace("REMOVE " + getName() + " Game sessions: "+ gameSessions.size());
+  LOGGER.trace("REMOVE " + getName() + " Game sessions: "+ gameSessions.size());
   for (  GameSessionPlayer gameSessionPlayer : gameSessions.values()) {
-    logger.debug("-- kill game session of gameId: " + gameSessionPlayer.getGameId());
+    LOGGER.debug("-- kill game session of gameId: " + gameSessionPlayer.getGameId());
     GameManager.getInstance().quitMatch(gameSessionPlayer.getGameId(),userId);
     gameSessionPlayer.quitGame();
   }
   gameSessions.clear();
-  logger.trace("REMOVE " + getName() + " watched Games "+ watchedGames.size());
+  LOGGER.trace("REMOVE " + getName() + " watched Games "+ watchedGames.size());
   for (  UUID gameId : watchedGames) {
     GameManager.getInstance().stopWatching(gameId,userId);
   }
   watchedGames.clear();
-  logger.trace("REMOVE " + getName() + " Chats ");
+  LOGGER.trace("REMOVE " + getName() + " Chats ");
   ChatManager.getInstance().removeUser(userId,reason);
 }

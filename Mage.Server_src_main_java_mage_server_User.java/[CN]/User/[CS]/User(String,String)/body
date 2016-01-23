@@ -14,4 +14,11 @@
   this.watchedGames=new ArrayList<>();
   this.tablesToDelete=new ArrayList<>();
   this.sessionId="";
+  this.userStats=UserStatsRepository.instance.getUser(this.userName);
+  if (userStats != null) {
+    this.history=userStatsToString(userStats.getProto());
+  }
+ else {
+    this.history="<No Games yet>";
+  }
 }
