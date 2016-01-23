@@ -1,12 +1,7 @@
 {
   String command=message.substring(1).trim().toUpperCase(Locale.ENGLISH);
-  if (command.equals("I") || command.equals("INFO")) {
-    user.setInfo("");
-    chatSessions.get(chatId).broadcastInfoToUser(user,message);
-    return true;
-  }
   if (command.startsWith("I ") || command.startsWith("INFO ")) {
-    user.setInfo(message.substring(command.startsWith("I ") ? 3 : 6));
+    message=UserManager.getInstance().getUserHistory(message.substring(command.startsWith("I ") ? 3 : 6));
     chatSessions.get(chatId).broadcastInfoToUser(user,message);
     return true;
   }
@@ -31,7 +26,7 @@
     }
   }
   if (command.equals("L") || command.equals("LIST")) {
-    message+=new StringBuilder("<br/>List of commands:").append("<br/>\\info [text] - set a info text to your player").append("<br/>\\list - Show a list of commands").append("<br/>\\whisper [player name] [text] - whisper to the player with the given name").toString();
+    message+=new StringBuilder("<br/>List of commands:").append("<br/>\\info [username] - shows the history of a player").append("<br/>\\list - Show a list of commands").append("<br/>\\whisper [player name] [text] - whisper to the player with the given name").toString();
     chatSessions.get(chatId).broadcastInfoToUser(user,message);
     return true;
   }
