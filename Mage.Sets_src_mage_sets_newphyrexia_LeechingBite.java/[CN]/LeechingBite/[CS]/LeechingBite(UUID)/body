@@ -1,13 +1,14 @@
 {
   super(ownerId,113,"Leeching Bite",Rarity.COMMON,new CardType[]{CardType.INSTANT},"{1}{G}");
   this.expansionSetCode="NPH";
-  Effect effect=new BoostTargetEffect(1,1,Duration.EndOfTurn);
-  effect.setText("Target creature gets +1/+1 until end of turn");
-  this.getSpellAbility().addEffect(effect);
-  this.getSpellAbility().addTarget(new TargetCreaturePermanent(new FilterCreaturePermanent("creature (getting the +1/+1 counter)")));
-  effect=new BoostTargetEffect(-1,-1,Duration.EndOfTurn);
-  effect.setText("Another target creature gets -1/-1 until end of turn");
-  effect.setTargetPointer(new SecondTargetPointer());
-  this.getSpellAbility().addEffect(effect);
-  this.getSpellAbility().addTarget(new TargetCreaturePermanent(new FilterCreaturePermanent("creature (getting the -1/-1 counter)")));
+  this.getSpellAbility().addEffect(new LeechingBiteEffect());
+  FilterCreaturePermanent filter1=new FilterCreaturePermanent("creature to get +1/+1");
+  TargetCreaturePermanent target1=new TargetCreaturePermanent(filter1);
+  target1.setTargetTag(1);
+  this.getSpellAbility().addTarget(target1);
+  FilterCreaturePermanent filter2=new FilterCreaturePermanent("another creature to get -1/-1");
+  filter2.add(new AnotherTargetPredicate(2));
+  TargetCreaturePermanent target2=new TargetCreaturePermanent(filter2);
+  target2.setTargetTag(2);
+  this.getSpellAbility().addTarget(target2);
 }
