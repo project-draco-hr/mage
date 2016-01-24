@@ -23,6 +23,9 @@
     CardScanner.scan();
   }
   logger.info("Done.");
+  logger.info("Updating user stats DB...");
+  UserStatsRepository.instance.updateUserStats();
+  logger.info("Done.");
   deleteSavedGames();
   ConfigSettings config=ConfigSettings.getInstance();
   for (  GamePlugin plugin : config.getGameTypes()) {
@@ -84,10 +87,4 @@
  catch (  Exception ex) {
     logger.fatal("Failed to start server - " + connection.toString(),ex);
   }
-  updateUserStatsTaskExecutor.scheduleAtFixedRate(new Runnable(){
-    @Override public void run(){
-      updateUserStats();
-    }
-  }
-,60,60,TimeUnit.SECONDS);
 }
