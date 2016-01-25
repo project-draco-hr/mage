@@ -23,6 +23,9 @@
     CardScanner.scan();
   }
   logger.info("Done.");
+  logger.info("Updating user stats DB...");
+  UserStatsRepository.instance.updateUserStats();
+  logger.info("Done.");
   deleteSavedGames();
   ConfigSettings config=ConfigSettings.getInstance();
   for (  GamePlugin plugin : config.getGameTypes()) {
@@ -57,6 +60,12 @@
   logger.info("Config - auth. activated : " + (config.isAuthenticationActivated() ? "true" : "false"));
   logger.info("Config - mailgun api key : " + config.getMailgunApiKey());
   logger.info("Config - mailgun domain  : " + config.getMailgunDomain());
+  logger.info("Config - mail smtp Host  : " + config.getMailSmtpHost());
+  logger.info("Config - mail smtpPort   : " + config.getMailSmtpPort());
+  logger.info("Config - mail user       : " + config.getMailUser());
+  logger.info("Config - mail passw. len.: " + config.getMailPassword().length());
+  logger.info("Config - mail from addre.: " + config.getMailFromAddress());
+  logger.info("Config - google account  : " + config.getGoogleAccount());
   Connection connection=new Connection("&maxPoolSize=" + config.getMaxPoolSize());
   connection.setHost(config.getServerAddress());
   connection.setPort(config.getPort());
@@ -78,10 +87,4 @@
  catch (  Exception ex) {
     logger.fatal("Failed to start server - " + connection.toString(),ex);
   }
-  updateUserStatsTaskExecutor.scheduleAtFixedRate(new Runnable(){
-    @Override public void run(){
-      updateUserStats();
-    }
-  }
-,60,60,TimeUnit.SECONDS);
 }

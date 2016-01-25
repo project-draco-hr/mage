@@ -21,17 +21,12 @@
   matchView=matchList;
   List<UsersView> users=new ArrayList<>();
   for (  User user : UserManager.getInstance().getUsers()) {
-    String history=null;
-    UserStats stats=user.getUserStats();
-    if (stats != null) {
-      history=userStatsToString(stats.getProto());
-    }
     try {
-      users.add(new UsersView(user.getUserData().getFlagName(),user.getName(),history,user.getInfo(),user.getGameInfo(),user.getPingInfo()));
+      users.add(new UsersView(user.getUserData().getFlagName(),user.getName(),user.getHistory(),user.getGameInfo(),user.getPingInfo()));
     }
  catch (    Exception ex) {
       logger.fatal("User update exception: " + user.getName() + " - "+ ex.toString(),ex);
-      users.add(new UsersView((user.getUserData() != null && user.getUserData().getFlagName() != null) ? user.getUserData().getFlagName() : "world",user.getName() != null ? user.getName() : "<no name>",history != null ? history : "<no history>",user.getInfo() != null ? user.getInfo() : "<no info>","[exception]",user.getPingInfo() != null ? user.getPingInfo() : "<no ping>"));
+      users.add(new UsersView((user.getUserData() != null && user.getUserData().getFlagName() != null) ? user.getUserData().getFlagName() : "world",user.getName() != null ? user.getName() : "<no name>",user.getHistory() != null ? user.getHistory() : "<no history>","[exception]",user.getPingInfo() != null ? user.getPingInfo() : "<no ping>"));
     }
   }
   Collections.sort(users,new UserNameSorter());
