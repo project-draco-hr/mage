@@ -1,12 +1,12 @@
 {
-  Permanent vessel=game.getPermanent(source.getSourceId());
-  Player you=game.getPlayer(source.getControllerId());
-  if (vessel != null && you != null) {
-    int amount=you.getLife();
+  Permanent vessel=game.getPermanentEntering(source.getSourceId());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (vessel != null && controller != null) {
+    int amount=controller.getLife();
     if (amount > 0) {
       vessel.addCounters(CounterType.CHARGE.createInstance(amount),game);
-      return true;
     }
+    return true;
   }
-  return true;
+  return false;
 }
