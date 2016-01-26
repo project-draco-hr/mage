@@ -20,6 +20,7 @@
     }
   }
   game.applyEffects();
+  Player controllingPlayer=null;
   if (targetId == null) {
     SpellAbility spellAbility=card.getSpellAbility();
     if (spellAbility.getTargets().isEmpty()) {
@@ -46,8 +47,13 @@
       target.setNotTarget(true);
       target.clearChosen();
     }
-    Player player=game.getPlayer(card.getOwnerId());
-    if (target != null && player != null && player.choose(auraOutcome,target,card.getId(),game)) {
+    if (event.getPlayerId() != null) {
+      controllingPlayer=game.getPlayer(event.getPlayerId());
+    }
+ else {
+      controllingPlayer=game.getPlayer(card.getOwnerId());
+    }
+    if (target != null && controllingPlayer != null && controllingPlayer.choose(auraOutcome,target,card.getId(),game)) {
       targetId=target.getFirstTarget();
     }
   }
@@ -63,7 +69,7 @@
   if (targetCard != null || targetPermanent != null || targetPlayer != null) {
     card.removeFromZone(game,fromZone,sourceId);
     card.updateZoneChangeCounter(game);
-    PermanentCard permanent=new PermanentCard(card,card.getOwnerId(),game);
+    PermanentCard permanent=new PermanentCard(card,(controllingPlayer == null ? card.getOwnerId() : controllingPlayer.getId()),game);
     game.getBattlefield().addPermanent(permanent);
     card.setZone(Zone.BATTLEFIELD,game);
     if (permanent.entersBattlefield(event.getSourceId(),game,fromZone,true)) {
