@@ -99,7 +99,8 @@
             for (            UUID possibleBlockerId : mustBeBlockedByAtLeastOne.get(toBeBlockedCreatureId)) {
               String blockRequiredMessage=isCreatureDoingARequiredBlock(possibleBlockerId,mustBeBlockedByAtLeastOne,game);
               if (blockRequiredMessage != null) {
-                game.informPlayer(controller,blockRequiredMessage + "It's a requirement to block " + toBeBlockedCreature.getIdName());
+                removeBlocker(possibleBlockerId,game);
+                game.informPlayer(controller,blockRequiredMessage + " Existing block removed. It's a requirement to block " + toBeBlockedCreature.getIdName()+ ".");
                 return false;
               }
             }
@@ -112,6 +113,9 @@
               Permanent possibleBlocker=game.getPermanent(possibleBlockerId);
               Player defender=game.getPlayer(possibleBlocker.getControllerId());
               if (defender != null) {
+                if (possibleBlocker.getBlocking() > 0) {
+                  removeBlocker(possibleBlockerId,game);
+                }
                 defender.declareBlocker(defender.getId(),possibleBlockerId,toBeBlockedCreatureId,game);
               }
               break;

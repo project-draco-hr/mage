@@ -1,5 +1,12 @@
 {
-  Permanent permanent=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
+  UUID targetId;
+  if (getTargetPointer() instanceof FixedTarget) {
+    targetId=((FixedTarget)getTargetPointer()).getTarget();
+  }
+ else {
+    targetId=getTargetPointer().getFirst(game,source);
+  }
+  Permanent permanent=game.getPermanentOrLKIBattlefield(targetId);
   Card copyFrom;
   ApplyToPermanent applier=new EmptyApplyToPermanent();
   if (permanent != null) {

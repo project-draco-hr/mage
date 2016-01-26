@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    VileRedeemerNonTokenCreaturesDiedWatcher watcher=(VileRedeemerNonTokenCreaturesDiedWatcher)game.getState().getWatchers().get("VileRedeemerNonTokenCreaturesDiedWatcher");
+    if (watcher != null) {
+      int amount=watcher.getAmountOfNontokenCreatureDiedThisTurn(controller.getId());
+      if (amount > 0) {
+        return new CreateTokenEffect(new EldraziScionToken(),amount).apply(game,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

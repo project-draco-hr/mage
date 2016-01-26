@@ -1,7 +1,9 @@
 {
-  this.txtServer.setText(MageFrame.getPreferences().get("serverAddress",Config.serverName));
-  this.txtPort.setText(MageFrame.getPreferences().get("serverPort",Integer.toString(Config.port)));
-  this.txtUserName.setText(MageFrame.getPreferences().get("userName",""));
+  String serverAddress=MagePreferences.getServerAddressWithDefault(Config.serverName);
+  this.txtServer.setText(serverAddress);
+  this.txtPort.setText(Integer.toString(MagePreferences.getServerPortWithDefault(Config.port)));
+  this.txtUserName.setText(MagePreferences.getUserName(serverAddress));
+  this.txtPassword.setText(MagePreferences.getPassword(serverAddress));
   this.chkAutoConnect.setSelected(Boolean.parseBoolean(MageFrame.getPreferences().get(KEY_CONNECT_AUTO_CONNECT,"false")));
   this.chkForceUpdateDB.setSelected(false);
   String selectedFlag=MageFrame.getPreferences().get(KEY_CONNECT_FLAG,"world");

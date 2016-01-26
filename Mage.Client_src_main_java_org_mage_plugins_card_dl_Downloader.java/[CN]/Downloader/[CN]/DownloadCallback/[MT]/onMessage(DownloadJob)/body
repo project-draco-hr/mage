@@ -9,11 +9,19 @@ synchronized (job) {
     Source src=job.getSource();
     Destination dst=job.getDestination();
     BoundedRangeModel progress=job.getProgress();
-    if (dst.exists()) {
+    if (dst.isValid()) {
       progress.setMaximum(1);
       progress.setValue(1);
     }
  else {
+      if (dst.exists()) {
+        try {
+          dst.delete();
+        }
+ catch (        IOException ex1) {
+          logger.warn("While deleting not valid file",ex1);
+        }
+      }
       progress.setMaximum(src.length());
       InputStream is=new BufferedInputStream(src.open());
       try {

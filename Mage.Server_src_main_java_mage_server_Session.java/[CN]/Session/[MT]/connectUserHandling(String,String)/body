@@ -1,0 +1,41 @@
+{
+  this.isAdmin=false;
+  if (ConfigSettings.getInstance().isAuthenticationActivated()) {
+    AuthorizedUser authorizedUser=AuthorizedUserRepository.instance.getByName(userName);
+    if (authorizedUser == null || !authorizedUser.doCredentialsMatch(userName,password)) {
+      return "Wrong username or password. In case you haven't, please register your account first.";
+    }
+  }
+  User user=UserManager.getInstance().createUser(userName,host);
+  boolean reconnect=false;
+  if (user == null) {
+    user=UserManager.getInstance().getUserByName(userName);
+    if (ConfigSettings.getInstance().isAuthenticationActivated() || user.getHost().equals(host)) {
+      user.updateLastActivity(null);
+      this.userId=user.getId();
+      if (user.getSessionId().isEmpty()) {
+        logger.info("Reconnecting session for " + userName);
+        reconnect=true;
+      }
+ else {
+        logger.info("Disconnecting another user instance: " + userName);
+        SessionManager.getInstance().disconnect(user.getSessionId(),DisconnectReason.ConnectingOtherInstance);
+      }
+    }
+ else {
+      return "User name " + userName + " already in use (or your IP address changed)";
+    }
+  }
+  if (!UserManager.getInstance().connectToSession(sessionId,user.getId())) {
+    return "Error connecting " + userName;
+  }
+  this.userId=user.getId();
+  if (reconnect) {
+    UUID chatId=GamesRoomManager.getInstance().getRoom(GamesRoomManager.getInstance().getMainRoomId()).getChatId();
+    if (chatId != null) {
+      ChatManager.getInstance().joinChat(chatId,userId);
+    }
+    ChatManager.getInstance().sendReconnectMessage(userId);
+  }
+  return null;
+}

@@ -1,0 +1,15 @@
+{
+  if (!this.txtPassword.getText().equals(this.txtPasswordConfirmation.getText())) {
+    MageFrame.getInstance().showError("Passwords don't match.");
+    return;
+  }
+  connection=new Connection();
+  connection.setHost(this.txtServer.getText().trim());
+  connection.setPort(Integer.valueOf(this.txtPort.getText().trim()));
+  connection.setUsername(this.txtUserName.getText().trim());
+  connection.setPassword(this.txtPassword.getText().trim());
+  connection.setEmail(this.txtEmail.getText().trim());
+  PreferencesDialog.setProxyInformation(connection);
+  task=new ConnectTask();
+  task.execute();
+}

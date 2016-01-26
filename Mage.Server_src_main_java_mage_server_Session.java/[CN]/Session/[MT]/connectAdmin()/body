@@ -1,0 +1,14 @@
+{
+  this.isAdmin=true;
+  User user=UserManager.getInstance().createUser("Admin",host);
+  if (user == null) {
+    user=UserManager.getInstance().getUserByName("Admin");
+  }
+  UserData adminUserData=UserData.getDefaultUserDataView();
+  adminUserData.setGroupId(UserGroup.ADMIN.getGroupId());
+  user.setUserData(adminUserData);
+  if (!UserManager.getInstance().connectToSession(sessionId,user.getId())) {
+    logger.info("Error connecting Admin!");
+  }
+  this.userId=user.getId();
+}

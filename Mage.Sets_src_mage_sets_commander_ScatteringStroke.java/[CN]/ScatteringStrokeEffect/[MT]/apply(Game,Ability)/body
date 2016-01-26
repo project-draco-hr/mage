@@ -4,12 +4,9 @@
   if (controller != null && spell != null) {
     game.getStack().counter(spell.getId(),source.getSourceId(),game);
     if (ClashEffect.getInstance().apply(game,source)) {
-      Effect effect=new AddManaToManaPoolSourceControllerEffect(new Mana(0,0,0,0,0,spell.getConvertedManaCost(),0));
+      Effect effect=new AddManaToManaPoolSourceControllerEffect(new Mana(0,0,0,0,0,0,0,spell.getConvertedManaCost()));
       AtTheBeginOfMainPhaseDelayedTriggeredAbility delayedAbility=new AtTheBeginOfMainPhaseDelayedTriggeredAbility(effect,true,TargetController.YOU,AtTheBeginOfMainPhaseDelayedTriggeredAbility.PhaseSelection.NEXT_MAIN);
-      delayedAbility.setSourceId(source.getSourceId());
-      delayedAbility.setControllerId(source.getControllerId());
-      delayedAbility.setSourceObject(source.getSourceObject(game),game);
-      game.addDelayedTriggeredAbility(delayedAbility);
+      game.addDelayedTriggeredAbility(delayedAbility,source);
     }
     return true;
   }

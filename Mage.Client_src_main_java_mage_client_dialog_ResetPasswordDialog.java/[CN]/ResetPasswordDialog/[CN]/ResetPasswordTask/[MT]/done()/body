@@ -1,0 +1,29 @@
+{
+  try {
+    get(CONNECTION_TIMEOUT_MS,TimeUnit.MILLISECONDS);
+    if (result) {
+      MagePreferences.setPassword(connection.getHost(),connection.getPassword());
+      String message="Password is reset successfully.";
+      lblStatus.setText(message);
+      MageFrame.getInstance().showMessage(message);
+      hideDialog();
+    }
+ else {
+      lblStatus.setText("There was an issue while resetting password.");
+    }
+  }
+ catch (  InterruptedException|ExecutionException ex) {
+    logger.fatal("Reset Password Task error",ex);
+  }
+catch (  CancellationException ex) {
+    logger.info("Canceled");
+    lblStatus.setText("Canceled");
+  }
+catch (  TimeoutException ex) {
+    logger.fatal("Timeout: ",ex);
+  }
+ finally {
+    MageFrame.stopConnecting();
+    enableButtons();
+  }
+}

@@ -1,10 +1,10 @@
 {
-  List<CardInfo> specialLand=new ArrayList<>();
   if (savedSpecialLand.isEmpty()) {
     CardCriteria criteria=new CardCriteria();
     criteria.setCodes("EXP");
-    specialLand.addAll(CardRepository.instance.findCards(criteria));
+    criteria.minCardNumber(1);
+    criteria.maxCardNumber(25);
+    savedSpecialLand.addAll(CardRepository.instance.findCards(criteria));
   }
-  specialLand.addAll(savedSpecialLand);
-  return specialLand;
+  return new ArrayList<>(savedSpecialLand);
 }

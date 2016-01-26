@@ -1,0 +1,17 @@
+{
+  try {
+    if (version.compareTo(Main.getVersion()) != 0) {
+      logger.info("MageVersionException: userName=" + userName + ", version="+ version);
+      LogServiceImpl.instance.log(LogKeys.KEY_WRONG_VERSION,userName,version.toString(),Main.getVersion().toString(),sessionId);
+      throw new MageVersionException(version,Main.getVersion());
+    }
+    return SessionManager.getInstance().connectUser(sessionId,userName,password);
+  }
+ catch (  MageException ex) {
+    if (ex instanceof MageVersionException) {
+      throw (MageVersionException)ex;
+    }
+    handleException(ex);
+  }
+  return false;
+}

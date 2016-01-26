@@ -3,18 +3,17 @@
   if (controller != null) {
     Cards cards=new CardsImpl(getTargetPointer().getTargets(game,source));
     controller.moveCards(cards,Zone.BATTLEFIELD,source,game);
+    ArrayList<Permanent> toSacrifice=new ArrayList<>(cards.size());
     for (    UUID targetId : cards) {
       Permanent creature=game.getPermanent(targetId);
       if (creature != null) {
-        Effect effect=new SacrificeTargetEffect("Sacrifice those creatures at the beginning of the next end step",source.getControllerId());
-        effect.setTargetPointer(new FixedTarget(creature,game));
-        DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect);
-        delayedAbility.setSourceId(source.getSourceId());
-        delayedAbility.setControllerId(source.getControllerId());
-        delayedAbility.setSourceObject(source.getSourceObject(game),game);
-        game.addDelayedTriggeredAbility(delayedAbility);
+        toSacrifice.add(creature);
       }
     }
+    Effect effect=new SacrificeTargetEffect("Sacrifice those creatures at the beginning of the next end step",source.getControllerId());
+    effect.setTargetPointer(new FixedTargets(toSacrifice,game));
+    DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect);
+    game.addDelayedTriggeredAbility(delayedAbility,source);
     return true;
   }
   return false;

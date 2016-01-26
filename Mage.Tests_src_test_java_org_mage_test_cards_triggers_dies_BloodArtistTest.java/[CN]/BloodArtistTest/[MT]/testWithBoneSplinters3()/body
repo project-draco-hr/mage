@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.HAND,playerA,"Bone Splinters",1);
+  addCard(Zone.HAND,playerA,"Terror",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Blood Artist",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Bone Splinters","Pillarfield Ox");
+  setChoice(playerA,"Blood Artist");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Terror","Silvercoat Lion","Bone Splinters");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Bone Splinters",1);
+  assertGraveyardCount(playerA,"Terror",1);
+  assertGraveyardCount(playerA,"Blood Artist",1);
+  assertGraveyardCount(playerB,"Pillarfield Ox",1);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+  assertLife(playerA,21);
+  assertLife(playerB,19);
+}

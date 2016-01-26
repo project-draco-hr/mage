@@ -1,0 +1,12 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards cardsToExile=new CardsImpl(getTargetPointer().getTargets(game,source));
+    controller.moveCards(cardsToExile,Zone.EXILED,source,game);
+    if (!cardsToExile.isEmpty()) {
+      new ZombieToken().putOntoBattlefield(cardsToExile.size(),game,source.getSourceId(),controller.getId());
+    }
+    return true;
+  }
+  return false;
+}

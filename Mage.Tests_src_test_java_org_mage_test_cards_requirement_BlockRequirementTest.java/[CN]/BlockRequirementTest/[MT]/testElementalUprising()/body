@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.HAND,playerA,"Elemental Uprising");
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox");
+  activateManaAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Add {G}");
+  activateManaAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Add {G}");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Elemental Uprising","Mountain");
+  attack(1,playerA,"Mountain");
+  attack(1,playerA,"Silvercoat Lion");
+  block(1,playerB,"Pillarfield Ox","Silvercoat Lion");
+  setStopAt(1,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertGraveyardCount(playerA,"Elemental Uprising",1);
+  assertPowerToughness(playerA,"Mountain",4,4);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+  assertGraveyardCount(playerB,"Pillarfield Ox",1);
+  assertLife(playerB,18);
+}

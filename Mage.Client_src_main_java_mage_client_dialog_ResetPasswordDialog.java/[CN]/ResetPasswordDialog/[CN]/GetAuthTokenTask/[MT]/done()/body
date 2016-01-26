@@ -1,0 +1,28 @@
+{
+  try {
+    get(CONNECTION_TIMEOUT_MS,TimeUnit.MILLISECONDS);
+    if (result) {
+      MagePreferences.setEmail(connection.getHost(),connection.getEmail());
+      String message="Auth token is emailed. Please check your inbox.";
+      lblStatus.setText(message);
+      MageFrame.getInstance().showMessage(message);
+    }
+ else {
+      lblStatus.setText("There was an issue while requesting an auth token.");
+    }
+  }
+ catch (  InterruptedException|ExecutionException ex) {
+    logger.fatal("Get Auth Token Task error",ex);
+  }
+catch (  CancellationException ex) {
+    logger.info("Canceled");
+    lblStatus.setText("Canceled");
+  }
+catch (  TimeoutException ex) {
+    logger.fatal("Timeout: ",ex);
+  }
+ finally {
+    MageFrame.stopConnecting();
+    enableButtons();
+  }
+}

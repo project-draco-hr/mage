@@ -1,0 +1,22 @@
+{
+  addCard(Zone.HAND,playerA,"Villainous Wealth");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.LIBRARY,playerB,"Mox Emerald");
+  addCard(Zone.LIBRARY,playerB,"Quicken");
+  addCard(Zone.LIBRARY,playerB,"Mox Sapphire");
+  skipInitShuffling();
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Villainous Wealth",playerB);
+  setChoice(playerA,"X=3");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Mox Emerald");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Quicken");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Mox Sapphire");
+  setStopAt(1,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertGraveyardCount(playerA,"Villainous Wealth",1);
+  assertExileCount(playerB,0);
+  assertPermanentCount(playerA,"Mox Emerald",1);
+  assertPermanentCount(playerA,"Mox Sapphire",1);
+  assertGraveyardCount(playerB,"Quicken",1);
+}

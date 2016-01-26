@@ -1,8 +1,9 @@
 {
-  if (event.getType() == EventType.DAMAGED_CREATURE && sourceId.equals(event.getSourceId())) {
+  boolean eventHasAppropriateType=(event.getType() == EventType.DAMAGED_CREATURE) || (watchPlaneswalkers && event.getType() == EventType.DAMAGED_PLANESWALKER);
+  if (eventHasAppropriateType && sourceId.equals(event.getSourceId())) {
     MageObjectReference mor=new MageObjectReference(event.getTargetId(),game);
-    if (!damagedCreatures.contains(mor)) {
-      damagedCreatures.add(mor);
+    if (!damagedBySource.contains(mor)) {
+      damagedBySource.add(mor);
     }
   }
 }

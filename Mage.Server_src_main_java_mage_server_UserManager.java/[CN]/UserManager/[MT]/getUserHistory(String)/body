@@ -1,0 +1,11 @@
+{
+  User user=getUserByName(userName);
+  if (user == null) {
+    UserStats userStats=UserStatsRepository.instance.getUser(userName);
+    if (userStats == null) {
+      return "User " + userName + " not found";
+    }
+    return User.userStatsToString(userStats.getProto());
+  }
+  return "History of user " + userName + ": "+ user.getUserData().getHistory();
+}

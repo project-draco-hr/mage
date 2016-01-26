@@ -1,7 +1,8 @@
 {
-  String userName=prefs.get("userName","");
-  String server=prefs.get("serverAddress","");
-  int port=Integer.parseInt(prefs.get("serverPort",""));
+  String server=MagePreferences.getServerAddress();
+  int port=MagePreferences.getServerPort();
+  String userName=MagePreferences.getUserName(server);
+  String password=MagePreferences.getPassword(server);
   String proxyServer=prefs.get("proxyAddress","");
   int proxyPort=Integer.parseInt(prefs.get("proxyPort","0"));
   ProxyType proxyType=ProxyType.valueByText(prefs.get("proxyType","None"));
@@ -11,6 +12,7 @@
     setCursor(new Cursor(Cursor.WAIT_CURSOR));
     Connection connection=new Connection();
     connection.setUsername(userName);
+    connection.setPassword(password);
     connection.setHost(server);
     connection.setPort(port);
     connection.setProxyType(proxyType);

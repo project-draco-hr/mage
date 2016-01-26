@@ -1,0 +1,16 @@
+{
+  addCard(Zone.HAND,playerA,"Ajani Goldmane");
+  addCard(Zone.HAND,playerA,"Oath of Gideon");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",7);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Oath of Gideon");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Ajani Goldmane");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"+1: You gain 2 life");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Kor Ally",2);
+  assertPermanentCount(playerA,"Oath of Gideon",1);
+  assertPermanentCount(playerA,"Ajani Goldmane",1);
+  assertCounterCount("Ajani Goldmane",CounterType.LOYALTY,6);
+  assertLife(playerA,22);
+  assertLife(playerB,20);
+}

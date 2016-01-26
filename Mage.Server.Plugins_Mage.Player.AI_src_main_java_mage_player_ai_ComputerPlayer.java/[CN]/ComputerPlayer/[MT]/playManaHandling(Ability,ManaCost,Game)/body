@@ -67,6 +67,17 @@
       }
     }
     for (    ManaAbility manaAbility : perm.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
+      if (cost instanceof ColorlessManaCost) {
+        for (        Mana netMana : manaAbility.getNetMana(game)) {
+          if (cost.testPay(netMana) || spendAnyMana) {
+            if (activateAbility(manaAbility,game)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    for (    ManaAbility manaAbility : perm.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
       if (cost instanceof GenericManaCost) {
         for (        Mana netMana : manaAbility.getNetMana(game)) {
           if (cost.testPay(netMana) || spendAnyMana) {
@@ -79,7 +90,7 @@
     }
   }
   if (cost instanceof PhyrexianManaCost) {
-    if (cost.pay(null,game,null,playerId,false) || spendAnyMana) {
+    if (cost.pay(null,game,null,playerId,false,null) || spendAnyMana) {
       return true;
     }
   }

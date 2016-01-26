@@ -1,9 +1,7 @@
 {
   Integer castCount=(Integer)game.getState().getValue(commanderId + "_castCount");
-  if (castCount == null) {
-    castCount=0;
-    game.getState().setValue(commanderId + "_castCount",castCount);
+  if (castCount > 0) {
+    abilityToModify.getManaCostsToPay().add(new GenericManaCost(2 * castCount));
   }
-  abilityToModify.getManaCostsToPay().add(new GenericManaCost(2 * castCount));
   return true;
 }

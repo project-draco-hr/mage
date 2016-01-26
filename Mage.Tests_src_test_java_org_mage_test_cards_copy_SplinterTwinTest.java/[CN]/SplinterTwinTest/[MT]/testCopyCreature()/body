@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",4);
+  addCard(Zone.HAND,playerA,"Splinter Twin");
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Splinter Twin","Silvercoat Lion");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Put a token");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Bolt","Silvercoat Lion","{T}: Put a token");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertHandCount(playerB,"Lightning Bolt",0);
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertGraveyardCount(playerA,"Silvercoat Lion",1);
+  assertGraveyardCount(playerA,"Splinter Twin",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+}

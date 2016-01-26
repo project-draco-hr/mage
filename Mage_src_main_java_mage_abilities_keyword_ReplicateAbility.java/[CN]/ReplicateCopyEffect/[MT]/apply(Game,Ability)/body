@@ -6,7 +6,7 @@
     if (spell != null && replicateCount > 0) {
       Card card=game.getCard(spell.getSourceId());
       if (card != null) {
-        for (        Ability ability : card.getAbilities()) {
+        for (        Ability ability : card.getAbilities(game)) {
           if (ability instanceof ReplicateAbility) {
             if (((ReplicateAbility)ability).isActivated()) {
               ((ReplicateAbility)ability).resetReplicate();
@@ -21,7 +21,7 @@
         game.getStack().push(copy);
         copy.chooseNewTargets(game,source.getControllerId());
         if (!game.isSimulation()) {
-          game.informPlayers(new StringBuilder(controller.getLogName()).append(copy.getActivatedMessage(game)).toString());
+          game.informPlayers(controller.getLogName() + copy.getActivatedMessage(game));
         }
       }
       return true;

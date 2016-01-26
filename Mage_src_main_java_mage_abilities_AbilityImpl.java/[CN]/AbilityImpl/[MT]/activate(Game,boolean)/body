@@ -84,7 +84,7 @@
       }
     }
   }
-  if (this instanceof ManaAbility && !costs.pay(this,game,sourceId,controllerId,noMana)) {
+  if (this instanceof ManaAbility && !costs.pay(this,game,sourceId,controllerId,noMana,null)) {
     logger.debug("activate mana ability failed - non mana costs");
     return false;
   }
@@ -99,11 +99,11 @@
     activatorId=((ActivatedAbilityImpl)this).getActivatorId();
   }
   if (!useAlternativeCost(game)) {
-    if (!manaCostsToPay.pay(this,game,sourceId,activatorId,false)) {
+    if (!manaCostsToPay.pay(this,game,sourceId,activatorId,false,null)) {
       return false;
     }
   }
-  if (!costs.pay(this,game,sourceId,activatorId,noMana)) {
+  if (!costs.pay(this,game,sourceId,activatorId,noMana,null)) {
     logger.debug("activate failed - non mana costs");
     return false;
   }

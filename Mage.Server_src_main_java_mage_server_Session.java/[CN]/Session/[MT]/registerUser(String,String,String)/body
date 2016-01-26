@@ -1,0 +1,41 @@
+{
+  if (!ConfigSettings.getInstance().isAuthenticationActivated()) {
+    String returnMessage="Registration is disabled by the server config";
+    sendErrorMessageToClient(returnMessage);
+    return returnMessage;
+  }
+synchronized (AuthorizedUserRepository.instance) {
+    String returnMessage=validateUserName(userName);
+    if (returnMessage != null) {
+      sendErrorMessageToClient(returnMessage);
+      return returnMessage;
+    }
+    returnMessage=validatePassword(password,userName);
+    if (returnMessage != null) {
+      sendErrorMessageToClient(returnMessage);
+      return returnMessage;
+    }
+    returnMessage=validateEmail(email);
+    if (returnMessage != null) {
+      sendErrorMessageToClient(returnMessage);
+      return returnMessage;
+    }
+    AuthorizedUserRepository.instance.add(userName,password,email);
+    String subject="XMage Registration Completed";
+    String text="You are successfully registered as " + userName + ".";
+    boolean success;
+    if (!ConfigSettings.getInstance().getMailUser().isEmpty()) {
+      success=MailClient.sendMessage(email,subject,text);
+    }
+ else {
+      success=MailgunClient.sendMessage(email,subject,text);
+    }
+    if (success) {
+      logger.info("Sent a registration confirmation email to " + email + " for "+ userName);
+    }
+ else {
+      logger.error("Failed sending a registration confirmation email to " + email + " for "+ userName);
+    }
+    return null;
+  }
+}

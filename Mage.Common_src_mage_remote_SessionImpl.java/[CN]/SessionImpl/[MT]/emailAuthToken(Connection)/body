@@ -1,0 +1,13 @@
+{
+  return establishJBossRemotingConnection(connection) && handleRemotingTaskExceptions(new RemotingTask(){
+    @Override public boolean run() throws Throwable {
+      logger.info("Trying to ask for an auth token to " + getEmail() + " to XMAGE server at "+ connection.getHost()+ ":"+ connection.getPort());
+      boolean result=server.emailAuthToken(sessionId,connection.getEmail());
+      if (result) {
+        logger.info("An auth token is emailed to " + getEmail() + " from MAGE server at "+ connection.getHost()+ ":"+ connection.getPort());
+      }
+      return result;
+    }
+  }
+);
+}
