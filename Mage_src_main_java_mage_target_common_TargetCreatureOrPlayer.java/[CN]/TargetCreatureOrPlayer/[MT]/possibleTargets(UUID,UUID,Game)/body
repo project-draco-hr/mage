@@ -3,12 +3,12 @@
   MageObject targetSource=game.getObject(sourceId);
   for (  UUID playerId : game.getPlayer(sourceControllerId).getInRange()) {
     Player player=game.getPlayer(playerId);
-    if (player != null && player.canBeTargetedBy(targetSource,sourceControllerId,game) && filter.match(player,game)) {
+    if (player != null && player.canBeTargetedBy(targetSource,sourceControllerId,game) && filter.getPlayerFilter().match(player,sourceId,sourceControllerId,game)) {
       possibleTargets.add(playerId);
     }
   }
-  for (  Permanent permanent : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),sourceControllerId,game)) {
-    if (permanent.canBeTargetedBy(targetSource,sourceControllerId,game) && filter.match(permanent,sourceId,sourceControllerId,game)) {
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(filter.getCreatureFilter(),sourceControllerId,game)) {
+    if (permanent.canBeTargetedBy(targetSource,sourceControllerId,game) && filter.getCreatureFilter().match(permanent,sourceId,sourceControllerId,game)) {
       possibleTargets.add(permanent.getId());
     }
   }
