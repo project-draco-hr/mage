@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.HAND,playerA,"Genju of the Spires",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Strip Mine",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Genju of the Spires","Mountain");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerB,"{T}, Sacrifice","Mountain","Genju of the Spires",StackClause.WHILE_NOT_ON_STACK);
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerB,"Strip Mine",1);
+  assertGraveyardCount(playerA,"Genju of the Spires",0);
+  assertPermanentCount(playerA,"Genju of the Spires",0);
+  assertHandCount(playerA,"Genju of the Spires",1);
+}
