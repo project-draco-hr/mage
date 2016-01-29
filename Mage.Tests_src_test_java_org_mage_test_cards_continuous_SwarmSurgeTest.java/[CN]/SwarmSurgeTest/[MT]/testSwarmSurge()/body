@@ -1,0 +1,21 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",9);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.HAND,playerA,"Birthing Hulk");
+  addCard(Zone.HAND,playerA,"Swarm Surge");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Birthing Hulk");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Swarm Surge");
+  attack(1,playerA,"Silvercoat Lion");
+  setStopAt(1,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertGraveyardCount(playerA,"Swarm Surge",1);
+  assertPowerToughness(playerA,"Birthing Hulk",7,4);
+  assertAbility(playerA,"Birthing Hulk",FirstStrikeAbility.getInstance(),true);
+  assertPowerToughness(playerA,"Eldrazi Scion",3,1,Filter.ComparisonScope.All);
+  assertAbility(playerA,"Eldrazi Scion",FirstStrikeAbility.getInstance(),true,2);
+  assertPowerToughness(playerA,"Silvercoat Lion",4,2);
+  assertAbility(playerA,"Silvercoat Lion",FirstStrikeAbility.getInstance(),false);
+  assertLife(playerA,20);
+  assertLife(playerB,16);
+}

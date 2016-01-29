@@ -1,18 +1,3 @@
 {
-  int count=0;
-  Permanent found=null;
-  for (  Permanent permanent : currentGame.getBattlefield().getAllActivePermanents(player.getId())) {
-    if (permanent.getName().equals(cardName)) {
-      found=permanent;
-      count++;
-    }
-  }
-  Assert.assertNotNull("There is no such permanent under player's control, player=" + player.getName() + ", cardName="+ cardName,found);
-  Assert.assertTrue("There is more than one such permanent under player's control, player=" + player.getName() + ", cardName="+ cardName,count == 1);
-  if (flag) {
-    Assert.assertTrue("No such ability=" + ability.toString() + ", player="+ player.getName()+ ", cardName"+ cardName,found.getAbilities(currentGame).containsRule(ability));
-  }
- else {
-    Assert.assertFalse("Card shouldn't have such ability=" + ability.toString() + ", player="+ player.getName()+ ", cardName"+ cardName,found.getAbilities(currentGame).containsRule(ability));
-  }
+  assertAbility(player,cardName,ability,flag,1);
 }
