@@ -3,6 +3,7 @@
     @Override public TableView execute() throws MageException {
       try {
         UUID userId=SessionManager.getInstance().getSession(sessionId).getUserId();
+        User user=UserManager.getInstance().getUser(userId);
         String maxAiOpponents=ConfigSettings.getInstance().getMaxAiOpponents();
         if (maxAiOpponents != null) {
           int max=Integer.parseInt(maxAiOpponents);
@@ -13,10 +14,17 @@
             }
           }
           if (aiPlayers > max) {
-            User user=UserManager.getInstance().getUser(userId);
             if (user != null) {
               user.showUserMessage("Create tournament","It's only allowed to use a maximum of " + max + " AI players.");
             }
+            throw new MageException("No message");
+          }
+        }
+        if (user != null) {
+          int quitRatio=options.getQuitRatio();
+          if (quitRatio < user.getTourneyQuitRatio()) {
+            String message=new StringBuilder("Your quit ratio ").append(user.getTourneyQuitRatio()).append("% is higher than the table requirement ").append(quitRatio).append("%").toString();
+            user.showUserMessage("Create tournament",message);
             throw new MageException("No message");
           }
         }
