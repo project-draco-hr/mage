@@ -12,7 +12,7 @@
   String authToken=generateAuthToken();
   activeAuthTokens.put(email,authToken);
   String subject="XMage Password Reset Auth Token";
-  String text="Use this auth token to reset your password: " + authToken + "\n"+ "It's valid until the next server restart.";
+  String text="Use this auth token to reset " + authorizedUser.name + "'s password: "+ authToken+ "\n"+ "It's valid until the next server restart.";
   boolean success;
   if (!ConfigSettings.getInstance().getMailUser().isEmpty()) {
     success=MailClient.sendMessage(email,subject,text);

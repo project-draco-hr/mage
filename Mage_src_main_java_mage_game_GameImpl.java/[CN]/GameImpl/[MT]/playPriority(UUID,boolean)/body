@@ -65,7 +65,10 @@
           }
         }
  catch (        Exception ex) {
-          logger.fatal("Game exception gameId: " + getId(),ex);
+          LOGGER.fatal("Game exception gameId: " + getId(),ex);
+          if ((ex instanceof NullPointerException) && errorContinueCounter == 1 && ex.getStackTrace() != null) {
+            LOGGER.fatal(ex.getStackTrace());
+          }
           this.fireErrorEvent("Game exception occurred: ",ex);
           restoreState(bookmark,"");
           bookmark=0;
@@ -86,7 +89,7 @@
     }
   }
  catch (  Exception ex) {
-    logger.fatal("Game exception ",ex);
+    LOGGER.fatal("Game exception ",ex);
     this.fireErrorEvent("Game exception occurred: ",ex);
     this.end();
   }
