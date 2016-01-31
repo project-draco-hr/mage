@@ -1,6 +1,14 @@
 {
-  this.userStats=UserStatsRepository.instance.getUser(this.userName);
-  if (userData != null) {
-    userData.setHistory(userStatsToString(userStats.getProto()));
+  if (userData == null) {
+    return;
+  }
+  userStats=UserStatsRepository.instance.getUser(this.userName);
+  if (userStats != null) {
+    userData.setMatchHistory(userStatsToMatchHistory(userStats.getProto()));
+    userData.setTourneyHistory(userStatsToTourneyHistory(userStats.getProto()));
+  }
+ else {
+    userData.setMatchHistory("0");
+    userData.setTourneyHistory("0");
   }
 }
