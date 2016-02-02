@@ -2,4 +2,10 @@
   if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_BLOCKERS,attackerId,attackerId))) {
     game.getCombat().selectBlockers(null,game);
   }
+  for (  UUID attackingCreatureID : game.getCombat().getAttackers()) {
+    Permanent permanent=game.getPermanent(attackingCreatureID);
+    if (permanent != null && permanent.getBlocking() == 0) {
+      game.fireEvent(GameEvent.getEvent(EventType.UNBLOCKED_ATTACKER,attackingCreatureID,attackerId));
+    }
+  }
 }
