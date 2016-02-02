@@ -2,6 +2,9 @@
   if (super.canActivate(playerId,game)) {
     Card card=game.getCard(getSourceId());
     if (card != null) {
+      if (card.getManaCost().isEmpty()) {
+        return false;
+      }
       if (card.isSplitCard()) {
         if (((SplitCard)card).getLeftHalfCard().getName().equals(abilityName)) {
           return ((SplitCard)card).getLeftHalfCard().getSpellAbility().canActivate(playerId,game);
