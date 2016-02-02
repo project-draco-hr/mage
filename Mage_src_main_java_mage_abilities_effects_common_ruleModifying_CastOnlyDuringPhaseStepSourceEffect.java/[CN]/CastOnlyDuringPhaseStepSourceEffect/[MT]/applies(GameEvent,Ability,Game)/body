@@ -1,6 +1,8 @@
 {
   if (event.getSourceId().equals(source.getSourceId())) {
-    return (turnPhase == null || !game.getPhase().getType().equals(turnPhase)) && (phaseStep == null || !game.getTurn().getStepType().equals(phaseStep)) && (condition == null || !condition.apply(game,source));
+    if ((turnPhase != null && !game.getPhase().getType().equals(turnPhase)) || (phaseStep != null && !game.getTurn().getStepType().equals(phaseStep)) || (condition != null && !condition.apply(game,source))) {
+      return true;
+    }
   }
   return false;
 }
