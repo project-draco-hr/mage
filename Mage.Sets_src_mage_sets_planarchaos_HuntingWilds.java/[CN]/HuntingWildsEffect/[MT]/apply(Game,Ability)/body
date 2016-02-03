@@ -1,0 +1,21 @@
+{
+  if (game.getPlayer(source.getControllerId()) != null) {
+    for (    Effect sourceEffect : source.getEffects()) {
+      if (sourceEffect instanceof SearchLibraryPutInPlayEffect) {
+        for (        UUID target : ((SearchLibraryPutInPlayEffect)sourceEffect).getTargets()) {
+          if (target != null) {
+            FixedTarget fixedTarget=new FixedTarget(target);
+            BecomesCreatureTargetEffect becomesCreatureEffect=new BecomesCreatureTargetEffect(new HuntingWildsToken(),false,true,Duration.Custom);
+            becomesCreatureEffect.setTargetPointer(fixedTarget);
+            game.addEffect(becomesCreatureEffect,source);
+            UntapTargetEffect untapEffect=new UntapTargetEffect();
+            untapEffect.setTargetPointer(fixedTarget);
+            untapEffect.apply(game,source);
+          }
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}
