@@ -1,20 +1,17 @@
 {
-  if (game.getPlayer(source.getControllerId()) != null) {
-    for (    Effect sourceEffect : source.getEffects()) {
-      if (sourceEffect instanceof SearchLibraryPutInPlayEffect) {
-        for (        UUID target : ((SearchLibraryPutInPlayEffect)sourceEffect).getTargets()) {
-          if (target != null) {
-            FixedTarget fixedTarget=new FixedTarget(target);
-            BecomesCreatureTargetEffect becomesCreatureEffect=new BecomesCreatureTargetEffect(new HuntingWildsToken(),false,true,Duration.Custom);
-            becomesCreatureEffect.setTargetPointer(fixedTarget);
-            game.addEffect(becomesCreatureEffect,source);
-            UntapTargetEffect untapEffect=new UntapTargetEffect();
-            untapEffect.setTargetPointer(fixedTarget);
-            untapEffect.apply(game,source);
-          }
-        }
-        return true;
+  for (  Effect sourceEffect : source.getEffects()) {
+    if (sourceEffect instanceof SearchLibraryPutInPlayEffect) {
+      Cards foundCards=new CardsImpl(((SearchLibraryPutInPlayEffect)sourceEffect).getTargets());
+      if (!foundCards.isEmpty()) {
+        FixedTargets fixedTargets=new FixedTargets(foundCards,game);
+        UntapTargetEffect untapEffect=new UntapTargetEffect();
+        untapEffect.setTargetPointer(fixedTargets);
+        untapEffect.apply(game,source);
+        BecomesCreatureTargetEffect becomesCreatureEffect=new BecomesCreatureTargetEffect(new HuntingWildsToken(),false,true,Duration.Custom);
+        becomesCreatureEffect.setTargetPointer(fixedTargets);
+        game.addEffect(becomesCreatureEffect,source);
       }
+      return true;
     }
   }
   return false;
