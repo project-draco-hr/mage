@@ -1,6 +1,13 @@
 {
-  for (  Permanent creature : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
-    creature.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : controller.getInRange()) {
+      FilterPermanent playerFilter=filter.copy();
+      playerFilter.add(new OwnerIdPredicate(playerId));
+      for (      Permanent permanent : game.getBattlefield().getActivePermanents(playerFilter,playerId,game)) {
+        permanent.moveToZone(Zone.HAND,playerId,game,true);
+      }
+    }
   }
   return true;
 }
