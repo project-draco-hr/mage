@@ -1,0 +1,35 @@
+{
+  ColumnHeaderToolTips tips=new ColumnHeaderToolTips();
+  for (int c=0; c < jTablePlayers.getColumnCount(); c++) {
+    String tooltipText="";
+switch (c) {
+case 0:
+      tooltipText="<HTML><b>The flag the user has assigned to his profile</b>" + "<br>You can assign the flag in the connect to server dialog window";
+    break;
+case 1:
+  tooltipText="<HTML><b>Name of the user</b>" + "<br>(the number behind the header text is the number of currently connected users to the server)";
+break;
+case 2:
+tooltipText="<HTML><b>Number of matches the user played so far</b>" + "<br>Q = number of matches quit" + "<br>I = number of matches lost because of idle timeout"+ "<br>T = number of matches lost because of match timeout";
+break;
+case 3:
+tooltipText="<HTML><b>%-Ratio of matches played to matches quit</b>" + "<br>this calculation does not include tournament matches";
+break;
+case 4:
+tooltipText="<HTML><b>Number of tournaments the user played so far</b>" + "<br>D = number of tournaments left during draft phase" + "<br>C = number of tournaments left during constructing phase"+ "<br>R = number of tournaments left during rounds";
+break;
+case 5:
+tooltipText="<HTML><b>%-Ratio of tournament matches played to tournament matches quit</b>" + "<br>this calculation does not include non tournament matches";
+break;
+case 6:
+tooltipText="<HTML><b>Current activities of the player</b>" + "<BR>the header itself shows the number of currently active games" + "<BR>T: = number of games threads "+ "<BR><i>(that can vary from active games because of sideboarding or crashed games)</i>"+ "<BR>limt: the maximum of games the server is configured to"+ "<BR><i>(if the number of started games exceed that limit, the games have to wait"+ "<BR>until active games end)</i>";
+break;
+case 7:
+tooltipText="<HTML><b>Latency of the user's connection to the server</b>";
+break;
+}
+tips.setToolTip(c,tooltipText);
+}
+JTableHeader header=jTablePlayers.getTableHeader();
+header.addMouseMotionListener(tips);
+}

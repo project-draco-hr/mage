@@ -7,7 +7,7 @@
   tableTables.createDefaultColumnsFromModel();
   activeTablesSorter=new MageTableRowSorter(tableModel);
   tableTables.setRowSorter(activeTablesSorter);
-  TableUtil.setColumnWidthAndOrder(tableTables,defaultColumnsWidth,PreferencesDialog.KEY_TABLES_COLUMNS_WIDTH,PreferencesDialog.KEY_TABLES_COLUMNS_ORDER);
+  TableUtil.setColumnWidthAndOrder(tableTables,DEFAULT_COLUMNS_WIDTH,PreferencesDialog.KEY_TABLES_COLUMNS_WIDTH,PreferencesDialog.KEY_TABLES_COLUMNS_ORDER);
   tableCompleted.setRowSorter(new MageTableRowSorter(matchesModel));
   chatPanelMain.getUserChatPanel().useExtendedView(ChatPanelBasic.VIEW_MODE.NONE);
   chatPanelMain.getUserChatPanel().setBorder(null);
@@ -45,18 +45,18 @@ case "Join":
                   frame.setSelected(true);
                 }
  catch (                PropertyVetoException ve) {
-                  logger.error(ve);
+                  LOGGER.error(ve);
                 }
               }
             }
           }
  catch (          InterruptedException ex) {
-            logger.error(ex);
+            LOGGER.error(ex);
           }
           return;
         }
       if (isTournament) {
-        logger.info("Joining tournament " + tableId);
+        LOGGER.info("Joining tournament " + tableId);
         if (deckType.startsWith("Limited")) {
           if (!status.endsWith("PW")) {
             session.joinTournamentTable(roomId,tableId,session.getUserName(),"Human",1,null,"");
@@ -70,7 +70,7 @@ case "Join":
         }
       }
  else {
-        logger.info("Joining table " + tableId);
+        LOGGER.info("Joining table " + tableId);
         joinTableDialog.showDialog(roomId,tableId,false,false);
       }
     break;
@@ -81,18 +81,18 @@ case "Remove":
 break;
 case "Show":
 if (isTournament) {
-logger.info("Showing tournament table " + tableId);
+LOGGER.info("Showing tournament table " + tableId);
 session.watchTable(roomId,tableId);
 }
 break;
 case "Watch":
 if (!isTournament) {
-logger.info("Watching table " + tableId);
+LOGGER.info("Watching table " + tableId);
 session.watchTable(roomId,tableId);
 }
 break;
 case "Replay":
-logger.info("Replaying game " + gameId);
+LOGGER.info("Replaying game " + gameId);
 session.replayGame(gameId);
 break;
 }
@@ -119,7 +119,7 @@ break;
 case "Show":
 ;
 if (matchesModel.isTournament(modelRow)) {
-logger.info("Showing tournament table " + matchesModel.getTableId(modelRow));
+LOGGER.info("Showing tournament table " + matchesModel.getTableId(modelRow));
 session.watchTable(roomId,matchesModel.getTableId(modelRow));
 }
 break;
