@@ -1,12 +1,11 @@
 {
   Permanent creature=game.getPermanent(targetPointer.getFirst(game,source));
-  Permanent HamletbackGoliath=game.getPermanent(source.getSourceId());
+  Permanent sourceObject=game.getPermanent(source.getSourceId());
   if (creature == null) {
     creature=(Permanent)game.getLastKnownInformation(targetPointer.getFirst(game,source),Zone.BATTLEFIELD);
   }
-  if (creature != null) {
-    HamletbackGoliath.addCounters(CounterType.P1P1.createInstance(creature.getPower().getValue()),game);
-    return true;
+  if (creature != null && sourceObject != null) {
+    sourceObject.addCounters(CounterType.P1P1.createInstance(creature.getPower().getValue()),game);
   }
-  return false;
+  return true;
 }
