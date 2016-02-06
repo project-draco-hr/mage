@@ -1,6 +1,6 @@
 {
   Card cardOnTop=game.getCard(objectId);
-  if (cardOnTop != null && affectedControllerId.equals(source.getControllerId()) && cardOnTop.getOwnerId().equals(source.getControllerId()) && !cardOnTop.getManaCost().isEmpty() && filter.match(cardOnTop,game)) {
+  if (cardOnTop != null && affectedControllerId.equals(source.getControllerId()) && cardOnTop.getOwnerId().equals(source.getControllerId()) && (!cardOnTop.getManaCost().isEmpty() || cardOnTop.getCardType().contains(CardType.LAND)) && filter.match(cardOnTop,game)) {
     Player player=game.getPlayer(cardOnTop.getOwnerId());
     if (player != null && cardOnTop.equals(player.getLibrary().getFromTop(game))) {
       return true;
