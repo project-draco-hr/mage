@@ -14,6 +14,9 @@
   try {
     UIManager.put("desktop",new Color(0,0,0,0));
     UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+    Font font=FontSizeHelper.getTableFont();
+    UIManager.put("Table.font",font);
+    UIManager.put("Table.rowHeight",FontSizeHelper.getTableRowHeight());
   }
  catch (  Exception ex) {
     LOGGER.fatal(null,ex);
@@ -112,6 +115,7 @@
     label.setBounds(0,0,180,30);
   }
   UI.addButton(MageComponents.TABLES_MENU_BUTTON,btnGames);
+  setGUISize();
   SwingUtilities.invokeLater(new Runnable(){
     @Override public void run(){
       disableButtons();

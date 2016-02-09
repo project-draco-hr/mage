@@ -1,0 +1,25 @@
+{
+  Font font=FontSizeHelper.getToolbarFont();
+  mageToolbar.setFont(font);
+  int newHeight=font.getSize() + 6;
+  Dimension mageToolbarDimension=mageToolbar.getPreferredSize();
+  mageToolbarDimension.height=newHeight + 6;
+  mageToolbar.setMinimumSize(mageToolbarDimension);
+  mageToolbar.setMaximumSize(mageToolbarDimension);
+  mageToolbar.setPreferredSize(mageToolbarDimension);
+  for (  Component component : mageToolbar.getComponents()) {
+    if (component instanceof JButton || component instanceof JLabel || component instanceof JToggleButton) {
+      component.setFont(font);
+      Dimension d=component.getPreferredSize();
+      d.height=newHeight;
+      component.setMinimumSize(d);
+      component.setMaximumSize(d);
+    }
+    if (component instanceof javax.swing.JToolBar.Separator) {
+      Dimension d=component.getPreferredSize();
+      d.height=newHeight;
+      component.setMinimumSize(d);
+      component.setMaximumSize(d);
+    }
+  }
+}
