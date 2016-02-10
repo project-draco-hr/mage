@@ -1,5 +1,19 @@
 {
   Font font=FontSizeHelper.getToolbarFont();
+  if (tablesPane != null) {
+    tablesPane.changeGUISize();
+  }
+  JInternalFrame[] windows=desktopPane.getAllFramesInLayer(JLayeredPane.DEFAULT_LAYER);
+  for (  JInternalFrame window : windows) {
+    if (window instanceof DeckEditorPane) {
+      ((DeckEditorPane)window).getPanel().changeGUISize();
+    }
+  }
+  for (  Component component : desktopPane.getComponents()) {
+    if (component instanceof TournamentPane) {
+      ((TournamentPane)component).changeGUISize();
+    }
+  }
   mageToolbar.setFont(font);
   int newHeight=font.getSize() + 6;
   Dimension mageToolbarDimension=mageToolbar.getPreferredSize();
@@ -22,4 +36,5 @@
       component.setMaximumSize(d);
     }
   }
+  balloonTip.setFont(FontSizeHelper.tooltipFont);
 }
