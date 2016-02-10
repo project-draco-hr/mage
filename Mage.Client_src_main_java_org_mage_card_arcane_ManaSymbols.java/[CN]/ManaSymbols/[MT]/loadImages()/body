@@ -6,22 +6,22 @@
     try {
       Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
       BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
-      manaImages.put(symbol,resized);
+      MANA_IMAGES.put(symbol,resized);
     }
  catch (    Exception e) {
-      log.error("Error for symbol:" + symbol);
+      LOGGER.error("Error for symbol:" + symbol);
     }
     file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_MANA_MEDIUM + "/"+ symbol+ ".jpg");
     try {
       Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
-      manaImagesOriginal.put(symbol,image);
+      MANA_IMAGES_ORIGINAL.put(symbol,image);
     }
  catch (    Exception e) {
     }
   }
   List<String> setCodes=ExpansionRepository.instance.getSetCodes();
   if (setCodes == null) {
-    log.warn("No db information for sets found. Connect to a server to create database file on client side. Then try to restart the client.");
+    LOGGER.warn("No db information for sets found. Connect to a server to create database file on client side. Then try to restart the client.");
     return;
   }
   for (  String set : setCodes) {
@@ -34,11 +34,11 @@
         if (h > 0) {
           Rectangle r=new Rectangle(21,(int)(h * 21.0f / width));
           BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
-          setImages.put(set,resized);
+          SET_IMAGES.put(set,resized);
         }
       }
  else {
-        setImages.put(set,image);
+        SET_IMAGES.put(set,image);
       }
     }
  catch (    Exception e) {
@@ -91,7 +91,7 @@
       Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
       int width=image.getWidth(null);
       int height=image.getHeight(null);
-      setImagesExist.put(set,new Dimension(width,height));
+      SET_IMAGES_EXIST.put(set,new Dimension(width,height));
     }
  catch (    Exception e) {
     }
