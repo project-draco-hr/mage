@@ -8,25 +8,23 @@
     if (value) {
       startModal();
     }
+ else     if (SwingUtilities.isEventDispatchThread()) {
+      stopModal();
+    }
  else {
-      if (SwingUtilities.isEventDispatchThread()) {
-        stopModal();
-      }
- else {
-        try {
-          SwingUtilities.invokeAndWait(new Runnable(){
-            @Override public void run(){
-              stopModal();
-            }
+      try {
+        SwingUtilities.invokeAndWait(new Runnable(){
+          @Override public void run(){
+            stopModal();
           }
+        }
 );
-        }
- catch (        InterruptedException ex) {
-          logger.fatal("MageDialog error",ex);
-        }
-catch (        InvocationTargetException ex) {
-          logger.fatal("MageDialog error",ex);
-        }
+      }
+ catch (      InterruptedException ex) {
+        LOGGER.fatal("MageDialog error",ex);
+      }
+catch (      InvocationTargetException ex) {
+        LOGGER.fatal("MageDialog error",ex);
       }
     }
   }

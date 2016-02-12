@@ -3,21 +3,25 @@
   value=value.replace("{this}","|this|");
   String replaced=value;
   if (!MANA_IMAGES.isEmpty()) {
+    int symbolSize;
 switch (type) {
 case TOOLTIP:
-      replaced=REPLACE_SYMBOLS_PATTERN.matcher(value).replaceAll("<img src='file:" + getSymbolsPath(true) + "/symbols/small/$1$2.jpg' alt='$1$2' width=11 height=11>");
+      symbolSize=FontSizeHelper.symbolTooltipSize;
     break;
 case CARD:
-  value=value.replace("{slash}","<img src='file:" + getSymbolsPath() + "/symbols/medium/slash.jpg' alt='slash' width=10 height=13>");
-replaced=REPLACE_SYMBOLS_PATTERN.matcher(value).replaceAll("<img src='file:" + getSymbolsPath(true) + "/symbols/"+ FontSizeHelper.basicSymbolSize+ "/$1$2.jpg' alt='$1$2' width="+ FontSizeHelper.symbolCardSize+ " height="+ FontSizeHelper.symbolCardSize+ ">");
+  symbolSize=FontSizeHelper.symbolCardSize;
 break;
 case PAY:
-value=value.replace("{slash}","<img src='file:" + getSymbolsPath() + "/symbols/medium/slash.jpg' alt='slash' width=10 height=13>");
-replaced=REPLACE_SYMBOLS_PATTERN.matcher(value).replaceAll("<img src='file:" + getSymbolsPath(true) + "/symbols/"+ FontSizeHelper.basicSymbolSize+ "/$1$2.jpg' alt='$1$2' "+ "width="+ FontSizeHelper.symbolPaySize+ " height="+ FontSizeHelper.symbolPaySize+ ">");
+symbolSize=FontSizeHelper.symbolPaySize;
+break;
+case EDITOR:
+symbolSize=FontSizeHelper.symbolEditorSize;
 break;
 default :
+symbolSize=11;
 break;
 }
+replaced=REPLACE_SYMBOLS_PATTERN.matcher(value).replaceAll("<img src='file:" + getSymbolsPath(true) + "/symbols/"+ FontSizeHelper.basicSymbolSize+ "/$1$2.jpg' alt='$1$2' width="+ symbolSize+ " height="+ symbolSize+ ">");
 }
 replaced=replaced.replace("|source|","{source}");
 replaced=replaced.replace("|this|","{this}");

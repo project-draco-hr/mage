@@ -1,99 +1,110 @@
 {
   String[] symbols=new String[]{"0","1","10","11","12","15","16","2","3","4","5","6","7","8","9","B","BG","BR","G","GU","GW","R","RG","RW","S","T","U","UB","UR","W","WB","WU","WP","UP","BP","RP","GP","X","C"};
+  MANA_IMAGES.clear();
+  SET_IMAGES.clear();
+  SET_IMAGES_EXIST.clear();
   for (  String symbol : symbols) {
-    File file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_MANA_MEDIUM + "/"+ symbol+ ".jpg");
-    Rectangle r=new Rectangle(11,11);
-    try {
-      Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
-      BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
-      MANA_IMAGES.put(symbol,resized);
-    }
- catch (    Exception e) {
-      LOGGER.error("Error for symbol:" + symbol);
-    }
-    file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_MANA_MEDIUM + "/"+ symbol+ ".jpg");
-    try {
-      Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
-      MANA_IMAGES_ORIGINAL.put(symbol,image);
-    }
- catch (    Exception e) {
-    }
-  }
-  List<String> setCodes=ExpansionRepository.instance.getSetCodes();
-  if (setCodes == null) {
-    LOGGER.warn("No db information for sets found. Connect to a server to create database file on client side. Then try to restart the client.");
-    return;
-  }
-  for (  String set : setCodes) {
-    File file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET + set+ "-C.jpg");
-    try {
-      Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
-      int width=image.getWidth(null);
-      if (width > 21) {
-        int h=image.getHeight(null);
-        if (h > 0) {
-          Rectangle r=new Rectangle(21,(int)(h * 21.0f / width));
-          BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
-          SET_IMAGES.put(set,resized);
-        }
-      }
+    String resourcePath=Constants.RESOURCE_PATH_MANA_SMALL;
+switch (FontSizeHelper.basicSymbolSize) {
+case "medium":
+      resourcePath=Constants.RESOURCE_PATH_MANA_SMALL;
+    break;
+case "large":
+  resourcePath=Constants.RESOURCE_PATH_MANA_LARGE;
+break;
+}
+File file=new File(getSymbolsPath() + resourcePath + "/"+ symbol+ ".jpg");
+try {
+if (FontSizeHelper.symbolPaySize != 15) {
+BufferedImage notResized=ImageIO.read(file);
+MANA_IMAGES.put(symbol,notResized);
+}
  else {
-        SET_IMAGES.put(set,image);
-      }
+Rectangle r=new Rectangle(FontSizeHelper.symbolPaySize,FontSizeHelper.symbolPaySize);
+Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
+BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
+MANA_IMAGES.put(symbol,resized);
+}
+}
+ catch (Exception e) {
+LOGGER.error("Error for symbol:" + symbol);
+}
+}
+List<String> setCodes=ExpansionRepository.instance.getSetCodes();
+if (setCodes == null) {
+LOGGER.warn("No db information for sets found. Connect to a server to create database file on client side. Then try to restart the client.");
+return;
+}
+for (String set : setCodes) {
+File file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET + set+ "-C.jpg");
+try {
+Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
+int width=image.getWidth(null);
+if (width > 21) {
+int h=image.getHeight(null);
+if (h > 0) {
+  Rectangle r=new Rectangle(21,(int)(h * 21.0f / width));
+  BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
+  SET_IMAGES.put(set,resized);
+}
+}
+ else {
+SET_IMAGES.put(set,image);
+}
+}
+ catch (Exception e) {
+}
+String[] codes=new String[]{"C","U","R","M"};
+try {
+file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET_SMALL);
+if (!file.exists()) {
+file.mkdirs();
+}
+for (String code : codes) {
+file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET_SMALL + set+ "-"+ code+ ".png");
+if (file.exists()) {
+  continue;
+}
+file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET + set+ "-"+ code+ ".jpg");
+Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
+try {
+  int width=image.getWidth(null);
+  int height=image.getHeight(null);
+  if (height > 0) {
+    int dx=0;
+    if (set.equals("M10") || set.equals("M11") || set.equals("M12")) {
+      dx=6;
     }
- catch (    Exception e) {
-    }
-    String[] codes=new String[]{"C","U","R","M"};
-    try {
-      file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET_SMALL);
-      if (!file.exists()) {
-        file.mkdirs();
-      }
-      for (      String code : codes) {
-        file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET_SMALL + set+ "-"+ code+ ".png");
-        if (file.exists()) {
-          continue;
-        }
-        file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET + set+ "-"+ code+ ".jpg");
-        Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
-        try {
-          int width=image.getWidth(null);
-          int height=image.getHeight(null);
-          if (height > 0) {
-            int dx=0;
-            if (set.equals("M10") || set.equals("M11") || set.equals("M12")) {
-              dx=6;
-            }
-            Rectangle r=new Rectangle(15 + dx,(int)(height * (15.0f + dx) / width));
-            BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
-            File newFile=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET_SMALL + File.separator+ set+ "-"+ code+ ".png");
-            ImageIO.write(resized,"png",newFile);
-          }
-        }
- catch (        Exception e) {
-          if (file.exists()) {
-            file.delete();
-          }
-        }
-      }
-    }
- catch (    Exception e) {
-    }
+    Rectangle r=new Rectangle(15 + dx,(int)(height * (15.0f + dx) / width));
+    BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
+    File newFile=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET_SMALL + File.separator+ set+ "-"+ code+ ".png");
+    ImageIO.write(resized,"png",newFile);
   }
-  File file;
-  for (  String set : ExpansionRepository.instance.getSetCodes()) {
-    file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET_SMALL);
-    if (!file.exists()) {
-      break;
-    }
-    file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET_SMALL + set+ "-C.png");
-    try {
-      Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
-      int width=image.getWidth(null);
-      int height=image.getHeight(null);
-      SET_IMAGES_EXIST.put(set,new Dimension(width,height));
-    }
- catch (    Exception e) {
-    }
+}
+ catch (Exception e) {
+  if (file.exists()) {
+    file.delete();
   }
+}
+}
+}
+ catch (Exception e) {
+}
+}
+File file;
+for (String set : ExpansionRepository.instance.getSetCodes()) {
+file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET_SMALL);
+if (!file.exists()) {
+break;
+}
+file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET_SMALL + set+ "-C.png");
+try {
+Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
+int width=image.getWidth(null);
+int height=image.getHeight(null);
+SET_IMAGES_EXIST.put(set,new Dimension(width,height));
+}
+ catch (Exception e) {
+}
+}
 }
