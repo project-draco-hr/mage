@@ -1,15 +1,24 @@
 {
   this.cardWidth=cardWidth;
   this.cardHeight=cardHeight;
-  int rotCenterX=Math.round(cardWidth / 2f);
-  int rotCenterY=cardHeight - rotCenterX;
-  int rotCenterToTopCorner=Math.round(cardWidth * CardPanel.ROT_CENTER_TO_TOP_CORNER);
-  int rotCenterToBottomCorner=Math.round(cardWidth * CardPanel.ROT_CENTER_TO_BOTTOM_CORNER);
-  int xOffset=getXOffset(cardWidth);
-  int yOffset=getYOffset(cardWidth,cardHeight);
-  cardXOffset=-xOffset;
-  cardYOffset=-yOffset;
-  int width=-xOffset + rotCenterX + rotCenterToTopCorner;
-  int height=-yOffset + rotCenterY + rotCenterToBottomCorner;
-  setBounds(x + xOffset,y + yOffset,width,height);
+  if (this.isPermanent) {
+    int rotCenterX=Math.round(cardWidth / 2f);
+    int rotCenterY=cardHeight - rotCenterX;
+    int rotCenterToTopCorner=Math.round(cardWidth * CardPanel.ROT_CENTER_TO_TOP_CORNER);
+    int rotCenterToBottomCorner=Math.round(cardWidth * CardPanel.ROT_CENTER_TO_BOTTOM_CORNER);
+    int xOffset=getXOffset(cardWidth);
+    int yOffset=getYOffset(cardWidth,cardHeight);
+    cardXOffset=-xOffset;
+    cardYOffset=-yOffset;
+    int width=-xOffset + rotCenterX + rotCenterToTopCorner;
+    int height=-yOffset + rotCenterY + rotCenterToBottomCorner;
+    setBounds(x + xOffset,y + yOffset,width,height);
+  }
+ else {
+    cardXOffset=5;
+    cardYOffset=5;
+    int width=cardXOffset * 2 + cardWidth;
+    int height=cardYOffset * 2 + cardHeight;
+    setBounds(x - cardXOffset,y - cardYOffset,width,height);
+  }
 }

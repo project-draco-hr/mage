@@ -5,7 +5,7 @@
   SET_IMAGES_EXIST.clear();
   for (  String symbol : symbols) {
     String resourcePath=Constants.RESOURCE_PATH_MANA_SMALL;
-switch (FontSizeHelper.basicSymbolSize) {
+switch (GUISizeHelper.basicSymbolSize) {
 case "medium":
       resourcePath=Constants.RESOURCE_PATH_MANA_SMALL;
     break;
@@ -15,12 +15,12 @@ break;
 }
 File file=new File(getSymbolsPath() + resourcePath + "/"+ symbol+ ".jpg");
 try {
-if (FontSizeHelper.symbolPaySize != 15) {
+if (GUISizeHelper.symbolPaySize != 15) {
 BufferedImage notResized=ImageIO.read(file);
 MANA_IMAGES.put(symbol,notResized);
 }
  else {
-Rectangle r=new Rectangle(FontSizeHelper.symbolPaySize,FontSizeHelper.symbolPaySize);
+Rectangle r=new Rectangle(GUISizeHelper.symbolPaySize,GUISizeHelper.symbolPaySize);
 Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
 BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
 MANA_IMAGES.put(symbol,resized);
