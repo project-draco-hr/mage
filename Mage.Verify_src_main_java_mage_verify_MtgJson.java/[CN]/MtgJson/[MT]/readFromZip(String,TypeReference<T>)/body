@@ -1,0 +1,18 @@
+{
+  InputStream stream=MtgJson.class.getResourceAsStream(filename);
+  if (stream == null) {
+    File file=new File(filename);
+    if (!file.exists()) {
+      InputStream download=new URL("http://mtgjson.com/json/" + filename).openStream();
+      Files.copy(download,file.toPath(),StandardCopyOption.REPLACE_EXISTING);
+      System.out.println("Downloaded " + filename + " to "+ file.getAbsolutePath());
+    }
+ else {
+      System.out.println("Using " + filename + " from "+ file.getAbsolutePath());
+    }
+    stream=new FileInputStream(file);
+  }
+  ZipInputStream zipInputStream=new ZipInputStream(stream);
+  zipInputStream.getNextEntry();
+  return new ObjectMapper().readValue(zipInputStream,ref);
+}

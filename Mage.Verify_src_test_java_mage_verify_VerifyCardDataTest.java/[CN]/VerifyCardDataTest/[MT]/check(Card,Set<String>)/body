@@ -1,5 +1,5 @@
 {
-  JsonCard ref=MtgJson.find(card.getName());
+  JsonCard ref=MtgJson.card(card.getName());
   if (ref == null) {
     System.out.println("Missing card reference for " + card);
     return;
@@ -8,7 +8,7 @@
   if (tokens != null) {
     JsonCard ref2=null;
     if (card.isFlipCard()) {
-      ref2=MtgJson.find(card.getFlipCardName());
+      ref2=MtgJson.card(card.getFlipCardName());
     }
     for (    String token : tokens) {
       if (!(token.equals(card.getName()) || containsInTypesOrText(ref,token) || containsInTypesOrText(ref,token.toLowerCase())|| (ref2 != null && (containsInTypesOrText(ref2,token) || containsInTypesOrText(ref2,token.toLowerCase()))))) {
