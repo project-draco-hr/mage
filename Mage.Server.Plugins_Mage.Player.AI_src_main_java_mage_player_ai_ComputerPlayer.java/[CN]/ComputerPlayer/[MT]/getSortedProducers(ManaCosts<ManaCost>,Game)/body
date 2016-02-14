@@ -1,11 +1,11 @@
 {
-  List<Permanent> unsorted=this.getAvailableManaProducers(game);
+  List<MageObject> unsorted=this.getAvailableManaProducers(game);
   unsorted.addAll(this.getAvailableManaProducersWithCost(game));
-  Map<Permanent,Integer> scored=new HashMap<>();
-  for (  Permanent permanent : unsorted) {
+  Map<MageObject,Integer> scored=new HashMap<>();
+  for (  MageObject mageObject : unsorted) {
     int score=0;
     for (    ManaCost cost : unpaid) {
-      Abilities:       for (      ManaAbility ability : permanent.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
+      Abilities:       for (      ManaAbility ability : mageObject.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
         for (        Mana netMana : ability.getNetMana(game)) {
           if (cost.testPay(netMana)) {
             score++;
@@ -15,16 +15,16 @@
       }
     }
     if (score > 0) {
-      score+=permanent.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game).size();
-      score+=permanent.getAbilities().getActivatedAbilities(Zone.BATTLEFIELD).size();
-      if (!permanent.getCardType().contains(CardType.LAND)) {
+      score+=mageObject.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game).size();
+      score+=mageObject.getAbilities().getActivatedAbilities(Zone.BATTLEFIELD).size();
+      if (!mageObject.getCardType().contains(CardType.LAND)) {
         score+=2;
       }
- else       if (permanent.getCardType().contains(CardType.CREATURE)) {
+ else       if (mageObject.getCardType().contains(CardType.CREATURE)) {
         score+=2;
       }
     }
-    scored.put(permanent,score);
+    scored.put(mageObject,score);
   }
   return sortByValue(scored);
 }

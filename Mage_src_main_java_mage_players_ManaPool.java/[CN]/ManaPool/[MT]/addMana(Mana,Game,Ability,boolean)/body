@@ -2,14 +2,14 @@
   Mana mana=manaToAdd.copy();
   if (!game.replaceEvent(new ManaEvent(EventType.ADD_MANA,source.getId(),source.getSourceId(),playerId,mana))) {
     if (mana instanceof ConditionalMana) {
-      ManaPoolItem item=new ManaPoolItem((ConditionalMana)mana,source.getSourceId(),source.getOriginalId());
+      ManaPoolItem item=new ManaPoolItem((ConditionalMana)mana,source.getSourceObject(game),source.getOriginalId());
       if (emptyOnTurnsEnd) {
         item.setDuration(Duration.EndOfTurn);
       }
       this.manaItems.add(item);
     }
  else {
-      ManaPoolItem item=new ManaPoolItem(mana.getRed(),mana.getGreen(),mana.getBlue(),mana.getWhite(),mana.getBlack(),mana.getGeneric() + mana.getColorless(),source.getSourceId(),source.getOriginalId(),mana.getFlag());
+      ManaPoolItem item=new ManaPoolItem(mana.getRed(),mana.getGreen(),mana.getBlue(),mana.getWhite(),mana.getBlack(),mana.getGeneric() + mana.getColorless(),source.getSourceObject(game),source.getOriginalId(),mana.getFlag());
       if (emptyOnTurnsEnd) {
         item.setDuration(Duration.EndOfTurn);
       }
