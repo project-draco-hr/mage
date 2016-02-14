@@ -76,9 +76,10 @@ case "Join":
       }
     break;
 case "Remove":
-  if (JOptionPane.showConfirmDialog(null,"Are you sure you want to remove table?","Removing table",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-    session.removeTable(roomId,tableId);
-  }
+  UserRequestMessage message=new UserRequestMessage("Removing table","Are you sure you want to remove table?");
+message.setButton1("No",null);
+message.setButton2("Yes",PlayerAction.CLIENT_REMOVE_TABLE);
+MageFrame.getInstance().showUserRequestDialog(message);
 break;
 case "Show":
 if (isTournament) {
@@ -128,6 +129,6 @@ break;
 }
 }
 ;
-new ButtonColumn(tableTables,openTableAction,tableTables.convertColumnIndexToView(TableTableModel.ACTION_COLUMN));
-new ButtonColumn(tableCompleted,closedTableAction,tableCompleted.convertColumnIndexToView(MatchesTableModel.ACTION_COLUMN));
+actionButton1=new ButtonColumn(tableTables,openTableAction,tableTables.convertColumnIndexToView(TableTableModel.ACTION_COLUMN));
+actionButton2=new ButtonColumn(tableCompleted,closedTableAction,tableCompleted.convertColumnIndexToView(MatchesTableModel.ACTION_COLUMN));
 }

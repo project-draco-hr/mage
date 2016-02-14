@@ -1,5 +1,7 @@
 {
-  if (modalQuestion("Are you sure you want to concede?","Confirm concede") == JOptionPane.YES_OPTION) {
-    session.sendPlayerAction(PlayerAction.CONCEDE,gameId,null);
-  }
+  UserRequestMessage message=new UserRequestMessage("Confirm concede","Are you sure you want to concede?");
+  message.setButton1("No",null);
+  message.setButton2("Yes",PlayerAction.CLIENT_CONCEDE_GAME);
+  message.setGameId(gameId);
+  MageFrame.getInstance().showUserRequestDialog(message);
 }
