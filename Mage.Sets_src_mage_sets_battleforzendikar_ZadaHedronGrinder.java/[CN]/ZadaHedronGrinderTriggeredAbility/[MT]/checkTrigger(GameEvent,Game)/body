@@ -3,14 +3,18 @@
     Spell spell=game.getStack().getSpell(event.getTargetId());
     if (isControlledInstantOrSorcery(spell)) {
       boolean targetsSource=false;
-      for (      Mode mode : spell.getSpellAbility().getModes().getSelectedModes()) {
-        for (        Target target : mode.getTargets()) {
-          for (          UUID targetId : target.getTargets()) {
-            if (targetId.equals(getSourceId())) {
-              targetsSource=true;
-            }
+      for (      Ability ability : spell.getSpellAbilities()) {
+        for (        Mode mode : ability.getModes().getSelectedModes()) {
+          for (          Target target : mode.getTargets()) {
+            if (!target.isNotTarget()) {
+              for (              UUID targetId : target.getTargets()) {
+                if (targetId.equals(getSourceId())) {
+                  targetsSource=true;
+                }
  else {
-              return false;
+                  return false;
+                }
+              }
             }
           }
         }

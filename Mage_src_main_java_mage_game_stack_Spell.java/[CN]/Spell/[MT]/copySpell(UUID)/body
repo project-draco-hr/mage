@@ -1,0 +1,16 @@
+{
+  Spell copy=new Spell(this.card,this.ability.copySpell(),this.controllerId,this.fromZone);
+  boolean firstDone=false;
+  for (  SpellAbility spellAbility : this.getSpellAbilities()) {
+    if (!firstDone) {
+      firstDone=true;
+      continue;
+    }
+    SpellAbility newAbility=spellAbility.copy();
+    newAbility.newId();
+    copy.addSpellAbility(newAbility);
+  }
+  copy.setCopy(true);
+  copy.setControllerId(newController);
+  return copy;
+}

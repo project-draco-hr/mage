@@ -19,8 +19,7 @@
     if (targetsToBeChanged.size() < 1) {
       return false;
     }
-    Spell copy=spell.copySpell();
-    copy.setCopiedSpell(true);
+    Spell copy=spell.copySpell(source.getControllerId());
     modifyCopy(copy,game,source);
     Target sampleTarget=targetsToBeChanged.iterator().next().getTarget(copy);
     sampleTarget.setNotTarget(true);
@@ -31,8 +30,7 @@
         obj=game.getPlayer(objId);
       }
       if (obj != null) {
-        copy=spell.copySpell();
-        copy.setCopiedSpell(true);
+        copy=spell.copySpell(source.getControllerId());
         try {
           modifyCopy(copy,(T)obj,game,source);
           if (!filter.match((T)obj,game)) {
