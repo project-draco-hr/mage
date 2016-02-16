@@ -2,26 +2,36 @@
   value=value.replace("{source}","|source|");
   value=value.replace("{this}","|this|");
   String replaced=value;
-  if (!MANA_IMAGES.isEmpty()) {
-    int symbolSize;
+  boolean symbolFilesFound;
+  int symbolSize;
 switch (type) {
+case TABLE:
+    symbolSize=GUISizeHelper.symbolTableSize;
+  break;
+case CHAT:
+symbolSize=GUISizeHelper.symbolChatSize;
+break;
+case DIALOG:
+symbolSize=GUISizeHelper.symbolDialogSize;
+break;
 case TOOLTIP:
-      symbolSize=GUISizeHelper.symbolTooltipSize;
-    break;
-case CARD:
-  symbolSize=GUISizeHelper.symbolCardSize;
-break;
-case PAY:
-symbolSize=GUISizeHelper.symbolPaySize;
-break;
-case EDITOR:
-symbolSize=GUISizeHelper.symbolEditorSize;
+symbolSize=GUISizeHelper.symbolTooltipSize;
 break;
 default :
 symbolSize=11;
 break;
 }
-replaced=REPLACE_SYMBOLS_PATTERN.matcher(value).replaceAll("<img src='file:" + getSymbolsPath(true) + "/symbols/"+ GUISizeHelper.basicSymbolSize+ "/$1$2.jpg' alt='$1$2' width="+ symbolSize+ " height="+ symbolSize+ ">");
+String resourcePath="small";
+symbolFilesFound=smallSymbolsFound;
+if (symbolSize > 25) {
+resourcePath="large";
+}
+ else if (symbolSize > 15) {
+resourcePath="medium";
+symbolFilesFound=mediumSymbolsFound;
+}
+if (symbolFilesFound) {
+replaced=REPLACE_SYMBOLS_PATTERN.matcher(value).replaceAll("<img src='file:" + getSymbolsPath(true) + "/symbols/"+ resourcePath+ "/$1$2.jpg' alt='$1$2' width="+ symbolSize+ " height="+ symbolSize+ ">");
 }
 replaced=replaced.replace("|source|","{source}");
 replaced=replaced.replace("|this|","{this}");

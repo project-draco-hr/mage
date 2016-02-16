@@ -1,4 +1,8 @@
 {
+  if (!manaImages.containsKey(symbolWidth)) {
+    loadSymbolsImages(symbolWidth);
+  }
+  Map<String,BufferedImage> sizedSymbols=manaImages.get(symbolWidth);
   if (manaCost.length() == 0) {
     return;
   }
@@ -7,11 +11,11 @@
   StringTokenizer tok=new StringTokenizer(manaCost," ");
   while (tok.hasMoreTokens()) {
     String symbol=tok.nextToken().substring(0);
-    Image image=MANA_IMAGES.get(symbol);
+    Image image=sizedSymbols.get(symbol);
     if (image == null) {
       continue;
     }
     g.drawImage(image,x,y,null);
-    x+=GUISizeHelper.symbolPaySize;
+    x+=symbolWidth;
   }
 }
