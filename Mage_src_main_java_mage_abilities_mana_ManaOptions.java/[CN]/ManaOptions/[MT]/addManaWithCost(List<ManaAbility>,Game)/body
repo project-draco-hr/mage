@@ -23,20 +23,18 @@
           }
         }
       }
+ else       if (netManas.size() == 1) {
+        subtractCostAddMana(ability.getManaCosts().getMana(),netManas.get(0),ability.getCosts().isEmpty());
+      }
  else {
-        if (netManas.size() == 1) {
-          subtractCostAddMana(ability.getManaCosts().getMana(),netManas.get(0),ability.getCosts().isEmpty());
-        }
- else {
-          List<Mana> copy=copy();
-          this.clear();
-          for (          Mana netMana : netManas) {
-            for (            Mana mana : copy) {
-              Mana newMana=new Mana();
-              newMana.add(mana);
-              newMana.add(netMana);
-              subtractCostAddMana(ability.getManaCosts().getMana(),netMana,ability.getCosts().isEmpty());
-            }
+        List<Mana> copy=copy();
+        this.clear();
+        for (        Mana netMana : netManas) {
+          for (          Mana mana : copy) {
+            Mana newMana=new Mana();
+            newMana.add(mana);
+            newMana.add(netMana);
+            subtractCostAddMana(ability.getManaCosts().getMana(),netMana,ability.getCosts().isEmpty());
           }
         }
       }
