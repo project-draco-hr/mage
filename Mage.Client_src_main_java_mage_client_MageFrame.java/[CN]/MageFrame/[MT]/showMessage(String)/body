@@ -1,13 +1,5 @@
 {
-  if (SwingUtilities.isEventDispatchThread()) {
-    JOptionPane.showMessageDialog(desktopPane,message);
-  }
- else {
-    SwingUtilities.invokeLater(new Runnable(){
-      @Override public void run(){
-        JOptionPane.showMessageDialog(desktopPane,message);
-      }
-    }
-);
-  }
+  final UserRequestMessage requestMessage=new UserRequestMessage("Message",message);
+  requestMessage.setButton1("OK",null);
+  MageFrame.getInstance().showUserRequestDialog(requestMessage);
 }
