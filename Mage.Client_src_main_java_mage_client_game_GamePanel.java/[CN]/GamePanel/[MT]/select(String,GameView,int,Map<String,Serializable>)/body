@@ -4,7 +4,7 @@
   for (  PlayerView playerView : gameView.getPlayers()) {
     if (playerView.getPlayerId().equals(playerId)) {
       controllingPlayer=!gameView.getPriorityPlayerName().equals(playerView.getName());
-      if (playerView.getStatesSavedSize() > 0 && gameView.getStack().size() == 0) {
+      if (playerView.getStatesSavedSize() > 0 && gameView.getStack().isEmpty()) {
         feedbackPanel.allowUndo(playerView.getStatesSavedSize());
       }
       break;
@@ -26,6 +26,6 @@
   if (controllingPlayer) {
     priorityPlayerText=" / priority " + gameView.getPriorityPlayerName();
   }
-  String messageToDisplay=message + "<div style='font-size:11pt'>" + activePlayerText+ " / "+ gameView.getStep().toString()+ priorityPlayerText+ "</div>";
+  String messageToDisplay=message + FeedbackPanel.getSmallText(activePlayerText + " / " + gameView.getStep().toString()+ priorityPlayerText);
   this.feedbackPanel.getFeedback(FeedbackMode.SELECT,messageToDisplay,gameView.getSpecial(),panelOptions,messageId);
 }
