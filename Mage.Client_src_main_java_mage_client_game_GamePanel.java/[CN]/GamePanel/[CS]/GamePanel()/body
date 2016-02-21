@@ -1,7 +1,8 @@
 {
+  initComponents=true;
   initComponents();
-  setGUISize();
   initPopupMenuTriggerOrder();
+  setGUISize();
   pickNumber=new PickNumberDialog();
   MageFrame.getDesktop().add(pickNumber,JLayeredPane.MODAL_LAYER);
   this.feedbackPanel.setConnectedChatPanel(this.userChatPanel);
@@ -40,7 +41,9 @@
         @Override public void run(){
           SwingUtilities.invokeLater(new Runnable(){
             @Override public void run(){
-              setGUISize();
+              if (!initComponents) {
+                setGUISize();
+              }
             }
           }
 );
@@ -52,4 +55,5 @@
   }
 ;
   jPanel3.addComponentListener(componentAdapterPlayField);
+  initComponents=false;
 }
