@@ -1,0 +1,19 @@
+{
+  if (card instanceof AbilityView) {
+    CardView tmp=((AbilityView)card).getSourceCard();
+    tmp.overrideRules(card.getRules());
+    tmp.setIsAbility(true);
+    tmp.overrideTargets(card.getTargets());
+    tmp.setAbility(card);
+    card=tmp;
+  }
+  MageCard cardPanel=Plugins.getInstance().getMageCard(card,bigCard,cardDimension,gameId,true);
+  cardPanel.setBounds(rectangle);
+  cardPanel.addMouseListener(this);
+  cardArea.add(cardPanel);
+  cardArea.moveToFront(cardPanel);
+  cardPanel.update(card);
+  cardPanel.setCardBounds(rectangle.x,rectangle.y,cardDimension.width,cardDimension.height);
+  cardPanel.setTextOffset(yTextOffset);
+  cardPanel.showCardTitle();
+}

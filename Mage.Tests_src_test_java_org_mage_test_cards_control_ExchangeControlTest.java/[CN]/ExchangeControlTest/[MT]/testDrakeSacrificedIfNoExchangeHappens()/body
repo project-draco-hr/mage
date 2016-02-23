@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",6);
+  addCard(Zone.HAND,playerA,"Gilded Drake");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain");
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Gilded Drake");
+  addTarget(playerA,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Bolt","Silvercoat Lion","When");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+  assertGraveyardCount(playerA,"Gilded Drake",1);
+}

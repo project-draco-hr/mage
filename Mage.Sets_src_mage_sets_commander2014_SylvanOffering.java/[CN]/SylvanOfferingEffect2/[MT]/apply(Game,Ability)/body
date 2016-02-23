@@ -7,9 +7,10 @@
     if (opponent != null) {
       int xValue=source.getManaCostsToPay().getX();
       Effect effect=new CreateTokenTargetEffect(new ElfToken(),xValue);
+      effect.setTargetPointer(new FixedTarget(controller.getId()));
+      effect.apply(game,source);
       effect.setTargetPointer(new FixedTarget(opponent.getId()));
       effect.apply(game,source);
-      new CreateTokenEffect(new ElfToken(),xValue).apply(game,source);
       return true;
     }
   }

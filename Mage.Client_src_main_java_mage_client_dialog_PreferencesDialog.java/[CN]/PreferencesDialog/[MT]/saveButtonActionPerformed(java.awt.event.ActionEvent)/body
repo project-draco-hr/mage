@@ -24,8 +24,16 @@
     save(prefs,dialog.sliderCardSizeHand,KEY_GUI_CARD_HAND_SIZE,"true","false",UPDATE_CACHE_POLICY);
     sizeGUIChanged=true;
   }
-  if (getCachedValue(KEY_GUI_SYMBOL_SIZE,14) != dialog.sliderSymbolSize.getValue()) {
-    save(prefs,dialog.sliderSymbolSize,KEY_GUI_SYMBOL_SIZE,"true","false",UPDATE_CACHE_POLICY);
+  if (getCachedValue(KEY_GUI_CARD_EDITOR_SIZE,14) != dialog.sliderEditorCardSize.getValue()) {
+    save(prefs,dialog.sliderEditorCardSize,KEY_GUI_CARD_EDITOR_SIZE,"true","false",UPDATE_CACHE_POLICY);
+    sizeGUIChanged=true;
+  }
+  if (getCachedValue(KEY_GUI_CARD_OFFSET_SIZE,14) != dialog.sliderEditorCardOffset.getValue()) {
+    save(prefs,dialog.sliderEditorCardOffset,KEY_GUI_CARD_OFFSET_SIZE,"true","false",UPDATE_CACHE_POLICY);
+    sizeGUIChanged=true;
+  }
+  if (getCachedValue(KEY_GUI_STACK_WIDTH,30) != dialog.sliderStackWidth.getValue()) {
+    save(prefs,dialog.sliderStackWidth,KEY_GUI_STACK_WIDTH,"true","false",UPDATE_CACHE_POLICY);
     sizeGUIChanged=true;
   }
   if (getCachedValue(KEY_GUI_TOOLTIP_SIZE,14) != dialog.sliderTooltipSize.getValue()) {
@@ -106,8 +114,10 @@
     prefs.flush();
   }
  catch (  BackingStoreException ex) {
-    ex.printStackTrace();
-    JOptionPane.showMessageDialog(null,"Error: couldn't save preferences. Please try once again.");
+    logger.error("Error: couldn't save preferences",ex);
+    UserRequestMessage message=new UserRequestMessage("Error","Error: couldn't save preferences. Please try once again.");
+    message.setButton1("OK",null);
+    MageFrame.getInstance().showUserRequestDialog(message);
   }
   dialog.setVisible(false);
 }
