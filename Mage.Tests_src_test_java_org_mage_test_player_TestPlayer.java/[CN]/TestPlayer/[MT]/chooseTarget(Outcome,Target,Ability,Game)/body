@@ -4,7 +4,21 @@
     if (target.getTargetController() != null && target.getAbilityController() != null) {
       abilityControllerId=target.getAbilityController();
     }
-    if ((target instanceof TargetPermanent) || (target instanceof TargetPermanentOrPlayer)) {
+    if (target instanceof TargetPlayer || target instanceof TargetCreatureOrPlayer) {
+      for (      String targetDefinition : targets) {
+        if (targetDefinition.startsWith("targetPlayer=")) {
+          String playerName=targetDefinition.substring(targetDefinition.indexOf("targetPlayer=") + 13);
+          for (          Player player : game.getPlayers().values()) {
+            if (player.getName().equals(playerName) && target.canTarget(computerPlayer.getId(),player.getId(),source,game)) {
+              target.add(player.getId(),game);
+              targets.remove(targetDefinition);
+              return true;
+            }
+          }
+        }
+      }
+    }
+    if ((target instanceof TargetPermanent) || (target instanceof TargetPermanentOrPlayer) || (target instanceof TargetCreatureOrPlayer)) {
       for (      String targetDefinition : targets) {
         String[] targetList=targetDefinition.split("\\^");
         boolean targetFound=false;
@@ -21,9 +35,13 @@
               targetName=targetName.substring(0,targetName.length() - 11);
             }
           }
-          for (          Permanent permanent : game.getBattlefield().getAllActivePermanents((FilterPermanent)target.getFilter(),game)) {
+          Filter filter=target.getFilter();
+          if (filter instanceof FilterCreatureOrPlayer) {
+            filter=((FilterCreatureOrPlayer)filter).getCreatureFilter();
+          }
+          for (          Permanent permanent : game.getBattlefield().getAllActivePermanents((FilterPermanent)filter,game)) {
             if (permanent.getName().equals(targetName) || (permanent.getName() + "-" + permanent.getExpansionSetCode()).equals(targetName)) {
-              if (((TargetPermanent)target).canTarget(abilityControllerId,permanent.getId(),source,game) && !target.getTargets().contains(permanent.getId())) {
+              if (target.canTarget(abilityControllerId,permanent.getId(),source,game) && !target.getTargets().contains(permanent.getId())) {
                 if ((permanent.isCopy() && !originOnly) || (!permanent.isCopy() && !copyOnly)) {
                   target.add(permanent.getId(),game);
                   targetFound=true;
@@ -36,20 +54,6 @@
         if (targetFound) {
           targets.remove(targetDefinition);
           return true;
-        }
-      }
-    }
-    if (target instanceof TargetPlayer) {
-      for (      String targetDefinition : targets) {
-        if (targetDefinition.startsWith("targetPlayer=")) {
-          String playerName=targetDefinition.substring(targetDefinition.indexOf("targetPlayer=") + 13);
-          for (          Player player : game.getPlayers().values()) {
-            if (player.getName().equals(playerName) && ((TargetPlayer)target).canTarget(computerPlayer.getId(),player.getId(),source,game)) {
-              target.add(player.getId(),game);
-              targets.remove(targetDefinition);
-              return true;
-            }
-          }
         }
       }
     }
