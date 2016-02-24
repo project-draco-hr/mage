@@ -4,5 +4,9 @@
   this.subtype.add("Wurm");
   this.power=new MageInt(6);
   this.toughness=new MageInt(6);
-  this.addAbility(new JohtullWurmAbility());
+  DynamicValue toughnessValue=new MultipliedValue(new BlockedCreatureCount(),2);
+  int value=Math.negateExact(Integer.parseInt(toughnessValue.toString()) - 1);
+  Effect effect=new BoostSourceEffect(powerValue,value,Duration.EndOfTurn);
+  effect.setText("it gets -2/-1 until end of turn for each creature blocking it beyond the first");
+  this.addAbility(new BecomesBlockedTriggeredAbility(effect,false));
 }
