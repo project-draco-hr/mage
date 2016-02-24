@@ -4,5 +4,8 @@
   this.subtype.add("Golem");
   this.power=new MageInt(2);
   this.toughness=new MageInt(2);
-  this.addAbility(new SparringGolemAbility());
+  BlockedCreatureCount value=new BlockedCreatureCount();
+  Effect effect=new BoostSourceEffect(value,value,Duration.EndOfTurn);
+  effect.setText("it gets +1/+1 until end of turn for each creature blocking it");
+  this.addAbility(new BecomesBlockedTriggeredAbility(effect,false));
 }
