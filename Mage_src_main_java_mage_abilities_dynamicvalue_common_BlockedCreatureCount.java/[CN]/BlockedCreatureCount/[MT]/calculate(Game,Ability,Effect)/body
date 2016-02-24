@@ -2,7 +2,10 @@
   for (  CombatGroup combatGroup : game.getCombat().getGroups()) {
     if (combatGroup.getAttackers().contains(sourceAbility.getSourceId())) {
       int blockers=combatGroup.getBlockers().size();
-      return blockers > 1 ? (blockers) : 0;
+      if (beyondTheFirst) {
+        blockers=blockers > 0 ? blockers - 1 : 0;
+      }
+      return blockers;
     }
   }
   return 0;
