@@ -1,5 +1,6 @@
 {
-  Map<String,String> setLinks=new HashMap<>();
+  ConcurrentHashMap<String,String> setLinks=new ConcurrentHashMap<>();
+  ExecutorService executor=Executors.newFixedThreadPool(10);
   try {
     String setNames=setsAliases.get(cardSet);
     String preferedLanguage=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_IMAGES_PREF_LANGUAGE,"en");
@@ -24,13 +25,8 @@
           }
           String cardName=normalizeName(cardsImages.get(i).attr("alt"));
           if (cardName != null && !cardName.isEmpty()) {
-            if (cardName.equals("Forest") || cardName.equals("Swamp") || cardName.equals("Mountain")|| cardName.equals("Island")|| cardName.equals("Plains")) {
-              setLinks.putAll(getLandVariations(multiverseId,cardName));
-            }
- else {
-              Integer preferedMultiverseId=getLocalizedMultiverseId(preferedLanguage,multiverseId);
-              setLinks.put(cardName.toLowerCase(),generateLink(preferedMultiverseId));
-            }
+            Runnable task=new GetImageLinkTask(multiverseId,cardName,preferedLanguage,setLinks);
+            executor.execute(task);
           }
         }
         page++;
@@ -39,6 +35,14 @@
   }
  catch (  IOException ex) {
     System.out.println("Exception when parsing the wizards page: " + ex.getMessage());
+  }
+  executor.shutdown();
+  while (!executor.isTerminated()) {
+    try {
+      Thread.sleep(1000);
+    }
+ catch (    InterruptedException ie) {
+    }
   }
   return setLinks;
 }
