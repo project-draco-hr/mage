@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",5);
+  addCard(Zone.HAND,playerA,"Vandalblast");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",1);
+  addCard(Zone.HAND,playerB,"Mental Misstep",1);
+  addCard(Zone.BATTLEFIELD,playerB,"War Horn",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Vandalblast with overload");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Mental Misstep","Vandalblast");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Vandalblast",1);
+  assertGraveyardCount(playerB,"Mental Misstep",1);
+  assertPermanentCount(playerB,"War Horn",2);
+}

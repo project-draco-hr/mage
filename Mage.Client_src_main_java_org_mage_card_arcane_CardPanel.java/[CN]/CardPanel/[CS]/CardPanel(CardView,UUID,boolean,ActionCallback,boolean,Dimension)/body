@@ -2,11 +2,11 @@
   this.gameCard=newGameCard;
   this.callback=callback;
   this.gameId=gameId;
-  this.setCardBounds(0,0,dimension.width,dimension.height);
   this.isPermanent=this.gameCard instanceof PermanentView;
   if (isPermanent) {
     this.hasSickness=((PermanentView)this.gameCard).hasSummoningSickness();
   }
+  this.setCardBounds(0,0,dimension.width,dimension.height);
   if (this.gameCard.canTransform()) {
     buttonPanel=new JPanel();
     buttonPanel.setLayout(null);
@@ -87,7 +87,6 @@
   displayTitleAnyway=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_SHOW_CARD_NAMES,"true").equals("true");
   titleText=new GlowText();
   setText(gameCard);
-  titleText.setFont(getFont().deriveFont(Font.BOLD,13f));
   titleText.setForeground(Color.white);
   titleText.setGlow(Color.black,TEXT_GLOW_SIZE,TEXT_GLOW_INTENSITY);
   titleText.setWrap(true);
@@ -99,7 +98,6 @@
  else   if (CardUtil.isPlaneswalker(gameCard)) {
     ptText.setText(gameCard.getLoyalty());
   }
-  ptText.setFont(getFont().deriveFont(Font.BOLD,13f));
   ptText.setForeground(Color.white);
   ptText.setGlow(Color.black,TEXT_GLOW_SIZE,TEXT_GLOW_INTENSITY);
   add(ptText);
@@ -141,10 +139,10 @@
         setText(gameCard);
       }
  catch (      Exception e) {
-        logger.fatal("Problem during image animation",e);
+        LOGGER.fatal("Problem during image animation",e);
       }
 catch (      Error err) {
-        logger.error("Problem during image animation",err);
+        LOGGER.error("Problem during image animation",err);
       }
     }
   }

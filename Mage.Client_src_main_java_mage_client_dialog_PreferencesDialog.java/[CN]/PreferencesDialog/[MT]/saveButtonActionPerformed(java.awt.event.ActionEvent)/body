@@ -1,6 +1,5 @@
 {
   Preferences prefs=MageFrame.getPreferences();
-  save(prefs,dialog.displayBigCardsInHand,KEY_HAND_USE_BIG_CARDS,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.tooltipDelay,KEY_SHOW_TOOLTIPS_DELAY,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.showCardName,KEY_SHOW_CARD_NAMES,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.nonLandPermanentsInOnePile,KEY_PERMANENTS_IN_ONE_PILE,"true","false",UPDATE_CACHE_POLICY);
@@ -12,19 +11,67 @@
   save(prefs,dialog.cbAskMoveToGraveOrder,KEY_GAME_ASK_MOVE_TO_GRAVE_ORDER,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.cbGameLogAutoSave,KEY_GAME_LOG_AUTO_SAVE,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.cbDraftLogAutoSave,KEY_DRAFT_LOG_AUTO_SAVE,"true","false",UPDATE_CACHE_POLICY);
+  boolean sizeGUIChanged=false;
+  if (getCachedValue(KEY_GUI_TABLE_FONT_SIZE,14) != dialog.sliderFontSize.getValue()) {
+    save(prefs,dialog.sliderFontSize,KEY_GUI_TABLE_FONT_SIZE,"true","false",UPDATE_CACHE_POLICY);
+    sizeGUIChanged=true;
+  }
+  if (getCachedValue(KEY_GUI_CHAT_FONT_SIZE,14) != dialog.sliderChatFontSize.getValue()) {
+    save(prefs,dialog.sliderChatFontSize,KEY_GUI_CHAT_FONT_SIZE,"true","false",UPDATE_CACHE_POLICY);
+    sizeGUIChanged=true;
+  }
+  if (getCachedValue(KEY_GUI_CARD_HAND_SIZE,14) != dialog.sliderCardSizeHand.getValue()) {
+    save(prefs,dialog.sliderCardSizeHand,KEY_GUI_CARD_HAND_SIZE,"true","false",UPDATE_CACHE_POLICY);
+    sizeGUIChanged=true;
+  }
+  if (getCachedValue(KEY_GUI_CARD_EDITOR_SIZE,14) != dialog.sliderEditorCardSize.getValue()) {
+    save(prefs,dialog.sliderEditorCardSize,KEY_GUI_CARD_EDITOR_SIZE,"true","false",UPDATE_CACHE_POLICY);
+    sizeGUIChanged=true;
+  }
+  if (getCachedValue(KEY_GUI_CARD_OFFSET_SIZE,14) != dialog.sliderEditorCardOffset.getValue()) {
+    save(prefs,dialog.sliderEditorCardOffset,KEY_GUI_CARD_OFFSET_SIZE,"true","false",UPDATE_CACHE_POLICY);
+    sizeGUIChanged=true;
+  }
+  if (getCachedValue(KEY_GUI_STACK_WIDTH,30) != dialog.sliderStackWidth.getValue()) {
+    save(prefs,dialog.sliderStackWidth,KEY_GUI_STACK_WIDTH,"true","false",UPDATE_CACHE_POLICY);
+    sizeGUIChanged=true;
+  }
+  if (getCachedValue(KEY_GUI_TOOLTIP_SIZE,14) != dialog.sliderTooltipSize.getValue()) {
+    save(prefs,dialog.sliderTooltipSize,KEY_GUI_TOOLTIP_SIZE,"true","false",UPDATE_CACHE_POLICY);
+    sizeGUIChanged=true;
+  }
+  if (getCachedValue(KEY_GUI_DIALOG_FONT_SIZE,14) != dialog.sliderDialogFont.getValue()) {
+    save(prefs,dialog.sliderDialogFont,KEY_GUI_DIALOG_FONT_SIZE,"true","false",UPDATE_CACHE_POLICY);
+    sizeGUIChanged=true;
+  }
+  if (getCachedValue(KEY_GUI_FEEDBACK_AREA_SIZE,14) != dialog.sliderGameFeedbackArea.getValue()) {
+    save(prefs,dialog.sliderGameFeedbackArea,KEY_GUI_FEEDBACK_AREA_SIZE,"true","false",UPDATE_CACHE_POLICY);
+    sizeGUIChanged=true;
+  }
+  if (getCachedValue(KEY_GUI_CARD_OTHER_ZONES_SIZE,14) != dialog.sliderCardSizeOtherZones.getValue()) {
+    save(prefs,dialog.sliderCardSizeOtherZones,KEY_GUI_CARD_OTHER_ZONES_SIZE,"true","false",UPDATE_CACHE_POLICY);
+    sizeGUIChanged=true;
+  }
+  if (getCachedValue(KEY_GUI_CARD_BATTLEFIELD_SIZE,14) != dialog.sliderCardSizeBattlefield.getValue()) {
+    save(prefs,dialog.sliderCardSizeBattlefield,KEY_GUI_CARD_BATTLEFIELD_SIZE,"true","false",UPDATE_CACHE_POLICY);
+    sizeGUIChanged=true;
+  }
+  if (sizeGUIChanged) {
+    GUISizeHelper.changeGUISize();
+  }
   save(prefs,dialog.checkBoxUpkeepYou,UPKEEP_YOU);
   save(prefs,dialog.checkBoxDrawYou,DRAW_YOU);
   save(prefs,dialog.checkBoxMainYou,MAIN_YOU);
   save(prefs,dialog.checkBoxBeforeCYou,BEFORE_COMBAT_YOU);
   save(prefs,dialog.checkBoxEndOfCYou,END_OF_COMBAT_YOU);
-  save(prefs,dialog.checkBoxMain2You,MAIN_2_YOU);
+  save(prefs,dialog.checkBoxMain2You,MAIN_TWO_YOU);
   save(prefs,dialog.checkBoxEndTurnYou,END_OF_TURN_YOU);
   save(prefs,dialog.checkBoxUpkeepOthers,UPKEEP_OTHERS);
   save(prefs,dialog.checkBoxDrawOthers,DRAW_OTHERS);
   save(prefs,dialog.checkBoxMainOthers,MAIN_OTHERS);
   save(prefs,dialog.checkBoxBeforeCOthers,BEFORE_COMBAT_OTHERS);
   save(prefs,dialog.checkBoxEndOfCOthers,END_OF_COMBAT_OTHERS);
-  save(prefs,dialog.checkBoxMain2Others,MAIN_2_OTHERS);
+  save(prefs,dialog.checkBoxMain2Others,MAIN_TWO_OTHERS);
   save(prefs,dialog.checkBoxEndTurnOthers,END_OF_TURN_OTHERS);
   save(prefs,dialog.cbStopAttack,KEY_STOP_ATTACK,"true","false",UPDATE_CACHE_POLICY);
   save(prefs,dialog.cbStopBlock,KEY_STOP_BLOCK,"true","false",UPDATE_CACHE_POLICY);
@@ -67,8 +114,10 @@
     prefs.flush();
   }
  catch (  BackingStoreException ex) {
-    ex.printStackTrace();
-    JOptionPane.showMessageDialog(null,"Error: couldn't save preferences. Please try once again.");
+    logger.error("Error: couldn't save preferences",ex);
+    UserRequestMessage message=new UserRequestMessage("Error","Error: couldn't save preferences. Please try once again.");
+    message.setButton1("OK",null);
+    MageFrame.getInstance().showUserRequestDialog(message);
   }
   dialog.setVisible(false);
 }

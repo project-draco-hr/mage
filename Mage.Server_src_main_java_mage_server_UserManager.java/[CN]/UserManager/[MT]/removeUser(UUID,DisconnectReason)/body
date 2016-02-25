@@ -2,12 +2,12 @@
   if (userId != null) {
     final User user=users.get(userId);
     if (user != null) {
-      callExecutor.execute(new Runnable(){
+      CALL_EXECUTOR.execute(new Runnable(){
         @Override public void run(){
           try {
-            logger.info("USER REMOVE - " + user.getName() + " ("+ reason.toString()+ ")  userId: "+ userId);
+            LOGGER.info("USER REMOVE - " + user.getName() + " ("+ reason.toString()+ ")  userId: "+ userId);
             user.remove(reason);
-            logger.debug("USER REMOVE END - " + user.getName());
+            LOGGER.debug("USER REMOVE END - " + user.getName());
           }
  catch (          Exception ex) {
             handleException(ex);
@@ -21,7 +21,7 @@
 );
     }
  else {
-      logger.warn("Trying to remove userId: " + userId + " - but it does not exist.");
+      LOGGER.warn("Trying to remove userId: " + userId + " - but it does not exist.");
     }
   }
 }

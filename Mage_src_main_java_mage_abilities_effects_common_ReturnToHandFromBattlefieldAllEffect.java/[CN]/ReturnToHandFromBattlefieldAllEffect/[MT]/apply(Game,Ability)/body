@@ -1,11 +1,11 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    Cards cardsToHand=new CardsImpl();
+    Set<Card> permanentsToHand=new HashSet<>();
     for (    Permanent permanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
-      cardsToHand.add(permanent);
+      permanentsToHand.add(permanent);
     }
-    controller.moveCards(cardsToHand,null,Zone.HAND,source,game);
+    controller.moveCards(permanentsToHand,Zone.HAND,source,game);
     return true;
   }
   return false;

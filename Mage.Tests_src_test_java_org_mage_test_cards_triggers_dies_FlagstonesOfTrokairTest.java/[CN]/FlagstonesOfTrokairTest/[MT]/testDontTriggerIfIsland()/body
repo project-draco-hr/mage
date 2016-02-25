@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.HAND,playerA,"Spreading Seas",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Flagstones of Trokair",1);
+  addCard(Zone.LIBRARY,playerA,"Plains",5);
+  addCard(Zone.BATTLEFIELD,playerB,"Ghost Quarter",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Spreading Seas","Flagstones of Trokair");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"{T}, Sacrifice","Flagstones of Trokair");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerB,"Ghost Quarter",1);
+  assertGraveyardCount(playerA,"Flagstones of Trokair",1);
+  assertGraveyardCount(playerA,"Spreading Seas",1);
+  assertPermanentCount(playerA,3);
+}

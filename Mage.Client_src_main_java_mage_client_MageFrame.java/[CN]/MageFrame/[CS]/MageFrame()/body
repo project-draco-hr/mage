@@ -14,9 +14,10 @@
   try {
     UIManager.put("desktop",new Color(0,0,0,0));
     UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+    GUISizeHelper.calculateGUISizes();
   }
  catch (  Exception ex) {
-    logger.fatal(null,ex);
+    LOGGER.fatal(null,ex);
   }
   ManaSymbols.loadImages();
   Plugins.getInstance().loadPlugins();
@@ -33,8 +34,8 @@
   errorDialog=new ErrorDialog();
   errorDialog.setLocation(100,100);
   desktopPane.add(errorDialog,JLayeredPane.POPUP_LAYER);
-  ui.addComponent(MageComponents.DESKTOP_PANE,desktopPane);
-  pingTaskExecutor.scheduleAtFixedRate(new Runnable(){
+  UI.addComponent(MageComponents.DESKTOP_PANE,desktopPane);
+  PING_TASK_EXECUTOR.scheduleAtFixedRate(new Runnable(){
     @Override public void run(){
       session.ping();
     }
@@ -47,7 +48,7 @@
     tablesPane.setMaximum(true);
   }
  catch (  PropertyVetoException ex) {
-    logger.fatal(null,ex);
+    LOGGER.fatal(null,ex);
   }
   addTooltipContainer();
   setBackground();
@@ -70,6 +71,9 @@
     }
   }
 );
+  balloonTip=new BalloonTip(desktopPane,"",new EdgedBalloonStyle(Color.WHITE,Color.BLUE),false);
+  balloonTip.setPositioner(new LeftAbovePositioner(0,0));
+  balloonTip.setVisible(false);
   mageToolbar.add(new javax.swing.JToolBar.Separator());
   mageToolbar.add(createWindowsButton());
   if (Plugins.getInstance().isCardPluginLoaded()) {
@@ -108,7 +112,8 @@
     label.setForeground(Color.white);
     label.setBounds(0,0,180,30);
   }
-  ui.addButton(MageComponents.TABLES_MENU_BUTTON,btnGames);
+  UI.addButton(MageComponents.TABLES_MENU_BUTTON,btnGames);
+  setGUISize();
   SwingUtilities.invokeLater(new Runnable(){
     @Override public void run(){
       disableButtons();
@@ -116,7 +121,7 @@
         checkForNewImages();
       }
       updateMemUsageTask.execute();
-      logger.info("Client start up time: " + ((System.currentTimeMillis() - startTime) / 1000 + " seconds"));
+      LOGGER.info("Client start up time: " + ((System.currentTimeMillis() - startTime) / 1000 + " seconds"));
       if (autoConnect()) {
         enableButtons();
       }

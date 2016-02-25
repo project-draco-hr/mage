@@ -1,0 +1,32 @@
+{
+  boolean fileErrors=false;
+  HashMap<String,BufferedImage> sizedSymbols=new HashMap<>();
+  for (  String symbol : symbols) {
+    String resourcePath=Constants.RESOURCE_PATH_MANA_SMALL;
+    if (size > 25) {
+      resourcePath=Constants.RESOURCE_PATH_MANA_LARGE;
+    }
+ else     if (size > 15) {
+      resourcePath=Constants.RESOURCE_PATH_MANA_MEDIUM;
+    }
+    File file=new File(getSymbolsPath() + resourcePath + "/"+ symbol+ ".jpg");
+    try {
+      if (size == 15 || size == 25) {
+        BufferedImage notResized=ImageIO.read(file);
+        sizedSymbols.put(symbol,notResized);
+      }
+ else {
+        Rectangle r=new Rectangle(size,size);
+        Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
+        BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
+        sizedSymbols.put(symbol,resized);
+      }
+    }
+ catch (    Exception e) {
+      LOGGER.error("Error for symbol:" + symbol);
+      fileErrors=true;
+    }
+  }
+  manaImages.put(size,sizedSymbols);
+  return !fileErrors;
+}

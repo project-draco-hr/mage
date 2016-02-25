@@ -6,11 +6,9 @@
         return true;
       }
     }
- else {
-      if (((TargetOpponent)target).canTarget(randomOpponentId,source,game)) {
-        target.add(randomOpponentId,game);
-        return true;
-      }
+ else     if (((TargetOpponent)target).canTarget(randomOpponentId,source,game)) {
+      target.add(randomOpponentId,game);
+      return true;
     }
     for (    UUID currentId : game.getOpponents(abilityControllerId)) {
       if (source == null) {
@@ -19,11 +17,9 @@
           return true;
         }
       }
- else {
-        if (((TargetOpponent)target).canTarget(currentId,source,game)) {
-          target.add(currentId,game);
-          return true;
-        }
+ else       if (((TargetOpponent)target).canTarget(currentId,source,game)) {
+        target.add(currentId,game);
+        return true;
       }
     }
     return false;
@@ -55,29 +51,27 @@
         }
       }
     }
- else {
-      if (source == null) {
-        if (target.canTarget(randomOpponentId,game)) {
-          target.add(randomOpponentId,game);
+ else     if (source == null) {
+      if (target.canTarget(randomOpponentId,game)) {
+        target.add(randomOpponentId,game);
+        return true;
+      }
+      if (target.isRequired(sourceId,game)) {
+        if (target.canTarget(abilityControllerId,game)) {
+          target.add(abilityControllerId,game);
           return true;
-        }
-        if (target.isRequired(sourceId,game)) {
-          if (target.canTarget(abilityControllerId,game)) {
-            target.add(abilityControllerId,game);
-            return true;
-          }
         }
       }
+    }
  else {
-        if (target.canTarget(randomOpponentId,game)) {
-          target.add(randomOpponentId,game);
+      if (target.canTarget(randomOpponentId,game)) {
+        target.add(randomOpponentId,game);
+        return true;
+      }
+      if (target.isRequired(sourceId,game)) {
+        if (target.canTarget(abilityControllerId,game)) {
+          target.add(abilityControllerId,game);
           return true;
-        }
-        if (target.isRequired(sourceId,game)) {
-          if (target.canTarget(abilityControllerId,game)) {
-            target.add(abilityControllerId,game);
-            return true;
-          }
         }
       }
     }

@@ -1,0 +1,21 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.HAND,playerA,"Reset");
+  addCard(Zone.HAND,playerA,"Dismiss");
+  addCard(Zone.HAND,playerA,"Lumengrid Warden");
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lumengrid Warden");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Bolt",playerA);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Reset");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Dismiss","Lightning Bolt");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Lumengrid Warden",1);
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertHandCount(playerA,"Reset",1);
+  assertHandCount(playerA,"Dismiss",1);
+  assertLife(playerB,20);
+  assertLife(playerA,17);
+}

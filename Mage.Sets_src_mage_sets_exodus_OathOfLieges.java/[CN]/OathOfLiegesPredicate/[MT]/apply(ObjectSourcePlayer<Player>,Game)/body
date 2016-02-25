@@ -4,10 +4,10 @@
   if (targetPlayer == null || activePlayerId == null) {
     return false;
   }
-  if (targetPlayer.getId().equals(activePlayerId)) {
+  if (targetPlayer.getId().equals(activePlayerId) || !targetPlayer.hasOpponent(activePlayerId,game)) {
     return false;
   }
-  int countTargetPlayer=game.getBattlefield().countAll(filter,targetPlayer.getId(),game);
-  int countActivePlayer=game.getBattlefield().countAll(filter,activePlayerId,game);
+  int countTargetPlayer=game.getBattlefield().countAll(FILTER,targetPlayer.getId(),game);
+  int countActivePlayer=game.getBattlefield().countAll(FILTER,activePlayerId,game);
   return countTargetPlayer > countActivePlayer;
 }

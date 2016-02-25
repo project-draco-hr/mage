@@ -1,0 +1,21 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.HAND,playerA,"Spreading Seas",1);
+  addCard(Zone.BATTLEFIELD,playerB,"It That Betrays");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Spreading Seas","Mountain");
+  attack(2,playerB,"It That Betrays");
+  setChoice(playerA,"Spreading Seas");
+  setChoice(playerA,"Silvercoat Lion");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertLife(playerA,9);
+  assertLife(playerB,20);
+  assertHandCount(playerA,"Spreading Seas",0);
+  assertPermanentCount(playerB,"Silvercoat Lion",1);
+  assertPermanentCount(playerA,"Spreading Seas",0);
+  assertGraveyardCount(playerA,"Spreading Seas",0);
+  assertPermanentCount(playerB,"Spreading Seas",1);
+}

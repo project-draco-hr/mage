@@ -1,7 +1,7 @@
 {
   if (super.applies(event,source,game) && event.getType().equals(GameEvent.EventType.DAMAGE_PLAYER)) {
     Player controller=game.getPlayer(source.getControllerId());
-    if (controller != null && controller.getInRange().contains(event.getTargetId())) {
+    if (controller != null && game.getState().getPlayersInRange(controller.getId(),game).contains(event.getTargetId())) {
       return true;
     }
   }

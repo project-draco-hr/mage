@@ -93,7 +93,7 @@ planeswalkers.add(perm);
 if (perm.getSupertype().contains("World")) {
 worldEnchantment.add(perm);
 }
-if (filterAura.match(perm,this)) {
+if (FILTER_AURA.match(perm,this)) {
 if (perm.getAttachedTo() == null) {
 Card card=this.getCard(perm.getId());
 if (card != null && !card.getCardType().contains(CardType.CREATURE)) {
@@ -127,10 +127,8 @@ UUID wasAttachedTo=perm.getAttachedTo();
 perm.attachTo(null,this);
 fireEvent(new GameEvent(GameEvent.EventType.UNATTACHED,wasAttachedTo,perm.getId(),perm.getControllerId()));
 }
- else {
-if (movePermanentToGraveyardWithInfo(perm)) {
-  somethingHappened=true;
-}
+ else if (movePermanentToGraveyardWithInfo(perm)) {
+somethingHappened=true;
 }
 }
  else {
@@ -142,19 +140,15 @@ if (!((FilterControlledCreaturePermanent)auraFilter).match(attachedTo,perm.getId
   }
 }
 }
- else {
-if (!auraFilter.match(attachedTo,this) || attachedTo.cantBeEnchantedBy(perm,this)) {
-  Card card=this.getCard(perm.getId());
-  if (card != null && card.getCardType().contains(CardType.CREATURE)) {
-    UUID wasAttachedTo=perm.getAttachedTo();
-    perm.attachTo(null,this);
-    fireEvent(new GameEvent(GameEvent.EventType.UNATTACHED,wasAttachedTo,perm.getId(),perm.getControllerId()));
-  }
- else {
-    if (movePermanentToGraveyardWithInfo(perm)) {
-      somethingHappened=true;
-    }
-  }
+ else if (!auraFilter.match(attachedTo,this) || attachedTo.cantBeEnchantedBy(perm,this)) {
+Card card=this.getCard(perm.getId());
+if (card != null && card.getCardType().contains(CardType.CREATURE)) {
+  UUID wasAttachedTo=perm.getAttachedTo();
+  perm.attachTo(null,this);
+  fireEvent(new GameEvent(GameEvent.EventType.UNATTACHED,wasAttachedTo,perm.getId(),perm.getControllerId()));
+}
+ else if (movePermanentToGraveyardWithInfo(perm)) {
+  somethingHappened=true;
 }
 }
 }
@@ -178,10 +172,10 @@ if (movePermanentToGraveyardWithInfo(perm)) {
 }
 }
 }
-if (this.getState().isLegendaryRuleActive() && filterLegendary.match(perm,this)) {
+if (this.getState().isLegendaryRuleActive() && FILTER_LEGENDARY.match(perm,this)) {
 legendary.add(perm);
 }
-if (filterEquipment.match(perm,this)) {
+if (FILTER_EQUIPMENT.match(perm,this)) {
 if (perm.getAttachedTo() != null) {
 Permanent creature=getPermanent(perm.getAttachedTo());
 if (creature == null || !creature.getAttachments().contains(perm.getId())) {
@@ -196,7 +190,7 @@ somethingHappened=true;
 }
 }
 }
-if (filterFortification.match(perm,this)) {
+if (FILTER_FORTIFICATION.match(perm,this)) {
 if (perm.getAttachedTo() != null) {
 Permanent land=getPermanent(perm.getAttachedTo());
 if (land == null || !land.getAttachments().contains(perm.getId())) {

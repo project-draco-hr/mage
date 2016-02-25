@@ -2,7 +2,7 @@
   Player controller=game.getPlayer(source.getControllerId());
   HashMap<UUID,Cards> cardsToDiscard=new HashMap<>();
   if (controller != null) {
-    for (    UUID playerId : controller.getInRange()) {
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
       Player player=game.getPlayer(playerId);
       if (player != null) {
 switch (targetController) {
@@ -35,7 +35,7 @@ if (randomDiscard) {
 cardsToDiscard.put(playerId,cards);
 }
 }
-for (UUID playerId : controller.getInRange()) {
+for (UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
 Player player=game.getPlayer(playerId);
 if (player != null) {
 Cards cardsPlayer=cardsToDiscard.get(playerId);

@@ -36,6 +36,12 @@
     }
     return false;
   }
+  int quitRatio=table.getMatch().getOptions().getQuitRatio();
+  if (quitRatio < user.getMatchQuitRatio()) {
+    String message=new StringBuilder("Your quit ratio ").append(user.getMatchQuitRatio()).append("% is higher than the table requirement ").append(quitRatio).append("%").toString();
+    user.showUserMessage("Join Table",message);
+    return false;
+  }
   Player player=createPlayer(name,seat.getPlayerType(),skill);
   if (player == null) {
     String message=new StringBuilder("Could not create player ").append(name).append(" of type ").append(seat.getPlayerType()).toString();

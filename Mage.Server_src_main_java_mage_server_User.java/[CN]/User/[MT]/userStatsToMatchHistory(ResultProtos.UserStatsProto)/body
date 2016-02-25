@@ -1,0 +1,20 @@
+{
+  StringBuilder builder=new StringBuilder();
+  builder.append(proto.getMatches());
+  List<String> quit=new ArrayList<>();
+  if (proto.getMatchesIdleTimeout() > 0) {
+    quit.add("I:" + Integer.toString(proto.getMatchesIdleTimeout()));
+  }
+  if (proto.getMatchesTimerTimeout() > 0) {
+    quit.add("T:" + Integer.toString(proto.getMatchesTimerTimeout()));
+  }
+  if (proto.getMatchesQuit() > 0) {
+    quit.add("Q:" + Integer.toString(proto.getMatchesQuit()));
+  }
+  if (quit.size() > 0) {
+    builder.append(" (");
+    joinStrings(builder,quit," ");
+    builder.append(")");
+  }
+  return builder.toString();
+}

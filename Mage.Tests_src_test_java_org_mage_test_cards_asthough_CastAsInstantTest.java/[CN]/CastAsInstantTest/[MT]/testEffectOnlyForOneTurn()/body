@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerB,"Island");
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",4);
+  addCard(Zone.HAND,playerB,"Quicken");
+  addCard(Zone.HAND,playerB,"Witness the End");
+  addCard(Zone.HAND,playerA,"Silvercoat Lion",2);
+  castSpell(1,PhaseStep.UPKEEP,playerB,"Quicken");
+  castSpell(1,PhaseStep.UPKEEP,playerB,"Witness the End",playerA);
+  setStopAt(1,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertGraveyardCount(playerB,"Quicken",1);
+  assertGraveyardCount(playerB,"Witness the End",1);
+  assertExileCount("Silvercoat Lion",2);
+  assertLife(playerA,18);
+  assertLife(playerB,20);
+}

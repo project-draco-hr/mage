@@ -17,9 +17,7 @@ if (watcher != null) {
 }
 break;
 case NOT_YOU:
-Player you=game.getPlayer(playerId);
-if (you != null) {
-for (UUID notYouId : you.getInRange()) {
+for (UUID notYouId : game.getState().getPlayersInRange(playerId,game)) {
 if (!notYouId.equals(playerId)) {
 watcher=(PlayerDamagedBySourceWatcher)game.getState().getWatchers().get("PlayerDamagedBySource",notYouId);
 if (watcher != null) {
@@ -27,16 +25,12 @@ return watcher.hasSourceDoneDamage(object.getId(),game);
 }
 }
 }
-}
 break;
 case ANY:
-you=game.getPlayer(playerId);
-if (you != null) {
-for (UUID anyId : you.getInRange()) {
+for (UUID anyId : game.getState().getPlayersInRange(playerId,game)) {
 watcher=(PlayerDamagedBySourceWatcher)game.getState().getWatchers().get("PlayerDamagedBySource",anyId);
 if (watcher != null) {
 return watcher.hasSourceDoneDamage(object.getId(),game);
-}
 }
 }
 return true;

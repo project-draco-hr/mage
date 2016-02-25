@@ -1,9 +1,10 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    Permanent permanent=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
+    Permanent permanent=((FixedTarget)getTargetPointer()).getTargetedPermanentOrLKIBattlefield(game);
     if (permanent != null) {
-      ContinuousEffect effect=new SetPowerToughnessSourceEffect(permanent.getPower().getValue(),permanent.getToughness().getValue(),Duration.EndOfTurn,SubLayer.SetPT_7b);
+      ContinuousEffect effect=new SetPowerToughnessTargetEffect(permanent.getPower().getValue(),permanent.getToughness().getValue(),Duration.EndOfTurn);
+      effect.setTargetPointer(new FixedTarget(source.getSourceId()));
       game.addEffect(effect,source);
       return true;
     }

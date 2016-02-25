@@ -2,20 +2,38 @@
   value=value.replace("{source}","|source|");
   value=value.replace("{this}","|this|");
   String replaced=value;
-  if (!manaImages.isEmpty()) {
-    if (type.equals(Type.TOOLTIP)) {
-      replaced=replaceSymbolsPattern.matcher(value).replaceAll("<img src='file:" + getSymbolsPath(true) + "/symbols/small/$1$2.jpg' alt='$1$2' width=11 height=11>");
-    }
- else     if (type.equals(Type.CARD)) {
-      value=value.replace("{slash}","<img src='file:" + getSymbolsPath() + "/symbols/medium/slash.jpg' alt='slash' width=10 height=13>");
-      replaced=replaceSymbolsPattern.matcher(value).replaceAll("<img src='file:" + getSymbolsPath(true) + "/symbols/medium/$1$2.jpg' alt='$1$2' width=12 height=12>");
-    }
- else     if (type.equals(Type.PAY)) {
-      value=value.replace("{slash}","<img src='file:" + getSymbolsPath() + "/symbols/medium/slash.jpg' alt='slash' width=10 height=13>");
-      replaced=replaceSymbolsPattern.matcher(value).replaceAll("<img src='file:" + getSymbolsPath(true) + "/symbols/medium/$1$2.jpg' alt='$1$2' width=15 height=15>");
-    }
-  }
-  replaced=replaced.replace("|source|","{source}");
-  replaced=replaced.replace("|this|","{this}");
-  return replaced;
+  boolean symbolFilesFound;
+  int symbolSize;
+switch (type) {
+case TABLE:
+    symbolSize=GUISizeHelper.symbolTableSize;
+  break;
+case CHAT:
+symbolSize=GUISizeHelper.symbolChatSize;
+break;
+case DIALOG:
+symbolSize=GUISizeHelper.symbolDialogSize;
+break;
+case TOOLTIP:
+symbolSize=GUISizeHelper.symbolTooltipSize;
+break;
+default :
+symbolSize=11;
+break;
+}
+String resourcePath="small";
+symbolFilesFound=smallSymbolsFound;
+if (symbolSize > 25) {
+resourcePath="large";
+}
+ else if (symbolSize > 15) {
+resourcePath="medium";
+symbolFilesFound=mediumSymbolsFound;
+}
+if (symbolFilesFound) {
+replaced=REPLACE_SYMBOLS_PATTERN.matcher(value).replaceAll("<img src='file:" + getSymbolsPath(true) + "/symbols/"+ resourcePath+ "/$1$2.jpg' alt='$1$2' width="+ symbolSize+ " height="+ symbolSize+ ">");
+}
+replaced=replaced.replace("|source|","{source}");
+replaced=replaced.replace("|this|","{this}");
+return replaced;
 }

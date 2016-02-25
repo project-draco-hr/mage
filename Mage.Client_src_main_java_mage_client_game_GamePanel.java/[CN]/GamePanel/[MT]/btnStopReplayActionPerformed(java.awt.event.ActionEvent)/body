@@ -2,7 +2,11 @@
   if (replayTask != null && !replayTask.isDone()) {
     replayTask.cancel(true);
   }
- else   if (modalQuestion("Are you sure you want to stop replay?","Stop replay") == JOptionPane.YES_OPTION) {
-    session.stopReplay(gameId);
+ else {
+    UserRequestMessage message=new UserRequestMessage("Stop replay","Are you sure you want to stop replay?");
+    message.setButton1("No",null);
+    message.setButton2("Yes",PlayerAction.CLIENT_REPLAY_ACTION);
+    message.setGameId(gameId);
+    MageFrame.getInstance().showUserRequestDialog(message);
   }
 }

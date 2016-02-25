@@ -39,15 +39,20 @@
   boolean showText=(!isAnimationPanel && fontHeight < 12);
   titleText.setVisible(showText);
   ptText.setVisible(showText);
-  int titleX=Math.round(cardWidth * (20f / 480));
-  int titleY=Math.round(cardHeight * (9f / 680)) + yTextOffset;
-  titleText.setBounds(cardXOffset + titleX,cardYOffset + titleY,cardWidth - titleX,cardHeight - titleY);
-  Dimension ptSize=ptText.getPreferredSize();
-  ptText.setSize(ptSize.width,ptSize.height);
-  int ptX=Math.round(cardWidth * (420f / 480)) - ptSize.width / 2;
-  int ptY=Math.round(cardHeight * (675f / 680)) - ptSize.height;
-  int offsetX=Math.round((CARD_SIZE_FULL.width - cardWidth) / 10.0f);
-  ptText.setLocation(cardXOffset + ptX - TEXT_GLOW_SIZE / 2 - offsetX,cardYOffset + ptY - TEXT_GLOW_SIZE / 2);
+  if (showText) {
+    int fontSize=(int)cardHeight / 11;
+    titleText.setFont(getFont().deriveFont(Font.BOLD,fontSize));
+    int titleX=Math.round(cardWidth * (20f / 480));
+    int titleY=Math.round(cardHeight * (9f / 680)) + yTextOffset;
+    titleText.setBounds(cardXOffset + titleX,cardYOffset + titleY,cardWidth - titleX,cardHeight - titleY);
+    ptText.setFont(getFont().deriveFont(Font.BOLD,fontSize));
+    Dimension ptSize=ptText.getPreferredSize();
+    ptText.setSize(ptSize.width,ptSize.height);
+    int ptX=Math.round(cardWidth * (420f / 480)) - ptSize.width / 2;
+    int ptY=Math.round(cardHeight * (675f / 680)) - ptSize.height;
+    int offsetX=Math.round((CARD_SIZE_FULL.width - cardWidth) / 10.0f);
+    ptText.setLocation(cardXOffset + ptX - TEXT_GLOW_SIZE / 2 - offsetX,cardYOffset + ptY - TEXT_GLOW_SIZE / 2);
+  }
   if (isAnimationPanel || cardWidth < 200) {
     imagePanel.setScalingType(ScalingType.nearestNeighbor);
   }

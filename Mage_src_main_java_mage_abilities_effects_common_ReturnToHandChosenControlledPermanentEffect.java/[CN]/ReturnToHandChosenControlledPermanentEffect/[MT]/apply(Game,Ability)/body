@@ -1,14 +1,4 @@
 {
-  Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null) {
-    int available=game.getBattlefield().count(filter,source.getSourceId(),source.getControllerId(),game);
-    if (available > 0) {
-      TargetControlledPermanent target=new TargetControlledPermanent(Math.min(number,available),number,filter,true);
-      if (controller.chooseTarget(this.outcome,target,source,game)) {
-        controller.moveCards(new CardsImpl(target.getTargets()),Zone.BATTLEFIELD,Zone.HAND,source,game);
-      }
-    }
-    return true;
-  }
-  return false;
+  this.targetPointer=new FixedTarget(source.getControllerId());
+  return super.apply(game,source);
 }

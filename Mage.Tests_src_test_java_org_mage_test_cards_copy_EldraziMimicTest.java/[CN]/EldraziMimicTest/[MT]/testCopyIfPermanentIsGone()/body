@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerA,"Drowner of Hope",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",6);
+  addCard(Zone.BATTLEFIELD,playerA,"Eldrazi Mimic",1);
+  addCard(Zone.HAND,playerB,"Terror",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Drowner of Hope");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Terror","Drowner of Hope");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Terror",1);
+  assertGraveyardCount(playerA,"Drowner of Hope",1);
+  assertPermanentCount(playerA,"Eldrazi Mimic",1);
+  assertPowerToughness(playerA,"Eldrazi Mimic",5,5);
+}

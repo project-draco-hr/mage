@@ -9,6 +9,9 @@
           if (effect.getDuration() != Duration.OneUse || !effect.isUsed()) {
             effect.setValue("targetAbility",targetAbility);
             if (effect.applies(event,sourceAbility,game)) {
+              if (targetAbility instanceof ActivatedAbility && ((ActivatedAbility)targetAbility).isCheckPlayableMode()) {
+                checkPlayableMode=true;
+              }
               if (!checkPlayableMode) {
                 String message=effect.getInfoMessage(sourceAbility,event,game);
                 if (message != null && !message.isEmpty()) {

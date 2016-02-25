@@ -1,0 +1,27 @@
+{
+  addCard(Zone.BATTLEFIELD,playerC,"Silvercoat Lion",2);
+  addCard(Zone.BATTLEFIELD,playerC,"Pillarfield Ox",1);
+  addCard(Zone.BATTLEFIELD,playerC,"Grizzly Bears",1);
+  addCard(Zone.BATTLEFIELD,playerD,"Blade of Selves");
+  addCard(Zone.BATTLEFIELD,playerD,"Island",4);
+  addCard(Zone.HAND,playerD,"Man-o'-War");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerD,"Man-o'-War");
+  addTarget(playerD,"Silvercoat Lion");
+  activateAbility(6,PhaseStep.PRECOMBAT_MAIN,playerD,"Equip","Man-o'-War");
+  attack(6,playerD,"Man-o'-War",playerC);
+  addTarget(playerD,"Silvercoat Lion");
+  addTarget(playerD,"Pillarfield Ox");
+  addTarget(playerD,"Grizzly Bears");
+  setStopAt(6,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerD,"Man-o'-War",1);
+  assertPermanentCount(playerC,"Silvercoat Lion",0);
+  assertPermanentCount(playerC,"Pillarfield Ox",0);
+  assertPermanentCount(playerC,"Grizzly Bears",1);
+  assertHandCount(playerC,"Silvercoat Lion",2);
+  assertHandCount(playerC,"Pillarfield Ox",1);
+  assertLife(playerA,38);
+  assertLife(playerB,38);
+  assertLife(playerC,38);
+  assertLife(playerD,40);
+}

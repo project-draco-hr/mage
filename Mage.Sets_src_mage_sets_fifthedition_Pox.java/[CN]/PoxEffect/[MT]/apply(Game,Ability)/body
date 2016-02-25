@@ -1,14 +1,14 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    for (    UUID playerId : controller.getInRange()) {
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
       Player player=game.getPlayer(playerId);
       if (player != null) {
         int lifeToLose=(int)Math.ceil(player.getLife() / 3.0);
         player.loseLife(lifeToLose,game);
       }
     }
-    for (    UUID playerId : controller.getInRange()) {
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
       Player player=game.getPlayer(playerId);
       if (player != null) {
         int cardsToDiscard=(int)Math.ceil(player.getHand().size() / 3.0);
@@ -17,7 +17,7 @@
         }
       }
     }
-    for (    UUID playerId : controller.getInRange()) {
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
       Player player=game.getPlayer(playerId);
       if (player != null) {
         FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent();
@@ -34,7 +34,7 @@
         }
       }
     }
-    for (    UUID playerId : controller.getInRange()) {
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
       Player player=game.getPlayer(playerId);
       if (player != null) {
         FilterControlledLandPermanent filter=new FilterControlledLandPermanent();

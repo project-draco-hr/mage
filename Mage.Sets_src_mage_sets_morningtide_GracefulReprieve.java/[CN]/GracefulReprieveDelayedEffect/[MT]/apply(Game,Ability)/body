@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent permanent=(Permanent)game.getLastKnownInformation(target,Zone.BATTLEFIELD);
+  if (controller != null && permanent != null) {
+    Player player=game.getPlayer(permanent.getOwnerId());
+    if (player != null) {
+      Card card=game.getCard(target);
+      if (card != null && game.getState().getZone(card.getId()).equals(Zone.GRAVEYARD)) {
+        return card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),player.getId());
+      }
+      return true;
+    }
+  }
+  return false;
+}

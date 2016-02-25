@@ -35,7 +35,6 @@
   btnSwitchHands=new javax.swing.JButton();
   btnStopWatching=new javax.swing.JButton();
   bigCard=new mage.client.cards.BigCard();
-  stack=new mage.client.cards.Cards();
   pnlReplay=new javax.swing.JPanel();
   btnStopReplay=new javax.swing.JButton();
   btnNextPlay=new javax.swing.JButton();
@@ -55,6 +54,9 @@
   jSplitPane2=new javax.swing.JSplitPane();
   handContainer=new HandPanel();
   handCards=new HashMap<>();
+  pnlShortCuts.setOpaque(false);
+  pnlShortCuts.setPreferredSize(new Dimension(400,72));
+  stackObjects=new mage.client.cards.Cards();
   jSplitPane1.setBorder(null);
   jSplitPane1.setDividerSize(7);
   jSplitPane1.setResizeWeight(1.0);
@@ -65,8 +67,6 @@
   jSplitPane0.setResizeWeight(1.0);
   jSplitPane0.setOneTouchExpandable(true);
   restoreDividerLocations();
-  pnlShortCuts.setOpaque(false);
-  pnlShortCuts.setPreferredSize(new Dimension(400,72));
   lblPhase.setLabelFor(txtPhase);
   lblPhase.setText("Phase:");
   txtPhase.setText("Phase");
@@ -92,9 +92,6 @@
   txtPriority.setMinimumSize(new java.awt.Dimension(0,16));
   lblPriority.setLabelFor(txtPriority);
   lblPriority.setText("Priority Player:");
-  feedbackPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(150,50,50),2));
-  feedbackPanel.setMaximumSize(new java.awt.Dimension(208,121));
-  feedbackPanel.setMinimumSize(new java.awt.Dimension(208,121));
   bigCard.setBorder(new LineBorder(Color.black,1,true));
   int c=JComponent.WHEN_IN_FOCUSED_WINDOW;
   KeyStroke ks3=KeyStroke.getKeyStroke(KeyEvent.VK_F3,0);
@@ -332,8 +329,7 @@
     }
   }
 );
-  stack.setPreferredSize(new java.awt.Dimension(Config.dimensions.frameWidth,Config.dimensions.frameHeight + 25));
-  stack.setBackgroundColor(new Color(0,0,0,0));
+  stackObjects.setBackgroundColor(new Color(0,0,0,40));
   btnStopReplay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/buttons/control_stop.png")));
   btnStopReplay.addActionListener(new java.awt.event.ActionListener(){
     @Override public void actionPerformed(    java.awt.event.ActionEvent evt){
@@ -402,7 +398,7 @@
   }
   jPhases.addMouseListener(phasesMouseAdapter);
   pnlReplay.setOpaque(false);
-  HelperPanel helper=new HelperPanel();
+  helper=new HelperPanel();
   helper.setPreferredSize(new Dimension(100,90));
   feedbackPanel.setHelperPanel(helper);
   jSplitPane2.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
@@ -418,8 +414,8 @@
   phasesContainer.add(empty1,ratio);
   phasesContainer.add(jPhases);
   javax.swing.GroupLayout gl_jPanel3=new javax.swing.GroupLayout(jPanel3);
-  gl_jPanel3.setHorizontalGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel3.createSequentialGroup().addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel3.createSequentialGroup().addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addComponent(helper,GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE).addComponent(handContainer,GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)).addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addComponent(pnlShortCuts,400,400,400).addComponent(stack,400,400,400))).addGap(0).addGroup(gl_jPanel3.createSequentialGroup().addComponent(pnlBattlefield,GroupLayout.DEFAULT_SIZE,200,Short.MAX_VALUE).addComponent(phasesContainer,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)))));
-  gl_jPanel3.setVerticalGroup(gl_jPanel3.createParallelGroup(Alignment.TRAILING).addGroup(gl_jPanel3.createSequentialGroup().addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addComponent(pnlBattlefield,GroupLayout.DEFAULT_SIZE,200,Short.MAX_VALUE).addComponent(phasesContainer,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)).addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel3.createSequentialGroup().addGap(2).addComponent(pnlShortCuts,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).addComponent(stack,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)).addGroup(gl_jPanel3.createSequentialGroup().addComponent(helper,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).addComponent(handContainer,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)))));
+  gl_jPanel3.setHorizontalGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel3.createSequentialGroup().addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel3.createSequentialGroup().addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addComponent(helper,GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE).addComponent(handContainer,GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE,Short.MAX_VALUE)).addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addComponent(pnlShortCuts,360,GroupLayout.PREFERRED_SIZE,Short.MAX_VALUE).addComponent(stackObjects,360,GroupLayout.PREFERRED_SIZE,Short.MAX_VALUE))).addGap(0).addGroup(gl_jPanel3.createSequentialGroup().addComponent(pnlBattlefield,GroupLayout.DEFAULT_SIZE,200,Short.MAX_VALUE).addComponent(phasesContainer,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)))));
+  gl_jPanel3.setVerticalGroup(gl_jPanel3.createParallelGroup(Alignment.TRAILING).addGroup(gl_jPanel3.createSequentialGroup().addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addComponent(pnlBattlefield,GroupLayout.DEFAULT_SIZE,200,Short.MAX_VALUE).addComponent(phasesContainer,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)).addGroup(gl_jPanel3.createParallelGroup(Alignment.LEADING).addGroup(gl_jPanel3.createSequentialGroup().addGap(2).addComponent(pnlShortCuts,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).addComponent(stackObjects,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)).addGroup(gl_jPanel3.createSequentialGroup().addComponent(helper,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE).addComponent(handContainer,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.PREFERRED_SIZE)))));
   jPanel3.setLayout(gl_jPanel3);
   jSplitPane1.setLeftComponent(jPanel3);
   jSplitPane1.setRightComponent(jSplitPane2);

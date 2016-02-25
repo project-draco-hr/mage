@@ -43,7 +43,9 @@
     ServerMessagesUtil.getInstance().incGamesStarted();
     logger.info("GAME started " + match.getGame().getId() + " ["+ match.getName()+ "] "+ creator+ " - "+ opponent.toString());
     logger.debug("- matchId: " + match.getId() + " ["+ match.getName()+ "]");
-    logger.debug("- chatId:  " + GameManager.getInstance().getChatId(match.getGame().getId()));
+    if (match.getGame() != null) {
+      logger.debug("- chatId:  " + GameManager.getInstance().getChatId(match.getGame().getId()));
+    }
     LogServiceImpl.instance.log(LogKeys.KEY_GAME_STARTED,String.valueOf(userPlayerMap.size()),creator,opponent.toString());
   }
  catch (  Exception ex) {

@@ -1,15 +1,13 @@
 {
+  if (cards == null) {
+    return false;
+  }
   updateGameStatePriority("choose(4)",game);
   while (!abort) {
     boolean required=target.isRequired();
-    if (cards == null) {
+    int count=cards.count(target.getFilter(),game);
+    if (count == 0) {
       required=false;
-    }
- else {
-      int count=cards.count(target.getFilter(),game);
-      if (count == 0) {
-        required=false;
-      }
     }
     if (target.getTargets().size() >= target.getNumberOfTargets()) {
       required=false;

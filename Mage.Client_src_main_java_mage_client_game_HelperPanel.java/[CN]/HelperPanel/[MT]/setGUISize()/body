@@ -1,0 +1,25 @@
+{
+  buttonContainer.setPreferredSize(new Dimension(getWidth(),GUISizeHelper.gameDialogButtonHeight + 20));
+  buttonContainer.setMinimumSize(new Dimension(160,GUISizeHelper.gameDialogButtonHeight + 20));
+  buttonContainer.setMaximumSize(new Dimension(Integer.MAX_VALUE,GUISizeHelper.gameDialogButtonHeight + 20));
+  Dimension buttonDimension=new Dimension(GUISizeHelper.gameDialogButtonWidth,GUISizeHelper.gameDialogButtonHeight);
+  btnLeft.setFont(GUISizeHelper.gameDialogAreaFont);
+  btnRight.setFont(GUISizeHelper.gameDialogAreaFont);
+  btnSpecial.setFont(GUISizeHelper.gameDialogAreaFont);
+  btnUndo.setFont(GUISizeHelper.gameDialogAreaFont);
+  if (message != null) {
+    int pos=this.message.indexOf("font-size:");
+    if (pos > 0) {
+      String newMessage=this.message.substring(0,pos + 10) + GUISizeHelper.gameDialogAreaFontSizeBig + this.message.substring(pos + 12);
+      pos=this.message.indexOf("font-size:",pos + 10);
+      if (pos > 0) {
+        newMessage=this.message.substring(0,pos + 10) + GUISizeHelper.gameDialogAreaFontSizeSmall + this.message.substring(pos + 12);
+      }
+      setBasicMessage(newMessage);
+    }
+  }
+  GUISizeHelper.changePopupMenuFont(popupMenuAskNo);
+  GUISizeHelper.changePopupMenuFont(popupMenuAskYes);
+  revalidate();
+  repaint();
+}

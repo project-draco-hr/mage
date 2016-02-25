@@ -1,6 +1,6 @@
 {
   int maxWidth=this.getParent().getWidth();
-  int numColumns=maxWidth / Config.dimensions.frameWidth;
+  int numColumns=maxWidth / cardDimension.width;
   int curColumn=0;
   int curRow=0;
   int maxRow=0;
@@ -21,7 +21,7 @@
     cardArea.remove(card);
   }
   if (cards != null && cards.size() > 0) {
-    Rectangle rectangle=new Rectangle(Config.dimensions.frameWidth,Config.dimensions.frameHeight);
+    Rectangle rectangle=new Rectangle(cardDimension.width,cardDimension.height);
     List<CardView> sortedCards=new ArrayList<>(cards.values());
 switch (sortSetting.getSortBy()) {
 case NAME:
@@ -57,13 +57,13 @@ maxRow=Math.max(maxRow,curRow);
 curRow=0;
 }
 }
-rectangle.setLocation(curColumn * Config.dimensions.frameWidth,curRow * 20);
+rectangle.setLocation(curColumn * cardDimension.width,curRow * rowHeight);
 setCardBounds(mageCards.get(card.getId()),rectangle);
 curRow++;
 lastCard=card;
 }
  else {
-rectangle.setLocation(curColumn * Config.dimensions.frameWidth,curRow * 20);
+rectangle.setLocation(curColumn * cardDimension.width,curRow * rowHeight);
 setCardBounds(mageCards.get(card.getId()),rectangle);
 curColumn++;
 if (curColumn == numColumns) {
@@ -77,7 +77,7 @@ curRow++;
 maxRow=Math.max(maxRow,curRow);
 maxColumn=Math.max(maxColumn,curColumn);
 updateCounts();
-cardArea.setPreferredSize(new Dimension((maxColumn + 1) * Config.dimensions.frameWidth,Config.dimensions.frameHeight + maxRow * 20));
+cardArea.setPreferredSize(new Dimension((maxColumn + 1) * cardDimension.width,cardDimension.height + maxRow * rowHeight));
 cardArea.revalidate();
 this.revalidate();
 this.repaint();

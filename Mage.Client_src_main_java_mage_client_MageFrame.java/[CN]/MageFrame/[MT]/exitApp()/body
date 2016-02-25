@@ -1,18 +1,14 @@
 {
   if (session.isConnected()) {
-    if (JOptionPane.showConfirmDialog(this,"You are currently connected.  Are you sure you want to disconnect?","Confirm disconnect",JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
-      return;
-    }
-    session.disconnect(false);
+    UserRequestMessage message=new UserRequestMessage("Confirm disconnect","You are currently connected.  Are you sure you want to disconnect?");
+    message.setButton1("No",null);
+    message.setButton2("Yes",PlayerAction.CLIENT_EXIT);
+    MageFrame.getInstance().showUserRequestDialog(message);
   }
  else {
-    if (JOptionPane.showConfirmDialog(this,"Are you sure you want to exit?","Confirm exit",JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
-      return;
-    }
+    UserRequestMessage message=new UserRequestMessage("Confirm exit","Are you sure you want to exit?");
+    message.setButton1("No",null);
+    message.setButton2("Yes",PlayerAction.CLIENT_EXIT);
+    MageFrame.getInstance().showUserRequestDialog(message);
   }
-  CardRepository.instance.closeDB();
-  tablesPane.cleanUp();
-  Plugins.getInstance().shutdown();
-  dispose();
-  System.exit(0);
 }

@@ -1,0 +1,15 @@
+{
+  String cardLanguagesUrl="http://gatherer.wizards.com/Pages/Card/Languages.aspx?multiverseid=" + englishMultiverseId;
+  Document cardLanguagesDoc=getDocument(cardLanguagesUrl);
+  Elements languageTableRows=cardLanguagesDoc.select("tr.cardItem");
+  HashMap<String,Integer> localizedIds=new HashMap<>();
+  if (!languageTableRows.isEmpty()) {
+    for (    Element languageTableRow : languageTableRows) {
+      Elements languageTableColumns=languageTableRow.select("td");
+      Integer localizedId=Integer.parseInt(languageTableColumns.get(0).select("a").first().attr("href").replaceAll("[^\\d]",""));
+      String languageName=languageTableColumns.get(1).text().trim();
+      localizedIds.put(languageName,localizedId);
+    }
+  }
+  return localizedIds;
+}

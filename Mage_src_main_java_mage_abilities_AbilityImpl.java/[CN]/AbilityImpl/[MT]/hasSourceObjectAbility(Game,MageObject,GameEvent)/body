@@ -6,19 +6,19 @@
       object=game.getObject(getSourceId());
     }
   }
-  if (object != null && !object.getAbilities().contains(this)) {
+  if (object != null) {
     if (object instanceof Permanent) {
-      return false;
+      if (!((Permanent)object).getAbilities(game).contains(this)) {
+        return false;
+      }
+      return ((Permanent)object).isPhasedIn();
     }
- else {
+ else     if (!object.getAbilities().contains(this)) {
       Abilities<Ability> otherAbilities=game.getState().getAllOtherAbilities(this.getSourceId());
       if (otherAbilities == null || !otherAbilities.contains(this)) {
         return false;
       }
     }
-  }
-  if (object instanceof Permanent) {
-    return ((Permanent)object).isPhasedIn();
   }
   return true;
 }

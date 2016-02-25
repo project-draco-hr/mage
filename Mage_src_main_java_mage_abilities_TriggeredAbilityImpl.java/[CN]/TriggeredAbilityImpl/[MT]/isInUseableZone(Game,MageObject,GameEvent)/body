@@ -7,13 +7,11 @@ case DESTROYED_PERMANENT:
         if (event.getType().equals(EventType.DESTROYED_PERMANENT)) {
           source=game.getLastKnownInformation(getSourceId(),Zone.BATTLEFIELD);
         }
+ else         if (((ZoneChangeEvent)event).getTarget() != null) {
+          source=((ZoneChangeEvent)event).getTarget();
+        }
  else {
-          if (((ZoneChangeEvent)event).getTarget() != null) {
-            source=((ZoneChangeEvent)event).getTarget();
-          }
- else {
-            source=game.getLastKnownInformation(getSourceId(),((ZoneChangeEvent)event).getZone());
-          }
+          source=game.getLastKnownInformation(getSourceId(),((ZoneChangeEvent)event).getZone());
         }
       }
 case PHASED_OUT:

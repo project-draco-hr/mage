@@ -2,14 +2,14 @@
   updateGameStatePriority("activateAbility",game);
   if (abilities.size() == 1 && suppressAbilityPicker(abilities.values().iterator().next())) {
     ActivatedAbility ability=abilities.values().iterator().next();
-    if (ability.getTargets().size() != 0 || !(ability.getCosts().size() == 1 && ability.getCosts().get(0) instanceof SacrificeSourceCost) || !(ability.getCosts().size() == 2 && ability.getCosts().get(0) instanceof TapSourceCost && ability.getCosts().get(0) instanceof SacrificeSourceCost)) {
+    if (!ability.getTargets().isEmpty() || !(ability.getCosts().size() == 1 && ability.getCosts().get(0) instanceof SacrificeSourceCost) || !(ability.getCosts().size() == 2 && ability.getCosts().get(0) instanceof TapSourceCost && ability.getCosts().get(0) instanceof SacrificeSourceCost)) {
       activateAbility(ability,game);
       return;
     }
   }
   game.fireGetChoiceEvent(playerId,name,object,new ArrayList<>(abilities.values()));
   waitForResponse(game);
-  if (response.getUUID() != null) {
+  if (response.getUUID() != null && isInGame()) {
     if (abilities.containsKey(response.getUUID())) {
       activateAbility(abilities.get(response.getUUID()),game);
     }

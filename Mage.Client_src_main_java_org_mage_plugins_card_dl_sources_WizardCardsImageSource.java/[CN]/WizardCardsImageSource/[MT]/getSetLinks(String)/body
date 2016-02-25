@@ -2,41 +2,21 @@
   Map<String,String> setLinks=new HashMap<>();
   try {
     String setNames=setsAliases.get(cardSet);
-    Preferences prefs=MageFrame.getPreferences();
-    Connection.ProxyType proxyType=Connection.ProxyType.valueByText(prefs.get("proxyType","None"));
+    String preferedLanguage=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_IMAGES_PREF_LANGUAGE,"en");
     for (    String setName : setNames.split("\\^")) {
       String URLSetName=URLEncoder.encode(setName,"UTF-8");
-      String urlDocument;
       int page=0;
       int firstMultiverseIdLastPage=0;
       Pages:       while (page < 999) {
-        Document doc;
-        if (proxyType.equals(ProxyType.NONE)) {
-          urlDocument="http://gatherer.wizards.com/Pages/Search/Default.aspx?page=" + page + "&output=spoiler&method=visual&action=advanced&set=+[%22"+ URLSetName+ "%22]";
-          doc=Jsoup.connect(urlDocument).get();
-        }
- else {
-          String proxyServer=prefs.get("proxyAddress","");
-          int proxyPort=Integer.parseInt(prefs.get("proxyPort","0"));
-          URL url=new URL("http://gatherer.wizards.com/Pages/Search/Default.aspx?page=" + page + "&output=spoiler&method=visual&action=advanced&set=+[%22"+ URLSetName+ "%22]");
-          Proxy proxy=new Proxy(Proxy.Type.HTTP,new InetSocketAddress(proxyServer,proxyPort));
-          HttpURLConnection uc=(HttpURLConnection)url.openConnection(proxy);
-          uc.connect();
-          String line;
-          StringBuffer tmp=new StringBuffer();
-          BufferedReader in=new BufferedReader(new InputStreamReader(uc.getInputStream()));
-          while ((line=in.readLine()) != null) {
-            tmp.append(line);
-          }
-          doc=Jsoup.parse(String.valueOf(tmp));
-        }
+        String searchUrl="http://gatherer.wizards.com/Pages/Search/Default.aspx?page=" + page + "&output=spoiler&method=visual&action=advanced&set=+[%22"+ URLSetName+ "%22]";
+        Document doc=getDocument(searchUrl);
         Elements cardsImages=doc.select("img[src^=../../Handlers/]");
         if (cardsImages.isEmpty()) {
           break;
         }
         for (int i=0; i < cardsImages.size(); i++) {
+          Integer multiverseId=Integer.parseInt(cardsImages.get(i).attr("src").replaceAll("[^\\d]",""));
           if (i == 0) {
-            Integer multiverseId=Integer.parseInt(cardsImages.get(i).attr("src").replaceAll("[^\\d]",""));
             if (multiverseId == firstMultiverseIdLastPage) {
               break Pages;
             }
@@ -45,24 +25,11 @@
           String cardName=normalizeName(cardsImages.get(i).attr("alt"));
           if (cardName != null && !cardName.isEmpty()) {
             if (cardName.equals("Forest") || cardName.equals("Swamp") || cardName.equals("Mountain")|| cardName.equals("Island")|| cardName.equals("Plains")) {
-              Integer multiverseId=Integer.parseInt(cardsImages.get(i).attr("src").replaceAll("[^\\d]",""));
-              String urlLandDocument="http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=" + multiverseId;
-              Document landDoc=Jsoup.connect(urlLandDocument).get();
-              Elements variations=landDoc.select("a.variationlink");
-              if (!variations.isEmpty()) {
-                int landNumber=1;
-                for (                Element variation : variations) {
-                  Integer landMultiverseId=Integer.parseInt(variation.attr("onclick").replaceAll("[^\\d]",""));
-                  setLinks.put((cardName + landNumber).toLowerCase(),"/Handlers/Image.ashx?multiverseid=" + landMultiverseId + "&type=card");
-                  landNumber++;
-                }
-              }
- else {
-                setLinks.put(cardName.toLowerCase(),cardsImages.get(i).attr("src").substring(5));
-              }
+              setLinks.putAll(getLandVariations(multiverseId,cardName));
             }
  else {
-              setLinks.put(cardName.toLowerCase(),cardsImages.get(i).attr("src").substring(5));
+              Integer preferedMultiverseId=getLocalizedMultiverseId(preferedLanguage,multiverseId);
+              setLinks.put(cardName.toLowerCase(),generateLink(preferedMultiverseId));
             }
           }
         }

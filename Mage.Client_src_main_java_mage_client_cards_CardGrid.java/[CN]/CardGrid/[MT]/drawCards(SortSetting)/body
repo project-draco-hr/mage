@@ -1,10 +1,11 @@
 {
   int maxWidth=this.getParent().getWidth();
-  int numColumns=maxWidth / Config.dimensions.frameWidth;
+  int cardVerticalOffset=GUISizeHelper.editorCardOffsetSize;
+  int numColumns=maxWidth / cardDimension.width;
   int curColumn=0;
   int curRow=0;
   if (cards.size() > 0) {
-    Rectangle rectangle=new Rectangle(Config.dimensions.frameWidth,Config.dimensions.frameHeight);
+    Rectangle rectangle=new Rectangle(cardDimension.width,cardDimension.height);
     List<MageCard> sortedCards=new ArrayList<>(cards.values());
 switch (sortSetting.getSortBy()) {
 case NAME:
@@ -61,17 +62,17 @@ curRow=0;
 }
 break;
 }
-rectangle.setLocation(curColumn * Config.dimensions.frameWidth,curRow * 20);
+rectangle.setLocation(curColumn * cardDimension.width,curRow * cardVerticalOffset);
 cardImg.setBounds(rectangle);
-cardImg.setCardBounds(rectangle.x,rectangle.y,Config.dimensions.frameWidth,Config.dimensions.frameHeight);
+cardImg.setCardBounds(rectangle.x,rectangle.y,cardDimension.width,cardDimension.height);
 moveToFront(cardImg);
 curRow++;
 lastCard=cardImg;
 }
  else {
-rectangle.setLocation(curColumn * Config.dimensions.frameWidth,curRow * 20);
+rectangle.setLocation(curColumn * cardDimension.width,curRow * cardVerticalOffset);
 cardImg.setBounds(rectangle);
-cardImg.setCardBounds(rectangle.x,rectangle.y,Config.dimensions.frameWidth,Config.dimensions.frameHeight);
+cardImg.setCardBounds(rectangle.x,rectangle.y,cardDimension.width,cardDimension.height);
 moveToFront(cardImg);
 curColumn++;
 if (curColumn == numColumns) {

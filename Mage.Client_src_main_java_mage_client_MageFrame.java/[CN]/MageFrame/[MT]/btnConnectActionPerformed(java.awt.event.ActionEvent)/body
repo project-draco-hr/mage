@@ -1,13 +1,12 @@
 {
   if (session.isConnected()) {
-    if (JOptionPane.showConfirmDialog(this,"Are you sure you want to disconnect?","Confirm disconnect",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-      session.disconnect(false);
-      tablesPane.clearChat();
-      showMessage("You have disconnected");
-    }
+    UserRequestMessage message=new UserRequestMessage("Confirm disconnect","Are you sure you want to disconnect?");
+    message.setButton1("No",null);
+    message.setButton2("Yes",PlayerAction.CLIENT_DISCONNECT);
+    showUserRequestDialog(message);
   }
  else {
     connectDialog.showDialog();
+    setWindowTitle();
   }
-  setWindowTitle();
 }

@@ -6,7 +6,7 @@ case YOU:
       controller.setCanGainLife(false);
     break;
 case NOT_YOU:
-  for (  UUID playerId : controller.getInRange()) {
+  for (  UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
     Player player=game.getPlayer(playerId);
     if (player != null && !player.equals(controller)) {
       player.setCanGainLife(false);
@@ -14,7 +14,7 @@ case NOT_YOU:
   }
 break;
 case OPPONENT:
-for (UUID playerId : controller.getInRange()) {
+for (UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
 if (controller.hasOpponent(playerId,game)) {
   Player player=game.getPlayer(playerId);
   if (player != null) {
@@ -24,7 +24,7 @@ if (controller.hasOpponent(playerId,game)) {
 }
 break;
 case ANY:
-for (UUID playerId : controller.getInRange()) {
+for (UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
 Player player=game.getPlayer(playerId);
 if (player != null) {
 player.setCanGainLife(false);

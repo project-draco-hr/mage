@@ -20,7 +20,7 @@ case ANY:
 boolean conflict=false;
 switch (this.type) {
 case FEWER_THAN:
-for (UUID playerId : controller.getInRange()) {
+for (UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
 Player player=game.getPlayer(playerId);
 if (player != null) {
 if (player.getHand().size() >= this.count) {
@@ -31,7 +31,7 @@ break;
 }
 break;
 case MORE_THAN:
-for (UUID playerId : controller.getInRange()) {
+for (UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
 Player player=game.getPlayer(playerId);
 if (player != null) {
 if (player.getHand().size() <= this.count) {
@@ -42,7 +42,7 @@ break;
 }
 break;
 case EQUAL_TO:
-for (UUID playerId : controller.getInRange()) {
+for (UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
 Player player=game.getPlayer(playerId);
 if (player != null) {
 if (player.getHand().size() != this.count) {

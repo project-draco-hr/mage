@@ -1,0 +1,23 @@
+{
+  JTableHeader header=(JTableHeader)evt.getSource();
+  JTable table=header.getTable();
+  TableColumnModel colModel=table.getColumnModel();
+  int vColIndex=colModel.getColumnIndexAtX(evt.getX());
+  TableColumn col=null;
+  if (vColIndex >= 0) {
+    col=colModel.getColumn(table.convertColumnIndexToModel(vColIndex));
+  }
+  if (table.convertColumnIndexToModel(vColIndex) != curCol) {
+    if (col != null) {
+      MageFrame.getInstance().getBalloonTip().setAttachedComponent(header);
+      JLabel content=new JLabel(tips.get(table.convertColumnIndexToModel(vColIndex)));
+      content.setFont(GUISizeHelper.balloonTooltipFont);
+      MageFrame.getInstance().getBalloonTip().setContents(content);
+      ToolTipUtils.balloonToToolTip(MageFrame.getInstance().getBalloonTip(),600,10000);
+    }
+ else {
+      MageFrame.getInstance().getBalloonTip().setTextContents("");
+    }
+    curCol=table.convertColumnIndexToModel(vColIndex);
+  }
+}

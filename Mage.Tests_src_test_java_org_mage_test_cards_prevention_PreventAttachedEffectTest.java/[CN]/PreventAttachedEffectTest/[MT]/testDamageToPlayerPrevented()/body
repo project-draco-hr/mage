@@ -1,0 +1,21 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Kaervek the Merciless");
+  addCard(Zone.HAND,playerA,"Temporal Isolation",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.HAND,playerB,"Silvercoat Lion",1);
+  addCard(Zone.HAND,playerB,"Pillarfield Ox",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",6);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Temporal Isolation","Kaervek the Merciless");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Silvercoat Lion");
+  addTarget(playerA,playerB);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Pillarfield Ox");
+  addTarget(playerA,"Silvercoat Lion");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Kaervek the Merciless",1);
+  assertPermanentCount(playerA,"Temporal Isolation",1);
+  assertPermanentCount(playerB,"Silvercoat Lion",1);
+  assertPermanentCount(playerB,"Pillarfield Ox",1);
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+}

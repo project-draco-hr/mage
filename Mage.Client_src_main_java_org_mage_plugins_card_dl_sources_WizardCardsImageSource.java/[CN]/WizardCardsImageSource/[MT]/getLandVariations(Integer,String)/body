@@ -1,0 +1,18 @@
+{
+  String urlLandDocument="http://gatherer.wizards.com/Pages/Card/Details.aspx?multiverseid=" + multiverseId;
+  Document landDoc=getDocument(urlLandDocument);
+  Elements variations=landDoc.select("a.variationlink");
+  Map<String,String> links=new HashMap<>();
+  if (!variations.isEmpty()) {
+    int landNumber=1;
+    for (    Element variation : variations) {
+      Integer landMultiverseId=Integer.parseInt(variation.attr("onclick").replaceAll("[^\\d]",""));
+      links.put((cardName + landNumber).toLowerCase(),generateLink(landMultiverseId));
+      landNumber++;
+    }
+  }
+ else {
+    links.put(cardName.toLowerCase(),generateLink(multiverseId));
+  }
+  return links;
+}

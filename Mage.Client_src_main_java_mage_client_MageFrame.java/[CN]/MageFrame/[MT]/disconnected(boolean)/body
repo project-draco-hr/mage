@@ -1,23 +1,24 @@
 {
   if (SwingUtilities.isEventDispatchThread()) {
-    logger.info("DISCONNECTED (Event Dispatch Thread)");
+    LOGGER.info("DISCONNECTED (Event Dispatch Thread)");
     setStatusText("Not connected");
     disableButtons();
     hideGames();
     hideTables();
   }
  else {
-    logger.info("DISCONNECTED (NO Event Dispatch Thread)");
+    LOGGER.info("DISCONNECTED (NO Event Dispatch Thread)");
     SwingUtilities.invokeLater(new Runnable(){
       @Override public void run(){
         setStatusText("Not connected");
         disableButtons();
         hideGames();
         hideTables();
-        if (errorCall && JOptionPane.showConfirmDialog(MageFrame.this,"The connection to server was lost. Reconnect?","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-          if (performConnect()) {
-            enableButtons();
-          }
+        if (errorCall) {
+          UserRequestMessage message=new UserRequestMessage("Connection lost","The connection to server was lost. Reconnect?");
+          message.setButton1("No",null);
+          message.setButton2("Yes",PlayerAction.CLIENT_RECONNECT);
+          showUserRequestDialog(message);
         }
  else {
           session.disconnect(false);

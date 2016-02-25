@@ -21,9 +21,7 @@
         if (cost.pay(source,game,source.getSourceId(),affectedPlayer.getId(),false,null)) {
           Spell spell=game.getStack().getSpell(source.getSourceId());
           if (spell != null) {
-            Spell copy=spell.copySpell();
-            copy.setControllerId(affectedPlayer.getId());
-            copy.setCopiedSpell(true);
+            Spell copy=spell.copySpell(affectedPlayer.getId());
             game.getStack().push(copy);
             copy.chooseNewTargets(game,affectedPlayer.getId());
             game.informPlayers(affectedPlayer.getLogName() + " copies " + copy.getName()+ ".");

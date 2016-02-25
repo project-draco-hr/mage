@@ -1,6 +1,7 @@
 {
-  if (modalQuestion("Are you sure you want to stop watching?","Stop watching") == JOptionPane.YES_OPTION) {
-    session.stopWatching(gameId);
-    this.removeGame();
-  }
+  UserRequestMessage message=new UserRequestMessage("Stop watching","Are you sure you want to stop watching?");
+  message.setButton1("No",null);
+  message.setButton2("Yes",PlayerAction.CLIENT_STOP_WATCHING);
+  message.setGameId(gameId);
+  MageFrame.getInstance().showUserRequestDialog(message);
 }
