@@ -1,0 +1,14 @@
+{
+  boolean legal=false;
+  List<CardInfo> cardInfos=CardRepository.instance.findCards(card.getName());
+  for (  CardInfo cardInfo : cardInfos) {
+    if (setCodes.contains(cardInfo.getSetCode())) {
+      legal=true;
+      break;
+    }
+  }
+  if (!legal && !invalid.containsKey(card.getName())) {
+    invalid.put(card.getName(),"Invalid set: " + card.getExpansionSetCode());
+  }
+  return legal;
+}

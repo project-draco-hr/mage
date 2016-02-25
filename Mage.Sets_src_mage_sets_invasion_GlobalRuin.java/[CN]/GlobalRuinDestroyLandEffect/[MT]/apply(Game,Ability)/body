@@ -1,0 +1,21 @@
+{
+  Set<UUID> lands=new HashSet<>();
+  for (  UUID playerId : game.getState().getPlayersInRange(source.getControllerId(),game)) {
+    Player player=game.getPlayer(playerId);
+    for (    String landName : new String[]{"Forest","Island","Mountain","Plains","Swamp"}) {
+      FilterControlledLandPermanent filter=new FilterControlledLandPermanent(landName + " you control");
+      filter.add(new SubtypePredicate(landName));
+      Target target=new TargetControlledPermanent(1,1,filter,true);
+      if (target.canChoose(player.getId(),game)) {
+        player.chooseTarget(outcome,target,source,game);
+        lands.add(target.getFirstTarget());
+      }
+    }
+  }
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(new FilterLandPermanent(),game)) {
+    if (!lands.contains(permanent.getId())) {
+      permanent.sacrifice(permanent.getId(),game);
+    }
+  }
+  return true;
+}
