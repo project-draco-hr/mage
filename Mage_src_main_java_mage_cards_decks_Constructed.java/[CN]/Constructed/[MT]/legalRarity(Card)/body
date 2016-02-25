@@ -1,0 +1,14 @@
+{
+  boolean legal=false;
+  List<CardInfo> cardInfos=CardRepository.instance.findCards(card.getName());
+  for (  CardInfo cardInfo : cardInfos) {
+    if (rarities.contains(cardInfo.getRarity())) {
+      legal=true;
+      break;
+    }
+  }
+  if (!legal && !invalid.containsKey(card.getName())) {
+    invalid.put(card.getName(),"Invalid rarity: " + card.getRarity());
+  }
+  return legal;
+}
