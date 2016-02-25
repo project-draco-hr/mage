@@ -1,0 +1,14 @@
+{
+  try {
+    if (cardName.equals("Forest") || cardName.equals("Swamp") || cardName.equals("Mountain")|| cardName.equals("Island")|| cardName.equals("Plains")) {
+      setLinks.putAll(getLandVariations(multiverseId,cardName));
+    }
+ else {
+      Integer preferedMultiverseId=getLocalizedMultiverseId(preferedLanguage,multiverseId);
+      setLinks.put(cardName.toLowerCase(),generateLink(preferedMultiverseId));
+    }
+  }
+ catch (  IOException|NumberFormatException ex) {
+    System.out.println("Exception when parsing the wizards page: " + ex.getMessage());
+  }
+}
