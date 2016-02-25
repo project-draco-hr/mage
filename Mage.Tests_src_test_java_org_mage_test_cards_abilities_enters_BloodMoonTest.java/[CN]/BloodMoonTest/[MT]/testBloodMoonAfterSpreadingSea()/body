@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Zone.HAND,playerA,"Blood Moon");
+  addCard(Zone.HAND,playerA,"Spreading Seas");
+  addCard(Zone.BATTLEFIELD,playerB,"Steam Vents");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Spreading Seas","Steam Vents");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Blood Moon");
+  setStopAt(2,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerA,"Spreading Seas",1);
+  assertPermanentCount(playerA,"Blood Moon",1);
+  assertHandCount(playerA,1);
+  Assert.assertTrue("The mana the land can produce should be [{R}] but it's " + playerB.getManaAvailable(currentGame).toString(),playerB.getManaAvailable(currentGame).toString().equals("[{R}]"));
+}
