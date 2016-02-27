@@ -1,7 +1,11 @@
 {
-  DreamThiefWatcher watcher=(DreamThiefWatcher)game.getState().getWatchers().get("DreamThiefWatcher",source.getControllerId());
+  SpellsCastWatcher watcher=(SpellsCastWatcher)game.getState().getWatchers().get(SpellsCastWatcher.class.getName());
   if (watcher != null) {
-    return watcher.conditionMet();
+    for (    Spell spell : watcher.getSpellsCastThisTurn(source.getControllerId())) {
+      if (!spell.getSourceId().equals(source.getSourceId()) && spell.getColor(game).isBlue()) {
+        return true;
+      }
+    }
   }
   return false;
 }
