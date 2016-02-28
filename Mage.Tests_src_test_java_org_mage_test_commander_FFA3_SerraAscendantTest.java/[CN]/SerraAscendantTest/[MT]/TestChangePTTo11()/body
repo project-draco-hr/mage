@@ -1,0 +1,27 @@
+{
+  addCard(Zone.HAND,playerA,"Serra Ascendant");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.HAND,playerA,"Soul's Majesty");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",5);
+  addCard(Zone.HAND,playerB,"Lightning Bolt",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",2);
+  addCard(Zone.HAND,playerC,"Lightning Bolt",2);
+  addCard(Zone.BATTLEFIELD,playerC,"Mountain",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Serra Ascendant");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Soul's Majesty","Serra Ascendant");
+  castSpell(1,PhaseStep.BEGIN_COMBAT,playerB,"Lightning Bolt",playerA);
+  castSpell(1,PhaseStep.BEGIN_COMBAT,playerB,"Lightning Bolt",playerA);
+  castSpell(1,PhaseStep.BEGIN_COMBAT,playerC,"Lightning Bolt",playerA);
+  castSpell(1,PhaseStep.BEGIN_COMBAT,playerC,"Lightning Bolt",playerA);
+  setStopAt(1,PhaseStep.DECLARE_ATTACKERS);
+  execute();
+  assertGraveyardCount(playerA,"Soul's Majesty",1);
+  assertHandCount(playerA,7);
+  assertGraveyardCount(playerB,"Lightning Bolt",2);
+  assertGraveyardCount(playerC,"Lightning Bolt",2);
+  assertPermanentCount(playerA,"Serra Ascendant",1);
+  assertPowerToughness(playerA,"Serra Ascendant",1,1);
+  assertLife(playerA,28);
+  assertLife(playerB,40);
+  assertLife(playerC,40);
+}
