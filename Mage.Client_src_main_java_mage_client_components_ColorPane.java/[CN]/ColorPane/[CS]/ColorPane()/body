@@ -1,4 +1,43 @@
 {
   this.setEditorKit(kit);
   this.setDocument(doc);
+  addHyperlinkListener(new HyperlinkListener(){
+    @Override public void hyperlinkUpdate(    final HyperlinkEvent e){
+      tooltipDelay=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_SHOW_TOOLTIPS_DELAY,300);
+      if (tooltipDelay == 0) {
+        return;
+      }
+      String name=e.getDescription().substring(1);
+      CardInfo card=CardRepository.instance.findCard(name);
+      try {
+        final Component container=MageFrame.getUI().getComponent(MageComponents.POPUP_CONTAINER);
+        if (e.getEventType() == EventType.EXITED) {
+          setPopupVisibility(container,false);
+        }
+ else {
+          CardInfoPane cardInfoPane=(CardInfoPane)MageFrame.getUI().getComponent(MageComponents.CARD_INFO_PANE);
+          cardInfoPane.setCard(new CardView(card.getMockCard()),container);
+          Point location=new Point(getLocationOnScreen().x - container.getWidth(),(int)MageFrame.getDesktop().getMousePosition().getY());
+          Component parentComponent=MageFrame.getInstance();
+          location=GuiDisplayUtil.keepComponentInsideParent(location,parentComponent.getLocationOnScreen(),container,parentComponent);
+          container.setLocation(location);
+          setPopupVisibility(container,true);
+        }
+      }
+ catch (      InterruptedException e1) {
+        e1.printStackTrace();
+      }
+    }
+    private void setPopupVisibility(    final Component container,    final boolean show) throws InterruptedException {
+      final Component c=MageFrame.getUI().getComponent(MageComponents.DESKTOP_PANE);
+      SwingUtilities.invokeLater(new Runnable(){
+        @Override public void run(){
+          container.setVisible(show);
+          c.repaint();
+        }
+      }
+);
+    }
+  }
+);
 }
