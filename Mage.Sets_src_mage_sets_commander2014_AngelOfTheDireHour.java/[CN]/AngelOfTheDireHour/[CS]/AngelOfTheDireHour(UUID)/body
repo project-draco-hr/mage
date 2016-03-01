@@ -6,6 +6,5 @@
   this.toughness=new MageInt(4);
   this.addAbility(FlashAbility.getInstance());
   this.addAbility(FlyingAbility.getInstance());
-  Ability ability=new EntersBattlefieldTriggeredAbility(new ConditionalOneShotEffect(new ExileAllEffect(new FilterAttackingCreature("attacking creatures")),new CastFromHandCondition()," if you cast it from your hand, exile all attacking creatures"));
-  this.addAbility(ability,new CastFromHandWatcher());
+  this.addAbility(new ConditionalTriggeredAbility(new EntersBattlefieldTriggeredAbility(new ExileAllEffect(new FilterAttackingCreature("attacking creatures")),false),new CastFromHandCondition(),"When {this} enters the battlefield, if you cast it from your hand, exile all attacking creatures."),new CastFromHandWatcher());
 }

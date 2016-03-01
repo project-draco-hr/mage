@@ -1,5 +1,10 @@
 {
-  if (event.getType() == GameEvent.EventType.SPELL_CAST && event.getZone() == Zone.HAND) {
+  if (step != null && game.getTurn().getStep() != step) {
+    spellsCastFromHand.clear();
+    step=null;
+  }
+  if (event.getType() == GameEvent.EventType.SPELL_CAST && event.getZone().equals(Zone.HAND)) {
+    step=game.getTurn().getStep();
     Spell spell=(Spell)game.getObject(event.getTargetId());
     if (this.getSourceId().equals(spell.getSourceId())) {
       condition=true;
