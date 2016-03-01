@@ -4,7 +4,7 @@
   this.subtype.add("Elemental");
   this.power=new MageInt(4);
   this.toughness=new MageInt(4);
-  Ability ability=new EntersBattlefieldTriggeredAbility(new ConditionalOneShotEffect(new CreateTokenEffect(new BirdToken()),new CastFromHandCondition(),"if you cast it from your hand, put a 1/1 white Bird creature token with flying onto the battlefield,"));
+  TriggeredAbility ability=new EntersBattlefieldTriggeredAbility(new CreateTokenEffect(new BirdToken()),false);
   ability.addEffect(new PopulateEffect("then"));
-  this.addAbility(ability,new CastFromHandWatcher());
+  this.addAbility(new ConditionalTriggeredAbility(ability,new CastFromHandCondition(),"When {this} enters the battlefield, if you cast it from your hand, put a 1/1 white Bird creature token with flying onto the battlefield, then populate."),new CastFromHandWatcher());
 }
