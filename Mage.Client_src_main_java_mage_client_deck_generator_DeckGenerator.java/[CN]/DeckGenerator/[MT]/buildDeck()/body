@@ -4,6 +4,9 @@
   selectedColors=selectedColors != null ? selectedColors.toUpperCase() : getRandomColors("X");
   String format=genDialog.getSelectedFormat();
   List<String> setsToUse=ConstructedFormats.getSetsByFormat(format);
+  if (setsToUse == null) {
+    throw new DeckGeneratorException("Deck sets aren't initialized; please connect to a server to update the database.");
+  }
   if (setsToUse.isEmpty()) {
     setsToUse=ExpansionRepository.instance.getSetCodes();
   }

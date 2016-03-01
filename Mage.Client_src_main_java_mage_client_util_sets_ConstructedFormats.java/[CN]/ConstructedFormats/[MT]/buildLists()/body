@@ -7,6 +7,7 @@
     cutoff=new GregorianCalendar(calendar.get(Calendar.YEAR) - 2,Calendar.SEPTEMBER,1);
   }
   final Map<String,ExpansionInfo> expansionInfo=new HashMap<>();
+  formats.clear();
   for (  ExpansionInfo set : ExpansionRepository.instance.getAll()) {
     expansionInfo.put(set.getName(),set);
     formats.add(set.getName());
@@ -125,8 +126,10 @@
     }
   }
 );
-  formats.add(0,MODERN);
-  formats.add(0,EXTENDED);
-  formats.add(0,STANDARD);
+  if (!formats.isEmpty()) {
+    formats.add(0,MODERN);
+    formats.add(0,EXTENDED);
+    formats.add(0,STANDARD);
+  }
   formats.add(0,ALL);
 }
