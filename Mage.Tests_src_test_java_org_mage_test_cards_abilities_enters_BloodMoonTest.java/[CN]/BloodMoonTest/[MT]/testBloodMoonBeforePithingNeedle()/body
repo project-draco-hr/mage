@@ -1,14 +1,17 @@
 {
   addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
-  addCard(Zone.BATTLEFIELD,playerA,"Blood Moon",1);
+  addCard(Zone.HAND,playerA,"Blood Moon",1);
   addCard(Zone.HAND,playerB,"Pithing Needle");
+  addCard(Zone.HAND,playerB,"Ghost Quarter",1);
   addCard(Zone.BATTLEFIELD,playerB,"Ghost Quarter",1);
-  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Pithing Needle");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Blood Moon");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Pithing Needle");
   setChoice(playerB,"Blood Moon");
-  setStopAt(1,PhaseStep.POSTCOMBAT_MAIN);
+  playLand(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Ghost Quarter");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
   execute();
   assertPermanentCount(playerA,"Blood Moon",1);
   assertPermanentCount(playerB,"Pithing Needle",1);
-  assertPermanentCount(playerB,"Ghost Quarter",1);
-  Assert.assertTrue("The mana the land can produce should be [{R}] but it's " + playerB.getManaAvailable(currentGame).toString(),playerB.getManaAvailable(currentGame).toString().equals("[{R}]"));
+  assertPermanentCount(playerB,"Ghost Quarter",2);
+  Assert.assertTrue("The mana Ghost Quarter can produce should be [{R}] but it's " + playerB.getManaAvailable(currentGame).toString(),playerB.getManaAvailable(currentGame).toString().equals("[{R}]"));
 }
