@@ -6,7 +6,8 @@
   }
   try {
     try (TFileOutputStream outputStream=new TFileOutputStream(imageFile)){
-      ImageIO.write(image,"jpg",outputStream);
+      String format=image.getColorModel().getNumComponents() > 3 ? "png" : "jpg";
+      ImageIO.write(image,format,outputStream);
     }
    }
  catch (  IOException e) {
