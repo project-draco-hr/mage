@@ -1,0 +1,18 @@
+{
+  addCard(Zone.HAND,playerA,"Diluvian Primordial");
+  addCard(Zone.BATTLEFIELD,playerA,"Island",7);
+  addCard(Zone.GRAVEYARD,playerB,"Lightning Bolt");
+  addCard(Zone.GRAVEYARD,playerC,"Lightning Bolt");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Diluvian Primordial");
+  addTarget(playerA,"Lightning Bolt");
+  addTarget(playerA,"Lightning Bolt");
+  addTarget(playerA,playerB);
+  addTarget(playerA,playerC);
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Diluvian Primordial",1);
+  assertExileCount("Lightning Bolt",2);
+  assertLife(playerA,40);
+  assertLife(playerB,37);
+  assertLife(playerC,37);
+}

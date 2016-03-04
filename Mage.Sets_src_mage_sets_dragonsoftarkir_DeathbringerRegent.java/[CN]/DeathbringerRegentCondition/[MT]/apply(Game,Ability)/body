@@ -1,14 +1,3 @@
 {
-  boolean applies=false;
-  Permanent permanent=game.getPermanent(source.getSourceId());
-  if (permanent != null) {
-    Watcher watcher=game.getState().getWatchers().get("CastFromHand",source.getSourceId());
-    if (watcher != null && watcher.conditionMet()) {
-      applies=true;
-    }
-  }
-  if (applies) {
-    applies=game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),game).size() >= 6;
-  }
-  return applies;
+  return new CastFromHandSourceCondition().apply(game,source) && game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),game).size() >= 6;
 }

@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerA,"Grizzly Bears");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",2);
+  addCard(Zone.HAND,playerB,"Disrupting Shoal",1);
+  addCard(Zone.HAND,playerB,"Far // Away",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Grizzly Bears");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Disrupting Shoal","Grizzly Bears","Grizzly Bears");
+  playerB.addChoice("Yes");
+  setStopAt(1,PhaseStep.CLEANUP);
+  execute();
+  assertExileCount(playerB,1);
+  assertGraveyardCount(playerB,"Disrupting Shoal",1);
+  assertPermanentCount(playerA,"Grizzly Bears",0);
+  assertGraveyardCount(playerA,"Grizzly Bears",1);
+}

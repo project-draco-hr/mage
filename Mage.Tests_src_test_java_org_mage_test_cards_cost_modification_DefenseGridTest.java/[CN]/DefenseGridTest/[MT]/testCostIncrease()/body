@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
+  addCard(Zone.HAND,playerA,"Lightning Bolt",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Defense Grid");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",3);
+  addCard(Zone.HAND,playerB,"Mindbreak Trap");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt",playerB);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt",playerB);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt",playerB);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Mindbreak Trap","Lightning Bolt^Lightning Bolt^Lightning Bolt");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertExileCount("Lightning Bolt",3);
+  assertGraveyardCount(playerB,"Mindbreak Trap",1);
+  assertTappedCount("Island",true,3);
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+}

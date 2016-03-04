@@ -1,0 +1,20 @@
+{
+  addCard(Zone.HAND,playerA,"Rattleclaw Mystic");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest");
+  addCard(Zone.BATTLEFIELD,playerA,"Island");
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain");
+  addCard(Zone.HAND,playerB,"Reflector Mage");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Rattleclaw Mystic");
+  setChoice(playerA,"Yes");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Reflector Mage");
+  addTarget(playerB,"");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Rattleclaw Mystic");
+  setChoice(playerA,"No");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerB,"Reflector Mage",1);
+  assertPermanentCount(playerA,"Rattleclaw Mystic",1);
+  assertHandCount(playerA,"Rattleclaw Mystic",0);
+}

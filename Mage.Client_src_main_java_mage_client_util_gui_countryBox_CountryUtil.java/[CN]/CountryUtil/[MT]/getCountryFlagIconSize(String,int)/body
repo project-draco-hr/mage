@@ -1,0 +1,15 @@
+{
+  ImageIcon flagIcon=null;
+  Image flagImage=ImageHelper.getImageFromResources("/flags/" + countryCode + (countryCode.endsWith(".png") ? "" : ".png"));
+  if (flagImage != null) {
+    if (height > 11) {
+      int width=Math.round(height * flagImage.getWidth(null) / flagImage.getHeight(null));
+      BufferedImage resized=ImageHelper.scale((BufferedImage)flagImage,BufferedImage.TYPE_4BYTE_ABGR,width,height);
+      flagIcon=new ImageIcon(resized);
+    }
+ else {
+      flagIcon=new ImageIcon(flagImage);
+    }
+  }
+  return flagIcon;
+}

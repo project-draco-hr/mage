@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerA,"Air Elemental");
+  addCard(Zone.BATTLEFIELD,playerA,"Island",5);
+  addCard(Zone.HAND,playerB,"Disrupting Shoal",1);
+  addCard(Zone.HAND,playerB,"Far // Away",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Air Elemental");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Disrupting Shoal","Air Elemental","Air Elemental");
+  playerB.addChoice("Yes");
+  setStopAt(1,PhaseStep.CLEANUP);
+  execute();
+  assertExileCount(playerB,1);
+  assertGraveyardCount(playerB,"Disrupting Shoal",1);
+  assertPermanentCount(playerA,"Air Elemental",1);
+  assertGraveyardCount(playerA,"Air Elemental",0);
+}

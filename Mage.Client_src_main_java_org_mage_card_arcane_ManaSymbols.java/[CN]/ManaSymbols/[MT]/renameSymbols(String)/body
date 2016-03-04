@@ -1,0 +1,18 @@
+{
+  final PathMatcher matcher=FileSystems.getDefault().getPathMatcher("glob:**/*.jpg");
+  try {
+    Files.walkFileTree(Paths.get(path),new SimpleFileVisitor<Path>(){
+      @Override public FileVisitResult visitFile(      Path file,      BasicFileAttributes attrs) throws IOException {
+        if (matcher.matches(file)) {
+          Path gifPath=file.resolveSibling(file.getFileName().toString().replaceAll("\\.jpg$",".gif"));
+          Files.move(file,gifPath,StandardCopyOption.REPLACE_EXISTING);
+        }
+        return FileVisitResult.CONTINUE;
+      }
+    }
+);
+  }
+ catch (  IOException e) {
+    LOGGER.error("Couldn't rename mana symbols!");
+  }
+}

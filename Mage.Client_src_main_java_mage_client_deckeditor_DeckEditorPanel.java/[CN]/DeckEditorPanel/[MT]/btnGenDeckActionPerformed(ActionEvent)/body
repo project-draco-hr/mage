@@ -1,0 +1,17 @@
+{
+  try {
+    setCursor(new Cursor(Cursor.WAIT_CURSOR));
+    String path=DeckGenerator.generateDeck();
+    deck=Deck.load(DeckImporterUtil.importDeck(path),true,true);
+  }
+ catch (  GameException ex) {
+    JOptionPane.showMessageDialog(MageFrame.getDesktop(),ex.getMessage(),"Error loading generated deck",JOptionPane.ERROR_MESSAGE);
+  }
+catch (  DeckGeneratorException ex) {
+    JOptionPane.showMessageDialog(MageFrame.getDesktop(),ex.getMessage(),"Generator error",JOptionPane.ERROR_MESSAGE);
+  }
+ finally {
+    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+  }
+  refreshDeck();
+}

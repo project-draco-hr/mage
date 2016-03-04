@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerA,"Centaur Courser");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",3);
+  addCard(Zone.HAND,playerB,"Disrupting Shoal",1);
+  addCard(Zone.HAND,playerB,"Far // Away",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Centaur Courser");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Disrupting Shoal","Centaur Courser","Centaur Courser");
+  playerB.addChoice("Yes");
+  setStopAt(1,PhaseStep.CLEANUP);
+  execute();
+  assertExileCount(playerB,1);
+  assertGraveyardCount(playerB,"Disrupting Shoal",1);
+  assertPermanentCount(playerA,"Centaur Courser",0);
+  assertGraveyardCount(playerA,"Centaur Courser",1);
+}
