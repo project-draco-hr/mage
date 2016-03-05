@@ -1,0 +1,21 @@
+{
+  for (  Cost cost : sourceAbility.getCosts()) {
+    if (cost.isPaid() && cost instanceof ExileFromHandCost) {
+      for (      Card card : ((ExileFromHandCost)cost).getCards()) {
+        if (card instanceof SplitCard) {
+          if (((SplitCard)card).getLeftHalfCard().getManaCost().convertedManaCost() == amount) {
+            return true;
+          }
+          if (((SplitCard)card).getRightHalfCard().getManaCost().convertedManaCost() == amount) {
+            return true;
+          }
+        }
+ else         if (card.getManaCost().convertedManaCost() == amount) {
+          return true;
+        }
+        return false;
+      }
+    }
+  }
+  return false;
+}
