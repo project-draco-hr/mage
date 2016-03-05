@@ -1,15 +1,22 @@
 {
   initPopupMenuTriggerOrder();
   setBackground(new Color(0,0,0,100));
+  setLayout(new GridLayout(0,1));
   setOpaque(false);
-  textArea=new MageTextArea();
-  textArea.setText("<Empty>");
-  add(textArea);
+  dialogTextArea=new MageTextArea();
+  dialogTextArea.setText("<Empty>");
+  dialogTextArea.setOpaque(false);
+  textAreaScrollPane=new JScrollPane(dialogTextArea,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+  textAreaScrollPane.setOpaque(false);
+  textAreaScrollPane.setBackground(new Color(0,0,0,0));
+  textAreaScrollPane.getViewport().setOpaque(false);
+  textAreaScrollPane.setBorder(null);
+  textAreaScrollPane.setViewportBorder(null);
+  add(textAreaScrollPane);
   buttonContainer=new JPanel();
   buttonContainer.setLayout(new FlowLayout(FlowLayout.CENTER,15,0));
   buttonContainer.setOpaque(false);
   add(buttonContainer);
-  setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
   btnSpecial=new JButton("Special");
   btnSpecial.setVisible(false);
   buttonContainer.add(btnSpecial);
@@ -78,7 +85,7 @@
     }
   }
 );
-  textArea.addMouseListener(new MouseAdapter(){
+  dialogTextArea.addMouseListener(new MouseAdapter(){
     @Override public void mouseEntered(    MouseEvent me){
       ToolTipManager.sharedInstance().setDismissDelay(100000);
       UIManager.put("info",Color.DARK_GRAY);

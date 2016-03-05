@@ -1,8 +1,6 @@
 {
   initComponents=true;
   initComponents();
-  initPopupMenuTriggerOrder();
-  setGUISize();
   pickNumber=new PickNumberDialog();
   MageFrame.getDesktop().add(pickNumber,JLayeredPane.MODAL_LAYER);
   this.feedbackPanel.setConnectedChatPanel(this.userChatPanel);
@@ -37,23 +35,30 @@
 );
   ComponentAdapter componentAdapterPlayField=new ComponentAdapter(){
     @Override public void componentResized(    ComponentEvent e){
-      Thread worker=new Thread(){
-        @Override public void run(){
-          SwingUtilities.invokeLater(new Runnable(){
-            @Override public void run(){
-              if (!initComponents) {
-                setGUISize();
-              }
-            }
-          }
-);
+      if (!initComponents) {
+        if (resizeTimer.isRunning()) {
+          resizeTimer.restart();
+        }
+ else {
+          resizeTimer.start();
         }
       }
-;
-      worker.start();
     }
   }
 ;
+  resizeTimer=new Timer(1000,new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent evt){
+      SwingUtilities.invokeLater(new Runnable(){
+        @Override public void run(){
+          resizeTimer.stop();
+          setGUISize();
+          feedbackPanel.changeGUISize();
+        }
+      }
+);
+    }
+  }
+);
   jPanel3.addComponentListener(componentAdapterPlayField);
   initComponents=false;
 }
