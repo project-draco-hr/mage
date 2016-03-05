@@ -1,21 +1,5 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  ApplyToPermanent vesuvanShapeShifterFaceUpApplier=new ApplyToPermanent(){
-    @Override public Boolean apply(    Game game,    Permanent permanent){
-      Effect effect=new VesuvanShapeshifterFaceDownEffect();
-      Ability ability=new BeginningOfUpkeepTriggeredAbility(effect,TargetController.YOU,true);
-      permanent.getAbilities().add(ability);
-      permanent.addAbility(new MorphAbility(permanent,new ManaCostsImpl("{1}{U}")),permanent.getId(),game);
-      return true;
-    }
-    @Override public Boolean apply(    Game game,    MageObject mageObject){
-      Effect effect=new VesuvanShapeshifterFaceDownEffect();
-      Ability ability=new BeginningOfUpkeepTriggeredAbility(effect,TargetController.YOU,true);
-      mageObject.getAbilities().add(ability);
-      return true;
-    }
-  }
-;
   Permanent copyToCreature=game.getPermanent(source.getSourceId());
   if (copyToCreature != null) {
     FilterCreaturePermanent filter=new FilterCreaturePermanent("another creature");
@@ -24,7 +8,7 @@
     if (controller.chooseTarget(Outcome.BecomeCreature,target,source,game) && !target.getTargets().isEmpty()) {
       Permanent copyFromCreature=game.getPermanentOrLKIBattlefield(target.getFirstTarget());
       if (copyFromCreature != null) {
-        game.copyPermanent(Duration.Custom,copyFromCreature,copyToCreature.getId(),source,vesuvanShapeShifterFaceUpApplier);
+        game.copyPermanent(Duration.Custom,copyFromCreature,copyToCreature.getId(),source,new vesuvanShapeShifterFaceUpApplier());
         source.getTargets().clear();
         return true;
       }
