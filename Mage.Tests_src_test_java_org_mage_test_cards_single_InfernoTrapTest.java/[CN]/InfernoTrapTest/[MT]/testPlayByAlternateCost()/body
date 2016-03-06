@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.HAND,playerA,"Inferno Trap");
+  addCard(Zone.BATTLEFIELD,playerB,"Skyhunter Skirmisher");
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  attack(2,playerB,"Skyhunter Skirmisher");
+  attack(2,playerB,"Silvercoat Lion");
+  castSpell(2,PhaseStep.POSTCOMBAT_MAIN,playerA,"Inferno Trap","Skyhunter Skirmisher");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,16);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Inferno Trap",1);
+  assertGraveyardCount(playerB,"Skyhunter Skirmisher",1);
+}
