@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Captivating Vampire",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Child of Night",4);
+  addCard(Zone.HAND,playerB,"Progenitor Mimic",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",3);
+  addCard(Zone.BATTLEFIELD,playerB,"Forest",3);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Progenitor Mimic");
+  setChoice(playerB,"Captivating Vampire");
+  activateAbility(2,PhaseStep.POSTCOMBAT_MAIN,playerA,"Tap five untapped Vampire","Captivating Vampire[only copy]");
+  setChoice(playerA,"Captivating Vampire");
+  setChoice(playerA,"Child of Night");
+  setChoice(playerA,"Child of Night");
+  setChoice(playerA,"Child of Night");
+  setChoice(playerA,"Child of Night");
+  setStopAt(2,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Captivating Vampire",2);
+  assertPowerToughness(playerA,"Captivating Vampire",3,3,Filter.ComparisonScope.All);
+  assertPowerToughness(playerA,"Child of Night",4,3,Filter.ComparisonScope.All);
+}
