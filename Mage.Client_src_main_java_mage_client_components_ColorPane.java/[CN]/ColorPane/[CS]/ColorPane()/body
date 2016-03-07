@@ -1,46 +1,4 @@
 {
   this.setEditorKit(kit);
   this.setDocument(doc);
-  addHyperlinkListener(new HyperlinkListener(){
-    @Override public void hyperlinkUpdate(    final HyperlinkEvent e){
-      ThreadUtils.threadPool2.submit(new Runnable(){
-        @Override public void run(){
-          tooltipDelay=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_SHOW_TOOLTIPS_DELAY,300);
-          if (tooltipDelay == 0) {
-            return;
-          }
-          String name=e.getDescription().substring(1);
-          CardInfo card=CardRepository.instance.findCard(name);
-          try {
-            final Component container=MageFrame.getUI().getComponent(MageComponents.POPUP_CONTAINER);
-            if (e.getEventType() == EventType.EXITED) {
-              setPopupVisibility(container,false);
-            }
-            if (e.getEventType() == EventType.ENTERED) {
-              CardInfoPane cardInfoPane=(CardInfoPane)MageFrame.getUI().getComponent(MageComponents.CARD_INFO_PANE);
-              cardInfoPane.setCard(new CardView(card.getMockCard()),container);
-              setPopupVisibility(container,true);
-            }
-          }
- catch (          InterruptedException e1) {
-            e1.printStackTrace();
-          }
-        }
-      }
-);
-    }
-  }
-);
-  addMouseListener(new MouseAdapter(){
-    @Override public void mouseExited(    MouseEvent e){
-      tooltipCounter=1;
-      try {
-        setPopupVisibility(MageFrame.getUI().getComponent(MageComponents.POPUP_CONTAINER),false);
-      }
- catch (      InterruptedException e1) {
-        e1.printStackTrace();
-      }
-    }
-  }
-);
 }
