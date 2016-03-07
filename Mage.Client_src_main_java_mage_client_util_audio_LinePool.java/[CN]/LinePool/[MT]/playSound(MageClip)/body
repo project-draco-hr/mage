@@ -1,0 +1,47 @@
+{
+  final SourceDataLine line;
+synchronized (LinePool.this) {
+    if (activeLines.size() > 0) {
+      line=activeLines.iterator().next();
+    }
+ else     if (freeLines.size() > 0) {
+      line=freeLines.iterator().next();
+    }
+ else {
+      queue.add(mageClip);
+      return;
+    }
+    freeLines.remove(line);
+    activeLines.remove(line);
+    busyLines.add(line);
+  }
+  ThreadUtils.threadPool.submit(new Runnable(){
+    @Override public void run(){
+      try {
+        if (!line.isOpen()) {
+          line.open();
+        }
+        line.start();
+      }
+ catch (      LineUnavailableException e) {
+        e.printStackTrace();
+      }
+      byte[] buffer=mageClip.getBuffer();
+      line.write(buffer,0,buffer.length);
+synchronized (LinePool.this) {
+        boolean hasQueue=queue.size() > 0;
+        busyLines.remove(line);
+        if (activeLines.size() < LinePool.this.alwaysActive) {
+          activeLines.add(line);
+        }
+ else {
+          freeLines.add(line);
+        }
+        if (hasQueue) {
+          playSound(queue.poll());
+        }
+      }
+    }
+  }
+);
+}
