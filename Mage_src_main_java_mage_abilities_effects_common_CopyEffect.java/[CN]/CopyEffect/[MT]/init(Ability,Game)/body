@@ -11,7 +11,11 @@
     permanent=game.getPermanentEntering(copyToObjectId);
     if (permanent != null) {
       copyToPermanent(permanent,game,source);
-      affectedObjectList.add(new MageObjectReference(permanent.getId(),game.getState().getZoneChangeCounter(copyToObjectId) + 1,game));
+      int ZCCDiff=1;
+      if (permanent instanceof PermanentToken) {
+        ZCCDiff=0;
+      }
+      affectedObjectList.add(new MageObjectReference(permanent.getId(),game.getState().getZoneChangeCounter(copyToObjectId) + ZCCDiff,game));
     }
   }
 }
