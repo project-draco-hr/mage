@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",9);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.HAND,playerA,"Widespread Panic",1);
+  addCard(Zone.HAND,playerA,"Knowledge Exploitation");
+  addCard(Zone.HAND,playerB,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Widespread Panic");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Knowledge Exploitation",playerB);
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Widespread Panic",1);
+  assertGraveyardCount(playerA,"Knowledge Exploitation",1);
+  assertHandCount(playerB,"Silvercoat Lion",1);
+}

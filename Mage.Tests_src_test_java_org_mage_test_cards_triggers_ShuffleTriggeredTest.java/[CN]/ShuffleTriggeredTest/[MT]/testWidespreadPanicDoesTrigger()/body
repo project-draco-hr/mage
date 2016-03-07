@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",5);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.HAND,playerA,"Widespread Panic",1);
+  addCard(Zone.HAND,playerA,"Untamed Wilds");
+  addCard(Zone.HAND,playerA,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Widespread Panic");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Untamed Wilds");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Widespread Panic",1);
+  assertGraveyardCount(playerA,"Untamed Wilds",1);
+  assertHandCount(playerA,"Silvercoat Lion",0);
+}
