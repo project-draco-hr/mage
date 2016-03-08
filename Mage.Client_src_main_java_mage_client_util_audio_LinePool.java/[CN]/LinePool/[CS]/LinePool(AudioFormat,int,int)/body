@@ -1,16 +1,11 @@
 {
   format=audioFormat;
   this.alwaysActive=alwaysActive;
-  Info[] mixerInfos=AudioSystem.getMixerInfo();
-  Mixer.Info mInfo=null;
-  if (mixerInfos.length > 0) {
-    mInfo=mixerInfos[0];
-  }
-  mixer=AudioSystem.getMixer(mInfo);
+  mixer=AudioSystem.getMixer(null);
   DataLine.Info lineInfo=new DataLine.Info(SourceDataLine.class,audioFormat);
   for (int i=0; i < size; i++) {
     try {
-      final SourceDataLine line=(SourceDataLine)mixer.getLine(lineInfo);
+      SourceDataLine line=(SourceDataLine)mixer.getLine(lineInfo);
       freeLines.add(line);
     }
  catch (    LineUnavailableException e) {
@@ -21,7 +16,9 @@
     @Override public void run(){
 synchronized (LinePool.this) {
         for (        SourceDataLine sourceDataLine : freeLines) {
-          sourceDataLine.close();
+          if (sourceDataLine.isOpen()) {
+            sourceDataLine.close();
+          }
         }
       }
     }

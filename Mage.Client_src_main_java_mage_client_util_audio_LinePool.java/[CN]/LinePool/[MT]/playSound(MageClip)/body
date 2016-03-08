@@ -17,29 +17,41 @@ synchronized (LinePool.this) {
   }
   ThreadUtils.threadPool.submit(new Runnable(){
     @Override public void run(){
-      try {
-        if (!line.isOpen()) {
-          line.open();
+synchronized (LinePool.this) {
+        try {
+          if (!line.isOpen()) {
+            line.open();
+            line.addLineListener(new LineListener(){
+              @Override public void update(              LineEvent event){
+                if (event.getType() != Type.STOP) {
+                  return;
+                }
+synchronized (LinePool.this) {
+                  busyLines.remove(line);
+                  if (activeLines.size() < LinePool.this.alwaysActive) {
+                    activeLines.add(line);
+                  }
+ else {
+                    freeLines.add(line);
+                  }
+                  if (queue.size() > 0) {
+                    playSound(queue.poll());
+                  }
+                }
+              }
+            }
+);
+          }
+          line.start();
         }
-        line.start();
-      }
- catch (      LineUnavailableException e) {
-        e.printStackTrace();
+ catch (        LineUnavailableException e) {
+          e.printStackTrace();
+        }
       }
       byte[] buffer=mageClip.getBuffer();
       line.write(buffer,0,buffer.length);
-synchronized (LinePool.this) {
-        busyLines.remove(line);
-        if (activeLines.size() < LinePool.this.alwaysActive) {
-          activeLines.add(line);
-        }
- else {
-          freeLines.add(line);
-        }
-        if (queue.size() > 0) {
-          playSound(queue.poll());
-        }
-      }
+      line.drain();
+      line.stop();
     }
   }
 );
