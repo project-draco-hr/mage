@@ -29,7 +29,6 @@ synchronized (LinePool.this) {
       byte[] buffer=mageClip.getBuffer();
       line.write(buffer,0,buffer.length);
 synchronized (LinePool.this) {
-        boolean hasQueue=queue.size() > 0;
         busyLines.remove(line);
         if (activeLines.size() < LinePool.this.alwaysActive) {
           activeLines.add(line);
@@ -37,7 +36,7 @@ synchronized (LinePool.this) {
  else {
           freeLines.add(line);
         }
-        if (hasQueue) {
+        if (queue.size() > 0) {
           playSound(queue.poll());
         }
       }
