@@ -1,5 +1,12 @@
 {
-  CardCriteria criteria=new CardCriteria();
-  criteria.rarities(Rarity.COMMON).setCodes(this.code).types(CardType.LAND);
-  return CardRepository.instance.findCards(criteria);
+  List<CardInfo> specialCommons=new ArrayList<>();
+  if (savedSpecialCommon.isEmpty()) {
+    CardCriteria criteria=new CardCriteria();
+    criteria.rarities(Rarity.COMMON).setCodes(this.code).types(CardType.LAND);
+    savedSpecialCommon=CardRepository.instance.findCards(criteria);
+    criteria.rarities(Rarity.LAND).setCodes(this.code);
+    savedSpecialCommon.addAll(CardRepository.instance.findCards(criteria));
+  }
+  specialCommons.addAll(savedSpecialCommon);
+  return specialCommons;
 }
