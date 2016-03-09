@@ -17,8 +17,15 @@
     permanent.getSupertype().add(type);
   }
   permanent.removeAllAbilities(source.getSourceId(),game);
-  for (  Ability ability : copyFromObject.getAbilities()) {
-    permanent.addAbility(ability,getSourceId(),game,false);
+  if (copyFromObject instanceof Permanent) {
+    for (    Ability ability : ((Permanent)copyFromObject).getAbilities(game)) {
+      permanent.addAbility(ability,getSourceId(),game,false);
+    }
+  }
+ else {
+    for (    Ability ability : copyFromObject.getAbilities()) {
+      permanent.addAbility(ability,getSourceId(),game,false);
+    }
   }
   permanent.getPower().setValue(copyFromObject.getPower().getValue());
   permanent.getToughness().setValue(copyFromObject.getToughness().getValue());
