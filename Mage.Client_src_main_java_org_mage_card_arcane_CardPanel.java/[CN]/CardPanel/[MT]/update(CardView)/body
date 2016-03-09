@@ -35,6 +35,11 @@
   this.canAttack=card.isCanAttack();
   this.isSelected=card.isSelected();
   boolean updateImage=!gameCard.getName().equals(card.getName()) || gameCard.isFaceDown() != card.isFaceDown();
+  if (updateImage && gameCard.canTransform() && card.canTransform()&& transformed) {
+    if (card.getSecondCardFace() != null && card.getSecondCardFace().getName().equals(gameCard.getName())) {
+      transformed=false;
+    }
+  }
   this.gameCard=card;
   String cardType=getType(card);
   tooltipText.setText(getText(cardType,card));
@@ -48,7 +53,7 @@
     updateImage();
     if (card.canTransform()) {
       BufferedImage transformIcon;
-      if (card.isTransformed()) {
+      if (transformed) {
         transformIcon=ImageManagerImpl.getInstance().getNightImage();
       }
  else {
