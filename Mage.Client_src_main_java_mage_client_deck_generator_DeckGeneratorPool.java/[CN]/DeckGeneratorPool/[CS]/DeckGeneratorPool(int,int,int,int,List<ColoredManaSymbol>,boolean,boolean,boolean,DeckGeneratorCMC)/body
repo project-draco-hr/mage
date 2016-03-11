@@ -1,0 +1,32 @@
+{
+  this.deckSize=deckSize;
+  this.allowedColors=allowedColors;
+  this.isSingleton=isSingleton;
+  this.colorlessAllowed=colorlessAllowed;
+  this.deck=new Deck();
+  if (isAdvanced) {
+    this.creatureCount=(int)Math.ceil((deckSize / 100.0) * creaturePercentage);
+    this.nonCreatureCount=(int)Math.ceil((deckSize / 100.0) * nonCreaturePercentage);
+    this.landCount=(int)Math.ceil((deckSize / 100.0) * landPercentage);
+    if (this.deckSize == 60) {
+      this.poolCMCs=deckGeneratorCMC.get60CardPoolCMC();
+    }
+ else {
+      this.poolCMCs=deckGeneratorCMC.get40CardPoolCMC();
+    }
+  }
+ else {
+    this.creatureCount=(int)Math.ceil((deckSize / 100.0) * DEFAULT_CREATURE_PERCENTAGE);
+    this.nonCreatureCount=(int)Math.ceil((deckSize / 100.0) * DEFAULT_NON_CREATURE_PERCENTAGE);
+    this.landCount=(int)Math.ceil((deckSize / 100.0) * DEFAULT_LAND_PERCENTAGE);
+    if (this.deckSize == 60) {
+      this.poolCMCs=DeckGeneratorCMC.Default.get60CardPoolCMC();
+    }
+ else {
+      this.poolCMCs=DeckGeneratorCMC.Default.get40CardPoolCMC();
+    }
+  }
+  if (allowedColors.size() == 1) {
+    monoColored=true;
+  }
+}
