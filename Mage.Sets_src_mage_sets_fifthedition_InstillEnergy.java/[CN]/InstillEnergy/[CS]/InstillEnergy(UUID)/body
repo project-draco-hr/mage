@@ -10,6 +10,5 @@
   Ability asThough=new SimpleStaticAbility(Zone.BATTLEFIELD,new CanAttackAsThoughItHadHasteEnchantedEffect(Duration.WhileOnBattlefield));
   Ability haste=new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(asThough,AttachmentType.AURA,Duration.WhileOnBattlefield,"Enchanted creature can attack as though it had haste."));
   this.addAbility(haste);
-  Ability gainedAbility=new LimitedTimesIfConditionActivatedAbility(Zone.BATTLEFIELD,new UntapEnchantedEffect(),new GenericManaCost(0),MyTurnCondition.getInstance(),1);
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(gainedAbility,AttachmentType.AURA,Duration.WhileOnBattlefield,"{0}: Untap enchanted creature. Activate this ability only during your turn and only once each turn.")));
+  this.addAbility(new LimitedTimesPerTurnActivatedAbility(Zone.BATTLEFIELD,new UntapEnchantedEffect(),new GenericManaCost(0),1,MyTurnCondition.getInstance()));
 }
