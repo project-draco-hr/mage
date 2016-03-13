@@ -5,9 +5,12 @@
   this.power=new MageInt(4);
   this.toughness=new MageInt(4);
   this.addAbility(DefenderAbility.getInstance());
-  ConditionalContinuousEffect effect=new ConditionalContinuousEffect(new GainAbilitySourceEffect(IndestructibleAbility.getInstance()),HasDefenderCondition.getInstance(),rule);
+  GainAbilitySourceEffect gainEffect=new GainAbilitySourceEffect(IndestructibleAbility.getInstance());
+  gainEffect.setDependedToType(DependencyType.LooseDefenderEffect);
+  ConditionalContinuousEffect effect=new ConditionalContinuousEffect(gainEffect,HasDefenderCondition.getInstance(),rule);
   this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
-  Effect effect2=new LoseAbilitySourceEffect(DefenderAbility.getInstance(),Duration.EndOfTurn);
+  ContinuousEffect effect2=new LoseAbilitySourceEffect(DefenderAbility.getInstance(),Duration.EndOfTurn);
+  effect2.addDependencyType(DependencyType.LooseDefenderEffect);
   effect2.setText("Until end of turn, {this} loses defender");
   Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect2,new ManaCostsImpl("{1}"));
   effect2=new GainAbilitySourceEffect(FlyingAbility.getInstance(),Duration.EndOfTurn);

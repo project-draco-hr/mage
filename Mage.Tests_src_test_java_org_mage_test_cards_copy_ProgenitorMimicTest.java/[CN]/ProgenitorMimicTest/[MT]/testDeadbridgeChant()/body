@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",3);
+  addCard(Zone.HAND,playerA,"Deadbridge Chant",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.LIBRARY,playerA,"Progenitor Mimic",10);
+  skipInitShuffling();
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Deadbridge Chant");
+  setChoice(playerA,"Silvercoat Lion");
+  setStopAt(3,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerA,"Deadbridge Chant",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",2);
+  assertPowerToughness(playerA,"Silvercoat Lion",2,2);
+  assertGraveyardCount(playerA,"Progenitor Mimic",9);
+}
