@@ -4,19 +4,18 @@
   int nonLandSize=(deckSize - landCount);
   if (spellSize < nonLandSize) {
     int spellsNeeded=nonLandSize - spellSize;
-    if (reserveSpells.size() < spellsNeeded) {
-      throw new IllegalStateException("Not enough cards found to generate deck. Please try again");
-    }
-    List<Card> spellsToAdd=new ArrayList<>(spellsNeeded);
-    for (int i=0; i < spellsNeeded; i++)     spellsToAdd.add(reserveSpells.get(i));
-    for (int i=spellsNeeded + 1; i < reserveSpells.size() - 1; i++) {
-      int j=random.nextInt(i);
-      Card randomCard=reserveSpells.get(j);
-      if (isValidSpellCard(randomCard) && j < spellsToAdd.size()) {
-        spellsToAdd.set(j,randomCard);
+    if (reserveSpells.size() >= spellsNeeded) {
+      List<Card> spellsToAdd=new ArrayList<>(spellsNeeded);
+      for (int i=0; i < spellsNeeded; i++)       spellsToAdd.add(reserveSpells.get(i));
+      for (int i=spellsNeeded + 1; i < reserveSpells.size() - 1; i++) {
+        int j=random.nextInt(i);
+        Card randomCard=reserveSpells.get(j);
+        if (isValidSpellCard(randomCard) && j < spellsToAdd.size()) {
+          spellsToAdd.set(j,randomCard);
+        }
       }
+      deckCards.addAll(spellsToAdd);
     }
-    deckCards.addAll(spellsToAdd);
   }
  else   if (spellSize > (deckSize - landCount)) {
     int spellsRemoved=(spellSize) - (deckSize - landCount);
@@ -25,7 +24,7 @@
     }
   }
   if (deckCards.size() != nonLandSize) {
-    throw new IllegalStateException("Not enough cards found to generate deck. Please try again");
+    throw new IllegalStateException("Not enough cards found to generate deck.");
   }
   return deckCards;
 }
