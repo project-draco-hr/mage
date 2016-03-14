@@ -1,32 +1,32 @@
 {
-  if (validForTurnNum > 0 && validForTurnNum < game.getTurnNum()) {
-    discard();
-    return false;
-  }
   if (GameEvent.EventType.UNTAP_STEP.equals(event.getType())) {
-    UUID controllerId=null;
+    boolean allHandled=true;
     for (    UUID targetId : getTargetPointer().getTargets(game,source)) {
       Permanent permanent=game.getPermanent(targetId);
       if (permanent != null) {
-        controllerId=permanent.getControllerId();
+        if (game.getActivePlayerId().equals(permanent.getControllerId()) || (game.getActivePlayerId().equals(onlyIfControlledByPlayer))) {
+          if (!handledTargetsDuringTurn.containsKey(targetId)) {
+            handledTargetsDuringTurn.put(targetId,false);
+            allHandled=false;
+          }
+ else           if (!handledTargetsDuringTurn.get(targetId)) {
+            handledTargetsDuringTurn.put(targetId,true);
+          }
+        }
+ else {
+          allHandled=false;
+        }
       }
     }
-    if (controllerId == null) {
+    if (allHandled) {
       discard();
-      return false;
-    }
-    if (game.getActivePlayerId().equals(controllerId)) {
-      if (validForTurnNum == game.getTurnNum()) {
-        discard();
-        return false;
-      }
-      validForTurnNum=game.getTurnNum();
     }
   }
   if (game.getTurn().getStepType() == PhaseStep.UNTAP && event.getType() == EventType.UNTAP) {
-    if (targetPointer.getTargets(game,source).contains(event.getTargetId())) {
+    if (handledTargetsDuringTurn.containsKey(event.getTargetId()) && !handledTargetsDuringTurn.get(event.getTargetId()) && getTargetPointer().getTargets(game,source).contains(event.getTargetId())) {
       Permanent permanent=game.getPermanent(event.getTargetId());
       if (permanent != null && game.getActivePlayerId().equals(permanent.getControllerId())) {
+        handledTargetsDuringTurn.put(event.getTargetId(),true);
         return true;
       }
     }
