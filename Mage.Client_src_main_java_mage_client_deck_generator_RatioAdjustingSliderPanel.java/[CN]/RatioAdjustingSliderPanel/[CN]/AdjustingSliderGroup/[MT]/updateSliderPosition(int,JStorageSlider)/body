@@ -1,0 +1,17 @@
+{
+  int remaining=change;
+  while (remaining != 0) {
+    JStorageSlider slider=storageSliders.get(sliderIndex);
+    if (slider != source) {
+      if (remaining < 0 || (remaining > 0 && slider.getValue() > 0)) {
+        int adjustment=Integer.signum(remaining);
+        slider.setValue(slider.getValue() - adjustment);
+        remaining-=adjustment;
+      }
+    }
+    sliderIndex=(sliderIndex + 1) % storageSliders.size();
+  }
+  for (  JStorageSlider slider : storageSliders) {
+    slider.setPreviousValue(slider.getValue());
+  }
+}
