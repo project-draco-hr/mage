@@ -1,0 +1,12 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player != null) {
+    for (    Permanent creature : game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),player.getId(),game)) {
+      ContinuousEffect effect=new DontUntapInControllersNextUntapStepTargetEffect();
+      effect.setTargetPointer(new FixedTarget(creature.getId()));
+      game.addEffect(effect,source);
+    }
+    return true;
+  }
+  return false;
+}
