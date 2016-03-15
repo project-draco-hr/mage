@@ -1,0 +1,9 @@
+{
+  CardInfo cardInfo=CardRepository.instance.findCard(cardName);
+  if (cardInfo == null) {
+    throw new IllegalArgumentException("Couldn't find the card " + cardName + " in the DB.");
+  }
+  Card card=cardInfo.getCard();
+  FilterMana filterMana=CardUtil.getColorIdentity(card);
+  return filterMana.toString();
+}
