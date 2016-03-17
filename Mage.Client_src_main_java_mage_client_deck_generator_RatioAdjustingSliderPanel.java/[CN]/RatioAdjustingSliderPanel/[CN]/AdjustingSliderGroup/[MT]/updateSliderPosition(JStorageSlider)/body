@@ -1,0 +1,35 @@
+{
+  int maximum=MAXIMUM;
+  int excess=100;
+  int sign=0;
+  for (  JStorageSlider slider : storageSliders) {
+    excess-=slider.getValue();
+  }
+  sign=Integer.signum(excess);
+  excess=Math.abs(excess);
+  int addition=excess / (adjustableCount - 1);
+  if (addition == 0 && excess != 0) {
+    addition=1;
+  }
+  for (int i=storageSliders.size() - 1; i >= 0; i--) {
+    JStorageSlider slider=storageSliders.get(i);
+    int value=slider.getValue();
+    if (slider != source && slider.isAdjust()) {
+      slider.setMaximum(maximum);
+      if (excess >= addition) {
+        value+=addition * sign;
+        excess-=addition;
+      }
+ else {
+        value+=excess * sign;
+        excess=0;
+      }
+      if (value < 0) {
+        excess+=value;
+        value=0;
+      }
+      slider.setValue(value);
+    }
+    maximum-=value;
+  }
+}
