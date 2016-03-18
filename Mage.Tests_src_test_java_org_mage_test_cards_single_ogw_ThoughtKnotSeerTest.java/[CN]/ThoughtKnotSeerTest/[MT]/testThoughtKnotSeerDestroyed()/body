@@ -1,0 +1,13 @@
+{
+  addCard(Zone.HAND,playerA,"Doom Blade");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Thought-Knot Seer");
+  addCard(Zone.BATTLEFIELD,playerB,"Wastes",4);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Doom Blade");
+  addTarget(playerA,"Thought-Knot Seer");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Thought-Knot Seer",1);
+  Set<Card> hand=playerA.getHand().getCards(currentGame);
+  assertHandCount(playerA,1);
+}

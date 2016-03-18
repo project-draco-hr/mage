@@ -1,0 +1,14 @@
+{
+  addCard(Zone.HAND,playerA,"Path to Exile");
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Thought-Knot Seer");
+  addCard(Zone.BATTLEFIELD,playerB,"Wastes",4);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Path to Exile");
+  addTarget(playerA,"Thought-Knot Seer");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertExileCount(playerB,1);
+  assertExileCount("Thought-Knot Seer",1);
+  Set<Card> hand=playerA.getHand().getCards(currentGame);
+  assertHandCount(playerA,1);
+}

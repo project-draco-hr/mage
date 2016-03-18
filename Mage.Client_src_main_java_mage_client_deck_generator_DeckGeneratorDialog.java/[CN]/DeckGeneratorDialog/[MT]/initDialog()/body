@@ -1,49 +1,73 @@
 {
-  JPanel p0=new JPanel();
-  p0.setLayout(new BoxLayout(p0,BoxLayout.Y_AXIS));
-  JLabel text=new JLabel("Choose color for your deck: ");
-  text.setAlignmentX(Component.CENTER_ALIGNMENT);
-  p0.add(text);
-  p0.add(Box.createVerticalStrut(5));
+  JPanel mainPanel=new JPanel();
+  mainPanel.setLayout(new GridBagLayout());
+  GridBagConstraints c=new GridBagConstraints();
+  c.insets=new Insets(0,15,0,0);
+  c.fill=GridBagConstraints.HORIZONTAL;
+  c.gridx=0;
+  c.gridy=0;
+  c.weightx=0.10;
+  JLabel text=new JLabel("Choose color for your deck:");
+  mainPanel.add(text,c);
+  c.fill=GridBagConstraints.HORIZONTAL;
+  c.weightx=0.80;
+  c.ipadx=30;
+  c.insets=new Insets(5,10,0,10);
+  c.gridx=1;
+  c.gridy=0;
   String chosen=MageFrame.getPreferences().get("genDeckColor","u");
   final ColorsChooser colorsChooser=new ColorsChooser(chosen);
-  p0.add(colorsChooser);
-  p0.add(Box.createVerticalStrut(5));
-  JLabel text2=new JLabel("(X - random color)");
-  text2.setAlignmentX(Component.CENTER_ALIGNMENT);
-  p0.add(text2);
-  p0.add(Box.createVerticalStrut(5));
-  JPanel jPanel=new JPanel();
-  JLabel text3=new JLabel("Choose sets:");
-  cbSets=new JComboBox<String>(ConstructedFormats.getTypes());
+  mainPanel.add(colorsChooser,c);
+  c.insets=new Insets(0,15,0,0);
+  c.fill=GridBagConstraints.HORIZONTAL;
+  c.weightx=0.10;
+  c.gridx=2;
+  c.gridy=0;
+  c.ipadx=0;
+  JLabel text2=new JLabel("(X = random color)");
+  mainPanel.add(text2);
+  JLabel formatSetText=new JLabel("Choose format/set for your deck:");
+  c.fill=GridBagConstraints.HORIZONTAL;
+  c.gridx=0;
+  c.gridy=1;
+  c.weightx=0.10;
+  mainPanel.add(formatSetText,c);
+  c.fill=GridBagConstraints.HORIZONTAL;
+  c.gridx=1;
+  c.gridy=1;
+  c.ipadx=30;
+  c.insets=new Insets(5,10,0,10);
+  c.weightx=0.90;
+  cbSets=new JComboBox<>(ConstructedFormats.getTypes());
   cbSets.setSelectedIndex(0);
-  cbSets.setPreferredSize(new Dimension(300,25));
-  cbSets.setMaximumSize(new Dimension(300,25));
-  cbSets.setAlignmentX(Component.LEFT_ALIGNMENT);
-  jPanel.add(text3);
-  jPanel.add(cbSets);
-  p0.add(jPanel);
+  mainPanel.add(cbSets,c);
   String prefSet=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_DECK_GENERATOR_SET,null);
   if (prefSet != null) {
     cbSets.setSelectedItem(prefSet);
   }
-  p0.add(Box.createVerticalStrut(5));
-  JPanel jPanel2=new JPanel();
+  c.fill=GridBagConstraints.HORIZONTAL;
+  c.insets=new Insets(0,15,0,0);
+  c.ipadx=0;
+  c.gridx=0;
+  c.gridy=2;
+  c.weightx=0.10;
   JLabel textDeckSize=new JLabel("Deck size:");
-  cbDeckSize=new JComboBox<String>(new String[]{"40","60"});
+  mainPanel.add(textDeckSize,c);
+  c.fill=GridBagConstraints.HORIZONTAL;
+  c.gridx=1;
+  c.gridy=2;
+  c.ipadx=30;
+  c.insets=new Insets(5,10,0,10);
+  c.weightx=0.90;
+  cbDeckSize=new JComboBox<>(new String[]{"40","60"});
   cbDeckSize.setSelectedIndex(0);
-  cbDeckSize.setPreferredSize(new Dimension(300,25));
-  cbDeckSize.setMaximumSize(new Dimension(300,25));
   cbDeckSize.setAlignmentX(Component.LEFT_ALIGNMENT);
-  jPanel2.add(textDeckSize);
-  jPanel2.add(cbDeckSize);
-  p0.add(jPanel2);
+  mainPanel.add(cbDeckSize,c);
   String prefSize=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_DECK_GENERATOR_DECK_SIZE,"60");
   if (prefSet != null) {
     cbDeckSize.setSelectedItem(prefSize);
   }
-  p0.add(Box.createVerticalStrut(5));
-  JPanel jCheckBoxes=new JPanel();
+  JPanel jCheckBoxes=new JPanel(new FlowLayout(FlowLayout.LEFT));
   cSingleton=new JCheckBox("Singleton",false);
   cSingleton.setToolTipText("Allow only a single copy of each non-land card in your deck.");
   String singletonEnabled=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_DECK_GENERATOR_SINGLETON,"false");
@@ -64,9 +88,34 @@
   String colorlessEnabled=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_DECK_GENERATOR_COLORLESS,"false");
   cColorless.setSelected(Boolean.valueOf(colorlessEnabled));
   jCheckBoxes.add(cColorless);
-  jCheckBoxes.setPreferredSize(new Dimension(450,25));
-  jCheckBoxes.setMaximumSize(new Dimension(450,25));
-  p0.add(jCheckBoxes);
+  c.ipadx=0;
+  c.gridx=0;
+  c.gridy=3;
+  c.weightx=1;
+  c.gridwidth=3;
+  mainPanel.add(jCheckBoxes,c);
+  JPanel advancedPanel=createAdvancedPanel();
+  cAdvanced=new JCheckBox("Advanced");
+  cAdvanced.setToolTipText("Enable advanced configuration options");
+  cAdvanced.addItemListener(new ItemListener(){
+    @Override public void itemStateChanged(    ItemEvent itemEvent){
+      boolean enable=cAdvanced.isSelected();
+      enableAdvancedPanel(enable);
+    }
+  }
+);
+  String advancedSavedValue=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_DECK_GENERATOR_ADVANCED,"false");
+  boolean advancedEnabled=Boolean.valueOf(advancedSavedValue);
+  enableAdvancedPanel(advancedEnabled);
+  cAdvanced.setSelected(advancedEnabled);
+  c.gridy=4;
+  c.weightx=0;
+  c.insets=new Insets(10,15,10,0);
+  mainPanel.add(cAdvanced,c);
+  c.gridy=5;
+  c.weightx=1;
+  c.insets=new Insets(5,10,0,5);
+  mainPanel.add(advancedPanel,c);
   btnGenerate=new JButton("Ok");
   btnGenerate.addActionListener(new ActionListener(){
     @Override public void actionPerformed(    ActionEvent e){
@@ -87,8 +136,9 @@
   }
 );
   JButton[] options={btnGenerate,btnCancel};
-  JOptionPane optionPane=new JOptionPane(p0,JOptionPane.PLAIN_MESSAGE,JOptionPane.DEFAULT_OPTION,null,options,options[1]);
-  dlg=optionPane.createDialog("Generating deck");
+  JOptionPane optionPane=new JOptionPane(mainPanel,JOptionPane.PLAIN_MESSAGE,JOptionPane.DEFAULT_OPTION,null,options,options[1]);
+  dlg=optionPane.createDialog("Generating Deck");
+  dlg.setResizable(false);
   dlg.setVisible(true);
   dlg.dispose();
 }

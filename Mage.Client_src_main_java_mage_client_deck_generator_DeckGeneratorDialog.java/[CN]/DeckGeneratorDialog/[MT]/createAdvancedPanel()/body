@@ -1,0 +1,57 @@
+{
+  JPanel advancedPanel=new JPanel(new GridBagLayout());
+  GridBagConstraints c=new GridBagConstraints();
+  c.fill=GridBagConstraints.HORIZONTAL;
+  c.gridx=0;
+  c.gridy=0;
+  c.weightx=0.10;
+  averageCMCLabel=new JLabel("Average CMC:");
+  advancedPanel.add(averageCMCLabel,c);
+  c.fill=GridBagConstraints.HORIZONTAL;
+  c.weightx=0.90;
+  c.gridx=2;
+  c.gridy=0;
+  cbCMC=new JComboBox<>(DeckGeneratorCMC.values());
+  cbCMC.setSelectedItem(DeckGeneratorCMC.Default);
+  String cmcSelected=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_DECK_GENERATOR_ADVANCED_CMC,DeckGeneratorCMC.Default.name());
+  cbCMC.setSelectedItem(DeckGeneratorCMC.valueOf(cmcSelected));
+  advancedPanel.add(cbCMC,c);
+  c.fill=GridBagConstraints.HORIZONTAL;
+  c.ipady=20;
+  c.ipadx=40;
+  c.weightx=1;
+  c.gridwidth=3;
+  c.gridx=0;
+  c.gridy=1;
+  c.insets=new Insets(10,0,0,0);
+  adjustingSliderPanel=new RatioAdjustingSliderPanel();
+  String landPercentage=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_DECK_GENERATOR_LAND_PERCENTAGE,Integer.toString(DeckGeneratorPool.DEFAULT_LAND_PERCENTAGE));
+  adjustingSliderPanel.setLandPercentage(Integer.parseInt(landPercentage));
+  String nonCreaturePercentage=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_DECK_GENERATOR_NON_CREATURE_PERCENTAGE,Integer.toString(DeckGeneratorPool.DEFAULT_NON_CREATURE_PERCENTAGE));
+  adjustingSliderPanel.setNonCreaturePercentage(Integer.parseInt(nonCreaturePercentage));
+  String creaturePercentage=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_NEW_DECK_GENERATOR_CREATURE_PERCENTAGE,Integer.toString(DeckGeneratorPool.DEFAULT_CREATURE_PERCENTAGE));
+  adjustingSliderPanel.setCreaturePercentage(Integer.parseInt(creaturePercentage));
+  advancedPanel.add(adjustingSliderPanel,c);
+  c.fill=GridBagConstraints.NONE;
+  c.ipadx=0;
+  c.ipady=0;
+  c.weightx=1.0;
+  c.anchor=GridBagConstraints.LAST_LINE_END;
+  c.insets=new Insets(10,10,0,0);
+  c.gridx=2;
+  c.gridwidth=1;
+  c.gridy=2;
+  btnReset=new JButton("Reset");
+  btnReset.setToolTipText("Reset advanced dialog to default values");
+  btnReset.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent actionEvent){
+      cbCMC.setSelectedItem(DeckGeneratorCMC.Default);
+      adjustingSliderPanel.resetValues();
+    }
+  }
+);
+  advancedPanel.add(btnReset,c);
+  CompoundBorder border=BorderFactory.createCompoundBorder(new EtchedBorder(),new EmptyBorder(10,10,10,10));
+  advancedPanel.setBorder(border);
+  return advancedPanel;
+}
