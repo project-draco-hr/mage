@@ -1,0 +1,13 @@
+{
+  Spell spell=game.getStack().getSpell(targetPointer.getFirst(game,source));
+  if (spell != null) {
+    String nameOfExiledCardPayment=(String)game.getState().getValue(source.getSourceId() + "_nameOfExiledCardPayment");
+    String nameOfExiledCardPayment2=(String)game.getState().getValue(source.getSourceId() + "_nameOfExiledCardPayment2");
+    if (nameOfExiledCardPayment != null) {
+      if (nameOfExiledCardPayment.matches(spell.getName()) || nameOfExiledCardPayment2.matches(spell.getName())) {
+        return game.getStack().counter(targetPointer.getFirst(game,source),source.getSourceId(),game);
+      }
+    }
+  }
+  return false;
+}
