@@ -1,8 +1,8 @@
 {
   Player player=game.getPlayer(source.getControllerId());
-  Permanent permanent=game.getPermanent(source.getSourceId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
   String chosenType="";
-  if (player != null && permanent != null) {
+  if (player != null && sourceObject != null) {
     Choice typeChoice=new ChoiceImpl(true);
     typeChoice.setMessage("Choose a creature type other than Wall");
     Set<String> types=CardRepository.instance.getCreatureTypes();
@@ -13,7 +13,7 @@
         return false;
       }
     }
-    game.informPlayers(permanent.getName() + ": " + player.getLogName()+ " has chosen "+ typeChoice.getChoice());
+    game.informPlayers(sourceObject.getLogName() + ": " + player.getLogName()+ " has chosen "+ typeChoice.getChoice());
     chosenType=typeChoice.getChoice();
     if (chosenType != null && !chosenType.isEmpty()) {
       ContinuousEffect effect=new BecomesSubtypeAllEffect(Duration.EndOfTurn,chosenType);
