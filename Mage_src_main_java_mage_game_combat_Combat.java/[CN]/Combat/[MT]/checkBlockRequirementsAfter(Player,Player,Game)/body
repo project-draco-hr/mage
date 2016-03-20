@@ -136,6 +136,25 @@
       continue;
     }
     if (creatureForcedToBlock.getBlocking() == 0) {
+      boolean validBlockPossible=false;
+      for (      UUID possibleAttackerId : entry.getValue()) {
+        CombatGroup attackersGroup=findGroup(possibleAttackerId);
+        if (attackersGroup.getBlockers().contains(creatureForcedToBlock.getId())) {
+          validBlockPossible=true;
+          break;
+        }
+        Permanent attackingCreature=game.getPermanent(possibleAttackerId);
+        if (attackingCreature.getMinBlockedBy() > 1) {
+          if (attackersGroup.getBlockers().size() + 1 >= attackingCreature.getMinBlockedBy()) {
+            validBlockPossible=true;
+          }
+        }
+      }
+      if (!validBlockPossible) {
+        continue;
+      }
+    }
+    if (creatureForcedToBlock.getBlocking() == 0) {
       blockIsValid=false;
     }
  else {
