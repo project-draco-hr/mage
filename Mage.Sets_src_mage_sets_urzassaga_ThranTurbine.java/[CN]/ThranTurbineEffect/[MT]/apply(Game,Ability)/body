@@ -1,0 +1,20 @@
+{
+  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  if (player != null) {
+    Choice numberChoice=new ChoiceImpl();
+    HashSet<String> numbers=new HashSet<String>();
+    numbers.add(Integer.toString(1));
+    numbers.add(Integer.toString(2));
+    numberChoice.setChoices(numbers);
+    numberChoice.setMessage("Choose the amount of {C} mana to add");
+    while (!player.choose(Outcome.Benefit,numberChoice,game)) {
+      if (!player.canRespond()) {
+        return false;
+      }
+    }
+    int count=Integer.parseInt(numberChoice.getChoice());
+    new AddConditionalColorlessManaEffect(count,new ThranTurbineManaBuilder()).apply(game,source);
+    return true;
+  }
+  return false;
+}
