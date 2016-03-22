@@ -1,0 +1,17 @@
+{
+switch (event.getType()) {
+case DAMAGE_PLAYER:
+    if (event.getTargetId().equals(source.getControllerId())) {
+      event.setAmount(event.getAmount() * 2);
+    }
+  break;
+case DAMAGE_CREATURE:
+Permanent permanent=game.getPermanent(event.getTargetId());
+if (permanent != null) {
+if (permanent.getId().equals(source.getSourceId())) {
+  event.setAmount(event.getAmount() * 2);
+}
+}
+}
+return false;
+}

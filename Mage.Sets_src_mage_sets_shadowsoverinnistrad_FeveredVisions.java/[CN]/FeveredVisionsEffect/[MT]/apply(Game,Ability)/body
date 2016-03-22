@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  UUID activePlayerId=game.getActivePlayerId();
+  Player player=game.getPlayer(activePlayerId);
+  if (controller != null && player != null) {
+    player.drawCards(1,game);
+    Set<UUID> opponents=game.getOpponents(source.getControllerId());
+    if (opponents.contains(player.getId()) && player.getHand().size() > 3) {
+      player.damage(2,source.getSourceId(),game,false,true);
+    }
+    return true;
+  }
+  return false;
+}
