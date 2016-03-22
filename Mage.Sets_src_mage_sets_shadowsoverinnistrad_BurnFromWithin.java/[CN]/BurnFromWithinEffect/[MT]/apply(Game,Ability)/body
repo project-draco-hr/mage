@@ -1,0 +1,22 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Permanent creature=game.getPermanent(getTargetPointer().getFirst(game,source));
+    int amount=source.getManaCostsToPay().getX();
+    if (creature != null) {
+      int damageDealt=creature.damage(amount,source.getSourceId(),game,false,true);
+      if (damageDealt > 0) {
+        ContinuousEffect effect=new LoseAbilityTargetEffect(IndestructibleAbility.getInstance(),Duration.EndOfTurn);
+        effect.setTargetPointer(new FixedTarget(creature.getId()));
+        game.addEffect(effect,source);
+      }
+      return true;
+    }
+    Player targetPlayer=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+    if (targetPlayer != null) {
+      targetPlayer.damage(amount,source.getSourceId(),game,false,true);
+      return true;
+    }
+  }
+  return false;
+}
