@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    FilterControlledPermanent filter=new FilterControlledPermanent("each token you control");
+    filter.add(new TokenPredicate());
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(filter,controller.getId(),game)) {
+      if (permanent != null) {
+        PutTokenOntoBattlefieldCopyTargetEffect effect=new PutTokenOntoBattlefieldCopyTargetEffect();
+        effect.setTargetPointer(new FixedTarget(permanent,game));
+        effect.apply(game,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}
