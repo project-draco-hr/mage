@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mulldrifter");
+  addCard(Zone.BATTLEFIELD,playerA,"Merfolk Looter");
+  addCard(Zone.BATTLEFIELD,playerA,"Island",5);
+  addCard(Zone.HAND,playerA,"Ghostly Flicker");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Ghostly Flicker");
+  addTarget(playerA,"Mulldrifter^Merfolk Looter");
+  setChoice(playerA,"No");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Mulldrifter",1);
+  assertPermanentCount(playerA,"Merfolk Looter",1);
+  assertGraveyardCount(playerA,"Ghostly Flicker",1);
+  assertHandCount(playerA,2);
+}
