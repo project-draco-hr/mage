@@ -1,0 +1,16 @@
+{
+  if (event.getType() == GameEvent.EventType.SACRIFICED_PERMANENT) {
+    Permanent perm=game.getPermanentOrLKIBattlefield(event.getTargetId());
+    if (perm != null) {
+      List<Permanent> permanents;
+      if (!sacrificedPermanents.containsKey(perm.getControllerId())) {
+        permanents=new ArrayList<>();
+        sacrificedPermanents.put(perm.getControllerId(),permanents);
+      }
+ else {
+        permanents=sacrificedPermanents.get(perm.getControllerId());
+      }
+      permanents.add(perm);
+    }
+  }
+}
