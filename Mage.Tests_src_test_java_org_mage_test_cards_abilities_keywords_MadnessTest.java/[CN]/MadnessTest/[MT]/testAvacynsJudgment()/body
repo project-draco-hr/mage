@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",5);
+  addCard(Zone.HAND,playerA,"Avacyn's Judgment",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",6);
+  addCard(Zone.HAND,playerB,"Haunting Hymn");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Haunting Hymn",playerA);
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"X=4");
+  addTarget(playerA,"Pillarfield Ox");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Haunting Hymn",1);
+  assertGraveyardCount(playerA,"Avacyn's Judgment",1);
+  assertGraveyardCount(playerB,"Pillarfield Ox",1);
+}
