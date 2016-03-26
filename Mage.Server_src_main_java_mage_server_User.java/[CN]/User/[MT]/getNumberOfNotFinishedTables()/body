@@ -1,0 +1,15 @@
+{
+  int number=0;
+  for (  Table table : tables.values()) {
+    if (table.getState().equals(TableState.FINISHED)) {
+      number++;
+    }
+ else {
+      TableController tableController=TableManager.getInstance().getController(table.getId());
+      if (tableController != null && tableController.isUserStillActive(userId)) {
+        number++;
+      }
+    }
+  }
+  return number;
+}
