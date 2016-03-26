@@ -6,6 +6,7 @@ case PASS_PRIORITY_UNTIL_MY_NEXT_TURN:
 passedTurn=false;
 passedAllTurns=true;
 passedUntilStackResolved=false;
+passedUntilEndStepBeforeMyTurn=false;
 this.skip();
 break;
 case PASS_PRIORITY_UNTIL_TURN_END_STEP:
@@ -14,6 +15,7 @@ passedTurn=false;
 passedAllTurns=false;
 passedUntilEndOfTurn=true;
 passedUntilStackResolved=false;
+passedUntilEndStepBeforeMyTurn=false;
 skippedAtLeastOnce=!PhaseStep.END_TURN.equals(game.getTurn().getStepType());
 this.skip();
 break;
@@ -22,6 +24,7 @@ passedUntilNextMain=false;
 passedAllTurns=false;
 passedUntilEndOfTurn=false;
 passedUntilStackResolved=false;
+passedUntilEndStepBeforeMyTurn=false;
 passedTurn=true;
 this.skip();
 break;
@@ -31,6 +34,7 @@ passedTurn=false;
 passedUntilEndOfTurn=false;
 passedUntilNextMain=true;
 passedUntilStackResolved=false;
+passedUntilEndStepBeforeMyTurn=false;
 skippedAtLeastOnce=!(game.getTurn().getStepType().equals(PhaseStep.POSTCOMBAT_MAIN) || game.getTurn().getStepType().equals(PhaseStep.PRECOMBAT_MAIN));
 this.skip();
 break;
@@ -40,7 +44,17 @@ passedTurn=false;
 passedUntilEndOfTurn=false;
 passedUntilNextMain=false;
 passedUntilStackResolved=true;
+passedUntilEndStepBeforeMyTurn=false;
 dateLastAddedToStack=game.getStack().getDateLastAdded();
+this.skip();
+break;
+case PASS_PRIORITY_UNTIL_END_STEP_BEFORE_MY_NEXT_TURN:
+passedAllTurns=false;
+passedTurn=false;
+passedUntilEndOfTurn=false;
+passedUntilNextMain=false;
+passedUntilStackResolved=false;
+passedUntilEndStepBeforeMyTurn=true;
 this.skip();
 break;
 case PASS_PRIORITY_CANCEL_ALL_ACTIONS:
@@ -49,6 +63,7 @@ passedTurn=false;
 passedUntilEndOfTurn=false;
 passedUntilNextMain=false;
 passedUntilStackResolved=false;
+passedUntilEndStepBeforeMyTurn=false;
 break;
 case PERMISSION_REQUESTS_ALLOWED_OFF:
 userData.setAllowRequestShowHandCards(false);
