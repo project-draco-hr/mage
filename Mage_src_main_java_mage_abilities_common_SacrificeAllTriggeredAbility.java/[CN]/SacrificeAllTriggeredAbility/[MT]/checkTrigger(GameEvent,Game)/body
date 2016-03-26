@@ -1,0 +1,17 @@
+{
+switch (sacrificingPlayer) {
+case YOU:
+    if (event.getPlayerId().equals(getControllerId())) {
+      return false;
+    }
+  break;
+case OPPONENT:
+Player controller=game.getPlayer(getControllerId());
+if (controller == null || !controller.hasOpponent(event.getPlayerId(),game)) {
+return false;
+}
+break;
+}
+Permanent sacrificedPermanent=game.getPermanentOrLKIBattlefield(event.getTargetId());
+return sacrificedPermanent != null && filter.match(sacrificedPermanent,getSourceId(),getControllerId(),game);
+}
