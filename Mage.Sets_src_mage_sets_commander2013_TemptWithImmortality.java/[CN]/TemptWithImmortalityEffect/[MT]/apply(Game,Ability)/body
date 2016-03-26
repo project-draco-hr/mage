@@ -8,14 +8,14 @@
       if (opponent != null) {
         FilterCard filter=new FilterCreatureCard("creature card from your graveyard");
         filter.add(new OwnerIdPredicate(opponent.getId()));
-        Target targetOpponent=new TargetCardInGraveyard(filter);
-        if (targetOpponent.canChoose(source.getSourceId(),opponent.getId(),game)) {
-          if (opponent.chooseUse(outcome,new StringBuilder("Return a creature card from your graveyard to the battlefield?").toString(),source,game)) {
-            if (opponent.chooseTarget(outcome,targetOpponent,source,game)) {
-              Card card=game.getCard(targetOpponent.getFirstTarget());
+        Target targetCardOpponent=new TargetCardInGraveyard(filter);
+        if (targetCardOpponent.canChoose(source.getSourceId(),opponent.getId(),game)) {
+          if (opponent.chooseUse(outcome,"Return a creature card from your graveyard to the battlefield?",source,game)) {
+            if (opponent.chooseTarget(outcome,targetCardOpponent,source,game)) {
+              Card card=game.getCard(targetCardOpponent.getFirstTarget());
               if (card != null) {
                 opponentsReturnedCreatures++;
-                card.moveToZone(Zone.BATTLEFIELD,source.getSourceId(),game,false);
+                opponent.moveCards(card,Zone.BATTLEFIELD,source,game);
               }
             }
           }

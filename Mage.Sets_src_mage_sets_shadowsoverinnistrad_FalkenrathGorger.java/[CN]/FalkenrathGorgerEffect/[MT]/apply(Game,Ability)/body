@@ -1,0 +1,20 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    Card card : controller.getHand().getCards(filter,game)) {
+      game.getState().addOtherAbility(card,new MadnessAbility(card,card.getSpellAbility().getManaCosts()));
+    }
+    for (    Card card : controller.getGraveyard().getCards(filter,game)) {
+      game.getState().addOtherAbility(card,new MadnessAbility(card,card.getSpellAbility().getManaCosts()));
+    }
+    for (    Card card : game.getExile().getAllCards(game)) {
+      if (filter.match(card,source.getSourceId(),controller.getId(),game)) {
+        if (card.getOwnerId().equals(controller.getId())) {
+          game.getState().addOtherAbility(card,new MadnessAbility(card,card.getSpellAbility().getManaCosts()));
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
