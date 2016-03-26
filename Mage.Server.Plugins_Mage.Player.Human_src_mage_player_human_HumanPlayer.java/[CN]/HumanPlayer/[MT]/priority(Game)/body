@@ -18,6 +18,21 @@
         return false;
       }
     }
+    if (passedUntilEndStepBeforeMyTurn) {
+      if (!game.getTurn().getStepType().equals(PhaseStep.END_TURN)) {
+        if (passWithManaPoolCheck(game)) {
+          return false;
+        }
+      }
+ else {
+        PlayerList playerList=game.getState().getPlayerList(playerId);
+        if (!playerList.getPrevious().equals(game.getActivePlayerId())) {
+          if (passWithManaPoolCheck(game)) {
+            return false;
+          }
+        }
+      }
+    }
     if (game.getStack().isEmpty()) {
       passedUntilStackResolved=false;
       boolean dontCheckPassStep=false;
