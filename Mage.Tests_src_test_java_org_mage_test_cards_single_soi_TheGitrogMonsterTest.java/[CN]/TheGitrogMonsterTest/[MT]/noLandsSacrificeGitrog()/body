@@ -1,0 +1,19 @@
+{
+  addCard(Zone.HAND,playerA,"The Gitrog Monster",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",2);
+  addCard(Zone.HAND,playerB,"Armageddon",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",4);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"The Gitrog Monster");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Armageddon");
+  setStopAt(3,PhaseStep.DRAW);
+  execute();
+  Set<Card> hand=playerA.getHand().getCards(currentGame);
+  assertGraveyardCount(playerA,"Swamp",3);
+  assertGraveyardCount(playerA,"Forest",2);
+  assertGraveyardCount(playerA,"The Gitrog Monster",1);
+  assertGraveyardCount(playerB,"Plains",4);
+  assertGraveyardCount(playerB,"Armageddon",1);
+  assertPermanentCount(playerA,"The Gitrog Monster",0);
+  assertHandCount(playerA,6);
+}
