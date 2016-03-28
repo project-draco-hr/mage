@@ -16,7 +16,9 @@
         for (        Permanent permanent : game.getBattlefield().getAllActivePermanents(controllerPermanentId)) {
           if (permanent != null && permanent.getName().equals(name)) {
             you.moveCardToExileWithInfo(permanent,exileId,sourceObject.getIdName(),source.getSourceId(),game,Zone.BATTLEFIELD,true);
-            exiledCount++;
+            if (nonTokenFilter.match(permanent,game)) {
+              exiledCount++;
+            }
           }
         }
       }
