@@ -1,0 +1,15 @@
+{
+  if (abilityToModify instanceof SpellAbility) {
+    if (game.getOpponents(source.getControllerId()).contains(abilityToModify.getControllerId())) {
+      for (      Target target : abilityToModify.getTargets()) {
+        for (        UUID targetUUID : target.getTargets()) {
+          Permanent permanent=game.getPermanent(targetUUID);
+          if (permanent != null && permanent.getId().equals(source.getSourceId())) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}
