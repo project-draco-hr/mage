@@ -1,0 +1,13 @@
+{
+  addCard(Zone.HAND,playerA,"Necromantic Summons",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",5);
+  addCard(Zone.GRAVEYARD,playerB,"Merfolk Looter",1);
+  addCard(Zone.GRAVEYARD,playerB,"Prized Amalgam",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Necromantic Summons");
+  addTarget(playerA,"Merfolk Looter");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Merfolk Looter",1);
+  assertPermanentCount(playerB,"Prized Amalgam",0);
+  assertGraveyardCount(playerB,"Prized Amalgam",1);
+}
