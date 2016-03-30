@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerA,"Reanimate",1);
+  addCard(Zone.GRAVEYARD,playerA,"Bronze Sable",1);
+  addCard(Zone.GRAVEYARD,playerA,"Prized Amalgam",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Reanimate");
+  addTarget(playerA,"Bronze Sable");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,18);
+  assertGraveyardCount(playerA,"Reanimate",1);
+  assertPermanentCount(playerA,"Bronze Sable",1);
+  assertPermanentCount(playerA,"Prized Amalgam",1);
+  assertTapped("Prized Amalgam",true);
+}
