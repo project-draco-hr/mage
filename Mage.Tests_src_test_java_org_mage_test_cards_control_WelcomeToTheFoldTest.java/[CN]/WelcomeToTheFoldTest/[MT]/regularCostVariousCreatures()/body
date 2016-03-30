@@ -1,0 +1,19 @@
+{
+  addCard(Zone.HAND,playerA,"Welcome to the Fold",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",12);
+  addCard(Zone.BATTLEFIELD,playerB,"Arashin Cleric",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Jace, Vryn's Prodigy",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Elite Vanguard",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Welcome to the Fold");
+  addTarget(playerA,"Arashin Cleric");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Welcome to the Fold");
+  addTarget(playerA,"Jace, Vryn's Prodigy");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Welcome to the Fold");
+  addTarget(playerA,"Elite Vanguard");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerA,"Welcome to the Fold",3);
+  assertPermanentCount(playerA,"Arashin Cleric",0);
+  assertPermanentCount(playerA,"Jace, Vryn's Prodigy",1);
+  assertPermanentCount(playerA,"Elite Vanguard",1);
+}
