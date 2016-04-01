@@ -71,7 +71,16 @@
         if (cardOpponent != null) {
           opponent.moveCardToLibraryWithInfo(cardOpponent,source.getSourceId(),game,Zone.LIBRARY,topOpponent,true);
         }
-        game.fireEvent(new GameEvent(EventType.CLASHED,opponent.getId(),source.getSourceId(),controller.getId(),0,cmcController > cmcOpponent));
+        String winner="draw";
+        if (cmcController > cmcOpponent) {
+          winner="controller";
+        }
+        if (cmcOpponent > cmcController) {
+          winner="opponent";
+        }
+        GameEvent gameEvent=new GameEvent(EventType.CLASHED,opponent.getId(),source.getSourceId(),controller.getId());
+        gameEvent.setData(winner);
+        game.fireEvent(gameEvent);
         for (        Effect effect : source.getEffects()) {
           if (effect instanceof DoIfClashWonEffect) {
             effect.setValue("clashOpponent",opponent);
