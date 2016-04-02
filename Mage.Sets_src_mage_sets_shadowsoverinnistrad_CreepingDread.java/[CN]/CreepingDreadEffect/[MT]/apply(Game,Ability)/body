@@ -1,19 +1,19 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    List<CardType> typesChosen=new ArrayList<>();
+    Set<CardType> typesChosen=new HashSet<>();
     Map<Player,Card> cardsChosen=new HashMap<>();
     if (!controller.getHand().isEmpty()) {
       TargetCard controllerTarget=new TargetCard(Zone.HAND,new FilterCard());
       if (controller.choose(Outcome.Discard,controller.getHand(),controllerTarget,game)) {
         Card card=controller.getHand().get(controllerTarget.getFirstTarget(),game);
         if (card != null) {
-          typesChosen=card.getCardType();
+          typesChosen=new HashSet<>(card.getCardType());
           cardsChosen.put(controller,card);
         }
       }
     }
-    ArrayList<Player> opponentsAffected=new ArrayList<>();
+    Set<Player> opponentsAffected=new HashSet<>();
     for (    UUID playerId : game.getOpponents(source.getControllerId())) {
       Player opponent=game.getPlayer(playerId);
       if (!opponent.getHand().isEmpty()) {
@@ -36,11 +36,6 @@
         }
       }
     }
-    if (!opponentsAffected.isEmpty()) {
-      for (      Player opponent : opponentsAffected) {
-        opponent.loseLife(3,game);
-      }
-    }
     if (!cardsChosen.isEmpty()) {
       for (      Map.Entry<Player,Card> entry : cardsChosen.entrySet()) {
         Player player=entry.getKey();
@@ -48,6 +43,11 @@
         if (player != null && cardChosen != null) {
           player.discard(cardChosen,source,game);
         }
+      }
+    }
+    if (!opponentsAffected.isEmpty()) {
+      for (      Player opponent : opponentsAffected) {
+        opponent.loseLife(3,game);
       }
     }
     return true;
