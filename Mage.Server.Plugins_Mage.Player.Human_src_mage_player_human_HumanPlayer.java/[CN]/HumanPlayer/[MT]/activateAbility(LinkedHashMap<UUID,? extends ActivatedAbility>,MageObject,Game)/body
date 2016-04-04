@@ -7,7 +7,16 @@
       return;
     }
   }
-  game.fireGetChoiceEvent(playerId,name,object,new ArrayList<>(abilities.values()));
+  if (userData.isUseFirstManaAbility() && object instanceof Permanent && object.getCardType().contains(CardType.LAND)) {
+    ActivatedAbility ability=abilities.values().iterator().next();
+    if (ability instanceof ManaAbility) {
+      activateAbility(ability,game);
+      return;
+    }
+  }
+ else {
+    game.fireGetChoiceEvent(playerId,name,object,new ArrayList<>(abilities.values()));
+  }
   waitForResponse(game);
   if (response.getUUID() != null && isInGame()) {
     if (abilities.containsKey(response.getUUID())) {
