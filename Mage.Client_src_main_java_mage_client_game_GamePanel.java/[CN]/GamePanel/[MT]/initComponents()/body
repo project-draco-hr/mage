@@ -297,6 +297,15 @@
     }
   }
 );
+  KeyStroke ksAlt1=KeyStroke.getKeyStroke(KeyEvent.VK_1,InputEvent.ALT_MASK);
+  this.getInputMap(c).put(ksAlt1,"USEFIRSTMANAABILITY");
+  this.getActionMap().put("USEFIRSTMANAABILITY",new AbstractAction(){
+    @Override public void actionPerformed(    ActionEvent actionEvent){
+      session.sendPlayerAction(PlayerAction.USE_FIRST_MANA_ABILITY_ON,gameId,null);
+      setMenuStates(PreferencesDialog.getCachedValue(KEY_GAME_MANA_AUTOPAYMENT,"true").equals("true"),PreferencesDialog.getCachedValue(KEY_GAME_MANA_AUTOPAYMENT_ONLY_ONE,"true").equals("true"),true);
+    }
+  }
+);
   final BasicSplitPaneUI myUi=(BasicSplitPaneUI)jSplitPane0.getUI();
   final BasicSplitPaneDivider divider=myUi.getDivider();
   final JButton upArrowButton=(JButton)divider.getComponent(0);
@@ -321,6 +330,15 @@
     @Override public void actionPerformed(    ActionEvent actionEvent){
       ActionCallback callback=Plugins.getInstance().getActionCallback();
       ((MageActionCallback)callback).hideEnlargedCard();
+    }
+  }
+);
+  KeyStroke ksAlt1Released=KeyStroke.getKeyStroke(KeyEvent.VK_1,InputEvent.ALT_MASK,true);
+  this.getInputMap(c).put(ksAlt1Released,"USEFIRSTMANAABILITY_RELEASE");
+  this.getActionMap().put("USEFIRSTMANAABILITY_RELEASE",new AbstractAction(){
+    @Override public void actionPerformed(    ActionEvent actionEvent){
+      session.sendPlayerAction(PlayerAction.USE_FIRST_MANA_ABILITY_OFF,gameId,null);
+      setMenuStates(PreferencesDialog.getCachedValue(KEY_GAME_MANA_AUTOPAYMENT,"true").equals("true"),PreferencesDialog.getCachedValue(KEY_GAME_MANA_AUTOPAYMENT_ONLY_ONE,"true").equals("true"),false);
     }
   }
 );
