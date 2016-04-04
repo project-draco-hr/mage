@@ -1,0 +1,17 @@
+{
+  addCard(Zone.HAND,playerA,"Curse of Echoes");
+  addCard(Zone.BATTLEFIELD,playerA,"Island",5);
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Curse of Echoes");
+  addTarget(playerA,playerB);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Bolt");
+  addTarget(playerB,playerA);
+  setChoice(playerA,"Yes");
+  addTarget(playerA,playerB);
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertLife(playerA,17);
+  assertLife(playerB,17);
+}
