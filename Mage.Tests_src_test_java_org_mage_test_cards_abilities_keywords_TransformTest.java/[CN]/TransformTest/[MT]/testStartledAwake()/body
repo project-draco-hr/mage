@@ -1,0 +1,14 @@
+{
+  addCard(Zone.HAND,playerA,"Startled Awake");
+  addCard(Zone.BATTLEFIELD,playerA,"Island",9);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Startled Awake");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{3}{U}{U}");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,13);
+  assertGraveyardCount(playerA,"Startled Awake",0);
+  assertPermanentCount(playerA,"Persistent Nightmare",1);
+  Permanent nightmare=getPermanent("Persistent Nightmare",playerA);
+  Assert.assertTrue("Has to have creature card type",nightmare.getCardType().contains(CardType.CREATURE));
+  Assert.assertFalse("Has not to have sorcery card type",nightmare.getCardType().contains(CardType.SORCERY));
+}
