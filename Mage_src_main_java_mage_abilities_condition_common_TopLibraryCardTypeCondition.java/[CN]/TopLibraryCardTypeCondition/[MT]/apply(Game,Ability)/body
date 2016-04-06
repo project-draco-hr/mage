@@ -2,19 +2,22 @@
   boolean conditionApplies=false;
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null && controller.getLibrary().size() > 0) {
+    Card card=controller.getLibrary().getFromTop(game);
+    if (card != null) {
 switch (this.type) {
 case CREATURE:
-      conditionApplies|=controller.getLibrary().getFromTop(game).getCardType().contains(CardType.CREATURE);
-    break;
+        conditionApplies|=card.getCardType().contains(CardType.CREATURE);
+      break;
 case LAND:
-  conditionApplies|=controller.getLibrary().getFromTop(game).getCardType().contains(CardType.LAND);
-break;
+    conditionApplies|=card.getCardType().contains(CardType.LAND);
+  break;
 case SORCERY:
-conditionApplies|=controller.getLibrary().getFromTop(game).getCardType().contains(CardType.SORCERY);
+conditionApplies|=card.getCardType().contains(CardType.SORCERY);
 break;
 case INSTANT:
-conditionApplies|=controller.getLibrary().getFromTop(game).getCardType().contains(CardType.INSTANT);
+conditionApplies|=card.getCardType().contains(CardType.INSTANT);
 break;
+}
 }
 }
 return conditionApplies;
