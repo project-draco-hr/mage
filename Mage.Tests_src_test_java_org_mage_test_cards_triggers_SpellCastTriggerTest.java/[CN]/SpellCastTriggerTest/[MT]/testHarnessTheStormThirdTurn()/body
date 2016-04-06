@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Harness the Storm",1);
+  addCard(Zone.HAND,playerA,"Dance with Devils",1);
+  addCard(Zone.HAND,playerA,"Read the Bones",1);
+  addCard(Zone.GRAVEYARD,playerA,"Read the Bones",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",4);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Dance with Devils");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Read the Bones");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Dance with Devils",1);
+  assertPermanentCount(playerA,"Devil",2);
+  assertGraveyardCount(playerA,"Read the Bones",2);
+  assertHandCount(playerA,5);
+}
