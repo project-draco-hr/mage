@@ -1,7 +1,9 @@
 {
   if (!simultaneousEvents.isEmpty() && !getTurn().isEndTurnRequested()) {
     List<GameEvent> eventsToHandle=new ArrayList<>();
+    List<GameEvent> eventGroups=createEventGroups(simultaneousEvents,game);
     eventsToHandle.addAll(simultaneousEvents);
+    eventsToHandle.addAll(eventGroups);
     simultaneousEvents.clear();
     for (    GameEvent event : eventsToHandle) {
       this.handleEvent(event,game);
