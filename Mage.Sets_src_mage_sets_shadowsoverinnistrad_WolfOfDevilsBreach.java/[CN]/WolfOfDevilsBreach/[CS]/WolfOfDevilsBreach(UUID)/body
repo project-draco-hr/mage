@@ -5,8 +5,10 @@
   this.subtype.add("Wolf");
   this.power=new MageInt(5);
   this.toughness=new MageInt(5);
-  Ability ability=new AttacksTriggeredAbility(new DoIfCostPaid(new DamageTargetEffect(new DiscardCostCardConvertedMana()),new ManaCostsImpl("{1}{R}")),true,"Whenever {this} attacks you may pay {1}{R} and discard a card. If you do, {this} deals damage to target creature or planeswalker " + "equal to the discarded card's converted mana cost.");
-  ability.addCost(new DiscardCardCost());
+  Costs toPay=new CostsImpl<>();
+  toPay.add(new ManaCostsImpl<>("{1}{R}"));
+  toPay.add(new DiscardCardCost());
+  Ability ability=new AttacksTriggeredAbility(new DoIfCostPaid(new DamageTargetEffect(new WolfOfDevilsBreachDiscardCostCardConvertedMana()),toPay,"Pay {1}{R} and discard a card to let {this} do damage to target creature or planeswalker equal to the discarded card's converted mana cost?",true),false,"Whenever {this} attacks you may pay {1}{R} and discard a card. If you do, {this} deals damage to target creature or planeswalker " + "equal to the discarded card's converted mana cost.");
   ability.addTarget(new TargetCreatureOrPlaneswalker());
   this.addAbility(ability);
 }

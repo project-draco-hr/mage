@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Flameblade Angel");
+  addCard(Zone.BATTLEFIELD,playerA,"Wall of Roots");
+  addCard(Zone.HAND,playerB,"Shock");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Shock");
+  addTarget(playerB,"Wall of Roots");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  Permanent roots=getPermanent("Wall of Roots",playerA);
+  Assert.assertEquals("Wall of Roots should have 2 damage dealt to it",2,roots.getDamage());
+  assertGraveyardCount(playerB,"Shock",1);
+  assertLife(playerA,20);
+  assertLife(playerB,19);
+}

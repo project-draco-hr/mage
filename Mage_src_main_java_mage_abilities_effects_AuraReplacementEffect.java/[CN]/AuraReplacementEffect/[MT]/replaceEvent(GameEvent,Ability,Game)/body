@@ -3,6 +3,9 @@
   Card card=game.getCard(event.getTargetId());
   UUID sourceId=event.getSourceId();
   UUID controllerId=event.getPlayerId();
+  if (game.getState().getValue(TransformAbility.VALUE_KEY_ENTER_TRANSFORMED + card.getId()) != null) {
+    card=card.getSecondCardFace();
+  }
   if (card.isFaceDown(game)) {
     return false;
   }
@@ -67,6 +70,7 @@
   }
   Player targetPlayer=game.getPlayer(targetId);
   if (targetCard != null || targetPermanent != null || targetPlayer != null) {
+    card=game.getCard(event.getTargetId());
     card.removeFromZone(game,fromZone,sourceId);
     card.updateZoneChangeCounter(game);
     PermanentCard permanent=new PermanentCard(card,(controllingPlayer == null ? card.getOwnerId() : controllingPlayer.getId()),game);

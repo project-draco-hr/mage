@@ -1,0 +1,23 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Tireless Tracker",1);
+  addCard(Zone.HAND,playerA,"Forest",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Thing in the Ice",1);
+  addCard(Zone.HAND,playerB,"Expedite",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",4);
+  playLand(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Forest");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Expedite");
+  addTarget(playerB,"Thing in the Ice");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Expedite");
+  addTarget(playerB,"Thing in the Ice");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Expedite");
+  addTarget(playerB,"Thing in the Ice");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Expedite");
+  addTarget(playerB,"Thing in the Ice");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Clue",1);
+  assertHandCount(playerA,"Tireless Tracker",1);
+  assertPermanentCount(playerA,"Tireless Tracker",0);
+  assertPermanentCount(playerB,"Awoken Horror",1);
+  assertGraveyardCount(playerB,"Expedite",4);
+}
