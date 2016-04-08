@@ -1,0 +1,26 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (sourcePermanent == null) {
+    sourcePermanent=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+  }
+  if (player == null || sourcePermanent == null) {
+    return false;
+  }
+  FilterControlledLandPermanent filter=new FilterControlledLandPermanent("Controlled Land");
+  filter.add(new AnotherPredicate());
+  Target target=new TargetControlledPermanent(1,1,filter,true);
+  if (target.canChoose(source.getSourceId(),player.getId(),game)) {
+    player.choose(Outcome.Sacrifice,target,source.getSourceId(),game);
+    Permanent permanent=game.getPermanent(target.getFirstTarget());
+    if (permanent != null) {
+      permanent.sacrifice(source.getSourceId(),game);
+      return true;
+    }
+    if (permanent.hasSubtype("Island")) {
+      player.damage(3,source.getSourceId(),game,false,true);
+      return true;
+    }
+  }
+  return false;
+}
