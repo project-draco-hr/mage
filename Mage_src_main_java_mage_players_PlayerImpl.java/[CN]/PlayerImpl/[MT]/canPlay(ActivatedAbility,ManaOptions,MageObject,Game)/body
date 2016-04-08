@@ -29,8 +29,12 @@
         if (available == null) {
           return true;
         }
+        boolean spendAnyMana=game.getContinuousEffects().asThough(ability.getSourceId(),AsThoughEffectType.SPEND_OTHER_MANA,ability,ability.getControllerId(),game);
         for (        Mana mana : abilityOptions) {
           for (          Mana avail : available) {
+            if (spendAnyMana && mana.count() <= avail.count()) {
+              return true;
+            }
             if (mana.enough(avail)) {
               return true;
             }
