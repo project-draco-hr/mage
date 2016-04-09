@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Permanent sourceObject=(Permanent)source.getSourceObjectIfItStillExists(game);
+    int artifacts=game.getBattlefield().countAll(new FilterArtifactPermanent(),source.getControllerId(),game);
+    if (artifacts < 1 || !controller.chooseUse(outcome,"Sacrifice an artifact?",source,game)) {
+      if (new SacrificeControllerEffect(new FilterArtifactPermanent(),1,"").apply(game,source)) {
+        if (sourceObject != null) {
+          sourceObject.tap(game);
+          controller.damage(2,source.getSourceId(),game,false,true);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,38 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    if (controller.flipCoin(game)) {
+      controller.drawCards(1,game);
+    }
+ else {
+      List<Permanent> artifacts=game.getBattlefield().getActivePermanents(new FilterControlledArtifactPermanent(),source.getControllerId(),game);
+      if (artifacts.isEmpty()) {
+        return true;
+      }
+      filter.add(Predicates.not(new PermanentIdPredicate(source.getSourceId())));
+      List<Permanent> list=game.getBattlefield().getAllActivePermanents(filter,game);
+      for (      Permanent perm : list) {
+        for (        Ability abil : perm.getAbilities(game)) {
+          for (          Mode mode : abil.getModes().getSelectedModes()) {
+            for (            Target target : mode.getTargets()) {
+              for (              UUID targetId : target.getTargets()) {
+                artifacts.remove(game.getPermanentOrLKIBattlefield(targetId));
+              }
+            }
+          }
+        }
+      }
+      if (!artifacts.isEmpty()) {
+        Cards cards=new CardsImpl();
+        for (        Permanent perm : artifacts) {
+          cards.add(perm.getId());
+        }
+        TargetCard target=new TargetCard(Zone.BATTLEFIELD,new FilterCard());
+        controller.choose(Outcome.Sacrifice,cards,target,game);
+        game.getPermanent(target.getFirstTarget()).sacrifice(source.getSourceId(),game);
+      }
+      return true;
+    }
+  }
+  return false;
+}
