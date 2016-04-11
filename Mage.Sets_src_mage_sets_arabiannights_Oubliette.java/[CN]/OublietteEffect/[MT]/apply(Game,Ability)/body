@@ -1,0 +1,32 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment == null) {
+    enchantment=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+  }
+  UUID targetId=null;
+  for (  Ability abil : enchantment.getAbilities(game)) {
+    targetId=abil.getFirstTarget();
+    if (targetId != null)     break;
+  }
+  if (targetId == null)   return false;
+  if (enchantment != null) {
+    Permanent enchantedCreature=game.getPermanent(targetId);
+    if (enchantedCreature != null) {
+      UUID exileZoneId=UUID.randomUUID();
+      enchantedCreature.moveToExile(exileZoneId,enchantment.getName(),source.getSourceId(),game);
+      for (      UUID attachementId : enchantedCreature.getAttachments()) {
+        Permanent attachment=game.getPermanent(attachementId);
+        if (attachment != null && filter.match(attachment,game)) {
+          attachment.moveToExile(exileZoneId,enchantment.getName(),source.getSourceId(),game);
+        }
+      }
+      ((Oubliette)enchantment).godHelpMe=enchantedCreature.getCounters(game);
+      if (!(enchantedCreature instanceof Token)) {
+        LeavesBattlefieldTriggeredAbility triggeredAbility=new LeavesBattlefieldTriggeredAbility(new OublietteReturnEffect(enchantedCreature.getId(),exileZoneId,enchantment),false);
+        enchantment.addAbility(triggeredAbility,game);
+      }
+      return true;
+    }
+  }
+  return false;
+}
