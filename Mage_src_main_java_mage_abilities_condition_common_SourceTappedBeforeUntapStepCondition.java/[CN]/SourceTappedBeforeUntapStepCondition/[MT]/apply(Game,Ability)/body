@@ -1,0 +1,18 @@
+{
+  TurnPhase turnPhase=game.getTurn().getPhase().getType();
+  Step step=game.getPhase().getStep();
+  Permanent permanent=game.getBattlefield().getPermanent(permanentId);
+  if (permanent != null) {
+    if (lastTurnNum != game.getTurnNum() && turnPhase.equals(TurnPhase.BEGINNING)) {
+      lastTurnNum=game.getTurnNum();
+      permanentWasTappedBeforeUntapStep=permanent.isTapped();
+    }
+    if (step.getType().equals(PhaseStep.UNTAP)) {
+      return permanentWasTappedBeforeUntapStep;
+    }
+ else {
+      return permanent.isTapped();
+    }
+  }
+  return false;
+}
