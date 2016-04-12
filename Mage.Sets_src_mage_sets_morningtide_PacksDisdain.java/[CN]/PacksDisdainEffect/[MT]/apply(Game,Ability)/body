@@ -1,0 +1,18 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Choice typeChoice=new ChoiceImpl(true);
+    typeChoice.setMessage("Choose a creature type:");
+    typeChoice.setChoices(CardRepository.instance.getCreatureTypes());
+    while (!player.choose(Outcome.UnboostCreature,typeChoice,game)) {
+      if (!player.canRespond()) {
+        return false;
+      }
+    }
+    FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent();
+    filter.add(new SubtypePredicate(typeChoice.getChoice()));
+    DynamicValue negativePermanentsCount=new MultipliedValue(new PermanentsOnBattlefieldCount(filter),-1);
+    return new BoostTargetEffect(negativePermanentsCount,negativePermanentsCount,Duration.EndOfTurn,true).apply(game,source);
+  }
+  return false;
+}
