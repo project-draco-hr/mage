@@ -11,8 +11,10 @@
     }
     FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent();
     filter.add(new SubtypePredicate(typeChoice.getChoice()));
-    DynamicValue negativePermanentsCount=new MultipliedValue(new PermanentsOnBattlefieldCount(filter),-1);
-    return new BoostTargetEffect(negativePermanentsCount,negativePermanentsCount,Duration.EndOfTurn,true).apply(game,source);
+    DynamicValue negativePermanentsCount=new PermanentsOnBattlefieldCount(filter,-1);
+    ContinuousEffect effect=new BoostTargetEffect(negativePermanentsCount,negativePermanentsCount,Duration.EndOfTurn,true);
+    effect.setTargetPointer(new FixedTarget(source.getFirstTarget()));
+    game.addEffect(effect,source);
   }
   return false;
 }
