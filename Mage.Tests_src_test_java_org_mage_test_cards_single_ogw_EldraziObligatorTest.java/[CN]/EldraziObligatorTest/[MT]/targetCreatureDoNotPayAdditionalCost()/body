@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Bronze Sable");
+  addCard(Zone.HAND,playerB,"Eldrazi Obligator");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",3);
+  attack(1,playerA,"Bronze Sable");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Eldrazi Obligator");
+  setChoice(playerB,"No");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Bronze Sable",1);
+  assertPermanentCount(playerB,"Eldrazi Obligator",1);
+  assertAbility(playerA,"Bronze Sable",HasteAbility.getInstance(),false);
+  assertTapped("Bronze Sable",true);
+}
