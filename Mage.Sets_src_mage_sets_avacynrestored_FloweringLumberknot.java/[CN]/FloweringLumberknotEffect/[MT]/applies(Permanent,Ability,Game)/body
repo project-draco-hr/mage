@@ -1,11 +1,19 @@
 {
   if (permanent.getId().equals(source.getSourceId())) {
-    if (permanent.getPairedCard() == null) {
-      return true;
-    }
-    Permanent paired=game.getPermanent(permanent.getPairedCard());
-    if (paired != null && paired.getAbilities().contains(SoulbondAbility.getInstance())) {
-      return false;
+    if (permanent.getPairedCard() != null) {
+      Permanent paired=permanent.getPairedCard().getPermanent(game);
+      if (paired != null) {
+        boolean found=false;
+        for (        Ability ability : paired.getAbilities(game)) {
+          if (ability instanceof SoulbondAbility) {
+            found=true;
+            break;
+          }
+        }
+        if (found) {
+          return false;
+        }
+      }
     }
     return true;
   }

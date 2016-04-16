@@ -1,0 +1,26 @@
+{
+  boolean self=false;
+  boolean other=false;
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(getControllerId())) {
+    if (permanent.getCardType().contains(CardType.CREATURE)) {
+      if (permanent.getId().equals(getSourceId())) {
+        if (permanent.getControllerId().equals(getControllerId())) {
+          self=true;
+          if (other) {
+            return true;
+          }
+        }
+ else {
+          return false;
+        }
+      }
+ else       if (permanent.getPairedCard() == null) {
+        other=true;
+        if (self) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
