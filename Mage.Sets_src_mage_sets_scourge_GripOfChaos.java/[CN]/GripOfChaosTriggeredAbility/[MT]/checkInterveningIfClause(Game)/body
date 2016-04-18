@@ -1,0 +1,16 @@
+{
+  StackObject stackObject=null;
+  for (  Effect effect : this.getEffects()) {
+    stackObject=game.getStack().getStackObject(effect.getTargetPointer().getFirst(game,this));
+  }
+  if (stackObject != null) {
+    int numberOfTargets=0;
+    for (    Mode mode : stackObject.getStackAbility().getModes().getSelectedModes()) {
+      for (      Target target : mode.getTargets()) {
+        numberOfTargets+=target.getTargets().size();
+      }
+    }
+    return numberOfTargets == 1;
+  }
+  return false;
+}
