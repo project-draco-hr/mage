@@ -3,7 +3,8 @@
   Player controller=game.getPlayer(source.getControllerId());
   Permanent target=game.getPermanent(getTargetPointer().getFirst(game,source));
   if (controller != null && sourcePermanent != null && target != null && controller.getId().equals(sourcePermanent.getControllerId())) {
-    game.addEffect(new ConditionalContinuousEffect(new GainControlTargetEffect(Duration.Custom),new SourceOnBattlefieldControlUnchangedCondition(),null),source);
+    SourceHasRemainedInSameZoneCondition condition=new SourceHasRemainedInSameZoneCondition(sourcePermanent.getId());
+    game.addEffect(new ConditionalContinuousEffect(new GainControlTargetEffect(Duration.Custom),new CompoundCondition(new SourceOnBattlefieldControlUnchangedCondition(),condition),null),source);
     if (!game.isSimulation()) {
       game.informPlayers(sourcePermanent.getLogName() + ": " + controller.getLogName()+ " gained control of "+ target.getLogName());
     }
