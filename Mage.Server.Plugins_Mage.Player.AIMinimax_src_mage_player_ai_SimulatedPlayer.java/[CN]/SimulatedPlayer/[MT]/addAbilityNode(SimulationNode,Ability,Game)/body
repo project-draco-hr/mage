@@ -2,6 +2,9 @@
   Game sim=game.copy();
   sim.getStack().push(new StackAbility(ability,playerId));
   ability.activate(sim,false);
+  if (ability.activate(sim,false) && ability.isUsesStack()) {
+    game.fireEvent(new GameEvent(GameEvent.EventType.TRIGGERED_ABILITY,ability.getId(),ability.getSourceId(),ability.getControllerId()));
+  }
   sim.applyEffects();
   SimulationNode newNode=new SimulationNode(parent,sim,playerId);
   logger.debug(indent(newNode.getDepth()) + "simulating -- node #:" + SimulationNode.getCount()+ " triggered ability option");

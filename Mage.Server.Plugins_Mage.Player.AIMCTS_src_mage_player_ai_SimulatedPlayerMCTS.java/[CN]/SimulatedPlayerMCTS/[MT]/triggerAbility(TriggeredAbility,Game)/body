@@ -16,6 +16,7 @@
     if (ability.isUsesStack()) {
       game.getStack().push(new StackAbility(ability,playerId));
       if (ability.activate(game,false)) {
+        game.fireEvent(new GameEvent(GameEvent.EventType.TRIGGERED_ABILITY,ability.getId(),ability.getSourceId(),ability.getControllerId()));
         actionCount++;
         return true;
       }
