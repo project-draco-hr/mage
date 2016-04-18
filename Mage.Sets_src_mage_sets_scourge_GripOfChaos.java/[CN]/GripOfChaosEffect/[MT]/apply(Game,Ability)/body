@@ -1,0 +1,25 @@
+{
+  StackObject stackObject=game.getStack().getStackObject(this.getTargetPointer().getFirst(game,source));
+  if (stackObject != null) {
+    for (    Mode mode : stackObject.getStackAbility().getModes().getSelectedModes()) {
+      for (      Target target : mode.getTargets()) {
+        UUID oldTargetId=target.getFirstTarget();
+        Set<UUID> possibleTargets=target.possibleTargets(source.getSourceId(),source.getControllerId(),game);
+        if (possibleTargets.size() > 0) {
+          int i=0;
+          int rnd=new Random().nextInt(possibleTargets.size());
+          Iterator<UUID> it=possibleTargets.iterator();
+          while (i < rnd) {
+            it.next();
+            i++;
+          }
+          UUID newTargetId=it.next();
+          target.remove(oldTargetId);
+          target.add(newTargetId,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
