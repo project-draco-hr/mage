@@ -1,0 +1,15 @@
+{
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (sourcePermanent != null) {
+    ExileZone exileZone=game.getExile().getExileZone(CardUtil.getExileZoneId(source.getSourceId().toString() + sourcePermanent.getZoneChangeCounter(game) + affectedControllerId.toString(),game));
+    if (exileZone != null) {
+      Card card=exileZone.get(objectId,game);
+      Player player=game.getPlayer(affectedControllerId);
+      if (card != null && player != null) {
+        player.lookAtCards(card.getName(),card,game);
+        return !card.getCardType().contains(CardType.LAND) || player.chooseUse(Outcome.Benefit,"Play " + card.getName() + "?",source,game);
+      }
+    }
+  }
+  return false;
+}
