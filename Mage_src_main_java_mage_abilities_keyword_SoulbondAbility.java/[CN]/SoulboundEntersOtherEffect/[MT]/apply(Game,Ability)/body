@@ -1,0 +1,18 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null && permanent.getPairedCard() == null && permanent.getCardType().contains(CardType.CREATURE)) {
+    Player controller=game.getPlayer(permanent.getControllerId());
+    if (controller != null) {
+      Permanent enteringPermanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+      if (enteringPermanent != null && enteringPermanent.getCardType().contains(CardType.CREATURE) && enteringPermanent.getPairedCard() == null) {
+        enteringPermanent.setPairedCard(new MageObjectReference(permanent,game));
+        permanent.setPairedCard(new MageObjectReference(enteringPermanent,game));
+        if (!game.isSimulation()) {
+          game.informPlayers(controller.getLogName() + " soulbonds " + permanent.getLogName()+ " with "+ enteringPermanent.getLogName());
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

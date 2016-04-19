@@ -1,0 +1,11 @@
+{
+  Card card=game.getCard(objectToReturn.getSourceId());
+  if (card != null && objectToReturn.refersTo(card,game)) {
+    Player owner=game.getPlayer(card.getOwnerId());
+    if (owner != null) {
+      game.addEffect(new VanishIntoMemoryEntersBattlefieldEffect(objectToReturn),source);
+      owner.moveCards(card,Zone.BATTLEFIELD,source,game,false,false,true,null);
+    }
+  }
+  return true;
+}

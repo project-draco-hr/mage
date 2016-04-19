@@ -1,0 +1,17 @@
+{
+synchronized (players) {
+    UUID startId=table.get(0);
+    UUID currentId=startId;
+    UUID nextId=table.getNext();
+    DraftPlayer next=players.get(nextId);
+    while (true) {
+      List<Card> nextBooster=sets.get(0).createBooster();
+      next.setBooster(nextBooster);
+      if (nextId == startId) {
+        break;
+      }
+      nextId=table.getNext();
+      next=players.get(nextId);
+    }
+  }
+}

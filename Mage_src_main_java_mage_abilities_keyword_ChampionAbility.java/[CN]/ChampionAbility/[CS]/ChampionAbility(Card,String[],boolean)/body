@@ -1,0 +1,37 @@
+{
+  super(Zone.BATTLEFIELD,null);
+  this.subtypes=subtypes;
+  StringBuilder sb=new StringBuilder("another ");
+  ArrayList<Predicate<MageObject>> subtypesPredicates=new ArrayList<>();
+  if (!subtypes[0].isEmpty()) {
+    int i=0;
+    for (    String subtype : this.subtypes) {
+      subtypesPredicates.add(new SubtypePredicate(subtype));
+      if (i == 0) {
+        sb.append(subtype);
+      }
+ else {
+        sb.append(" or ").append(subtype);
+      }
+      i++;
+    }
+  }
+ else {
+    sb.append("creature");
+  }
+  this.objectDescription=sb.toString();
+  FilterControlledPermanent filter=new FilterControlledPermanent(objectDescription);
+  if (!subtypesPredicates.isEmpty()) {
+    filter.add(Predicates.or(subtypesPredicates));
+  }
+  if (requiresCreature) {
+    filter.add(new CardTypePredicate(CardType.CREATURE));
+  }
+  filter.add(new AnotherPredicate());
+  Ability ability1=new EntersBattlefieldTriggeredAbility(new SacrificeSourceUnlessPaysEffect(new ChampionExileCost(filter,new StringBuilder(card.getName()).append(" championed permanents").toString())),false);
+  ability1.setRuleVisible(false);
+  addSubAbility(ability1);
+  Ability ability2=new LeavesBattlefieldTriggeredAbility(new ReturnFromExileForSourceEffect(Zone.BATTLEFIELD),false);
+  ability2.setRuleVisible(false);
+  addSubAbility(ability2);
+}

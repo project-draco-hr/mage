@@ -1,10 +1,11 @@
 {
-  Permanent attackingCreature=game.getPermanent(event.getTargetId());
-  if (attackingCreature != null && attackingCreature.hasSubtype("Rogue")) {
-    for (    Effect effect : getEffects()) {
-      effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+  Permanent sourcePermanent=game.getPermanent(getSourceId());
+  if (sourcePermanent.isAttacking()) {
+    for (    CombatGroup combatGroup : game.getCombat().getGroups()) {
+      if (combatGroup.getBlockers().isEmpty() && combatGroup.getAttackers().contains(getSourceId())) {
+        return true;
+      }
     }
-    return true;
   }
   return false;
 }

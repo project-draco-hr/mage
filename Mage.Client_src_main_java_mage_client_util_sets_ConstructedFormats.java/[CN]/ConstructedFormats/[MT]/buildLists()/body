@@ -1,18 +1,11 @@
 {
-  GregorianCalendar cutoff;
-  if (calendar.get(Calendar.MONTH) > 8) {
-    cutoff=new GregorianCalendar(calendar.get(Calendar.YEAR) - 1,Calendar.SEPTEMBER,1);
-  }
- else {
-    cutoff=new GregorianCalendar(calendar.get(Calendar.YEAR) - 2,Calendar.SEPTEMBER,1);
-  }
   final Map<String,ExpansionInfo> expansionInfo=new HashMap<>();
   formats.clear();
   for (  ExpansionInfo set : ExpansionRepository.instance.getAll()) {
     expansionInfo.put(set.getName(),set);
     formats.add(set.getName());
-    if (set.getType().equals(SetType.CORE) || set.getType().equals(SetType.EXPANSION)) {
-      if (set.getReleaseDate().after(cutoff.getTime())) {
+    if (set.getType().equals(SetType.CORE) || set.getType().equals(SetType.EXPANSION) || set.getType().equals(SetType.SUPPLEMENTAL_STANDARD_LEGAL)) {
+      if (STANDARD_CARDS.getSetCodes().contains(set.getCode())) {
         if (underlyingSetCodesPerFormat.get(STANDARD) == null) {
           underlyingSetCodesPerFormat.put(STANDARD,new ArrayList<String>());
         }

@@ -1,18 +1,34 @@
 {
   UUID targetId=null;
-  for (  Target target : source.getTargets()) {
-    if (target.getFilter().getMessage().equals(filterMessage)) {
-      targetId=target.getFirstTarget();
+  if (source != null && source.getTargets() != null) {
+    for (    Target target : source.getTargets()) {
+      if (target.getFilter() != null && target.getFilter().getMessage().equals(filterMessage)) {
+        targetId=target.getFirstTarget();
+      }
+    }
+    if (targetId != null) {
+      FixedTarget fixedTarget=new FixedTarget(targetId);
+      ContinuousEffect continuousEffect=new BecomesCreatureTargetEffect(new AwakenElementalToken(),false,true,Duration.Custom);
+      continuousEffect.setTargetPointer(fixedTarget);
+      game.addEffect(continuousEffect,source);
+      Effect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance(awakenValue));
+      effect.setTargetPointer(fixedTarget);
+      return effect.apply(game,source);
     }
   }
-  if (targetId != null) {
-    FixedTarget fixedTarget=new FixedTarget(targetId);
-    ContinuousEffect continuousEffect=new BecomesCreatureTargetEffect(new AwakenElementalToken(),false,true,Duration.Custom);
-    continuousEffect.setTargetPointer(fixedTarget);
-    game.addEffect(continuousEffect,source);
-    Effect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance(awakenValue));
-    effect.setTargetPointer(fixedTarget);
-    return effect.apply(game,source);
+ else {
+    if (source == null) {
+      logger.fatal("Source was null in AwakenAbility: Create a bug report or fix the source code");
+    }
+ else     if (source.getTargets() == null) {
+      MageObject sourceObj=source.getSourceObject(game);
+      if (sourceObj != null) {
+        Class<? extends MageObject> sourceClass=sourceObj.getClass();
+        if (sourceClass != null) {
+          logger.fatal("getTargets was null in AwakenAbility for " + sourceClass.toString() + " : Create a bug report or fix the source code");
+        }
+      }
+    }
   }
   return true;
 }

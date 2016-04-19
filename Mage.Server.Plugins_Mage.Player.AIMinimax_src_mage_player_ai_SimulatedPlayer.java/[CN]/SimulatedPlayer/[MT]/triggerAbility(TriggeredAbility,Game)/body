@@ -4,7 +4,9 @@
   if (options.isEmpty()) {
     if (logger.isDebugEnabled())     logger.debug("simulating -- triggered ability:" + ability);
     game.getStack().push(new StackAbility(ability,playerId));
-    ability.activate(game,false);
+    if (ability.activate(game,false) && ability.isUsesStack()) {
+      game.fireEvent(new GameEvent(GameEvent.EventType.TRIGGERED_ABILITY,ability.getId(),ability.getSourceId(),ability.getControllerId()));
+    }
     game.applyEffects();
     game.getPlayers().resetPassed();
   }

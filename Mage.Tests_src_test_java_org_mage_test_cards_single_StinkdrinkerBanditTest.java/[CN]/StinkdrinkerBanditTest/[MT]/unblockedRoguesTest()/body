@@ -1,0 +1,22 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Agent of Horizons");
+  addCard(Zone.BATTLEFIELD,playerA,"Amphin Cutthroat");
+  addCard(Zone.BATTLEFIELD,playerA,"Bronze Sable");
+  addCard(Zone.BATTLEFIELD,playerA,"Stinkdrinker Bandit");
+  addCard(Zone.BATTLEFIELD,playerB,"Wall of Omens");
+  attack(1,playerA,"Agent of Horizons");
+  attack(1,playerA,"Amphin Cutthroat");
+  attack(1,playerA,"Stinkdrinker Bandit");
+  attack(1,playerA,"Bronze Sable");
+  block(1,playerB,"Wall of Omens","Stinkdrinker Bandit");
+  setStopAt(1,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertPowerToughness(playerA,"Stinkdrinker Bandit",2,1);
+  assertPowerToughness(playerA,"Agent of Horizons",5,3);
+  assertPowerToughness(playerA,"Amphin Cutthroat",4,5);
+  assertPowerToughness(playerA,"Bronze Sable",2,1);
+  assertPermanentCount(playerB,"Wall of Omens",1);
+  assertPowerToughness(playerB,"Wall of Omens",0,4);
+  assertLife(playerA,20);
+  assertLife(playerB,9);
+}

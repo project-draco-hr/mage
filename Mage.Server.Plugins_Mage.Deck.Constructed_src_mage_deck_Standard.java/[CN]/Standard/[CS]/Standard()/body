@@ -1,16 +1,21 @@
 {
   super("Constructed - Standard");
   GregorianCalendar current=new GregorianCalendar();
-  GregorianCalendar cutoff;
-  if (current.get(Calendar.MONTH) > 8) {
-    cutoff=new GregorianCalendar(current.get(Calendar.YEAR) - 1,Calendar.SEPTEMBER,1);
+  List<ExpansionSet> sets=new ArrayList(Sets.getInstance().values());
+  Collections.sort(sets,new Comparator<ExpansionSet>(){
+    @Override public int compare(    final ExpansionSet lhs,    ExpansionSet rhs){
+      return lhs.getReleaseDate().after(rhs.getReleaseDate()) ? -1 : 1;
+    }
   }
- else {
-    cutoff=new GregorianCalendar(current.get(Calendar.YEAR) - 2,Calendar.SEPTEMBER,1);
-  }
-  for (  ExpansionSet set : Sets.getInstance().values()) {
-    if (set.getReleaseDate().after(cutoff.getTime()) && (set.getSetType() == SetType.CORE || set.getSetType() == SetType.EXPANSION)) {
+);
+  int blocksAdded=0;
+  for (Iterator<ExpansionSet> iter=sets.iterator(); iter.hasNext() && blocksAdded < 3; ) {
+    ExpansionSet set=iter.next();
+    if (set.getSetType() == SetType.CORE || set.getSetType() == SetType.EXPANSION || set.getSetType() == SetType.SUPPLEMENTAL_STANDARD_LEGAL) {
       setCodes.add(set.getCode());
+      if (set.getReleaseDate().before(current.getTime()) && set.getParentSet() == null && set.getSetType() == SetType.EXPANSION) {
+        blocksAdded++;
+      }
     }
   }
 }

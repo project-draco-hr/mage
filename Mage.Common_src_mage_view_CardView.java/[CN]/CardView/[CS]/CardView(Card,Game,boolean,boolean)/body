@@ -24,16 +24,14 @@
       this.rules.add("You may cast this card as a 2/2 face-down creature, with no text," + " no name, no subtypes, and no mana cost by paying {3} rather than paying its mana cost.");
       return;
     }
+ else     if (card instanceof Permanent) {
+      this.power=Integer.toString(card.getPower().getValue());
+      this.toughness=Integer.toString(card.getToughness().getValue());
+      this.cardTypes=card.getCardType();
+      this.faceDown=((Permanent)card).isFaceDown(game);
+    }
  else {
-      if (card instanceof Permanent) {
-        this.power=Integer.toString(card.getPower().getValue());
-        this.toughness=Integer.toString(card.getToughness().getValue());
-        this.cardTypes=card.getCardType();
-        this.faceDown=((Permanent)card).isFaceDown(game);
-      }
- else {
-        return;
-      }
+      return;
     }
   }
   SplitCard splitCard=null;
@@ -41,18 +39,16 @@
     splitCard=(SplitCard)card;
     rotate=true;
   }
- else {
-    if (card instanceof Spell) {
+ else   if (card instanceof Spell) {
 switch (((Spell)card).getSpellAbility().getSpellAbilityType()) {
 case SPLIT_FUSED:
-        splitCard=(SplitCard)((Spell)card).getCard();
-      rotate=true;
-    break;
+      splitCard=(SplitCard)((Spell)card).getCard();
+    rotate=true;
+  break;
 case SPLIT_LEFT:
 case SPLIT_RIGHT:
-  rotate=true;
+rotate=true;
 break;
-}
 }
 }
 if (splitCard != null) {
@@ -78,7 +74,7 @@ if (card instanceof Permanent) {
 this.mageObjectType=MageObjectType.PERMANENT;
 Permanent permanent=(Permanent)card;
 this.loyalty=Integer.toString(permanent.getCounters().getCount(CounterType.LOYALTY));
-this.pairedCard=permanent.getPairedCard();
+this.pairedCard=permanent.getPairedCard() != null ? permanent.getPairedCard().getSourceId() : null;
 if (!permanent.getControllerId().equals(permanent.getOwnerId())) {
 controlledByOwner=false;
 }

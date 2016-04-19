@@ -1,4 +1,5 @@
 {
+  logger.trace(userName + " started reconnect");
   for (  Entry<UUID,Table> entry : tables.entrySet()) {
     ccJoinedTable(entry.getValue().getRoomId(),entry.getValue().getId(),entry.getValue().isTournament());
   }
@@ -26,4 +27,6 @@
     TableController controller=TableManager.getInstance().getController(entry.getKey());
     ccSideboard(entry.getValue(),entry.getKey(),controller.getRemainingTime(),controller.getOptions().isLimited());
   }
+  ServerMessagesUtil.getInstance().incReconnects();
+  logger.trace(userName + " ended reconnect");
 }

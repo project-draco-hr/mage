@@ -63,7 +63,7 @@ continue;
 }
 }
 if (perm.getPairedCard() != null) {
-Permanent paired=getPermanent(perm.getPairedCard());
+Permanent paired=perm.getPairedCard().getPermanent(this);
 if (paired == null || !perm.getControllerId().equals(paired.getControllerId()) || paired.getPairedCard() == null) {
 perm.setPairedCard(null);
 if (paired != null) {
@@ -74,7 +74,7 @@ somethingHappened=true;
 }
 }
  else if (perm.getPairedCard() != null) {
-Permanent paired=getPermanent(perm.getPairedCard());
+Permanent paired=perm.getPairedCard().getPermanent(this);
 perm.setPairedCard(null);
 if (paired != null) {
 paired.setPairedCard(null);
@@ -252,6 +252,7 @@ filterLegendName.add(new SupertypePredicate("Legendary"));
 filterLegendName.add(new NamePredicate(legend.getName()));
 filterLegendName.add(new ControllerIdPredicate(legend.getControllerId()));
 if (getBattlefield().contains(filterLegendName,legend.getControllerId(),this,2)) {
+if (!replaceEvent(GameEvent.getEvent(GameEvent.EventType.DESTROY_PERMANENT_BY_LEGENDARY_RULE,legend.getId(),legend.getControllerId()))) {
 Player controller=this.getPlayer(legend.getControllerId());
 if (controller != null) {
 Target targetLegendaryToKeep=new TargetPermanent(filterLegendName);
@@ -264,6 +265,7 @@ movePermanentToGraveyardWithInfo(dupLegend);
 }
 }
 return true;
+}
 }
 }
 }
