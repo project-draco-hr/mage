@@ -1,11 +1,10 @@
 {
-  Integer amount=(Integer)game.getState().getValue(source.getSourceId().toString() + "DragonWhelp");
-  if (amount == null) {
-    amount=0;
-    DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new DragonWhelpDelayedEffect());
+  ActivationInfo activationInfo=getActivationInfo(source,game);
+  ++activationInfo.activationCounter;
+  setActivationInfo(activationInfo,source,game);
+  if (activationInfo.activationCounter == 4) {
+    DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new SacrificeSourceEffect());
     game.addDelayedTriggeredAbility(delayedAbility,source);
   }
-  amount++;
-  game.getState().setValue(source.getSourceId().toString() + "DragonWhelp",amount);
   return true;
 }
