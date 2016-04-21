@@ -1,0 +1,11 @@
+{
+  Integer amount=(Integer)game.getState().getValue(source.getSourceId().toString() + "InitiatesOfTheEbonHand");
+  if (amount == null) {
+    amount=0;
+    DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new InitiatesOfTheEbonHandResetEffect());
+    game.addDelayedTriggeredAbility(delayedAbility,source);
+  }
+  amount++;
+  game.getState().setValue(source.getSourceId().toString() + "InitiatesOfTheEbonHand",amount);
+  return true;
+}

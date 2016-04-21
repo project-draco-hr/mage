@@ -1,0 +1,11 @@
+{
+  Integer amount=(Integer)game.getState().getValue(source.getSourceId().toString() + "FarrelitePriest");
+  if (amount == null) {
+    amount=0;
+    DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new FarrelitePriestResetEffect());
+    game.addDelayedTriggeredAbility(delayedAbility,source);
+  }
+  amount++;
+  game.getState().setValue(source.getSourceId().toString() + "FarrelitePriest",amount);
+  return true;
+}
