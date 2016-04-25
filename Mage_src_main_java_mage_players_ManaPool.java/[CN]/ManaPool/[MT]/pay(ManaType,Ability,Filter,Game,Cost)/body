@@ -13,7 +13,9 @@
   for (  ManaPoolItem mana : manaItems) {
     if (filter != null) {
       if (!filter.match(mana.getSourceObject(),game)) {
-        continue;
+        if (!(mana.getSourceObject() instanceof Spell) || ability.getSourceId().equals(mana.getSourceId())) {
+          continue;
+        }
       }
     }
     if (!manaType.equals(unlockedManaType) && autoPayment && autoPaymentRestricted&& mana.count() == mana.getStock()) {

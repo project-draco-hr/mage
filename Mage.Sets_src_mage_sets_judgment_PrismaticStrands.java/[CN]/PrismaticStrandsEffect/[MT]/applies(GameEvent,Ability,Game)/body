@@ -1,0 +1,12 @@
+{
+  if (super.applies(event,source,game)) {
+    if (event.getType().equals(GameEvent.EventType.DAMAGE_PLAYER) || event.getType().equals(GameEvent.EventType.DAMAGE_CREATURE) || event.getType().equals(GameEvent.EventType.DAMAGE_PLANESWALKER)) {
+      ChoiceColor choice=(ChoiceColor)source.getChoices().get(0);
+      MageObject sourceObject=game.getObject(event.getSourceId());
+      if (sourceObject != null && choice != null && sourceObject.getColor(game).shares(choice.getColor())) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

@@ -1,5 +1,13 @@
 {
   MageObject sourceObject=source.getSourceObjectIfItStillExists(game);
+  if (sourceObject == null) {
+    if (source.getSourceObject(game) instanceof Spell) {
+      sourceObject=game.getPermanent(source.getSourceId());
+      if (sourceObject.getZoneChangeCounter(game) > source.getSourceObjectZoneChangeCounter() + 1) {
+        return false;
+      }
+    }
+  }
   if (sourceObject instanceof Permanent) {
     Permanent permanent=(Permanent)sourceObject;
     if (source.getControllerId().equals(permanent.getControllerId())) {
