@@ -1,0 +1,19 @@
+{
+  Mana types=new Mana();
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof SacrificeTargetCost && ((SacrificeTargetCost)cost).getPermanents().size() > 0) {
+      Permanent land=((SacrificeTargetCost)cost).getPermanents().get(0);
+      if (land != null) {
+        Abilities<ManaAbility> manaAbilities=land.getAbilities().getManaAbilities(Zone.BATTLEFIELD);
+        for (        ManaAbility ability : manaAbilities) {
+          if (!ability.equals(source) && ability.definesMana()) {
+            for (            Mana netMana : ability.getNetMana(game)) {
+              types.add(netMana);
+            }
+          }
+        }
+      }
+    }
+  }
+  return types;
+}
