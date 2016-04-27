@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",1);
+  addCard(Zone.HAND,playerA,"Blood Cultist",1);
+  addCard(Zone.HAND,playerA,"Lightning Bolt",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Shambling Ghoul",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Blood Cultist");
+  activateAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}:","Shambling Ghoul");
+  castSpell(3,PhaseStep.POSTCOMBAT_MAIN,playerA,"Lightning Bolt","Shambling Ghoul");
+  setStopAt(3,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerB,"Shambling Ghoul",1);
+  assertGraveyardCount(playerA,"Lightning Bolt",1);
+  assertPowerToughness(playerA,"Blood Cultist",2,2);
+}

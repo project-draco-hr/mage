@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.HAND,playerA,"Blood Cultist",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Devilthorn Fox",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Shambling Ghoul",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Blood Cultist");
+  activateAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}:","Devilthorn Fox");
+  activateAbility(5,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}:","Shambling Ghoul");
+  attack(5,playerA,"Silvercoat Lion");
+  block(5,playerB,"Shambling Ghoul","Silvercoat Lion");
+  setStopAt(5,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertGraveyardCount(playerB,"Devilthorn Fox",1);
+  assertGraveyardCount(playerB,"Shambling Ghoul",1);
+  assertGraveyardCount(playerA,"Silvercoat Lion",1);
+  assertPowerToughness(playerA,"Blood Cultist",3,3);
+}
