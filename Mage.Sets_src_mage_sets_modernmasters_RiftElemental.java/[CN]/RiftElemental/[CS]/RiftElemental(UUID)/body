@@ -4,12 +4,7 @@
   this.subtype.add("Elemental");
   this.power=new MageInt(1);
   this.toughness=new MageInt(1);
-  Choice targetChoice=new ChoiceImpl();
-  targetChoice.setMessage("Choose what to target");
-  targetChoice.getChoices().add("Permanent");
-  targetChoice.getChoices().add("Suspended Card");
-  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostSourceEffect(2,0,Duration.EndOfTurn),new ManaCostsImpl("{1}{R}"));
-  ability.addChoice(targetChoice);
-  ability.addCost(new RemoveCounterFromCardCost(new TargetCardInExile(1,1,filter,null,true),CounterType.TIME));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostSourceEffect(2,0,Duration.EndOfTurn),new ManaCostsImpl<>("{1}{R}"));
+  ability.addCost(new RiftElementalCost());
   this.addAbility(ability);
 }

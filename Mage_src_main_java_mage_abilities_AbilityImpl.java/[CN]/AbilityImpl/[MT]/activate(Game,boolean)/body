@@ -16,15 +16,6 @@
   if (this.abilityType.equals(AbilityType.SPELL)) {
     game.getContinuousEffects().applySpliceEffects(this,game);
   }
-  if (sourceObject != null) {
-    sourceObject.adjustChoices(this,game);
-  }
-  for (  Mode mode : this.getModes().getSelectedModes()) {
-    if (mode.getChoices().size() > 0 && mode.getChoices().choose(game,this) == false) {
-      logger.debug("activate failed - choice");
-      return false;
-    }
-  }
   if (noMana) {
     if (this.getManaCostsToPay().getVariableCosts().size() > 0) {
       int xValue=this.getManaCostsToPay().getX();

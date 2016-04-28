@@ -3,14 +3,14 @@
   if (controller != null) {
     ChoiceColor choice=new ChoiceColor();
     while (!choice.isChosen()) {
-      controller.choose(Outcome.Protect,choice,game);
+      controller.choose(Outcome.Benefit,choice,game);
       if (!controller.canRespond()) {
         return false;
       }
     }
     int countMax=game.getBattlefield().count(filter,source.getSourceId(),source.getTargets().getFirstTarget(),game);
     ChoiceImpl choiceCount=new ChoiceImpl(true);
-    LinkedHashSet<String> set=new LinkedHashSet<>();
+    LinkedHashSet<String> set=new LinkedHashSet<>(countMax + 1);
     for (int i=0; i <= countMax; i++) {
       set.add(Integer.toString(i));
     }
@@ -36,8 +36,7 @@ break;
 case "White":
 mana.setWhite(count);
 break;
-case "Colorless":
-mana.setGeneric(count);
+default :
 break;
 }
 checkToFirePossibleEvents(mana,game,source);

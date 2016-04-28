@@ -1,0 +1,14 @@
+{
+  MageObject sourceObject=game.getObject(sourceId);
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(filter.getPermanentFilter(),sourceControllerId,game)) {
+    if (permanent.canBeTargetedBy(sourceObject,sourceControllerId,game) && filter.match(permanent,sourceId,sourceControllerId,game)) {
+      return true;
+    }
+  }
+  for (  Card card : game.getExile().getAllCards(game)) {
+    if (filter.match(card,sourceId,sourceControllerId,game)) {
+      return true;
+    }
+  }
+  return false;
+}

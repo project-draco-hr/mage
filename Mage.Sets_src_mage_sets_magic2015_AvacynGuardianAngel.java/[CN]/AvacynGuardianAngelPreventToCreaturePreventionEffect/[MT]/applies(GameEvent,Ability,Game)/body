@@ -1,0 +1,11 @@
+{
+  if (super.applies(event,source,game)) {
+    if (event.getType().equals(GameEvent.EventType.DAMAGE_CREATURE) && event.getTargetId().equals(getTargetPointer().getFirst(game,source))) {
+      MageObject sourceObject=game.getObject(event.getSourceId());
+      if (sourceObject != null && sourceObject.getColor(game).shares(this.color)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

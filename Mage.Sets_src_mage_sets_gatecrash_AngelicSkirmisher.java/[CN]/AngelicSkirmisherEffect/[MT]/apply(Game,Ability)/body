@@ -1,24 +1,34 @@
 {
-  Choice abilityChoice=source.getChoices().get(0);
   Player controller=game.getPlayer(source.getControllerId());
   Permanent sourcePermanent=game.getPermanent(source.getSourceId());
-  if (controller != null && sourcePermanent != null && abilityChoice != null && abilityChoice.isChosen()) {
+  if (controller != null && sourcePermanent != null) {
+    Choice abilityChoice=new ChoiceImpl(true);
+    Set<String> abilityChoices=new HashSet<>(3);
+    abilityChoice.setMessage("Choose ability for your creatures");
+    abilityChoices.add("First strike");
+    abilityChoices.add("Vigilance");
+    abilityChoices.add("Lifelink");
+    abilityChoice.setChoices(abilityChoices);
     Ability ability=null;
-    if (abilityChoice.getChoice().equals("First strike")) {
+switch (abilityChoice.getChoice()) {
+case "First strike":
       ability=FirstStrikeAbility.getInstance();
-    }
- else     if (abilityChoice.getChoice().equals("Vigilance")) {
-      ability=VigilanceAbility.getInstance();
-    }
- else     if (abilityChoice.getChoice().equals("Lifelink")) {
-      ability=LifelinkAbility.getInstance();
-    }
-    if (ability != null) {
-      GainAbilityControlledEffect effect=new GainAbilityControlledEffect(ability,Duration.EndOfTurn,new FilterControlledCreaturePermanent());
-      game.addEffect(effect,source);
-      game.informPlayers(new StringBuilder(sourcePermanent.getName()).append(": ").append(controller.getLogName()).append(" has chosen ").append(abilityChoice.getChoice().toLowerCase()).toString());
-      return true;
-    }
-  }
-  return false;
+    break;
+case "Vigilance":
+  ability=VigilanceAbility.getInstance();
+break;
+case "Lifelink":
+ability=LifelinkAbility.getInstance();
+break;
+default :
+break;
+}
+if (ability != null) {
+GainAbilityControlledEffect effect=new GainAbilityControlledEffect(ability,Duration.EndOfTurn,new FilterControlledCreaturePermanent());
+game.addEffect(effect,source);
+game.informPlayers(new StringBuilder(sourcePermanent.getName()).append(": ").append(controller.getLogName()).append(" has chosen ").append(abilityChoice.getChoice().toLowerCase()).toString());
+return true;
+}
+}
+return false;
 }
