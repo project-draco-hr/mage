@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Silverfur Partisan",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Howlpack Wolf",1);
+  addCard(Zone.HAND,playerA,"Giant Growth",1);
+  addCard(Zone.HAND,playerA,"Enlarge",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",6);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Giant Growth","Silverfur Partisan");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Enlarge","Howlpack Wolf");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Giant Growth",1);
+  assertGraveyardCount(playerA,"Enlarge",1);
+  assertPowerToughness(playerA,"Silverfur Partisan",5,5);
+  assertPowerToughness(playerA,"Howlpack Wolf",10,10);
+  assertPermanentCount(playerA,"Wolf",2);
+}

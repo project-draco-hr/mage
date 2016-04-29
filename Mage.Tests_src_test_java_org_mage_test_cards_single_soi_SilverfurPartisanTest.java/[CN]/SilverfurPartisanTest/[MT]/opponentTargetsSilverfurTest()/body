@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Silverfur Partisan",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Howlpack Wolf",1);
+  addCard(Zone.HAND,playerB,"Lightning Bolt",1);
+  addCard(Zone.HAND,playerB,"Arrow Storm",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",6);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Lightning Bolt","Howlpack Wolf");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Arrow Storm","Silverfur Partisan");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertGraveyardCount(playerB,"Arrow Storm",1);
+  assertGraveyardCount(playerA,"Howlpack Wolf",1);
+  assertGraveyardCount(playerA,"Silverfur Partisan",1);
+  assertPermanentCount(playerA,"Wolf",2);
+}
