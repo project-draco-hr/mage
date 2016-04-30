@@ -1,5 +1,5 @@
 {
-  if (actions == null || actions.size() == 0) {
+  if (actions == null || actions.isEmpty()) {
     pass(game);
   }
  else {
@@ -11,6 +11,9 @@
         for (        Target target : ability.getTargets()) {
           for (          UUID id : target.getTargets()) {
             target.updateTarget(id,game);
+            if (!target.isNotTarget()) {
+              game.addSimultaneousEvent(GameEvent.getEvent(GameEvent.EventType.TARGETED,id,ability.getSourceId(),ability.getControllerId()));
+            }
           }
         }
         Player player=game.getPlayer(ability.getFirstTarget());
