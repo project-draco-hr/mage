@@ -3,12 +3,12 @@
   MageObject sourceObject=game.getObject(source.getSourceId());
   if (sourceObject != null && controller != null) {
     Cards cards=new CardsImpl();
-    cards.addAll(controller.getLibrary().getTopCards(game,3));
+    cards.addAll(controller.getLibrary().getTopCards(game,5));
     if (!cards.isEmpty()) {
       controller.revealCards(staticText,cards,game);
-      Card cardToGraveyard;
+      Card cardToHand;
       if (cards.size() == 1) {
-        cardToGraveyard=cards.getRandom(game);
+        cardToHand=cards.getRandom(game);
       }
  else {
         Player opponent;
@@ -21,15 +21,15 @@
           controller.chooseTarget(Outcome.Detriment,target,source,game);
           opponent=game.getPlayer(target.getFirstTarget());
         }
-        TargetCard target=new TargetCard(1,Zone.LIBRARY,new FilterCard());
+        TargetCard target=new TargetCard(1,Zone.LIBRARY,new FilterCreatureCard());
         opponent.chooseTarget(outcome,cards,target,source,game);
-        cardToGraveyard=game.getCard(target.getFirstTarget());
+        cardToHand=game.getCard(target.getFirstTarget());
       }
-      if (cardToGraveyard != null) {
-        controller.moveCards(cardToGraveyard,Zone.GRAVEYARD,source,game);
-        cards.remove(cardToGraveyard);
+      if (cardToHand != null) {
+        controller.moveCards(cardToHand,Zone.HAND,source,game);
+        cards.remove(cardToHand);
       }
-      controller.moveCards(cards,Zone.HAND,source,game);
+      controller.moveCards(cards,Zone.GRAVEYARD,source,game);
     }
     return true;
   }
