@@ -15,9 +15,14 @@
       }
     }
   }
+  int numSpecialCommons=getNumberOfSpecialCommons();
+  int numCommonsToGenerate=numBoosterCommon - numSpecialCommons;
   List<CardInfo> commons=getCardsByRarity(Rarity.COMMON);
-  for (int i=0; i < numBoosterCommon; i++) {
+  for (int i=0; i < numCommonsToGenerate; i++) {
     addToBooster(booster,commons);
+  }
+  if (numSpecialCommons > 0) {
+    addSpecialCommon(booster,numSpecialCommons);
   }
   List<CardInfo> uncommons=getCardsByRarity(Rarity.UNCOMMON);
   for (int i=0; i < numBoosterUncommon; i++) {
@@ -34,79 +39,10 @@
     }
   }
   if (numBoosterDoubleFaced > 0) {
-    this.addDoubleFace(booster);
+    addDoubleFace(booster);
   }
   if (numBoosterSpecial > 0) {
-    int specialCards=0;
-    List<CardInfo> specialBonus=getSpecialBonus();
-    if (specialBonus != null) {
-      specialCards+=specialBonus.size();
-    }
-    List<CardInfo> specialMythic=getSpecialMythic();
-    if (specialMythic != null) {
-      specialCards+=specialMythic.size();
-    }
-    List<CardInfo> specialRare=getSpecialRare();
-    if (specialRare != null) {
-      specialCards+=specialRare.size();
-    }
-    List<CardInfo> specialUncommon=getSpecialUncommon();
-    if (specialUncommon != null) {
-      specialCards+=specialUncommon.size();
-    }
-    List<CardInfo> specialCommon=getSpecialCommon();
-    if (specialCommon != null) {
-      specialCards+=specialCommon.size();
-    }
-    if (specialCards > 0) {
-      for (int i=0; i < numBoosterSpecial; i++) {
-        if (rnd.nextInt(15) < 10) {
-          if (specialCommon != null && !specialCommon.isEmpty()) {
-            addToBooster(booster,specialCommon);
-          }
- else {
-            i--;
-          }
-          continue;
-        }
-        if (rnd.nextInt(4) < 3) {
-          if (specialUncommon != null && !specialUncommon.isEmpty()) {
-            addToBooster(booster,specialUncommon);
-          }
- else {
-            i--;
-          }
-          continue;
-        }
-        if (rnd.nextInt(8) < 7) {
-          if (specialRare != null && !specialRare.isEmpty()) {
-            addToBooster(booster,specialRare);
-          }
- else {
-            i--;
-          }
-          continue;
-        }
-        if (specialMythic != null && !specialMythic.isEmpty()) {
-          if (specialBonus != null && !specialBonus.isEmpty()) {
-            if (rnd.nextInt(3) < 2) {
-              addToBooster(booster,specialMythic);
-              continue;
-            }
-          }
- else {
-            addToBooster(booster,specialMythic);
-            continue;
-          }
-        }
- else {
-          i--;
-        }
-        if (specialBonus != null && !specialBonus.isEmpty()) {
-          addToBooster(booster,specialBonus);
-        }
-      }
-    }
+    addSpecial(booster);
   }
   return booster;
 }

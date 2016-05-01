@@ -1,0 +1,12 @@
+{
+  List<CardInfo> savedCardsInfos=savedDoubleFacedCards.get(rarity);
+  if (savedCardsInfos == null) {
+    CardCriteria criteria=new CardCriteria();
+    criteria.setCodes(getCode());
+    criteria.rarities(rarity);
+    criteria.doubleFaced(true);
+    savedCardsInfos=CardRepository.instance.findCards(criteria);
+    savedDoubleFacedCards.put(rarity,savedCardsInfos);
+  }
+  return new ArrayList<>(savedCardsInfos);
+}
