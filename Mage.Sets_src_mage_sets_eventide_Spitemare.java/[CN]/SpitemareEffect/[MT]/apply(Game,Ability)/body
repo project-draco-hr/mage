@@ -1,7 +1,13 @@
 {
-  Player target=game.getPlayer(source.getFirstTarget());
-  if (target != null) {
-    target.damage((Integer)this.getValue("damageAmount"),source.getSourceId(),game,false,true);
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player != null) {
+    player.damage((Integer)this.getValue("damageAmount"),source.getSourceId(),game,false,true);
+    return true;
   }
-  return true;
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  if (permanent != null) {
+    permanent.damage((Integer)this.getValue("damageAmount"),source.getSourceId(),game,false,true);
+    return true;
+  }
+  return false;
 }
