@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Angel of Jubilation");
+  addCard(Zone.BATTLEFIELD,playerA,"Savannah Lions");
+  addCard(Zone.BATTLEFIELD,playerB,"Barrin, Master Wizard");
+  addCard(Zone.BATTLEFIELD,playerB,"Nantuko Husk");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Food Chain");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerB,"{2},Sacrifice a permanent you control: Return target creature to its owner's hand.");
+  playerB.addChoice("Food Chain");
+  playerA.addTarget("Angel of Jubilation");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Angel of Jubilation",0);
+  assertPermanentCount(playerB,"Food Chain",0);
+}

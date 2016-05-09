@@ -8,8 +8,11 @@
       activator=controllerId;
     }
   }
-  if (!game.getPlayer(activator).canPaySacrificeCost()) {
-    return false;
+  int validTargets=0;
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(((TargetControlledPermanent)targets.get(0)).getFilter(),controllerId,game)) {
+    if (game.getPlayer(activator).canPaySacrificeCost(permanent,sourceId,controllerId,game)) {
+      validTargets++;
+    }
   }
-  return targets.canChoose(activator,game);
+  return validTargets > 0;
 }
