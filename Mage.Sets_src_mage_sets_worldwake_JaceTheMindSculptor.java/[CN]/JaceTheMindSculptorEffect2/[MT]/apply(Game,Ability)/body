@@ -1,13 +1,19 @@
 {
-  Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null) {
-    controller.drawCards(3,game);
-    TargetCardInHand target=new TargetCardInHand(2,2,new FilterCard());
-    controller.chooseTarget(Outcome.Detriment,target,source,game);
-    Cards cardsToLibrary=new CardsImpl(target.getTargets());
-    if (!cardsToLibrary.isEmpty()) {
-      controller.putCardsOnTopOfLibrary(cardsToLibrary,game,source,true);
+  Player player=game.getPlayer(source.getFirstTarget());
+  if (player != null) {
+    while (true) {
+      if (player.getLibrary().getFromTop(game) == null) {
+        break;
+      }
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        card.moveToExile(null,"",source.getSourceId(),game);
+      }
     }
+    for (    Card card : player.getHand().getCards(game)) {
+      card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,false);
+    }
+    player.shuffleLibrary(source,game);
     return true;
   }
   return false;
