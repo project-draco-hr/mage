@@ -1,0 +1,41 @@
+{
+  Card card=game.getCard(event.getSourceId());
+  if (card == null || !(card.getCardType().contains(CardType.CREATURE))) {
+    return false;
+  }
+  boolean castCreatureIsWhite=card.getColor(game).isWhite();
+  boolean castCreatureIsBlue=card.getColor(game).isBlue();
+  boolean castCreatureIsBlack=card.getColor(game).isBlack();
+  boolean castCreatureIsRed=card.getColor(game).isRed();
+  boolean castCreatureIsGreen=card.getColor(game).isGreen();
+  UUID uuid=getControllerId();
+  Player controller=game.getPlayer(uuid);
+  boolean hasToPay=true;
+  boolean gotACreature=false;
+  FilterCreaturePermanent controllerCreaturesFilter=new FilterCreaturePermanent();
+  controllerCreaturesFilter.add(new ControllerIdPredicate(controller.getId()));
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(new FilterControlledCreaturePermanent(),getControllerId(),game)) {
+    gotACreature=true;
+    if (castCreatureIsWhite && permanent.getColor(game).isWhite()) {
+      hasToPay=false;
+    }
+    if (castCreatureIsBlue && permanent.getColor(game).isBlue()) {
+      hasToPay=false;
+    }
+    if (castCreatureIsBlack && permanent.getColor(game).isBlack()) {
+      hasToPay=false;
+    }
+    if (castCreatureIsRed && permanent.getColor(game).isRed()) {
+      hasToPay=false;
+    }
+    if (castCreatureIsGreen && permanent.getColor(game).isGreen()) {
+      hasToPay=false;
+    }
+  }
+  if (hasToPay || !gotACreature) {
+    for (    Effect effect : getEffects()) {
+      effect.setTargetPointer(new FixedTarget(card.getId()));
+    }
+  }
+  return hasToPay || !gotACreature;
+}
