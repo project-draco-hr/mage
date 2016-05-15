@@ -27,10 +27,15 @@
     if (tournamentType.isCubeBooster()) {
       tOptions.getLimitedOptions().setDraftCubeName(this.cbDraftCube.getSelectedItem().toString());
     }
- else     if (tournamentType.isRandom()) {
+ else     if (tournamentType.isRandom() || tournamentType.isRichMan()) {
+      this.isRandom=tournamentType.isRandom();
+      this.isRichMan=tournamentType.isRichMan();
       tOptions.getLimitedOptions().getSetCodes().clear();
       ArrayList<String> selected=randomPackSelector.getSelectedPacks();
       int maxPacks=3 * (players.size() + 1);
+      if (tournamentType.isRichMan()) {
+        maxPacks=36;
+      }
       if (selected.size() > maxPacks) {
         StringBuilder infoString=new StringBuilder("More sets were selected than needed. ");
         infoString.append(maxPacks);

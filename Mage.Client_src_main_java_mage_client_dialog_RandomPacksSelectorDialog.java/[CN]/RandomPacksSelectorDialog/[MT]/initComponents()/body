@@ -6,7 +6,7 @@
   pnlApply=new javax.swing.JPanel();
   btnApply=new javax.swing.JButton();
   setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-  setTitle("Random Booster Draft Packs Selector");
+  setTitle(title);
   setModal(true);
   setModalExclusionType(java.awt.Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
   setPreferredSize(new java.awt.Dimension(600,450));
@@ -38,7 +38,12 @@
   pnlSelect.add(btnAll);
   pnlApply.setLayout(new javax.swing.BoxLayout(pnlApply,javax.swing.BoxLayout.LINE_AXIS));
   btnApply.setText("Apply");
-  btnApply.setToolTipText("At least two packs must be selected");
+  if (isRandomDraft) {
+    btnApply.setToolTipText("At least 2 packs must be selected");
+  }
+ else   if (isRichManDraft) {
+    btnApply.setToolTipText("At least 1 pack must be selected");
+  }
   btnApply.addActionListener(new java.awt.event.ActionListener(){
     public void actionPerformed(    java.awt.event.ActionEvent evt){
       btnApplyActionPerformed(evt);
