@@ -1,0 +1,9 @@
+{
+  if (sourceAbility.getFirstTarget() == null) {
+    return 0;
+  }
+  FilterArtifactPermanent filter=new FilterArtifactPermanent();
+  filter.add(new TappedPredicate());
+  filter.add(new ControllerIdPredicate(sourceAbility.getFirstTarget()));
+  return game.getBattlefield().count(filter,sourceAbility.getSourceId(),sourceAbility.getControllerId(),game);
+}
