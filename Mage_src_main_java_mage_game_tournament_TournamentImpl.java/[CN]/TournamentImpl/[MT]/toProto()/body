@@ -12,7 +12,7 @@
     for (    TournamentPairing pair : round.getPairs()) {
       Match match=pair.getMatch();
       if (match != null && match.hasEnded()) {
-        MatchProto.Builder matchBuilder=roundBuilder.addMatchesBuilder().setName(match.getName()).setGameType(match.getOptions().getGameType()).setDeckType(match.getOptions().getDeckType()).setGames(match.getNumGames()).setDraws(match.getDraws()).addPlayers(matchToProto(match,pair.getPlayer1())).addPlayers(matchToProto(match,pair.getPlayer2()));
+        MatchProto.Builder matchBuilder=roundBuilder.addMatchesBuilder().setName(match.getName()).setGameType(match.getOptions().getGameType()).setDeckType(match.getOptions().getDeckType()).setGames(match.getNumGames()).setDraws(match.getDraws()).addPlayers(matchToProto(match,pair.getPlayer1())).addPlayers(matchToProto(match,pair.getPlayer2())).setMatchOptions(match.getOptions().toProto()).setEndTimeMs((match.getEndTime() != null ? match.getEndTime() : new Date()).getTime());
       }
     }
     for (    TournamentPlayer tp : round.getPlayerByes()) {

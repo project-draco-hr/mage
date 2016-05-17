@@ -1,0 +1,12 @@
+{
+  playerRating.setRatingDeviation(getUpdatedRD(playerRating,gameTimeMs));
+  opponentRating.setRatingDeviation(getUpdatedRD(opponentRating,gameTimeMs));
+  GlickoRating newPlayerRating=getNewRating(playerRating,opponentRating,outcome);
+  GlickoRating newOpponentRating=getNewRating(opponentRating,playerRating,1 - outcome);
+  playerRating.setRating(newPlayerRating.getRating());
+  playerRating.setRatingDeviation(newPlayerRating.getRatingDeviation());
+  playerRating.setLastGameTimeMs(gameTimeMs);
+  opponentRating.setRating(newOpponentRating.getRating());
+  opponentRating.setRatingDeviation(newOpponentRating.getRatingDeviation());
+  opponentRating.setLastGameTimeMs(gameTimeMs);
+}

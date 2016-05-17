@@ -1,0 +1,16 @@
+{
+  GlickoRatingSystem glickoRatingSystem=new GlickoRatingSystem();
+  int count=1000;
+  for (int i=0; i < count; i++) {
+    double startRating=random.nextDouble() * 2500 + 500;
+    double startRatingDeviation=Math.min(random.nextDouble() * 300 + 100,GlickoRatingSystem.BaseRD);
+    GlickoRating player1=new GlickoRating(startRating,startRatingDeviation,1);
+    GlickoRating player2=new GlickoRating(startRating,startRatingDeviation,1);
+    int gamesCount=random.nextInt(50) + 1;
+    for (int j=0; j < gamesCount; j++) {
+      glickoRatingSystem.updateRating(player1,player2,0.5,j + 2);
+      Assert.assertEquals(player1.getRating(),player2.getRating(),1e-5);
+      Assert.assertEquals(player1.getRatingDeviation(),player2.getRatingDeviation(),1e-5);
+    }
+  }
+}

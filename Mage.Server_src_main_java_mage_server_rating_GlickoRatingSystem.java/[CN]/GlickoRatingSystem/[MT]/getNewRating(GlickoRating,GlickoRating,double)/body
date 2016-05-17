@@ -1,0 +1,10 @@
+{
+  double RD=playerRating.getRatingDeviation();
+  double g=gFunc(opponentRating.getRatingDeviation());
+  double p=-g * (playerRating.getRating() - opponentRating.getRating()) / 400;
+  double e=1 / (1 + Math.pow(10,p));
+  double d2=1 / (Q * Q * g* g* e* (1 - e));
+  double newRating=playerRating.getRating() + Q / (1 / RD / RD + 1 / d2) * g * (outcome - e);
+  double newRD=Math.sqrt(1 / (1 / RD / RD + 1 / d2));
+  return new GlickoRating(newRating,newRD);
+}

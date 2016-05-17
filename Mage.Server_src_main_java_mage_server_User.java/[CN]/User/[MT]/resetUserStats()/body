@@ -4,15 +4,22 @@
   }
   userStats=UserStatsRepository.instance.getUser(this.userName);
   if (userStats != null) {
-    userData.setMatchHistory(userStatsToMatchHistory(userStats.getProto()));
-    userData.setMatchQuitRatio(userStatsToMatchQuitRatio(userStats.getProto()));
-    userData.setTourneyHistory(userStatsToTourneyHistory(userStats.getProto()));
-    userData.setTourneyQuitRatio(userStatsToTourneyQuitRatio(userStats.getProto()));
+    ResultProtos.UserStatsProto userStatsProto=userStats.getProto();
+    userData.setMatchHistory(userStatsToMatchHistory(userStatsProto));
+    userData.setMatchQuitRatio(userStatsToMatchQuitRatio(userStatsProto));
+    userData.setTourneyHistory(userStatsToTourneyHistory(userStatsProto));
+    userData.setTourneyQuitRatio(userStatsToTourneyQuitRatio(userStatsProto));
+    userData.setGeneralRating(userStatsToGeneralRating(userStatsProto));
+    userData.setConstructedRating(userStatsToConstructedRating(userStatsProto));
+    userData.setLimitedRating(userStatsToLimitedRating(userStatsProto));
   }
  else {
     userData.setMatchHistory("0");
     userData.setMatchQuitRatio(0);
     userData.setTourneyHistory("0");
     userData.setTourneyQuitRatio(0);
+    userData.setGeneralRating(GlickoRatingSystem.getDefaultDisplayedRating());
+    userData.setConstructedRating(GlickoRatingSystem.getDefaultDisplayedRating());
+    userData.setLimitedRating(GlickoRatingSystem.getDefaultDisplayedRating());
   }
 }
