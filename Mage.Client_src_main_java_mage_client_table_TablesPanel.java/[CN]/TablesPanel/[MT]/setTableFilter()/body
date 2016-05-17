@@ -54,7 +54,14 @@
   if (btnSkillSerious.isSelected()) {
     skillFilterList.add(RowFilter.regexFilter(SkillLevel.SERIOUS.toString(),TableTableModel.COLUMN_SKILL));
   }
-  if (stateFilterList.isEmpty() || typeFilterList.isEmpty() || formatFilterList.isEmpty()|| skillFilterList.isEmpty()) {
+  List<RowFilter<Object,Object>> ratingFilterList=new ArrayList<>();
+  if (btnRated.isSelected()) {
+    ratingFilterList.add(RowFilter.regexFilter("^Rated",TableTableModel.COLUMN_RATING));
+  }
+  if (btnUnrated.isSelected()) {
+    ratingFilterList.add(RowFilter.regexFilter("^Unrated",TableTableModel.COLUMN_RATING));
+  }
+  if (stateFilterList.isEmpty() || typeFilterList.isEmpty() || formatFilterList.isEmpty()|| skillFilterList.isEmpty()|| ratingFilterList.isEmpty()) {
     activeTablesSorter.setRowFilter(RowFilter.regexFilter("Nothing",TableTableModel.COLUMN_SKILL));
   }
  else {
@@ -82,6 +89,12 @@
     }
  else     if (skillFilterList.size() == 1) {
       filterList.addAll(skillFilterList);
+    }
+    if (ratingFilterList.size() > 1) {
+      filterList.add(RowFilter.orFilter(ratingFilterList));
+    }
+ else     if (ratingFilterList.size() == 1) {
+      filterList.addAll(ratingFilterList);
     }
     if (filterList.size() == 1) {
       activeTablesSorter.setRowFilter(filterList.get(0));
