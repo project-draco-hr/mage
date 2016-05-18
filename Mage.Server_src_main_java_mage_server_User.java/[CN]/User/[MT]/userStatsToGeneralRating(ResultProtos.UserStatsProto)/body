@@ -1,0 +1,11 @@
+{
+  GlickoRating glickoRating;
+  if (proto.hasGeneralGlickoRating()) {
+    ResultProtos.GlickoRatingProto glickoRatingProto=proto.getGeneralGlickoRating();
+    glickoRating=new GlickoRating(glickoRatingProto.getRating(),glickoRatingProto.getRatingDeviation(),glickoRatingProto.getLastGameTimeMs());
+  }
+ else {
+    glickoRating=GlickoRatingSystem.getInitialRating();
+  }
+  return GlickoRatingSystem.getDisplayedRating(glickoRating);
+}

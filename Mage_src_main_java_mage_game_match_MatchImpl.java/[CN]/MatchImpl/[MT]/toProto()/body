@@ -1,8 +1,8 @@
 {
-  MatchProto.Builder builder=MatchProto.newBuilder().setName(this.getName()).setGameType(this.getOptions().getGameType()).setDeckType(this.getOptions().getDeckType()).setGames(this.getNumGames()).setDraws(this.getDraws());
+  MatchProto.Builder builder=MatchProto.newBuilder().setName(this.getName()).setGameType(this.getOptions().getGameType()).setDeckType(this.getOptions().getDeckType()).setGames(this.getNumGames()).setDraws(this.getDraws()).setMatchOptions(this.getOptions().toProto()).setEndTimeMs((this.getEndTime() != null ? this.getEndTime() : new Date()).getTime());
   for (  MatchPlayer matchPlayer : this.getPlayers()) {
     MatchQuitStatus status=!matchPlayer.hasQuit() ? MatchQuitStatus.NO_MATCH_QUIT : matchPlayer.getPlayer().hasTimerTimeout() ? MatchQuitStatus.TIMER_TIMEOUT : matchPlayer.getPlayer().hasIdleTimeout() ? MatchQuitStatus.IDLE_TIMEOUT : MatchQuitStatus.QUIT;
-    builder.addPlayersBuilder().setName(matchPlayer.getName()).setQuit(status).setWins(matchPlayer.getWins());
+    builder.addPlayersBuilder().setName(matchPlayer.getName()).setHuman(matchPlayer.getPlayer().isHuman()).setQuit(status).setWins(matchPlayer.getWins());
   }
   return builder.build();
 }
