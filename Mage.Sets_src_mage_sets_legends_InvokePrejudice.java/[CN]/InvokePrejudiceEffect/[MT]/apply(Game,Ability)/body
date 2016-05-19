@@ -2,12 +2,9 @@
   boolean result=true;
   Spell spell=game.getStack().getSpell(getTargetPointer().getFirst(game,source));
   if (spell != null) {
-    Card card=spell.getCard();
-    if (card != null) {
-      CounterUnlessPaysEffect effect=new CounterUnlessPaysEffect(new GenericManaCost(card.getConvertedManaCost()));
-      effect.setTargetPointer(new FixedTarget(spell.getId()));
-      result=effect.apply(game,source);
-    }
+    CounterUnlessPaysEffect effect=new CounterUnlessPaysEffect(new GenericManaCost(spell.getConvertedManaCost()));
+    effect.setTargetPointer(getTargetPointer());
+    result=effect.apply(game,source);
   }
   return result;
 }
