@@ -1,0 +1,20 @@
+{
+  Set<Player> playersThatSearched=new HashSet<>(1);
+  for (  UUID opponentId : game.getOpponents(source.getControllerId())) {
+    Player opponent=game.getPlayer(opponentId);
+    if (opponent != null && opponent.chooseUse(Outcome.PutCreatureInPlay,"Search your library for a creature card and put it onto the battlefield?",source,game)) {
+      TargetCardInLibrary target=new TargetCardInLibrary(new FilterCreatureCard());
+      if (opponent.searchLibrary(target,game)) {
+        Card targetCard=opponent.getLibrary().getCard(target.getFirstTarget(),game);
+        if (targetCard != null) {
+          opponent.moveCards(targetCard,Zone.BATTLEFIELD,source,game);
+          playersThatSearched.add(opponent);
+        }
+      }
+    }
+  }
+  for (  Player opponent : playersThatSearched) {
+    opponent.shuffleLibrary(source,game);
+  }
+  return true;
+}
