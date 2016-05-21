@@ -4,7 +4,7 @@
     Player opponent=game.getPlayer(getTargetPointer().getFirst(game,source));
     if (opponent != null) {
       int swamps=game.getBattlefield().count(filterSwamp,source.getSourceId(),source.getControllerId(),game);
-      opponent.damage(swamps,source.getSourceId(),game,false,true);
+      opponent.loseLife(swamps * 2,game);
     }
     Permanent creature=game.getPermanent(source.getTargets().get(1).getFirstTarget());
     if (creature != null) {
@@ -18,7 +18,7 @@
       new CreateTokenEffect(new SaprolingToken(),forests).apply(game,source);
     }
     int plains=game.getBattlefield().count(filterPlains,source.getSourceId(),source.getControllerId(),game);
-    controller.gainLife(plains,game);
+    controller.gainLife(plains * 2,game);
     int islands=game.getBattlefield().count(filterIsland,source.getSourceId(),source.getControllerId(),game);
     if (islands > 0) {
       controller.drawCards(islands,game);
