@@ -1,6 +1,9 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent == null && source.getAbilityType().equals(AbilityType.STATIC)) {
+    permanent=game.getPermanentEntering(source.getSourceId());
+  }
   if (controller != null && permanent != null) {
     SpellAbility spellAbility=(SpellAbility)getValue(EntersBattlefieldEffect.SOURCE_CAST_SPELL_ABILITY);
     if (spellAbility != null && spellAbility.getSourceId().equals(source.getSourceId()) && permanent.getZoneChangeCounter(game) == spellAbility.getSourceObjectZoneChangeCounter()) {
