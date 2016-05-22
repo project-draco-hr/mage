@@ -8,5 +8,7 @@
   this.addAbility(new EnchantAbility(auraTarget.getTargetName()));
   this.addAbility(new EntersBattlefieldTriggeredAbility(new TapEnchantedEffect()));
   this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new DontUntapInControllersUntapStepEnchantedEffect()));
-  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new UntapEnchantedEffect(),new DiscardTargetCost(new TargetCardInHand(2,new FilterArtifactCard("two artifact cards")))));
+  Ability gainedAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new UntapSourceEffect(),new DiscardTargetCost(new TargetCardInHand(2,new FilterArtifactCard("two artifact cards"))));
+  Effect effect=new GainAbilityAttachedEffect(gainedAbility,AttachmentType.AURA,Duration.WhileOnBattlefield,"Enchanted permanent has \"Discard two artifact cards: Untap this permanent.\"");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
 }
