@@ -7,9 +7,11 @@
   for (  Permanent permanent : permanents) {
     if (!permanent.getId().equals(target.getId())) {
       for (      String subtype : targetSubtype) {
-        if (permanent.hasSubtype(subtype)) {
-          amount++;
-          break;
+        if (!CardUtil.isNonCreatureSubtype(subtype)) {
+          if (permanent.hasSubtype(subtype)) {
+            amount++;
+            break;
+          }
         }
       }
     }

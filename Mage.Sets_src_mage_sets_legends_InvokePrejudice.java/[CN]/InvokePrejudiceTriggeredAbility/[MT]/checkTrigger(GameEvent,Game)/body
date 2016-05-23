@@ -1,37 +1,22 @@
 {
-  Card card=game.getCard(event.getSourceId());
-  if (card == null || !(card.getCardType().contains(CardType.CREATURE))) {
-    return false;
-  }
-  boolean castCreatureIsWhite=card.getColor(game).isWhite();
-  boolean castCreatureIsBlue=card.getColor(game).isBlue();
-  boolean castCreatureIsBlack=card.getColor(game).isBlack();
-  boolean castCreatureIsRed=card.getColor(game).isRed();
-  boolean castCreatureIsGreen=card.getColor(game).isGreen();
-  boolean hasToPay=true;
-  boolean gotACreature=false;
-  for (  Permanent permanent : game.getBattlefield().getActivePermanents(new FilterControlledCreaturePermanent(),getControllerId(),game)) {
-    gotACreature=true;
-    if (castCreatureIsWhite && permanent.getColor(game).isWhite()) {
-      hasToPay=false;
-    }
-    if (castCreatureIsBlue && permanent.getColor(game).isBlue()) {
-      hasToPay=false;
-    }
-    if (castCreatureIsBlack && permanent.getColor(game).isBlack()) {
-      hasToPay=false;
-    }
-    if (castCreatureIsRed && permanent.getColor(game).isRed()) {
-      hasToPay=false;
-    }
-    if (castCreatureIsGreen && permanent.getColor(game).isGreen()) {
-      hasToPay=false;
+  if (game.getOpponents(getControllerId()).contains(event.getPlayerId())) {
+    Spell spell=(Spell)game.getObject(event.getTargetId());
+    if (spell != null && spell.getCardType().contains(CardType.CREATURE)) {
+      boolean creatureSharesAColor=false;
+      ObjectColor spellColor=spell.getColor(game);
+      for (      Permanent permanent : game.getBattlefield().getAllActivePermanents(new FilterControlledCreaturePermanent(),getControllerId(),game)) {
+        if (spellColor.shares(permanent.getColor(game))) {
+          creatureSharesAColor=true;
+          break;
+        }
+      }
+      if (!creatureSharesAColor) {
+        for (        Effect effect : getEffects()) {
+          effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+        }
+        return true;
+      }
     }
   }
-  if (hasToPay || !gotACreature) {
-    for (    Effect effect : getEffects()) {
-      effect.setTargetPointer(new FixedTarget(card.getId()));
-    }
-  }
-  return hasToPay || !gotACreature;
+  return false;
 }
