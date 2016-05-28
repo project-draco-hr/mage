@@ -10,7 +10,8 @@
       card.setFaceDown(false,game);
       int zcc=card.getZoneChangeCounter(game);
       if (card.getCardType().contains(CardType.LAND)) {
-        if (controller.getLandsPlayed() > 0 || !game.getActivePlayerId().equals(controller.getId())) {
+        UUID playerId=controller.getId();
+        if (!game.getActivePlayerId().equals(playerId) || !game.getPlayer(playerId).canPlayLand()) {
           return false;
         }
       }
