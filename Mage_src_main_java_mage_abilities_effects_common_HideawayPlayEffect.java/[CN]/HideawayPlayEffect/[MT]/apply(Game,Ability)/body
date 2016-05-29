@@ -9,7 +9,13 @@
     if (controller.chooseUse(Outcome.PlayForFree,"Do you want to play " + card.getIdName() + " for free now?",source,game)) {
       card.setFaceDown(false,game);
       int zcc=card.getZoneChangeCounter(game);
-      if (!controller.playCard(card,game,true,false)) {
+      if (card.getCardType().contains(CardType.LAND)) {
+        UUID playerId=controller.getId();
+        if (!game.getActivePlayerId().equals(playerId) || !game.getPlayer(playerId).canPlayLand()) {
+          return false;
+        }
+      }
+      if (!controller.playCard(card,game,true,true)) {
         if (card.getZoneChangeCounter(game) == zcc) {
           card.setFaceDown(true,game);
         }
