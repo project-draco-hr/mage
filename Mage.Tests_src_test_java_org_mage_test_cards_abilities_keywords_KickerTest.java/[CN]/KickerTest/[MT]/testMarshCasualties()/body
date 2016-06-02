@@ -1,0 +1,12 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",5);
+  addCard(Zone.HAND,playerA,"Marsh Casualties",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Centaur Courser",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Marsh Casualties",playerB);
+  setChoice(playerA,"Yes");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertTappedCount("Swamp",true,5);
+  assertGraveyardCount(playerA,"Marsh Casualties",1);
+  assertPowerToughness(playerB,"Centaur Courser",1,1);
+}
