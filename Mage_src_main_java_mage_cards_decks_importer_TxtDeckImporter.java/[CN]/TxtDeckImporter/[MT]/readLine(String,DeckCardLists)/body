@@ -6,15 +6,12 @@
   if (line.startsWith("//")) {
     return;
   }
-  if (line.length() == 0) {
-    emptyLinesInARow++;
-    if (emptyLinesInARow > 1) {
-      sideboard=true;
-    }
+  if (line.length() == 0 && nonEmptyLinesTotal > 0) {
+    sideboard=true;
     return;
   }
  else {
-    emptyLinesInARow=0;
+    nonEmptyLinesTotal++;
   }
   line=line.replace("\t"," ");
   int delim=line.indexOf(' ');
