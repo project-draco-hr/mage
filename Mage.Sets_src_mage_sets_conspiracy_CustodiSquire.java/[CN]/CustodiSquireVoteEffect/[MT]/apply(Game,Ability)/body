@@ -1,0 +1,44 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards possibleCards=new CardsImpl();
+    possibleCards.addAll(controller.getGraveyard().getCards(filter,game));
+    if (!possibleCards.isEmpty()) {
+      HashMap<UUID,Integer> cardCounter=new HashMap<>();
+      TargetCard target=new TargetCard(1,1,Zone.GRAVEYARD,filter);
+      int maxCount=1;
+      for (      UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+        Player player=game.getPlayer(playerId);
+        if (player != null) {
+          target.clearChosen();
+          player.chooseTarget(outcome,possibleCards,target,source,game);
+          Card card=game.getCard(target.getFirstTarget());
+          if (card != null) {
+            game.informPlayers(player.getName() + " voted for " + card.getLogName());
+            if (!cardCounter.containsKey(target.getFirstTarget())) {
+              cardCounter.put(target.getFirstTarget(),1);
+            }
+ else {
+              int count=cardCounter.get(target.getFirstTarget()) + 1;
+              if (count > maxCount) {
+                maxCount=count;
+              }
+              cardCounter.put(target.getFirstTarget(),count);
+            }
+          }
+        }
+      }
+      Cards cardsToMove=new CardsImpl();
+      for (      UUID uuid : possibleCards) {
+        if (cardCounter.containsKey(uuid)) {
+          if (cardCounter.get(uuid) == maxCount) {
+            cardsToMove.add(uuid);
+          }
+        }
+      }
+      controller.moveCards(cardsToMove,Zone.HAND,source,game);
+    }
+    return true;
+  }
+  return false;
+}
