@@ -1,0 +1,17 @@
+{
+  final DeckImportFromClipboardDialog dialog=new DeckImportFromClipboardDialog();
+  dialog.pack();
+  dialog.setVisible(true);
+  dialog.addWindowListener(new WindowAdapter(){
+    @Override public void windowClosed(    WindowEvent e){
+      try {
+        deck=Deck.load(DeckImporterUtil.importDeck(dialog.getTmpPath()),true,true);
+        refreshDeck();
+      }
+ catch (      GameException e1) {
+        JOptionPane.showMessageDialog(MageFrame.getDesktop(),e1.getMessage(),"Error loading deck",JOptionPane.ERROR_MESSAGE);
+      }
+    }
+  }
+);
+}
