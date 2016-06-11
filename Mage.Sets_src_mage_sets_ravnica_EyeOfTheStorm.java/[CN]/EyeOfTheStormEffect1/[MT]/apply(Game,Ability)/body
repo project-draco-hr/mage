@@ -10,17 +10,18 @@
     UUID exileZoneId=CardUtil.getExileZoneId(game,source.getSourceId(),EyeOfTheStorm.getZoneChangeCounter(game));
     if (controller.moveCardsToExile(spell,source,game,true,exileZoneId,EyeOfTheStorm.getIdName())) {
       EyeOfTheStorm.imprint(card.getId(),game);
-      Player player=game.getPlayer(spell.getControllerId());
       if (EyeOfTheStorm != null && EyeOfTheStorm.getImprinted() != null && EyeOfTheStorm.getImprinted().size() > 0 && controller != null) {
         CardsImpl copiedCards=new CardsImpl();
         for (        UUID uuid : EyeOfTheStorm.getImprinted()) {
           card=game.getCard(uuid);
-          if (card.isSplitCard()) {
-            copiedCards.add(((SplitCard)card).getLeftHalfCard());
-            copiedCards.add(((SplitCard)card).getRightHalfCard());
-          }
+          if (game.getPlayer(card.getOwnerId()) != null) {
+            if (card.isSplitCard()) {
+              copiedCards.add(((SplitCard)card).getLeftHalfCard());
+              copiedCards.add(((SplitCard)card).getRightHalfCard());
+            }
  else {
-            copiedCards.add(card);
+              copiedCards.add(card);
+            }
           }
         }
         boolean continueCasting=true;
