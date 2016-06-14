@@ -61,7 +61,14 @@
   if (btnUnrated.isSelected()) {
     ratingFilterList.add(RowFilter.regexFilter("^Unrated",TableTableModel.COLUMN_RATING));
   }
-  if (stateFilterList.isEmpty() || typeFilterList.isEmpty() || formatFilterList.isEmpty()|| skillFilterList.isEmpty()|| ratingFilterList.isEmpty()) {
+  List<RowFilter<Object,Object>> passwordFilterList=new ArrayList<>();
+  if (btnOpen.isSelected()) {
+    passwordFilterList.add(RowFilter.regexFilter("^$",TableTableModel.COLUMN_PASSWORD));
+  }
+  if (btnPassword.isSelected()) {
+    passwordFilterList.add(RowFilter.regexFilter("^\\*\\*\\*$",TableTableModel.COLUMN_PASSWORD));
+  }
+  if (stateFilterList.isEmpty() || typeFilterList.isEmpty() || formatFilterList.isEmpty()|| skillFilterList.isEmpty()|| ratingFilterList.isEmpty()|| passwordFilterList.isEmpty()) {
     activeTablesSorter.setRowFilter(RowFilter.regexFilter("Nothing",TableTableModel.COLUMN_SKILL));
   }
  else {
@@ -95,6 +102,12 @@
     }
  else     if (ratingFilterList.size() == 1) {
       filterList.addAll(ratingFilterList);
+    }
+    if (passwordFilterList.size() > 1) {
+      filterList.add(RowFilter.orFilter(passwordFilterList));
+    }
+ else     if (passwordFilterList.size() == 1) {
+      filterList.addAll(passwordFilterList);
     }
     if (filterList.size() == 1) {
       activeTablesSorter.setRowFilter(filterList.get(0));
