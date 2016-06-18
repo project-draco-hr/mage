@@ -1,5 +1,12 @@
 {
-  ExileZone exile=game.getExile().getExileZone(source.getSourceId());
+  UUID exileId=CardUtil.getExileZoneId(game,source.getSourceId(),source.getSourceObjectZoneChangeCounter());
+  if (exileId == null) {
+    return false;
+  }
+  ExileZone exile=game.getExile().getExileZone(exileId);
+  if (exile == null) {
+    return false;
+  }
   Player controller=game.getPlayer(source.getControllerId());
   MageObject sourceObject=game.getObject(source.getSourceId());
   boolean allReturned=true;
