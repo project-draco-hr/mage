@@ -2,19 +2,9 @@
   Player targetPlayer=game.getPlayer(targetPointer.getFirst(game,source));
   Player controller=game.getPlayer(source.getControllerId());
   MageObject sourceObject=game.getObject(source.getSourceId());
-  if (targetPlayer != null && controller != null && sourceObject != null) {
-    Choice cardChoice=new ChoiceImpl(true);
-    cardChoice.setMessage("Name a nonland card.");
-    cardChoice.setChoices(CardRepository.instance.getNonLandNames());
-    cardChoice.clearChoice();
-    while (!controller.choose(Outcome.Discard,cardChoice,game)) {
-      if (!controller.canRespond()) {
-        return false;
-      }
-    }
-    String cardName=cardChoice.getChoice();
+  String cardName=(String)game.getState().getValue(source.getSourceId().toString() + NameACardEffect.INFO_KEY);
+  if (targetPlayer != null && controller != null && sourceObject != null && cardName != null) {
     Boolean hasDiscarded=false;
-    game.informPlayers(sourceObject.getLogName() + ", named card: [" + cardName+ "]");
     for (    Card card : targetPlayer.getHand().getCards(game)) {
       if (card.getName().equals(cardName)) {
         targetPlayer.discard(card,source,game);
