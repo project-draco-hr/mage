@@ -1,17 +1,11 @@
 {
   Card aura=game.getCard(source.getSourceId());
   if (aura != null && game.getState().getZone(aura.getId()).equals(Zone.GRAVEYARD)) {
-    Player controller=game.getPlayer(source.getControllerId());
-    FilterCreaturePermanent filter=new FilterCreaturePermanent();
-    TargetPermanent target=new TargetPermanent(filter);
-    target.setNotTarget(true);
-    if (controller != null && controller.choose(Outcome.PutCardInPlay,target,source.getSourceId(),game)) {
-      Permanent targetPermanent=game.getPermanent(target.getFirstTarget());
-      if (!targetPermanent.cantBeEnchantedBy(aura,game)) {
-        game.getState().setValue("attachTo:" + aura.getId(),targetPermanent);
-        aura.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),controller.getId());
-        return targetPermanent.addAttachment(aura.getId(),game);
-      }
+    Permanent targetPermanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (!targetPermanent.cantBeEnchantedBy(aura,game)) {
+      game.getState().setValue("attachTo:" + aura.getId(),targetPermanent);
+      aura.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),source.getControllerId());
+      return targetPermanent.addAttachment(aura.getId(),game);
     }
   }
   return false;
