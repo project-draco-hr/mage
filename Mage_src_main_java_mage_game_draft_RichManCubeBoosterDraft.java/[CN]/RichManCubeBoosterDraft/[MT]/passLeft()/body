@@ -1,0 +1,32 @@
+{
+synchronized (players) {
+    UUID startId=table.get(0);
+    UUID currentId=startId;
+    UUID nextId=table.getNext();
+    DraftPlayer next=players.get(nextId);
+    draftCube.leftCubeCards.clear();
+    draftCube.leftCubeCards.addAll(draftCube.getCubeCards());
+    cardsInCube.clear();
+    for (    CardIdentity card : draftCube.leftCubeCards) {
+      cardsInCube.put(card.getName(),card);
+    }
+    while (true) {
+      for (      DraftPlayer player : players.values()) {
+        if (player != null && player.getDeck() != null) {
+          for (          Card card : player.getDeck().getSideboard()) {
+            if (cardsInCube.get(card.getName()) != null) {
+              draftCube.removeFromLeftCards(cardsInCube.get(card.getName()));
+            }
+          }
+        }
+      }
+      List<Card> nextBooster=draftCube.createBooster();
+      next.setBooster(nextBooster);
+      if (nextId == startId) {
+        break;
+      }
+      nextId=table.getNext();
+      next=players.get(nextId);
+    }
+  }
+}
