@@ -1,0 +1,22 @@
+{
+  if (rotate && getWidth() > getHeight()) {
+    image=TransformedImageCache.getRotatedResizedImage((BufferedImage)image,getHeight(),getWidth(),Math.toRadians(90.0));
+  }
+ else {
+    image=TransformedImageCache.getResizedImage((BufferedImage)image,getWidth(),getHeight());
+  }
+  if (this.cardId == null || !enlargeMode.equals(this.enlargeMode) || !this.cardId.equals(cardId)) {
+    if (this.panel != null) {
+      remove(this.panel);
+    }
+    this.cardId=cardId;
+    this.enlargeMode=enlargeMode;
+    bigImage=image;
+synchronized (this) {
+      source=null;
+      hue=0.000f;
+    }
+    drawText(strings);
+    repaint();
+  }
+}
