@@ -1,0 +1,15 @@
+{
+  super(ownerId,33,"Lone Rider",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{1}{W}");
+  this.expansionSetCode="EMN";
+  this.subtype.add("Human");
+  this.subtype.add("Knight");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.canTransform=true;
+  this.secondSideCard=new ItThatRidesAsOne(ownerId);
+  this.addAbility(FirstStrikeAbility.getInstance());
+  this.addAbility(LifelinkAbility.getInstance());
+  this.addAbility(new TransformAbility());
+  TriggeredAbility ability=new BeginningOfEndStepTriggeredAbility(new TransformSourceEffect(true),TargetController.ANY,false);
+  this.addAbility(new ConditionalTriggeredAbility(ability,new YouGainedLifeCondition(Condition.ComparisonType.GreaterThan,2),"At the beginning of the end step, if you gained 3 or more life this turn, transform {this}"));
+}
