@@ -1,0 +1,12 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    for (    Card card : player.getGraveyard().getCards(filter,game)) {
+      ContinuousEffect effect=new GisaAndGeralfCastFromGraveyardEffect();
+      effect.setTargetPointer(new FixedTarget(card.getId()));
+      game.addEffect(effect,source);
+    }
+    return true;
+  }
+  return false;
+}

@@ -10,6 +10,5 @@
   this.addAbility(FirstStrikeAbility.getInstance());
   this.addAbility(LifelinkAbility.getInstance());
   this.addAbility(new TransformAbility());
-  TriggeredAbility ability=new BeginningOfEndStepTriggeredAbility(new TransformSourceEffect(true),TargetController.ANY,false);
-  this.addAbility(new ConditionalTriggeredAbility(ability,new YouGainedLifeCondition(Condition.ComparisonType.GreaterThan,2),"At the beginning of the end step, if you gained 3 or more life this turn, transform {this}"));
+  this.addAbility(new BeginningOfEndStepTriggeredAbility(Zone.BATTLEFIELD,new TransformSourceEffect(true),TargetController.ANY,new YouGainedLifeCondition(Condition.ComparisonType.GreaterThan,2),false),new PlayerGainedLifeWatcher());
 }

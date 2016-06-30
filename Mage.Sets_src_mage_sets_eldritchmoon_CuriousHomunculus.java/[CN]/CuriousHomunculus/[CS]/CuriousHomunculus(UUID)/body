@@ -1,0 +1,12 @@
+{
+  super(ownerId,54,"Curious Homunculus",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{1}{U}");
+  this.expansionSetCode="EMN";
+  this.subtype.add("Homunculus");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.canTransform=true;
+  this.secondSideCard=new VoraciousReader(ownerId);
+  this.addAbility(new ConditionalColorlessManaAbility(new TapSourceCost(),1,new InstantOrSorcerySpellManaBuilder()));
+  this.addAbility(new TransformAbility());
+  this.addAbility(new ConditionalTriggeredAbility(new BeginningOfUpkeepTriggeredAbility(new TransformSourceEffect(true),TargetController.YOU,false),new InstantOrSorceryCardsInControllerGraveCondition(3),"At the beginning of your upkeep, if there are three or more instant and/or sorcery cards in your graveyard, transform {this}"));
+}
