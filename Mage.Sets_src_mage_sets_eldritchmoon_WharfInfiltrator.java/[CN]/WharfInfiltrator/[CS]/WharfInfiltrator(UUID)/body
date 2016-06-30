@@ -1,0 +1,16 @@
+{
+  super(ownerId,80,"Wharf Infiltrator",Rarity.RARE,new CardType[]{CardType.CREATURE},"{1}{U}");
+  this.expansionSetCode="EMN";
+  this.subtype.add("Eldrazi");
+  this.subtype.add("Horror");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.addAbility(new SkulkAbility());
+  Effect effect=new DrawDiscardControllerEffect();
+  effect.setText("you may draw a card. If you do, discard a card");
+  this.addAbility(new DealsCombatDamageToAPlayerTriggeredAbility(effect,true));
+  effect=new CreateTokenEffect(new EldraziHorrorToken());
+  effect.setText("put a 3/2 colorless Eldrazi Horror creature token onto the battlefield");
+  DoIfCostPaid doIfCostPaid=new DoIfCostPaid(effect,new GenericManaCost(2));
+  this.addAbility(new WharfInfiltratorDiscardAbility(doIfCostPaid));
+}
