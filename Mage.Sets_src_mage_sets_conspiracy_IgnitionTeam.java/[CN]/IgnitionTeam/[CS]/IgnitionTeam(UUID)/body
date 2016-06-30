@@ -1,0 +1,13 @@
+{
+  super(ownerId,34,"Ignition Team",Rarity.RARE,new CardType[]{CardType.CREATURE},"{5}{R}{R}");
+  this.expansionSetCode="CNS";
+  this.subtype.add("Goblin");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(0),new TappedLandsCount(),true),"with X +1/+1 counters on it, where X is the number of tapped lands on the battlefield."));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BecomesCreatureTargetEffect(new IgnitionTeamToken(),false,true,Duration.EndOfTurn),new ManaCostsImpl("{2}{R}"));
+  ability.addCost(new RemoveCountersSourceCost(CounterType.P1P1.createInstance(1)));
+  ability.addTarget(new TargetLandPermanent());
+  this.addAbility(ability);
+}

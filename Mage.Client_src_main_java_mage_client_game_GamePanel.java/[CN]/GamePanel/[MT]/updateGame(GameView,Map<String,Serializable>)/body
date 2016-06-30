@@ -160,6 +160,37 @@
  else {
     CombatManager.getInstance().hideCombat(gameId);
   }
+  for (  PlayerView player : game.getPlayers()) {
+    if (player.hasLeft() && !playersWhoLeft.get(player.getPlayerId())) {
+      PlayAreaPanel playerLeftPanel=players.get(player.getPlayerId());
+      playersWhoLeft.put(player.getPlayerId(),true);
+      Container parent=playerLeftPanel.getParent();
+      GridBagLayout layout=(GridBagLayout)parent.getLayout();
+      for (      Component otherPanel : parent.getComponents()) {
+        if (otherPanel instanceof PlayAreaPanel) {
+          GridBagConstraints gbc=layout.getConstraints(otherPanel);
+          if (gbc.weightx > 0.1) {
+            gbc.weightx=0.99;
+          }
+          gbc.fill=GridBagConstraints.BOTH;
+          gbc.anchor=GridBagConstraints.WEST;
+          if (gbc.gridx > 0) {
+            gbc.anchor=GridBagConstraints.EAST;
+          }
+          if (otherPanel == playerLeftPanel) {
+            gbc.weightx=0.01;
+            Dimension d=playerLeftPanel.getPreferredSize();
+            d.width=95;
+            otherPanel.setPreferredSize(d);
+          }
+          parent.remove(otherPanel);
+          parent.add(otherPanel,gbc);
+        }
+      }
+      parent.validate();
+      parent.repaint();
+    }
+  }
   feedbackPanel.disableUndo();
   this.revalidate();
   this.repaint();

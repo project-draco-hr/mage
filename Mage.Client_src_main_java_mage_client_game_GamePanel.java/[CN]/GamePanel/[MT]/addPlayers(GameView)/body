@@ -1,5 +1,6 @@
 {
   this.players.clear();
+  this.playersWhoLeft.clear();
   this.pnlBattlefield.removeAll();
   int numSeats=game.getPlayers().size();
   int numColumns=(numSeats + 1) / 2;
@@ -18,6 +19,7 @@
   PlayerView player=game.getPlayers().get(playerSeat);
   PlayAreaPanel playAreaPanel=new PlayAreaPanel(player,bigCard,gameId,game.getPriorityTime(),this,new PlayAreaPanelOptions(game.isPlayer(),game.isPlayer(),game.isRollbackTurnsAllowed()));
   players.put(player.getPlayerId(),playAreaPanel);
+  playersWhoLeft.put(player.getPlayerId(),false);
   GridBagConstraints c=new GridBagConstraints();
   c.fill=GridBagConstraints.BOTH;
   c.weightx=0.5;
@@ -26,8 +28,14 @@
     c.gridwidth=2;
   }
   c.gridx=col;
-  c.gridy=row;
-  this.pnlBattlefield.add(playAreaPanel,c);
+  c.gridy=0;
+  JPanel topPanel=new JPanel();
+  topPanel.setOpaque(false);
+  JPanel bottomPanel=new JPanel();
+  bottomPanel.setOpaque(false);
+  topPanel.setLayout(new GridBagLayout());
+  bottomPanel.setLayout(new GridBagLayout());
+  bottomPanel.add(playAreaPanel,c);
   playAreaPanel.setVisible(true);
   if (oddNumber) {
     col++;
@@ -50,13 +58,19 @@
     player=game.getPlayers().get(playerNum);
     PlayAreaPanel playerPanel=new PlayAreaPanel(player,bigCard,gameId,game.getPriorityTime(),this,new PlayAreaPanelOptions(game.isPlayer(),false,game.isRollbackTurnsAllowed()));
     players.put(player.getPlayerId(),playerPanel);
+    playersWhoLeft.put(player.getPlayerId(),false);
     c=new GridBagConstraints();
     c.fill=GridBagConstraints.BOTH;
     c.weightx=0.5;
     c.weighty=0.5;
     c.gridx=col;
-    c.gridy=row;
-    this.pnlBattlefield.add(playerPanel,c);
+    c.gridy=0;
+    if (row == 0) {
+      topPanel.add(playerPanel,c);
+    }
+ else {
+      bottomPanel.add(playerPanel,c);
+    }
     playerPanel.setVisible(true);
     playerNum++;
     if (playerNum >= numSeats) {
@@ -69,4 +83,13 @@
   for (  PlayAreaPanel p : players.values()) {
     p.sizePlayer(smallMode);
   }
+  GridBagConstraints panelC=new GridBagConstraints();
+  panelC.fill=GridBagConstraints.BOTH;
+  panelC.weightx=0.5;
+  panelC.weighty=0.5;
+  panelC.gridwidth=1;
+  panelC.gridy=0;
+  this.pnlBattlefield.add(topPanel,panelC);
+  panelC.gridy=1;
+  this.pnlBattlefield.add(bottomPanel,panelC);
 }

@@ -11,6 +11,19 @@ conditionApplies|=game.getPlayer(source.getControllerId()).getLife() <= 10;
 break;
 case TARGET_OPPONENT:
 break;
+case EACH_PLAYER:
+int maxLife=0;
+PlayerList playerList=game.getState().getPlayersInRange(source.getControllerId(),game);
+for (UUID pid : playerList) {
+Player p=game.getPlayer(pid);
+if (p != null) {
+if (maxLife < p.getLife()) {
+maxLife=p.getLife();
+}
+}
+}
+conditionApplies|=maxLife <= 10;
+break;
 }
 return conditionApplies;
 }

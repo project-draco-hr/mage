@@ -55,6 +55,7 @@
         }
         PlayerList playerList=game.getPlayerList().copy();
         playerList.setCurrent(game.getActivePlayerId());
+        Player nextPlayer;
         do {
           Player current=playerList.getCurrent(game);
           if (cardController != null && current.getId().equals(controller.getId())) {
@@ -63,8 +64,9 @@
           if (cardOpponent != null && current.getId().equals(opponent.getId())) {
             topOpponent=current.chooseUse(Outcome.Detriment,"Put " + cardOpponent.getLogName() + " back on top of your library? (otherwise it goes to bottom)",source,game);
           }
+          nextPlayer=playerList.getNext(game);
         }
- while (!playerList.getNext(game).getId().equals(game.getActivePlayerId()));
+ while (nextPlayer != null && !nextPlayer.getId().equals(game.getActivePlayerId()));
         if (cardController != null) {
           controller.moveCardToLibraryWithInfo(cardController,source.getSourceId(),game,Zone.LIBRARY,topController,true);
         }

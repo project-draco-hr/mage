@@ -108,43 +108,17 @@
   imagePanel=new ScaledImagePanel();
   imagePanel.setBorder(BorderFactory.createLineBorder(Color.white));
   add(imagePanel);
-  imagePanel.setScaleLarger(true);
-  imagePanel.setScalingType(ScalingType.nearestNeighbor);
-  imagePanel.setScalingMultiPassType(MultipassType.none);
   String cardType=getType(newGameCard);
   tooltipText.setText(getText(cardType,newGameCard));
-  Util.threadPool.submit(new Runnable(){
-    @Override public void run(){
-      try {
-        tappedAngle=isTapped() ? CardPanel.TAPPED_ANGLE : 0;
-        flippedAngle=isFlipped() ? CardPanel.FLIPPED_ANGLE : 0;
-        if (!loadImage) {
-          return;
-        }
-        BufferedImage srcImage;
-        if (gameCard.isFaceDown()) {
-          srcImage=getFaceDownImage();
-        }
- else {
-          srcImage=ImageCache.getImage(gameCard,getCardWidth(),getCardHeight());
-        }
-        if (srcImage != null) {
-          hasImage=true;
-          setText(gameCard);
-          setImage(srcImage);
-        }
-        if (gameCard.isTransformed()) {
-          toggleTransformed();
-        }
-        setText(gameCard);
-      }
- catch (      Exception e) {
-        LOGGER.fatal("Problem during image animation",e);
-      }
-catch (      Error err) {
-        LOGGER.error("Problem during image animation",err);
-      }
-    }
+  tappedAngle=isTapped() ? CardPanel.TAPPED_ANGLE : 0;
+  flippedAngle=isFlipped() ? CardPanel.FLIPPED_ANGLE : 0;
+  if (!loadImage) {
+    return;
   }
-);
+  if (gameCard.isTransformed()) {
+    toggleTransformed();
+  }
+ else {
+    updateImage();
+  }
 }

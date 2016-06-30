@@ -8,7 +8,11 @@
     ChoiceImpl choice=new ChoiceImpl(true);
     choice.setChoices(choiceSet);
     choice.setMessage("Choose a basic land type");
-    controller.choose(outcome,choice,game);
+    while (!controller.choose(outcome,choice,game)) {
+      if (!controller.canRespond()) {
+        return;
+      }
+    }
     landTypes.add(choice.getChoice());
   }
  else {

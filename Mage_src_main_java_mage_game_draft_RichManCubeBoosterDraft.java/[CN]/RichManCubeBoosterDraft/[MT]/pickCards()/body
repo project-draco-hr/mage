@@ -1,0 +1,20 @@
+{
+  cardNum++;
+  for (  DraftPlayer player : players.values()) {
+    if (cardNum > 36) {
+      return false;
+    }
+    player.setPicking();
+    player.getPlayer().pickCard(player.getBooster(),player.getDeck(),this);
+  }
+synchronized (this) {
+    while (!donePicking()) {
+      try {
+        this.wait();
+      }
+ catch (      InterruptedException ex) {
+      }
+    }
+  }
+  return true;
+}

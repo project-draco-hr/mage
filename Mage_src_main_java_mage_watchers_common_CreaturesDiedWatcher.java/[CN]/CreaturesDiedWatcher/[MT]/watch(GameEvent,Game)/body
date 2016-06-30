@@ -3,6 +3,11 @@
     ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
     if (zEvent.isDiesEvent() && zEvent.getTarget() != null && zEvent.getTarget().getCardType().contains(CardType.CREATURE)) {
       amountOfCreaturesThatDied++;
+      int amount=0;
+      if (amountOfCreaturesThatDiedByController.containsKey(zEvent.getTarget().getControllerId())) {
+        amount=amountOfCreaturesThatDiedByController.get(zEvent.getTarget().getControllerId());
+      }
+      amountOfCreaturesThatDiedByController.put(zEvent.getTarget().getControllerId(),amount + 1);
     }
   }
 }

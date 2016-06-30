@@ -1,4 +1,14 @@
 {
+  threadPool=new ThreadPoolExecutor(alwaysActive,size,30L,TimeUnit.SECONDS,new LinkedBlockingQueue(),new ThreadFactory(){
+    @Override public Thread newThread(    Runnable runnable){
+      threadCount++;
+      Thread thread=new Thread(runnable,"Audio" + threadCount);
+      thread.setDaemon(true);
+      return thread;
+    }
+  }
+);
+  threadPool.prestartAllCoreThreads();
   format=audioFormat;
   this.alwaysActive=alwaysActive;
   mixer=AudioSystem.getMixer(null);

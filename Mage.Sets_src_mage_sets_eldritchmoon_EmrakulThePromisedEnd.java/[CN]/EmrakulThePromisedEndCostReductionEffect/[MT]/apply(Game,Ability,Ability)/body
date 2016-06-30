@@ -1,0 +1,12 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Set<CardType> foundCardTypes=new HashSet<>(8);
+    for (    Card card : controller.getGraveyard().getCards(game)) {
+      foundCardTypes.addAll(card.getCardType());
+    }
+    CardUtil.reduceCost(abilityToModify,foundCardTypes.size());
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,12 @@
+{
+  super(ownerId,39,"Sanctifier of Souls",Rarity.RARE,new CardType[]{CardType.CREATURE},"{3}{W}");
+  this.expansionSetCode="EMN";
+  this.subtype.add("Human");
+  this.subtype.add("Cleric");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(3);
+  this.addAbility(new EntersBattlefieldControlledTriggeredAbility(new BoostSourceEffect(1,1,Duration.EndOfTurn),filter));
+  SimpleActivatedAbility ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new SpiritWhiteToken()),new ManaCostsImpl("{2}{W}"));
+  ability.addCost(new ExileFromGraveCost(new TargetCardInYourGraveyard(new FilterCreatureCard("a creature card from your graveyard"))));
+  this.addAbility(ability);
+}

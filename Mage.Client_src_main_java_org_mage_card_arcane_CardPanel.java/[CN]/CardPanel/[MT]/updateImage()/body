@@ -1,10 +1,12 @@
 {
+  tappedAngle=isTapped() ? CardPanel.TAPPED_ANGLE : 0;
+  flippedAngle=isFlipped() ? CardPanel.FLIPPED_ANGLE : 0;
+  final CardView gameCard=this.gameCard;
+  final int stamp=++updateImageStamp;
   Util.threadPool.submit(new Runnable(){
     @Override public void run(){
       try {
-        tappedAngle=isTapped() ? CardPanel.TAPPED_ANGLE : 0;
-        flippedAngle=isFlipped() ? CardPanel.FLIPPED_ANGLE : 0;
-        BufferedImage srcImage;
+        final BufferedImage srcImage;
         if (gameCard.isFaceDown()) {
           srcImage=getFaceDownImage();
         }
@@ -14,11 +16,16 @@
  else {
           srcImage=ImageCache.getThumbnail(gameCard);
         }
-        if (srcImage != null) {
-          hasImage=true;
-          setText(gameCard);
-          setImage(srcImage);
+        UI.invokeLater(new Runnable(){
+          @Override public void run(){
+            if (stamp == updateImageStamp) {
+              hasImage=srcImage != null;
+              setText(gameCard);
+              setImage(srcImage);
+            }
+          }
         }
+);
       }
  catch (      Exception e) {
         e.printStackTrace();
