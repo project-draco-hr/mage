@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(this.getControllerId());
+  if (controller != null) {
+    TargetPermanent target=new TargetControlledCreaturePermanent(new FilterControlledCreaturePermanent("creature to sacrifice for emerge"));
+    if (controller.choose(Outcome.Sacrifice,target,this.getSourceId(),game)) {
+      Permanent creature=game.getPermanent(target.getFirstTarget());
+      CardUtil.reduceCost(this,creature.getConvertedManaCost());
+      FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent(creature.getLogName());
+      filter.add(new CardIdPredicate(creature.getId()));
+      this.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(filter)));
+      return super.activate(game,false);
+    }
+  }
+  return false;
+}
