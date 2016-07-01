@@ -23,6 +23,13 @@
   txtSpellsCast.setBackground(Color.LIGHT_GRAY);
   txtSpellsCast.setOpaque(true);
   txtSpellsCast.setToolTipText("spells cast during the current turn");
+  txtHoldPriority=new javax.swing.JLabel();
+  txtHoldPriority.setText("Hold");
+  txtHoldPriority.setBorder(BorderFactory.createCompoundBorder(border,paddingBorder));
+  txtHoldPriority.setBackground(Color.LIGHT_GRAY);
+  txtHoldPriority.setOpaque(true);
+  txtHoldPriority.setToolTipText("Holding priority after the next spell cast or ability activation");
+  txtHoldPriority.setVisible(false);
   btnCancelSkip=new javax.swing.JButton();
   btnSkipToNextTurn=new javax.swing.JButton();
   btnSkipToEndTurn=new javax.swing.JButton();
@@ -310,7 +317,7 @@
   this.getActionMap().put("USEFIRSTMANAABILITY",new AbstractAction(){
     @Override public void actionPerformed(    ActionEvent actionEvent){
       session.sendPlayerAction(PlayerAction.USE_FIRST_MANA_ABILITY_ON,gameId,null);
-      setMenuStates(PreferencesDialog.getCachedValue(KEY_GAME_MANA_AUTOPAYMENT,"true").equals("true"),PreferencesDialog.getCachedValue(KEY_GAME_MANA_AUTOPAYMENT_ONLY_ONE,"true").equals("true"),PreferencesDialog.getCachedValue(KEY_USE_FIRST_MANA_ABILITY,"false").equals("true"));
+      setMenuStates(PreferencesDialog.getCachedValue(KEY_GAME_MANA_AUTOPAYMENT,"true").equals("true"),PreferencesDialog.getCachedValue(KEY_GAME_MANA_AUTOPAYMENT_ONLY_ONE,"true").equals("true"),PreferencesDialog.getCachedValue(KEY_USE_FIRST_MANA_ABILITY,"false").equals("true"),holdingPriority);
     }
   }
 );
@@ -346,7 +353,7 @@
   this.getActionMap().put("USEFIRSTMANAABILITY_RELEASE",new AbstractAction(){
     @Override public void actionPerformed(    ActionEvent actionEvent){
       session.sendPlayerAction(PlayerAction.USE_FIRST_MANA_ABILITY_OFF,gameId,null);
-      setMenuStates(PreferencesDialog.getCachedValue(KEY_GAME_MANA_AUTOPAYMENT,"true").equals("true"),PreferencesDialog.getCachedValue(KEY_GAME_MANA_AUTOPAYMENT_ONLY_ONE,"true").equals("true"),PreferencesDialog.getCachedValue(KEY_USE_FIRST_MANA_ABILITY,"false").equals("true"));
+      setMenuStates(PreferencesDialog.getCachedValue(KEY_GAME_MANA_AUTOPAYMENT,"true").equals("true"),PreferencesDialog.getCachedValue(KEY_GAME_MANA_AUTOPAYMENT_ONLY_ONE,"true").equals("true"),PreferencesDialog.getCachedValue(KEY_USE_FIRST_MANA_ABILITY,"false").equals("true"),holdingPriority);
     }
   }
 );
@@ -420,8 +427,8 @@
   gl_pnlReplay.setVerticalGroup(gl_pnlReplay.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(btnSkipForward,0,0,Short.MAX_VALUE).addComponent(btnNextPlay,0,0,Short.MAX_VALUE).addComponent(btnStopReplay,0,0,Short.MAX_VALUE).addComponent(btnPlay,0,0,Short.MAX_VALUE).addComponent(btnPreviousPlay,javax.swing.GroupLayout.PREFERRED_SIZE,31,Short.MAX_VALUE));
   javax.swing.GroupLayout gl_pnlShortCuts=new javax.swing.GroupLayout(pnlShortCuts);
   pnlShortCuts.setLayout(gl_pnlShortCuts);
-  gl_pnlShortCuts.setHorizontalGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addGroup(gl_pnlShortCuts.createSequentialGroup().addComponent(btnSkipToNextTurn).addComponent(btnSkipToEndTurn).addComponent(btnSkipToNextMain).addComponent(btnSkipToYourTurn).addComponent(btnSkipStack).addComponent(btnSkipToEndStepBeforeYourTurn)).addGroup(gl_pnlShortCuts.createSequentialGroup().addComponent(txtSpellsCast).addComponent(btnSwitchHands).addComponent(btnCancelSkip).addComponent(btnConcede).addComponent(btnStopWatching)).addGroup(gl_pnlShortCuts.createSequentialGroup().addContainerGap().addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(51,Short.MAX_VALUE)));
-  gl_pnlShortCuts.setVerticalGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(gl_pnlShortCuts.createSequentialGroup().addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,164,Short.MAX_VALUE).addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(btnSkipToNextTurn).addComponent(btnSkipToEndTurn).addComponent(btnSkipToNextMain).addComponent(btnSkipToYourTurn).addComponent(btnSkipStack).addComponent(btnSkipToEndStepBeforeYourTurn)).addGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(txtSpellsCast).addComponent(btnSwitchHands).addComponent(btnCancelSkip).addComponent(btnConcede).addComponent(btnStopWatching))));
+  gl_pnlShortCuts.setHorizontalGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addGroup(gl_pnlShortCuts.createSequentialGroup().addComponent(btnSkipToNextTurn).addComponent(btnSkipToEndTurn).addComponent(btnSkipToNextMain).addComponent(btnSkipToYourTurn).addComponent(btnSkipStack).addComponent(btnSkipToEndStepBeforeYourTurn)).addGroup(gl_pnlShortCuts.createSequentialGroup().addComponent(txtHoldPriority).addComponent(txtSpellsCast).addComponent(btnSwitchHands).addComponent(btnCancelSkip).addComponent(btnConcede).addComponent(btnStopWatching)).addGroup(gl_pnlShortCuts.createSequentialGroup().addContainerGap().addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addContainerGap(51,Short.MAX_VALUE)));
+  gl_pnlShortCuts.setVerticalGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(gl_pnlShortCuts.createSequentialGroup().addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED,164,Short.MAX_VALUE).addComponent(pnlReplay,javax.swing.GroupLayout.PREFERRED_SIZE,javax.swing.GroupLayout.DEFAULT_SIZE,javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(btnSkipToNextTurn).addComponent(btnSkipToEndTurn).addComponent(btnSkipToNextMain).addComponent(btnSkipToYourTurn).addComponent(btnSkipStack).addComponent(btnSkipToEndStepBeforeYourTurn)).addGroup(gl_pnlShortCuts.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING).addComponent(txtHoldPriority).addComponent(txtSpellsCast).addComponent(btnSwitchHands).addComponent(btnCancelSkip).addComponent(btnConcede).addComponent(btnStopWatching))));
   pnlBattlefield.setLayout(new java.awt.GridBagLayout());
   jPhases=new JPanel();
   jPhases.setBackground(new Color(0,0,0,0));

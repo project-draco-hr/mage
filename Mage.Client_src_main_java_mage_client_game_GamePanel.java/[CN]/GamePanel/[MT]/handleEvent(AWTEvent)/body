@@ -1,0 +1,19 @@
+{
+  if (event instanceof InputEvent) {
+    int id=event.getID();
+    boolean isActionEvent=false;
+    if (id == MouseEvent.MOUSE_PRESSED)     isActionEvent=true;
+ else     if (id == KeyEvent.KEY_PRESSED) {
+      KeyEvent key=(KeyEvent)event;
+      int keyCode=key.getKeyCode();
+      if (keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_SPACE)       isActionEvent=true;
+    }
+    if (isActionEvent) {
+      InputEvent input=(InputEvent)event;
+      if ((input.getModifiersEx() & holdPriorityMask) != 0) {
+        setMenuStates(PreferencesDialog.getCachedValue(KEY_GAME_MANA_AUTOPAYMENT,"true").equals("true"),PreferencesDialog.getCachedValue(KEY_GAME_MANA_AUTOPAYMENT_ONLY_ONE,"true").equals("true"),PreferencesDialog.getCachedValue(KEY_USE_FIRST_MANA_ABILITY,"false").equals("true"),true);
+        holdPriority(true);
+      }
+    }
+  }
+}
