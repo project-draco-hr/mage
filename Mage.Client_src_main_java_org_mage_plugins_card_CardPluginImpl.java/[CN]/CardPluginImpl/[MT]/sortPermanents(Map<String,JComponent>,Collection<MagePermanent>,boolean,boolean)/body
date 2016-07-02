@@ -54,12 +54,10 @@
   Row rowAllOthers=new Row(permanents,RowType.other);
   Row rowAllAttached=new Row(permanents,RowType.attached);
   boolean othersOnTheRight=true;
-  if (options != null && options.containsKey("nonLandPermanentsInOnePile")) {
-    if (options.get("nonLandPermanentsInOnePile").equals("true")) {
-      othersOnTheRight=false;
-      rowAllCreatures.addAll(rowAllOthers);
-      rowAllOthers.clear();
-    }
+  if (nonPermanentsOwnRow) {
+    othersOnTheRight=false;
+    rowAllCreatures.addAll(rowAllOthers);
+    rowAllOthers.clear();
   }
   cardWidth=cardWidthMax;
   Rectangle rect=battlefieldPanel.getVisibleRect();
@@ -77,11 +75,19 @@
     Row creatures=(Row)rowAllCreatures.clone();
     Row lands=(Row)rowAllLands.clone();
     Row others=(Row)rowAllOthers.clone();
-    wrap(creatures,rows,-1);
-    int afterCreaturesIndex=rows.size();
-    wrap(lands,rows,afterCreaturesIndex);
-    int afterLandsIndex=rows.size();
-    wrap(others,rows,afterLandsIndex);
+    int addOthersIndex;
+    if (topPanel) {
+      wrap(lands,rows,-1);
+      wrap(others,rows,rows.size());
+      addOthersIndex=rows.size();
+      wrap(creatures,rows,addOthersIndex);
+    }
+ else {
+      wrap(creatures,rows,-1);
+      addOthersIndex=rows.size();
+      wrap(lands,rows,rows.size());
+      wrap(others,rows,rows.size());
+    }
     List<Row> storedRows=new ArrayList<>(rows.size());
     for (    Row row : rows) {
       storedRows.add((Row)row.clone());
@@ -95,7 +101,7 @@
     }
     rows=storedRows;
     others=storedOthers;
-    wrap(others,rows,afterCreaturesIndex);
+    wrap(others,rows,addOthersIndex);
     for (    Row row : rows) {
       fillRow(others,rows,row);
     }

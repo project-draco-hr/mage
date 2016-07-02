@@ -1,0 +1,11 @@
+{
+  Map<UUID,MagePermanent> permanents=battlefieldPanel.getPermanents();
+  JLayeredPane jPanel=battlefieldPanel.getMainPanel();
+  int height=Plugins.getInstance().sortPermanents(battlefieldPanel.getUiComponentsList(),permanents.values(),battlefieldPanel.isTopPanelBattlefield());
+  jPanel.setPreferredSize(new Dimension(width - 30,height));
+  for (  PermanentView permanent : battlefieldPanel.getBattlefield().values()) {
+    if (permanent.getAttachments() != null) {
+      groupAttachments(battlefieldPanel,jPanel,permanents,permanent);
+    }
+  }
+}
