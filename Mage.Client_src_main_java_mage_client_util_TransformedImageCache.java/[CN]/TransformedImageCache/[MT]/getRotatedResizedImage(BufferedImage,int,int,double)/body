@@ -1,7 +1,9 @@
 {
   int imageWidth=image.getWidth();
   int imageHeight=image.getHeight();
-  if (angle == 0.0 && (width < 0 || imageWidth == width) && (height < 0 || imageHeight == height))   return image;
+  if (angle == 0.0 && (width < 0 || imageWidth == width) && (height < 0 || imageHeight == height)) {
+    return image;
+  }
   int resWidth;
   int resHeight;
   if (width < 0 && height < 0) {
@@ -16,6 +18,14 @@
     resWidth=imageWidth * height / imageHeight;
     resHeight=height;
   }
-  if (angle == 0.0 && imageWidth == resWidth && imageHeight == resHeight)   return image;
+  if (angle == 0.0 && imageWidth == resWidth && imageHeight == resHeight) {
+    return image;
+  }
+  if (resWidth < 3) {
+    resWidth=3;
+  }
+  if (resHeight < 3) {
+    resHeight=3;
+  }
   return IMAGE_CACHE.get(new Key(resWidth,resHeight,angle)).get(image);
 }
