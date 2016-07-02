@@ -9,6 +9,10 @@
     String landName=DeckGeneratorPool.getBasicLandName(c.toString());
     criteria.rarities(Rarity.LAND).name(landName);
     List<CardInfo> cards=CardRepository.instance.findCards(criteria);
+    if (cards.isEmpty()) {
+      criteria.setCodes("ORI");
+      cards=CardRepository.instance.findCards(criteria);
+    }
     basicLandMap.put(landName,cards);
   }
   return basicLandMap;
