@@ -14,7 +14,14 @@
       }
       tournament.getOptions().getLimitedOptions().setNumberBoosters(tournament.getTournamentType().getNumBoosters());
       if (tournament.getTournamentType().isCubeBooster()) {
-        tournament.getOptions().getLimitedOptions().setDraftCube(CubeFactory.getInstance().createDraftCube(tournament.getOptions().getLimitedOptions().getDraftCubeName()));
+        DraftCube draftCube=null;
+        if (tournament.getOptions().getLimitedOptions().getCubeFromDeckFilename().length() != 0) {
+          draftCube=CubeFactory.getInstance().createDeckDraftCube(tournament.getOptions().getLimitedOptions().getDraftCubeName(),tournament.getOptions().getLimitedOptions().getCubeFromDeckFilename());
+        }
+ else {
+          draftCube=CubeFactory.getInstance().createDraftCube(tournament.getOptions().getLimitedOptions().getDraftCubeName());
+        }
+        tournament.getOptions().getLimitedOptions().setDraftCube(draftCube);
         tournament.setBoosterInfo(tournament.getOptions().getLimitedOptions().getDraftCubeName());
       }
  else       if (tournament.getTournamentType().isRandom()) {

@@ -1,0 +1,17 @@
+{
+  if (fcSelectDeck == null) {
+    fcSelectDeck=new JFileChooser();
+    fcSelectDeck.setAcceptAllFileFilterUsed(false);
+    fcSelectDeck.addChoosableFileFilter(new DeckFilter());
+  }
+  String lastFolder=MageFrame.getPreferences().get("lastDeckFolder","");
+  if (!lastFolder.isEmpty()) {
+    fcSelectDeck.setCurrentDirectory(new File(lastFolder));
+  }
+  int ret=fcSelectDeck.showDialog(this,"Select Deck");
+  if (ret == JFileChooser.APPROVE_OPTION) {
+    File file=fcSelectDeck.getSelectedFile();
+    return (file.getPath());
+  }
+  return "";
+}
