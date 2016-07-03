@@ -5,10 +5,6 @@
   this.power=new MageInt(2);
   this.toughness=new MageInt(2);
   this.addAbility(new AsEntersBattlefieldAbility(new ChooseCreatureTypeEffect(Outcome.BoostCreature)));
-  FilterCard filter=new FilterCard("creature cards of the chosen type");
-  filter.add(new ChosenSubtypePredicate(this.getId()));
-  this.addAbility(new EntersBattlefieldTriggeredAbility(new EnvoyEffect(filter,4)));
-  FilterCreaturePermanent filter2=new FilterCreaturePermanent("creatures of the chosen type");
-  filter2.add(new ChosenSubtypePredicate(this.getId()));
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostAllEffect(1,1,Duration.WhileOnBattlefield,filter2,false)));
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new BrassHeraldEntersEffect()));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostAllOfChosenSubtypeEffect(1,1,Duration.WhileOnBattlefield,false)));
 }
