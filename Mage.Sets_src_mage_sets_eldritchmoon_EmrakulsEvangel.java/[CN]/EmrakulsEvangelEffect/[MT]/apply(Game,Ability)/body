@@ -1,20 +1,15 @@
 {
   Player player=game.getPlayer(source.getControllerId());
   if (player != null) {
-    Target target=new TargetControlledCreaturePermanent(0,Integer.MAX_VALUE,filter,true);
-    player.chooseTarget(Outcome.Sacrifice,target,source,game);
-    int numSacrificed=0;
-    for (    UUID permanentId : target.getTargets()) {
-      Permanent permanent=game.getPermanent(permanentId);
-      if (permanent != null) {
-        if (permanent.sacrifice(source.getSourceId(),game)) {
-          numSacrificed++;
-        }
+    int tokensToCreate=0;
+    for (    Cost cost : source.getCosts()) {
+      if (cost instanceof EmrakulsEvangelCost) {
+        tokensToCreate=((EmrakulsEvangelCost)cost).getNumSacrificed();
       }
     }
-    if (numSacrificed > 0) {
+    if (tokensToCreate > 0) {
       EldraziHorrorToken token=new EldraziHorrorToken();
-      token.putOntoBattlefield(numSacrificed,game,source.getSourceId(),source.getControllerId());
+      token.putOntoBattlefield(tokensToCreate,game,source.getSourceId(),source.getControllerId());
     }
     return true;
   }
