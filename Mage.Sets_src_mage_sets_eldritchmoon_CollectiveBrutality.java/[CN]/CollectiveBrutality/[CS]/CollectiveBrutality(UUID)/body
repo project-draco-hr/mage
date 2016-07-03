@@ -1,0 +1,28 @@
+{
+  super(ownerId,85,"Collective Brutality",Rarity.RARE,new CardType[]{CardType.SORCERY},"{1}{B}");
+  this.expansionSetCode="EMN";
+  Cost cost=new DiscardCardCost();
+  cost.setText("&mdash; Discard a card");
+  this.addAbility(new EscalateAbility(cost));
+  this.getSpellAbility().getModes().setMinModes(1);
+  this.getSpellAbility().getModes().setMaxModes(3);
+  Effect effect=new DiscardCardYouChooseTargetEffect(filter,TargetController.ANY);
+  effect.setText("Target opponent reveals his or her hand. You choose an instant or sorcery card from it. That player discards that card");
+  this.getSpellAbility().addEffect(effect);
+  this.getSpellAbility().addTarget(new TargetPlayer(1,1,false,filterDiscard));
+  Mode mode=new Mode();
+  effect=new BoostTargetEffect(-2,-2,Duration.EndOfTurn);
+  effect.setText("Target creature gets -2/-2 until end of turn");
+  mode.getEffects().add(effect);
+  mode.getTargets().add(new TargetCreaturePermanent(filterCreatureMinus));
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  effect=new LoseLifeTargetEffect(2);
+  effect.setText("Target opponent loses 2 life");
+  mode.getEffects().add(effect);
+  mode.getTargets().add(new TargetPlayer(1,1,false,filterLoseLife));
+  effect=new GainLifeEffect(2);
+  effect.setText("and you gain 2 life");
+  mode.getEffects().add(effect);
+  this.getSpellAbility().addMode(mode);
+}
