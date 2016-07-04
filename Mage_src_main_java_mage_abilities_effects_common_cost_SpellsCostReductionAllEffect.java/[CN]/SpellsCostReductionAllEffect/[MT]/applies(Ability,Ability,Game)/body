@@ -2,11 +2,11 @@
   if (abilityToModify instanceof SpellAbility) {
     Spell spell=(Spell)game.getStack().getStackObject(abilityToModify.getId());
     if (spell != null) {
-      return this.filter.match(spell,game);
+      return this.filter.match(spell,game) && selectedByRuntimeData(spell,source,game);
     }
  else {
       Card sourceCard=game.getCard(abilityToModify.getSourceId());
-      return sourceCard != null && this.filter.match(sourceCard,game);
+      return sourceCard != null && this.filter.match(sourceCard,game) && selectedByRuntimeData(sourceCard,source,game);
     }
   }
   return false;

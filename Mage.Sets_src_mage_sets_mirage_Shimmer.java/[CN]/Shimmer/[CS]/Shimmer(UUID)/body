@@ -2,7 +2,5 @@
   super(ownerId,92,"Shimmer",Rarity.RARE,new CardType[]{CardType.ENCHANTMENT},"{2}{U}{U}");
   this.expansionSetCode="MIR";
   this.addAbility(new AsEntersBattlefieldAbility(new ChooseLandTypeEffect(Outcome.Detriment)));
-  FilterLandPermanent filter=new FilterLandPermanent("Each land of the chosen type");
-  filter.add(new ChosenSubtypePredicate(this.getId()));
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAllEffect(PhasingAbility.getInstance(),Duration.WhileOnBattlefield,filter,false)));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAllOfChosenSubtypeEffect(PhasingAbility.getInstance(),Duration.WhileOnBattlefield,new FilterLandPermanent("Each land of the chosen type"))));
 }

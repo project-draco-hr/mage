@@ -12,8 +12,9 @@
     }
   }
  else {
+    setRuntimeData(source,game);
     for (    Permanent perm : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
-      if (!(excludeSource && perm.getId().equals(source.getSourceId()))) {
+      if (!(excludeSource && perm.getId().equals(source.getSourceId())) && selectedByRuntimeData(perm,source,game)) {
         perm.addPower(power.calculate(game,source,this));
         perm.addToughness(toughness.calculate(game,source,this));
       }

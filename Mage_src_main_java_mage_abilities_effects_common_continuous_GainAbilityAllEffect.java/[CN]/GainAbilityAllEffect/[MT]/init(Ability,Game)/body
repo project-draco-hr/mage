@@ -1,8 +1,9 @@
 {
   super.init(source,game);
+  setRuntimeData(source,game);
   if (this.affectedObjectsSet) {
     for (    Permanent perm : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
-      if (!(excludeSource && perm.getId().equals(source.getSourceId()))) {
+      if (!(excludeSource && perm.getId().equals(source.getSourceId())) && selectedByRuntimeData(perm,source,game)) {
         affectedObjectList.add(new MageObjectReference(perm,game));
       }
     }

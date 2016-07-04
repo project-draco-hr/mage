@@ -6,9 +6,5 @@
   this.toughness=new MageInt(2);
   this.addAbility(new AsEntersBattlefieldAbility(new ChooseCreatureTypeEffect(Outcome.BoostCreature)));
   this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new AdaptiveAutomatonAddSubtypeEffect()));
-  FilterCreaturePermanent filter=new FilterCreaturePermanent("Other creatures you control of the chosen type");
-  filter.add(new ChosenSubtypePredicate(this.getId()));
-  filter.add(new AnotherPredicate());
-  filter.add(new ControllerPredicate(TargetController.YOU));
-  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostAllEffect(1,1,Duration.WhileOnBattlefield,filter,false)));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostAllOfChosenSubtypeEffect(1,1,Duration.WhileOnBattlefield,filter,true)));
 }
