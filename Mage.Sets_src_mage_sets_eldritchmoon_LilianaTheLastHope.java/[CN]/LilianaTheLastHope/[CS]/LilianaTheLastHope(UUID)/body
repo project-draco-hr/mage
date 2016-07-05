@@ -1,0 +1,15 @@
+{
+  super(ownerId,93,"Liliana, the Last Hope",Rarity.MYTHIC,new CardType[]{CardType.PLANESWALKER},"{1}{B}{B}");
+  this.expansionSetCode="EMN";
+  this.subtype.add("Liliana");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(3));
+  Effect effect=new BoostTargetEffect(-2,-1,Duration.UntilYourNextTurn);
+  effect.setText("Up to one target creature gets -2/-1 until your next turn");
+  Ability ability=new LoyaltyAbility(effect,1);
+  ability.addTarget(new TargetCreaturePermanent(0,1));
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new PutTopCardOfLibraryIntoGraveControllerEffect(2),-2);
+  ability.addEffect(new LilianaTheLastHopeEffect());
+  this.addAbility(ability);
+  this.addAbility(new LoyaltyAbility(new GetEmblemEffect(new LilianaTheLastHopeEmblem()),-7));
+}
