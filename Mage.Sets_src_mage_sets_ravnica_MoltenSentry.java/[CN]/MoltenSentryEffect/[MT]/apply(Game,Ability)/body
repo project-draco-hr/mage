@@ -3,14 +3,14 @@
   Permanent permanent=game.getPermanentEntering(source.getSourceId());
   if (controller != null && permanent != null) {
     if (controller.flipCoin(game)) {
-      game.informPlayers("Heads: Molten Sentry enters the battlefield as a 5/2 creature with haste");
+      game.informPlayers("Heads: " + permanent.getLogName() + " enters the battlefield as a 5/2 creature with haste");
       game.addEffect(new SetPowerSourceEffect(new StaticValue(5),Duration.WhileOnBattlefield),source);
       game.addEffect(new SetToughnessSourceEffect(new StaticValue(2),Duration.WhileOnBattlefield),source);
       game.addEffect(new GainAbilitySourceEffect(HasteAbility.getInstance(),Duration.WhileOnBattlefield),source);
       return true;
     }
  else {
-      game.informPlayers("Tails: Molten Sentry enters the battlefield as a 2/5 creature with defender");
+      game.informPlayers("Tails: " + permanent.getLogName() + " enters the battlefield as a 2/5 creature with defender");
       game.addEffect(new SetPowerSourceEffect(new StaticValue(2),Duration.WhileOnBattlefield),source);
       game.addEffect(new SetToughnessSourceEffect(new StaticValue(5),Duration.WhileOnBattlefield),source);
       game.addEffect(new GainAbilitySourceEffect(DefenderAbility.getInstance(),Duration.WhileOnBattlefield),source);

@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",4);
+  addCard(Zone.HAND,playerA,"Molten Sentry");
+  addCard(Zone.BATTLEFIELD,playerB,"Identity Thief");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Molten Sentry");
+  attack(2,playerB,"Identity Thief");
+  addTarget(playerB,"Molten Sentry");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertExileCount(playerA,1);
+  assertExileCount("Molten Sentry",1);
+  assertPermanentCount(playerB,"Identity Thief",0);
+  assertPermanentCount(playerB,"Molten Sentry",1);
+}

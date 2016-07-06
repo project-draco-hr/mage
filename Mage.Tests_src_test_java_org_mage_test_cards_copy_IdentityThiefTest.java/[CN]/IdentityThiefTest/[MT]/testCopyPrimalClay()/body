@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",4);
+  addCard(Zone.HAND,playerA,"Primal Clay");
+  addCard(Zone.BATTLEFIELD,playerB,"Identity Thief");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Primal Clay");
+  attack(2,playerB,"Identity Thief");
+  addTarget(playerB,"Primal Clay");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertExileCount(playerA,1);
+  assertExileCount("Primal Clay",1);
+  assertPermanentCount(playerB,"Identity Thief",0);
+  assertPermanentCount(playerB,"Primal Clay",1);
+}

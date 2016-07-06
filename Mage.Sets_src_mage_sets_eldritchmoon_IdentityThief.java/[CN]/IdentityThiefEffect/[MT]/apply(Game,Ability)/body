@@ -3,12 +3,9 @@
   Player controller=game.getPlayer(source.getControllerId());
   Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
   if (controller != null && permanent != null && sourcePermanent != null) {
+    CopyEffect copyEffect=new CopyEffect(Duration.EndOfTurn,permanent,source.getSourceId());
     if (controller.moveCardToExileWithInfo(permanent,source.getSourceId(),sourcePermanent.getIdName(),source.getSourceId(),game,Zone.BATTLEFIELD,true)) {
-      MageObject mageObject=game.getObject(permanent.getId());
-      if (mageObject != null) {
-        CopyEffect copyEffect=new CopyEffect(Duration.EndOfTurn,mageObject,source.getSourceId());
-        game.addEffect(copyEffect,source);
-      }
+      game.addEffect(copyEffect,source);
       AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Zone.BATTLEFIELD,false));
       delayedAbility.setSourceId(source.getSourceId());
       delayedAbility.setControllerId(source.getControllerId());
