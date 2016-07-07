@@ -1,0 +1,12 @@
+{
+  super(ownerId,153,"Crop Sigil",Rarity.UNCOMMON,new CardType[]{CardType.ENCHANTMENT},"{G}");
+  this.expansionSetCode="EMN";
+  this.addAbility(new OnEventTriggeredAbility(GameEvent.EventType.UPKEEP_STEP_PRE,"beginning of your upkeep",new PutTopCardOfLibraryIntoGraveControllerEffect(1),true));
+  Effect effect=new ReturnToHandTargetEffect(true,true);
+  effect.setText("Return up to one target creature card and up to one target land card from your graveyard to your hand");
+  Ability ability=new ConditionalActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl<>("{2}{G}"),DeliriumCondition.getInstance());
+  ability.addCost(new SacrificeSourceCost());
+  ability.addTarget(new TargetCardInGraveyard(0,1,filterCreature));
+  ability.addTarget(new TargetCardInGraveyard(0,1,filterLand));
+  this.addAbility(ability);
+}

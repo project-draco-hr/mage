@@ -1,0 +1,21 @@
+{
+  super(ownerId,17,"Collective Effort",Rarity.RARE,new CardType[]{CardType.SORCERY},"{1}{W}{W}");
+  this.expansionSetCode="EMN";
+  this.addAbility(new EscalateAbility(new TapTargetCost(new TargetControlledCreaturePermanent(filterUntapped))));
+  this.getSpellAbility().getModes().setMinModes(1);
+  this.getSpellAbility().getModes().setMaxModes(3);
+  this.getSpellAbility().addEffect(new DestroyTargetEffect());
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent(filterDestroyCreature));
+  Mode mode=new Mode();
+  Effect effect=new DestroyTargetEffect();
+  effect.setText("Destroy target enchantment");
+  mode.getEffects().add(effect);
+  mode.getTargets().add(new TargetEnchantmentPermanent(filterDestroyEnchantment));
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  effect=new CollectiveEffortEffect();
+  effect.setText("Put a +1/+1 counter on each creature target player controls");
+  mode.getEffects().add(effect);
+  mode.getTargets().add(new TargetPlayer(1,1,false,filterPlayer));
+  this.getSpellAbility().addMode(mode);
+}
