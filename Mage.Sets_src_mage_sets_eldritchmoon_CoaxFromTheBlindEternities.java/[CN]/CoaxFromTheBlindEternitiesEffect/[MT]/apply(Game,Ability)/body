@@ -1,0 +1,49 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    Cards cards=controller.getSideboard();
+    Card card=null;
+    if (!cards.isEmpty()) {
+      if (controller.chooseUse(Outcome.Benefit,choiceText,source,game)) {
+        Set<Card> filtered=cards.getCards(filter,game);
+        if (filtered.isEmpty()) {
+          game.informPlayer(controller,"You have no " + filter.getMessage() + " outside the game (your sideboard).");
+        }
+ else {
+          Cards filteredCards=new CardsImpl();
+          for (          Card sideboardCard : filtered) {
+            filteredCards.add(sideboardCard.getId());
+          }
+          TargetCard target=new TargetCard(Zone.OUTSIDE,filter);
+          target.setNotTarget(true);
+          if (controller.choose(outcome,filteredCards,target,game)) {
+            card=controller.getSideboard().get(target.getFirstTarget(),game);
+          }
+        }
+      }
+    }
+    Cards filteredCards=new CardsImpl();
+    for (    Card exileCard : game.getExile().getAllCards(game)) {
+      if (exileCard.getOwnerId().equals(source.getControllerId()) && exileCard.hasSubtype("Eldrazi")) {
+        filteredCards.add(exileCard);
+      }
+    }
+    if (filteredCards.isEmpty()) {
+      game.informPlayer(controller,"You have no Eldrazi cards in the exile zone.");
+    }
+ else {
+      TargetCard target=new TargetCard(Zone.EXILED,filter);
+      target.setNotTarget(true);
+      if (controller.choose(Outcome.Benefit,filteredCards,target,game)) {
+        card=game.getCard(target.getFirstTarget());
+      }
+    }
+    if (card != null) {
+      card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+      controller.revealCards(sourceObject.getIdName(),new CardsImpl(card),game);
+    }
+    return true;
+  }
+  return false;
+}
