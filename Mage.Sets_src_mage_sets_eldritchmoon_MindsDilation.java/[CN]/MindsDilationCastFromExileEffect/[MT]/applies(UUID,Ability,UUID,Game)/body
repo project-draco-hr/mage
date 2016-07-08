@@ -1,0 +1,14 @@
+{
+  UUID targetId=getTargetPointer().getFirst(game,source);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (targetId != null && controller != null) {
+    Card card=game.getCard(targetId);
+    if (card != null && !card.getCardType().contains(CardType.LAND) && game.getState().getZone(targetId) == Zone.EXILED) {
+      if (controller.chooseUse(outcome,"Cast " + card.getLogName() + "?",source,game)) {
+        controller.cast(card.getSpellAbility(),game,true);
+      }
+      return true;
+    }
+  }
+  return false;
+}
