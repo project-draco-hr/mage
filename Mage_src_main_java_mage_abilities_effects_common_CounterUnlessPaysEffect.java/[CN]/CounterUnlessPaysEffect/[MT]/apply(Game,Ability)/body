@@ -19,8 +19,10 @@
       }
       costToPay.clearPaid();
       if (!(player.chooseUse(Outcome.Benefit,message,source,game) && costToPay.pay(source,game,spell.getSourceId(),spell.getControllerId(),false,null))) {
+        game.informPlayers(player.getLogName() + " chooses not to pay " + costToPay.getText()+ " to prevent the counter effect");
         return game.getStack().counter(spell.getId(),source.getSourceId(),game);
       }
+      game.informPlayers(player.getLogName() + " chooses to pay " + costToPay.getText()+ " to prevent the counter effect");
       return true;
     }
   }
