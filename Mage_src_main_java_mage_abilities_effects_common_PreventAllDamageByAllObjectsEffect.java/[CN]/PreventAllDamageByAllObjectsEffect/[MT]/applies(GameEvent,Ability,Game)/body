@@ -1,0 +1,15 @@
+{
+  if (super.applies(event,source,game) && event instanceof DamageEvent && event.getAmount() > 0) {
+    DamageEvent damageEvent=(DamageEvent)event;
+    if (damageEvent.isCombatDamage() || !onlyCombat) {
+      if (filter == null) {
+        return true;
+      }
+      MageObject damageSource=game.getObject(damageEvent.getSourceId());
+      if (damageSource != null && filter.match(damageSource,game)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
