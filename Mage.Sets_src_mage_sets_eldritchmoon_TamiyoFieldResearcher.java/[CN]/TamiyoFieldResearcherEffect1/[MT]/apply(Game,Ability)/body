@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    ArrayList<MageObjectReference> creatures=new ArrayList<>();
+    for (    UUID uuid : getTargetPointer().getTargets(game,source)) {
+      creatures.add(new MageObjectReference(uuid,game));
+    }
+    if (!creatures.isEmpty()) {
+      DelayedTriggeredAbility delayedAbility=new TamiyoFieldResearcherDelayedTriggeredAbility(creatures);
+      game.addDelayedTriggeredAbility(delayedAbility,source);
+    }
+    return true;
+  }
+  return false;
+}
