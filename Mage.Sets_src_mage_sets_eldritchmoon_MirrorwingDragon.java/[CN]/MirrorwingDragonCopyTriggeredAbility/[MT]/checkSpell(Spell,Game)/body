@@ -1,0 +1,16 @@
+{
+  if (spell != null && (spell.getCardType().contains(CardType.INSTANT) || spell.getCardType().contains(CardType.SORCERY))) {
+    for (    TargetAddress addr : TargetAddress.walk(spell)) {
+      Target targetInstance=addr.getTarget(spell);
+      for (      UUID target : targetInstance.getTargets()) {
+        Permanent permanent=game.getPermanent(target);
+        if (permanent == null || !permanent.getId().equals(getSourceId())) {
+          return false;
+        }
+      }
+    }
+    getEffects().get(0).setValue("triggeringSpell",spell);
+    return true;
+  }
+  return false;
+}

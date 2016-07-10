@@ -1,0 +1,17 @@
+{
+  Player targetOpponent=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+  if (targetOpponent != null) {
+    if (targetOpponent.getHand().size() > 0) {
+      TargetCardInHand target=new TargetCardInHand();
+      target.setNotTarget(true);
+      target.setTargetName("a card from your hand to put on top of your library");
+      targetOpponent.choose(Outcome.Detriment,target,source.getSourceId(),game);
+      Card card=targetOpponent.getHand().get(target.getFirstTarget(),game);
+      if (card != null) {
+        targetOpponent.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.HAND,true,false);
+      }
+    }
+    return true;
+  }
+  return false;
+}

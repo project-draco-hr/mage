@@ -1,6 +1,6 @@
 {
-  Player controller=game.getPlayer(source.getControllerId());
-  if (controller == null) {
+  Player actingPlayer=getPlayer(game,source);
+  if (actingPlayer == null) {
     return false;
   }
   Spell spell=getSpell(game,source);
@@ -24,7 +24,7 @@
     Target sampleTarget=targetsToBeChanged.iterator().next().getTarget(copy);
     sampleTarget.setNotTarget(true);
     Map<UUID,Map<UUID,Spell>> playerTargetCopyMap=new HashMap<>();
-    for (    UUID objId : sampleTarget.possibleTargets(controller.getId(),game)) {
+    for (    UUID objId : sampleTarget.possibleTargets(actingPlayer.getId(),game)) {
       MageItem obj=game.getObject(objId);
       if (obj == null) {
         obj=game.getPlayer(objId);
@@ -43,7 +43,7 @@
         boolean legal=true;
         for (        TargetAddress addr : targetsToBeChanged) {
           Target targetInstance=addr.getTarget(copy);
-          legal&=targetInstance.canTarget(objId,addr.getSpellAbility(copy),game);
+          legal&=targetInstance.canTarget(actingPlayer.getId(),objId,addr.getSpellAbility(copy),game);
           if (!legal) {
             break;
           }

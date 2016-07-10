@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards cardsToHand=new CardsImpl();
+    Card card=game.getCard(getTargetPointer().getFirst(game,source));
+    if (card != null) {
+      cardsToHand.add(card);
+    }
+    card=game.getCard(source.getTargets().get(1).getFirstTarget());
+    if (card != null) {
+      cardsToHand.add(card);
+    }
+    controller.moveCards(cardsToHand,Zone.HAND,source,game);
+    controller.discardOne(false,source,game);
+    return true;
+  }
+  return false;
+}
