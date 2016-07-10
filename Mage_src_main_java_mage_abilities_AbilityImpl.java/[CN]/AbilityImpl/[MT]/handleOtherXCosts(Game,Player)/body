@@ -3,7 +3,10 @@
   for (  VariableCost variableCost : this.costs.getVariableCosts()) {
     if (!(variableCost instanceof VariableManaCost)) {
       int xValue=variableCost.announceXValue(this,game);
-      costs.add(variableCost.getFixedCostsFromAnnouncedValue(xValue));
+      Cost fixedCost=variableCost.getFixedCostsFromAnnouncedValue(xValue);
+      if (fixedCost != null) {
+        costs.add(fixedCost);
+      }
       variableCost.setAmount(xValue);
       ((Cost)variableCost).setPaid();
       String message=controller.getLogName() + " announces a value of " + xValue+ " ("+ variableCost.getActionText()+ ")";

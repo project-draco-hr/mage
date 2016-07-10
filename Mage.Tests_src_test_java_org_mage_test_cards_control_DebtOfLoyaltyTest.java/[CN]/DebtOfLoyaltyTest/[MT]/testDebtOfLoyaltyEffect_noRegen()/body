@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.HAND,playerA,"Tremor");
+  addCard(Zone.HAND,playerA,"Debt of Loyalty");
+  addCard(Zone.BATTLEFIELD,playerB,"Metallic Sliver");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Debt of Loyalty","Metallic Sliver");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerB,"Metallic Sliver",1);
+  Permanent sliver=getPermanent("Metallic Sliver",playerB.getId());
+  Assert.assertNotNull(sliver);
+  Assert.assertFalse(sliver.isTapped());
+}
