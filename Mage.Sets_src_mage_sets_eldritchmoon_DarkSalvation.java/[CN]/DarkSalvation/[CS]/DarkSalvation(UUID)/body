@@ -1,10 +1,14 @@
 {
   super(ownerId,87,"Dark Salvation",Rarity.RARE,new CardType[]{CardType.SORCERY},"{X}{X}{B}");
   this.expansionSetCode="EMN";
-  this.getSpellAbility().addEffect(new CreateTokenTargetEffect(new ZombieToken(),new GetXValue()));
+  this.getSpellAbility().addTarget(new TargetPlayer());
+  Effect effect=new CreateTokenTargetEffect(new ZombieToken(),new ManacostVariableValue());
+  effect.setText("Target player puts X 2/2 black Zombie creature tokens onto the battlefield");
+  this.getSpellAbility().addEffect(effect);
   this.getSpellAbility().addTarget(new TargetCreaturePermanent(0,1,new FilterCreaturePermanent(),false));
   DynamicValue value=new ZombiesControlledByTargetCreaturesControllerCount();
-  Effect effect=new BoostTargetEffect(value,value,Duration.EndOfTurn,true);
+  effect=new BoostTargetEffect(value,value,Duration.EndOfTurn,true);
+  effect.setTargetPointer(new SecondTargetPointer());
   effect.setText(", then up to one target creature gets -1/-1 until end of turn for each Zombie that player controls");
   this.getSpellAbility().addEffect(effect);
 }
