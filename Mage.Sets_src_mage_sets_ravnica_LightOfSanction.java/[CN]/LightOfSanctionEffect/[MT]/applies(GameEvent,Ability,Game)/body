@@ -1,0 +1,15 @@
+{
+  if (event.getType().equals(GameEvent.EventType.DAMAGE_CREATURE)) {
+    Permanent permanent=game.getPermanent(event.getTargetId());
+    if (permanent != null && permanent.getControllerId().equals(source.getControllerId())) {
+      MageObject damageSource=game.getObject(event.getSourceId());
+      if (damageSource instanceof Controllable) {
+        return ((Controllable)damageSource).getControllerId().equals(source.getControllerId());
+      }
+ else       if (damageSource instanceof Card) {
+        return ((Card)damageSource).getOwnerId().equals(source.getControllerId());
+      }
+    }
+  }
+  return false;
+}
