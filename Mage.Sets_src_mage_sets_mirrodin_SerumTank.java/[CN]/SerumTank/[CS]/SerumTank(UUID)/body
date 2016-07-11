@@ -1,2 +1,11 @@
 {
+  super(ownerId,240,"Serum Tank",Rarity.UNCOMMON,new CardType[]{CardType.ARTIFACT},"{3}");
+  this.expansionSetCode="MRD";
+  Effect effect=new AddCountersSourceEffect(CounterType.CHARGE.createInstance());
+  effect.setText("put a charge counter on {this}");
+  this.addAbility(new SerumTankTriggeredAbility(effect));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DrawCardSourceControllerEffect(1),new ManaCostsImpl("{3}"));
+  ability.addCost(new RemoveCountersSourceCost(CounterType.CHARGE.createInstance(1)));
+  ability.addCost(new TapSourceCost());
+  this.addAbility(ability);
 }
