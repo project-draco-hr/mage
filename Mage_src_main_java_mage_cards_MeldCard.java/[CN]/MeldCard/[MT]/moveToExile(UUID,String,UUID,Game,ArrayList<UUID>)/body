@@ -1,0 +1,68 @@
+{
+  if (this.isMelded()) {
+    ZoneChangeEvent event=new ZoneChangeEvent(this.getId(),sourceId,this.getOwnerId(),Zone.BATTLEFIELD,Zone.EXILED,appliedEffects);
+    if (!game.replaceEvent(event)) {
+      updateZoneChangeCounter(game);
+switch (event.getToZone()) {
+case GRAVEYARD:
+        game.getPlayer(this.getOwnerId()).putInGraveyard(topHalfCard,game,true);
+      game.getPlayer(this.getOwnerId()).putInGraveyard(bottomHalfCard,game,true);
+    break;
+case HAND:
+  game.getPlayer(this.getOwnerId()).getHand().add(topHalfCard);
+game.getPlayer(this.getOwnerId()).getHand().add(bottomHalfCard);
+break;
+case EXILED:
+if (exileId == null) {
+game.getExile().getPermanentExile().add(topHalfCard);
+game.getExile().getPermanentExile().add(bottomHalfCard);
+}
+ else {
+game.getExile().createZone(exileId,name).add(topHalfCard);
+game.getExile().getExileZone(exileId).add(bottomHalfCard);
+}
+break;
+case LIBRARY:
+Player controller=game.getPlayer(this.getOwnerId());
+if (controller != null) {
+CardsImpl cardsToMove=new CardsImpl();
+cardsToMove.add(topHalfCard);
+cardsToMove.add(bottomHalfCard);
+if (event.getFlag()) {
+controller.putCardsOnTopOfLibrary(cardsToMove,game,null,true);
+}
+ else {
+controller.putCardsOnBottomOfLibrary(cardsToMove,game,null,true);
+}
+}
+break;
+default :
+return false;
+}
+this.setMelded(false);
+game.setZone(topHalfCard.getId(),event.getToZone());
+game.setZone(bottomHalfCard.getId(),event.getToZone());
+this.topLastZoneChangeCounter=topHalfCard.getZoneChangeCounter(game);
+this.bottomLastZoneChangeCounter=bottomHalfCard.getZoneChangeCounter(game);
+game.addSimultaneousEvent(event);
+return true;
+}
+ else {
+return false;
+}
+}
+ else {
+boolean returnValue=false;
+if (topLastZoneChangeCounter == topHalfCard.getZoneChangeCounter(game)) {
+topHalfCard.moveToExile(exileId,name,sourceId,game,appliedEffects);
+topLastZoneChangeCounter=topHalfCard.getZoneChangeCounter(game);
+returnValue=true;
+}
+if (bottomLastZoneChangeCounter == bottomHalfCard.getZoneChangeCounter(game)) {
+bottomHalfCard.moveToExile(exileId,name,sourceId,game,appliedEffects);
+bottomLastZoneChangeCounter=bottomHalfCard.getZoneChangeCounter(game);
+returnValue=true;
+}
+return returnValue;
+}
+}
