@@ -13,7 +13,18 @@
     controller.moveCardsToExile(toExile,source,game,true,exileId,sourceObject.getIdName());
     Cards cardsToReturn=new CardsImpl();
     for (    Card exiled : toExile) {
-      if (((Permanent)exiled).getZoneChangeCounter(game) == game.getState().getZoneChangeCounter(exiled.getId()) - 1) {
+      if (exiled instanceof PermanentMeld) {
+        MeldCard meldCard=(MeldCard)((PermanentCard)exiled).getCard();
+        Card topCard=meldCard.getTopHalfCard();
+        Card bottomCard=meldCard.getBottomHalfCard();
+        if (topCard.getZoneChangeCounter(game) == meldCard.getTopLastZoneChangeCounter()) {
+          cardsToReturn.add(topCard);
+        }
+        if (bottomCard.getZoneChangeCounter(game) == meldCard.getBottomLastZoneChangeCounter()) {
+          cardsToReturn.add(bottomCard);
+        }
+      }
+ else       if (exiled.getZoneChangeCounter(game) == game.getState().getZoneChangeCounter(exiled.getId()) - 1) {
         cardsToReturn.add(exiled);
       }
     }

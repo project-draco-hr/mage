@@ -12,6 +12,23 @@ return successfulMovedCards.size() > 0;
 case BATTLEFIELD:
 List<Permanent> permanents=new ArrayList<>();
 List<Permanent> permanentsEntered=new ArrayList<>();
+Set<Card> meldPiecesToAdd=new HashSet<>(0);
+Set<MeldCard> meldCardsRemoved=new HashSet<>(0);
+for (Iterator<Card> it=cards.iterator(); it.hasNext(); ) {
+Card card=it.next();
+if (card instanceof MeldCard && !((MeldCard)card).isMelded()) {
+MeldCard meldCard=(MeldCard)card;
+if (meldCard.getTopLastZoneChangeCounter() == meldCard.getTopHalfCard().getZoneChangeCounter(game)) {
+meldPiecesToAdd.add(meldCard.getTopHalfCard());
+}
+if (meldCard.getBottomLastZoneChangeCounter() == meldCard.getBottomHalfCard().getZoneChangeCounter(game)) {
+meldPiecesToAdd.add(meldCard.getBottomHalfCard());
+}
+meldCardsRemoved.add(meldCard);
+it.remove();
+}
+}
+cards.addAll(meldPiecesToAdd);
 for (Card card : cards) {
 UUID controllingPlayerId=byOwner ? card.getOwnerId() : getId();
 fromZone=game.getState().getZone(card.getId());
@@ -20,7 +37,13 @@ card.setFaceDown(true,game);
 }
 ZoneChangeEvent event=new ZoneChangeEvent(card.getId(),source.getSourceId(),controllingPlayerId,fromZone,Zone.BATTLEFIELD,appliedEffects,tapped);
 if (!game.replaceEvent(event)) {
-Permanent permanent=new PermanentCard(card,event.getPlayerId(),game);
+Permanent permanent;
+if (card instanceof MeldCard) {
+permanent=new PermanentMeld(card,event.getPlayerId(),game);
+}
+ else {
+permanent=new PermanentCard(card,event.getPlayerId(),game);
+}
 permanents.add(permanent);
 game.getPermanentsEntering().put(permanent.getId(),permanent);
 card.checkForCountersToAdd(permanent,game);
@@ -60,6 +83,10 @@ game.informPlayers(this.getLogName() + " puts " + (faceDown ? "a card face down 
  else {
 game.getPermanentsEntering().remove(permanent.getId());
 }
+}
+for (MeldCard meldCard : meldCardsRemoved) {
+meldCard.setTopLastZoneChangeCounter(meldCard.getTopHalfCard().getZoneChangeCounter(game));
+meldCard.setBottomLastZoneChangeCounter(meldCard.getBottomHalfCard().getZoneChangeCounter(game));
 }
 game.applyEffects();
 break;

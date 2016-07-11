@@ -1,0 +1,48 @@
+{
+  if (this.isMelded()) {
+    ZoneChangeEvent event=new ZoneChangeEvent(this.objectId,sourceId,controllerId,Zone.EXILED,Zone.BATTLEFIELD,appliedEffects);
+    if (!game.replaceEvent(event) && event.getToZone() == Zone.BATTLEFIELD) {
+      updateZoneChangeCounter(game);
+      PermanentMeld permanent=new PermanentMeld(this,event.getPlayerId(),game);
+      game.addPermanent(permanent);
+      game.setZone(objectId,Zone.BATTLEFIELD);
+      game.setScopeRelevant(true);
+      game.applyEffects();
+      boolean entered=permanent.entersBattlefield(sourceId,game,event.getFromZone(),true);
+      game.setScopeRelevant(false);
+      game.applyEffects();
+      if (entered) {
+        if (event.getFlag()) {
+          permanent.setTapped(true);
+        }
+        event.setTarget(permanent);
+      }
+ else {
+        return false;
+      }
+      game.setZone(objectId,event.getToZone());
+      game.addSimultaneousEvent(event);
+      game.getExile().removeCard(this.topHalfCard,game);
+      game.getExile().removeCard(this.bottomHalfCard,game);
+      return true;
+    }
+ else {
+      this.setMelded(false);
+      return false;
+    }
+  }
+ else {
+    boolean returnValue=false;
+    if (topLastZoneChangeCounter == topHalfCard.getZoneChangeCounter(game)) {
+      topHalfCard.moveToZone(Zone.BATTLEFIELD,sourceId,game,tapped,appliedEffects);
+      topLastZoneChangeCounter=topHalfCard.getZoneChangeCounter(game);
+      returnValue=true;
+    }
+    if (bottomLastZoneChangeCounter == bottomHalfCard.getZoneChangeCounter(game)) {
+      bottomHalfCard.moveToZone(Zone.BATTLEFIELD,sourceId,game,tapped,appliedEffects);
+      bottomLastZoneChangeCounter=bottomHalfCard.getZoneChangeCounter(game);
+      returnValue=true;
+    }
+    return returnValue;
+  }
+}

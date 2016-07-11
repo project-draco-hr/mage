@@ -1,0 +1,35 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    UUID sourceId=source.getSourceId();
+    FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent("creature named " + meldWithName);
+    filter.add(new NamePredicate(meldWithName));
+    TargetPermanent target=new TargetControlledCreaturePermanent(filter);
+    Set<UUID> meldWithList=target.possibleTargets(sourceId,source.getControllerId(),game);
+    UUID meldWithId;
+    if (meldWithList.size() == 1) {
+      meldWithId=meldWithList.iterator().next();
+    }
+ else {
+      controller.choose(Outcome.BoostCreature,target,sourceId,game);
+      meldWithId=target.getFirstTarget();
+    }
+    Permanent sourcePermanent=game.getPermanent(sourceId);
+    Permanent meldWithPermanent=game.getPermanent(meldWithId);
+    sourcePermanent.moveToExile(null,"",sourceId,game);
+    meldWithPermanent.moveToExile(null,"",sourceId,game);
+    Card sourceCard=game.getExile().getCard(sourceId,game);
+    Card meldWithCard=game.getExile().getCard(meldWithId,game);
+    if (!sourceCard.isCopy() && !meldWithCard.isCopy()) {
+      meldCard.setOwnerId(controller.getId());
+      meldCard.setTopHalfCard(meldWithCard,game);
+      meldCard.setbottomHalfCard(sourceCard,game);
+      meldCard.setMelded(true);
+      game.addMeldCard(meldCard.getId(),meldCard);
+      game.getState().addCard(meldCard);
+      meldCard.moveToZone(Zone.BATTLEFIELD,sourceId,game,false);
+    }
+    return true;
+  }
+  return false;
+}
