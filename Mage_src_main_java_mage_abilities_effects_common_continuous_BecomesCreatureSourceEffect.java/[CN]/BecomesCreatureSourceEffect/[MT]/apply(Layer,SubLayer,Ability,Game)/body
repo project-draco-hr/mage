@@ -46,20 +46,24 @@ if (token.getAbilities().size() > 0) {
 break;
 case PTChangingEffects_7:
 if ((sublayer == SubLayer.CharacteristicDefining_7a && isCharacterDefining()) || (sublayer == SubLayer.SetPT_7b && !isCharacterDefining())) {
-MageInt power=token.getPower();
-MageInt toughness=token.getToughness();
-if (power != null && toughness != null) {
-permanent.getPower().setValue(power.getValue());
-permanent.getToughness().setValue(toughness.getValue());
+if (power != null) {
+permanent.getPower().setValue(power.calculate(game,source,this));
+}
+ else if (token.getPower() != null) {
+permanent.getPower().setValue(token.getPower().getValue());
+}
+if (toughness != null) {
+permanent.getToughness().setValue(toughness.calculate(game,source,this));
+}
+ else if (token.getToughness() != null) {
+permanent.getToughness().setValue(token.getToughness().getValue());
 }
 }
 }
 return true;
 }
- else {
-if (duration.equals(Duration.Custom)) {
+ else if (duration.equals(Duration.Custom)) {
 this.discard();
-}
 }
 return false;
 }
