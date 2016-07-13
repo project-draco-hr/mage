@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Kalitas, Traitor of Ghet",1);
+  addCard(Zone.HAND,playerA,"Damnation",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",4);
+  addCard(Zone.BATTLEFIELD,playerB,"Bronze Sable",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Wall of Roots",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Sigiled Starfish",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Damnation");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Kalitas, Traitor of Ghet",1);
+  assertGraveyardCount(playerA,"Damnation",1);
+  assertExileCount("Bronze Sable",1);
+  assertExileCount("Wall of Roots",1);
+  assertExileCount("Sigiled Starfish",1);
+  assertGraveyardCount(playerB,0);
+  assertExileCount("Kalitas, Traitor of Ghet",0);
+  assertPermanentCount(playerA,"Zombie",3);
+}
