@@ -4,12 +4,13 @@
   Player opponent=game.getPlayer(getTargetPointer().getFirst(game,source));
   if (controller != null && sourceObject != null && opponent != null) {
     if (opponent.getLibrary().size() > 0) {
-      Card card=opponent.getLibrary().removeFromTop(game);
-      if (card != null) {
-        opponent.moveCardToExileWithInfo(card,source.getSourceId(),sourceObject.getIdName(),source.getSourceId(),game,Zone.LIBRARY,true);
-        ContinuousEffect effect=new MindsDilationCastFromExileEffect();
-        effect.setTargetPointer(new FixedTarget(card.getId()));
-        game.addEffect(effect,source);
+      Card card=opponent.getLibrary().getFromTop(game);
+      if (card != null && opponent.moveCards(card,Zone.EXILED,source,game)) {
+        if (!card.getCardType().contains(CardType.LAND)) {
+          if (controller.chooseUse(outcome,"Cast " + card.getLogName() + " without paying its mana cost from exile?",source,game)) {
+            controller.cast(card.getSpellAbility(),game,true);
+          }
+        }
       }
     }
     return true;
