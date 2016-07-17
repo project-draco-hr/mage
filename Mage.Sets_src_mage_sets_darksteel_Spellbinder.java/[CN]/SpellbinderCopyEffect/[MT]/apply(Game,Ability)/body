@@ -1,0 +1,28 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Permanent scepter=game.getPermanentOrLKIBattlefield(source.getSourceId());
+    if (scepter != null && scepter.getImprinted() != null && !scepter.getImprinted().isEmpty()) {
+      Card imprintedInstant=game.getCard(scepter.getImprinted().get(0));
+      if (imprintedInstant != null && game.getState().getZone(imprintedInstant.getId()).equals(Zone.EXILED)) {
+        if (controller.chooseUse(outcome,new StringBuilder("Create a copy of ").append(imprintedInstant.getName()).append("?").toString(),source,game)) {
+          Card copiedCard=game.copyCard(imprintedInstant,source,source.getControllerId());
+          if (copiedCard != null) {
+            game.getExile().add(source.getSourceId(),"",copiedCard);
+            game.getState().setZone(copiedCard.getId(),Zone.EXILED);
+            if (controller.chooseUse(outcome,"Cast the copied card without paying mana cost?",source,game)) {
+              if (copiedCard.getSpellAbility() != null) {
+                controller.cast(copiedCard.getSpellAbility(),game,true);
+              }
+ else {
+                Logger.getLogger(SpellbinderCopyEffect.class).error("Spellbinder: spell ability == null " + copiedCard.getName());
+              }
+            }
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
