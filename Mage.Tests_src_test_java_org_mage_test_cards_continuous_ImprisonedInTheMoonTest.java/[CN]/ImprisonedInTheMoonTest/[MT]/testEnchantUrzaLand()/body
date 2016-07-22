@@ -1,0 +1,20 @@
+{
+  addCard(Zone.HAND,playerA,"Imprisoned in the Moon",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",3);
+  addCard(Zone.BATTLEFIELD,playerB,"Urza's Mine",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Urza's Tower",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Urza's Power Plant",1);
+  addCard(Zone.HAND,playerB,"Wurmcoil Engine",1);
+  addCard(Zone.HAND,playerB,"Bottle Gnomes",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Imprisoned in the Moon");
+  addTarget(playerA,"Urza's Mine");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Wurmcoil Engine");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Bottle Gnomes");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Imprisoned in the Moon",1);
+  assertPermanentCount(playerB,"Wurmcoil Engine",1);
+  assertHandCount(playerB,"Wurmcoil Engine",0);
+  assertHandCount(playerB,"Bottle Gnomes",1);
+  assertPermanentCount(playerB,"Bottle Gnomes",0);
+}
