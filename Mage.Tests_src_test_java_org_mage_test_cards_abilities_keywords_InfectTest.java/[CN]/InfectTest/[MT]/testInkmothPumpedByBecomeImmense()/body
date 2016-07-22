@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",7);
+  addCard(Zone.BATTLEFIELD,playerA,"Inkmoth Nexus");
+  addCard(Zone.HAND,playerA,"Become Immense",1);
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{1}: {this} becomes");
+  attack(1,playerA,"Inkmoth Nexus");
+  castSpell(1,PhaseStep.DECLARE_ATTACKERS,playerA,"Become Immense");
+  addTarget(playerA,"Inkmoth Nexus");
+  setStopAt(1,PhaseStep.END_COMBAT);
+  execute();
+  assertTapped("Inkmoth Nexus",true);
+  assertGraveyardCount(playerA,"Become Immense",1);
+  assertCounterCount(playerB,CounterType.POISON,7);
+}
