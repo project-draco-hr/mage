@@ -1,0 +1,15 @@
+{
+  super(ownerId,148,"Simic Guildmage",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{G/U}{G/U}");
+  this.expansionSetCode="DIS";
+  this.subtype.add("Elf");
+  this.subtype.add("Wizard");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability countersAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new MoveCounterFromTargetToTargetEffect(),new ManaCostsImpl("{1}{G}"));
+  countersAbility.addTarget(new TargetCreaturePermanent(new FilterCreaturePermanent("creature (you take counters from)")));
+  countersAbility.addTarget(new SimicGuildmageSecondTargetCreaturePermanent());
+  this.addAbility(countersAbility);
+  Ability auraAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new MoveAuraEffect(),new ManaCostsImpl("{1}{U}"));
+  auraAbility.addTarget(new TargetPermanent(filter));
+  this.addAbility(auraAbility);
+}

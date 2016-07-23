@@ -1,0 +1,38 @@
+{
+  UUID auraId=getTargetPointer().getFirst(game,source);
+  Permanent aura=game.getPermanent(auraId);
+  Permanent fromPermanent=game.getPermanent(aura.getAttachedTo());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (fromPermanent != null && controller != null) {
+    Boolean passed=true;
+    FilterPermanent filterChoice=new FilterPermanent("a different permanent with the same controller as the target to attach the enchantments to");
+    filterChoice.add(new ControllerIdPredicate(fromPermanent.getControllerId()));
+    filterChoice.add(Predicates.not(new PermanentIdPredicate(fromPermanent.getId())));
+    Target chosenPermanentToAttachAuras=new TargetPermanent(filterChoice);
+    chosenPermanentToAttachAuras.setNotTarget(true);
+    if (chosenPermanentToAttachAuras.canChoose(source.getSourceId(),source.getControllerId(),game) && controller.choose(Outcome.Neutral,chosenPermanentToAttachAuras,source.getSourceId(),game)) {
+      Permanent permanentToAttachAuras=game.getPermanent(chosenPermanentToAttachAuras.getFirstTarget());
+      if (permanentToAttachAuras != null) {
+        if (aura != null && passed) {
+          Target target=aura.getSpellAbility().getTargets().get(0);
+          if (target instanceof TargetPermanent) {
+            if (!target.getFilter().match(permanentToAttachAuras,game)) {
+              passed=false;
+            }
+          }
+          MageObject auraObject=game.getObject(auraId);
+          if (permanentToAttachAuras.cantBeEnchantedBy(auraObject,game)) {
+            passed=false;
+          }
+        }
+        if (passed) {
+          fromPermanent.removeAttachment(aura.getId(),game);
+          permanentToAttachAuras.addAttachment(aura.getId(),game);
+          return true;
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
