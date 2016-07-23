@@ -1,0 +1,24 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",7);
+  addCard(Zone.BATTLEFIELD,playerA,"Inkmoth Nexus");
+  addCard(Zone.HAND,playerA,"Become Immense",1);
+  addCard(Zone.HAND,playerA,"Mutagenic Growth",1);
+  addCard(Zone.HAND,playerA,"Might of Old Krosa",1);
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{1}: {this} becomes");
+  attack(1,playerA,"Inkmoth Nexus");
+  castSpell(1,PhaseStep.DECLARE_ATTACKERS,playerA,"Mutagenic Growth");
+  addTarget(playerA,"Inkmoth Nexus");
+  castSpell(1,PhaseStep.DECLARE_ATTACKERS,playerA,"Might of Old Krosa");
+  addTarget(playerA,"Inkmoth Nexus");
+  activateAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"{1}: {this} becomes");
+  attack(3,playerA,"Inkmoth Nexus");
+  castSpell(3,PhaseStep.DECLARE_ATTACKERS,playerA,"Become Immense");
+  addTarget(playerA,"Inkmoth Nexus");
+  setStopAt(3,PhaseStep.END_COMBAT);
+  execute();
+  assertTapped("Inkmoth Nexus",true);
+  assertGraveyardCount(playerA,"Become Immense",1);
+  assertGraveyardCount(playerA,"Mutagenic Growth",1);
+  assertGraveyardCount(playerA,"Might of Old Krosa",1);
+  assertCounterCount(playerB,CounterType.POISON,12);
+}

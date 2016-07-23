@@ -5,7 +5,7 @@
   this.power=new MageInt(2);
   this.toughness=new MageInt(2);
   this.addAbility(new MadnessAbility(this,new ManaCostsImpl("{1}{B}")));
-  EntersBattlefieldTriggeredAbility ability=new EntersBattlefieldTriggeredAbility(new ReturnToHandTargetEffect(),true);
+  TriggeredAbility ability=new EntersBattlefieldTriggeredAbility(new ReturnToHandTargetEffect(),true);
   ability.addTarget(new TargetCardInGraveyard(new FilterCreatureCard("creature card in a graveyard")));
-  this.addAbility(new ConditionalTriggeredAbility(ability,MadnessAbility.GetCondition(),"When {this} enters the battlefield, if its madness cost was paid, you may return target creature card from a graveyard to its owner's hand."));
+  this.addAbility(new ConditionalTriggeredAbility(ability,MadnessPaidCondition.getInstance(),"When {this} enters the battlefield, if its madness cost was paid, you may return target creature card from a graveyard to its owner's hand."));
 }

@@ -1,0 +1,18 @@
+{
+  addCard(Zone.HAND,playerA,"Tamiyo, Field Researcher",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Sylvan Advocate",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Memnite",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Tamiyo, Field Researcher");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"+1: Choose up to two");
+  addTarget(playerA,"Sylvan Advocate");
+  attack(1,playerA,"Sylvan Advocate");
+  attack(2,playerB,"Memnite");
+  block(2,playerA,"Sylvan Advocate","Memnite");
+  setStopAt(2,PhaseStep.END_COMBAT);
+  execute();
+  assertLife(playerB,18);
+  assertHandCount(playerA,2);
+}

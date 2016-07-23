@@ -10,5 +10,6 @@
   this.addAbility(FirstStrikeAbility.getInstance());
   this.addAbility(LifelinkAbility.getInstance());
   this.addAbility(new TransformAbility());
-  this.addAbility(new BeginningOfEndStepTriggeredAbility(Zone.BATTLEFIELD,new TransformSourceEffect(true),TargetController.ANY,new YouGainedLifeCondition(Condition.ComparisonType.GreaterThan,2),false),new PlayerGainedLifeWatcher());
+  TriggeredAbility triggered=new OnEventTriggeredAbility(GameEvent.EventType.END_TURN_STEP_PRE,"beginning of the end step",true,new TransformSourceEffect(true));
+  this.addAbility(new ConditionalTriggeredAbility(triggered,new YouGainedLifeCondition(Condition.ComparisonType.GreaterThan,2),ruleText),new PlayerGainedLifeWatcher());
 }

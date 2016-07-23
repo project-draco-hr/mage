@@ -20,7 +20,9 @@
       new MagisterOfWorthReturnFromGraveyardEffect().apply(game,source);
     }
  else {
-      new MagisterOfWorthDestroyEffect().apply(game,source);
+      FilterPermanent filter=new FilterCreaturePermanent("creatures other than {this}");
+      filter.add(new AnotherPredicate());
+      new DestroyAllEffect(filter).apply(game,source);
     }
     return true;
   }

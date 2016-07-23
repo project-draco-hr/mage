@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Tamiyo, Field Researcher",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Gideon, Ally of Zendikar",1);
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"+0: Put a");
+  activateAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"+1: Until end of turn");
+  activateAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"+1: Choose up to two");
+  addTarget(playerA,"Knight Ally^Gideon, Ally of Zendikar");
+  attack(3,playerA,"Knight Ally");
+  attack(3,playerA,"Gideon, Ally of Zendikar");
+  setStopAt(3,PhaseStep.END_COMBAT);
+  execute();
+  assertLife(playerB,13);
+  assertPermanentCount(playerA,"Tamiyo, Field Researcher",1);
+  assertPermanentCount(playerA,"Gideon, Ally of Zendikar",1);
+  assertPermanentCount(playerA,"Knight Ally",1);
+  assertHandCount(playerA,3);
+}

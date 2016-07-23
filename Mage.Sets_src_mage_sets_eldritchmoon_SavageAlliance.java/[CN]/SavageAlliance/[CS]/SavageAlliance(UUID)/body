@@ -5,13 +5,15 @@
   this.getSpellAbility().getModes().setMinModes(1);
   this.getSpellAbility().getModes().setMaxModes(3);
   this.getSpellAbility().addEffect(new SavageAllianceGainTrampleEffect());
-  this.getSpellAbility().addTarget(new TargetPlayer());
+  this.getSpellAbility().addTarget(new TargetPlayer(1,1,false,filterPlayer));
   Mode mode=new Mode();
-  mode.getEffects().add(new DamageTargetEffect(2));
-  mode.getTargets().add(new TargetCreaturePermanent());
+  Effect effect=new DamageTargetEffect(2);
+  effect.setText("{this} deals 2 damage to target creature");
+  mode.getEffects().add(effect);
+  mode.getTargets().add(new TargetCreaturePermanent(filterCreature));
   this.getSpellAbility().addMode(mode);
   mode=new Mode();
   mode.getEffects().add(new SavageAllianceDamageEffect());
-  mode.getTargets().add(new TargetOpponent());
+  mode.getTargets().add(new TargetPlayer(1,1,false,filterOpponent));
   this.getSpellAbility().addMode(mode);
 }

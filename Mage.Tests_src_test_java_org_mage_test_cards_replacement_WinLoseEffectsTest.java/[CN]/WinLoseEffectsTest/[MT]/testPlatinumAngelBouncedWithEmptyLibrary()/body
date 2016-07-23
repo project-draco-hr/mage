@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Platinum Angel");
+  addCard(Zone.HAND,playerB,"Set Adrift",1);
+  removeAllCardsFromLibrary(playerA);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",6);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Set Adrift");
+  addTarget(playerB,"Platinum Angel");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Set Adrift",1);
+  assertPermanentCount(playerA,"Platinum Angel",0);
+  assertLibraryCount(playerA,1);
+  assertLibraryCount(playerA,"Platinum Angel",1);
+  Assert.assertFalse("Player A should not have lost yet",playerA.hasLost());
+}

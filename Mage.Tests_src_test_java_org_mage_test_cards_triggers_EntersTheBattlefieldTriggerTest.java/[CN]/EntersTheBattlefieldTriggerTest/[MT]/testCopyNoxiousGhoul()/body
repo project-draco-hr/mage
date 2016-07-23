@@ -1,0 +1,24 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",9);
+  addCard(Zone.HAND,playerA,"Noxious Ghoul",1);
+  addCard(Zone.HAND,playerA,"Clone",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Carnivorous Plant",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",3);
+  addCard(Zone.HAND,playerB,"Ego Erasure",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Zephyr Falcon",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Carnivorous Plant",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Scathe Zombies",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Noxious Ghoul");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Clone");
+  setChoice(playerA,"Noxious Ghoul");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Ego Erasure","targetPlayer=PlayerA","Whenever");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Noxious Ghoul",2);
+  assertGraveyardCount(playerB,"Ego Erasure",1);
+  assertPowerToughness(playerA,"Noxious Ghoul",-1,1,Filter.ComparisonScope.All);
+  assertGraveyardCount(playerB,"Zephyr Falcon",1);
+  assertPowerToughness(playerB,"Carnivorous Plant",2,3);
+  assertPowerToughness(playerA,"Carnivorous Plant",0,3);
+}

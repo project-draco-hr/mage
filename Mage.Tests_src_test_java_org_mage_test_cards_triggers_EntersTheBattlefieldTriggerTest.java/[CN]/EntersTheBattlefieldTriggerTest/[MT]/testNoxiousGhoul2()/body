@@ -1,0 +1,24 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",8);
+  addCard(Zone.HAND,playerA,"Noxious Ghoul",1);
+  addCard(Zone.HAND,playerA,"Scathe Zombies",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",3);
+  addCard(Zone.HAND,playerB,"Ego Erasure",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Zephyr Falcon",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Scathe Zombies",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Noxious Ghoul");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Ego Erasure","targetPlayer=PlayerA","Whenever");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Scathe Zombies");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Noxious Ghoul",1);
+  assertGraveyardCount(playerB,"Ego Erasure",1);
+  assertPowerToughness(playerA,"Noxious Ghoul",-1,1);
+  assertPermanentCount(playerA,"Scathe Zombies",1);
+  assertPowerToughness(playerB,"Scathe Zombies",2,2);
+  assertGraveyardCount(playerB,"Zephyr Falcon",1);
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+  assertGraveyardCount(playerA,"Silvercoat Lion",1);
+}

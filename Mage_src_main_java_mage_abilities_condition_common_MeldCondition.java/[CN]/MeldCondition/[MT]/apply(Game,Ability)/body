@@ -1,0 +1,16 @@
+{
+  MageObject sourceMageObject=source.getSourceObjectIfItStillExists(game);
+  if (sourceMageObject != null && sourceMageObject instanceof Permanent) {
+    Permanent sourcePermanent=(Permanent)sourceMageObject;
+    if (sourcePermanent.getControllerId().equals(source.getControllerId()) && sourcePermanent.getOwnerId().equals(source.getControllerId())) {
+      FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent();
+      filter.add(new NamePredicate(this.meldWithName));
+      for (      Permanent meldWithPermanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
+        if (meldWithPermanent.getOwnerId().equals(source.getControllerId())) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

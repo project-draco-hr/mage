@@ -4,7 +4,7 @@
   this.subtype.add("Human");
   this.power=new MageInt(0);
   this.toughness=new MageInt(1);
-  FilterCreaturePermanent filter=new FilterCreaturePermanent();
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("creatures blocking or blocked by it");
   filter.add(Predicates.or(new BlockedByIdPredicate(this.getId()),new BlockingAttackerIdPredicate(this.getId())));
-  this.addAbility(new DiesTriggeredAbility(new DestroyAllEffect(filter),true));
+  this.addAbility(new DiesTriggeredAbility(new DestroyAllEffect(filter,true),false));
 }
