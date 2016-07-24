@@ -1,0 +1,14 @@
+{
+  addCard(Zone.HAND,playerA,"Thoughtseize");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp");
+  addCard(Zone.HAND,playerB,"Loxodon Smiter");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Thoughtseize");
+  addTarget(playerA,playerB);
+  setChoice(playerA,"Loxodon Smiter");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertLife(playerA,18);
+  assertGraveyardCount(playerA,"Thoughtseize",1);
+  assertGraveyardCount(playerB,"Loxodon Smiter",0);
+  assertPermanentCount(playerB,"Loxodon Smiter",1);
+}
