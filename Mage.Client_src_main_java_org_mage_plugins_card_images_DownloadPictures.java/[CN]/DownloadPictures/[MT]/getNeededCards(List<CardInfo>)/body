@@ -14,7 +14,7 @@
   try {
     offlineMode=true;
     for (    CardInfo card : allCards) {
-      if (card.getCardNumber() > 0 && !card.getSetCode().isEmpty() && !ignoreUrls.contains(card.getSetCode())) {
+      if (!card.getCardNumber().isEmpty() && !"0".equals(card.getCardNumber()) && !card.getSetCode().isEmpty()&& !ignoreUrls.contains(card.getSetCode())) {
         String cardName=card.getName();
         boolean isType2=type2SetsFilter.contains(card.getSetCode());
         CardDownloadData url=new CardDownloadData(cardName,card.getSetCode(),card.getCardNumber(),card.usesVariousArt(),0,"",false,card.isDoubleFaced(),card.isNightCard());
@@ -44,7 +44,7 @@
           allCardsUrls.add(url);
         }
       }
- else       if (card.getCardNumber() < 1) {
+ else       if (card.getCardNumber().isEmpty() || "0".equals(card.getCardNumber())) {
         System.err.println("There was a critical error!");
         logger.error("Card has no collector ID and won't be sent to client: " + card);
       }
