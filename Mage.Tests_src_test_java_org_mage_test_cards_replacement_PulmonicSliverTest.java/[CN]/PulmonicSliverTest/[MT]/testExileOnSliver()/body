@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Pulmonic Sliver");
+  addCard(Zone.BATTLEFIELD,playerA,"Venom Sliver");
+  addCard(Zone.HAND,playerB,"Path to Exile");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",1);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Path to Exile");
+  addTarget(playerB,"Venom Sliver");
+  setChoice(playerA,"Yes");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Path to Exile",1);
+  assertGraveyardCount(playerA,"Venom Sliver",0);
+  assertPermanentCount(playerA,"Venom Sliver",0);
+  assertLibraryCount(playerA,"Venom Sliver",0);
+  assertExileCount("Venom Sliver",1);
+}

@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Pulmonic Sliver");
+  addCard(Zone.BATTLEFIELD,playerA,"Venom Sliver");
+  addCard(Zone.HAND,playerB,"Damnation");
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",4);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Damnation");
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"Yes");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Damnation",1);
+  assertGraveyardCount(playerA,"Venom Sliver",0);
+  assertPermanentCount(playerA,"Venom Sliver",0);
+  assertLibraryCount(playerA,"Venom Sliver",1);
+  assertGraveyardCount(playerA,"Pulmonic Sliver",0);
+  assertPermanentCount(playerA,"Pulmonic Sliver",0);
+  assertLibraryCount(playerA,"Pulmonic Sliver",1);
+}
