@@ -2,6 +2,12 @@
   super(ownerId,83,"Blood Feud",Rarity.UNCOMMON,new CardType[]{CardType.SORCERY},"{4}{R}{R}");
   this.expansionSetCode="DKA";
   this.getSpellAbility().addEffect(new FightTargetsEffect());
-  this.getSpellAbility().addTarget(new TargetCreaturePermanent());
-  this.getSpellAbility().addTarget(new TargetOtherCreaturePermanent());
+  TargetCreaturePermanent target=new TargetCreaturePermanent();
+  target.setTargetTag(1);
+  this.getSpellAbility().addTarget(target);
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("another creature to fight");
+  filter.add(new AnotherTargetPredicate(2));
+  TargetCreaturePermanent target2=new TargetCreaturePermanent(filter);
+  target2.setTargetTag(2);
+  this.getSpellAbility().addTarget(target2);
 }
