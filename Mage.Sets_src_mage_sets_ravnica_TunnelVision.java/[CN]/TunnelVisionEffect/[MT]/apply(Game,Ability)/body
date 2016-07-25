@@ -7,6 +7,7 @@
   }
   Cards cardsToReveal=new CardsImpl();
   Cards cardsToBury=new CardsImpl();
+  Card namedCard=null;
   boolean namedCardFound=false;
   while (targetPlayer.getLibrary().size() > 0) {
     Card card=targetPlayer.getLibrary().removeFromTop(game);
@@ -14,8 +15,7 @@
       cardsToReveal.add(card);
       if (card.getName().equals(cardName)) {
         namedCardFound=true;
-        targetPlayer.moveCards(cardsToBury,Zone.GRAVEYARD,source,game);
-        targetPlayer.moveCards(card,Zone.LIBRARY,source,game);
+        namedCard=card;
         break;
       }
  else {
@@ -24,7 +24,11 @@
     }
   }
   targetPlayer.revealCards(sourceObject.getIdName(),cardsToReveal,game);
-  if (!namedCardFound) {
+  if (namedCardFound) {
+    targetPlayer.moveCards(cardsToBury,Zone.GRAVEYARD,source,game);
+    targetPlayer.moveCards(namedCard,Zone.LIBRARY,source,game);
+  }
+ else {
     targetPlayer.shuffleLibrary(source,game);
   }
   return true;
