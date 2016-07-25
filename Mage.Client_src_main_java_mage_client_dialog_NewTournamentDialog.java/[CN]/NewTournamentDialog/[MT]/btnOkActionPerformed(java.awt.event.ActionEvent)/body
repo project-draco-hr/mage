@@ -27,7 +27,16 @@
     if (tournamentType.isCubeBooster()) {
       tOptions.getLimitedOptions().setDraftCubeName(this.cbDraftCube.getSelectedItem().toString());
       if (!(cubeFromDeckFilename.equals(""))) {
-        tOptions.getLimitedOptions().setCubeFromDeckFilename(cubeFromDeckFilename);
+        Deck cubeFromDeck=new Deck();
+        try {
+          cubeFromDeck=Deck.load(DeckImporterUtil.importDeck(cubeFromDeckFilename),true,true);
+        }
+ catch (        GameException e1) {
+          JOptionPane.showMessageDialog(MageFrame.getDesktop(),e1.getMessage(),"Error loading deck",JOptionPane.ERROR_MESSAGE);
+        }
+        if (cubeFromDeck != null) {
+          tOptions.getLimitedOptions().setCubeFromDeck(cubeFromDeck);
+        }
       }
     }
  else     if (tournamentType.isRandom() || tournamentType.isRichMan()) {
