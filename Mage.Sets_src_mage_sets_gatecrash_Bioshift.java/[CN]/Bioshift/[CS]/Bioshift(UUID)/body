@@ -2,6 +2,13 @@
   super(ownerId,214,"Bioshift",Rarity.COMMON,new CardType[]{CardType.INSTANT},"{G/U}");
   this.expansionSetCode="GTC";
   getSpellAbility().addEffect(new MoveCounterFromTargetToTargetEffect());
-  getSpellAbility().addTarget(new TargetCreaturePermanent(new FilterCreaturePermanent("creature (you take counters from)")));
-  getSpellAbility().addTarget(new BioshiftSecondTargetCreaturePermanent());
+  TargetCreaturePermanent target=new TargetCreaturePermanent(new FilterCreaturePermanent("creature (you take counters from)"));
+  target.setTargetTag(1);
+  this.getSpellAbility().addTarget(target);
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("another target creature with the same controller (counters go to)");
+  filter.add(new AnotherTargetPredicate(2));
+  filter.add(new SameControllerPredicate());
+  TargetCreaturePermanent target2=new TargetCreaturePermanent(filter);
+  target2.setTargetTag(2);
+  this.getSpellAbility().addTarget(target2);
 }
