@@ -1,17 +1,15 @@
 {
-  Player player=game.getPlayer(source.getFirstTarget());
-  if (player == null) {
-    return false;
-  }
-  if (player.searchLibrary(target,game)) {
+  Player controller=game.getPlayer(source.getControllerId());
+  UUID targetPlayerID=source.getFirstTarget();
+  if (controller.searchLibrary(target,game,targetPlayerID)) {
     if (target.getTargets().size() > 0) {
       Cards cards=new CardsImpl(target.getTargets());
-      player.revealCards("Quiet Speculation",cards,game);
-      player.moveCards(cards,Zone.LIBRARY,Zone.GRAVEYARD,source,game);
+      controller.revealCards("Quiet Speculation",cards,game);
+      controller.moveCards(cards,Zone.GRAVEYARD,source,game);
     }
-    player.shuffleLibrary(source,game);
+    controller.shuffleLibrary(source,game);
     return true;
   }
-  player.shuffleLibrary(source,game);
+  controller.shuffleLibrary(source,game);
   return false;
 }
