@@ -1,8 +1,9 @@
 {
   Object object=this.getValue("NayaSoulbeastCounters");
-  if (object instanceof Integer) {
+  Permanent permanent=game.getPermanentEntering(source.getSourceId());
+  if (permanent != null && object instanceof Integer) {
     int amount=((Integer)object);
-    new AddCountersSourceEffect(CounterType.P1P1.createInstance(amount)).apply(game,source);
+    permanent.addCounters(CounterType.P1P1.createInstance(amount),game);
   }
   return false;
 }
