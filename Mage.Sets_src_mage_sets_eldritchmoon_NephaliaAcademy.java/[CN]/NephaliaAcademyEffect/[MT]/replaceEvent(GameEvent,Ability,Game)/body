@@ -2,8 +2,21 @@
   if (event.getType().equals(GameEvent.EventType.DISCARD_CARD)) {
     Card card=game.getCard(event.getTargetId());
     if (card != null) {
-      cardId=card.getId();
-      zoneChangeCounter=game.getState().getZoneChangeCounter(cardId);
+      boolean isAnOpponentEffect=false;
+      MageObject object=game.getObject(event.getSourceId());
+      if (object instanceof PermanentCard) {
+        isAnOpponentEffect=game.getOpponents(source.getControllerId()).contains(((PermanentCard)object).getControllerId());
+      }
+ else       if (object instanceof Spell) {
+        isAnOpponentEffect=game.getOpponents(source.getControllerId()).contains(((Spell)object).getControllerId());
+      }
+ else       if (object instanceof Card) {
+        isAnOpponentEffect=game.getOpponents(source.getControllerId()).contains(((Card)object).getOwnerId());
+      }
+      if (isAnOpponentEffect) {
+        cardId=card.getId();
+        zoneChangeCounter=game.getState().getZoneChangeCounter(cardId);
+      }
     }
     return false;
   }
