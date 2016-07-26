@@ -2,6 +2,12 @@
   super(ownerId,93,"Fall of the Hammer",Rarity.COMMON,new CardType[]{CardType.INSTANT},"{1}{R}");
   this.expansionSetCode="BNG";
   this.getSpellAbility().addEffect(new FallOfTheHammerDamageEffect());
-  this.getSpellAbility().addTarget(new TargetControlledCreaturePermanent());
-  this.getSpellAbility().addTarget(new FallOfTheHammerTargetCreaturePermanent(filter));
+  TargetControlledCreaturePermanent target=new TargetControlledCreaturePermanent(new FilterControlledCreaturePermanent("Target creature: deals damage"));
+  target.setTargetTag(1);
+  this.getSpellAbility().addTarget(target);
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("Another creature: damage dealt to");
+  filter.add(new AnotherTargetPredicate(2));
+  TargetCreaturePermanent target2=new TargetCreaturePermanent(filter);
+  target2.setTargetTag(2);
+  this.getSpellAbility().addTarget(target2);
 }

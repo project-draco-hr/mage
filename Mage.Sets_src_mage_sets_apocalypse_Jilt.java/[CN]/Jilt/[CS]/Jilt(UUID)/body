@@ -6,5 +6,7 @@
   Effect effect=new ConditionalOneShotEffect(new DamageTargetEffect(2),KickedCondition.getInstance(),"If {this} was kicked, it deals 2 damage to another target creature");
   effect.setTargetPointer(new SecondTargetPointer());
   this.getSpellAbility().addEffect(effect);
-  this.getSpellAbility().addTarget(new TargetCreaturePermanent());
+  Target target=new TargetCreaturePermanent(new FilterCreaturePermanent("Target Creature: returned to Hand"));
+  target.setTargetTag(1);
+  this.getSpellAbility().addTarget(target);
 }
