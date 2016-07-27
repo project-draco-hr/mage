@@ -6,17 +6,19 @@
     filter.add(new OwnerIdPredicate(targetPlayer.getId()));
     TargetCardInGraveyard target=new TargetCardInGraveyard(filter);
     boolean opponentChoosesExile=targetPlayer.chooseUse(Outcome.Exile,"Exile a card from your graveyard?",source,game);
+    boolean opponentExilesACard=false;
     if (opponentChoosesExile && targetPlayer.chooseTarget(Outcome.Exile,target,source,game)) {
       Card card=game.getCard(target.getFirstTarget());
       if (card != null) {
-        if (targetPlayer.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.GRAVEYARD,true)) {
-          if (you.chooseUse(Outcome.DrawCard,"Draw a card?",source,game)) {
-            you.drawCards(1,game);
-          }
-        }
+        opponentExilesACard=targetPlayer.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.GRAVEYARD,true);
       }
-      return true;
     }
+    if (!opponentExilesACard) {
+      if (you.chooseUse(Outcome.DrawCard,"Draw a card?",source,game)) {
+        you.drawCards(1,game);
+      }
+    }
+    return true;
   }
   return false;
 }
