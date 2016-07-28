@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerB,"Reality Smasher");
+  addCard(Zone.BATTLEFIELD,playerA,"Pyromancer's Goggles");
+  addCard(Zone.HAND,playerA,"Lightning Bolt");
+  addCard(Zone.HAND,playerA,"Swamp",2);
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}:");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt");
+  addTarget(playerA,"Reality Smasher");
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"Swamp");
+  setChoice(playerA,"No");
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"Swamp");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Lightning Bolt",1);
+  assertGraveyardCount(playerA,"Swamp",2);
+  assertGraveyardCount(playerB,"Reality Smasher",1);
+}
