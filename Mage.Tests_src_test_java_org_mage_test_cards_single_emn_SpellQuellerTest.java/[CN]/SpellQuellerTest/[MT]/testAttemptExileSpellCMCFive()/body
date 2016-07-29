@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerB,"Spell Queller");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.HAND,playerA,"Battle Sliver");
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",5);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Battle Sliver");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Spell Queller");
+  addTarget(playerB,"Battle Sliver");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerB,"Spell Queller",1);
+  assertPermanentCount(playerA,"Battle Sliver",1);
+  assertExileCount(playerA,0);
+}
