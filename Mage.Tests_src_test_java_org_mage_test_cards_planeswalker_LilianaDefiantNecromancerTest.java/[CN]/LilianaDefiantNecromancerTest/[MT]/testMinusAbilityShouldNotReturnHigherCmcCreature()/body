@@ -1,0 +1,23 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Hill Giant",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.HAND,playerA,"Liliana, Heretical Healer");
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Liliana, Heretical Healer");
+  castSpell(1,PhaseStep.BEGIN_COMBAT,playerB,"Lightning Bolt");
+  addTarget(playerB,"Hill Giant");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"-X:");
+  setChoice(playerA,"X=1");
+  addTarget(playerA,"Hill Giant");
+  setChoice(playerA,"Hill Giant");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertPermanentCount(playerA,"Liliana, Heretical Healer",0);
+  assertPermanentCount(playerA,"Zombie",1);
+  assertPermanentCount(playerA,"Liliana, Defiant Necromancer",1);
+  assertCounterCount("Liliana, Defiant Necromancer",CounterType.LOYALTY,2);
+  assertPermanentCount(playerA,"Hill Giant",0);
+  assertGraveyardCount(playerA,"Hill Giant",1);
+}
