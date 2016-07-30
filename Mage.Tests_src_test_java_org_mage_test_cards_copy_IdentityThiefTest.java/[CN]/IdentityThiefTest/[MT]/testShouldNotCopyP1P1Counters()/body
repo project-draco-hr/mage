@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Sylvan Advocate",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.HAND,playerA,"Battlegrowth");
+  addCard(Zone.BATTLEFIELD,playerB,"Identity Thief");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Battlegrowth");
+  addTarget(playerA,"Sylvan Advocate");
+  attack(2,playerB,"Identity Thief");
+  addTarget(playerB,"Sylvan Advocate");
+  setStopAt(2,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertExileCount(playerA,1);
+  assertExileCount("Sylvan Advocate",1);
+  assertGraveyardCount(playerA,"Battlegrowth",1);
+  assertPermanentCount(playerB,"Identity Thief",0);
+  assertPermanentCount(playerB,"Sylvan Advocate",1);
+  assertCounterCount(playerB,"Sylvan Advocate",CounterType.P1P1,0);
+  assertPowerToughness(playerB,"Sylvan Advocate",2,3);
+}
