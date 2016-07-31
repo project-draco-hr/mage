@@ -2,14 +2,16 @@
   if (new ModeChoiceSourceCondition("Dragons").apply(game,source)) {
     if (abilityToModify instanceof SpellAbility) {
       if (game.getOpponents(source.getControllerId()).contains(abilityToModify.getControllerId())) {
-        for (        Target target : abilityToModify.getTargets()) {
-          for (          UUID targetUUID : target.getTargets()) {
-            if (targetUUID.equals(source.getControllerId())) {
-              return true;
-            }
-            Permanent permanent=game.getPermanent(targetUUID);
-            if (permanent != null && permanent.getControllerId().equals(source.getControllerId())) {
-              return true;
+        for (        Mode mode : abilityToModify.getModes().getSelectedModes()) {
+          for (          Target target : mode.getTargets()) {
+            for (            UUID targetUUID : target.getTargets()) {
+              if (targetUUID.equals(source.getControllerId())) {
+                return true;
+              }
+              Permanent permanent=game.getPermanent(targetUUID);
+              if (permanent != null && permanent.getControllerId().equals(source.getControllerId())) {
+                return true;
+              }
             }
           }
         }
