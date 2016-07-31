@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerA,"Postmortem Lunge");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",2);
+  addCard(Zone.GRAVEYARD,playerA,"Elite Vanguard");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Postmortem Lunge");
+  addTarget(playerA,"Elite Vanguard");
+  setChoice(playerA,"Elite Vanguard");
+  attack(1,playerA,"Elite Vanguard");
+  setStopAt(1,PhaseStep.CLEANUP);
+  execute();
+  assertLife(playerB,18);
+  assertGraveyardCount(playerA,"Postmortem Lunge",1);
+  assertExileCount("Elite Vanguard",1);
+  assertPermanentCount(playerA,"Elite Vanguard",0);
+}
