@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Slayer's Cleaver");
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Memnite");
+  addCard(Zone.BATTLEFIELD,playerB,"Wretched Gryff");
+  addCard(Zone.BATTLEFIELD,playerB,"Hill Giant");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Equip","Memnite");
+  attack(1,playerA,"Memnite");
+  block(1,playerB,"Hill Giant","Memnite");
+  setStopAt(1,PhaseStep.END_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Slayer's Cleaver",1);
+  assertLife(playerB,20);
+  assertGraveyardCount(playerA,"Memnite",1);
+  assertGraveyardCount(playerB,"Wretched Gryff",1);
+  assertPermanentCount(playerB,"Hill Giant",1);
+}
