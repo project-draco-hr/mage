@@ -1,21 +1,21 @@
 {
   Card card=game.getCard(source.getFirstTarget());
   if (card != null) {
-    Player player=game.getPlayer(card.getOwnerId());
-    if (player == null) {
+    Player cardOwner=game.getPlayer(card.getOwnerId());
+    if (cardOwner == null) {
       return false;
     }
-    card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),source.getControllerId());
-    ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.Custom);
-    effect.setTargetPointer(new FixedTarget(card.getId()));
-    game.addEffect(effect,source);
-    ExileTargetEffect exileEffect=new ExileTargetEffect();
-    exileEffect.setTargetPointer(new FixedTarget(card.getId()));
-    DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(exileEffect);
-    delayedAbility.setSourceId(source.getSourceId());
-    delayedAbility.setControllerId(source.getControllerId());
-    delayedAbility.setSourceObject(source.getSourceObject(game),game);
-    game.addDelayedTriggeredAbility(delayedAbility);
+    if (cardOwner.moveCards(card,Zone.BATTLEFIELD,source,game)) {
+      Permanent permanent=game.getPermanent(card.getId());
+      if (permanent != null) {
+        ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.Custom);
+        effect.setTargetPointer(new FixedTarget(permanent,game));
+        game.addEffect(effect,source);
+        ExileTargetEffect exileEffect=new ExileTargetEffect(null,null,Zone.BATTLEFIELD);
+        exileEffect.setTargetPointer(new FixedTarget(permanent,game));
+        game.addDelayedTriggeredAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(exileEffect),source);
+      }
+    }
     return true;
   }
   return false;
