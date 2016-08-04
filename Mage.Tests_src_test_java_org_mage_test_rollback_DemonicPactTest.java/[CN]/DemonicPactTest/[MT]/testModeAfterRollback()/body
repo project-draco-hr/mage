@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",4);
+  addCard(Zone.HAND,playerA,"Demonic Pact");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Demonic Pact");
+  setModeChoice(playerA,"1");
+  addTarget(playerA,playerB);
+  rollbackTurns(3,PhaseStep.PRECOMBAT_MAIN,playerA,0);
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertHandCount(playerA,1);
+  assertHandCount(playerB,1);
+  assertLife(playerA,24);
+  assertLife(playerB,16);
+}
