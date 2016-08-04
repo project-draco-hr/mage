@@ -2,9 +2,10 @@
   super(card.getId(),card.getExpansionSetCode(),card.getCardNumber(),card.getUsesVariousArt(),card.getTokenSetCode(),game != null);
   boolean showFaceUp=true;
   if (game != null) {
+    zone=game.getState().getZone(card.getId());
     if (card.isFaceDown(game)) {
       showFaceUp=false;
-      if (!Zone.BATTLEFIELD.equals(game.getState().getZone(card.getId()))) {
+      if (!Zone.BATTLEFIELD.equals(zone)) {
         if (showFaceDownCard) {
           showFaceUp=true;
         }
