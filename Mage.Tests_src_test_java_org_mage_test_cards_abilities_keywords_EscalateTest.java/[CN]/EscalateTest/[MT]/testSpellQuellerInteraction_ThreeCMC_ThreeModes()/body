@@ -1,0 +1,25 @@
+{
+  addCard(Zone.HAND,playerB,"Spell Queller");
+  addCard(Zone.BATTLEFIELD,playerB,"Wall of Omens");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",1);
+  addCard(Zone.HAND,playerA,"Collective Defiance");
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",5);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Collective Defiance","mode=2Wall of Omens");
+  setModeChoice(playerA,"1");
+  setModeChoice(playerA,"2");
+  setModeChoice(playerA,"3");
+  addTarget(playerA,playerB);
+  addTarget(playerA,playerB);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Spell Queller");
+  addTarget(playerB,"Collective Defiance");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerB,"Spell Queller",1);
+  assertHandCount(playerA,"Collective Defiance",0);
+  assertExileCount("Collective Defiance",1);
+  assertGraveyardCount(playerA,"Collective Defiance",0);
+  assertPermanentCount(playerB,"Wall of Omens",1);
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+}
