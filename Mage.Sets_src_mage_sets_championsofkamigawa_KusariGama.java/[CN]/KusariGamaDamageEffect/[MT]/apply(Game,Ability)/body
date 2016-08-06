@@ -1,21 +1,19 @@
 {
   Integer damage=(Integer)this.getValue("damageAmount");
-  if (damage != null && damage.intValue() > 0) {
+  if (damage != null && damage > 0) {
     UUID damagedCreatureId=(UUID)this.getValue("damagedCreatureId");
     Permanent creature=game.getPermanent(damagedCreatureId);
     if (creature == null) {
       creature=(Permanent)game.getLastKnownInformation(damagedCreatureId,Zone.BATTLEFIELD);
     }
     if (creature != null) {
-      for (      UUID blockerId : game.getCombat().getBlockers()) {
-        if (!blockerId.equals(damagedCreatureId)) {
-          Permanent blockingCreature=game.getPermanent(blockerId);
-          if (blockingCreature != null && blockingCreature.getControllerId().equals(creature.getControllerId())) {
-            blockingCreature.damage(damage,source.getSourceId(),game,false,true);
-          }
+      for (      Permanent permanent : game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),creature.getControllerId(),game)) {
+        if (!permanent.getId().equals(damagedCreatureId)) {
+          permanent.damage(damage,source.getSourceId(),game,false,true);
         }
       }
     }
+    return true;
   }
   return false;
 }
