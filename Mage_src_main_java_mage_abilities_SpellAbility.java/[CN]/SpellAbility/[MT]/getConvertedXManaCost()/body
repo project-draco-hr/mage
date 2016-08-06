@@ -1,5 +1,4 @@
 {
-  int cmc=0;
   int xMultiplier=0;
   for (  String symbolString : getManaCosts().getSymbols()) {
     int index=symbolString.indexOf("{X}");
@@ -9,11 +8,5 @@
       index=symbolString.indexOf("{X}");
     }
   }
-  if (getSpellAbilityType().equals(SpellAbilityType.BASE_ALTERNATE)) {
-    cmc+=getManaCostsToPay().getX() * xMultiplier;
-  }
- else {
-    cmc+=getManaCosts().convertedManaCost() + getManaCostsToPay().getX() * xMultiplier;
-  }
-  return cmc;
+  return getManaCostsToPay().getX() * xMultiplier;
 }
