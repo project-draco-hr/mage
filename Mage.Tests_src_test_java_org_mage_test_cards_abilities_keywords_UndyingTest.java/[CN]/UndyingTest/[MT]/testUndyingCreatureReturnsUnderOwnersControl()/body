@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerB,"Vorapede");
+  addCard(Zone.HAND,playerB,"Doom Blade");
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",2);
+  addCard(Zone.HAND,playerA,"Act of Treason");
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",3);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Act of Treason","Vorapede");
+  attack(1,playerA,"Vorapede");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerB,"Doom Blade","Vorapede");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,15);
+  assertGraveyardCount(playerA,"Act of Treason",1);
+  assertGraveyardCount(playerB,"Doom Blade",1);
+  assertPermanentCount(playerA,"Vorapede",1);
+  assertPermanentCount(playerB,"Vorapede",0);
+  assertCounterCount(playerA,"Vorapede",CounterType.P1P1,1);
+  assertPowerToughness(playerA,"Vorapede",6,5);
+}
