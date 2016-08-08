@@ -1,0 +1,21 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.HAND,playerA,"Snapcaster Mage",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",2);
+  addCard(Zone.GRAVEYARD,playerA,"Terminate");
+  addCard(Zone.BATTLEFIELD,playerA,"Berserkers' Onslaught",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Icefall Regent",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Snapcaster Mage");
+  setChoice(playerA,"Terminate");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Flashback");
+  addTarget(playerA,"Icefall Regent");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Snapcaster Mage",1);
+  assertGraveyardCount(playerB,"Icefall Regent",1);
+  assertExileCount("Terminate",1);
+  assertTappedCount("Mountain",true,2);
+  assertTappedCount("Island",true,2);
+  assertTappedCount("Swamp",true,2);
+}

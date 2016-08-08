@@ -1,0 +1,25 @@
+{
+  super.init(source,game);
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof SacrificeTargetCost) {
+      SacrificeTargetCost sacrificeCost=(SacrificeTargetCost)cost;
+      for (      Permanent permanent : sacrificeCost.getPermanents()) {
+        if (permanent.hasSubtype("Forest")) {
+          abilities.add(new ForestwalkAbility());
+        }
+        if (permanent.hasSubtype("Plains")) {
+          abilities.add(new PlainswalkAbility());
+        }
+        if (permanent.hasSubtype("Island")) {
+          abilities.add(new IslandwalkAbility());
+        }
+        if (permanent.hasSubtype("Mountain")) {
+          abilities.add(new MountainwalkAbility());
+        }
+        if (permanent.hasSubtype("Swamp")) {
+          abilities.add(new SwampwalkAbility());
+        }
+      }
+    }
+  }
+}

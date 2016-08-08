@@ -16,7 +16,9 @@ spellAbility=card.getSpellAbility().copy();
 }
 spellAbility.clear();
 spellAbility.getManaCostsToPay().clear();
-spellAbility.getManaCostsToPay().addAll(source.getManaCostsToPay());
+spellAbility.getManaCostsToPay().addAll(source.getManaCosts());
+spellAbility.getManaCosts().clear();
+spellAbility.getManaCosts().addAll(source.getManaCosts());
 for (Cost cost : source.getCosts()) {
 if (!(cost instanceof VariableCost)) {
 spellAbility.getCosts().add(cost);
@@ -25,7 +27,6 @@ spellAbility.getCosts().add(cost);
 if (!game.isSimulation()) {
 game.informPlayers(controller.getLogName() + " flashbacks " + card.getLogName());
 }
-spellAbility.setCostModificationActive(false);
 if (controller.cast(spellAbility,game,false)) {
 ContinuousEffect effect=new FlashbackReplacementEffect();
 effect.setTargetPointer(new FixedTarget(source.getSourceId(),game.getState().getZoneChangeCounter(source.getSourceId())));

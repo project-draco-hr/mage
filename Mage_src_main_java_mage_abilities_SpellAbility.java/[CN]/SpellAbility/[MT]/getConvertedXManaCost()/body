@@ -1,0 +1,12 @@
+{
+  int xMultiplier=0;
+  for (  String symbolString : getManaCosts().getSymbols()) {
+    int index=symbolString.indexOf("{X}");
+    while (index != -1) {
+      xMultiplier++;
+      symbolString=symbolString.substring(index + 3);
+      index=symbolString.indexOf("{X}");
+    }
+  }
+  return getManaCostsToPay().getX() * xMultiplier;
+}
