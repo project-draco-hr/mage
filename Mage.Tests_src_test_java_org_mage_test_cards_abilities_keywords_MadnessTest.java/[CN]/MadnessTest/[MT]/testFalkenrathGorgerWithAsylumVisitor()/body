@@ -1,0 +1,24 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Olivia, Mobilized for War",1);
+  addCard(Zone.HAND,playerA,"Falkenrath Gorger",1);
+  addCard(Zone.HAND,playerA,"Asylum Visitor");
+  addCard(Zone.HAND,playerA,"Forest");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Falkenrath Gorger");
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"Asylum Visitor");
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"Forest");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Falkenrath Gorger",1);
+  assertPermanentCount(playerA,"Asylum Visitor",1);
+  assertPowerToughness(playerA,"Falkenrath Gorger",3,2);
+  assertAbility(playerA,"Falkenrath Gorger",HasteAbility.getInstance(),true);
+  assertPowerToughness(playerA,"Asylum Visitor",4,2);
+  assertAbility(playerA,"Asylum Visitor",HasteAbility.getInstance(),true);
+  assertGraveyardCount(playerA,"Forest",1);
+}
