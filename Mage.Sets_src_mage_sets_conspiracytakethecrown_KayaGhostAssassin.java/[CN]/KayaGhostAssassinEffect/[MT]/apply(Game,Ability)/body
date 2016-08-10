@@ -1,0 +1,30 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (controller != null && sourcePermanent != null) {
+    if (getTargetPointer().getFirst(game,source) != null) {
+      Permanent targetCreature=game.getPermanent(getTargetPointer().getFirst(game,source));
+      if (targetCreature != null) {
+        int zcc=targetCreature.getZoneChangeCounter(game);
+        if (controller.moveCards(targetCreature,Zone.EXILED,source,game)) {
+          Effect effect=new ReturnToBattlefieldUnderOwnerControlTargetEffect();
+          effect.setTargetPointer(new FixedTarget(targetCreature.getId(),zcc + 1));
+          AtTheBeginOfYourNextUpkeepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfYourNextUpkeepDelayedTriggeredAbility(effect);
+          game.addDelayedTriggeredAbility(delayedAbility,source);
+        }
+      }
+    }
+ else {
+      int zcc=sourcePermanent.getZoneChangeCounter(game);
+      if (controller.moveCards(sourcePermanent,Zone.EXILED,source,game)) {
+        Effect effect=new ReturnToBattlefieldUnderOwnerControlTargetEffect();
+        effect.setTargetPointer(new FixedTarget(sourcePermanent.getId(),zcc + 1));
+        AtTheBeginOfYourNextUpkeepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfYourNextUpkeepDelayedTriggeredAbility(effect);
+        game.addDelayedTriggeredAbility(delayedAbility,source);
+      }
+    }
+    controller.loseLife(2,game);
+    return true;
+  }
+  return false;
+}
