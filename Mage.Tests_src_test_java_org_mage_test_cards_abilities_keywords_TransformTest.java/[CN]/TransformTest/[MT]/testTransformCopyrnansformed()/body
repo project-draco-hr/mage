@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Uninvited Geist");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.HAND,playerB,"Mirror Mockery");
+  attack(1,playerA,"Uninvited Geist");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Mirror Mockery","Unimpeded Trespasser");
+  attack(3,playerA,"Unimpeded Trespasser");
+  setStopAt(3,PhaseStep.COMBAT_DAMAGE);
+  execute();
+  assertLife(playerB,15);
+  assertPermanentCount(playerB,"Mirror Mockery",1);
+  assertPermanentCount(playerA,"Unimpeded Trespasser",1);
+  assertPermanentCount(playerB,"Unimpeded Trespasser",1);
+  assertPowerToughness(playerB,"Unimpeded Trespasser",3,3);
+}
