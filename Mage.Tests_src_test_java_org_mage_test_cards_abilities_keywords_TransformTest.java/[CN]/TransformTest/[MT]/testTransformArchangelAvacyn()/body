@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Archangel Avacyn");
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.HAND,playerA,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain");
+  addCard(Zone.BATTLEFIELD,playerB,"Eldrazi Displacer",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Wastes",3);
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerA,"Lightning Bolt","Silvercoat Lion");
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerB,"{2}{C}","Archangel Avacyn","Whenever a non-Angel creature you control dies");
+  setStopAt(3,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertGraveyardCount(playerA,"Lightning Bolt",1);
+  assertGraveyardCount(playerA,"Silvercoat Lion",1);
+  assertPermanentCount(playerB,"Eldrazi Displacer",1);
+  assertPermanentCount(playerA,"Avacyn, the Purifier",0);
+  assertPermanentCount(playerA,"Archangel Avacyn",1);
+}
