@@ -1,0 +1,23 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Soul Separator");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",5);
+  addCard(Zone.GRAVEYARD,playerA,"Tree of Perdition");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{5}");
+  addTarget(playerA,"Tree of Perdition");
+  activateAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Exchange");
+  addTarget(playerA,playerB);
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Soul Separator",1);
+  assertExileCount("Tree of Perdition",1);
+  assertPermanentCount(playerA,"Tree of Perdition",1);
+  assertPermanentCount(playerA,"Zombie",1);
+  assertPowerToughness(playerA,"Zombie",0,13);
+  Permanent treeToken=getPermanent("Tree of Perdition",playerA);
+  Assert.assertTrue(treeToken.getAbilities().contains(FlyingAbility.getInstance()));
+  Assert.assertTrue(treeToken.getSubtype().contains("Spirit"));
+  assertLife(playerA,20);
+  assertLife(playerB,1);
+  assertPowerToughness(playerA,"Tree of Perdition",1,20);
+  Assert.assertFalse(treeToken.getAbilities().contains(DefenderAbility.getInstance()));
+}
