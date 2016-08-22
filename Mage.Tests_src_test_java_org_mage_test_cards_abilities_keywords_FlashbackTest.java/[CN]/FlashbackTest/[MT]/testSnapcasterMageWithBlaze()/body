@@ -1,0 +1,16 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",5);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",1);
+  addCard(Zone.HAND,playerA,"Snapcaster Mage",1);
+  addCard(Zone.GRAVEYARD,playerA,"Blaze",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Snapcaster Mage");
+  setChoice(playerA,"B   laze");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Flashback");
+  setChoice(playerA,"X=1");
+  addTarget(playerA,"Snapcaster Mage");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPermanentCount(playerA,"Snapcaster Mage",0);
+  assertGraveyardCount(playerA,"Blaze",0);
+  assertExileCount("Blaze",1);
+}
