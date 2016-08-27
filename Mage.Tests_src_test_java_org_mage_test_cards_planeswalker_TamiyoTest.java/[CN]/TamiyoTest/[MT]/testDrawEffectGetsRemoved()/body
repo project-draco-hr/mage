@@ -1,0 +1,20 @@
+{
+  addCard(Zone.HAND,playerA,"Tamiyo, Field Researcher",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Sylvan Advocate",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Pillarfield Ox",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Tamiyo, Field Researcher");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"+1: Choose up to two","Sylvan Advocate");
+  attack(1,playerA,"Sylvan Advocate");
+  activateAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"+1: Choose up to two","Pillarfield Ox^Silvercoat Lion");
+  attack(3,playerA,"Pillarfield Ox");
+  attack(3,playerA,"Silvercoat Lion");
+  setStopAt(3,PhaseStep.END_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Tamiyo, Field Researcher",1);
+  assertLife(playerB,14);
+  assertHandCount(playerA,4);
+}

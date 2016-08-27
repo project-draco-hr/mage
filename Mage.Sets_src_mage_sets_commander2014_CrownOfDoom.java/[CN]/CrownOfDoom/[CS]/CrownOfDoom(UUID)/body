@@ -5,6 +5,7 @@
   effect.setText("it gets +2/+0 until end of turn");
   this.addAbility(new AttacksAllTriggeredAbility(effect,false,new FilterCreaturePermanent(),SetTargetPointer.PERMANENT,true));
   Ability ability=new ActivateIfConditionActivatedAbility(Zone.BATTLEFIELD,new CrownOfDoomEffect(),new ManaCostsImpl("{2}"),MyTurnCondition.getInstance());
-  ability.addTarget(new TargetPlayer(1,1,false,filter));
+  ability.addTarget(new TargetPlayer(1,1,false,new FilterPlayer("player other than Crown of Doom's owner")));
+  abilityId=ability.getOriginalId();
   this.addAbility(ability);
 }

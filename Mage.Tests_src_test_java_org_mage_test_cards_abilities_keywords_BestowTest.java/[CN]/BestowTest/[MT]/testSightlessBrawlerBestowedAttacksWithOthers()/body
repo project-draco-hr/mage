@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",5);
+  addCard(Zone.HAND,playerA,"Sightless Brawler");
+  addCard(Zone.BATTLEFIELD,playerA,"Elite Vanguard");
+  addCard(Zone.BATTLEFIELD,playerA,"Memnite");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Sightless Brawler using bestow","Elite Vanguard");
+  attack(1,playerA,"Elite Vanguard");
+  attack(1,playerA,"Memnite");
+  setStopAt(1,PhaseStep.END_COMBAT);
+  execute();
+  assertHandCount(playerA,"Sightless Brawler",0);
+  assertLife(playerB,14);
+  assertTapped("Elite Vanguard",true);
+  assertPowerToughness(playerA,"Elite Vanguard",5,3);
+}

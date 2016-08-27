@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",7);
+  addCard(Zone.HAND,playerA,"Bruna, the Fading Light");
+  addCard(Zone.HAND,playerA,"Gisela, the Broken Blade");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",2);
+  addCard(Zone.HAND,playerB,"Silvercoat Lion",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Bruna, the Fading Light");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Silvercoat Lion");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Gisela, the Broken Blade");
+  castSpell(4,PhaseStep.PRECOMBAT_MAIN,playerB,"Silvercoat Lion");
+  setStopAt(4,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Brisela, Voice of Nightmares",1);
+  assertPermanentCount(playerA,"Bruna, the Fading Light",0);
+  assertPermanentCount(playerA,"Gisela, the Broken Blade",0);
+  assertPermanentCount(playerB,"Silvercoat Lion",1);
+  assertHandCount(playerB,"Silvercoat Lion",1);
+}

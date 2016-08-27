@@ -1,0 +1,38 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player opponent=game.getPlayer(source.getFirstTarget());
+  if (controller != null && opponent != null) {
+    if (controller.getGraveyard().size() > 0) {
+      Cards cards=new CardsImpl();
+      UUID card1=null;
+      UUID card2=null;
+      for (      UUID cardId : controller.getGraveyard()) {
+        card2=card1;
+        card1=cardId;
+      }
+      if (card1 != null) {
+        cards.add(card1);
+      }
+      if (card2 != null) {
+        cards.add(card2);
+      }
+      TargetCard target=new TargetCard(Zone.GRAVEYARD,new FilterCard());
+      target.setRequired(true);
+      if (opponent.choose(Outcome.Exile,cards,target,game)) {
+        Card card=game.getCard(target.getFirstTarget());
+        cards.remove(target.getFirstTarget());
+        if (card != null) {
+          controller.moveCards(card,Zone.EXILED,source,game);
+        }
+        if (!cards.isEmpty()) {
+          card=game.getCard(cards.iterator().next());
+          if (card != null) {
+            controller.moveCards(card,Zone.HAND,source,game);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

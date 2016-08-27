@@ -1,0 +1,23 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Alesha, Who Smiles at Death",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",3);
+  addCard(Zone.HAND,playerA,"Liliana, Heretical Healer");
+  addCard(Zone.HAND,playerB,"Lightning Bolt");
+  addCard(Zone.BATTLEFIELD,playerB,"Mountain",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Liliana, Heretical Healer");
+  castSpell(1,PhaseStep.BEGIN_COMBAT,playerB,"Lightning Bolt");
+  addTarget(playerB,"Alesha, Who Smiles at Death");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"-X:");
+  setChoice(playerA,"X=3");
+  addTarget(playerA,"Alesha, Who Smiles at Death");
+  setChoice(playerA,"Alesha, Who Smiles at Death");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertPermanentCount(playerA,"Liliana, Heretical Healer",0);
+  assertPermanentCount(playerA,"Zombie",1);
+  assertPermanentCount(playerA,"Alesha, Who Smiles at Death",0);
+  assertGraveyardCount(playerA,"Alesha, Who Smiles at Death",1);
+  assertCounterCount("Liliana, Defiant Necromancer",CounterType.LOYALTY,3);
+  assertPermanentCount(playerA,"Liliana, Defiant Necromancer",1);
+}

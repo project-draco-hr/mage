@@ -1,4 +1,5 @@
 {
+  boolean returnCode=true;
   GameEvent countersEvent=GameEvent.getEvent(GameEvent.EventType.ADD_COUNTERS,objectId,ownerId,counter.getName(),counter.getCount());
   countersEvent.setAppliedEffects(appliedEffects);
   if (!game.replaceEvent(countersEvent)) {
@@ -12,6 +13,13 @@
         game.getState().getCardState(this.objectId).getCounters().addCounter(eventCounter);
         game.fireEvent(GameEvent.getEvent(GameEvent.EventType.COUNTER_ADDED,objectId,ownerId,counter.getName(),1));
       }
+ else {
+        returnCode=false;
+      }
     }
   }
+ else {
+    returnCode=false;
+  }
+  return returnCode;
 }

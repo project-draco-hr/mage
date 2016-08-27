@@ -1,10 +1,12 @@
 {
   if (abilityToModify instanceof SpellAbility || abilityToModify instanceof FlashbackAbility) {
     if (abilityToModify.getControllerId().equals(source.getControllerId())) {
-      for (      Target target : abilityToModify.getTargets()) {
-        for (        UUID targetUUID : target.getTargets()) {
-          if (targetUUID.equals(source.getSourceId())) {
-            return true;
+      for (      Mode mode : abilityToModify.getModes().getSelectedModes()) {
+        for (        Target target : mode.getTargets()) {
+          for (          UUID targetUUID : target.getTargets()) {
+            if (targetUUID.equals(source.getSourceId())) {
+              return true;
+            }
           }
         }
       }

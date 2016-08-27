@@ -1,13 +1,15 @@
 {
   if (this.isMelded()) {
-    super.addCounters(counter,game,appliedEffects);
+    return super.addCounters(counter,game,appliedEffects);
   }
  else {
+    boolean returnState=true;
     if (topLastZoneChangeCounter == topHalfCard.getZoneChangeCounter(game)) {
-      topHalfCard.addCounters(counter,game,appliedEffects);
+      returnState|=topHalfCard.addCounters(counter,game,appliedEffects);
     }
     if (bottomLastZoneChangeCounter == bottomHalfCard.getZoneChangeCounter(game)) {
-      bottomHalfCard.addCounters(counter,game,appliedEffects);
+      returnState|=bottomHalfCard.addCounters(counter,game,appliedEffects);
     }
+    return returnState;
   }
 }

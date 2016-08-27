@@ -1,0 +1,161 @@
+{
+  super(card.getId(),card.getExpansionSetCode(),card.getCardNumber(),card.getUsesVariousArt(),card.getTokenSetCode(),game != null);
+  boolean showFaceUp=true;
+  if (game != null) {
+    Zone cardZone=game.getState().getZone(card.getId());
+    if (card.isFaceDown(game)) {
+      showFaceUp=false;
+      if (!Zone.BATTLEFIELD.equals(cardZone)) {
+        if (showFaceDownCard) {
+          showFaceUp=true;
+        }
+      }
+    }
+    if (storeZone) {
+      this.zone=cardZone;
+    }
+  }
+  if (!showFaceUp) {
+    this.fillEmpty(card,controlled);
+    if (card instanceof Spell) {
+      if (controlled) {
+        this.name=card.getName();
+        this.displayName=card.getName();
+        this.alternateName=card.getName();
+      }
+      this.power="2";
+      this.toughness="2";
+      this.rules.add("You may cast this card as a 2/2 face-down creature, with no text," + " no name, no subtypes, and no mana cost by paying {3} rather than paying its mana cost.");
+      return;
+    }
+ else     if (card instanceof Permanent) {
+      this.power=Integer.toString(card.getPower().getValue());
+      this.toughness=Integer.toString(card.getToughness().getValue());
+      this.cardTypes=card.getCardType();
+      this.faceDown=((Permanent)card).isFaceDown(game);
+    }
+ else {
+      return;
+    }
+  }
+  SplitCard splitCard=null;
+  if (card.isSplitCard()) {
+    splitCard=(SplitCard)card;
+    rotate=true;
+  }
+ else   if (card instanceof Spell) {
+switch (((Spell)card).getSpellAbility().getSpellAbilityType()) {
+case SPLIT_FUSED:
+      splitCard=(SplitCard)((Spell)card).getCard();
+    rotate=true;
+  break;
+case SPLIT_LEFT:
+case SPLIT_RIGHT:
+rotate=true;
+break;
+}
+}
+if (splitCard != null) {
+this.isSplitCard=true;
+leftSplitName=splitCard.getLeftHalfCard().getName();
+leftSplitCosts=splitCard.getLeftHalfCard().getManaCost();
+leftSplitRules=splitCard.getLeftHalfCard().getRules(game);
+rightSplitName=splitCard.getRightHalfCard().getName();
+rightSplitCosts=splitCard.getRightHalfCard().getManaCost();
+rightSplitRules=splitCard.getRightHalfCard().getRules(game);
+}
+this.name=card.getImageName();
+this.displayName=card.getName();
+if (game == null) {
+this.rules=card.getRules();
+}
+ else {
+this.rules=card.getRules(game);
+}
+this.manaCost=card.getManaCost().getSymbols();
+this.convertedManaCost=card.getManaCost().convertedManaCost();
+if (card instanceof Permanent) {
+this.mageObjectType=MageObjectType.PERMANENT;
+Permanent permanent=(Permanent)card;
+this.loyalty=Integer.toString(permanent.getCounters().getCount(CounterType.LOYALTY));
+this.pairedCard=permanent.getPairedCard() != null ? permanent.getPairedCard().getSourceId() : null;
+if (!permanent.getControllerId().equals(permanent.getOwnerId())) {
+controlledByOwner=false;
+}
+if (game != null && permanent.getCounters() != null && !permanent.getCounters().isEmpty()) {
+counters=new ArrayList<>();
+for (Counter counter : permanent.getCounters().values()) {
+counters.add(new CounterView(counter));
+}
+}
+}
+ else {
+if (card.isCopy()) {
+this.mageObjectType=MageObjectType.COPY_CARD;
+}
+ else {
+this.mageObjectType=MageObjectType.CARD;
+}
+this.loyalty="";
+if (game != null && card.getCounters(game) != null && !card.getCounters(game).isEmpty()) {
+counters=new ArrayList<>();
+for (Counter counter : card.getCounters(game).values()) {
+counters.add(new CounterView(counter));
+}
+}
+}
+this.power=Integer.toString(card.getPower().getValue());
+this.toughness=Integer.toString(card.getToughness().getValue());
+this.cardTypes=card.getCardType();
+this.subTypes=card.getSubtype();
+this.superTypes=card.getSupertype();
+this.color=card.getColor(game);
+this.canTransform=card.canTransform();
+this.flipCard=card.isFlipCard();
+this.faceDown=!showFaceUp;
+if (card instanceof PermanentToken) {
+this.isToken=true;
+this.mageObjectType=MageObjectType.TOKEN;
+this.rarity=Rarity.COMMON;
+boolean originalCardNumberIsNull=((PermanentToken)card).getToken().getOriginalCardNumber() == null;
+if (!originalCardNumberIsNull && !"0".equals(((PermanentToken)card).getToken().getOriginalCardNumber())) {
+this.expansionSetCode=((PermanentToken)card).getToken().getOriginalExpansionSetCode();
+this.cardNumber=((PermanentToken)card).getToken().getOriginalCardNumber();
+}
+ else {
+this.expansionSetCode=((PermanentToken)card).getExpansionSetCode();
+}
+this.rules=((PermanentToken)card).getRules(game);
+this.type=((PermanentToken)card).getToken().getTokenType();
+}
+ else {
+this.rarity=card.getRarity();
+this.isToken=false;
+}
+if (card.getSecondCardFace() != null) {
+this.secondCardFace=new CardView(card.getSecondCardFace());
+this.alternateName=secondCardFace.getName();
+this.originalName=card.getName();
+}
+this.flipCard=card.isFlipCard();
+if (card.isFlipCard() && card.getFlipCardName() != null) {
+this.alternateName=card.getFlipCardName();
+this.originalName=card.getName();
+}
+if (card instanceof Spell) {
+this.mageObjectType=MageObjectType.SPELL;
+Spell spell=(Spell)card;
+for (SpellAbility spellAbility : spell.getSpellAbilities()) {
+for (Mode mode : spellAbility.getModes().getSelectedModes()) {
+if (mode.getTargets().size() > 0) {
+setTargets(spellAbility.getTargets());
+}
+}
+}
+if (spell.getSpellAbility().isModal()) {
+for (Mode mode : spell.getSpellAbility().getModes().getSelectedModes()) {
+this.rules.add("<span color='green'><i>Chosen mode: " + mode.getEffects().getText(mode) + "</i></span>");
+}
+}
+}
+}

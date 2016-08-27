@@ -8,16 +8,15 @@
   addCard(Zone.HAND,playerB,"Shock");
   addCard(Zone.BATTLEFIELD,playerB,"Mountain",2);
   castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Elite Vanguard");
-  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Shock");
-  addTarget(playerB,"Elite Vanguard");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Shock","Elite Vanguard");
   setStopAt(3,PhaseStep.DRAW);
   execute();
+  assertGraveyardCount(playerB,"Shock",1);
   assertPermanentCount(playerA,"Avacyn, the Purifier",1);
   assertPermanentCount(playerA,"Wall of Omens",1);
   assertGraveyardCount(playerA,"Elite Vanguard",1);
   assertPermanentCount(playerB,"Wall of Roots",1);
-  assertGraveyardCount(playerB,"Hill Giant",1);
-  assertGraveyardCount(playerB,"Shock",1);
   Permanent avacyn=getPermanent("Avacyn, the Purifier",playerA);
   Assert.assertEquals("Damage to Avacyn, the Purifier should be 0 not 3",0,avacyn.getDamage());
+  assertGraveyardCount(playerB,"Hill Giant",1);
 }

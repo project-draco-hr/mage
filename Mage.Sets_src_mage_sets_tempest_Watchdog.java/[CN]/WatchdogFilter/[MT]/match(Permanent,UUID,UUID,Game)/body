@@ -1,0 +1,16 @@
+{
+  if (!super.match(permanent,sourceId,playerId,game)) {
+    return false;
+  }
+  for (  CombatGroup group : game.getCombat().getGroups()) {
+    for (    UUID attacker : group.getAttackers()) {
+      if (attacker.equals(permanent.getId())) {
+        UUID defenderId=group.getDefenderId();
+        if (defenderId.equals(playerId)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

@@ -1,6 +1,8 @@
 {
   int numberOfActions=actions.size();
-  for (  PlayerAction action : actions) {
+  List<PlayerAction> tempActions=new ArrayList<>();
+  tempActions.addAll(actions);
+  for (  PlayerAction action : tempActions) {
     if (action.getTurnNum() == game.getTurnNum() && action.getStep() == game.getStep().getType()) {
       if (action.getAction().startsWith("activate:")) {
         String command=action.getAction();
@@ -86,6 +88,22 @@
             Counter counter=new Counter(groups[1],Integer.parseInt(groups[2]));
             permanent.addCounters(counter,game);
             break;
+          }
+        }
+      }
+ else       if (action.getAction().startsWith("playerAction:")) {
+        String command=action.getAction();
+        command=command.substring(command.indexOf("playerAction:") + 13);
+        groupsForTargetHandling=null;
+        String[] groups=command.split("\\$");
+        if (groups.length > 0) {
+          if (groups[0].equals("Rollback")) {
+            if (groups.length > 1 && groups[1].startsWith("turns=")) {
+              int turns=Integer.parseInt(groups[1].substring(6));
+              game.rollbackTurns(turns);
+              actions.remove(action);
+              return true;
+            }
           }
         }
       }

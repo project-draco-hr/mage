@@ -1,0 +1,28 @@
+{
+  addCard(Zone.HAND,playerB,"Spell Queller");
+  addCard(Zone.HAND,playerB,"Wasteland Strangler");
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",1);
+  addCard(Zone.HAND,playerA,"Centaur Courser");
+  addCard(Zone.HAND,playerA,"Wrath of God");
+  addCard(Zone.BATTLEFIELD,playerA,"Forest",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.BATTLEFIELD,playerA,"Sylvan Advocate");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Centaur Courser");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerB,"Spell Queller");
+  addTarget(playerB,"Centaur Courser");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Wasteland Strangler");
+  setChoice(playerB,"Yes");
+  setChoice(playerB,"Centaur Courser");
+  addTarget(playerB,"Sylvan Advocate");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Wrath of God");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Wrath of God",1);
+  assertGraveyardCount(playerA,"Centaur Courser",1);
+  assertGraveyardCount(playerA,"Sylvan Advocate",1);
+  assertGraveyardCount(playerB,"Spell Queller",1);
+  assertGraveyardCount(playerB,"Wasteland Strangler",1);
+  assertExileCount(playerA,0);
+}
