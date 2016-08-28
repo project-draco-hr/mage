@@ -5,40 +5,40 @@
     for (    UUID cardId : controller.getGraveyard()) {
       Card card=game.getCard(cardId);
       if (card.getCardType().contains(CardType.CREATURE)) {
-        setCreatureSubtype(card,choice);
+        setCreatureSubtype(card,choice,game);
       }
     }
     for (    UUID cardId : controller.getHand()) {
       Card card=game.getCard(cardId);
       if (card.getCardType().contains(CardType.CREATURE)) {
-        setCreatureSubtype(card,choice);
+        setCreatureSubtype(card,choice,game);
       }
     }
     for (    Card card : game.getState().getExile().getAllCards(game)) {
       if (card.getOwnerId().equals(controller.getId()) && card.getCardType().contains(CardType.CREATURE)) {
-        setCreatureSubtype(card,choice);
+        setCreatureSubtype(card,choice,game);
       }
     }
     for (    Card card : controller.getLibrary().getCards(game)) {
       if (card.getOwnerId().equals(controller.getId()) && card.getCardType().contains(CardType.CREATURE)) {
-        setCreatureSubtype(card,choice);
+        setCreatureSubtype(card,choice,game);
       }
     }
     if (controller.getCommanderId() != null && game.getState().getZone(controller.getCommanderId()).equals(Zone.COMMAND)) {
       Card card=game.getCard(controller.getCommanderId());
       if (card.getCardType().contains(CardType.CREATURE)) {
-        setCreatureSubtype(card,choice);
+        setCreatureSubtype(card,choice,game);
       }
     }
     for (Iterator<StackObject> iterator=game.getStack().iterator(); iterator.hasNext(); ) {
       StackObject stackObject=iterator.next();
       if (stackObject.getControllerId().equals(source.getControllerId()) && stackObject.getCardType().contains(CardType.CREATURE)) {
-        setCreatureSubtype(stackObject,choice);
+        setCreatureSubtype(stackObject,choice,game);
       }
     }
     List<Permanent> creatures=game.getBattlefield().getAllActivePermanents(new FilterControlledCreaturePermanent(),source.getControllerId(),game);
     for (    Permanent creature : creatures) {
-      setCreatureSubtype(creature,choice);
+      setCreatureSubtype(creature,choice,game);
     }
     return true;
   }

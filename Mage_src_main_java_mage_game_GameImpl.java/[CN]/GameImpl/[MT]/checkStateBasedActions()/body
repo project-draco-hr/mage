@@ -206,7 +206,7 @@ somethingHappened=true;
 if (perm.getAttachments().size() > 0) {
 for (UUID attachmentId : perm.getAttachments()) {
 Permanent attachment=getPermanent(attachmentId);
-if (attachment != null && (attachment.getCardType().contains(CardType.CREATURE) || !(attachment.getSubtype().contains("Aura") || attachment.getSubtype().contains("Equipment") || attachment.getSubtype().contains("Fortification")))) {
+if (attachment != null && (attachment.getCardType().contains(CardType.CREATURE) || !(attachment.getSubtype(this).contains("Aura") || attachment.getSubtype(this).contains("Equipment") || attachment.getSubtype(this).contains("Fortification")))) {
 if (perm.removeAttachment(attachment.getId(),this)) {
 somethingHappened=true;
 break;
@@ -224,7 +224,7 @@ perm.getCounters().removeCounter(CounterType.M1M1,min);
 }
 if (planeswalkers.size() > 1) {
 for (Permanent planeswalker : planeswalkers) {
-for (String planeswalkertype : planeswalker.getSubtype()) {
+for (String planeswalkertype : planeswalker.getSubtype(this)) {
 FilterPlaneswalkerPermanent filterPlaneswalker=new FilterPlaneswalkerPermanent();
 filterPlaneswalker.add(new SubtypePredicate(planeswalkertype));
 filterPlaneswalker.add(new ControllerIdPredicate(planeswalker.getControllerId()));
