@@ -2,10 +2,10 @@
   super(ownerId,108,"Homicidal Seclusion",Rarity.UNCOMMON,new CardType[]{CardType.ENCHANTMENT},"{4}{B}");
   this.expansionSetCode="AVR";
   ContinuousEffect boostEffect=new BoostControlledEffect(3,1,Duration.WhileOnBattlefield);
-  Effect effect=new ConditionalContinuousEffect(boostEffect,new OneControlledCreatureCondition(),rule);
+  Effect effect=new ConditionalContinuousEffect(boostEffect,new CreatureCountCondition(1,TargetController.YOU),rule);
   Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,effect);
   ContinuousEffect lifelinkEffect=new GainAbilityControlledEffect(LifelinkAbility.getInstance(),Duration.WhileOnBattlefield);
-  effect=new ConditionalContinuousEffect(lifelinkEffect,new OneControlledCreatureCondition(),"and has lifelink");
+  effect=new ConditionalContinuousEffect(lifelinkEffect,new CreatureCountCondition(1,TargetController.YOU),"and has lifelink");
   ability.addEffect(effect);
   this.addAbility(ability);
 }
