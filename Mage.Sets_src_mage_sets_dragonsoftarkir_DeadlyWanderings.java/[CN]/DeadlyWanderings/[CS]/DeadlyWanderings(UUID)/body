@@ -2,13 +2,13 @@
   super(ownerId,94,"Deadly Wanderings",Rarity.UNCOMMON,new CardType[]{CardType.ENCHANTMENT},"{3}{B}{B}");
   this.expansionSetCode="DTK";
   ContinuousEffect boostEffect=new BoostControlledEffect(2,0,Duration.WhileOnBattlefield);
-  Effect effect=new ConditionalContinuousEffect(boostEffect,new OneControlledCreatureCondition(),"As long as you control exactly one creature, that creature gets +2/+0");
+  Effect effect=new ConditionalContinuousEffect(boostEffect,new CreatureCountCondition(1,TargetController.YOU),"As long as you control exactly one creature, that creature gets +2/+0");
   Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,effect);
   ContinuousEffect deathtouchEffect=new GainAbilityControlledEffect(DeathtouchAbility.getInstance(),Duration.WhileOnBattlefield,new FilterCreaturePermanent());
-  effect=new ConditionalContinuousEffect(deathtouchEffect,new OneControlledCreatureCondition(),"and has deathtouch");
+  effect=new ConditionalContinuousEffect(deathtouchEffect,new CreatureCountCondition(1,TargetController.YOU),"and has deathtouch");
   ability.addEffect(effect);
   ContinuousEffect lifelinkEffect=new GainAbilityControlledEffect(LifelinkAbility.getInstance(),Duration.WhileOnBattlefield,new FilterCreaturePermanent());
-  effect=new ConditionalContinuousEffect(lifelinkEffect,new OneControlledCreatureCondition(),"and lifelink");
+  effect=new ConditionalContinuousEffect(lifelinkEffect,new CreatureCountCondition(1,TargetController.YOU),"and lifelink");
   ability.addEffect(effect);
   this.addAbility(ability);
 }

@@ -1,0 +1,17 @@
+{
+switch (targetController) {
+case YOU:
+    return game.getBattlefield().countAll(filter,source.getControllerId(),game) == creatureCount;
+case OPPONENT:
+  for (  UUID opponent : game.getOpponents(source.getControllerId())) {
+    if (game.getBattlefield().countAll(filter,opponent,game) != creatureCount) {
+      return false;
+    }
+  }
+return true;
+case ANY:
+return game.getBattlefield().count(filter,source.getSourceId(),source.getControllerId(),game) == creatureCount;
+default :
+throw new UnsupportedOperationException("Value for targetController not supported: " + targetController.toString());
+}
+}
