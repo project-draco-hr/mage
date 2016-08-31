@@ -1,0 +1,28 @@
+{
+  ObjectColor frameColors=getFrameObjectColor();
+  Color boxColor=getBoxColor(frameColors,cardView.getCardTypes(),isTransformed);
+  Paint textboxPaint=getTextboxPaint(frameColors,cardView.getCardTypes(),cardWidth);
+  Paint borderPaint=getBorderPaint(frameColors,cardView.getCardTypes(),cardWidth);
+  g.setPaint(borderPaint);
+  g.drawRect(totalContentInset,totalContentInset,contentWidth - 1,cardHeight - borderWidth * 3 - totalContentInset - 1);
+  g.setPaint(textboxPaint);
+  g.fillRect(totalContentInset + 1,typeLineY,contentWidth - 2,cardHeight - borderWidth * 3 - typeLineY - 1);
+  if (cardView.getCardTypes().contains(CardType.PLANESWALKER)) {
+    g.setPaint(borderPaint);
+    g.fillRect(totalContentInset,typeLineY + boxHeight,cardWidth / 16,cardHeight - typeLineY - boxHeight- borderWidth * 3);
+  }
+  g.setColor(new Color(0,0,0,100));
+  g.fillRect(totalContentInset - 1,totalContentInset,1,cardHeight - borderWidth * 3 - totalContentInset - 1);
+  g.drawRect(totalContentInset + 1,totalContentInset + boxHeight,contentWidth - 3,typeLineY - totalContentInset - boxHeight- 1);
+  CardRendererUtils.drawRoundedBox(g,borderWidth,totalContentInset,cardWidth - 2 * borderWidth,boxHeight,contentInset,borderPaint,boxColor);
+  CardRendererUtils.drawRoundedBox(g,borderWidth,typeLineY,cardWidth - 2 * borderWidth,boxHeight,contentInset,borderPaint,boxColor);
+  g.setColor(new Color(0,0,0,150));
+  g.fillRect(totalContentInset - 1,totalContentInset - 1,contentWidth + 1,1);
+  g.fillRect(totalContentInset + 1,typeLineY + boxHeight,contentWidth - 2,1);
+  g.fillRect(cardWidth - totalContentInset - 1,typeLineY + boxHeight,1,cardHeight - borderWidth * 3 - typeLineY - boxHeight);
+  int nameOffset=drawTransformationCircle(g,borderPaint);
+  drawNameLine(g,totalContentInset + nameOffset,totalContentInset,contentWidth - nameOffset,boxHeight);
+  drawTypeLine(g,totalContentInset,typeLineY,contentWidth,boxHeight);
+  drawRulesText(g,totalContentInset + 2,typeLineY + boxHeight + 2,contentWidth - 4,cardHeight - typeLineY - boxHeight- 4- borderWidth * 3);
+  drawBottomRight(g,borderPaint,boxColor);
+}

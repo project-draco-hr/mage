@@ -7,18 +7,17 @@
     this.hasSickness=((PermanentView)this.gameCard).hasSummoningSickness();
   }
   this.setCardBounds(0,0,dimension.width,dimension.height);
+  buttonPanel=new JPanel();
+  buttonPanel.setLayout(null);
+  buttonPanel.setOpaque(false);
+  buttonPanel.setVisible(true);
+  add(buttonPanel);
   if (this.gameCard.canTransform()) {
-    buttonPanel=new JPanel();
-    buttonPanel.setLayout(null);
-    buttonPanel.setOpaque(false);
-    add(buttonPanel);
     dayNightButton=new JButton("");
-    dayNightButton.setLocation(2,2);
-    dayNightButton.setSize(25,25);
-    buttonPanel.setVisible(true);
+    dayNightButton.setSize(32,32);
+    dayNightButton.setToolTipText("This permanent is a double faced card. To see the back face card, push this button or turn mouse wheel down while hovering with the mouse pointer over the permanent.");
     BufferedImage day=ImageManagerImpl.getInstance().getDayImage();
     dayNightButton.setIcon(new ImageIcon(day));
-    buttonPanel.add(dayNightButton);
     dayNightButton.addActionListener(new ActionListener(){
       @Override public void actionPerformed(      ActionEvent e){
         if (animationInProgress || isTapped() || isPermanent) {
@@ -28,48 +27,14 @@
       }
     }
 );
-  }
-  if (!newGameCard.isAbility()) {
-    counterPanel=new JPanel();
-    counterPanel.setLayout(null);
-    counterPanel.setOpaque(false);
-    add(counterPanel);
-    plusCounterLabel=new JLabel("");
-    plusCounterLabel.setToolTipText("+1/+1");
-    counterPanel.add(plusCounterLabel);
-    minusCounterLabel=new JLabel("");
-    minusCounterLabel.setToolTipText("-1/-1");
-    counterPanel.add(minusCounterLabel);
-    loyaltyCounterLabel=new JLabel("");
-    loyaltyCounterLabel.setToolTipText("loyalty");
-    counterPanel.add(loyaltyCounterLabel);
-    otherCounterLabel=new JLabel("");
-    counterPanel.add(otherCounterLabel);
-    counterPanel.setVisible(false);
-  }
-  if (newGameCard.isAbility()) {
-    if (AbilityType.TRIGGERED.equals(newGameCard.getAbilityType())) {
-      setTypeIcon(ImageManagerImpl.getInstance().getTriggeredAbilityImage(),"Triggered Ability");
-    }
- else     if (AbilityType.ACTIVATED.equals(newGameCard.getAbilityType())) {
-      setTypeIcon(ImageManagerImpl.getInstance().getActivatedAbilityImage(),"Activated Ability");
-    }
-  }
-  if (this.gameCard.isToken()) {
-    setTypeIcon(ImageManagerImpl.getInstance().getTokenIconImage(),"Token Permanent");
+    buttonPanel.add(dayNightButton);
   }
   if (this.gameCard instanceof PermanentView) {
-    copyIconPanel=new JPanel();
-    copyIconPanel.setLayout(null);
-    copyIconPanel.setOpaque(false);
-    add(copyIconPanel);
     showCopySourceButton=new JButton("");
-    showCopySourceButton.setLocation(2,2);
-    showCopySourceButton.setSize(25,25);
-    showCopySourceButton.setToolTipText("This permanent is copying a target. To see original image, push this button or turn mouse wheel down while hovering with the mouse pointer over the permanent.");
-    copyIconPanel.setVisible(((PermanentView)this.gameCard).isCopy());
+    showCopySourceButton.setSize(32,32);
+    showCopySourceButton.setToolTipText("This permanent is copying a target. To see original card, push this button or turn mouse wheel down while hovering with the mouse pointer over the permanent.");
+    showCopySourceButton.setVisible(((PermanentView)this.gameCard).isCopy());
     showCopySourceButton.setIcon(new ImageIcon(ImageManagerImpl.getInstance().getCopyInformIconImage()));
-    copyIconPanel.add(showCopySourceButton);
     showCopySourceButton.addActionListener(new ActionListener(){
       @Override public void actionPerformed(      ActionEvent e){
         ActionCallback callback=Plugins.getInstance().getActionCallback();
@@ -77,6 +42,7 @@
       }
     }
 );
+    buttonPanel.add(showCopySourceButton);
   }
   setBackground(Color.black);
   setOpaque(false);
@@ -84,41 +50,9 @@
   addMouseMotionListener(this);
   addMouseWheelListener(this);
   addComponentListener(this);
-  displayTitleAnyway=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_SHOW_CARD_NAMES,"true").equals("true");
-  titleText=new GlowText();
-  setText(gameCard);
-  titleText.setForeground(Color.white);
-  titleText.setGlow(Color.black,TEXT_GLOW_SIZE,TEXT_GLOW_INTENSITY);
-  titleText.setWrap(true);
-  add(titleText);
-  ptText=new GlowText();
-  if (CardUtil.isCreature(gameCard)) {
-    ptText.setText(gameCard.getPower() + "/" + gameCard.getToughness());
-  }
- else   if (CardUtil.isPlaneswalker(gameCard)) {
-    ptText.setText(gameCard.getLoyalty());
-  }
-  ptText.setForeground(Color.white);
-  ptText.setGlow(Color.black,TEXT_GLOW_SIZE,TEXT_GLOW_INTENSITY);
-  add(ptText);
-  BufferedImage sickness=ImageManagerImpl.getInstance().getSicknessImage();
-  overlayPanel=new ImagePanel(sickness,ImagePanel.SCALED);
-  overlayPanel.setOpaque(false);
-  add(overlayPanel);
-  imagePanel=new ScaledImagePanel();
-  imagePanel.setBorder(BorderFactory.createLineBorder(Color.white));
-  add(imagePanel);
   String cardType=getType(newGameCard);
+  tooltipText=new TextPopup();
   tooltipText.setText(getText(cardType,newGameCard));
   tappedAngle=isTapped() ? CardPanel.TAPPED_ANGLE : 0;
   flippedAngle=isFlipped() ? CardPanel.FLIPPED_ANGLE : 0;
-  if (!loadImage) {
-    return;
-  }
-  if (gameCard.isTransformed()) {
-    toggleTransformed();
-  }
- else {
-    updateImage();
-  }
 }

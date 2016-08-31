@@ -1,0 +1,11 @@
+{
+  int manaCostWidth=CardRendererUtils.getManaCostWidth(manaCostString,boxTextHeight);
+  int availableWidth=w - manaCostWidth + 2;
+  AttributedString str=new AttributedString(cardView.getName());
+  str.addAttribute(TextAttribute.FONT,boxTextFont);
+  TextMeasurer measure=new TextMeasurer(str.getIterator(),g.getFontRenderContext());
+  TextLayout layout=measure.getLayout(0,measure.getLineBreakIndex(0,availableWidth));
+  g.setColor(getBoxTextColor());
+  layout.draw(g,x,y + boxTextOffset + boxTextHeight - 1);
+  ManaSymbols.draw(g,manaCostString,x + w - manaCostWidth,y + boxTextOffset,boxTextHeight);
+}
