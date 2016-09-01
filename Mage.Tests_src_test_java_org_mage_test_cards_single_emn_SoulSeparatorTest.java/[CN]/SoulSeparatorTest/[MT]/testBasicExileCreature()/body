@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Soul Separator");
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",5);
+  addCard(Zone.GRAVEYARD,playerA,"Sylvan Advocate");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{5}");
+  addTarget(playerA,"Sylvan Advocate");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Soul Separator",1);
+  assertExileCount("Sylvan Advocate",1);
+  assertPermanentCount(playerA,"Sylvan Advocate",1);
+  assertPermanentCount(playerA,"Zombie",1);
+  assertPowerToughness(playerA,"Zombie",2,3);
+  Permanent saToken=getPermanent("Sylvan Advocate",playerA);
+  Assert.assertTrue(saToken.getAbilities().contains(FlyingAbility.getInstance()));
+  Assert.assertTrue(saToken.getSubtype().contains("Spirit"));
+  Assert.assertTrue(saToken.getAbilities().contains(VigilanceAbility.getInstance()));
+  assertPowerToughness(playerA,"Sylvan Advocate",1,1);
+}
