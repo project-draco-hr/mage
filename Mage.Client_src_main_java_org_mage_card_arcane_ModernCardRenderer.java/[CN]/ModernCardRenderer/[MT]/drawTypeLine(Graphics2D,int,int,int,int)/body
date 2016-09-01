@@ -1,10 +1,15 @@
 {
   int expansionSymbolWidth;
-  if (cardView.isAbility()) {
-    expansionSymbolWidth=0;
+  if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_RENDERING_SET_SYMBOL,"false").equals("false")) {
+    if (cardView.isAbility()) {
+      expansionSymbolWidth=0;
+    }
+ else {
+      expansionSymbolWidth=drawExpansionSymbol(g,x,y,w,h);
+    }
   }
  else {
-    expansionSymbolWidth=drawExpansionSymbol(g,x,y,w,h);
+    expansionSymbolWidth=0;
   }
   int availableWidth=w - expansionSymbolWidth + 1;
   String types=getCardTypeLine();

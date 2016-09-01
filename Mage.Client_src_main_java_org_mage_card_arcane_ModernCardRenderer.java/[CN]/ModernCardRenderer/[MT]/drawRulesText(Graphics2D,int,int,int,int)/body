@@ -36,19 +36,26 @@
       AttributedString attributed=rule.generateAttributedString(font,fontItalic);
       attributedRules.add(attributed);
     }
+    remaining=h;
+    if (hasKeywords) {
+      remaining-=drawSingleRule(g,keywordRulesAttributed,null,0,0,w,remaining,false);
+    }
+    for (    TextboxRule rule : textboxRules) {
+      AttributedString attributed=rule.generateAttributedString(font,fontItalic);
+      attributedRules.add(attributed);
+      remaining-=drawSingleRule(g,attributed,rule,0,0,w,remaining,false);
+      if (remaining < 0) {
+        useSmallFont=true;
+        break;
+      }
+    }
   }
-  int spacing;
-  if (useSmallFont) {
-    spacing=0;
-  }
- else {
-    spacing=(int)(remaining / (hasKeywords ? (textboxRules.size() + 2) : (textboxRules.size() + 1)));
-  }
+  int spacing=(int)(remaining / (hasKeywords ? (textboxRules.size() + 2) : (textboxRules.size() + 1)));
   loyaltyAbilityColorToggle=false;
   g.setColor(Color.black);
   int curY=y + spacing;
   if (hasKeywords) {
-    int adv=drawSingleRule(g,keywordRulesAttributed,null,x,y,w,h,true);
+    int adv=drawSingleRule(g,keywordRulesAttributed,null,x,curY,w,h,true);
     curY+=adv + spacing;
     h-=adv;
   }
