@@ -1,11 +1,31 @@
 {
-  int manaCostWidth=CardRendererUtils.getManaCostWidth(manaCostString,boxTextHeight);
+  int manaCostWidth;
+  if (cardView.isAbility()) {
+    manaCostWidth=0;
+  }
+ else {
+    manaCostWidth=CardRendererUtils.getManaCostWidth(manaCostString,boxTextHeight);
+  }
   int availableWidth=w - manaCostWidth + 2;
-  AttributedString str=new AttributedString(cardView.getName());
+  String nameStr;
+  if (cardView.isFaceDown()) {
+    if (cardView instanceof PermanentView && ((PermanentView)cardView).isManifested()) {
+      nameStr="Manifest: " + cardView.getName();
+    }
+ else {
+      nameStr="Morph: " + cardView.getName();
+    }
+  }
+ else {
+    nameStr=cardView.getName();
+  }
+  AttributedString str=new AttributedString(nameStr);
   str.addAttribute(TextAttribute.FONT,boxTextFont);
   TextMeasurer measure=new TextMeasurer(str.getIterator(),g.getFontRenderContext());
   TextLayout layout=measure.getLayout(0,measure.getLineBreakIndex(0,availableWidth));
   g.setColor(getBoxTextColor());
   layout.draw(g,x,y + boxTextOffset + boxTextHeight - 1);
-  ManaSymbols.draw(g,manaCostString,x + w - manaCostWidth,y + boxTextOffset,boxTextHeight);
+  if (!cardView.isAbility() && !cardView.isFaceDown()) {
+    ManaSymbols.draw(g,manaCostString,x + w - manaCostWidth,y + boxTextOffset,boxTextHeight);
+  }
 }

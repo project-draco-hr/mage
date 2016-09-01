@@ -16,10 +16,13 @@
   }
   this.isChoosable=card.isChoosable();
   this.isSelected=card.isSelected();
+  boolean mustUpdateArt=(!gameCard.getName().equals(card.getName())) || (gameCard.isFaceDown() != card.isFaceDown());
   this.gameCard=card;
   String cardType=getType(card);
   tooltipText.setText(getText(cardType,card));
-  updateImage();
+  if (mustUpdateArt) {
+    updateArtImage();
+  }
   if (card.canTransform()) {
     BufferedImage transformIcon;
     if (isTransformed() || card.isTransformed()) {

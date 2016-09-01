@@ -1,16 +1,28 @@
 {
-  StringBuilder sbType=new StringBuilder();
-  for (  String superType : cardView.getSuperTypes()) {
-    sbType.append(superType).append(" ");
-  }
-  for (  CardType cardType : cardView.getCardTypes()) {
-    sbType.append(cardType.toString()).append(" ");
-  }
-  if (cardView.getSubTypes().size() > 0) {
-    sbType.append("- ");
-    for (    String subType : cardView.getSubTypes()) {
-      sbType.append(subType).append(" ");
-    }
-  }
-  return sbType.toString();
+  if (cardView.isAbility()) {
+switch (cardView.getAbilityType()) {
+case TRIGGERED:
+      return "Triggered Ability";
+case ACTIVATED:
+    return "Activated Ability";
+default :
+  return "??? Ability";
+}
+}
+ else {
+StringBuilder sbType=new StringBuilder();
+for (String superType : cardView.getSuperTypes()) {
+sbType.append(superType).append(" ");
+}
+for (CardType cardType : cardView.getCardTypes()) {
+sbType.append(cardType.toString()).append(" ");
+}
+if (cardView.getSubTypes().size() > 0) {
+sbType.append("- ");
+for (String subType : cardView.getSubTypes()) {
+  sbType.append(subType).append(" ");
+}
+}
+return sbType.toString();
+}
 }

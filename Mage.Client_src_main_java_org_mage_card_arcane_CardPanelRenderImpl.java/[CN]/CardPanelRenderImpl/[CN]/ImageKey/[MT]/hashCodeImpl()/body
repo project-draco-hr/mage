@@ -7,6 +7,11 @@
   sb.append((char)(isChoosable ? 1 : 0));
   sb.append((char)(this.view.isPlayable() ? 1 : 0));
   sb.append((char)(this.view.isCanAttack() ? 1 : 0));
+  sb.append((char)(this.view.isFaceDown() ? 1 : 0));
+  if (this.view instanceof PermanentView) {
+    sb.append((char)(((PermanentView)this.view).hasSummoningSickness() ? 1 : 0));
+    sb.append((char)(((PermanentView)this.view).getDamage()));
+  }
   sb.append(this.view.getName());
   sb.append(this.view.getPower());
   sb.append(this.view.getToughness());
@@ -27,6 +32,11 @@
   }
   for (  String s : this.view.getRules()) {
     sb.append(s);
+  }
+  if (this.view.getCounters() != null) {
+    for (    CounterView v : this.view.getCounters()) {
+      sb.append(v.getName()).append(v.getCount());
+    }
   }
   return sb.toString().hashCode();
 }

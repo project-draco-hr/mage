@@ -1,14 +1,11 @@
 {
   int cardWidth=getCardWidth();
   int cardHeight=getCardHeight();
-  int cardXOffset=getCardXOffset();
-  int cardYOffset=getCardYOffset();
-  BufferedImage image=GraphicsUtilities.createCompatibleTranslucentImage(getWidth(),getHeight());
+  BufferedImage image=GraphicsUtilities.createCompatibleTranslucentImage(cardWidth,cardHeight);
   Graphics2D g2d=image.createGraphics();
   g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-  g2d.translate(cardXOffset,cardYOffset);
-  cardRenderer.draw(g2d,cardWidth - cardXOffset,cardHeight - cardYOffset);
-  g2d.translate(-cardXOffset,-cardYOffset);
+  CardPanelAttributes attribs=new CardPanelAttributes(cardWidth,cardHeight,isChoosable(),isSelected());
+  cardRenderer.draw(g2d,attribs);
   g2d.dispose();
   return image;
 }

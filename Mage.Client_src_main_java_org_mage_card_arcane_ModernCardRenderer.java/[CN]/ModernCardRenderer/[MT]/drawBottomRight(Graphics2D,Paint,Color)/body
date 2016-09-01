@@ -1,4 +1,7 @@
 {
+  if (cardView.isAbility()) {
+    return;
+  }
   int curY=cardHeight - (int)(0.03f * cardHeight);
   int partWidth=(int)Math.max(30,0.20f * cardWidth);
   if (cardView.getCardTypes().contains(CardType.CREATURE)) {
@@ -39,5 +42,17 @@
     int loyaltyWidth=g.getFontMetrics().stringWidth(loyalty);
     g.drawString(loyalty,x + (w - loyaltyWidth) / 2,y + ptTextHeight + (h - ptTextHeight) / 2);
     curY-=(int)(1.2 * y);
+  }
+  if ((cardView instanceof PermanentView) && ((PermanentView)cardView).getDamage() > 0) {
+    int x=cardWidth - partWidth - borderWidth;
+    int y=curY - boxHeight;
+    String damage="" + ((PermanentView)cardView).getDamage();
+    g.setFont(ptTextFont);
+    int txWidth=g.getFontMetrics().stringWidth(damage);
+    g.setColor(Color.red);
+    g.fillRect(x,y,partWidth,boxHeight);
+    g.setColor(Color.white);
+    g.drawRect(x,y,partWidth,boxHeight);
+    g.drawString(damage,x + (partWidth - txWidth) / 2,curY - 1);
   }
 }
