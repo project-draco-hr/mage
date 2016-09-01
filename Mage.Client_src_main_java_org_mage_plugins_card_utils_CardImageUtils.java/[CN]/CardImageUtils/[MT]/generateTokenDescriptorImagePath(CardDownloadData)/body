@@ -1,0 +1,20 @@
+{
+  String useDefault=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_IMAGES_USE_DEFAULT,"true");
+  String imagesPath=useDefault.equals("true") ? null : PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_IMAGES_PATH,null);
+  String straightImageFile=getTokenDescriptorImagePath(card);
+  TFile file=new TFile(straightImageFile);
+  if (file.exists()) {
+    return straightImageFile;
+  }
+  straightImageFile=straightImageFile.replaceFirst("\\.[0-9]+\\.[0-9]+",".X.X");
+  file=new TFile(straightImageFile);
+  if (file.exists()) {
+    return straightImageFile;
+  }
+  straightImageFile=straightImageFile.replaceFirst("\\.X\\.X",".S.S");
+  file=new TFile(straightImageFile);
+  if (file.exists()) {
+    return straightImageFile;
+  }
+  return "";
+}
