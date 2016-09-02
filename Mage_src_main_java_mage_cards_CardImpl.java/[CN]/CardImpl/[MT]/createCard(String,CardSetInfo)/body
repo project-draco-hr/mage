@@ -1,0 +1,14 @@
+{
+  try {
+    return createCard(Class.forName(name),setInfo);
+  }
+ catch (  ClassNotFoundException ex) {
+    try {
+      return createCard(PluginClassloaderRegistery.forName(name),setInfo);
+    }
+ catch (    ClassNotFoundException ex2) {
+    }
+    logger.fatal("Error loading card: " + name,ex);
+    return null;
+  }
+}

@@ -1,0 +1,17 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"");
+  this.subtype.add("Eldrazi");
+  this.subtype.add("Horror");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(6);
+  this.nightCard=true;
+  this.addAbility(HasteAbility.getInstance());
+  this.addAbility(new MenaceAbility());
+  Effect effect=new BoostControlledEffect(1,0,Duration.EndOfTurn,true);
+  effect.setText("other creatures you control get +1/+0");
+  Ability ability=new EntersBattlefieldTriggeredAbility(effect,false);
+  effect=new GainAbilityAllEffect(new MenaceAbility(),Duration.EndOfTurn,new FilterControlledCreaturePermanent("other creatures"),true);
+  effect.setText("and gain menace until end of turn");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}
