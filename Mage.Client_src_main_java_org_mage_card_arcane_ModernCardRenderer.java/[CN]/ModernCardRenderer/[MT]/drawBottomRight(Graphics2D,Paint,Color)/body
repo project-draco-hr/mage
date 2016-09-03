@@ -1,0 +1,58 @@
+{
+  if (cardView.isAbility()) {
+    return;
+  }
+  int curY=cardHeight - (int)(0.03f * cardHeight);
+  int partWidth=(int)Math.max(30,0.20f * cardWidth);
+  if (cardView.getCardTypes().contains(CardType.CREATURE)) {
+    int x=cardWidth - borderWidth - partWidth;
+    CardRendererUtils.drawRoundedBox(g,x,curY - boxHeight,partWidth,boxHeight,contentInset,borderPaint,fill);
+    g.setColor(new Color(0,0,0,150));
+    g.fillRect(x + contentInset,curY - boxHeight - 1,partWidth - 2 * contentInset,1);
+    g.setColor(getBoxTextColor());
+    g.setFont(ptTextFont);
+    String ptText=cardView.getPower() + "/" + cardView.getToughness();
+    int ptTextWidth=g.getFontMetrics().stringWidth(ptText);
+    g.drawString(ptText,x + (partWidth - ptTextWidth) / 2,curY - ptTextOffset - 1);
+    if ((cardView instanceof PermanentView) && ((PermanentView)cardView).getDamage() > 0) {
+    }
+    curY-=boxHeight;
+  }
+  if (cardView.getCardTypes().contains(CardType.PLANESWALKER) && (cardView instanceof PermanentView || !cardView.getStartingLoyalty().equals("0"))) {
+    int w=partWidth;
+    int h=partWidth / 2;
+    int x=cardWidth - partWidth - borderWidth;
+    int y=curY - h;
+    Polygon symbol=new Polygon(new int[]{x + w / 2,(int)(x + w * 0.9),x + w,(int)(x + w * 0.6),x + w / 2,(int)(x + w * 0.4),x,(int)(x + w * 0.1)},new int[]{y + h,(int)(y + 0.8 * h),y,(int)(y - 0.2 * h),y,(int)(y - 0.2 * h),y,(int)(y + 0.8 * h)},8);
+    g.setColor(Color.black);
+    g.fillPolygon(symbol);
+    g.setColor(new Color(200,200,200));
+    g.setStroke(new BasicStroke(2));
+    g.drawPolygon(symbol);
+    g.setStroke(new BasicStroke(1));
+    String loyalty;
+    if (cardView instanceof PermanentView) {
+      loyalty=cardView.getLoyalty();
+    }
+ else {
+      loyalty=cardView.getStartingLoyalty();
+    }
+    g.setFont(ptTextFont);
+    g.setColor(Color.white);
+    int loyaltyWidth=g.getFontMetrics().stringWidth(loyalty);
+    g.drawString(loyalty,x + (w - loyaltyWidth) / 2,y + ptTextHeight + (h - ptTextHeight) / 2);
+    curY-=(int)(1.2 * y);
+  }
+  if ((cardView instanceof PermanentView) && ((PermanentView)cardView).getDamage() > 0) {
+    int x=cardWidth - partWidth - borderWidth;
+    int y=curY - boxHeight;
+    String damage="" + ((PermanentView)cardView).getDamage();
+    g.setFont(ptTextFont);
+    int txWidth=g.getFontMetrics().stringWidth(damage);
+    g.setColor(Color.red);
+    g.fillRect(x,y,partWidth,boxHeight);
+    g.setColor(Color.white);
+    g.drawRect(x,y,partWidth,boxHeight);
+    g.drawString(damage,x + (partWidth - txWidth) / 2,curY - 1);
+  }
+}

@@ -1,0 +1,37 @@
+{
+  int xPos=(int)(0.65 * cardWidth);
+  int yPos=(int)(0.15 * cardHeight);
+  if (cardView.getCounters() != null) {
+    for (    CounterView v : cardView.getCounters()) {
+      if (!v.getName().equals("loyalty")) {
+        Polygon p;
+        if (v.getName().equals("+1/+1")) {
+          p=PLUS_COUNTER_POLY;
+        }
+ else         if (v.getName().equals("-1/-1")) {
+          p=MINUS_COUNTER_POLY;
+        }
+ else         if (v.getName().equals("time")) {
+          p=TIME_COUNTER_POLY;
+        }
+ else {
+          p=OTHER_COUNTER_POLY;
+        }
+        double scale=(0.1 * 0.25 * cardWidth);
+        Graphics2D g2=(Graphics2D)g.create();
+        g2.translate(xPos,yPos);
+        g2.scale(scale,scale);
+        g2.setColor(Color.white);
+        g2.fillPolygon(p);
+        g2.setColor(Color.black);
+        g2.drawPolygon(p);
+        g2.setFont(new Font("Arial",Font.BOLD,7));
+        String cstr="" + v.getCount();
+        int strW=g2.getFontMetrics().stringWidth(cstr);
+        g2.drawString(cstr,5 - strW / 2,8);
+        g2.dispose();
+        yPos+=((int)(0.30 * cardWidth));
+      }
+    }
+  }
+}

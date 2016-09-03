@@ -16,6 +16,7 @@
   if (secondSide != null) {
     this.secondSideName=secondSide.getName();
   }
+  this.frameColor=card.getFrameColor(null).toString();
   this.blue=card.getColor(null).isBlue();
   this.black=card.getColor(null).isBlack();
   this.green=card.getColor(null).isGreen();
@@ -55,5 +56,18 @@
       this.className=this.setCode + "." + this.name;
       this.splitCardHalf=true;
     }
+  }
+  if (card.getCardType().contains(CardType.PLANESWALKER)) {
+    for (    Ability ab : card.getAbilities()) {
+      if (ab instanceof PlanswalkerEntersWithLoyalityCountersAbility) {
+        this.startingLoyalty="" + ((PlanswalkerEntersWithLoyalityCountersAbility)ab).getStartingLoyalty();
+      }
+    }
+    if (this.startingLoyalty == null) {
+      this.startingLoyalty="";
+    }
+  }
+ else {
+    this.startingLoyalty="";
   }
 }

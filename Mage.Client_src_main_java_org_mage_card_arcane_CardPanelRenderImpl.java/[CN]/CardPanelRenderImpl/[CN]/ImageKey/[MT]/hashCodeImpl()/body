@@ -1,0 +1,42 @@
+{
+  StringBuilder sb=new StringBuilder();
+  sb.append((char)(artImage != null ? 1 : 0));
+  sb.append((char)width);
+  sb.append((char)height);
+  sb.append((char)(isSelected ? 1 : 0));
+  sb.append((char)(isChoosable ? 1 : 0));
+  sb.append((char)(this.view.isPlayable() ? 1 : 0));
+  sb.append((char)(this.view.isCanAttack() ? 1 : 0));
+  sb.append((char)(this.view.isFaceDown() ? 1 : 0));
+  if (this.view instanceof PermanentView) {
+    sb.append((char)(((PermanentView)this.view).hasSummoningSickness() ? 1 : 0));
+    sb.append((char)(((PermanentView)this.view).getDamage()));
+  }
+  sb.append(this.view.getName());
+  sb.append(this.view.getPower());
+  sb.append(this.view.getToughness());
+  sb.append(this.view.getLoyalty());
+  sb.append(this.view.getColor().toString());
+  sb.append(this.view.getExpansionSetCode());
+  for (  CardType type : this.view.getCardTypes()) {
+    sb.append((char)type.ordinal());
+  }
+  for (  String s : this.view.getSuperTypes()) {
+    sb.append(s);
+  }
+  for (  String s : this.view.getSubTypes()) {
+    sb.append(s);
+  }
+  for (  String s : this.view.getManaCost()) {
+    sb.append(s);
+  }
+  for (  String s : this.view.getRules()) {
+    sb.append(s);
+  }
+  if (this.view.getCounters() != null) {
+    for (    CounterView v : this.view.getCounters()) {
+      sb.append(v.getName()).append(v.getCount());
+    }
+  }
+  return sb.toString().hashCode();
+}

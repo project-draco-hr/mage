@@ -14,56 +14,24 @@
       Animation.transformCard(this,this,card.isTransformed());
     }
   }
-  if (card.canTransform()) {
-    dayNightButton.setVisible(!isPermanent);
-  }
-  if (CardUtil.isCreature(card) && CardUtil.isPlaneswalker(card)) {
-    ptText.setText(card.getPower() + "/" + card.getToughness()+ " ("+ card.getLoyalty()+ ")");
-  }
- else   if (CardUtil.isCreature(card)) {
-    ptText.setText(card.getPower() + "/" + card.getToughness());
-  }
- else   if (CardUtil.isPlaneswalker(card)) {
-    ptText.setText(card.getLoyalty());
-  }
- else {
-    ptText.setText("");
-  }
-  setText(card);
-  this.isPlayable=card.isPlayable();
   this.isChoosable=card.isChoosable();
-  this.canAttack=card.isCanAttack();
   this.isSelected=card.isSelected();
-  boolean updateImage=!gameCard.getName().equals(card.getName()) || gameCard.isFaceDown() != card.isFaceDown();
-  if (updateImage && gameCard.canTransform() && card.canTransform()&& transformed) {
-    if (card.getSecondCardFace() != null && card.getSecondCardFace().getName().equals(gameCard.getName())) {
-      transformed=false;
-    }
-  }
+  boolean mustUpdateArt=(!gameCard.getName().equals(card.getName())) || (gameCard.isFaceDown() != card.isFaceDown());
   this.gameCard=card;
   String cardType=getType(card);
   tooltipText.setText(getText(cardType,card));
-  if (hasSickness && CardUtil.isCreature(gameCard) && isPermanent) {
-    overlayPanel.setVisible(true);
+  if (mustUpdateArt) {
+    updateArtImage();
   }
- else {
-    overlayPanel.setVisible(false);
-  }
-  if (updateImage) {
-    updateImage();
-    if (card.canTransform()) {
-      BufferedImage transformIcon;
-      if (transformed || card.isTransformed()) {
-        transformIcon=ImageManagerImpl.getInstance().getNightImage();
-      }
- else {
-        transformIcon=ImageManagerImpl.getInstance().getDayImage();
-      }
-      dayNightButton.setIcon(new ImageIcon(transformIcon));
+  if (card.canTransform()) {
+    BufferedImage transformIcon;
+    if (isTransformed() || card.isTransformed()) {
+      transformIcon=ImageManagerImpl.getInstance().getNightImage();
     }
+ else {
+      transformIcon=ImageManagerImpl.getInstance().getDayImage();
+    }
+    dayNightButton.setVisible(!isPermanent);
+    dayNightButton.setIcon(new ImageIcon(transformIcon));
   }
-  if (counterPanel != null) {
-    updateCounters(card);
-  }
-  repaint();
 }
