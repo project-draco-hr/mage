@@ -1,56 +1,14 @@
 {
-  int borderSize=Math.round(cardWidth * BLACK_BORDER_SIZE);
-  imagePanel.setLocation(cardXOffset + borderSize,cardYOffset + borderSize);
-  imagePanel.setSize(cardWidth - borderSize * 2,cardHeight - borderSize * 2);
-  if (hasSickness && CardUtil.isCreature(gameCard) && isPermanent) {
-    overlayPanel.setLocation(cardXOffset + borderSize,cardYOffset + borderSize);
-    overlayPanel.setSize(cardWidth - borderSize * 2,cardHeight - borderSize * 2);
+  buttonPanel.setLocation(cardXOffset,cardYOffset);
+  buttonPanel.setSize(cardWidth,cardHeight);
+  int x=cardWidth / 20;
+  int y=cardHeight / 10;
+  if (dayNightButton != null) {
+    dayNightButton.setLocation(x,y);
+    y+=25;
+    y+=5;
   }
- else {
-    overlayPanel.setVisible(false);
-  }
-  if (buttonPanel != null) {
-    buttonPanel.setLocation(cardXOffset + borderSize,cardYOffset + borderSize);
-    buttonPanel.setSize(cardWidth - borderSize * 2,cardHeight - borderSize * 2);
-    dayNightButton.setLocation(0,cardHeight - 30);
-  }
-  if (iconPanel != null) {
-    iconPanel.setLocation(cardXOffset + borderSize,cardYOffset + borderSize);
-    iconPanel.setSize(cardWidth - borderSize * 2,cardHeight - borderSize * 2);
-  }
-  if (copyIconPanel != null) {
-    copyIconPanel.setLocation(cardXOffset + borderSize,cardYOffset + borderSize);
-    copyIconPanel.setSize(cardWidth - borderSize * 2,cardHeight - borderSize * 2);
-  }
-  if (counterPanel != null) {
-    counterPanel.setLocation(cardXOffset + borderSize,cardYOffset + borderSize);
-    counterPanel.setSize(cardWidth - borderSize * 2,cardHeight - borderSize * 2);
-    int size=cardWidth > WIDTH_LIMIT ? 40 : 20;
-    minusCounterLabel.setLocation(counterPanel.getWidth() - size,counterPanel.getHeight() - size * 2);
-    minusCounterLabel.setSize(size,size);
-    plusCounterLabel.setLocation(5,counterPanel.getHeight() - size * 2);
-    plusCounterLabel.setSize(size,size);
-    loyaltyCounterLabel.setLocation(counterPanel.getWidth() - size,counterPanel.getHeight() - size);
-    loyaltyCounterLabel.setSize(size,size);
-    otherCounterLabel.setLocation(5,counterPanel.getHeight() - size);
-    otherCounterLabel.setSize(size,size);
-  }
-  int fontHeight=Math.round(cardHeight * (27f / 680));
-  boolean showText=(!isAnimationPanel && fontHeight < 12);
-  titleText.setVisible(showText);
-  ptText.setVisible(showText);
-  if (showText) {
-    int fontSize=(int)cardHeight / 11;
-    titleText.setFont(getFont().deriveFont(Font.BOLD,fontSize));
-    int titleX=Math.round(cardWidth * (20f / 480));
-    int titleY=Math.round(cardHeight * (9f / 680)) + yTextOffset;
-    titleText.setBounds(cardXOffset + titleX,cardYOffset + titleY,cardWidth - titleX,cardHeight - titleY);
-    ptText.setFont(getFont().deriveFont(Font.BOLD,fontSize));
-    Dimension ptSize=ptText.getPreferredSize();
-    ptText.setSize(ptSize.width,ptSize.height);
-    int ptX=Math.round(cardWidth * (420f / 480)) - ptSize.width / 2;
-    int ptY=Math.round(cardHeight * (675f / 680)) - ptSize.height;
-    int offsetX=Math.round((CARD_SIZE_FULL.width - cardWidth) / 10.0f);
-    ptText.setLocation(cardXOffset + ptX - TEXT_GLOW_SIZE / 2 - offsetX,cardYOffset + ptY - TEXT_GLOW_SIZE / 2);
+  if (showCopySourceButton != null) {
+    showCopySourceButton.setLocation(x,y);
   }
 }

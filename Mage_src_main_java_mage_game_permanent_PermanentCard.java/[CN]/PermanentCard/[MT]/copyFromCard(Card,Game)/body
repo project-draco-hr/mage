@@ -1,0 +1,39 @@
+{
+  this.name=card.getName();
+  this.abilities.clear();
+  if (this.faceDown) {
+    for (    Ability ability : card.getAbilities()) {
+      if (ability.getWorksFaceDown()) {
+        this.abilities.add(ability.copy());
+      }
+    }
+  }
+ else {
+    this.abilities=card.getAbilities().copy();
+  }
+  this.abilities.setControllerId(this.controllerId);
+  this.abilities.setSourceId(objectId);
+  this.cardType.clear();
+  this.cardType.addAll(card.getCardType());
+  this.color=card.getColor(null).copy();
+  this.frameColor=card.getFrameColor(null).copy();
+  this.manaCost=card.getManaCost().copy();
+  if (card instanceof PermanentCard) {
+    this.maxLevelCounters=((PermanentCard)card).maxLevelCounters;
+  }
+  this.subtype.clear();
+  this.subtype.addAll(card.getSubtype(game));
+  this.supertype.clear();
+  this.supertype.addAll(card.getSupertype());
+  this.expansionSetCode=card.getExpansionSetCode();
+  this.rarity=card.getRarity();
+  this.cardNumber=card.getCardNumber();
+  this.usesVariousArt=card.getUsesVariousArt();
+  canTransform=card.canTransform();
+  if (canTransform) {
+    secondSideCard=card.getSecondCardFace();
+    nightCard=card.isNightCard();
+  }
+  this.flipCard=card.isFlipCard();
+  this.flipCardName=card.getFlipCardName();
+}

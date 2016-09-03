@@ -1,5 +1,5 @@
 {
-  super(card.getId(),card.getExpansionSetCode(),card.getCardNumber(),card.getUsesVariousArt(),card.getTokenSetCode(),game != null);
+  super(card.getId(),card.getExpansionSetCode(),card.getCardNumber(),card.getUsesVariousArt(),card.getTokenSetCode(),game != null,card.getTokenDescriptor());
   boolean showFaceUp=true;
   if (game != null) {
     Zone cardZone=game.getState().getZone(card.getId());
@@ -107,7 +107,7 @@ counters.add(new CounterView(counter));
 this.power=Integer.toString(card.getPower().getValue());
 this.toughness=Integer.toString(card.getToughness().getValue());
 this.cardTypes=card.getCardType();
-this.subTypes=card.getSubtype();
+this.subTypes=card.getSubtype(game);
 this.superTypes=card.getSupertype();
 this.color=card.getColor(game);
 this.canTransform=card.canTransform();
@@ -124,6 +124,7 @@ this.cardNumber=((PermanentToken)card).getToken().getOriginalCardNumber();
 }
  else {
 this.expansionSetCode=((PermanentToken)card).getExpansionSetCode();
+this.tokenDescriptor=((PermanentToken)card).getTokenDescriptor();
 }
 this.rules=((PermanentToken)card).getRules(game);
 this.type=((PermanentToken)card).getToken().getTokenType();
@@ -158,4 +159,6 @@ this.rules.add("<span color='green'><i>Chosen mode: " + mode.getEffects().getTex
 }
 }
 }
+this.frameColor=card.getFrameColor(game);
+this.startingLoyalty="" + card.getStartingLoyalty();
 }

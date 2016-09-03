@@ -1,0 +1,35 @@
+{
+  if (colors.isMulticolored()) {
+    if (colors.getColorCount() == 2) {
+      List<ObjectColor> twoColors=colors.getColors();
+      Color color1, color2;
+      if (twoColors.get(0).isWhite()) {
+        color1=new Color(240,240,240);
+      }
+ else {
+        color1=getBorderColor(twoColors.get(0));
+      }
+      if (twoColors.get(1).isWhite()) {
+        color2=new Color(240,240,240);
+      }
+ else {
+        color2=getBorderColor(twoColors.get(1));
+      }
+      return new LinearGradientPaint(0,0,width,0,new float[]{0.4f,0.6f},new Color[]{color1,color2});
+    }
+ else {
+      return BORDER_GOLD;
+    }
+  }
+ else   if (colors.isColorless()) {
+    if (types.contains(CardType.LAND)) {
+      return BORDER_LAND;
+    }
+ else {
+      return BORDER_COLORLESS;
+    }
+  }
+ else {
+    return getBorderColor(colors);
+  }
+}

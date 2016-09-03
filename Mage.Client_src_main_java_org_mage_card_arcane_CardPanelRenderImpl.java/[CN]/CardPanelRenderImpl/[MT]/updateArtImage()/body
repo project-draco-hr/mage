@@ -1,0 +1,47 @@
+{
+  artImage=null;
+  cardImage=null;
+  cardRenderer.setArtImage(null);
+  tappedAngle=isTapped() ? CardPanel.TAPPED_ANGLE : 0;
+  flippedAngle=isFlipped() ? CardPanel.FLIPPED_ANGLE : 0;
+  repaint();
+  if (artImage == null) {
+    final int stamp=++updateArtImageStamp;
+    Util.threadPool.submit(new Runnable(){
+      @Override public void run(){
+        try {
+          final BufferedImage srcImage;
+          if (gameCard.isFaceDown()) {
+            srcImage=null;
+          }
+ else           if (getCardWidth() > THUMBNAIL_SIZE_FULL.width) {
+            srcImage=ImageCache.getImage(gameCard,getCardWidth(),getCardHeight());
+          }
+ else {
+            srcImage=ImageCache.getThumbnail(gameCard);
+          }
+          UI.invokeLater(new Runnable(){
+            @Override public void run(){
+              if (stamp == updateArtImageStamp) {
+                artImage=srcImage;
+                cardRenderer.setArtImage(srcImage);
+                if (srcImage != null) {
+                  cardImage=null;
+                  repaint();
+                }
+              }
+            }
+          }
+);
+        }
+ catch (        Exception e) {
+          e.printStackTrace();
+        }
+catch (        Error err) {
+          err.printStackTrace();
+        }
+      }
+    }
+);
+  }
+}

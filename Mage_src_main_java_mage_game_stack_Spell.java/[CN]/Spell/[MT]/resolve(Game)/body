@@ -43,13 +43,13 @@
     counter(null,game);
     return false;
   }
- else   if (this.getCardType().contains(CardType.ENCHANTMENT) && this.getSubtype().contains("Aura")) {
+ else   if (this.getCardType().contains(CardType.ENCHANTMENT) && this.getSubtype(game).contains("Aura")) {
     if (ability.getTargets().stillLegal(ability,game)) {
       updateOptionalCosts(0);
       boolean bestow=ability instanceof BestowAbility;
       if (bestow) {
         card.getCardType().remove(CardType.CREATURE);
-        card.getSubtype().add("Aura");
+        card.getSubtype(game).add("Aura");
       }
       if (controller.moveCards(card,Zone.BATTLEFIELD,ability,game,false,faceDown,false,null)) {
         if (bestow) {
@@ -57,7 +57,7 @@
           if (permanent != null && permanent instanceof PermanentCard) {
             permanent.setSpellAbility(ability);
             ((PermanentCard)permanent).getCard().getCardType().add(CardType.CREATURE);
-            ((PermanentCard)permanent).getCard().getSubtype().remove("Aura");
+            ((PermanentCard)permanent).getCard().getSubtype(game).remove("Aura");
           }
         }
         return ability.resolve(game);

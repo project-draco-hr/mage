@@ -16,13 +16,14 @@
   if (secondSide != null) {
     this.secondSideName=secondSide.getName();
   }
+  this.frameColor=card.getFrameColor(null).toString();
   this.blue=card.getColor(null).isBlue();
   this.black=card.getColor(null).isBlack();
   this.green=card.getColor(null).isGreen();
   this.red=card.getColor(null).isRed();
   this.white=card.getColor(null).isWhite();
   this.setTypes(card.getCardType());
-  this.setSubtypes(card.getSubtype());
+  this.setSubtypes(card.getSubtype(null));
   this.setSuperTypes(card.getSupertype());
   this.setManaCosts(card.getManaCost().getSymbols());
   int length=0;
@@ -55,5 +56,18 @@
       this.className=this.setCode + "." + this.name;
       this.splitCardHalf=true;
     }
+  }
+  if (card.getCardType().contains(CardType.PLANESWALKER)) {
+    for (    Ability ab : card.getAbilities()) {
+      if (ab instanceof PlanswalkerEntersWithLoyalityCountersAbility) {
+        this.startingLoyalty="" + ((PlanswalkerEntersWithLoyalityCountersAbility)ab).getStartingLoyalty();
+      }
+    }
+    if (this.startingLoyalty == null) {
+      this.startingLoyalty="";
+    }
+  }
+ else {
+    this.startingLoyalty="";
   }
 }
