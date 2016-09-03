@@ -1,0 +1,12 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",5);
+  addCard(Zone.BATTLEFIELD,playerA,"Kranioceros");
+  addCard(Zone.BATTLEFIELD,playerA,"Gate Smasher");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{1}{W}:");
+  activateAbility(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Equip","Kranioceros");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertPowerToughness(playerA,"Kranioceros",8,5);
+  Permanent equipment=getPermanent("Gate Smasher",playerA);
+  Assert.assertTrue("Gate Smasher may no longer be attached",equipment.getAttachedTo() != null);
+}
