@@ -1,0 +1,20 @@
+{
+  this.cardView=card;
+  this.isTransformed=isTransformed;
+  for (  String rule : card.getRules()) {
+    if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_RENDERING_REMINDER_TEXT,"false").equals("false")) {
+      rule=CardRendererUtils.killReminderText(rule).trim();
+    }
+    if (!rule.isEmpty()) {
+      TextboxRule tbRule=TextboxRuleParser.parse(card,rule);
+      if (tbRule.type == TextboxRuleType.SIMPLE_KEYWORD) {
+        textboxKeywords.add(tbRule);
+      }
+ else       if (tbRule.text.isEmpty()) {
+      }
+ else {
+        textboxRules.add(tbRule);
+      }
+    }
+  }
+}

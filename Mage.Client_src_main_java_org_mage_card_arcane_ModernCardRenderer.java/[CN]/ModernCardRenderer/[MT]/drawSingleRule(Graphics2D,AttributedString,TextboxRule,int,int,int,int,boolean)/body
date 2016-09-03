@@ -1,0 +1,72 @@
+{
+  int inset=0;
+  if (rule != null && rule.type == TextboxRuleType.LOYALTY) {
+    inset=cardWidth / 12;
+  }
+  int availWidth=w - inset;
+  FontRenderContext frc=g.getFontRenderContext();
+  AttributedCharacterIterator textIter=text.getIterator();
+  LineBreakMeasurer measure=new LineBreakMeasurer(textIter,frc);
+  float yPos=y;
+  float remain=h;
+  AttributedCharacterIterator newLineCheck=text.getIterator();
+  while (measure.getPosition() < textIter.getEndIndex()) {
+    char ch=newLineCheck.setIndex(measure.getPosition());
+    while ((ch=newLineCheck.next()) != CharacterIterator.DONE) {
+      if (ch == '\n') {
+        break;
+      }
+    }
+    TextLayout layout=measure.nextLayout(availWidth,newLineCheck.getIndex(),false);
+    float ascent=layout.getAscent();
+    yPos+=ascent;
+    remain-=ascent;
+    if (remain < 0) {
+      break;
+    }
+    if (doDraw) {
+      g.setColor(Color.black);
+      layout.draw(g,x + inset,yPos);
+    }
+    yPos+=layout.getDescent() + layout.getLeading() - 2;
+  }
+  int advance=((int)Math.ceil(yPos)) - y;
+  if (rule != null && rule.type == TextboxRuleType.LOYALTY) {
+    TextboxLoyaltyRule loyaltyRule=(TextboxLoyaltyRule)rule;
+    Polygon symbol;
+    int symbolWidth=(x + inset) - borderWidth - 4;
+    int symbolHeight=(int)(0.7f * symbolWidth);
+    if (symbolHeight > advance) {
+      advance=symbolHeight;
+    }
+    int symbolX=x - borderWidth;
+    int symbolY=y + (advance - symbolHeight) / 2;
+    if (doDraw) {
+      if (loyaltyRule.loyaltyChange < 0 || loyaltyRule.loyaltyChange == TextboxLoyaltyRule.MINUS_X) {
+        symbol=new Polygon(new int[]{symbolX,symbolX + symbolWidth,symbolX + symbolWidth,symbolX + symbolWidth / 2,symbolX},new int[]{symbolY,symbolY,symbolY + symbolHeight - 3,symbolY + symbolHeight + 3,symbolY + symbolHeight - 3},5);
+      }
+ else       if (loyaltyRule.loyaltyChange > 0) {
+        symbol=new Polygon(new int[]{symbolX,symbolX + symbolWidth / 2,symbolX + symbolWidth,symbolX + symbolWidth,symbolX},new int[]{symbolY + 3,symbolY - 3,symbolY + 3,symbolY + symbolHeight,symbolY + symbolHeight},5);
+      }
+ else {
+        symbol=new Polygon(new int[]{symbolX,symbolX + symbolWidth,symbolX + symbolWidth,symbolX},new int[]{symbolY,symbolY,symbolY + symbolHeight,symbolY + symbolHeight},4);
+      }
+      g.setColor(new Color(0,0,0,128));
+      g.fillRect(x + 2,y + advance + 1,w - 2,1);
+      g.setColor(Color.black);
+      g.fillPolygon(symbol);
+      g.setColor(new Color(200,200,200));
+      g.setStroke(new BasicStroke(2));
+      g.drawPolygon(symbol);
+      g.setStroke(new BasicStroke(1));
+      g.setColor(Color.white);
+      g.setFont(boxTextFont);
+      String loyaltyString=loyaltyRule.getChangeString();
+      int textWidth=g.getFontMetrics().stringWidth(loyaltyString);
+      g.drawString(loyaltyString,symbolX + (symbolWidth - textWidth) / 2,symbolY + symbolHeight - (symbolHeight - boxTextHeight) / 2);
+      advance+=3;
+      loyaltyAbilityColorToggle=!loyaltyAbilityColorToggle;
+    }
+  }
+  return advance;
+}

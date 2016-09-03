@@ -1,0 +1,61 @@
+{
+  super(newGameCard,gameId,loadImage,callback,foil,dimension);
+  if (!newGameCard.isAbility()) {
+    counterPanel=new JPanel();
+    counterPanel.setLayout(null);
+    counterPanel.setOpaque(false);
+    add(counterPanel);
+    plusCounterLabel=new JLabel("");
+    plusCounterLabel.setToolTipText("+1/+1");
+    counterPanel.add(plusCounterLabel);
+    minusCounterLabel=new JLabel("");
+    minusCounterLabel.setToolTipText("-1/-1");
+    counterPanel.add(minusCounterLabel);
+    loyaltyCounterLabel=new JLabel("");
+    loyaltyCounterLabel.setToolTipText("loyalty");
+    counterPanel.add(loyaltyCounterLabel);
+    otherCounterLabel=new JLabel("");
+    counterPanel.add(otherCounterLabel);
+    counterPanel.setVisible(false);
+  }
+  if (newGameCard.isAbility()) {
+    if (AbilityType.TRIGGERED.equals(newGameCard.getAbilityType())) {
+      setTypeIcon(ImageManagerImpl.getInstance().getTriggeredAbilityImage(),"Triggered Ability");
+    }
+ else     if (AbilityType.ACTIVATED.equals(newGameCard.getAbilityType())) {
+      setTypeIcon(ImageManagerImpl.getInstance().getActivatedAbilityImage(),"Activated Ability");
+    }
+  }
+  if (this.gameCard.isToken()) {
+    setTypeIcon(ImageManagerImpl.getInstance().getTokenIconImage(),"Token Permanent");
+  }
+  displayTitleAnyway=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_SHOW_CARD_NAMES,"true").equals("true");
+  titleText=new GlowText();
+  setText(gameCard);
+  titleText.setForeground(Color.white);
+  titleText.setGlow(Color.black,TEXT_GLOW_SIZE,TEXT_GLOW_INTENSITY);
+  titleText.setWrap(true);
+  add(titleText);
+  ptText=new GlowText();
+  if (CardUtil.isCreature(gameCard)) {
+    ptText.setText(gameCard.getPower() + "/" + gameCard.getToughness());
+  }
+ else   if (CardUtil.isPlaneswalker(gameCard)) {
+    ptText.setText(gameCard.getLoyalty());
+  }
+  ptText.setForeground(Color.white);
+  ptText.setGlow(Color.black,TEXT_GLOW_SIZE,TEXT_GLOW_INTENSITY);
+  add(ptText);
+  BufferedImage sickness=ImageManagerImpl.getInstance().getSicknessImage();
+  overlayPanel=new ImagePanel(sickness,ImagePanel.SCALED);
+  overlayPanel.setOpaque(false);
+  add(overlayPanel);
+  imagePanel=new ScaledImagePanel();
+  imagePanel.setBorder(BorderFactory.createLineBorder(Color.white));
+  add(imagePanel);
+  if (loadImage) {
+    initialDraw();
+  }
+ else {
+  }
+}

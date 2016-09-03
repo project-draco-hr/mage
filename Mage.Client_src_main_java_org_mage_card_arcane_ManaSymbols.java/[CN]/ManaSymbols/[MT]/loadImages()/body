@@ -8,27 +8,31 @@
     return;
   }
   for (  String set : setCodes) {
-    File file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET + set+ "-C.jpg");
-    try {
-      Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
-      int width=image.getWidth(null);
-      if (width > 21) {
-        int h=image.getHeight(null);
-        if (h > 0) {
-          Rectangle r=new Rectangle(21,(int)(h * 21.0f / width));
-          BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
-          setImages.put(set,resized);
+    String[] codes=new String[]{"C","U","R","M"};
+    Map<String,Image> rarityImages=new HashMap<>();
+    setImages.put(set,rarityImages);
+    for (    String rarityCode : codes) {
+      File file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET + set+ "-"+ rarityCode+ ".jpg");
+      try {
+        Image image=UI.getImageIcon(file.getAbsolutePath()).getImage();
+        int width=image.getWidth(null);
+        if (width > 21) {
+          int h=image.getHeight(null);
+          if (h > 0) {
+            Rectangle r=new Rectangle(21,(int)(h * 21.0f / width));
+            BufferedImage resized=ImageHelper.getResizedImage(BufferedImageBuilder.bufferImage(image,BufferedImage.TYPE_INT_ARGB),r);
+            rarityImages.put(set,resized);
+          }
+        }
+ else {
+          rarityImages.put(rarityCode,image);
         }
       }
- else {
-        setImages.put(set,image);
+ catch (      Exception e) {
       }
     }
- catch (    Exception e) {
-    }
-    String[] codes=new String[]{"C","U","R","M"};
     try {
-      file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET_SMALL);
+      File file=new File(getSymbolsPath() + Constants.RESOURCE_PATH_SET_SMALL);
       if (!file.exists()) {
         file.mkdirs();
       }

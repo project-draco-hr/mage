@@ -1,0 +1,78 @@
+{
+  Font font=new Font("Arial",Font.PLAIN,12);
+  Font fontItalic=new Font("Arial",Font.ITALIC,12);
+  boolean hasKeywords=!textboxKeywords.isEmpty();
+  String keywordRulesString=getKeywordRulesString();
+  AttributedString keywordRulesAttributed=new AttributedString(keywordRulesString);
+  if (hasKeywords) {
+    keywordRulesAttributed.addAttribute(TextAttribute.FONT,font);
+  }
+  List<AttributedString> attributedRules=new ArrayList<>();
+  boolean useSmallFont=false;
+  int remaining=h;
+{
+    if (hasKeywords) {
+      remaining-=drawSingleRule(g,keywordRulesAttributed,null,0,0,w,remaining,false);
+    }
+    for (    TextboxRule rule : textboxRules) {
+      AttributedString attributed=rule.generateAttributedString(font,fontItalic);
+      attributedRules.add(attributed);
+      remaining-=drawSingleRule(g,attributed,rule,0,0,w,remaining,false);
+      if (remaining < 0) {
+        useSmallFont=true;
+        break;
+      }
+    }
+  }
+  if (useSmallFont) {
+    font=new Font("Arial",Font.PLAIN,9);
+    fontItalic=new Font("Arial",Font.ITALIC,9);
+    if (hasKeywords) {
+      keywordRulesAttributed=new AttributedString(keywordRulesString);
+      keywordRulesAttributed.addAttribute(TextAttribute.FONT,font);
+    }
+    attributedRules.clear();
+    for (    TextboxRule rule : textboxRules) {
+      AttributedString attributed=rule.generateAttributedString(font,fontItalic);
+      attributedRules.add(attributed);
+    }
+    remaining=h;
+    if (hasKeywords) {
+      remaining-=drawSingleRule(g,keywordRulesAttributed,null,0,0,w,remaining,false);
+    }
+    for (    TextboxRule rule : textboxRules) {
+      AttributedString attributed=rule.generateAttributedString(font,fontItalic);
+      attributedRules.add(attributed);
+      remaining-=drawSingleRule(g,attributed,rule,0,0,w,remaining,false);
+      if (remaining < 0) {
+        useSmallFont=true;
+        break;
+      }
+    }
+  }
+  int spacing;
+  if (remaining <= 0) {
+    spacing=0;
+  }
+ else {
+    spacing=(int)(remaining / (hasKeywords ? (textboxRules.size() + 2) : (textboxRules.size() + 1)));
+  }
+  loyaltyAbilityColorToggle=false;
+  g.setColor(Color.black);
+  int curY=y + spacing;
+  if (hasKeywords) {
+    int adv=drawSingleRule(g,keywordRulesAttributed,null,x,curY,w,h,true);
+    curY+=adv + spacing;
+    h-=adv;
+  }
+  for (int i=0; i < textboxRules.size(); ++i) {
+    TextboxRule rule=textboxRules.get(i);
+    AttributedString attributedRule=attributedRules.get(i);
+    int adv=drawSingleRule(g,attributedRule,rule,x,curY,w,h,true);
+    curY+=adv + spacing;
+    h-=adv;
+    if (h < 0) {
+      break;
+    }
+  }
+}
