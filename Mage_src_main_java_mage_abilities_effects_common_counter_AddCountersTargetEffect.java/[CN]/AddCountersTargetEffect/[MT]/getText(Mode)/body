@@ -15,15 +15,18 @@
     sb.append("s");
   }
   sb.append(" on ");
-  if (mode.getTargets().size() > 0) {
-    String targetName=mode.getTargets().get(0).getTargetName();
-    if (!targetName.startsWith("another")) {
-      sb.append("target ");
-    }
-    sb.append(targetName);
+  Target target=mode.getTargets().get(0);
+  if (target.getNumberOfTargets() == 0) {
+    sb.append("up to ");
+  }
+  if (target.getMaxNumberOfTargets() > 1 || target.getNumberOfTargets() == 0) {
+    sb.append(target.getMaxNumberOfTargets()).append(" target ").append(target.getTargetName());
   }
  else {
-    sb.append("it");
+    if (!target.getTargetName().startsWith("another")) {
+      sb.append("target ");
+    }
+    sb.append(target.getTargetName());
   }
   if (amount.getMessage().length() > 0) {
     sb.append(" for each ").append(amount.getMessage());
