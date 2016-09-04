@@ -5,10 +5,10 @@
     int actualDamage=event.getAmount();
     if (actualDamage > 0) {
       int countersToRemove=actualDamage;
-      if (countersToRemove > getCounters().getCount(CounterType.LOYALTY)) {
-        countersToRemove=getCounters().getCount(CounterType.LOYALTY);
+      if (countersToRemove > getCounters(game).getCount(CounterType.LOYALTY)) {
+        countersToRemove=getCounters(game).getCount(CounterType.LOYALTY);
       }
-      getCounters().removeCounter(CounterType.LOYALTY,countersToRemove);
+      getCounters(game).removeCounter(CounterType.LOYALTY,countersToRemove);
       game.fireEvent(new DamagedPlaneswalkerEvent(objectId,sourceId,controllerId,actualDamage,combat));
       return actualDamage;
     }
