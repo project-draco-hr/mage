@@ -4,9 +4,20 @@
   TFile outputFile=null;
   try {
     filePath.append(Constants.IO.imageBaseDir);
-    filePath.append(card.hashCode()).append(".").append(card.getName().replace(":","").replace("//","-")).append(".jpg");
-    temporaryFile=new File(filePath.toString());
-    String imagePath=CardImageUtils.generateImagePath(card);
+    if (!useSpecifiedPaths && card != null) {
+      filePath.append(card.hashCode()).append(".").append(card.getName().replace(":","").replace("//","-")).append(".jpg");
+      temporaryFile=new File(filePath.toString());
+    }
+    String imagePath;
+    if (useSpecifiedPaths) {
+      imagePath=CardImageUtils.getTokenBasePath();
+      imagePath+=actualFilename;
+      String tmpFile=filePath + actualFilename + ".2";
+      temporaryFile=new File(tmpFile.toString());
+    }
+ else {
+      imagePath=CardImageUtils.generateImagePath(card);
+    }
     outputFile=new TFile(imagePath);
     if (!outputFile.exists()) {
       outputFile.getParentFile().mkdirs();
@@ -47,7 +58,7 @@ synchronized (sync) {
       }
        out.flush();
       out.close();
-      if (card.isTwoFacedCard()) {
+      if (card != null && card.isTwoFacedCard()) {
         BufferedImage image=ImageIO.read(temporaryFile);
         if (image.getHeight() == 470) {
           BufferedImage renderedImage=new BufferedImage(265,370,BufferedImage.TYPE_INT_RGB);
@@ -72,9 +83,11 @@ synchronized (sync) {
       }
     }
  else {
-      logger.warn("Image download for " + card.getName() + (!card.getDownloadName().equals(card.getName()) ? " downloadname: " + card.getDownloadName() : "")+ "("+ card.getSet()+ ") failed - responseCode: "+ responseCode+ " url: "+ url.toString());
+      if (card != null) {
+        logger.warn("Image download for " + card.getName() + (!card.getDownloadName().equals(card.getName()) ? " downloadname: " + card.getDownloadName() : "")+ "("+ card.getSet()+ ") failed - responseCode: "+ responseCode+ " url: "+ url.toString());
+      }
       if (logger.isDebugEnabled()) {
-        logger.debug("Return ed HTML ERROR:\n" + convertStreamToString(((HttpURLConnection)httpConn).getErrorStream()));
+        logger.debug("Returned HTML ERROR:\n" + convertStreamToString(((HttpURLConnection)httpConn).getErrorStream()));
       }
     }
   }
