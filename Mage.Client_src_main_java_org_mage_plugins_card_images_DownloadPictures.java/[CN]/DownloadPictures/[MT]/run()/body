@@ -48,15 +48,31 @@ url=cardImageSource.generateTokenUrl(card);
  else {
 url=cardImageSource.generateURL(card);
 }
-if (url != null) {
-Runnable task=new DownloadTask(card,new URL(url),cardsToDownload.size());
-executor.execute(task);
+if (url == null) {
+String imageRef=cardImageSource.getNextHttpImageUrl();
+String fileName=cardImageSource.getFileForHttpImage(imageRef);
+if (imageRef != null && fileName != null) {
+imageRef=cardImageSource.getSourceName() + imageRef;
+try {
+  URL imageUrl=new URL(imageRef);
+  Runnable task=new DownloadTask(imageUrl,fileName,1);
+  executor.execute(task);
+}
+ catch (Exception ex) {
+}
 }
  else {
-logger.info("Card not available on " + cardImageSource.getSourceName() + ": "+ card.getName()+ " ("+ card.getSet()+ ")");
+if (card != null) {
+  logger.info("Card not available on " + cardImageSource.getSourceName() + ": "+ card.getName()+ " ("+ card.getSet()+ ")");
 synchronized (sync) {
-update(cardIndex + 1,cardsToDownload.size());
+    update(cardIndex + 1,cardsToDownload.size());
+  }
 }
+}
+}
+ else if (url != null) {
+Runnable task=new DownloadTask(card,new URL(url),cardsToDownload.size());
+executor.execute(task);
 }
 }
  catch (Exception ex) {
