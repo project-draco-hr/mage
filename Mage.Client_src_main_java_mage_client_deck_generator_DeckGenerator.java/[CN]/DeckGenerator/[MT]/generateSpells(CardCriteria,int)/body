@@ -2,14 +2,13 @@
   List<CardInfo> cardPool=CardRepository.instance.findCards(criteria);
   int retrievedCount=cardPool.size();
   List<DeckGeneratorCMC.CMC> deckCMCs=genPool.getCMCsForSpellCount(spellCount);
-  Random random=new Random();
   int count=0;
   int reservesAdded=0;
   boolean added;
   if (retrievedCount > 0 && retrievedCount >= spellCount) {
     int tries=0;
     while (count < spellCount) {
-      Card card=cardPool.get(random.nextInt(retrievedCount)).getMockCard();
+      Card card=cardPool.get(RandomUtil.nextInt(retrievedCount)).getMockCard();
       if (genPool.isValidSpellCard(card)) {
         int cardCMC=card.getManaCost().convertedManaCost();
         for (        DeckGeneratorCMC.CMC deckCMC : deckCMCs) {

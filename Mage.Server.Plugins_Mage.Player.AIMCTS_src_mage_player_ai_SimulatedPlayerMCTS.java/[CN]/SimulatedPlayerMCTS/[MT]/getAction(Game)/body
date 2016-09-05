@@ -6,7 +6,7 @@
       ability=playables.get(0);
     }
  else {
-      ability=playables.get(rnd.nextInt(playables.size()));
+      ability=playables.get(RandomUtil.nextInt(playables.size()));
     }
     List<Ability> options=getPlayableOptions(ability,game);
     if (!options.isEmpty()) {
@@ -14,14 +14,14 @@
         ability=options.get(0);
       }
  else {
-        ability=options.get(rnd.nextInt(options.size()));
+        ability=options.get(RandomUtil.nextInt(options.size()));
       }
     }
     if (ability.getManaCosts().getVariableCosts().size() > 0) {
       int amount=getAvailableManaProducers(game).size() - ability.getManaCosts().convertedManaCost();
       if (amount > 0) {
         ability=ability.copy();
-        ability.getManaCostsToPay().add(new GenericManaCost(rnd.nextInt(amount)));
+        ability.getManaCostsToPay().add(new GenericManaCost(RandomUtil.nextInt(amount)));
       }
     }
     break;
