@@ -6,10 +6,9 @@
   if (!genPool.isMonoColoredDeck() && genDialog.useNonBasicLand()) {
     List<Card> landCards=genPool.filterLands(CardRepository.instance.findCards(criteria));
     int allCount=landCards.size();
-    Random random=new Random();
     if (allCount > 0) {
       while (countNonBasic < landsCount / 2) {
-        Card card=landCards.get(random.nextInt(allCount));
+        Card card=landCards.get(RandomUtil.nextInt(allCount));
         if (genPool.isValidLandCard(card)) {
           Card addedCard=card.copy();
           deckLands.add(addedCard);
