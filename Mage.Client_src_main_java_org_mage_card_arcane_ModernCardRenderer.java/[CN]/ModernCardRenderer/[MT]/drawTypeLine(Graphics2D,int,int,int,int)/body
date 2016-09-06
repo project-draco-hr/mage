@@ -21,7 +21,14 @@
     AttributedString str=new AttributedString(types);
     str.addAttribute(TextAttribute.FONT,boxTextFont);
     TextMeasurer measure=new TextMeasurer(str.getIterator(),g.getFontRenderContext());
-    TextLayout layout=measure.getLayout(0,measure.getLineBreakIndex(0,availableWidth));
+    int breakIndex=measure.getLineBreakIndex(0,availableWidth);
+    if (breakIndex < types.length()) {
+      str=new AttributedString(types);
+      str.addAttribute(TextAttribute.FONT,boxTextFontNarrow);
+      measure=new TextMeasurer(str.getIterator(),g.getFontRenderContext());
+      breakIndex=measure.getLineBreakIndex(0,availableWidth);
+    }
+    TextLayout layout=measure.getLayout(0,breakIndex);
     g.setColor(getBoxTextColor());
     layout.draw(g,x,y + boxTextOffset + boxTextHeight - 1);
   }
