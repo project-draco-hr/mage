@@ -24,7 +24,8 @@
     for (    Card card : game.getCards()) {
       if (card.getOwnerId().equals(player.getId()) && !card.isCopy() && !player.getSideboard().contains(card.getId())&& !cards.contains(card)) {
         if (card.getId().equals(player.getCommanderId())) {
-          card.moveToZone(Zone.COMMAND,null,game,true);
+          game.addCommander(new Commander(card));
+          game.setZone(card.getId(),Zone.COMMAND);
         }
  else {
           player.getLibrary().putOnTop(card,game);
