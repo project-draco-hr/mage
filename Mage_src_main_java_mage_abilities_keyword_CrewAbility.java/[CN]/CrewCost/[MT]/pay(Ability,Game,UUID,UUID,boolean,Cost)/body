@@ -1,0 +1,14 @@
+{
+  Target target=new TargetControlledCreaturePermanent(0,Integer.MAX_VALUE,filter,true);
+  if (target.choose(Outcome.Tap,controllerId,sourceId,game)) {
+    int sumPower=0;
+    for (    UUID targetId : target.getTargets()) {
+      Permanent permanent=game.getPermanent(targetId);
+      if (permanent != null && permanent.tap(game)) {
+        sumPower+=permanent.getPower().getValue();
+      }
+    }
+    paid=sumPower >= value;
+  }
+  return paid;
+}
