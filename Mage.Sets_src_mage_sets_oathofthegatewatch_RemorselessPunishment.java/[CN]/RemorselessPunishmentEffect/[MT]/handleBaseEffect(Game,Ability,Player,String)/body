@@ -1,14 +1,12 @@
 {
   if (opponent.getHand().size() > 1) {
-    MessageToClient mtc=new MessageToClient("Discards two cards to prevent to lose 5 life?","If you want to sacrifice a creature or planeswalker instead click \"No\". (Iteration " + iteration + ")");
-    if (opponent.chooseUse(outcome,mtc,source,game)) {
+    if (opponent.chooseUse(outcome,"Choose your " + iteration + " punishment.",null,"Discard two cards","Choose another option",source,game)) {
       opponent.discard(2,false,source,game);
       return;
     }
   }
   if (game.getBattlefield().contains(filter,opponent.getId(),1,game)) {
-    MessageToClient mtc=new MessageToClient("Sacrifice a creature or planeswalker?","If you don't sacrifice a creature or planeswalker, you lose 5 life instead. (Iteration " + iteration + ")");
-    if (opponent.chooseUse(outcome,mtc,source,game)) {
+    if (opponent.chooseUse(outcome,"Choose your " + iteration + " punishment.",null,"Sacrifice a creature or planeswalker","Lose 5 life",source,game)) {
       TargetPermanent target=new TargetPermanent(1,1,filter,true);
       if (target.choose(Outcome.Sacrifice,opponent.getId(),source.getId(),game)) {
         for (        UUID targetId : target.getTargets()) {
