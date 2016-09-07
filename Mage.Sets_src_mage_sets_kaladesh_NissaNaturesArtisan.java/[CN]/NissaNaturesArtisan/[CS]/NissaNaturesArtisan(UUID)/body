@@ -1,0 +1,13 @@
+{
+  super(ownerId,270,"Nissa, Nature's Artisan",Rarity.MYTHIC,new CardType[]{CardType.PLANESWALKER},"{4}{G}{G}");
+  this.expansionSetCode="KLD";
+  this.subtype.add("Nissa");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(5));
+  this.addAbility(new LoyaltyAbility(new GainLifeEffect(3),3));
+  this.addAbility(new LoyaltyAbility(new NissaNaturesArtisanEffect(),-4));
+  Effect effect=new BoostControlledEffect(5,5,Duration.EndOfTurn);
+  effect.setText("Creature you control get +5/+5");
+  LoyaltyAbility ability=new LoyaltyAbility(effect,-12);
+  ability.addEffect(new GainAbilityControlledEffect(TrampleAbility.getInstance(),Duration.EndOfTurn));
+  this.addAbility(ability);
+}
