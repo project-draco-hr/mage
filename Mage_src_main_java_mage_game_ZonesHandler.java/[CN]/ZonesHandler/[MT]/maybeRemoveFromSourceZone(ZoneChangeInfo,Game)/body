@@ -1,0 +1,79 @@
+{
+  if (info instanceof ZoneChangeInfo.Unmelded) {
+    ZoneChangeInfo.Unmelded unmelded=(ZoneChangeInfo.Unmelded)info;
+    MeldCard meld=game.getMeldCard(info.event.getTargetId());
+    for (Iterator<ZoneChangeInfo> itr=unmelded.subInfo.iterator(); itr.hasNext(); ) {
+      ZoneChangeInfo subInfo=itr.next();
+      if (!maybeRemoveFromSourceZone(subInfo,game)) {
+        itr.remove();
+      }
+ else {
+        if (subInfo.event.getTargetId() == meld.getTopHalfCard().getId()) {
+          meld.setTopLastZoneChangeCounter(meld.getTopHalfCard().getZoneChangeCounter(game));
+        }
+ else         if (subInfo.event.getTargetId() == meld.getBottomHalfCard().getId()) {
+          meld.setBottomLastZoneChangeCounter(meld.getBottomHalfCard().getZoneChangeCounter(game));
+        }
+      }
+    }
+    if (unmelded.subInfo.isEmpty()) {
+      return false;
+    }
+    meld.updateZoneChangeCounter(game);
+    return true;
+  }
+  ZoneChangeEvent event=info.event;
+  Card card=game.getCard(event.getTargetId());
+  boolean success=false;
+  if (info.faceDown) {
+    card.setFaceDown(true,game);
+  }
+  if (!game.replaceEvent(event)) {
+    Zone fromZone=event.getFromZone();
+    if (event.getToZone() == Zone.BATTLEFIELD) {
+      Permanent permanent;
+      if (card instanceof MeldCard) {
+        permanent=new PermanentMeld(card,event.getPlayerId(),game);
+      }
+ else {
+        permanent=new PermanentCard(card,event.getPlayerId(),game);
+      }
+      game.getPermanentsEntering().put(permanent.getId(),permanent);
+      card.checkForCountersToAdd(permanent,game);
+      permanent.setTapped(info instanceof ZoneChangeInfo.Battlefield && ((ZoneChangeInfo.Battlefield)info).tapped);
+      permanent.setFaceDown(info.faceDown,game);
+      if (info.faceDown) {
+        card.setFaceDown(false,game);
+      }
+      game.setScopeRelevant(true);
+      game.getContinuousEffects().setController(permanent.getId(),permanent.getControllerId());
+      if (permanent.entersBattlefield(event.getSourceId(),game,fromZone,true) && card.removeFromZone(game,fromZone,event.getSourceId())) {
+        success=true;
+        event.setTarget(permanent);
+      }
+ else {
+        game.getContinuousEffects().setController(permanent.getId(),permanent.getOwnerId());
+        game.getPermanentsEntering().remove(permanent.getId());
+      }
+      game.setScopeRelevant(false);
+    }
+ else     if (event.getTarget() != null) {
+      card.setFaceDown(info.faceDown,game);
+      Permanent target=event.getTarget();
+      success=game.getPlayer(target.getControllerId()).removeFromBattlefield(target,game) && target.removeFromZone(game,fromZone,event.getSourceId());
+    }
+ else {
+      card.setFaceDown(info.faceDown,game);
+      success=card.removeFromZone(game,fromZone,event.getSourceId());
+    }
+  }
+  if (success) {
+    if (event.getToZone() == Zone.BATTLEFIELD && event.getTarget() != null) {
+      event.getTarget().updateZoneChangeCounter(game);
+    }
+ else {
+      card.updateZoneChangeCounter(game);
+    }
+  }
+  return success;
+}

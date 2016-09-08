@@ -1,13 +1,6 @@
 {
   Card mainCard=getMainCard();
   ZoneChangeEvent event=new ZoneChangeEvent(mainCard.getId(),ability.getId(),controllerId,fromZone,Zone.STACK);
-  if (!game.replaceEvent(event)) {
-    mainCard.removeFromZone(game,fromZone,ability.getSourceId());
-    game.getStack().push(new Spell(this,ability.copy(),controllerId,event.getFromZone()));
-    updateZoneChangeCounter(game);
-    setZone(event.getToZone(),game);
-    game.fireEvent(event);
-    return game.getState().getZone(mainCard.getId()) == Zone.STACK;
-  }
-  return false;
+  ZoneChangeInfo.Stack info=new ZoneChangeInfo.Stack(event,new Spell(this,ability.copy(),controllerId,event.getFromZone()));
+  return ZonesHandler.cast(info,game);
 }

@@ -1,61 +1,15 @@
 {
   Zone fromZone=game.getState().getZone(objectId);
   ZoneChangeEvent event=new ZoneChangeEvent(this.objectId,sourceId,ownerId,fromZone,toZone,appliedEffects);
-  if (!game.replaceEvent(event)) {
-    removeFromZone(game,fromZone,sourceId);
-    setFaceDown(false,game);
-    updateZoneChangeCounter(game);
-switch (event.getToZone()) {
-case GRAVEYARD:
-      game.getPlayer(ownerId).putInGraveyard(this,game);
-    break;
-case HAND:
-  game.getPlayer(ownerId).getHand().add(this);
-break;
-case STACK:
-game.getStack().push(new Spell(this,this.getSpellAbility().copy(),ownerId,event.getFromZone()));
-break;
-case EXILED:
-game.getExile().getPermanentExile().add(this);
-break;
-case COMMAND:
-game.addCommander(new Commander(this));
-break;
-case LIBRARY:
-if (flag) {
-game.getPlayer(ownerId).getLibrary().putOnTop(this,game);
-}
+  ZoneChangeInfo zoneChangeInfo;
+  if (toZone == Zone.LIBRARY) {
+    zoneChangeInfo=new ZoneChangeInfo.Library(event,flag);
+  }
+ else   if (toZone == Zone.BATTLEFIELD) {
+    zoneChangeInfo=new ZoneChangeInfo.Battlefield(event,flag);
+  }
  else {
-game.getPlayer(ownerId).getLibrary().putOnBottom(this,game);
-}
-break;
-case BATTLEFIELD:
-PermanentCard permanent=new PermanentCard(this,event.getPlayerId(),game);
-game.addPermanent(permanent);
-game.setZone(objectId,Zone.BATTLEFIELD);
-game.setScopeRelevant(true);
-game.applyEffects();
-boolean entered=permanent.entersBattlefield(sourceId,game,event.getFromZone(),true);
-game.setScopeRelevant(false);
-game.applyEffects();
-if (entered) {
-if (flag) {
-permanent.setTapped(true);
-}
-event.setTarget(permanent);
-}
- else {
-return false;
-}
-break;
-default :
-Card sourceCard=game.getCard(sourceId);
-logger.fatal(new StringBuilder("Invalid to zone [").append(toZone).append("] for card [").append(this.getName()).append("] to zone [").append(toZone).append("] source [").append(sourceCard != null ? sourceCard.getName() : "null").append("]").toString());
-return false;
-}
-game.setZone(objectId,event.getToZone());
-game.addSimultaneousEvent(event);
-return game.getState().getZone(objectId) == toZone;
-}
-return false;
+    zoneChangeInfo=new ZoneChangeInfo(event);
+  }
+  return ZonesHandler.moveCard(zoneChangeInfo,game);
 }

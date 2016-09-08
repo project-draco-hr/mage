@@ -1,32 +1,5 @@
 {
   ZoneChangeEvent event=new ZoneChangeEvent(this.objectId,sourceId,controllerId,fromZone,Zone.BATTLEFIELD,appliedEffects);
-  if (facedown) {
-    this.setFaceDown(true,game);
-  }
-  if (!game.replaceEvent(event)) {
-    if (facedown) {
-      this.setFaceDown(false,game);
-    }
-    removeFromZone(game,fromZone,sourceId);
-    updateZoneChangeCounter(game);
-    PermanentCard permanent=new PermanentCard(this,event.getPlayerId(),game);
-    game.getContinuousEffects().setController(objectId,event.getPlayerId());
-    game.addPermanent(permanent);
-    setZone(Zone.BATTLEFIELD,game);
-    checkForCountersToAdd(permanent,game);
-    game.setScopeRelevant(true);
-    permanent.setTapped(tapped);
-    permanent.setFaceDown(facedown,game);
-    boolean entered=permanent.entersBattlefield(sourceId,game,event.getFromZone(),true);
-    game.setScopeRelevant(false);
-    game.applyEffects();
-    if (entered) {
-      game.addSimultaneousEvent(new ZoneChangeEvent(permanent,event.getPlayerId(),fromZone,Zone.BATTLEFIELD));
-      return true;
-    }
-  }
-  if (facedown) {
-    this.setFaceDown(false,game);
-  }
-  return false;
+  ZoneChangeInfo.Battlefield info=new ZoneChangeInfo.Battlefield(event,faceDown,tapped);
+  return ZonesHandler.moveCard(info,game);
 }
