@@ -1,0 +1,17 @@
+{
+  if (zoneChangeCounter == 0) {
+    Card card=game.getCard(source.getSourceId());
+    if (card != null) {
+      zoneChangeCounter=card.getZoneChangeCounter(game);
+      if (previousZone) {
+        zoneChangeCounter--;
+      }
+    }
+  }
+  int number=0;
+  Integer sweepNumber=(Integer)game.getState().getValue(new StringBuilder("ParadoxicalOutcomeEffect").append(source.getSourceId()).append(zoneChangeCounter).toString());
+  if (sweepNumber != null) {
+    number=sweepNumber;
+  }
+  return number;
+}
