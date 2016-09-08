@@ -19,19 +19,23 @@
  else {
     nameStr=cardView.getName();
   }
-  AttributedString str=new AttributedString(nameStr);
-  str.addAttribute(TextAttribute.FONT,boxTextFont);
-  TextMeasurer measure=new TextMeasurer(str.getIterator(),g.getFontRenderContext());
-  int breakIndex=measure.getLineBreakIndex(0,availableWidth);
-  if (breakIndex < nameStr.length()) {
-    str=new AttributedString(nameStr);
-    str.addAttribute(TextAttribute.FONT,boxTextFontNarrow);
-    measure=new TextMeasurer(str.getIterator(),g.getFontRenderContext());
-    breakIndex=measure.getLineBreakIndex(0,availableWidth);
+  if (!nameStr.isEmpty()) {
+    AttributedString str=new AttributedString(nameStr);
+    str.addAttribute(TextAttribute.FONT,boxTextFont);
+    TextMeasurer measure=new TextMeasurer(str.getIterator(),g.getFontRenderContext());
+    int breakIndex=measure.getLineBreakIndex(0,availableWidth);
+    if (breakIndex < nameStr.length()) {
+      str=new AttributedString(nameStr);
+      str.addAttribute(TextAttribute.FONT,boxTextFontNarrow);
+      measure=new TextMeasurer(str.getIterator(),g.getFontRenderContext());
+      breakIndex=measure.getLineBreakIndex(0,availableWidth);
+    }
+    if (breakIndex > 0) {
+      TextLayout layout=measure.getLayout(0,breakIndex);
+      g.setColor(getBoxTextColor());
+      layout.draw(g,x,y + boxTextOffset + boxTextHeight - 1);
+    }
   }
-  TextLayout layout=measure.getLayout(0,breakIndex);
-  g.setColor(getBoxTextColor());
-  layout.draw(g,x,y + boxTextOffset + boxTextHeight - 1);
   if (!cardView.isAbility() && !cardView.isFaceDown()) {
     ManaSymbols.draw(g,manaCostString,x + w - manaCostWidth,y + boxTextOffset,boxTextHeight);
   }

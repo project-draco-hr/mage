@@ -28,8 +28,10 @@
       measure=new TextMeasurer(str.getIterator(),g.getFontRenderContext());
       breakIndex=measure.getLineBreakIndex(0,availableWidth);
     }
-    TextLayout layout=measure.getLayout(0,breakIndex);
-    g.setColor(getBoxTextColor());
-    layout.draw(g,x,y + boxTextOffset + boxTextHeight - 1);
+    if (breakIndex > 0) {
+      TextLayout layout=measure.getLayout(0,breakIndex);
+      g.setColor(getBoxTextColor());
+      layout.draw(g,x,y + boxTextOffset + boxTextHeight - 1);
+    }
   }
 }

@@ -4,7 +4,7 @@
   }
   int curY=cardHeight - (int)(0.03f * cardHeight);
   int partWidth=(int)Math.max(30,0.20f * cardWidth);
-  if (cardView.getCardTypes().contains(CardType.CREATURE)) {
+  if (cardView.getCardTypes().contains(CardType.CREATURE) || cardView.getSubTypes().contains("Vehicle")) {
     int x=cardWidth - borderWidth - partWidth;
     CardRendererUtils.drawRoundedBox(g,x,curY - boxHeight,partWidth,boxHeight,contentInset,borderPaint,fill);
     g.setColor(new Color(0,0,0,150));
@@ -14,8 +14,6 @@
     String ptText=cardView.getPower() + "/" + cardView.getToughness();
     int ptTextWidth=g.getFontMetrics().stringWidth(ptText);
     g.drawString(ptText,x + (partWidth - ptTextWidth) / 2,curY - ptTextOffset - 1);
-    if ((cardView instanceof PermanentView) && ((PermanentView)cardView).getDamage() > 0) {
-    }
     curY-=boxHeight;
   }
   if (cardView.getCardTypes().contains(CardType.PLANESWALKER) && (cardView instanceof PermanentView || !cardView.getStartingLoyalty().equals("0"))) {

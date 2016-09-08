@@ -1,0 +1,23 @@
+{
+  Font font=new Font("Arial",Font.PLAIN,fontSize);
+  Font fontItalic=new Font("Arial",Font.ITALIC,fontSize);
+  List<AttributedString> attributedRules=new ArrayList<>();
+  boolean fits=true;
+  int remaining=h;
+  for (  TextboxRule rule : rules) {
+    AttributedString attributed=rule.generateAttributedString(font,fontItalic);
+    attributedRules.add(attributed);
+    remaining-=drawSingleRule(g,attributed,rule,0,0,w,remaining,false);
+    if (remaining < 0) {
+      fits=false;
+      break;
+    }
+  }
+  RuleLayout layout=new RuleLayout();
+  layout.attributedRules=attributedRules;
+  layout.remainingHeight=remaining;
+  layout.fits=fits;
+  layout.font=font;
+  layout.fontItalic=fontItalic;
+  return layout;
+}
