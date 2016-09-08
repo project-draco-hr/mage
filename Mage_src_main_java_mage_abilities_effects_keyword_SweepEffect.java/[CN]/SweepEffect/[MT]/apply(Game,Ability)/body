@@ -1,9 +1,15 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    FilterPermanent filter=new FilterControlledLandPermanent(new StringBuilder("any number of ").append(sweepSubtype).append("s you control").toString());
-    filter.add(new SubtypePredicate(sweepSubtype));
-    Target target=new TargetPermanent(0,Integer.MAX_VALUE,filter,true);
+    FilterPermanent filter;
+    if (setFilter == null) {
+      filter=new FilterControlledLandPermanent(new StringBuilder("any number of ").append(sweepSubtype).append("s you control").toString());
+      filter.add(new SubtypePredicate(sweepSubtype));
+    }
+ else {
+      filter=setFilter;
+    }
+    Target target=new TargetPermanent(0,Integer.MAX_VALUE,filter,notTarget);
     if (controller.chooseTarget(outcome,target,source,game)) {
       game.getState().setValue(CardUtil.getCardZoneString("sweep",source.getSourceId(),game),target.getTargets().size());
       controller.moveCards(new CardsImpl(target.getTargets()),Zone.HAND,source,game);

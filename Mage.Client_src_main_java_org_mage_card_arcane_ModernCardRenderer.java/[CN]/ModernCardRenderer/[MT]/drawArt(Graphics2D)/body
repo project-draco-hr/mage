@@ -1,8 +1,24 @@
 {
   if (artImage != null && !cardView.isFaceDown()) {
-    int imgWidth=artImage.getWidth();
-    int imgHeight=artImage.getHeight();
-    BufferedImage subImg=artImage.getSubimage((int)(.079 * imgWidth),(int)(.11 * imgHeight),(int)(.84 * imgWidth),(int)(.42 * imgHeight));
-    g.drawImage(subImg,totalContentInset + 1,totalContentInset + boxHeight,contentWidth - 2,typeLineY - totalContentInset - boxHeight,null);
+    Rectangle2D artRect=getArtRect();
+    double fullCardImgWidth=artImage.getWidth();
+    double fullCardImgHeight=artImage.getHeight();
+    double artWidth=artRect.getWidth() * fullCardImgWidth;
+    double artHeight=artRect.getHeight() * fullCardImgHeight;
+    double targetWidth=contentWidth - 2;
+    double targetHeight=typeLineY - totalContentInset - boxHeight;
+    double targetAspect=targetWidth / targetHeight;
+    if (targetAspect * artHeight < artWidth) {
+      artWidth=targetAspect * artHeight;
+    }
+ else {
+      artHeight=artWidth / targetAspect;
+    }
+    try {
+      BufferedImage subImg=artImage.getSubimage((int)(artRect.getX() * fullCardImgWidth),(int)(artRect.getY() * fullCardImgHeight),(int)artWidth,(int)artHeight);
+      g.drawImage(subImg,totalContentInset + 1,totalContentInset + boxHeight,(int)targetWidth,(int)targetHeight,null);
+    }
+ catch (    RasterFormatException e) {
+    }
   }
 }
