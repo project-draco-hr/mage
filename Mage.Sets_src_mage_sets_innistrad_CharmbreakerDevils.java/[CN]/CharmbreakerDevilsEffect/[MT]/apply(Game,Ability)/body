@@ -5,8 +5,7 @@
     filter.add(Predicates.or(new CardTypePredicate(CardType.INSTANT),new CardTypePredicate(CardType.SORCERY)));
     Card[] cards=player.getGraveyard().getCards(filter,game).toArray(new Card[0]);
     if (cards.length > 0) {
-      Random rnd=new Random();
-      Card card=cards[rnd.nextInt(cards.length)];
+      Card card=cards[RandomUtil.nextInt(cards.length)];
       card.moveToZone(Zone.HAND,source.getSourceId(),game,true);
       game.informPlayers(new StringBuilder("Charmbreaker Devils: ").append(card.getName()).append(" returned to the hand of ").append(player.getLogName()).toString());
       return true;
