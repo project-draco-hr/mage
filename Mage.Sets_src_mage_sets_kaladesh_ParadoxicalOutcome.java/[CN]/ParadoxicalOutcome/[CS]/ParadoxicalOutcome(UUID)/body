@@ -1,0 +1,10 @@
+{
+  super(ownerId,60,"Paradoxical Outcome",Rarity.RARE,new CardType[]{CardType.INSTANT},"{3}{U}");
+  this.expansionSetCode="KLD";
+  FilterPermanent filter=new FilterControlledPermanent(new StringBuilder("any number of of target nonland, nontoken permanents you control").toString());
+  filter.add(Predicates.not(new CardTypePredicate(CardType.LAND)));
+  filter.add(Predicates.not(new TokenPredicate()));
+  this.getSpellAbility().addEffect(new SweepEffect(filter,"nonland, nontoken permanents "));
+  DynamicValue paradoxicalOutcomeValue=new SweepNumber("nonland, nontoken permanents ",false);
+  this.getSpellAbility().addEffect(new DrawCardSourceControllerEffect(paradoxicalOutcomeValue));
+}
