@@ -1,0 +1,25 @@
+{
+  for (ListIterator<ZoneChangeInfo> itr=zoneChangeInfos.listIterator(); itr.hasNext(); ) {
+    ZoneChangeInfo info=itr.next();
+    MeldCard card=game.getMeldCard(info.event.getTargetId());
+    if (card != null && !card.isMelded() && !card.isCopy()) {
+      ZoneChangeInfo.Unmelded unmelded=new ZoneChangeInfo.Unmelded(info,game);
+      if (unmelded.subInfo.isEmpty()) {
+        itr.remove();
+      }
+ else {
+        itr.set(unmelded);
+      }
+    }
+  }
+  for (Iterator<ZoneChangeInfo> itr=zoneChangeInfos.iterator(); itr.hasNext(); ) {
+    if (!maybeRemoveFromSourceZone(itr.next(),game)) {
+      itr.remove();
+    }
+  }
+  for (  ZoneChangeInfo zoneChangeInfo : zoneChangeInfos) {
+    placeInDestinationZone(zoneChangeInfo,game);
+    game.addSimultaneousEvent(zoneChangeInfo.event);
+  }
+  return zoneChangeInfos;
+}

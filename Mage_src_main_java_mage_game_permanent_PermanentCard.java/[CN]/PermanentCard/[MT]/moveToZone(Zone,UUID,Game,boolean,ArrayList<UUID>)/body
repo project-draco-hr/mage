@@ -3,41 +3,14 @@
   Player controller=game.getPlayer(controllerId);
   if (controller != null) {
     ZoneChangeEvent event=new ZoneChangeEvent(this,sourceId,controllerId,fromZone,toZone,appliedEffects);
-    if (!game.replaceEvent(event)) {
-      controller.removeFromBattlefield(this,game);
-      Player owner=game.getPlayer(ownerId);
-      game.rememberLKI(objectId,Zone.BATTLEFIELD,this);
-      if (owner != null) {
-        card.updateZoneChangeCounter(game);
-switch (event.getToZone()) {
-case GRAVEYARD:
-          owner.putInGraveyard(card,game,!flag);
-        break;
-case HAND:
-      owner.getHand().add(card);
-    break;
-case EXILED:
-  game.getExile().getPermanentExile().add(card);
-break;
-case COMMAND:
-game.addCommander(new Commander(card));
-break;
-case LIBRARY:
-if (flag) {
-owner.getLibrary().putOnTop(card,game);
-}
+    ZoneChangeInfo zoneChangeInfo;
+    if (toZone == Zone.LIBRARY) {
+      zoneChangeInfo=new ZoneChangeInfo.Library(event,flag);
+    }
  else {
-owner.getLibrary().putOnBottom(card,game);
-}
-break;
-case BATTLEFIELD:
-break;
-}
-game.setZone(objectId,event.getToZone());
-game.addSimultaneousEvent(event);
-return game.getState().getZone(objectId) == toZone;
-}
-}
-}
-return false;
+      zoneChangeInfo=new ZoneChangeInfo(event);
+    }
+    return ZonesHandler.moveCard(zoneChangeInfo,game);
+  }
+  return false;
 }

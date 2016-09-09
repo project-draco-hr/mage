@@ -1,0 +1,18 @@
+{
+  if (isCopy()) {
+    return super.removeFromZone(game,fromZone,sourceId);
+  }
+  if (isMelded() && fromZone == Zone.BATTLEFIELD) {
+    Permanent permanent=game.getPermanent(objectId);
+    return permanent != null && permanent.removeFromZone(game,fromZone,sourceId);
+  }
+  boolean topRemoved=hasTopHalf(game) && topHalfCard.removeFromZone(game,fromZone,sourceId);
+  if (!topRemoved) {
+    halves.remove(topHalfCard);
+  }
+  boolean bottomRemoved=hasBottomHalf(game) && bottomHalfCard.removeFromZone(game,fromZone,sourceId);
+  if (!bottomRemoved) {
+    halves.remove(bottomHalfCard);
+  }
+  return topRemoved || bottomRemoved;
+}

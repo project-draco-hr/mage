@@ -1,0 +1,15 @@
+{
+  if (isCopy() || !isMelded()) {
+    super.updateZoneChangeCounter(game);
+    return;
+  }
+  game.getState().updateZoneChangeCounter(objectId);
+  if (topLastZoneChangeCounter == topHalfCard.getZoneChangeCounter(game) && halves.contains(topHalfCard.getId())) {
+    topHalfCard.updateZoneChangeCounter(game);
+    topLastZoneChangeCounter=topHalfCard.getZoneChangeCounter(game);
+  }
+  if (bottomLastZoneChangeCounter == bottomHalfCard.getZoneChangeCounter(game) && halves.contains(bottomHalfCard.getId())) {
+    bottomHalfCard.updateZoneChangeCounter(game);
+    bottomLastZoneChangeCounter=bottomHalfCard.getZoneChangeCounter(game);
+  }
+}
