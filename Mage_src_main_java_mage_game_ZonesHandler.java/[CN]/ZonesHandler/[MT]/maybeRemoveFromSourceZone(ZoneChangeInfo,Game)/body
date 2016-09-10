@@ -19,7 +19,7 @@
     if (unmelded.subInfo.isEmpty()) {
       return false;
     }
-    meld.updateZoneChangeCounter(game);
+    meld.updateZoneChangeCounter(game,unmelded.subInfo.get(unmelded.subInfo.size() - 1).event);
     return true;
   }
   ZoneChangeEvent event=info.event;
@@ -69,10 +69,10 @@
   }
   if (success) {
     if (event.getToZone() == Zone.BATTLEFIELD && event.getTarget() != null) {
-      event.getTarget().updateZoneChangeCounter(game);
+      event.getTarget().updateZoneChangeCounter(game,event);
     }
  else {
-      card.updateZoneChangeCounter(game);
+      card.updateZoneChangeCounter(game,event);
     }
   }
   return success;
