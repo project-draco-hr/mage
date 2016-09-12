@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Card card=controller.getLibrary().getFromTop(game);
+    if (card != null) {
+      controller.revealCards("Rashmi, Eternities Crafter",new CardsImpl(card),game);
+      Object cmcObject=this.getValue("RashmiEternitiesCrafterCMC");
+      if (cmcObject == null || card.getCardType().contains(CardType.LAND) || card.getConvertedManaCost() >= (int)cmcObject || !controller.chooseUse(Outcome.PlayForFree,"Cast " + card.getName() + " without paying its mana cost?",source,game) || !controller.cast(card.getSpellAbility(),game,true)) {
+        controller.moveCards(card,Zone.HAND,source,game);
+      }
+    }
+    return true;
+  }
+  return false;
+}

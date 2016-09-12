@@ -1,0 +1,15 @@
+{
+  super(ownerId,186,"Saheeli Rai",Rarity.MYTHIC,new CardType[]{CardType.PLANESWALKER},"{1}{U}{R}");
+  this.expansionSetCode="KLD";
+  this.subtype.add("Saheeli");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(3));
+  Effect effect=new ScryEffect(1);
+  effect.setText("Scry 1");
+  Ability ability=new LoyaltyAbility(effect,1);
+  ability.addEffect(new DamagePlayersEffect(1,TargetController.OPPONENT));
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new SaheeliRaiCreateTokenEffect(),-2);
+  ability.addTarget(new TargetControlledPermanent(filter));
+  this.addAbility(ability);
+  this.addAbility(new LoyaltyAbility(new SearchLibraryPutInPlayEffect(new SaheeliRaiTarget()),-7));
+}
