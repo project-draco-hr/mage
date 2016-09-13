@@ -3,8 +3,17 @@
     setupLinks();
   }
   for (  String key : copyUrlToImageDone.keySet()) {
-    if (copyUrlToImageDone.get(key) == false) {
-      copyUrlToImageDone.put(key,true);
+    if (copyUrlToImageDone.get(key) < maxTimes) {
+      copyUrlToImageDone.put(key,maxTimes);
+      return key;
+    }
+  }
+  if (maxTimes < 2) {
+    maxTimes++;
+  }
+  for (  String key : copyUrlToImageDone.keySet()) {
+    if (copyUrlToImageDone.get(key) < maxTimes) {
+      copyUrlToImageDone.put(key,maxTimes);
       return key;
     }
   }
