@@ -12,7 +12,7 @@
     if (useSpecifiedPaths) {
       imagePath=CardImageUtils.getTokenBasePath();
       imagePath+=actualFilename;
-      String tmpFile=filePath + actualFilename + ".2";
+      String tmpFile=filePath + "ADDTOTOK" + actualFilename;
       temporaryFile=new File(tmpFile.toString());
     }
  else {
@@ -83,7 +83,7 @@ synchronized (sync) {
       }
     }
  else {
-      if (card != null) {
+      if (card != null && !useSpecifiedPaths) {
         logger.warn("Image download for " + card.getName() + (!card.getDownloadName().equals(card.getName()) ? " downloadname: " + card.getDownloadName() : "")+ "("+ card.getSet()+ ") failed - responseCode: "+ responseCode+ " url: "+ url.toString());
       }
       if (logger.isDebugEnabled()) {
