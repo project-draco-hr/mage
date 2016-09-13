@@ -1,0 +1,28 @@
+{
+  if (line.length() == 0 || line.startsWith("#") || !line.contains("<Cards CatID")) {
+    return;
+  }
+  try {
+    Integer cardCount=Integer.parseInt(extractAttribute(line,"Quantity"));
+    String cardName=extractAttribute(line,"Name");
+    Boolean isSideboard="true".equals(extractAttribute(line,"Sideboard"));
+    CardInfo cardInfo=CardRepository.instance.findPreferedCoreExpansionCard(cardName,true);
+    if (cardInfo == null) {
+      sbMessage.append("Could not find card: '").append(cardName).append("' at line ").append(lineCount).append("\n");
+    }
+ else {
+      for (int i=0; i < cardCount; i++) {
+        DeckCardInfo deckCardInfo=new DeckCardInfo(cardInfo.getName(),cardInfo.getCardNumber(),cardInfo.getSetCode());
+        if (isSideboard) {
+          deckList.getSideboard().add(deckCardInfo);
+        }
+ else {
+          deckList.getCards().add(deckCardInfo);
+        }
+      }
+    }
+  }
+ catch (  NumberFormatException nfe) {
+    sbMessage.append("Invalid number: ").append(extractAttribute(line,"Quantity")).append(" at line ").append(lineCount).append("\n");
+  }
+}
