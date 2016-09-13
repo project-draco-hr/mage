@@ -6,7 +6,9 @@
   EntersTheBattlefieldEvent event=new EntersTheBattlefieldEvent(this,sourceId,getControllerId(),fromZone);
   if (!game.replaceEvent(event)) {
     if (fireEvent) {
-      game.addSimultaneousEvent(event);
+      for (int i=0; i < event.getAmount(); i++) {
+        game.addSimultaneousEvent(event);
+      }
     }
     return true;
   }
