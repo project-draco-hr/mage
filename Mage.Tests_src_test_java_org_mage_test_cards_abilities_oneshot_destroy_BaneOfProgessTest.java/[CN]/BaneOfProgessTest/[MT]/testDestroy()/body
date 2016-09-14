@@ -1,0 +1,15 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Crucible of Worlds");
+  addCard(Zone.BATTLEFIELD,playerA,"Island",6);
+  addCard(Zone.HAND,playerA,"Stolen Identity");
+  addCard(Zone.BATTLEFIELD,playerB,"Forest",6);
+  addCard(Zone.HAND,playerB,"Bane of Progress");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Stolen Identity","Crucible of Worlds");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Bane of Progress");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Stolen Identity",1);
+  assertPermanentCount(playerA,"Crucible of Worlds",0);
+  assertPermanentCount(playerB,"Bane of Progress",1);
+  assertPowerToughness(playerB,"Bane of Progress",4,4);
+}
