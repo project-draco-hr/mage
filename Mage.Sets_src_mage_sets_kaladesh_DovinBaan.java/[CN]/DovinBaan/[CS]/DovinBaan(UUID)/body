@@ -1,0 +1,18 @@
+{
+  super(ownerId,179,"Dovin Baan",Rarity.MYTHIC,new CardType[]{CardType.PLANESWALKER},"{2}{W}{U}");
+  this.expansionSetCode="KLD";
+  this.subtype.add("Dovin");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(3));
+  Effect effect=new BoostTargetEffect(-3,0,Duration.UntilYourNextTurn);
+  effect.setText("Until your next turn, up to one target creature gets -3/-0");
+  Ability ability=new LoyaltyAbility(effect,1);
+  ability.addTarget(new TargetCreaturePermanent(0,1));
+  ability.addEffect(new DovinBaanCantActivateAbilitiesEffect());
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new GainLifeEffect(2),-1);
+  effect=new DrawCardSourceControllerEffect(1);
+  effect.setText("and draw a card");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  this.addAbility(new LoyaltyAbility(new GetEmblemEffect(new DovinBaanEmblem()),-7));
+}

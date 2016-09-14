@@ -7,13 +7,11 @@
       if (!maybeRemoveFromSourceZone(subInfo,game)) {
         itr.remove();
       }
- else {
-        if (subInfo.event.getTargetId() == meld.getTopHalfCard().getId()) {
-          meld.setTopLastZoneChangeCounter(meld.getTopHalfCard().getZoneChangeCounter(game));
-        }
- else         if (subInfo.event.getTargetId() == meld.getBottomHalfCard().getId()) {
-          meld.setBottomLastZoneChangeCounter(meld.getBottomHalfCard().getZoneChangeCounter(game));
-        }
+ else       if (subInfo.event.getTargetId() == meld.getTopHalfCard().getId()) {
+        meld.setTopLastZoneChangeCounter(meld.getTopHalfCard().getZoneChangeCounter(game));
+      }
+ else       if (subInfo.event.getTargetId() == meld.getBottomHalfCard().getId()) {
+        meld.setBottomLastZoneChangeCounter(meld.getBottomHalfCard().getZoneChangeCounter(game));
       }
     }
     if (unmelded.subInfo.isEmpty()) {
@@ -25,6 +23,9 @@
   ZoneChangeEvent event=info.event;
   Card card=game.getCard(event.getTargetId());
   boolean success=false;
+  if (card == null) {
+    return success;
+  }
   if (info.faceDown) {
     card.setFaceDown(true,game);
   }

@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Card card=controller.getLibrary().getFromTop(game);
+    if (card != null) {
+      UUID exileZoneId=CardUtil.getCardExileZoneId(game,source);
+      card.setFaceDown(true,game);
+      controller.moveCardsToExile(card,source,game,false,exileZoneId,"Bomat Courier");
+      card.setFaceDown(true,game);
+      return true;
+    }
+  }
+  return false;
+}
