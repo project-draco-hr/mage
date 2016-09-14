@@ -21,7 +21,10 @@
     return true;
   }
   ZoneChangeEvent event=info.event;
-  Card card=game.getCard(event.getTargetId());
+  Card card=getTargetCard(game,event.getTargetId());
+  if (card == null) {
+    return false;
+  }
   boolean success=false;
   if (card == null) {
     return success;
@@ -35,6 +38,9 @@
       Permanent permanent;
       if (card instanceof MeldCard) {
         permanent=new PermanentMeld(card,event.getPlayerId(),game);
+      }
+ else       if (card instanceof Permanent) {
+        permanent=(Permanent)card;
       }
  else {
         permanent=new PermanentCard(card,event.getPlayerId(),game);
@@ -72,7 +78,7 @@
     if (event.getToZone() == Zone.BATTLEFIELD && event.getTarget() != null) {
       event.getTarget().updateZoneChangeCounter(game,event);
     }
- else {
+ else     if (!(card instanceof Permanent)) {
       card.updateZoneChangeCounter(game,event);
     }
   }

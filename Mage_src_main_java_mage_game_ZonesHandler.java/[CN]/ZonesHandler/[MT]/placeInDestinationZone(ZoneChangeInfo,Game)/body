@@ -13,7 +13,10 @@
   }
   ZoneChangeEvent event=info.event;
   Zone toZone=event.getToZone();
-  Card targetCard=game.getCard(event.getTargetId());
+  Card targetCard=getTargetCard(game,event.getTargetId());
+  if (targetCard == null) {
+    return;
+  }
   Cards cards;
   if (targetCard instanceof MeldCard) {
     cards=((MeldCard)targetCard).getHalves();
