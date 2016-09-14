@@ -9,6 +9,11 @@
       }
     }
     paid=sumPower >= value;
+    if (paid) {
+      for (      UUID targetId : target.getTargets()) {
+        game.fireEvent(GameEvent.getEvent(GameEvent.EventType.CREWED_VEHICLE,targetId,sourceId,controllerId));
+      }
+    }
   }
   return paid;
 }
