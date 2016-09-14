@@ -1,13 +1,13 @@
 {
   this.clear();
   if (costs.containsKey(mana)) {
-    ManaCosts<T> savedCosts=costs.get(mana);
+    ManaCosts<ManaCost> savedCosts=costs.get(mana);
     for (    ManaCost cost : savedCosts) {
-      this.add((T)cost.copy());
+      this.add(cost.copy());
     }
   }
  else {
-    if (mana == null || mana.length() == 0) {
+    if (mana == null || mana.isEmpty()) {
       return;
     }
     String[] symbols=mana.split("^\\{|\\}\\{|\\}$");
@@ -37,13 +37,13 @@
           }
         }
  else         if (Character.isDigit(symbol.charAt(0))) {
-          this.add((T)new MonoHybridManaCost(ColoredManaSymbol.lookup(symbol.charAt(2))));
+          this.add(new MonoHybridManaCost(ColoredManaSymbol.lookup(symbol.charAt(2))));
         }
  else         if (symbol.contains("P")) {
-          this.add((T)new PhyrexianManaCost(ColoredManaSymbol.lookup(symbol.charAt(0))));
+          this.add(new PhyrexianManaCost(ColoredManaSymbol.lookup(symbol.charAt(0))));
         }
  else {
-          this.add((T)new HybridManaCost(ColoredManaSymbol.lookup(symbol.charAt(0)),ColoredManaSymbol.lookup(symbol.charAt(2))));
+          this.add(new HybridManaCost(ColoredManaSymbol.lookup(symbol.charAt(0)),ColoredManaSymbol.lookup(symbol.charAt(2))));
         }
       }
     }
