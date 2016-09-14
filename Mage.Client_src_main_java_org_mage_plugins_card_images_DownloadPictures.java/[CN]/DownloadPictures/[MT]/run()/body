@@ -55,18 +55,16 @@ if (imageRef != null && fileName != null) {
 imageRef=cardImageSource.getSourceName() + imageRef;
 try {
   URL imageUrl=new URL(imageRef);
-  Runnable task=new DownloadTask(imageUrl,fileName,1);
+  Runnable task=new DownloadTask(imageUrl,fileName,cardImageSource.getTotalImages());
   executor.execute(task);
 }
  catch (Exception ex) {
 }
 }
- else {
-if (card != null) {
-  logger.info("Card not available on " + cardImageSource.getSourceName() + ": "+ card.getName()+ " ("+ card.getSet()+ ")");
+ else if (card != null && cardImageSource.getTotalImages() == -1) {
+logger.info("Card not available on " + cardImageSource.getSourceName() + ": "+ card.getName()+ " ("+ card.getSet()+ ")");
 synchronized (sync) {
-    update(cardIndex + 1,cardsToDownload.size());
-  }
+  update(cardIndex + 1,cardsToDownload.size());
 }
 }
 }

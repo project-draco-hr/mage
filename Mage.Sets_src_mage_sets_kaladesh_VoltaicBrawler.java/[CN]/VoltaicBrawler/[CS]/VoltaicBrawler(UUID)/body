@@ -1,0 +1,16 @@
+{
+  super(ownerId,189,"Voltaic Brawler",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{R}{G}");
+  this.expansionSetCode="KLD";
+  this.subtype.add("Human");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(2);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new GetEnergyCountersControllerEffect(2)));
+  Effect effect=new BoostSourceEffect(1,1,Duration.EndOfTurn);
+  effect.setText("it gets +1/+1");
+  DoIfCostPaid doIfCostPaid=new DoIfCostPaid(effect,new PayEnergyCost(1));
+  effect=new GainAbilitySourceEffect(TrampleAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("and gains trample until end of turn");
+  doIfCostPaid.addEffect(effect);
+  this.addAbility(new AttacksTriggeredAbility(doIfCostPaid,false));
+}
