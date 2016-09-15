@@ -1,0 +1,12 @@
+{
+  super(ownerId,8,"Captured by the Consulate",Rarity.RARE,new CardType[]{CardType.ENCHANTMENT},"{3}{W}");
+  this.expansionSetCode="KLD";
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent(filter);
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.UnboostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new CantAttackBlockAttachedEffect(AttachmentType.AURA)));
+  this.addAbility(new CapturedByTheConsulateTriggeredAbility(Zone.BATTLEFIELD,new CapturedByTheConsulateEffect()));
+}
