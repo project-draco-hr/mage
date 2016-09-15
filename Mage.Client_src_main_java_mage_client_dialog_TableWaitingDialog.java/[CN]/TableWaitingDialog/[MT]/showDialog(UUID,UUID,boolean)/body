@@ -2,9 +2,8 @@
   this.roomId=roomId;
   this.tableId=tableId;
   this.isTournament=isTournament;
-  session=MageFrame.getSession();
-  updateTask=new UpdateSeatsTask(session,roomId,tableId,this);
-  if (session.isTableOwner(roomId,tableId)) {
+  updateTask=new UpdateSeatsTask(SessionHandler.getSession(),roomId,tableId,this);
+  if (SessionHandler.isTableOwner(roomId,tableId)) {
     this.btnStart.setVisible(true);
     this.btnMoveDown.setVisible(true);
     this.btnMoveUp.setVisible(true);
@@ -14,7 +13,7 @@
     this.btnMoveDown.setVisible(false);
     this.btnMoveUp.setVisible(false);
   }
-  UUID chatId=session.getTableChatId(tableId);
+  UUID chatId=SessionHandler.getTableChatId(tableId);
   if (chatId != null) {
     this.chatPanel.connect(chatId);
     updateTask.execute();

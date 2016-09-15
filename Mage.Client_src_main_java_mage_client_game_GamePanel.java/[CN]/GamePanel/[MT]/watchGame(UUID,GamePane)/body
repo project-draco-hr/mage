@@ -2,7 +2,6 @@
   this.gameId=gameId;
   this.gamePane=gamePane;
   this.playerId=null;
-  session=MageFrame.getSession();
   MageFrame.addGame(gameId,this);
   this.feedbackPanel.init(gameId);
   this.feedbackPanel.clear();
@@ -19,8 +18,8 @@
   this.btnSkipToEndStepBeforeYourTurn.setVisible(false);
   this.pnlReplay.setVisible(false);
   this.gameChatPanel.clear();
-  this.gameChatPanel.connect(session.getGameChatId(gameId));
-  if (!session.watchGame(gameId)) {
+  this.gameChatPanel.connect(SessionHandler.getGameChatId(gameId));
+  if (!SessionHandler.watchGame(gameId)) {
     removeGame();
   }
   for (  PlayAreaPanel panel : getPlayers().values()) {

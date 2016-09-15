@@ -1,11 +1,10 @@
 {
   this.roomId=roomId;
-  session=MageFrame.getSession();
   UUID chatRoomId=null;
-  if (session != null) {
-    btnQuickStart.setVisible(session.isTestMode());
-    gameChooser.init(session);
-    chatRoomId=session.getRoomChatId(roomId);
+  if (SessionHandler.getSession() != null) {
+    btnQuickStart.setVisible(SessionHandler.isTestMode());
+    gameChooser.init();
+    chatRoomId=SessionHandler.getRoomChatId(roomId);
   }
   if (newTableDialog == null) {
     newTableDialog=new NewTableDialog();
@@ -28,7 +27,6 @@
  else {
     hideTables();
   }
-  tableModel.setSession(session);
   reloadMessages();
   MageFrame.getUI().addButton(MageComponents.NEW_GAME_BUTTON,btnNewTable);
   Executors.newSingleThreadScheduledExecutor().schedule(new Runnable(){

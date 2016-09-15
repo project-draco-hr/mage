@@ -42,7 +42,7 @@
   SettingsManager.getInstance().setScreenWidthAndHeight(1024,768);
   DialogManager.updateParams(768,1024,false);
   this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-  session=new SessionImpl(this);
+  SessionHandler.startSession(this);
   callbackClient=new CallbackClientImpl(this);
   connectDialog=new ConnectDialog();
   desktopPane.add(connectDialog,JLayeredPane.POPUP_LAYER);
@@ -52,7 +52,7 @@
   UI.addComponent(MageComponents.DESKTOP_PANE,desktopPane);
   PING_TASK_EXECUTOR.scheduleAtFixedRate(new Runnable(){
     @Override public void run(){
-      session.ping();
+      SessionHandler.ping();
     }
   }
 ,60,60,TimeUnit.SECONDS);

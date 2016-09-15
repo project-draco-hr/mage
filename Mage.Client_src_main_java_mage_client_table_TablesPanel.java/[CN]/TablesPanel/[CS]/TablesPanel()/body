@@ -3,7 +3,6 @@
   matchesModel=new MatchesTableModel();
   gameChooser=new GameChooser();
   initComponents();
-  tableModel.setSession(session);
   tableTables.createDefaultColumnsFromModel();
   activeTablesSorter=new MageTableRowSorter(tableModel);
   tableTables.setRowSorter(activeTablesSorter);
@@ -34,7 +33,7 @@
       String owner=(String)tableModel.getValueAt(modelRow,TableTableModel.COLUMN_OWNER);
 switch (action) {
 case "Join":
-        if (owner.equals(session.getUserName()) || owner.startsWith(session.getUserName() + ",")) {
+        if (owner.equals(SessionHandler.getUserName()) || owner.startsWith(SessionHandler.getUserName() + ",")) {
           try {
             JDesktopPane desktopPane=(JDesktopPane)MageFrame.getUI().getComponent(MageComponents.DESKTOP_PANE);
             JInternalFrame[] windows=desktopPane.getAllFramesInLayer(javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -60,7 +59,7 @@ case "Join":
         LOGGER.info("Joining tournament " + tableId);
         if (deckType.startsWith("Limited")) {
           if (!status.endsWith("PW")) {
-            session.joinTournamentTable(roomId,tableId,session.getUserName(),"Human",1,null,"");
+            SessionHandler.joinTournamentTable(roomId,tableId,SessionHandler.getUserName(),"Human",1,null,"");
           }
  else {
             joinTableDialog.showDialog(roomId,tableId,true,deckType.startsWith("Limited"));
@@ -84,18 +83,18 @@ break;
 case "Show":
 if (isTournament) {
 LOGGER.info("Showing tournament table " + tableId);
-session.watchTable(roomId,tableId);
+SessionHandler.watchTable(roomId,tableId);
 }
 break;
 case "Watch":
 if (!isTournament) {
 LOGGER.info("Watching table " + tableId);
-session.watchTable(roomId,tableId);
+SessionHandler.watchTable(roomId,tableId);
 }
 break;
 case "Replay":
 LOGGER.info("Replaying game " + gameId);
-session.replayGame(gameId);
+SessionHandler.replayGame(gameId);
 break;
 }
 }
@@ -111,7 +110,7 @@ case "Replay":
 List<UUID> gameList=matchesModel.getListofGames(modelRow);
 if (gameList != null && gameList.size() > 0) {
 if (gameList.size() == 1) {
-session.replayGame(gameList.get(0));
+SessionHandler.replayGame(gameList.get(0));
 }
  else {
 gameChooser.show(gameList,MageFrame.getDesktop().getMousePosition());
@@ -122,7 +121,7 @@ case "Show":
 ;
 if (matchesModel.isTournament(modelRow)) {
 LOGGER.info("Showing tournament table " + matchesModel.getTableId(modelRow));
-session.watchTable(roomId,matchesModel.getTableId(modelRow));
+SessionHandler.watchTable(roomId,matchesModel.getTableId(modelRow));
 }
 break;
 }

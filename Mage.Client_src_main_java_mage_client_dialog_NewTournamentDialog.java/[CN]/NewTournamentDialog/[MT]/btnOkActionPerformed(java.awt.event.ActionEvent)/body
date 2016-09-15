@@ -87,15 +87,15 @@
   tOptions.getMatchOptions().setRollbackTurnsAllowed(this.chkRollbackTurnsAllowed.isSelected());
   tOptions.getMatchOptions().setRated(this.chkRated.isSelected());
   saveTournamentSettingsToPrefs(tOptions);
-  table=session.createTournamentTable(roomId,tOptions);
+  table=SessionHandler.createTournamentTable(roomId,tOptions);
   if (table == null) {
     return;
   }
-  if (session.joinTournamentTable(roomId,table.getTableId(),this.player1Panel.getPlayerName(),"Human",1,DeckImporterUtil.importDeck(this.player1Panel.getDeckFile()),tOptions.getPassword())) {
+  if (SessionHandler.joinTournamentTable(roomId,table.getTableId(),this.player1Panel.getPlayerName(),"Human",1,DeckImporterUtil.importDeck(this.player1Panel.getDeckFile()),tOptions.getPassword())) {
     for (    TournamentPlayerPanel player : players) {
       if (!player.getPlayerType().toString().equals("Human")) {
         if (!player.joinTournamentTable(roomId,table.getTableId(),DeckImporterUtil.importDeck(this.player1Panel.getDeckFile()))) {
-          session.removeTable(roomId,table.getTableId());
+          SessionHandler.removeTable(roomId,table.getTableId());
           table=null;
           return;
         }
@@ -105,6 +105,6 @@
     return;
   }
   JOptionPane.showMessageDialog(MageFrame.getDesktop(),"Error joining tournament.","Error",JOptionPane.ERROR_MESSAGE);
-  session.removeTable(roomId,table.getTableId());
+  SessionHandler.removeTable(roomId,table.getTableId());
   table=null;
 }
