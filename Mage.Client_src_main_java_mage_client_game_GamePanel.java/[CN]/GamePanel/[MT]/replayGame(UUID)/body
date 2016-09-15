@@ -1,7 +1,6 @@
 {
   this.gameId=gameId;
   this.playerId=null;
-  session=MageFrame.getSession();
   MageFrame.addGame(gameId,this);
   this.feedbackPanel.init(gameId);
   this.feedbackPanel.clear();
@@ -11,7 +10,7 @@
   this.btnStopWatching.setVisible(false);
   this.pnlReplay.setVisible(true);
   this.gameChatPanel.clear();
-  if (!session.startReplay(gameId)) {
+  if (!SessionHandler.startReplay(gameId)) {
     removeGame();
   }
   for (  PlayAreaPanel panel : getPlayers().values()) {

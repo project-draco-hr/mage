@@ -21,17 +21,17 @@
     return;
   }
   saveGameSettingsToPrefs(options,this.player1Panel.getDeckFile());
-  table=session.createTable(roomId,options);
+  table=SessionHandler.createTable(roomId,options);
   if (table == null) {
     JOptionPane.showMessageDialog(MageFrame.getDesktop(),"Error creating table.","Error",JOptionPane.ERROR_MESSAGE);
     return;
   }
   try {
-    if (session.joinTable(roomId,table.getTableId(),this.player1Panel.getPlayerName(),"Human",1,DeckImporterUtil.importDeck(this.player1Panel.getDeckFile()),this.txtPassword.getText())) {
+    if (SessionHandler.joinTable(roomId,table.getTableId(),this.player1Panel.getPlayerName(),"Human",1,DeckImporterUtil.importDeck(this.player1Panel.getDeckFile()),this.txtPassword.getText())) {
       for (      TablePlayerPanel player : players) {
         if (!player.getPlayerType().equals("Human")) {
           if (!player.joinTable(roomId,table.getTableId())) {
-            session.removeTable(roomId,table.getTableId());
+            SessionHandler.removeTable(roomId,table.getTableId());
             table=null;
             return;
           }
@@ -50,6 +50,6 @@ catch (  IOException ex) {
 catch (  ClassNotFoundException ex) {
     handleError(ex);
   }
-  session.removeTable(roomId,table.getTableId());
+  SessionHandler.removeTable(roomId,table.getTableId());
   table=null;
 }

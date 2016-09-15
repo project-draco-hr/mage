@@ -1,16 +1,16 @@
 {
-  if (session != null) {
+  if (SessionHandler.getSession() != null) {
     if (updateTablesTask == null || updateTablesTask.isDone()) {
-      updateTablesTask=new UpdateTablesTask(session,roomId,this);
+      updateTablesTask=new UpdateTablesTask(roomId,this);
       updateTablesTask.execute();
     }
     if (updatePlayersTask == null || updatePlayersTask.isDone()) {
-      updatePlayersTask=new UpdatePlayersTask(session,roomId,this.chatPanelMain);
+      updatePlayersTask=new UpdatePlayersTask(roomId,this.chatPanelMain);
       updatePlayersTask.execute();
     }
     if (this.btnStateFinished.isSelected()) {
       if (updateMatchesTask == null || updateMatchesTask.isDone()) {
-        updateMatchesTask=new UpdateMatchesTask(session,roomId,this);
+        updateMatchesTask=new UpdateMatchesTask(roomId,this);
         updateMatchesTask.execute();
       }
     }

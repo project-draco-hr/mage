@@ -7,26 +7,26 @@ case CLIENT_DOWNLOAD_CARD_IMAGES:
 DownloadPictures.startDownload(null,missingCards);
 break;
 case CLIENT_DISCONNECT:
-session.disconnect(false);
+SessionHandler.disconnect(false);
 tablesPane.clearChat();
 showMessage("You have disconnected");
 setWindowTitle();
 break;
 case CLIENT_QUIT_TOURNAMENT:
-MageFrame.getSession().quitTournament(userRequestMessage.getTournamentId());
+SessionHandler.quitTournament(userRequestMessage.getTournamentId());
 break;
 case CLIENT_QUIT_DRAFT_TOURNAMENT:
-MageFrame.getSession().quitDraft(userRequestMessage.getTournamentId());
+SessionHandler.quitDraft(userRequestMessage.getTournamentId());
 MageFrame.removeDraft(userRequestMessage.getTournamentId());
 break;
 case CLIENT_CONCEDE_GAME:
-MageFrame.getSession().sendPlayerAction(PlayerAction.CONCEDE,userRequestMessage.getGameId(),null);
+SessionHandler.sendPlayerAction(PlayerAction.CONCEDE,userRequestMessage.getGameId(),null);
 break;
 case CLIENT_CONCEDE_MATCH:
-MageFrame.getSession().quitMatch(userRequestMessage.getGameId());
+SessionHandler.quitMatch(userRequestMessage.getGameId());
 break;
 case CLIENT_STOP_WATCHING:
-session.stopWatching(userRequestMessage.getGameId());
+SessionHandler.stopWatching(userRequestMessage.getGameId());
 GamePanel gamePanel=getGame(userRequestMessage.getGameId());
 if (gamePanel != null) {
 gamePanel.removeGame();
@@ -34,8 +34,8 @@ gamePanel.removeGame();
 removeGame(userRequestMessage.getGameId());
 break;
 case CLIENT_EXIT:
-if (session.isConnected()) {
-session.disconnect(false);
+if (SessionHandler.isConnected()) {
+SessionHandler.disconnect(false);
 }
 CardRepository.instance.closeDB();
 tablesPane.cleanUp();
@@ -44,7 +44,7 @@ dispose();
 System.exit(0);
 break;
 case CLIENT_REMOVE_TABLE:
-session.removeTable(userRequestMessage.getRoomId(),userRequestMessage.getTableId());
+SessionHandler.removeTable(userRequestMessage.getRoomId(),userRequestMessage.getTableId());
 break;
 case CLIENT_RECONNECT:
 if (performConnect()) {
@@ -52,11 +52,11 @@ enableButtons();
 }
 break;
 case CLIENT_REPLAY_ACTION:
-session.stopReplay(userRequestMessage.getGameId());
+SessionHandler.stopReplay(userRequestMessage.getGameId());
 break;
 default :
-if (session != null && playerAction != null) {
-session.sendPlayerAction(playerAction,userRequestMessage.getGameId(),userRequestMessage.getRelatedUserId());
+if (SessionHandler.getSession() != null && playerAction != null) {
+SessionHandler.sendPlayerAction(playerAction,userRequestMessage.getGameId(),userRequestMessage.getRelatedUserId());
 }
 }
 }

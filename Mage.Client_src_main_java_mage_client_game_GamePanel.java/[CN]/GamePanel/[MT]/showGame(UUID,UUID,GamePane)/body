@@ -2,11 +2,10 @@
   this.gameId=gameId;
   this.gamePane=gamePane;
   this.playerId=playerId;
-  session=MageFrame.getSession();
   MageFrame.addGame(gameId,this);
   this.feedbackPanel.init(gameId);
   this.feedbackPanel.clear();
-  this.abilityPicker.init(session,gameId);
+  this.abilityPicker.init(gameId);
   this.btnConcede.setVisible(true);
   this.btnStopWatching.setVisible(false);
   this.btnSwitchHands.setVisible(false);
@@ -19,8 +18,8 @@
   this.btnSkipToEndStepBeforeYourTurn.setVisible(true);
   this.pnlReplay.setVisible(false);
   this.gameChatPanel.clear();
-  this.gameChatPanel.connect(session.getGameChatId(gameId));
-  if (!session.joinGame(gameId)) {
+  this.gameChatPanel.connect(SessionHandler.getGameChatId(gameId));
+  if (!SessionHandler.joinGame(gameId)) {
     removeGame();
   }
  else {
