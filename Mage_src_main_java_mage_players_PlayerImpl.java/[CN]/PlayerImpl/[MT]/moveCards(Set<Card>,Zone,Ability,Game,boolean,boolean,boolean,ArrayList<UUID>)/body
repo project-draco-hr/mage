@@ -10,7 +10,7 @@ case GRAVEYARD:
   successfulMovedCards=moveCardsToGraveyardWithInfo(cards,source,game,fromZone);
 return successfulMovedCards.size() > 0;
 case BATTLEFIELD:
-List<ZoneChangeInfo> infoList=new ArrayList<ZoneChangeInfo>();
+List<ZoneChangeInfo> infoList=new ArrayList<>();
 for (Card card : cards) {
 fromZone=game.getState().getZone(card.getId());
 ZoneChangeEvent event=new ZoneChangeEvent(card.getId(),source.getSourceId(),byOwner ? card.getOwnerId() : getId(),fromZone,Zone.BATTLEFIELD,appliedEffects);
@@ -22,7 +22,10 @@ Permanent permanent=game.getPermanent(info.event.getTargetId());
 if (permanent != null) {
 successfulMovedCards.add(permanent);
 if (!game.isSimulation()) {
-game.informPlayers(game.getPlayer(info.event.getPlayerId()) + " puts " + (info.faceDown ? "a card face down " : permanent.getLogName())+ " from "+ fromZone.toString().toLowerCase(Locale.ENGLISH)+ " onto the Battlefield");
+Player eventPlayer=game.getPlayer(info.event.getPlayerId());
+if (eventPlayer != null && fromZone != null) {
+game.informPlayers(eventPlayer.getLogName() + " puts " + (info.faceDown ? "a card face down " : permanent.getLogName())+ " from "+ fromZone.toString().toLowerCase(Locale.ENGLISH)+ " onto the Battlefield");
+}
 }
 }
 }
