@@ -10,7 +10,20 @@
     CardRendererUtils.drawRoundedBox(g,x,curY - boxHeight,partWidth,boxHeight,contentInset,borderPaint,isVehicle ? BOX_VEHICLE : fill);
     g.setColor(new Color(0,0,0,150));
     g.fillRect(x + contentInset,curY - boxHeight - 1,partWidth - 2 * contentInset,1);
-    g.setColor(isVehicle ? Color.white : getBoxTextColor());
+    Color textColor;
+    if (isVehicle) {
+      boolean isAnimated=!(cardView instanceof PermanentView) || cardView.getCardTypes().contains(CardType.CREATURE);
+      if (isAnimated) {
+        textColor=Color.white;
+      }
+ else {
+        textColor=new Color(180,180,180);
+      }
+    }
+ else {
+      textColor=getBoxTextColor();
+    }
+    g.setColor(textColor);
     g.setFont(ptTextFont);
     String ptText=cardView.getPower() + "/" + cardView.getToughness();
     int ptTextWidth=g.getFontMetrics().stringWidth(ptText);
