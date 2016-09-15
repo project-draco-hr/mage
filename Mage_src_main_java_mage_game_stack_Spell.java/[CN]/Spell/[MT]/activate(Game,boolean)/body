@@ -2,15 +2,19 @@
   if (!spellAbilities.get(0).activate(game,noMana)) {
     return false;
   }
-  boolean ignoreAbility=true;
-  boolean payNoMana=noMana;
-  for (  SpellAbility spellAbility : spellAbilities) {
-    payNoMana|=spellAbility.getSpellAbilityType().equals(SpellAbilityType.SPLICE);
-    if (ignoreAbility) {
-      ignoreAbility=false;
-    }
- else     if (!spellAbility.activate(game,payNoMana)) {
-      return false;
+  if (spellAbilities.size() > 1) {
+    boolean ignoreAbility=true;
+    boolean payNoMana=noMana;
+    for (    SpellAbility spellAbility : spellAbilities) {
+      if (ignoreAbility) {
+        ignoreAbility=false;
+      }
+ else {
+        payNoMana|=spellAbility.getSpellAbilityType().equals(SpellAbilityType.SPLICE);
+        if (!spellAbility.activate(game,payNoMana)) {
+          return false;
+        }
+      }
     }
   }
   return true;

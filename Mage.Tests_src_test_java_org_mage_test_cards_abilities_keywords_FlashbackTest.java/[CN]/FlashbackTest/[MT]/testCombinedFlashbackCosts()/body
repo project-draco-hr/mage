@@ -1,0 +1,13 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",2);
+  addCard(Zone.GRAVEYARD,playerA,"Deep Analysis",1);
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Flashback");
+  addTarget(playerA,playerA);
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Deep Analysis",0);
+  assertLife(playerA,17);
+  assertLife(playerB,20);
+  assertHandCount(playerA,2);
+  assertTappedCount("Island",true,2);
+}
