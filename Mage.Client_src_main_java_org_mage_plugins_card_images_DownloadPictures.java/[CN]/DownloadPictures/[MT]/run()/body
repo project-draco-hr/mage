@@ -55,7 +55,10 @@ if (imageRef != null && fileName != null) {
 imageRef=cardImageSource.getSourceName() + imageRef;
 try {
   URL imageUrl=new URL(imageRef);
-  Runnable task=new DownloadTask(imageUrl,fileName,cardImageSource.getTotalImages());
+  if (card != null) {
+    card.setToken(cardImageSource.isTokenSource());
+  }
+  Runnable task=new DownloadTask(card,imageUrl,fileName,cardImageSource.getTotalImages());
   executor.execute(task);
 }
  catch (Exception ex) {

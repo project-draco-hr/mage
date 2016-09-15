@@ -10,10 +10,23 @@
     }
     String imagePath;
     if (useSpecifiedPaths) {
-      imagePath=CardImageUtils.getTokenBasePath();
-      imagePath+=actualFilename;
-      String tmpFile=filePath + "ADDTOTOK" + actualFilename;
+      if (card != null && card.isToken()) {
+        imagePath=CardImageUtils.getTokenBasePath() + actualFilename;
+        ;
+      }
+ else {
+        if (card != null) {
+          imagePath=CardImageUtils.getImageBasePath() + actualFilename;
+        }
+ else {
+          imagePath=Constants.IO.imageBaseDir;
+        }
+      }
+      String tmpFile=filePath + "temporary" + actualFilename;
       temporaryFile=new File(tmpFile.toString());
+      if (!temporaryFile.exists()) {
+        temporaryFile.getParentFile().mkdirs();
+      }
     }
  else {
       imagePath=CardImageUtils.generateImagePath(card);
@@ -74,11 +87,13 @@ synchronized (sync) {
           writeImageToFile(renderedImage,outputFile);
         }
  else {
+          outputFile.getParentFile().mkdirs();
           new TFile(temporaryFile).cp_rp(outputFile);
         }
         temporaryFile.delete();
       }
  else {
+        outputFile.getParentFile().mkdirs();
         new TFile(temporaryFile).cp_rp(outputFile);
       }
     }
