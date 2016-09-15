@@ -5,6 +5,10 @@
     TextboxRule keywordsRule=new TextboxRule(keywordRulesString,new ArrayList<TextboxRule.AttributeRegion>());
     allRules.add(keywordsRule);
   }
+  if (allRules.size() == 1 && allRules.get(0) instanceof TextboxBasicManaRule) {
+    drawBasicManaTextbox(g,x,y,w,h,((TextboxBasicManaRule)allRules.get(0)).getBasicManaSymbol());
+    return;
+  }
   RuleLayout bestLayout=null;
   for (  int fontSize : RULES_TEXT_FONT_SIZES) {
     bestLayout=layoutRules(g,allRules,w,h,fontSize);

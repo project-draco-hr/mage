@@ -2,10 +2,22 @@
   if (colors.isMulticolored()) {
     if (colors.getColorCount() == 2) {
       List<ObjectColor> twoColors=colors.getColors();
-      return new LinearGradientPaint(0,0,width,0,new float[]{0.4f,0.6f},new Color[]{getTextboxColor(twoColors.get(0)),getTextboxColor(twoColors.get(1))});
+      Color[] translatedColors;
+      if (types.contains(CardType.LAND)) {
+        translatedColors=new Color[]{getLandTextboxColor(twoColors.get(0)),getLandTextboxColor(twoColors.get(1))};
+      }
+ else {
+        translatedColors=new Color[]{getTextboxColor(twoColors.get(0)),getTextboxColor(twoColors.get(1))};
+      }
+      return new LinearGradientPaint(0,0,width,0,new float[]{0.4f,0.6f},translatedColors);
     }
  else {
-      return TEXTBOX_GOLD;
+      if (types.contains(CardType.LAND)) {
+        return LAND_TEXTBOX_GOLD;
+      }
+ else {
+        return TEXTBOX_GOLD;
+      }
     }
   }
  else   if (colors.isColorless()) {
@@ -17,6 +29,11 @@
     }
   }
  else {
-    return getTextboxColor(colors);
+    if (types.contains(CardType.LAND)) {
+      return getLandTextboxColor(colors);
+    }
+ else {
+      return getTextboxColor(colors);
+    }
   }
 }

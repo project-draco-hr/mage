@@ -4,12 +4,13 @@
   }
   int curY=cardHeight - (int)(0.03f * cardHeight);
   int partWidth=(int)Math.max(30,0.20f * cardWidth);
-  if (cardView.getCardTypes().contains(CardType.CREATURE) || cardView.getSubTypes().contains("Vehicle")) {
+  boolean isVehicle=cardView.getSubTypes().contains("Vehicle");
+  if (cardView.getCardTypes().contains(CardType.CREATURE) || isVehicle) {
     int x=cardWidth - borderWidth - partWidth;
-    CardRendererUtils.drawRoundedBox(g,x,curY - boxHeight,partWidth,boxHeight,contentInset,borderPaint,fill);
+    CardRendererUtils.drawRoundedBox(g,x,curY - boxHeight,partWidth,boxHeight,contentInset,borderPaint,isVehicle ? BOX_VEHICLE : fill);
     g.setColor(new Color(0,0,0,150));
     g.fillRect(x + contentInset,curY - boxHeight - 1,partWidth - 2 * contentInset,1);
-    g.setColor(getBoxTextColor());
+    g.setColor(isVehicle ? Color.white : getBoxTextColor());
     g.setFont(ptTextFont);
     String ptText=cardView.getPower() + "/" + cardView.getToughness();
     int ptTextWidth=g.getFontMetrics().stringWidth(ptText);

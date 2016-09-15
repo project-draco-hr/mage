@@ -8,15 +8,24 @@
     double targetWidth=contentWidth - 2;
     double targetHeight=typeLineY - totalContentInset - boxHeight;
     double targetAspect=targetWidth / targetHeight;
-    if (targetAspect * artHeight < artWidth) {
-      artWidth=targetAspect * artHeight;
+    if (useInventionFrame()) {
     }
  else {
-      artHeight=artWidth / targetAspect;
+      if (targetAspect * artHeight < artWidth) {
+        artWidth=targetAspect * artHeight;
+      }
+ else {
+        artHeight=artWidth / targetAspect;
+      }
     }
     try {
       BufferedImage subImg=artImage.getSubimage((int)(artRect.getX() * fullCardImgWidth),(int)(artRect.getY() * fullCardImgHeight),(int)artWidth,(int)artHeight);
-      g.drawImage(subImg,totalContentInset + 1,totalContentInset + boxHeight,(int)targetWidth,(int)targetHeight,null);
+      if (useInventionFrame()) {
+        g.drawImage(subImg,borderWidth,borderWidth,cardWidth - 2 * borderWidth,cardHeight - 2 * borderWidth,null);
+      }
+ else {
+        g.drawImage(subImg,totalContentInset + 1,totalContentInset + boxHeight,(int)targetWidth,(int)targetHeight,null);
+      }
     }
  catch (    RasterFormatException e) {
     }
