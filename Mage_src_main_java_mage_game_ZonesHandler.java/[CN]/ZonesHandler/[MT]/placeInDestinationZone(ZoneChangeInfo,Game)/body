@@ -14,37 +14,35 @@
   ZoneChangeEvent event=info.event;
   Zone toZone=event.getToZone();
   Card targetCard=getTargetCard(game,event.getTargetId());
-  if (targetCard == null) {
-    return;
-  }
-  Cards cards;
-  if (targetCard instanceof MeldCard) {
-    cards=((MeldCard)targetCard).getHalves();
-  }
+  Cards cards=null;
+  if (!(targetCard instanceof Permanent) && targetCard != null) {
+    if (targetCard instanceof MeldCard) {
+      cards=((MeldCard)targetCard).getHalves();
+    }
  else {
-    cards=new CardsImpl(targetCard);
-  }
-  Player owner=game.getPlayer(targetCard.getOwnerId());
+      cards=new CardsImpl(targetCard);
+    }
+    Player owner=game.getPlayer(targetCard.getOwnerId());
 switch (toZone) {
 case HAND:
-    for (    Card card : cards.getCards(game)) {
-      game.getPlayer(card.getOwnerId()).getHand().add(card);
-    }
-  break;
+      for (      Card card : cards.getCards(game)) {
+        game.getPlayer(card.getOwnerId()).getHand().add(card);
+      }
+    break;
 case GRAVEYARD:
-for (Card card : chooseOrder("order to put in graveyard (last chosen will be on top)",cards,owner,game)) {
-  game.getPlayer(card.getOwnerId()).getGraveyard().add(card);
-}
+  for (  Card card : chooseOrder("order to put in graveyard (last chosen will be on top)",cards,owner,game)) {
+    game.getPlayer(card.getOwnerId()).getGraveyard().add(card);
+  }
 break;
 case LIBRARY:
 if (info instanceof ZoneChangeInfo.Library && ((ZoneChangeInfo.Library)info).top) {
 for (Card card : chooseOrder("order to put on top of library (last chosen will be topmost)",cards,owner,game)) {
-game.getPlayer(card.getOwnerId()).getLibrary().putOnTop(card,game);
+  game.getPlayer(card.getOwnerId()).getLibrary().putOnTop(card,game);
 }
 }
  else {
 for (Card card : chooseOrder("order to put on bottom of library (last chosen will be bottommost)",cards,owner,game)) {
-game.getPlayer(card.getOwnerId()).getLibrary().putOnBottom(card,game);
+  game.getPlayer(card.getOwnerId()).getLibrary().putOnBottom(card,game);
 }
 }
 break;
@@ -82,8 +80,9 @@ break;
 default :
 throw new UnsupportedOperationException("to Zone" + toZone.toString() + " not supported yet");
 }
+}
 game.setZone(event.getTargetId(),event.getToZone());
-if (targetCard instanceof MeldCard) {
+if (targetCard instanceof MeldCard && cards != null) {
 if (event.getToZone() != Zone.BATTLEFIELD) {
 ((MeldCard)targetCard).setMelded(false);
 }
