@@ -1,0 +1,21 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    Card card=controller.getLibrary().getFromTop(game);
+    if (card != null) {
+      controller.moveCards(card,Zone.EXILED,source,game);
+      Permanent targetCreature=game.getPermanent(getTargetPointer().getFirst(game,source));
+      if (targetCreature != null) {
+        int cmc=card.getManaCost().convertedManaCost();
+        if (controller.chooseUse(outcome,"Let " + sourceObject.getLogName() + " deal "+ cmc+ " damage to "+ targetCreature.getLogName()+ "?",source,game)) {
+          targetCreature.damage(cmc,source.getSourceId(),game,false,true);
+          return true;
+        }
+      }
+      game.addEffect(new SparkOfCreativityPlayEffect(new MageObjectReference(card,game)),source);
+    }
+    return true;
+  }
+  return false;
+}
