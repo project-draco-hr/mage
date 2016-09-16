@@ -4,12 +4,13 @@
   MageObject sourceObject=game.getObject(source.getSourceId());
   if (targetPlayer != null && controller != null && sourceObject != null) {
     String cardName=(String)game.getState().getValue(source.getSourceId().toString() + NameACardEffect.INFO_KEY);
-    for (    Card card : targetPlayer.getHand().getCards(game)) {
+    Cards hand=targetPlayer.getHand();
+    for (    Card card : hand.getCards(game)) {
       if (card.getName().equals(cardName)) {
         targetPlayer.discard(card,source,game);
       }
     }
-    controller.lookAtCards(sourceObject.getName() + " Hand",targetPlayer.getHand(),game);
+    targetPlayer.revealCards("Cabal Therapy",hand,game);
   }
   return true;
 }
