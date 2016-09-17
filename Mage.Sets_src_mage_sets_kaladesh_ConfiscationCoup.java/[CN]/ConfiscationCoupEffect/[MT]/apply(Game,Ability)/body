@@ -1,0 +1,25 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    new GetEnergyCountersControllerEffect(4).apply(game,source);
+    Permanent targetPermanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (targetPermanent != null) {
+      Cost cost=new PayEnergyCost(targetPermanent.getManaCost().convertedManaCost());
+      if (cost.canPay(source,source.getSourceId(),source.getControllerId(),game)) {
+        String energy="";
+        for (int i=0; i < targetPermanent.getManaCost().convertedManaCost(); i++) {
+          energy+="{E}";
+        }
+        if (controller.chooseUse(outcome,"Pay " + energy + " to get control of "+ targetPermanent.getLogName()+ "?",source,game)) {
+          if (cost.pay(source,game,source.getSourceId(),source.getControllerId(),true)) {
+            ContinuousEffect controllEffect=new GainControlTargetEffect(Duration.Custom);
+            controllEffect.setTargetPointer(new FixedTarget(targetPermanent,game));
+            game.addEffect(controllEffect,source);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
