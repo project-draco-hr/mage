@@ -12,10 +12,16 @@
     if (numBoosterDoubleFaced > -1) {
       criteria.doubleFaced(false);
     }
-    if (maxCardNumberInBooster != Integer.MAX_VALUE) {
-      criteria.maxCardNumber(maxCardNumberInBooster);
-    }
     savedCardsInfos=CardRepository.instance.findCards(criteria);
+    if (maxCardNumberInBooster != Integer.MAX_VALUE) {
+      Iterator<CardInfo> iterator=savedCardsInfos.iterator();
+      while (iterator.hasNext()) {
+        CardInfo next=iterator.next();
+        if (Integer.valueOf(next.getCardNumber()) > maxCardNumberInBooster) {
+          iterator.remove();
+        }
+      }
+    }
     savedCards.put(rarity,savedCardsInfos);
   }
   return new ArrayList<>(savedCardsInfos);
