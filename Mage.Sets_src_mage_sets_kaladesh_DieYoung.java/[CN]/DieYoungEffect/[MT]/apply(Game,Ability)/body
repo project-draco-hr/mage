@@ -1,0 +1,20 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    new GetEnergyCountersControllerEffect(2).apply(game,source);
+    int numberToPayed=controller.getAmount(0,controller.getCounters().getCount(CounterType.ENERGY),"staticText",game);
+    if (numberToPayed > 0) {
+      Cost cost=new PayEnergyCost(numberToPayed);
+      if (cost.pay(source,game,source.getSourceId(),source.getControllerId(),true)) {
+        Permanent targetCreature=game.getPermanent(getTargetPointer().getFirst(game,source));
+        if (targetCreature != null) {
+          ContinuousEffect effect=new BoostTargetEffect(numberToPayed,numberToPayed,Duration.EndOfTurn);
+          effect.setTargetPointer(new FixedTarget(targetCreature,game));
+          game.addEffect(effect,source);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

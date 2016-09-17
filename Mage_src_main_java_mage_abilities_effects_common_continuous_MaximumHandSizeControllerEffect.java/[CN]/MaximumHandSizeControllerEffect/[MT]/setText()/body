@@ -2,7 +2,7 @@
   StringBuilder sb=new StringBuilder();
 switch (targetController) {
 case ANY:
-    if (handSize == Integer.MAX_VALUE) {
+    if (handSize instanceof StaticValue && ((StaticValue)handSize).getValue() == Integer.MAX_VALUE) {
       sb.append("All players have no ");
     }
  else {
@@ -10,7 +10,7 @@ case ANY:
     }
   break;
 case OPPONENT:
-if (handSize == Integer.MAX_VALUE) {
+if (handSize instanceof StaticValue && ((StaticValue)handSize).getValue() == Integer.MAX_VALUE) {
   sb.append("Each opponent has no ");
 }
  else {
@@ -18,7 +18,7 @@ if (handSize == Integer.MAX_VALUE) {
 }
 break;
 case YOU:
-if (handSize == Integer.MAX_VALUE) {
+if (handSize instanceof StaticValue && ((StaticValue)handSize).getValue() == Integer.MAX_VALUE) {
 sb.append("You have no ");
 }
  else {
@@ -33,11 +33,11 @@ sb.append(" is increased by ");
  else if (handSizeModification.equals(HandSizeModification.REDUCE)) {
 sb.append(" is reduced by ");
 }
- else if (handSize != Integer.MAX_VALUE) {
+ else if ((handSize instanceof StaticValue && ((StaticValue)handSize).getValue() == Integer.MAX_VALUE) || !(handSize instanceof StaticValue)) {
 sb.append(" is ");
 }
-if (handSize != Integer.MAX_VALUE) {
-sb.append(CardUtil.numberToText(handSize));
+if ((handSize instanceof StaticValue && ((StaticValue)handSize).getValue() != Integer.MAX_VALUE) || !(handSize instanceof StaticValue)) {
+sb.append(CardUtil.numberToText(((StaticValue)handSize).getValue()));
 }
 if (duration == Duration.EndOfGame) {
 sb.append(" for the rest of the game");
