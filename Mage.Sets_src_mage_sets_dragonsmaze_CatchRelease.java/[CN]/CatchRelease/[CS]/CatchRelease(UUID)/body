@@ -3,7 +3,12 @@
   this.expansionSetCode="DGM";
   getLeftHalfCard().getSpellAbility().addTarget(new TargetPermanent(new FilterPermanent()));
   getLeftHalfCard().getSpellAbility().addEffect(new GainControlTargetEffect(Duration.EndOfTurn));
-  getLeftHalfCard().getSpellAbility().addEffect(new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn));
-  getLeftHalfCard().getSpellAbility().addEffect(new UntapTargetEffect());
+  Effect effect=new UntapTargetEffect();
+  effect.setText("Untap it");
+  this.getSpellAbility().addEffect(effect);
+  getLeftHalfCard().getSpellAbility().addEffect(effect);
+  effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("It gains haste until end of turn");
+  getLeftHalfCard().getSpellAbility().addEffect(effect);
   getRightHalfCard().getSpellAbility().addEffect(new ReleaseSacrificeEffect());
 }

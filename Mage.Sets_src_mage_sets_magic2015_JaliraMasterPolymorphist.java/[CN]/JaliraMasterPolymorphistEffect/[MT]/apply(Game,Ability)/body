@@ -15,8 +15,10 @@
     if (!cards.isEmpty()) {
       controller.revealCards(sourceObject.getIdName(),cards,game);
     }
-    controller.moveCards(card,Zone.BATTLEFIELD,source,game);
-    cards.remove(card);
+    if (card != null && filter.match(card,game)) {
+      controller.moveCards(card,Zone.BATTLEFIELD,source,game);
+      cards.remove(card);
+    }
     while (cards.size() > 0) {
       card=cards.getRandom(game);
       if (card != null) {
