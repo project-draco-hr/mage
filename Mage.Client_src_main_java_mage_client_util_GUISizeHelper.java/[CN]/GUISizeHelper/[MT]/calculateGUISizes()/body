@@ -39,11 +39,16 @@
   stackWidth=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_GUI_STACK_WIDTH,30);
   int otherZonesCardSize=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_GUI_CARD_OTHER_ZONES_SIZE,14);
   otherZonesCardDimension=new Dimension(CARD_IMAGE_WIDTH * otherZonesCardSize / 42,CARD_IMAGE_HEIGHT * otherZonesCardSize / 42);
-  if (otherZonesCardSize > 29) {
-    otherZonesCardVerticalOffset=otherZonesCardDimension.height / 8;
+  if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_RENDERING_FALLBACK,"false").equals("false")) {
+    otherZonesCardVerticalOffset=CardRenderer.getCardTopHeight(otherZonesCardDimension.width);
   }
  else {
-    otherZonesCardVerticalOffset=otherZonesCardDimension.height / 10;
+    if (otherZonesCardSize > 29) {
+      otherZonesCardVerticalOffset=otherZonesCardDimension.height / 8;
+    }
+ else {
+      otherZonesCardVerticalOffset=otherZonesCardDimension.height / 10;
+    }
   }
   int battlefieldCardMinSize=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_GUI_CARD_BATTLEFIELD_MIN_SIZE,10);
   battlefieldCardMinDimension=new Dimension(CARD_IMAGE_WIDTH * battlefieldCardMinSize / 42,CARD_IMAGE_HEIGHT * battlefieldCardMinSize / 42);
@@ -51,6 +56,11 @@
   battlefieldCardMaxDimension=new Dimension(CARD_IMAGE_WIDTH * battlefieldCardMaxSize / 42,CARD_IMAGE_HEIGHT * battlefieldCardMaxSize / 42);
   int editorCardSize=PreferencesDialog.getCachedValue(PreferencesDialog.KEY_GUI_CARD_EDITOR_SIZE,14);
   editorCardDimension=new Dimension(CARD_IMAGE_WIDTH * editorCardSize / 42,CARD_IMAGE_HEIGHT * editorCardSize / 42);
-  editorCardOffsetSize=2 * PreferencesDialog.getCachedValue(PreferencesDialog.KEY_GUI_CARD_OFFSET_SIZE,14) - 10;
+  if (PreferencesDialog.getCachedValue(PreferencesDialog.KEY_CARD_RENDERING_FALLBACK,"false").equals("false")) {
+    editorCardOffsetSize=CardRenderer.getCardTopHeight(editorCardDimension.width);
+  }
+ else {
+    editorCardOffsetSize=2 * PreferencesDialog.getCachedValue(PreferencesDialog.KEY_GUI_CARD_OFFSET_SIZE,14) - 10;
+  }
   enlargedImageHeight=25 * PreferencesDialog.getCachedValue(PreferencesDialog.KEY_GUI_ENLARGED_IMAGE_SIZE,20);
 }
