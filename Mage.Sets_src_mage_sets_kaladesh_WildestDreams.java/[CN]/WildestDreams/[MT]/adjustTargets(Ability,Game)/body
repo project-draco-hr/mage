@@ -1,5 +1,7 @@
 {
-  int xValue=new GetXValue().calculate(game,ability,null);
-  Target target=new TargetCardInYourGraveyard(xValue,new FilterCard("card from your graveyard"));
-  ability.addTarget(target);
+  if (ability instanceof SpellAbility) {
+    int xValue=ability.getManaCostsToPay().getX();
+    ability.getTargets().clear();
+    ability.addTarget(new TargetCardInYourGraveyard(xValue,new FilterCard("card from your graveyard")));
+  }
 }
