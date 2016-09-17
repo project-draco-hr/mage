@@ -1,0 +1,11 @@
+{
+  super(ownerId,153,"Durable Handicraft",Rarity.UNCOMMON,new CardType[]{CardType.ENCHANTMENT},"{1}{G}");
+  this.expansionSetCode="KLD";
+  Effect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance());
+  effect.setText("put a +1/+1 counter on that creature");
+  DoIfCostPaid doIfCostPaid=new DoIfCostPaid(effect,new GenericManaCost(1));
+  this.addAbility(new EntersBattlefieldControlledTriggeredAbility(Zone.BATTLEFIELD,doIfCostPaid,new FilterControlledCreaturePermanent(),false,SetTargetPointer.PERMANENT,null));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new AddCountersAllEffect(CounterType.P1P1.createInstance(),new FilterControlledCreaturePermanent()),new ManaCostsImpl("{5}{G}"));
+  ability.addCost(new SacrificeSourceCost());
+  this.addAbility(ability);
+}
