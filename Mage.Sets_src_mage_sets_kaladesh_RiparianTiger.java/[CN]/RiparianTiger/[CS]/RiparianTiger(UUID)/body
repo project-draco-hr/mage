@@ -1,0 +1,13 @@
+{
+  super(ownerId,167,"Riparian Tiger",Rarity.COMMON,new CardType[]{CardType.CREATURE},"{3}{G}{G}");
+  this.expansionSetCode="KLD";
+  this.subtype.add("Cat");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  this.addAbility(TrampleAbility.getInstance());
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new GetEnergyCountersControllerEffect(2)));
+  Effect effect=new BoostSourceEffect(2,2,Duration.EndOfTurn);
+  effect.setText("it gets +2/+2 until end of turn");
+  DoIfCostPaid doIfCostPaid=new DoIfCostPaid(effect,new PayEnergyCost(2));
+  this.addAbility(new AttacksTriggeredAbility(doIfCostPaid,false));
+}
