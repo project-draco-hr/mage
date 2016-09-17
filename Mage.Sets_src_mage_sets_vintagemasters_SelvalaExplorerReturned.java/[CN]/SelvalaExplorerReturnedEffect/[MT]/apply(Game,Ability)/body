@@ -1,10 +1,10 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    int parley=ParleyCount.getInstance().calculate(game,source,this);
-    if (parley > 0) {
-      controller.getManaPool().addMana(new Mana(0,parley,0,0,0,0,0,0),game,source);
-      controller.gainLife(parley,game);
+    Mana parley=getMana(game,source);
+    if (parley.getAny() > 0) {
+      controller.getManaPool().addMana(parley,game,source);
+      controller.gainLife(parley.getAny(),game);
     }
     return true;
   }
