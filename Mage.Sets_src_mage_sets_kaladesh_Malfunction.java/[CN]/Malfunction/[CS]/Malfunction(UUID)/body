@@ -1,0 +1,12 @@
+{
+  super(ownerId,55,"Malfunction",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{3}{U}");
+  this.expansionSetCode="KLD";
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetPermanent(filter);
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Detriment));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new TapEnchantedEffect()));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new DontUntapInControllersUntapStepEnchantedEffect("permanent")));
+}
