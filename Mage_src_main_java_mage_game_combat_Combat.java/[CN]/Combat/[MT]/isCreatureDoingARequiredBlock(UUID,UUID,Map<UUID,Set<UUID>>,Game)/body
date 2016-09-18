@@ -12,7 +12,14 @@
           for (          UUID blockedAttackerId : combatGroupOfPossibleBlocker.getAttackers()) {
             if (mustBeBlockedByAtLeastOne.containsKey(blockedAttackerId)) {
               if (combatGroupOfPossibleBlocker.getBlockers().size() == 1) {
-                return null;
+                Set<UUID> blockedSet=mustBeBlockedByAtLeastOne.get(blockedAttackerId);
+                Set<UUID> toBlockSet=mustBeBlockedByAtLeastOne.get(toBeBlockedCreatureId);
+                if (toBlockSet == null) {
+                  return null;
+                }
+ else                 if (toBlockSet.containsAll(blockedSet)) {
+                  return null;
+                }
               }
               Permanent blockedAttacker=game.getPermanent(blockedAttackerId);
               return possibleBlocker.getIdName() + " blocks with other creatures " + blockedAttacker.getIdName()+ ", which has to be blocked by only one creature. ";
