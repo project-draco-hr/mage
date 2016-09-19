@@ -1,0 +1,11 @@
+{
+  ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+  if (zEvent.getFromZone() == Zone.BATTLEFIELD) {
+    UUID targetId=event.getTargetId();
+    Permanent permanent=game.getPermanentOrLKIBattlefield(targetId);
+    if (permanent != null) {
+      return filter.match(permanent,getSourceId(),getControllerId(),game);
+    }
+  }
+  return false;
+}
