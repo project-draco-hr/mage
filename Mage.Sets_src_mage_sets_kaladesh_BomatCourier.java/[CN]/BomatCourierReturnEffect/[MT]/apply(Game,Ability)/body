@@ -1,7 +1,11 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    return controller.moveCards(game.getExile().getExileZone(CardUtil.getCardExileZoneId(game,source.getSourceId(),true)),Zone.HAND,source,game);
+    ExileZone exileZone=game.getExile().getExileZone(CardUtil.getCardExileZoneId(game,source.getSourceId(),true));
+    if (exileZone != null) {
+      controller.moveCards(exileZone,Zone.HAND,source,game);
+    }
+    return true;
   }
   return false;
 }
