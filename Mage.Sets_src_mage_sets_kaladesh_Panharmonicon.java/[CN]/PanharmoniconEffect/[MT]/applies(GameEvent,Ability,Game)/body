@@ -5,7 +5,11 @@
       GameEvent sourceEvent=numberOfTriggersEvent.getSourceEvent();
       if (sourceEvent.getType() == EventType.ENTERS_THE_BATTLEFIELD && sourceEvent instanceof EntersTheBattlefieldEvent) {
         EntersTheBattlefieldEvent entersTheBattlefieldEvent=(EntersTheBattlefieldEvent)sourceEvent;
-        return entersTheBattlefieldEvent.getTarget().getCardType().contains(CardType.ARTIFACT) || entersTheBattlefieldEvent.getTarget().getCardType().contains(CardType.CREATURE);
+        if (entersTheBattlefieldEvent.getTarget().getCardType().contains(CardType.ARTIFACT) || entersTheBattlefieldEvent.getTarget().getCardType().contains(CardType.CREATURE)) {
+          if (game.getPermanent(numberOfTriggersEvent.getSourceId()) != null) {
+            return true;
+          }
+        }
       }
     }
   }
