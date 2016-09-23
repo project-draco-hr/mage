@@ -1,11 +1,6 @@
 {
-  String key=getKey(source,game);
-  @SuppressWarnings("unchecked") Set<UUID> onceSelectedModes=(Set<UUID>)game.getState().getValue(key);
-  if (onceSelectedModes == null) {
-    onceSelectedModes=new HashSet<>();
-  }
   for (  Mode mode : selectedModes) {
-    onceSelectedModes.add(mode.getId());
+    String key=getKey(source,game,mode.getId());
+    game.getState().setValue(key,true);
   }
-  game.getState().setValue(key,onceSelectedModes);
 }
