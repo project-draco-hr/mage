@@ -38,7 +38,7 @@
       return false;
     }
     Player player=game.getPlayer(playerId);
-    this.mode=null;
+    this.currentMode=null;
     while (this.selectedModes.size() < this.getMaxModes()) {
       Mode choice=player.chooseMode(this,source,game);
       if (choice == null) {
@@ -48,8 +48,8 @@
         return this.selectedModes.size() >= this.getMinModes();
       }
       this.selectedModes.add(choice.copy());
-      if (mode == null) {
-        mode=choice;
+      if (currentMode == null) {
+        currentMode=choice;
       }
     }
     if (isEachModeOnlyOnce()) {
@@ -57,7 +57,7 @@
     }
     return true;
   }
-  if (mode == null) {
+  if (currentMode == null) {
     this.selectedModes.clear();
     Mode copiedMode=this.values().iterator().next().copy();
     this.selectedModes.add(copiedMode);
