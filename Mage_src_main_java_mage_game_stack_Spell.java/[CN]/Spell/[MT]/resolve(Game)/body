@@ -18,7 +18,8 @@
     if (notTargeted || legalParts) {
       for (      SpellAbility spellAbility : this.spellAbilities) {
         if (spellAbilityHasLegalParts(spellAbility,game)) {
-          for (          Mode mode : spellAbility.getModes().getSelectedModes()) {
+          for (          UUID modeId : spellAbility.getModes().getSelectedModes()) {
+            Mode mode=spellAbility.getModes().get(modeId);
             spellAbility.getModes().setActiveMode(mode);
             if (mode.getTargets().stillLegal(spellAbility,game)) {
               if (!spellAbility.getSpellAbilityType().equals(SpellAbilityType.SPLICE)) {

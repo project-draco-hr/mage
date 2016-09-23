@@ -38,7 +38,8 @@
   if (this.getAbilityType().equals(AbilityType.SPELL) && game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.CAST_SPELL_LATE,getId(),getSourceId(),getControllerId()),this)) {
     return false;
   }
-  for (  Mode mode : this.getModes().getSelectedModes()) {
+  for (  UUID modeId : this.getModes().getSelectedModes()) {
+    Mode mode=this.getModes().get(modeId);
     this.getModes().setActiveMode(mode);
     if (sourceObject != null && !this.getAbilityType().equals(AbilityType.TRIGGERED)) {
       sourceObject.adjustTargets(this,game);
