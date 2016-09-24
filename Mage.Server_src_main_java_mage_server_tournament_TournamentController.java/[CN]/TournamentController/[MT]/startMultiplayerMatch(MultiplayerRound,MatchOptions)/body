@@ -1,0 +1,24 @@
+{
+  try {
+    TableManager tableManager=TableManager.getInstance();
+    Table table=tableManager.createTable(GamesRoomManager.getInstance().getMainRoomId(),matchOptions);
+    table.setTournamentSubTable(true);
+    table.setTournament(tournament);
+    table.setState(TableState.WAITING);
+    for (    TournamentPlayer player : round.getAllPlayers()) {
+      tableManager.addPlayer(getPlayerUserId(player.getPlayer().getId()),table.getId(),player.getPlayer(),player.getPlayerType(),player.getDeck());
+    }
+    table.setState(TableState.STARTING);
+    tableManager.startTournamentSubMatch(null,table.getId());
+    Match match=tableManager.getMatch(table.getId());
+    match.setTableId(tableId);
+    round.setMatch(match);
+    round.setTableId(table.getId());
+    for (    TournamentPlayer player : round.getAllPlayers()) {
+      player.setState(TournamentPlayerState.DUELING);
+    }
+  }
+ catch (  GameException ex) {
+    logger.fatal("TournamentController startMatch error",ex);
+  }
+}

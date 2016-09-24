@@ -1,0 +1,18 @@
+{
+  int numPlayers=(Integer)this.spnNumPlayers.getValue();
+  int numSeats=(Integer)this.spnNumSeats.getValue();
+  if (numSeats > 2) {
+    TournamentTypeView tournamentType=(TournamentTypeView)cbTournamentType.getSelectedItem();
+    if (numSeats >= tournamentType.getMinPlayers()) {
+      createPlayers(numSeats - 1);
+      spnNumPlayers.setValue(numSeats);
+    }
+ else {
+      numSeats=tournamentType.getMinPlayers();
+      createPlayers(numSeats - 1);
+      spnNumPlayers.setValue(numSeats);
+      spnNumSeats.setValue(numSeats);
+    }
+    spnNumWins.setValue(1);
+  }
+}
