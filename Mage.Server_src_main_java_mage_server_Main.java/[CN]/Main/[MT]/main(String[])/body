@@ -15,6 +15,28 @@
       fastDbMode=Boolean.valueOf(arg.replace(fastDBModeArg,""));
     }
   }
+  logger.info("Loading custom set packages...");
+  List<CustomSetPackage> customSets=new ArrayList<>();
+  if (!customSetsFolder.exists())   if (!customSetsFolder.mkdirs())   logger.error("Could not create custom sets directory.");
+  File[] customSetDirectories=customSetsFolder.listFiles();
+  if (customSetDirectories != null)   for (  File f : customSetDirectories)   if (f.isDirectory())   try {
+    customSets.add(CustomSetLoader.loadCustomSet(f));
+  }
+ catch (  IOException e) {
+    logger.error("Could not load custom package in " + f + "!",e);
+  }
+  logger.info("Done.");
+  if (!customSets.isEmpty()) {
+    logger.info("Registering custom sets...");
+    for (    CustomSetPackage pkg : customSets) {
+      for (      ExpansionSet set : pkg.getSets()) {
+        logger.info("- Loading " + set.getName() + " ("+ set.getCode()+ ")");
+        Sets.getInstance().addSet(set);
+      }
+      PluginClassloaderRegistery.registerPluginClassloader(pkg.getClassLoader());
+    }
+    logger.info("Done.");
+  }
   logger.info("Loading cards...");
   if (fastDbMode) {
     CardScanner.scanned=true;
@@ -42,6 +64,12 @@
   }
   for (  Plugin plugin : config.getDeckTypes()) {
     DeckValidatorFactory.getInstance().addDeckType(plugin.getName(),loadPlugin(plugin));
+  }
+  for (  CustomSetPackage pkg : customSets) {
+    Map<String,Class> draftCubes=pkg.getDraftCubes();
+    for (    String name : draftCubes.keySet())     CubeFactory.getInstance().addDraftCube(name,draftCubes.get(name));
+    Map<String,Class> deckTypes=pkg.getDeckTypes();
+    for (    String name : deckTypes.keySet())     DeckValidatorFactory.getInstance().addDeckType(name,deckTypes.get(name));
   }
   logger.info("Config - max seconds idle: " + config.getMaxSecondsIdle());
   logger.info("Config - max game threads: " + config.getMaxGameThreads());
