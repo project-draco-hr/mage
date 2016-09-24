@@ -26,6 +26,18 @@ initTournament();
 startMatch(event.getPair(),event.getMatchOptions());
 }
 break;
+case START_MULTIPLAYER_MATCH:
+if (!isAbort()) {
+initTournament();
+MatchOptions matchOptions=event.getMatchOptions();
+if (matchOptions != null && event.getMultiplayerRound() != null) {
+for (TournamentPlayer player : event.getMultiplayerRound().getAllPlayers()) {
+matchOptions.getPlayerTypes().add(player.getPlayerType());
+}
+}
+startMultiplayerMatch(event.getMultiplayerRound(),event.getMatchOptions());
+}
+break;
 case END:
 endTournament();
 break;
