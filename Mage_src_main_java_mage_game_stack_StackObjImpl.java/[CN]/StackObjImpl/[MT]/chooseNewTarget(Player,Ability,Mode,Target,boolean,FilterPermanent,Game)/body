@@ -51,39 +51,37 @@
               again=true;
             }
           }
- else {
-            if (newTarget.getTargets().contains(tempTarget.getFirstTarget()) || target.getTargets().contains(tempTarget.getFirstTarget())) {
-              if (targetController.isHuman()) {
-                if (targetController.chooseUse(Outcome.Benefit,"This target was already selected from origin spell. Reset to original target?",ability,game)) {
-                  newTarget.addTarget(targetId,target.getTargetAmount(targetId),ability,game,false);
-                }
- else {
-                  again=true;
-                }
-              }
- else {
+ else           if (newTarget.getTargets().contains(tempTarget.getFirstTarget()) || target.getTargets().contains(tempTarget.getFirstTarget())) {
+            if (targetController.isHuman()) {
+              if (targetController.chooseUse(Outcome.Benefit,"This target was already selected from origin spell. Reset to original target?",ability,game)) {
                 newTarget.addTarget(targetId,target.getTargetAmount(targetId),ability,game,false);
               }
-            }
- else             if (!target.canTarget(getControllerId(),tempTarget.getFirstTarget(),ability,game)) {
-              if (targetController.isHuman()) {
-                game.informPlayer(targetController,"This target is not valid!");
-                again=true;
-              }
  else {
-                newTarget.addTarget(targetId,target.getTargetAmount(targetId),ability,game,false);
-              }
-            }
- else             if (newTarget.getFirstTarget() != null && filterNewTarget != null) {
-              Permanent newTargetPermanent=game.getPermanent(newTarget.getFirstTarget());
-              if (newTargetPermanent == null || !filterNewTarget.match(newTargetPermanent,game)) {
-                game.informPlayer(targetController,"This target does not fullfil the target requirements (" + filterNewTarget.getMessage() + ")");
                 again=true;
               }
             }
  else {
-              newTarget.addTarget(tempTarget.getFirstTarget(),target.getTargetAmount(targetId),ability,game,false);
+              newTarget.addTarget(targetId,target.getTargetAmount(targetId),ability,game,false);
             }
+          }
+ else           if (!target.canTarget(getControllerId(),tempTarget.getFirstTarget(),ability,game)) {
+            if (targetController.isHuman()) {
+              game.informPlayer(targetController,"This target is not valid!");
+              again=true;
+            }
+ else {
+              newTarget.addTarget(targetId,target.getTargetAmount(targetId),ability,game,false);
+            }
+          }
+ else           if (newTarget.getFirstTarget() != null && filterNewTarget != null) {
+            Permanent newTargetPermanent=game.getPermanent(newTarget.getFirstTarget());
+            if (newTargetPermanent == null || !filterNewTarget.match(newTargetPermanent,game)) {
+              game.informPlayer(targetController,"This target does not fullfil the target requirements (" + filterNewTarget.getMessage() + ")");
+              again=true;
+            }
+          }
+ else {
+            newTarget.addTarget(tempTarget.getFirstTarget(),target.getTargetAmount(targetId),ability,game,false);
           }
         }
  while (again && targetController.canRespond());

@@ -13,7 +13,8 @@
       List<Permanent> list=game.getBattlefield().getAllActivePermanents(filter,game);
       for (      Permanent perm : list) {
         for (        Ability abil : perm.getAbilities(game)) {
-          for (          Mode mode : abil.getModes().getSelectedModes()) {
+          for (          UUID modeId : abil.getModes().getSelectedModes()) {
+            Mode mode=abil.getModes().get(modeId);
             for (            Target target : mode.getTargets()) {
               for (              UUID targetId : target.getTargets()) {
                 artifacts.remove(game.getPermanentOrLKIBattlefield(targetId));

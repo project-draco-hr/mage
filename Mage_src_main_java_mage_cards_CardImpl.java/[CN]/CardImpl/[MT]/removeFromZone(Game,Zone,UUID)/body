@@ -52,6 +52,9 @@ removed=true;
 game.getPlayer(ownerId).getSideboard().remove(this.getId());
 removed=true;
 }
+ else if (game.getPhase() == null) {
+removed=true;
+}
 break;
 case BATTLEFIELD:
 removed=true;
@@ -62,7 +65,9 @@ logger.fatal("Invalid from zone [" + fromZone + "] for card ["+ this.getIdName()
 break;
 }
 if (removed) {
+if (!fromZone.equals(Zone.OUTSIDE)) {
 game.rememberLKI(lkiObject != null ? lkiObject.getId() : objectId,fromZone,lkiObject != null ? lkiObject : this);
+}
 }
  else {
 logger.warn("Couldn't find card in fromZone, card=" + getIdName() + ", fromZone="+ fromZone);

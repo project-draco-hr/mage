@@ -7,7 +7,8 @@
   if (spell != null && controller != null) {
     Target usedTarget=null;
     setUsedTarget:     for (    Ability ability : spell.getSpellAbilities()) {
-      for (      Mode mode : ability.getModes().getSelectedModes()) {
+      for (      UUID modeId : ability.getModes().getSelectedModes()) {
+        Mode mode=ability.getModes().get(modeId);
         for (        Target target : mode.getTargets()) {
           if (!target.isNotTarget() && target.getFirstTarget().equals(source.getSourceId())) {
             usedTarget=target.copy();
@@ -24,7 +25,8 @@
       if (!creature.getId().equals(source.getSourceId()) && usedTarget.canTarget(source.getControllerId(),creature.getId(),source,game)) {
         Spell copy=spell.copySpell(source.getControllerId());
         game.getStack().push(copy);
-        setTarget:         for (        Mode mode : copy.getSpellAbility().getModes().getSelectedModes()) {
+        setTarget:         for (        UUID modeId : copy.getSpellAbility().getModes().getSelectedModes()) {
+          Mode mode=copy.getSpellAbility().getModes().get(modeId);
           for (          Target target : mode.getTargets()) {
             if (target.getClass().equals(usedTarget.getClass())) {
               target.clearChosen();

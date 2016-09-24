@@ -1,8 +1,16 @@
 {
-  if (event instanceof EntersTheBattlefieldEvent) {
-    Permanent permanent=((EntersTheBattlefieldEvent)event).getTarget();
-    if (permanent != null) {
-      return permanent.getCardType().contains(CardType.ARTIFACT) || permanent.getCardType().contains(CardType.CREATURE);
+  if (event instanceof NumberOfTriggersEvent) {
+    NumberOfTriggersEvent numberOfTriggersEvent=(NumberOfTriggersEvent)event;
+    if (source.getControllerId().equals(event.getPlayerId())) {
+      GameEvent sourceEvent=numberOfTriggersEvent.getSourceEvent();
+      if (sourceEvent.getType() == EventType.ENTERS_THE_BATTLEFIELD && sourceEvent instanceof EntersTheBattlefieldEvent) {
+        EntersTheBattlefieldEvent entersTheBattlefieldEvent=(EntersTheBattlefieldEvent)sourceEvent;
+        if (entersTheBattlefieldEvent.getTarget().getCardType().contains(CardType.ARTIFACT) || entersTheBattlefieldEvent.getTarget().getCardType().contains(CardType.CREATURE)) {
+          if (game.getPermanent(numberOfTriggersEvent.getSourceId()) != null) {
+            return true;
+          }
+        }
+      }
     }
   }
   return false;

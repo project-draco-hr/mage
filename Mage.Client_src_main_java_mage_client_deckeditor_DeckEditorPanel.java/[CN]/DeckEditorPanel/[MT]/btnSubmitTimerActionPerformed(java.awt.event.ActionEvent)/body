@@ -1,0 +1,17 @@
+{
+  ScheduledExecutorService scheduledExecutorService=Executors.newScheduledThreadPool(5);
+  timeToSubmit=60;
+  this.btnSubmitTimer.setEnabled(false);
+  ScheduledFuture scheduledFuture=scheduledExecutorService.schedule(new Callable(){
+    public Object call() throws Exception {
+      if (updateDeckTask != null) {
+        updateDeckTask.cancel(true);
+      }
+      if (SessionHandler.submitDeck(tableId,deck.getDeckCardLists())) {
+        removeDeckEditor();
+      }
+      return null;
+    }
+  }
+,60,TimeUnit.SECONDS);
+}
