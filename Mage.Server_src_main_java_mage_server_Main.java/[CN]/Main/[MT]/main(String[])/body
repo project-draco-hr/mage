@@ -20,6 +20,7 @@
   if (!customSetsFolder.exists())   if (!customSetsFolder.mkdirs())   logger.error("Could not create custom sets directory.");
   File[] customSetDirectories=customSetsFolder.listFiles();
   if (customSetDirectories != null)   for (  File f : customSetDirectories)   if (f.isDirectory())   try {
+    logger.info(" - Loading custom set module from " + f);
     customSets.add(CustomSetLoader.loadCustomSet(f));
   }
  catch (  IOException e) {
