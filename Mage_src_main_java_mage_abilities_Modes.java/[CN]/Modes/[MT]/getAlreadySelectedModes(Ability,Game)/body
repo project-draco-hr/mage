@@ -1,3 +1,10 @@
 {
-  return (Set<UUID>)game.getState().getValue(getKey(source,game));
+  Set<UUID> onceSelectedModes=new HashSet<>();
+  for (  UUID modeId : this.keySet()) {
+    Object exist=game.getState().getValue(getKey(source,game,modeId));
+    if (exist != null) {
+      onceSelectedModes.add(modeId);
+    }
+  }
+  return onceSelectedModes;
 }

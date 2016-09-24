@@ -1,16 +1,16 @@
 {
   addCard(Zone.HAND,playerA,"Brutal Expulsion");
   addCard(Zone.HAND,playerA,"Shock");
-  addCard(Zone.BATTLEFIELD,playerA,"Island",4);
-  addCard(Zone.BATTLEFIELD,playerA,"Mountain",5);
+  addCard(Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Mountain",4);
   addCard(Zone.BATTLEFIELD,playerB,"Gideon, Ally of Zendikar");
   castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Brutal Expulsion",playerB);
   setModeChoice(playerA,"2");
   setModeChoice(playerA,null);
   setChoice(playerA,"Yes");
-  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Shock",playerB);
+  castSpell(1,PhaseStep.BEGIN_COMBAT,playerA,"Shock",playerB);
   setChoice(playerA,"Yes");
-  setStopAt(1,PhaseStep.POSTCOMBAT_MAIN);
+  setStopAt(1,PhaseStep.END_COMBAT);
   execute();
   assertPermanentCount(playerB,"Gideon, Ally of Zendikar",0);
   assertGraveyardCount(playerB,"Gideon, Ally of Zendikar",0);

@@ -147,14 +147,16 @@ if (card instanceof Spell) {
 this.mageObjectType=MageObjectType.SPELL;
 Spell spell=(Spell)card;
 for (SpellAbility spellAbility : spell.getSpellAbilities()) {
-for (Mode mode : spellAbility.getModes().getSelectedModes()) {
+for (UUID modeId : spellAbility.getModes().getSelectedModes()) {
+Mode mode=spellAbility.getModes().get(modeId);
 if (mode.getTargets().size() > 0) {
 setTargets(spellAbility.getTargets());
 }
 }
 }
 if (spell.getSpellAbility().isModal()) {
-for (Mode mode : spell.getSpellAbility().getModes().getSelectedModes()) {
+for (UUID modeId : spell.getSpellAbility().getModes().getSelectedModes()) {
+Mode mode=spell.getSpellAbility().getModes().get(modeId);
 this.rules.add("<span color='green'><i>Chosen mode: " + mode.getEffects().getText(mode) + "</i></span>");
 }
 }

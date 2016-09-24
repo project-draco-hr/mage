@@ -4,7 +4,8 @@
     if (isControlledInstantOrSorcery(spell)) {
       boolean targetsSource=false;
       for (      Ability ability : spell.getSpellAbilities()) {
-        for (        Mode mode : ability.getModes().getSelectedModes()) {
+        for (        UUID modeId : ability.getModes().getSelectedModes()) {
+          Mode mode=ability.getModes().get(modeId);
           for (          Target target : mode.getTargets()) {
             if (!target.isNotTarget()) {
               for (              UUID targetId : target.getTargets()) {

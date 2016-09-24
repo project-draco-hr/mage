@@ -1,30 +1,33 @@
 {
   List<TournamentPlayer> roundPlayers=getActivePlayers();
   boolean isLastRound=(rounds.size() + 1 == getNumberRounds());
-  RoundPairings roundPairings;
-  if (roundPlayers.size() <= 16) {
-    SwissPairingMinimalWeightMatching swissPairing=new SwissPairingMinimalWeightMatching(roundPlayers,rounds,isLastRound);
-    roundPairings=swissPairing.getRoundPairings();
-  }
- else {
-    SwissPairingSimple swissPairing=new SwissPairingSimple(roundPlayers,rounds);
-    roundPairings=swissPairing.getRoundPairings();
-  }
-  Round round=new Round(rounds.size() + 1,this);
-  rounds.add(round);
-  for (  TournamentPairing pairing : roundPairings.getPairings()) {
-    round.addPairing(pairing);
-  }
-  for (  TournamentPlayer playerBye : roundPairings.getPlayerByes()) {
-    round.getPlayerByes().add(playerBye);
-    if (isLastRound) {
-      playerBye.setState(TournamentPlayerState.FINISHED);
+  Round round=null;
+  if (options.matchOptions.getNumSeats() == 2) {
+    RoundPairings roundPairings;
+    if (roundPlayers.size() <= 16) {
+      SwissPairingMinimalWeightMatching swissPairing=new SwissPairingMinimalWeightMatching(roundPlayers,rounds,isLastRound);
+      roundPairings=swissPairing.getRoundPairings();
     }
  else {
-      playerBye.setState(TournamentPlayerState.WAITING);
+      SwissPairingSimple swissPairing=new SwissPairingSimple(roundPlayers,rounds);
+      roundPairings=swissPairing.getRoundPairings();
     }
-    playerBye.setStateInfo("Round Bye");
-    updateResults();
+    round=new Round(rounds.size() + 1,this);
+    rounds.add(round);
+    for (    TournamentPairing pairing : roundPairings.getPairings()) {
+      round.addPairing(pairing);
+    }
+    for (    TournamentPlayer playerBye : roundPairings.getPlayerByes()) {
+      round.getPlayerByes().add(playerBye);
+      if (isLastRound) {
+        playerBye.setState(TournamentPlayerState.FINISHED);
+      }
+ else {
+        playerBye.setState(TournamentPlayerState.WAITING);
+      }
+      playerBye.setStateInfo("Round Bye");
+      updateResults();
+    }
   }
   return round;
 }

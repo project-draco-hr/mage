@@ -1,0 +1,21 @@
+{
+  List<TournamentPlayer> roundPlayers=getActivePlayers();
+  boolean isLastRound=(rounds.size() + 1 == getNumberRounds());
+  MultiplayerRound round=null;
+  if (options.matchOptions.getNumSeats() > 2) {
+    RoundPairings roundPairings;
+    if (roundPlayers.size() <= 16) {
+      SwissPairingMinimalWeightMatching swissPairing=new SwissPairingMinimalWeightMatching(roundPlayers,rounds,isLastRound);
+      roundPairings=swissPairing.getRoundPairings();
+    }
+ else {
+      SwissPairingSimple swissPairing=new SwissPairingSimple(roundPlayers,rounds);
+      roundPairings=swissPairing.getRoundPairings();
+    }
+    round=new MultiplayerRound(rounds.size() + 1,this,options.matchOptions.getNumSeats());
+    for (    TournamentPairing pairing : roundPairings.getPairings()) {
+      round.addPairing(pairing);
+    }
+  }
+  return round;
+}
