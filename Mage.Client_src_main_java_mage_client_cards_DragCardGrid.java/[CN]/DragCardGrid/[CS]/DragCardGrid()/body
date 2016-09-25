@@ -1,0 +1,57 @@
+{
+  cardGrid=new ArrayList<>();
+  setLayout(new BorderLayout());
+  sortButton=new JButton("Sort");
+  filterButton=new JButton("Filter");
+  JButton loadButton=new JButton("Load");
+  loadButton.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      loadDeck();
+    }
+  }
+);
+  JPanel toolbar=new JPanel(new BorderLayout());
+  JPanel toolbarInner=new JPanel();
+  toolbar.setBackground(new Color(250,250,250,150));
+  toolbar.setOpaque(true);
+  toolbarInner.setOpaque(false);
+  toolbarInner.add(sortButton);
+  toolbarInner.add(filterButton);
+  toolbarInner.add(loadButton);
+  toolbar.add(toolbarInner,BorderLayout.WEST);
+  this.add(toolbar,BorderLayout.NORTH);
+  cardContent=new JLayeredPane();
+  cardContent.setLayout(null);
+  cardContent.addMouseListener(new MouseAdapter(){
+    @Override public void mousePressed(    MouseEvent e){
+      beginSelectionDrag(e.getX(),e.getY());
+      updateSelectionDrag(e.getX(),e.getY());
+    }
+    @Override public void mouseReleased(    MouseEvent e){
+      updateSelectionDrag(e.getX(),e.getY());
+      endSelectionDrag(e.getX(),e.getY());
+    }
+  }
+);
+  cardContent.addMouseMotionListener(new MouseAdapter(){
+    @Override public void mouseDragged(    MouseEvent e){
+      updateSelectionDrag(e.getX(),e.getY());
+    }
+  }
+);
+  cardScroll=new JScrollPane(cardContent,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+  this.add(cardScroll,BorderLayout.CENTER);
+  insertArrow=new JLabel();
+  insertArrow.setSize(20,20);
+  insertArrow.setVisible(false);
+  cardContent.add(insertArrow,new Integer(1000));
+  selectionPanel=new SelectionBox();
+  selectionPanel.setVisible(false);
+  cardContent.add(selectionPanel,new Integer(1001));
+  sortPopup=new JPopupMenu();
+  sortPopup.setPreferredSize(new Dimension(300,300));
+  makeButtonPopup(sortButton,sortPopup);
+  filterPopup=new JPopupMenu();
+  filterPopup.setPreferredSize(new Dimension(300,300));
+  makeButtonPopup(filterButton,filterPopup);
+}

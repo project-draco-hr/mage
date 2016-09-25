@@ -1,0 +1,46 @@
+{
+  int cardWidth=getCardWidth();
+  int cardHeight=getCardHeight();
+  int cardTopHeight=CardRenderer.getCardTopHeight(cardWidth);
+  int layerIndex=0;
+  int currentY=COUNT_LABEL_HEIGHT;
+  int maxWidth=0;
+  for (int rowIndex=0; rowIndex < cardGrid.size(); ++rowIndex) {
+    int rowMaxStackSize=0;
+    ArrayList<ArrayList<CardView>> gridRow=cardGrid.get(rowIndex);
+    for (int colIndex=0; colIndex < gridRow.size(); ++colIndex) {
+      ArrayList<CardView> stack=gridRow.get(colIndex);
+      if (stackCountLabels.size() <= rowIndex) {
+        stackCountLabels.add(new ArrayList<JLabel>());
+      }
+      if (stackCountLabels.get(rowIndex).size() <= colIndex) {
+        JLabel countLabel=new JLabel("",SwingConstants.CENTER);
+        cardContent.add(countLabel,new Integer(0));
+        stackCountLabels.get(rowIndex).add(countLabel);
+      }
+      JLabel countLabel=stackCountLabels.get(rowIndex).get(colIndex);
+      if (stack.isEmpty()) {
+        countLabel.setVisible(false);
+      }
+ else {
+        countLabel.setText("" + stack.size());
+        countLabel.setLocation(GRID_PADDING + (cardWidth + GRID_PADDING) * colIndex,currentY - COUNT_LABEL_HEIGHT);
+        countLabel.setSize(cardWidth,COUNT_LABEL_HEIGHT);
+        countLabel.setVisible(true);
+      }
+      rowMaxStackSize=Math.max(rowMaxStackSize,stack.size());
+      for (int i=0; i < stack.size(); ++i) {
+        CardView card=stack.get(i);
+        MageCard view=cardViews.get(card.getId());
+        int x=GRID_PADDING + (cardWidth + GRID_PADDING) * colIndex;
+        int y=currentY + i * cardTopHeight;
+        view.setCardBounds(x,y,cardWidth,cardHeight);
+        cardContent.setLayer(view,layerIndex++);
+      }
+    }
+    maxWidth=Math.max(maxWidth,GRID_PADDING + (GRID_PADDING + cardWidth) * gridRow.size());
+    maxStackSize.set(rowIndex,rowMaxStackSize);
+    currentY+=(cardTopHeight * (rowMaxStackSize - 1) + cardHeight) + COUNT_LABEL_HEIGHT;
+  }
+  cardContent.setPreferredSize(new Dimension(maxWidth,currentY - COUNT_LABEL_HEIGHT + GRID_PADDING));
+}

@@ -1,0 +1,35 @@
+{
+  boolean didModify=false;
+  for (int i=0; i < cardGrid.size(); ++i) {
+    ArrayList<ArrayList<CardView>> gridRow=cardGrid.get(i);
+    for (int j=0; j < gridRow.size(); ++j) {
+      ArrayList<CardView> stack=gridRow.get(j);
+      for (int k=0; k < stack.size(); ++k) {
+        CardView card=stack.get(k);
+        if (!cardsView.containsKey(card.getId())) {
+          removeCardView(card);
+          stack.remove(k--);
+          didModify=true;
+        }
+      }
+    }
+  }
+  for (  CardView newCard : cardsView.values()) {
+    if (!cardViews.containsKey(newCard.getId())) {
+      addCardView(newCard);
+      try {
+        sortIntoGrid(newCard);
+      }
+ catch (      Exception e) {
+        e.printStackTrace();
+      }
+      didModify=true;
+    }
+  }
+  if (didModify) {
+    trimGrid();
+    layoutGrid();
+    cardScroll.revalidate();
+    repaint();
+  }
+}

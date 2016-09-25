@@ -1,0 +1,34 @@
+{
+  JFileChooser fcSelectDeck=new JFileChooser();
+  String lastFolder=MageFrame.getPreferences().get("lastDeckFolder","");
+  if (!lastFolder.isEmpty()) {
+    fcSelectDeck.setCurrentDirectory(new File(lastFolder));
+  }
+  int ret=fcSelectDeck.showOpenDialog(DragCardGrid.this);
+  if (ret == JFileChooser.APPROVE_OPTION) {
+    File file=fcSelectDeck.getSelectedFile();
+    try {
+      setCursor(new Cursor(Cursor.WAIT_CURSOR));
+      Deck deck=Deck.load(DeckImporterUtil.importDeck(file.getPath()),true,true);
+      Logger.getLogger(DragCardGrid.class).info("Loaded " + deck.getCards().size());
+      setCards(new CardsView(deck.getCards()));
+    }
+ catch (    GameException ex) {
+      JOptionPane.showMessageDialog(MageFrame.getDesktop(),ex.getMessage(),"Error loading deck",JOptionPane.ERROR_MESSAGE);
+    }
+catch (    Exception ex) {
+      ex.printStackTrace();
+    }
+ finally {
+      setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
+    try {
+      if (file != null) {
+        MageFrame.getPreferences().put("lastDeckFolder",file.getCanonicalPath());
+      }
+    }
+ catch (    IOException ex) {
+    }
+  }
+  fcSelectDeck.setSelectedFile(null);
+}

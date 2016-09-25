@@ -1,0 +1,54 @@
+{
+  if (cardGrid.size() == 0) {
+    cardGrid.add(0,new ArrayList<ArrayList<CardView>>());
+    maxStackSize.add(0,0);
+  }
+  ArrayList<ArrayList<CardView>> targetRow;
+  if (separateCreatures && !newCard.getCardTypes().contains(CardType.CREATURE)) {
+    if (cardGrid.size() < 2) {
+      cardGrid.add(1,new ArrayList<ArrayList<CardView>>());
+      maxStackSize.add(1,0);
+      for (int i=0; i < cardGrid.get(0).size(); ++i) {
+        cardGrid.get(1).add(new ArrayList<CardView>());
+      }
+    }
+    targetRow=cardGrid.get(1);
+  }
+ else {
+    targetRow=cardGrid.get(0);
+  }
+  boolean didInsert=false;
+  for (int currentColumn=0; currentColumn < cardGrid.get(0).size(); ++currentColumn) {
+    CardView cardInColumn=null;
+    for (    ArrayList<ArrayList<CardView>> gridRow : cardGrid) {
+      for (      CardView card : gridRow.get(currentColumn)) {
+        cardInColumn=card;
+        break;
+      }
+    }
+    if (cardInColumn == null) {
+      LOGGER.error("Empty column!");
+    }
+ else {
+      int res=cardSort.getComparator().compare(newCard,cardInColumn);
+      if (res <= 0) {
+        if (res < 0) {
+          for (int rowIndex=0; rowIndex < cardGrid.size(); ++rowIndex) {
+            cardGrid.get(rowIndex).add(currentColumn,new ArrayList<CardView>());
+          }
+        }
+        targetRow.get(currentColumn).add(newCard);
+        didInsert=true;
+        break;
+      }
+ else {
+      }
+    }
+  }
+  if (!didInsert) {
+    for (int rowIndex=0; rowIndex < cardGrid.size(); ++rowIndex) {
+      cardGrid.get(rowIndex).add(new ArrayList<CardView>());
+    }
+    targetRow.get(targetRow.size() - 1).add(newCard);
+  }
+}

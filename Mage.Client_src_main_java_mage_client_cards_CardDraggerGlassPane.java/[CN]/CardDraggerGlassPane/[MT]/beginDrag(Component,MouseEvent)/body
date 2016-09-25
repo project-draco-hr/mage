@@ -1,0 +1,29 @@
+{
+  if (isDragging) {
+    return;
+  }
+  isDragging=true;
+  dragComponent=c;
+  currentRoot=SwingUtilities.getRootPane(c);
+  c.addMouseListener(this);
+  c.addMouseMotionListener(this);
+  oldGlassPane=currentRoot.getGlassPane();
+  setVisible(false);
+  currentRoot.setGlassPane(this);
+  setVisible(true);
+  revalidate();
+  e=SwingUtilities.convertMouseEvent(c,e,this);
+  currentCards=new ArrayList<>(source.dragCardList());
+  dragView=Plugins.getInstance().getMageCard(currentCards.get(0),null,new Dimension(100,140),null,true);
+  for (  MouseListener l : dragView.getMouseListeners()) {
+    dragView.removeMouseListener(l);
+  }
+  for (  MouseMotionListener l : dragView.getMouseMotionListeners()) {
+    dragView.removeMouseMotionListener(l);
+  }
+  this.add(dragView);
+  dragView.setLocation(e.getX(),e.getY());
+  source.dragCardBegin();
+  currentDragTarget=null;
+  updateCurrentTarget(SwingUtilities.convertMouseEvent(c,e,currentRoot),false);
+}

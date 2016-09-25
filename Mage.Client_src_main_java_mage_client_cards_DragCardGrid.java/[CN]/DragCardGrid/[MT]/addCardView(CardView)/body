@@ -1,0 +1,24 @@
+{
+  allCards.add(card);
+  final MageCard cardPanel=Plugins.getInstance().getMageCard(card,null,new Dimension(100,140),null,true);
+  cardPanel.update(card);
+  cardPanel.addMouseListener(new MouseAdapter(){
+    @Override public void mouseClicked(    MouseEvent e){
+      cardClicked(card,e);
+    }
+  }
+);
+  cardPanel.addMouseMotionListener(new MouseAdapter(){
+    @Override public void mouseDragged(    MouseEvent e){
+      if (!dragger.isDragging()) {
+        if (!card.isSelected()) {
+          cardClicked(card,e);
+        }
+        dragger.beginDrag(cardPanel,e);
+      }
+    }
+  }
+);
+  cardContent.add(cardPanel);
+  cardViews.put(card.getId(),cardPanel);
+}

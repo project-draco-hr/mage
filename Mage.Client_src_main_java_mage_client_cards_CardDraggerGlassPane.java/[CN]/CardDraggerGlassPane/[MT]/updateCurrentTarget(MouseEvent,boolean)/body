@@ -1,0 +1,31 @@
+{
+  Component mouseOver=SwingUtilities.getDeepestComponentAt(currentRoot.getContentPane(),e.getX(),e.getY());
+  while (mouseOver != null) {
+    if (mouseOver instanceof DragCardTarget) {
+      DragCardTarget target=(DragCardTarget)mouseOver;
+      MouseEvent targetEvent=SwingUtilities.convertMouseEvent(currentRoot,e,mouseOver);
+      if (target != currentDragTarget) {
+        if (currentDragTarget != null) {
+          MouseEvent oldTargetEvent=SwingUtilities.convertMouseEvent(currentRoot,e,(Component)currentDragTarget);
+          currentDragTarget.dragCardExit(oldTargetEvent);
+        }
+        currentDragTarget=target;
+        currentDragTarget.dragCardEnter(targetEvent);
+      }
+      if (isEnding) {
+        currentDragTarget.dragCardExit(targetEvent);
+        currentDragTarget.dragCardDrop(targetEvent,source,currentCards);
+      }
+ else {
+        currentDragTarget.dragCardMove(targetEvent);
+      }
+      return;
+    }
+    mouseOver=mouseOver.getParent();
+  }
+  if (currentDragTarget != null) {
+    MouseEvent oldTargetEvent=SwingUtilities.convertMouseEvent(currentRoot,e,(Component)currentDragTarget);
+    currentDragTarget.dragCardExit(oldTargetEvent);
+  }
+  currentDragTarget=null;
+}
