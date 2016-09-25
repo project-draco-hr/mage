@@ -18,10 +18,8 @@ case "alt-double-click":
       }
     break;
 case "remove-main":
-  DeckEditorPanel.this.deckArea.getDeckList().handleDoubleClick();
-break;
+  break;
 case "remove-sideboard":
-DeckEditorPanel.this.deckArea.getSideboardList().handleDoubleClick();
 break;
 }
 refreshDeck();
@@ -38,10 +36,10 @@ case "double-click":
 {
 SimpleCardView cardView=(SimpleCardView)event.getSource();
 for (Card card : deck.getCards()) {
-if (card.getId().equals(cardView.getId())) {
-deck.getCards().remove(card);
-break;
-}
+  if (card.getId().equals(cardView.getId())) {
+    deck.getCards().remove(card);
+    break;
+  }
 }
 hidePopup();
 refreshDeck();
@@ -52,9 +50,9 @@ case "alt-double-click":
 SimpleCardView cardView=(SimpleCardView)event.getSource();
 for (Card card : deck.getCards()) {
 if (card.getId().equals(cardView.getId())) {
-deck.getCards().remove(card);
-deck.getSideboard().add(card);
-break;
+  deck.getCards().remove(card);
+  deck.getSideboard().add(card);
+  break;
 }
 }
 hidePopup();
@@ -64,6 +62,21 @@ break;
 case "set-number":
 {
 setCardNumberToCardsList(event,deck.getCards());
+}
+case "remove-specific-card":
+{
+SimpleCardView cardView=(SimpleCardView)event.getSource();
+for (Card card : deck.getCards()) {
+if (card.getId().equals(cardView.getId())) {
+deck.getCards().remove(card);
+break;
+}
+}
+}
+case "add-specific-card-maindeck":
+{
+SimpleCardView cardView=(CardView)event.getSource();
+deck.getCards().add(CardRepository.instance.findCard(cardView.getExpansionSetCode(),cardView.getCardNumber()).getCard());
 }
 }
 }
@@ -85,11 +98,27 @@ hidePopup();
 refreshDeck();
 break;
 }
+case "remove-specific-card":
+{
+SimpleCardView cardView=(SimpleCardView)event.getSource();
+for (Card card : deck.getCards()) {
+if (card.getId().equals(cardView.getId())) {
+deck.getCards().remove(card);
+break;
+}
+}
+}
+case "add-specific-card-maindeck":
+{
+SimpleCardView cardView=(CardView)event.getSource();
+deck.getCards().add(CardRepository.instance.findCard(cardView.getExpansionSetCode(),cardView.getCardNumber()).getCard());
+}
 }
 }
 }
 }
 );
+this.deckArea.clearSideboardEventListeners();
 this.deckArea.addSideboardEventListener(new Listener<Event>(){
 @Override public void event(Event event){
 if (mode.equals(DeckEditorMode.FREE_BUILDING)) {
@@ -121,10 +150,40 @@ case "set-number":
 {
 setCardNumberToCardsList(event,deck.getSideboard());
 }
+case "remove-specific-card":
+{
+cardView=(SimpleCardView)event.getSource();
+for (Card card : deck.getSideboard()) {
+if (card.getId().equals(cardView.getId())) {
+deck.getSideboard().remove(card);
+break;
+}
+}
+}
+case "add-specific-card-sideboard":
+{
+cardView=(CardView)event.getSource();
+deck.getSideboard().add(CardRepository.instance.findCard(cardView.getExpansionSetCode(),cardView.getCardNumber()).getCard());
+}
 }
 }
  else {
 switch (event.getEventName()) {
+case "remove-specific-card":
+{
+SimpleCardView cardView=(SimpleCardView)event.getSource();
+for (Card card : deck.getSideboard()) {
+if (card.getId().equals(cardView.getId())) {
+deck.getSideboard().remove(card);
+break;
+}
+}
+}
+case "add-specific-card-sideboard":
+{
+SimpleCardView cardView=(CardView)event.getSource();
+deck.getSideboard().add(CardRepository.instance.findCard(cardView.getExpansionSetCode(),cardView.getCardNumber()).getCard());
+}
 case "double-click":
 case "alt-double-click":
 SimpleCardView cardView=(SimpleCardView)event.getSource();

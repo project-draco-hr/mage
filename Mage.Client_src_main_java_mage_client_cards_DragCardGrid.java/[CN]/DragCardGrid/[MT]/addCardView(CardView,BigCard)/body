@@ -1,10 +1,20 @@
 {
   allCards.add(card);
-  final MageCard cardPanel=Plugins.getInstance().getMageCard(card,null,new Dimension(100,140),null,true);
-  cardPanel.update(card);
+  final MageCard cardPanel=Plugins.getInstance().getMageCard(card,bigCard,new Dimension(100,140),null,true);
+  cardPanel.setTextOffset(0);
   cardPanel.addMouseListener(new MouseAdapter(){
     @Override public void mouseClicked(    MouseEvent e){
-      cardClicked(card,e);
+      if (e.getClickCount() == 1) {
+        cardClicked(card,e);
+      }
+ else {
+        if (e.isAltDown()) {
+          eventSource.altDoubleClick(card,"alt-double-click");
+        }
+ else {
+          eventSource.doubleClick(card,"double-click");
+        }
+      }
     }
   }
 );

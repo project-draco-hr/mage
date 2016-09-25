@@ -101,4 +101,18 @@
     layoutGrid();
     cardScroll.repaint();
   }
+ else {
+    for (    CardView card : cards) {
+      card.setSelected(true);
+      addCardView(card,lastBigCard);
+      if (role == Role.SIDEBOARD) {
+        eventSource.addSpecificCardSideboard(card,"add-specific-card-sideboard");
+      }
+ else       if (role == Role.MAINDECK) {
+        eventSource.addSpecificCardMaindeck(card,"add-specific-card-maindeck");
+      }
+    }
+    layoutGrid();
+    cardContent.repaint();
+  }
 }
