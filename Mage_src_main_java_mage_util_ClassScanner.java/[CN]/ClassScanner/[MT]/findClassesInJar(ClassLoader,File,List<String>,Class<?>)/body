@@ -1,8 +1,6 @@
 {
   List<Class> cards=new ArrayList<>();
-  if (!file.exists()) {
-    return cards;
-  }
+  if (!file.exists())   return cards;
   JarInputStream jarFile=null;
   try {
     jarFile=new JarInputStream(new FileInputStream(file));
@@ -15,17 +13,7 @@
         String className=jarEntry.getName().replace(".class","").replace('/','.');
         int packageNameEnd=className.lastIndexOf('.');
         String packageName=packageNameEnd != -1 ? className.substring(0,packageNameEnd) : "";
-        if (packages.contains(packageName)) {
-          Class<?> clazz;
-          try {
-            clazz=Class.forName(className);
-            if (type.isAssignableFrom(clazz)) {
-              cards.add(clazz);
-            }
-          }
- catch (          ClassNotFoundException ex) {
-          }
-        }
+        if (packages.contains(packageName))         checkClassForInclusion(cards,type,className,classLoader);
       }
     }
   }
@@ -33,7 +21,7 @@
   }
  finally {
     try {
-      jarFile.close();
+      if (jarFile != null)       jarFile.close();
     }
  catch (    IOException ex) {
     }
