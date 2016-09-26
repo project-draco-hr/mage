@@ -1,0 +1,30 @@
+{
+  Player opponent=game.getPlayer(targetPointer.getFirst(game,source));
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (opponent != null && sourceObject != null) {
+    opponent.revealCards(sourceObject.getName(),opponent.getHand(),game);
+    Player controller=game.getPlayer(source.getControllerId());
+    if (controller != null) {
+      int cardsHand=opponent.getHand().count(filter,game);
+      Card card=null;
+      if (cardsHand > 0) {
+        TargetCard target=new TargetCard(Zone.HAND,filter);
+        if (controller.choose(Outcome.Benefit,opponent.getHand(),target,game)) {
+          card=opponent.getHand().get(target.getFirstTarget(),game);
+        }
+      }
+      if (card != null) {
+        UUID exileId=CardUtil.getCardExileZoneId(game,source);
+        controller.moveCardToExileWithInfo(card,exileId,sourceObject.getIdName(),source.getSourceId(),game,Zone.HAND,true);
+        ContinuousEffect effect=new CunningAbductionCastFromExileEffect();
+        effect.setTargetPointer(new FixedTarget(card.getId()));
+        game.addEffect(effect,source);
+        effect=new CunningAbductionSpendAnyManaEffect();
+        effect.setTargetPointer(new FixedTarget(card.getId()));
+        game.addEffect(effect,source);
+      }
+      return true;
+    }
+  }
+  return false;
+}

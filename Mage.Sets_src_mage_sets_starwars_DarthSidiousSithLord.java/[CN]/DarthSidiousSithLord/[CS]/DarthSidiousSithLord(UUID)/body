@@ -1,0 +1,17 @@
+{
+  super(ownerId,192,"Darth Sidious, Sith Lord",Rarity.MYTHIC,new CardType[]{CardType.PLANESWALKER},"{3}{U}{B}{B}{R}");
+  this.expansionSetCode="SWS";
+  this.subtype.add("Sidious");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(5));
+  Ability ability=new LoyaltyAbility(new DestroyTargetEffect(),+3);
+  ability.addTarget(new TargetPermanent(filter));
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new GainControlTargetEffect(Duration.Custom),-2);
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new DamageTargetEffect(7),-9);
+  ability.addTarget(new TargetPlayer());
+  ability.addEffect(new DiscardTargetEffect(7));
+  ability.addEffect(new SacrificeEffect(new FilterPermanent(),7,"then"));
+  this.addAbility(ability);
+}

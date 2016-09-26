@@ -1,0 +1,35 @@
+{
+  Player opponent=game.getPlayer(source.getTargets().getFirstTarget());
+  if (opponent == null) {
+    return false;
+  }
+  int amount=(new ManacostVariableValue()).calculate(game,source,this);
+  if (amount > 0) {
+    LinkedList<Permanent> sacrifices=new LinkedList<Permanent>();
+    FilterNonlandPermanent filter=new FilterNonlandPermanent();
+    List<Permanent> permanents=game.getBattlefield().getAllActivePermanents(filter,opponent.getId(),game);
+    int lifePaid=0;
+    int playerLife=opponent.getLife();
+    for (    Permanent permanent : permanents) {
+      String message="Pay " + amount + " life? If you don't, "+ permanent.getName()+ " will be sacrificed.";
+      if (playerLife - amount - lifePaid >= 0 && opponent != null && opponent.chooseUse(Outcome.Neutral,message,source,game)) {
+        game.informPlayers(opponent.getLogName() + " pays " + amount+ " life. He will not sacrifice "+ permanent.getName());
+        lifePaid+=amount;
+      }
+ else {
+        game.informPlayers(opponent.getLogName() + " will sacrifice " + permanent.getName());
+        sacrifices.add(permanent);
+      }
+    }
+    if (lifePaid > 0) {
+      Player player=game.getPlayer(opponent.getId());
+      if (player != null) {
+        player.loseLife(lifePaid,game);
+      }
+    }
+    for (    Permanent permanent : sacrifices) {
+      permanent.sacrifice(source.getSourceId(),game);
+    }
+  }
+  return true;
+}

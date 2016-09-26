@@ -1,0 +1,14 @@
+{
+  for (Iterator<MageObjectReference> it=affectedObjectList.iterator(); it.hasNext(); ) {
+    Permanent permanent=it.next().getPermanent(game);
+    if (permanent != null) {
+      int unboostCount=-1 * new CountersSourceCount(CounterType.P1P1).calculate(game,source,this);
+      permanent.addPower(unboostCount);
+      permanent.addToughness(unboostCount);
+    }
+ else {
+      it.remove();
+    }
+  }
+  return true;
+}

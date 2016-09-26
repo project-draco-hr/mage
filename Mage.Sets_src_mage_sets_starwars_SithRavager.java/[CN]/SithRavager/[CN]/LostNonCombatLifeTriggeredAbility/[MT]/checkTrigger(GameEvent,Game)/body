@@ -1,0 +1,15 @@
+{
+  if (event.getType() == GameEvent.EventType.LOST_LIFE) {
+    game.informPlayers("LOST LIFE TRIGGER");
+  }
+  if (event.getType() == GameEvent.EventType.DAMAGED_PLAYER) {
+    game.informPlayers("DAMAGED PLAYER TRIGGER " + ((DamagedPlayerEvent)event).isCombatDamage());
+  }
+  if (event.getType() == GameEvent.EventType.DAMAGED_PLAYER) {
+    return !((DamagedPlayerEvent)event).isCombatDamage() && game.getOpponents(game.getControllerId(sourceId)).contains(event.getPlayerId());
+  }
+ else   if (event.getType() == GameEvent.EventType.LOST_LIFE) {
+    return game.getOpponents(game.getControllerId(sourceId)).contains(event.getPlayerId());
+  }
+  return false;
+}

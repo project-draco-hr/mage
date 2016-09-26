@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Set<Card> cards=controller.getGraveyard().getCards(filterCard,game);
+    for (    Card card : cards) {
+      if (card != null) {
+        RepairAbility ability=new RepairAbility(6);
+        ability.setSourceId(card.getId());
+        ability.setControllerId(card.getOwnerId());
+        game.getState().addOtherAbility(card,ability);
+      }
+    }
+    return true;
+  }
+  return false;
+}
