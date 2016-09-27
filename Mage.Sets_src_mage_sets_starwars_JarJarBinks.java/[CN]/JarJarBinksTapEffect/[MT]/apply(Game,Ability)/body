@@ -1,0 +1,36 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (controller != null && sourcePermanent != null) {
+    int highestPower=Integer.MIN_VALUE;
+    boolean multipleExist=false;
+    Permanent permanentToTap=null;
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(new FilterControlledCreaturePermanent(),source.getControllerId(),game)) {
+      if (permanent.getPower().getValue() > highestPower) {
+        permanentToTap=permanent;
+        highestPower=permanent.getPower().getValue();
+        multipleExist=false;
+      }
+ else       if (permanent.getPower().getValue() == highestPower) {
+        multipleExist=true;
+      }
+    }
+    if (multipleExist) {
+      FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent("one of the creatures with the highest power");
+      filter.add(new PowerPredicate(Filter.ComparisonType.Equal,highestPower));
+      Target target=new TargetPermanent(filter);
+      target.setNotTarget(true);
+      if (target.canChoose(source.getSourceId(),source.getControllerId(),game)) {
+        if (controller.choose(outcome,target,source.getSourceId(),game)) {
+          permanentToTap=game.getPermanent(target.getFirstTarget());
+        }
+      }
+    }
+    if (permanentToTap != null) {
+      game.informPlayers(new StringBuilder(sourcePermanent.getName()).append(" chosen creature: ").append(permanentToTap.getName()).toString());
+      return permanentToTap.tap(game);
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    MageObject mageObject=source.getSourceObjectIfItStillExists(game);
+    if (mageObject != null) {
+      Permanent permanent=game.getPermanent(source.getSourceId());
+      if (permanent != null) {
+        boolean ret=controller.moveCards(permanent,Zone.HAND,source,game);
+        if (ret) {
+          game.fireEvent(new GameEvent(EventType.MEDITATED,source.getSourceId(),source.getSourceId(),controller.getId()));
+        }
+        return ret;
+      }
+    }
+  }
+  return false;
+}

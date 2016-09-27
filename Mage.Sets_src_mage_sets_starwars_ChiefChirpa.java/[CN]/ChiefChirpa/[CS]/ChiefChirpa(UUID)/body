@@ -1,0 +1,14 @@
+{
+  super(ownerId,188,"Chief Chirpa",Rarity.RARE,new CardType[]{CardType.CREATURE},"{R}{G}{W}");
+  this.expansionSetCode="SWS";
+  this.supertype.add("Legendary");
+  this.subtype.add("Ewok");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new MonstrosityAbility("{2}{R}{G}{W}",2));
+  Ability ability=new DiesCreatureTriggeredAbility(new AddCountersTargetEffect(CounterType.P1P1.createInstance()),true,diedFilter);
+  ability.addTarget(new TargetControlledCreaturePermanent(ewokFilter));
+  this.addAbility(ability);
+  this.addAbility(new BecomesMonstrousSourceTriggeredAbility(new CreateTokenEffect(new EwokToken(),3)));
+}

@@ -1,0 +1,17 @@
+{
+  super(ownerId,183,"Asajj Ventress",Rarity.RARE,new CardType[]{CardType.CREATURE},"{1}{U}{B}{R}");
+  this.expansionSetCode="SWS";
+  this.supertype.add("Legendary");
+  this.subtype.add("Dathomirian");
+  this.subtype.add("Sith");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(2);
+  this.addAbility(DoubleStrikeAbility.getInstance());
+  BlockedCreatureCount value=new BlockedCreatureCount();
+  Effect effect=new BoostSourceEffect(value,value,Duration.EndOfTurn,true);
+  effect.setText("she gets +1/+1 for each creature blocking her until end of turn");
+  this.addAbility(new BecomesBlockedTriggeredAbility(effect,false));
+  Ability ability=new ConditionalTriggeredAbility(new AttacksTriggeredAbility(new BlocksIfAbleTargetEffect(Duration.EndOfTurn),false),HateCondition.getInstance(),"<i>Hate</i> &mdash; Whenever Asajj Ventress attacks, if an opponent lost life from a source other than combat damage this turn, target creature blocks this turn if able");
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability,new NonCombatDamageWatcher());
+}

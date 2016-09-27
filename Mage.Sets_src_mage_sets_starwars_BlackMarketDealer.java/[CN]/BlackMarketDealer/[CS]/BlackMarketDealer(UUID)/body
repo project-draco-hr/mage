@@ -1,0 +1,17 @@
+{
+  super(ownerId,68,"Black Market Dealer",Rarity.UNCOMMON,new CardType[]{CardType.CREATURE},"{2}{B}");
+  this.expansionSetCode="SWS";
+  this.subtype.add("Human");
+  this.subtype.add("Rogue");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability ability=new DiesCreatureTriggeredAbility(new AddCountersTargetEffect(CounterType.BOUNTY.createInstance()),false,filter);
+  ability.addTarget(new TargetOpponentsCreaturePermanent());
+  this.addAbility(ability);
+  ability=new BountyAbility(new LoseLifeTargetEffect(1));
+  Effect effect=new DrawCardTargetEffect(1);
+  effect.setText("and draws a card");
+  ability.addEffect(effect);
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+}
