@@ -1,0 +1,21 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player targetOpponent=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (controller != null && targetOpponent != null) {
+    int originalHandSize=targetOpponent.getHand().size();
+    if (originalHandSize > 0) {
+      targetOpponent.putCardsOnTopOfLibrary(targetOpponent.getHand(),game,source,false);
+      int librarySize=targetOpponent.getLibrary().size();
+      int searchLibraryForNum=min(originalHandSize,librarySize);
+      TargetCardInLibrary target=new TargetCardInLibrary(searchLibraryForNum,searchLibraryForNum,new FilterCard());
+      controller.searchLibrary(target,game,targetOpponent.getId());
+      for (      UUID cardId : target.getTargets()) {
+        Card targetCard=game.getCard(cardId);
+        targetOpponent.moveCards(targetCard,Zone.HAND,source,game);
+      }
+      targetOpponent.shuffleLibrary(source,game);
+    }
+    return true;
+  }
+  return false;
+}
