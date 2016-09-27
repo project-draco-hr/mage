@@ -17,6 +17,12 @@
         }
         underlyingSetCodesPerFormat.get(EXTENDED).add(set.getCode());
       }
+      if (set.getReleaseDate().after(frontierDate)) {
+        if (underlyingSetCodesPerFormat.get(FRONTIER) == null) {
+          underlyingSetCodesPerFormat.put(FRONTIER,new ArrayList<String>());
+        }
+        underlyingSetCodesPerFormat.get(FRONTIER).add(set.getCode());
+      }
       if (set.getReleaseDate().after(modernDate)) {
         if (underlyingSetCodesPerFormat.get(MODERN) == null) {
           underlyingSetCodesPerFormat.put(MODERN,new ArrayList<String>());
@@ -121,6 +127,7 @@
 );
   if (!formats.isEmpty()) {
     formats.add(0,MODERN);
+    formats.add(0,FRONTIER);
     formats.add(0,EXTENDED);
     formats.add(0,STANDARD);
   }
