@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    CreateTokenEffect effect=new CreateTokenEffect(new EwokToken(),2);
+    effect.apply(game,source);
+    for (    UUID tokenId : effect.getLastAddedTokenIds()) {
+      Permanent token=game.getPermanent(tokenId);
+      if (token != null) {
+        ContinuousEffect continuousEffect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn);
+        continuousEffect.setTargetPointer(new FixedTarget(tokenId));
+        game.addEffect(continuousEffect,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

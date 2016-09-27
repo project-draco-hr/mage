@@ -1,0 +1,15 @@
+{
+  super(Zone.BATTLEFIELD,null);
+  addCost(new TapSourceCost());
+  addCost(new SacrificeSourceCost());
+  FilterCard filter=new FilterCard("basic Mountain, Forest or Plains");
+  filter.add(new CardTypePredicate(CardType.LAND));
+  ArrayList<Predicate<MageObject>> subtypePredicates=new ArrayList<>();
+  subtypePredicates.add(new SubtypePredicate("Plains"));
+  subtypePredicates.add(new SubtypePredicate("Mountain"));
+  subtypePredicates.add(new SubtypePredicate("Forest"));
+  filter.add(Predicates.or(subtypePredicates));
+  filter.add(new SupertypePredicate("Basic"));
+  TargetCardInLibrary target=new TargetCardInLibrary(filter);
+  addEffect(new SearchLibraryPutInPlayEffect(target,true,true,Outcome.PutLandInPlay));
+}

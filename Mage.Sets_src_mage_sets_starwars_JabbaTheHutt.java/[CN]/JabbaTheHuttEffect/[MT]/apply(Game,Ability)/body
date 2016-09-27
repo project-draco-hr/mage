@@ -1,0 +1,13 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    CreateTokenEffect effect=new CreateTokenEffect(new HunterToken(),1,true,false);
+    effect.apply(game,source);
+    Permanent token=game.getPermanent(effect.getLastAddedTokenIds().get(0));
+    Permanent opponentCreature=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (token != null && opponentCreature != null) {
+      return token.fight(opponentCreature,source,game);
+    }
+  }
+  return false;
+}

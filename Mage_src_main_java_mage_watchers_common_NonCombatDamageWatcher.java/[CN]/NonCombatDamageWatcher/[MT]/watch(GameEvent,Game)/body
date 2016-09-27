@@ -1,0 +1,17 @@
+{
+  if (event.getType() == GameEvent.EventType.LOST_LIFE) {
+    UUID playerId=event.getPlayerId();
+    if (playerId != null) {
+      playersBeenDealtNonCombatDamage.add(playerId);
+    }
+  }
+ else   if (event.getType() == EventType.DAMAGED_PLAYER) {
+    DamagedPlayerEvent dEvent=(DamagedPlayerEvent)event;
+    if (!dEvent.isCombatDamage()) {
+      UUID playerId=event.getPlayerId();
+      if (playerId != null) {
+        playersBeenDealtNonCombatDamage.add(playerId);
+      }
+    }
+  }
+}

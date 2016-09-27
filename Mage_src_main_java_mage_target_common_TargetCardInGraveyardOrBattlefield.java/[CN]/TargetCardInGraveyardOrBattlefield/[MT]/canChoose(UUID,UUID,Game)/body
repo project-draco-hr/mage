@@ -1,0 +1,12 @@
+{
+  if (!super.canChoose(sourceId,sourceControllerId,game)) {
+    MageObject targetSource=game.getObject(sourceId);
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(new FilterPermanent(),sourceControllerId,game)) {
+      if ((notTarget || permanent.canBeTargetedBy(targetSource,sourceControllerId,game)) && filter.match(permanent,sourceControllerId,game)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  return true;
+}

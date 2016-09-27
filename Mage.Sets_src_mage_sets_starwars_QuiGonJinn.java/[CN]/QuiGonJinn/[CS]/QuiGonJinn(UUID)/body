@@ -1,0 +1,21 @@
+{
+  super(ownerId,212,"Qui-Gon Jinn",Rarity.RARE,new CardType[]{CardType.CREATURE},"{2}{G}{U}{W}");
+  this.expansionSetCode="SWS";
+  this.supertype.add("Legendary");
+  this.subtype.add("Human");
+  this.subtype.add("Jedi");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  this.addAbility(VigilanceAbility.getInstance());
+  Effect effect=new BoostSourceEffect(2,2,Duration.EndOfTurn);
+  effect.setText("it gets +2/+2");
+  Ability abitity=new AttacksAloneTriggeredAbility(effect);
+  effect=new GainAbilitySourceEffect(LifelinkAbility.getInstance());
+  effect.setText("and lifelink until end of turn");
+  abitity.addEffect(effect);
+  this.addAbility(abitity);
+  abitity=new LeavesBattlefieldTriggeredAbility(new ExileTargetEffect(),true);
+  abitity.addTarget(new TargetCardInGraveyard());
+  this.addAbility(abitity);
+  this.addAbility(new MeditateAbility(new ManaCostsImpl("{1}{W}")));
+}
