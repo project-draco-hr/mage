@@ -1,0 +1,23 @@
+{
+  Permanent creature=game.getPermanent(source.getSourceId());
+  if (creature == null) {
+    return false;
+  }
+  UUID defenderId=game.getCombat().getDefendingPlayerId(creature.getId(),game);
+  int count=0;
+  if (defenderId != null) {
+    FilterCreaturePermanent bountyFilter=new FilterCreaturePermanent("creatures defending player controls with a bounty counter");
+    bountyFilter.add(new CounterPredicate(CounterType.BOUNTY));
+    count=game.getBattlefield().countAll(bountyFilter,defenderId,game);
+  }
+  if (count == 0) {
+    return false;
+  }
+  Permanent targetCreature=game.getPermanent(source.getFirstTarget());
+  if (targetCreature != null) {
+    targetCreature.damage(count,source.getSourceId(),game,false,true);
+  }
+  Player defender=game.getPlayer(defenderId);
+  defender.damage(count,source.getSourceId(),game,false,true);
+  return true;
+}
