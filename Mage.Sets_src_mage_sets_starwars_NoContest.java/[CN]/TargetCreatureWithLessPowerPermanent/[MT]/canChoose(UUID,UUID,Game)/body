@@ -1,0 +1,17 @@
+{
+  int maxPower=Integer.MIN_VALUE;
+  Card sourceCard=game.getCard(sourceId);
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),sourceControllerId,game)) {
+    if (permanent.getPower().getValue() > maxPower && permanent.canBeTargetedBy(sourceCard,sourceControllerId,game)) {
+      maxPower=permanent.getPower().getValue();
+    }
+  }
+  FilterCreaturePermanent checkFilter=new FilterCreaturePermanent();
+  checkFilter.add(new PowerPredicate(Filter.ComparisonType.LessThan,maxPower));
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(checkFilter,sourceControllerId,sourceId,game)) {
+    if (permanent.canBeTargetedBy(sourceCard,sourceControllerId,game)) {
+      return true;
+    }
+  }
+  return false;
+}
