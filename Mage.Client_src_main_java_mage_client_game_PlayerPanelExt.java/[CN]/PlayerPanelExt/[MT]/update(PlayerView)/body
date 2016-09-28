@@ -14,11 +14,11 @@
     lifeLabel.setFont(font);
     changedFontLife=false;
   }
-  lifeLabel.setText(Integer.toString(playerLife));
-  poisonLabel.setText(Integer.toString(player.getCounters().getCount(CounterType.POISON)));
-  energyLabel.setText(Integer.toString(player.getCounters().getCount(CounterType.ENERGY)));
-  experienceLabel.setText(Integer.toString(player.getCounters().getCount(CounterType.EXPERIENCE)));
-  handLabel.setText(Integer.toString(player.getHandCount()));
+  setTextForLabel(lifeLabel,playerLife,true);
+  setTextForLabel(poisonLabel,player.getCounters().getCount(CounterType.POISON),false);
+  setTextForLabel(energyLabel,player.getCounters().getCount(CounterType.ENERGY),false);
+  setTextForLabel(experienceLabel,player.getCounters().getCount(CounterType.EXPERIENCE),false);
+  setTextForLabel(handLabel,player.getHandCount(),true);
   int libraryCards=player.getLibraryCount();
   if (libraryCards > 99) {
     Font font=libraryLabel.getFont();
@@ -32,7 +32,7 @@
     libraryLabel.setFont(font);
     changedFontLibrary=false;
   }
-  libraryLabel.setText(Integer.toString(libraryCards));
+  setTextForLabel(libraryLabel,libraryCards,true);
   int graveCards=player.getGraveyard().size();
   if (graveCards > 99) {
     if (!changedFontGrave) {
@@ -48,7 +48,7 @@
     graveLabel.setFont(font);
     changedFontGrave=false;
   }
-  graveLabel.setText(Integer.toString(graveCards));
+  setTextForLabel(graveLabel,graveCards,false);
   graveLabel.setToolTipText("Card Types: " + qtyCardTypes(player.getGraveyard()));
   int exileCards=player.getExile().size();
   if (exileCards > 99) {
@@ -65,7 +65,7 @@
     exileLabel.setFont(font);
     changedFontExile=false;
   }
-  exileLabel.setText(Integer.toString(exileCards));
+  setTextForLabel(exileLabel,exileCards,false);
   if (!MageFrame.isLite()) {
     int id=player.getUserData().getAvatarId();
     if (!(id >= 1000) && (id <= 0 || (id <= MIN_AVATAR_ID && id > MAX_AVATAR_ID))) {
