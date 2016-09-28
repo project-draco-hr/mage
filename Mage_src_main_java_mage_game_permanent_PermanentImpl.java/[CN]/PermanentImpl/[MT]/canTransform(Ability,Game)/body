@@ -1,0 +1,13 @@
+{
+  if (transformable) {
+    for (    Map.Entry<RestrictionEffect,HashSet<Ability>> entry : game.getContinuousEffects().getApplicableRestrictionEffects(this,game).entrySet()) {
+      RestrictionEffect effect=entry.getKey();
+      for (      Ability ability : entry.getValue()) {
+        if (!effect.canTransform(this,ability,game)) {
+          return false;
+        }
+      }
+    }
+  }
+  return transformable;
+}

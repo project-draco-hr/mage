@@ -2,13 +2,7 @@
   Permanent permanent=game.getPermanent(event.getTargetId());
   if (permanent != null) {
     permanent.regenerate(source.getSourceId(),game);
-    if (permanent.canTransform(game)) {
-      if (!permanent.isTransformed()) {
-        permanent.setTransformed(true);
-        game.informPlayers(((PermanentCard)permanent).getCard().getLogName() + " transforms into " + permanent.getSecondCardFace().getLogName());
-        return true;
-      }
-    }
+    return new TransformSourceEffect(true).apply(game,source);
   }
   return false;
 }
