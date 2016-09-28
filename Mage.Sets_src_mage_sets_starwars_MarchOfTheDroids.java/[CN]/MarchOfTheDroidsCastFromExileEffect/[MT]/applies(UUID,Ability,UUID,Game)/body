@@ -1,0 +1,13 @@
+{
+  if (source.getControllerId().equals(affectedControllerId) && getTargetPointer().getTargets(game,source).contains(objectId)) {
+    Card card=game.getCard(objectId);
+    Player controller=game.getPlayer(source.getControllerId());
+    if (card != null && controller != null) {
+      if (!card.getCardType().contains(CardType.LAND)) {
+        controller.setCastSourceIdWithAlternateMana(objectId,null,null);
+        return true;
+      }
+    }
+  }
+  return false;
+}
