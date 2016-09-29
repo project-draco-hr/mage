@@ -1,9 +1,8 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    Set<Card> cards=controller.getGraveyard().getCards(filterCard,game);
-    for (    Card card : cards) {
-      if (card != null) {
+    for (    Card card : controller.getGraveyard().getCards(game)) {
+      if (card.getCounters(game).getCount("repair") > 0) {
         card.removeCounters("repair",1,game);
       }
     }

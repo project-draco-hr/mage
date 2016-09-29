@@ -1,8 +1,7 @@
 {
-  Card card=game.getCard(sourceId);
-  Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null && card != null && game.getState().getZone(sourceId) == Zone.EXILED && this.card.equals(sourceId)) {
-    return true;
+  if (objectId.equals(getTargetPointer().getFirst(game,source)) && affectedControllerId.equals(source.getSourceId())) {
+    ExileZone exileZone=game.getExile().getExileZone(source.getSourceId());
+    return exileZone != null && exileZone.contains(getTargetPointer().getFirst(game,source));
   }
   return false;
 }

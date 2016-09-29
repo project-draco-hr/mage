@@ -1,14 +1,17 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null) {
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
     TargetCardInLibrary target=new TargetCardInLibrary(new FilterNonlandCard());
     target.setCardLimit(10);
     if (controller.searchLibrary(target,game)) {
       UUID targetId=target.getFirstTarget();
-      Card card=controller.getLibrary().remove(targetId,game);
+      Card card=game.getCard(targetId);
       if (card != null) {
-        card.moveToExile(source.getSourceId(),"Dark Decision",source.getSourceId(),game);
-        game.addEffect(new DarkDecisionMayPlayExiledEffect(targetId),source);
+        controller.moveCardsToExile(card,source,game,true,source.getSourceId(),sourceObject.getIdName());
+        ContinuousEffect effect=new DarkDecisionMayPlayExiledEffect();
+        effect.setTargetPointer(new FixedTarget(card.getId()));
+        game.addEffect(effect,source);
       }
       controller.shuffleLibrary(source,game);
     }
