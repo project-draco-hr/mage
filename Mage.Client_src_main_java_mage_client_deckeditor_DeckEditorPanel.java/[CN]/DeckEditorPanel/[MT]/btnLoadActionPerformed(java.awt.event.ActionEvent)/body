@@ -6,15 +6,19 @@
   int ret=fcSelectDeck.showOpenDialog(this);
   if (ret == JFileChooser.APPROVE_OPTION) {
     File file=fcSelectDeck.getSelectedFile();
+{
+      if (file == null) {
+        if (!lastFolder.isEmpty()) {
+          file=new File(lastFolder);
+        }
+      }
+    }
     try {
       setCursor(new Cursor(Cursor.WAIT_CURSOR));
       deck=Deck.load(DeckImporterUtil.importDeck(file.getPath()),true,true);
     }
  catch (    GameException ex) {
       JOptionPane.showMessageDialog(MageFrame.getDesktop(),ex.getMessage(),"Error loading deck",JOptionPane.ERROR_MESSAGE);
-    }
-catch (    Exception ex) {
-      logger.fatal(ex);
     }
  finally {
       setCursor(new Cursor(Cursor.DEFAULT_CURSOR));

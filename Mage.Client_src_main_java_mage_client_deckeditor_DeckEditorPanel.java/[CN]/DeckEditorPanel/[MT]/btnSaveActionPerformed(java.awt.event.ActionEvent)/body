@@ -7,6 +7,13 @@
   int ret=fcSelectDeck.showSaveDialog(this);
   if (ret == JFileChooser.APPROVE_OPTION) {
     File file=fcSelectDeck.getSelectedFile();
+{
+      if (file == null) {
+        if (!lastFolder.isEmpty()) {
+          file=new File(lastFolder);
+        }
+      }
+    }
     try {
       String fileName=file.getPath();
       if (!fileName.endsWith(".dck")) {
@@ -15,8 +22,8 @@
       setCursor(new Cursor(Cursor.WAIT_CURSOR));
       Sets.saveDeck(fileName,deck.getDeckCardLists());
     }
- catch (    Exception ex) {
-      logger.fatal(ex);
+ catch (    FileNotFoundException ex) {
+      JOptionPane.showMessageDialog(MageFrame.getDesktop(),ex.getMessage() + "\nTry ensuring that the selected directory is writable.","Error saving deck",JOptionPane.ERROR_MESSAGE);
     }
  finally {
       setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -25,6 +32,7 @@
       MageFrame.getPreferences().put("lastDeckFolder",file.getCanonicalPath());
     }
  catch (    IOException ex) {
+      ex.printStackTrace();
     }
   }
 }
