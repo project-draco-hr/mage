@@ -1,0 +1,53 @@
+{
+  final JPopupMenu menu=new JPopupMenu();
+  final JMenuItem hideSelected=new JMenuItem("Hide selected");
+  hideSelected.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      hideSelection();
+    }
+  }
+);
+  menu.add(hideSelected);
+  JMenuItem showAll=new JMenuItem("Show all");
+  showAll.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      showAll();
+    }
+  }
+);
+  menu.add(showAll);
+  JMenu sortMenu=new JMenu("Sort by...");
+  for (  final Sort sort : Sort.values()) {
+    JMenuItem subSort=new JMenuItem(sort.getText());
+    subSort.addActionListener(new ActionListener(){
+      @Override public void actionPerformed(      ActionEvent e){
+        cardSort=sort;
+        resort();
+      }
+    }
+);
+    sortMenu.add(subSort);
+  }
+  sortMenu.add(new JPopupMenu.Separator());
+  final JCheckBoxMenuItem separateButton=new JCheckBoxMenuItem("Separate creatures");
+  separateButton.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      separateCreatures=!separateCreatures;
+      separateCreaturesCb.setSelected(separateCreatures);
+      resort();
+    }
+  }
+);
+  sortMenu.add(separateButton);
+  menu.add(sortMenu);
+  cardContent.addMouseListener(new MouseAdapter(){
+    @Override public void mouseClicked(    MouseEvent e){
+      if (SwingUtilities.isRightMouseButton(e)) {
+        hideSelected.setEnabled(dragCardList().size() > 0);
+        separateButton.setSelected(separateCreatures);
+        menu.show(e.getComponent(),e.getX(),e.getY());
+      }
+    }
+  }
+);
+}

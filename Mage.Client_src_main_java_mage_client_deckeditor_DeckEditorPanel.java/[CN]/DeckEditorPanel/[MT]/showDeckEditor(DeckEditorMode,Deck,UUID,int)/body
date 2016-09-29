@@ -7,24 +7,25 @@
   this.btnAddLand.setVisible(false);
 switch (mode) {
 case LIMITED_BUILDING:
-    this.deckArea.setOrientation(true);
-  this.btnAddLand.setVisible(true);
-this.txtTimeRemaining.setVisible(true);
+    this.btnAddLand.setVisible(true);
+  this.txtTimeRemaining.setVisible(true);
 case SIDEBOARDING:
 this.btnSubmit.setVisible(true);
 this.btnSubmitTimer.setVisible(true);
-if (deck != null) {
-this.cardSelector.loadSideboard(new ArrayList<>(deck.getSideboard()),this.bigCard);
-}
+if (mode == DeckEditorMode.SIDEBOARDING) {
 this.deckArea.setOrientation(false);
-this.cardSelector.switchToGrid();
+}
+ else {
+this.deckArea.setOrientation(true);
+}
+this.cardSelector.setVisible(false);
 this.btnExit.setVisible(false);
 this.btnImport.setVisible(false);
 this.btnGenDeck.setVisible(false);
 if (!SessionHandler.isTestMode()) {
 this.btnLoad.setVisible(false);
 }
-this.deckArea.showSideboard(false);
+this.deckArea.showSideboard(true);
 countdown.stop();
 this.timeout=time;
 setTimeout(timeout);
@@ -41,6 +42,7 @@ this.deckArea.setOrientation(false);
 this.btnSubmit.setVisible(false);
 this.btnSubmitTimer.setVisible(false);
 this.btnAddLand.setVisible(true);
+this.cardSelector.setVisible(true);
 this.cardSelector.loadCards(this.bigCard);
 this.btnExit.setVisible(true);
 this.btnImport.setVisible(true);

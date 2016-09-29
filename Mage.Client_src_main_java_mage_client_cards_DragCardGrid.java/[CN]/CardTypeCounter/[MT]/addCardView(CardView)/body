@@ -1,0 +1,50 @@
+{
+  allCards.add(card);
+  for (  CardTypeCounter counter : allCounters) {
+    counter.add(card);
+  }
+  updateCounts();
+  final MageCard cardPanel=Plugins.getInstance().getMageCard(card,lastBigCard,new Dimension(100,140),null,true,true);
+  cardPanel.update(card);
+  cardPanel.setTextOffset(0);
+  for (  MouseWheelListener l : cardPanel.getMouseWheelListeners()) {
+    cardPanel.removeMouseWheelListener(l);
+  }
+  cardPanel.addMouseListener(new MouseAdapter(){
+    @Override public void mouseClicked(    MouseEvent e){
+      if (SwingUtilities.isRightMouseButton(e)) {
+        if (!card.isSelected()) {
+          selectCard(card);
+        }
+        showCardRightClickMenu(card,e);
+      }
+ else       if (SwingUtilities.isLeftMouseButton(e)) {
+        if (e.getClickCount() == 1) {
+          cardClicked(card,e);
+        }
+ else {
+          if (e.isAltDown()) {
+            eventSource.altDoubleClick(card,"alt-double-click");
+          }
+ else {
+            eventSource.doubleClick(card,"double-click");
+          }
+        }
+      }
+    }
+  }
+);
+  cardPanel.addMouseMotionListener(new MouseAdapter(){
+    @Override public void mouseDragged(    MouseEvent e){
+      if (!dragger.isDragging()) {
+        if (!card.isSelected()) {
+          cardClicked(card,e);
+        }
+        dragger.beginDrag(cardPanel,e);
+      }
+    }
+  }
+);
+  cardContent.add(cardPanel);
+  cardViews.put(card.getId(),cardPanel);
+}

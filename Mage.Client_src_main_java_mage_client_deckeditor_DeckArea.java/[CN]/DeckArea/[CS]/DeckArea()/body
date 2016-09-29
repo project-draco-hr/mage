@@ -2,4 +2,38 @@
   initComponents();
   deckList.setRole(DragCardGrid.Role.MAINDECK);
   sideboardList.setRole(DragCardGrid.Role.SIDEBOARD);
+  deckList.addDragCardGridListener(new DragCardGrid.DragCardGridListener(){
+    @Override public void cardsSelected(){
+      sideboardList.deselectAll();
+    }
+    @Override public void hideCards(    Collection<CardView> cards){
+      for (      CardView card : cards) {
+        hiddenCards.add(card.getId());
+        maindeckVirtualEvent.removeSpecificCard(card,"remove-specific-card");
+        sideboardVirtualEvent.addSpecificCard(card,"add-specific-card");
+      }
+      loadDeck(lastDeck,lastBigCard);
+    }
+    @Override public void showAll(){
+      hiddenCards.clear();
+      loadDeck(lastDeck,lastBigCard);
+    }
+  }
+);
+  sideboardList.addDragCardGridListener(new DragCardGrid.DragCardGridListener(){
+    @Override public void cardsSelected(){
+      deckList.deselectAll();
+    }
+    @Override public void hideCards(    Collection<CardView> cards){
+      for (      CardView card : cards) {
+        hiddenCards.add(card.getId());
+      }
+      loadDeck(lastDeck,lastBigCard);
+    }
+    @Override public void showAll(){
+      hiddenCards.clear();
+      loadDeck(lastDeck,lastBigCard);
+    }
+  }
+);
 }
