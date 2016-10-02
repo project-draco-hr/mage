@@ -9,11 +9,7 @@
       if (exile != null && !exile.isEmpty()) {
         Card card=game.getCard(permanent.getId());
         if (card != null) {
-          DelayedTriggeredAbility delayedAbility=new AtTheBeginOfYourNextUpkeepDelayedTriggeredAbility(new VanishIntoMemoryReturnFromExileEffect(new MageObjectReference(card,game)));
-          delayedAbility.setSourceId(source.getSourceId());
-          delayedAbility.setControllerId(source.getControllerId());
-          delayedAbility.setSourceObject(source.getSourceObject(game),game);
-          game.addDelayedTriggeredAbility(delayedAbility);
+          game.addDelayedTriggeredAbility(new AtTheBeginOfYourNextUpkeepDelayedTriggeredAbility(new VanishIntoMemoryReturnFromExileEffect(new MageObjectReference(card,game))),source);
         }
       }
       return true;

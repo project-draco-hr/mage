@@ -1,11 +1,9 @@
 {
   Permanent permanent=game.getPermanent(source.getSourceId());
   if (permanent != null) {
-    AtBeginningOfUntapDelayedTriggeredAbility delayedAbility=new AtBeginningOfUntapDelayedTriggeredAbility(new ReturnToHandSourceEffect(true));
-    delayedAbility.setSourceId(source.getSourceId());
-    delayedAbility.setControllerId(source.getControllerId());
-    delayedAbility.setSourceObject(source.getSourceObject(game),game);
-    game.addDelayedTriggeredAbility(delayedAbility);
+    Effect effect=new ReturnToHandTargetEffect();
+    effect.setTargetPointer(new FixedTarget(permanent,game));
+    game.addDelayedTriggeredAbility(new AtBeginningOfUntapDelayedTriggeredAbility(effect));
     return true;
   }
   return false;

@@ -1,10 +1,10 @@
 {
-  Permanent p=game.getPermanent(source.getSourceId());
-  if (p != null) {
-    AtTheEndOfCombatDelayedTriggeredAbility ability=new AtTheEndOfCombatDelayedTriggeredAbility(new RemoveCounterSourceEffect(CounterType.P1P1.createInstance()));
-    ability.setSourceId(source.getSourceId());
-    ability.setControllerId(source.getControllerId());
-    game.addDelayedTriggeredAbility(ability);
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    Effect effect=new RemoveCounterTargetEffect(CounterType.P1P1.createInstance());
+    effect.setTargetPointer(new FixedTarget(source.getSourceId(),source.getSourceObjectZoneChangeCounter()));
+    game.addDelayedTriggeredAbility(new AtTheEndOfCombatDelayedTriggeredAbility(effect),source);
+    return true;
   }
   return false;
 }
