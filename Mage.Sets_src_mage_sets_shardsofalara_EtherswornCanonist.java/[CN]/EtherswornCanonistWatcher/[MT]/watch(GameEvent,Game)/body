@@ -1,11 +1,14 @@
 {
-  if (event.getType() == GameEvent.EventType.SPELL_CAST) {
-    Card card=game.getCard(event.getSourceId());
-    if (card != null && !card.getCardType().contains(CardType.ARTIFACT)) {
-      UUID playerId=event.getPlayerId();
-      if (playerId != null) {
-        castNonartifactSpell.put(playerId,true);
+  if (event.getType() == GameEvent.EventType.SPELL_CAST && event.getPlayerId() != null) {
+    Spell spell=game.getStack().getSpell(event.getTargetId());
+    if (spell == null) {
+      MageObject mageObject=game.getLastKnownInformation(event.getTargetId(),Zone.STACK);
+      if (mageObject instanceof Spell) {
+        spell=(Spell)mageObject;
       }
+    }
+    if (spell != null && !spell.getCardType().contains(CardType.ARTIFACT)) {
+      castNonartifactSpell.add(event.getPlayerId());
     }
   }
 }
