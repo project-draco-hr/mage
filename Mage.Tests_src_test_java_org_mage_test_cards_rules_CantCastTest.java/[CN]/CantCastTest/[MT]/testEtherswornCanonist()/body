@@ -1,0 +1,18 @@
+{
+  addCard(Zone.HAND,playerA,"Ethersworn Canonist",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Aether Vial",1);
+  addCard(Zone.HAND,playerB,"Llanowar Elves",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Swamp",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Forest",2);
+  addCard(Zone.HAND,playerB,"Abrupt Decay",1);
+  castSpell(4,PhaseStep.PRECOMBAT_MAIN,playerB,"Llanowar Elves");
+  activateAbility(4,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: You");
+  setChoice(playerB,"Ethersworn Canonist");
+  castSpell(4,PhaseStep.POSTCOMBAT_MAIN,playerB,"Abrupt Decay","Ethersworn Canonist");
+  setStopAt(4,PhaseStep.END_TURN);
+  execute();
+  assertCounterCount(playerA,"Aether Vial",CounterType.CHARGE,2);
+  assertPermanentCount(playerB,"Llanowar Elves",1);
+  assertPermanentCount(playerA,"Ethersworn Canonist",1);
+  assertHandCount(playerB,"Abrupt Decay",1);
+}
