@@ -5,12 +5,7 @@
     if (controller.searchLibrary(target,game)) {
       UUID exileZone=CardUtil.getCardExileZoneId(game,source);
       if (target.getTargets().size() > 0) {
-        for (        UUID cardId : target.getTargets()) {
-          Card card=controller.getLibrary().getCard(cardId,game);
-          if (card != null) {
-            controller.moveCardToExileWithInfo(card,exileZone,sourceObject.getIdName(),source.getSourceId(),game,Zone.LIBRARY,true);
-          }
-        }
+        controller.moveCardsToExile(new CardsImpl(target.getTargets()).getCards(game),source,game,true,exileZone,sourceObject.getIdName());
       }
     }
     controller.shuffleLibrary(source,game);
