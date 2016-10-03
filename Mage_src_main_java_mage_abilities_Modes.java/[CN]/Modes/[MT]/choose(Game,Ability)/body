@@ -1,6 +1,7 @@
 {
   if (this.size() > 1) {
     this.selectedModes.clear();
+    this.duplicateModes.clear();
     Card card=game.getCard(source.getSourceId());
     if (card != null) {
       for (      Ability modeModifyingAbility : card.getAbilities()) {
@@ -16,7 +17,7 @@
       }
       for (      Mode mode : this.values()) {
         if ((!isEachModeOnlyOnce() || onceSelectedModes == null || !onceSelectedModes.contains(mode.getId())) && mode.getTargets().canChoose(source.getSourceId(),source.getControllerId(),game)) {
-          this.selectedModes.add(mode.getId());
+          this.addSelectedMode(mode.getId());
         }
       }
       if (isEachModeOnlyOnce()) {
@@ -47,7 +48,7 @@
         }
         return this.selectedModes.size() >= this.getMinModes();
       }
-      this.selectedModes.add(choice.getId());
+      this.addSelectedMode(choice.getId());
       if (currentMode == null) {
         currentMode=choice;
       }
@@ -57,14 +58,13 @@
     }
     return true;
   }
-  if (currentMode == null) {
-    this.selectedModes.clear();
-    Mode copiedMode=this.values().iterator().next().copy();
-    this.selectedModes.add(copiedMode.getId());
-    this.setActiveMode(copiedMode);
+ else {
+    if (currentMode == null) {
+      this.selectedModes.clear();
+      Mode mode=this.values().iterator().next();
+      this.addSelectedMode(mode.getId());
+      this.setActiveMode(mode);
+    }
+    return true;
   }
-  if (isEachModeOnlyOnce()) {
-    setAlreadySelectedModes(selectedModes,source,game);
-  }
-  return true;
 }
