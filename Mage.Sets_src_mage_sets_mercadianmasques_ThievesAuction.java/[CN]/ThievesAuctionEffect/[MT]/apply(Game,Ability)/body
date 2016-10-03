@@ -8,8 +8,8 @@
     }
     PlayerList playerList=game.getState().getPlayersInRange(controller.getId(),game);
     Player player=playerList.getCurrent(game);
-    while (!exiledCards.isEmpty()) {
-      if (player.canRespond()) {
+    while (!exiledCards.isEmpty() && !game.hasEnded()) {
+      if (player != null && player.canRespond()) {
         TargetCard target=new TargetCardInExile(new FilterCard());
         if (player.choose(Outcome.PutCardInPlay,exiledCards,target,game)) {
           Card chosenCard=exiledCards.get(target.getFirstTarget(),game);
