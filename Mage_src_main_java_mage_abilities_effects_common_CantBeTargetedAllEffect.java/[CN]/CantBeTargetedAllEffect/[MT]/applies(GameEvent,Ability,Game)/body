@@ -1,14 +1,16 @@
 {
   Permanent permanent=game.getPermanent(event.getTargetId());
   if (permanent != null && filterTarget.match(permanent,source.getSourceId(),source.getControllerId(),game)) {
-    if (filterSource == null) {
-      return true;
+    StackObject stackObject=game.getStack().getStackObject(event.getSourceId());
+    MageObject sourceObject;
+    if (stackObject instanceof StackAbility) {
+      sourceObject=((StackAbility)stackObject).getSourceObject(game);
     }
  else {
-      StackObject sourceObject=game.getStack().getStackObject(event.getSourceId());
-      if (sourceObject != null && filterSource.match(sourceObject,source.getSourceId(),sourceObject.getControllerId(),game)) {
-        return true;
-      }
+      sourceObject=stackObject;
+    }
+    if (sourceObject != null && filterSource.match(sourceObject,game)) {
+      return true;
     }
   }
   return false;
