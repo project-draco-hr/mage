@@ -1,0 +1,17 @@
+{
+  Permanent enchantment=game.getPermanent(sourceAbility.getSourceId());
+  int xValue=0;
+  if (enchantment != null && enchantment.getAttachedTo() != null) {
+    Permanent enchanted=game.getPermanent(enchantment.getAttachedTo());
+    if (enchanted != null) {
+      for (      Permanent permanent : game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),game)) {
+        if (!permanent.getId().equals(enchanted.getId())) {
+          if (CardUtil.shareSubtypes(enchanted,permanent,game)) {
+            xValue+=2;
+          }
+        }
+      }
+    }
+  }
+  return xValue;
+}
