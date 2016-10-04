@@ -1,0 +1,61 @@
+{
+  int cardWidth=getCardWidth();
+  int cardHeight=getCardHeight();
+  int cardTopHeight=CardRenderer.getCardTopHeight(cardWidth);
+  int x1=Math.min(x,selectionDragStartX);
+  int x2=Math.max(x,selectionDragStartX);
+  int y1=Math.min(y,selectionDragStartY);
+  int y2=Math.max(y,selectionDragStartY);
+  selectionPanel.setLocation(x1,y1);
+  selectionPanel.setSize(x2 - x1,y2 - y1);
+  int col1=x1 / (cardWidth + GRID_PADDING);
+  int col2=x2 / (cardWidth + GRID_PADDING);
+  int offsetIntoCol2=x2 % (cardWidth + GRID_PADDING);
+  if (offsetIntoCol2 < GRID_PADDING) {
+    --col2;
+  }
+  int curY=COUNT_LABEL_HEIGHT;
+  for (int rowIndex=0; rowIndex < cardGrid.size(); ++rowIndex) {
+    int stackStartIndex;
+    if (y1 < curY) {
+      stackStartIndex=0;
+    }
+ else {
+      stackStartIndex=(y1 - curY) / cardTopHeight;
+    }
+    int stackEndIndex;
+    if (y2 < curY) {
+      stackEndIndex=-1;
+    }
+ else {
+      stackEndIndex=(y2 - curY) / cardTopHeight;
+    }
+    ArrayList<ArrayList<CardView>> gridRow=cardGrid.get(rowIndex);
+    for (int col=0; col < gridRow.size(); ++col) {
+      ArrayList<CardView> stack=gridRow.get(col);
+      int stackBottomBegin=curY + cardTopHeight * (stack.size());
+      int stackBottomEnd=curY + cardTopHeight * (stack.size() - 1) + cardHeight;
+      for (int i=0; i < stack.size(); ++i) {
+        CardView card=stack.get(i);
+        MageCard view=cardViews.get(card.getId());
+        boolean inBoundsX=(col >= col1 && col <= col2);
+        boolean inBoundsY=(i >= stackStartIndex && i <= stackEndIndex);
+        boolean lastCard=(i == stack.size() - 1);
+        boolean inSeletionDrag=inBoundsX && (inBoundsY || (lastCard && (y2 >= stackBottomBegin && y1 <= stackBottomEnd)));
+        if (inSeletionDrag || selectionDragStartCards.contains(card)) {
+          if (!card.isSelected()) {
+            card.setSelected(true);
+            view.update(card);
+          }
+        }
+ else {
+          if (card.isSelected()) {
+            card.setSelected(false);
+            view.update(card);
+          }
+        }
+      }
+    }
+    curY+=cardTopHeight * (maxStackSize.get(rowIndex) - 1) + cardHeight + COUNT_LABEL_HEIGHT;
+  }
+}
