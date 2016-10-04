@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{G}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetArtifactPermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Benefit));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new LivingArtifactTriggeredAbility());
+  this.addAbility(new ConditionalTriggeredAbility(new BeginningOfUpkeepTriggeredAbility(new DoIfCostPaid(new GainLifeEffect(1),new RemoveCountersSourceCost(CounterType.VITALITY.createInstance(1))),TargetController.YOU,false),new SourceHasCounterCondition(CounterType.VITALITY,1),"At the beginning of your upkeep, you may remove a vitality counter from {this}. If you do, you gain 1 life"));
+}

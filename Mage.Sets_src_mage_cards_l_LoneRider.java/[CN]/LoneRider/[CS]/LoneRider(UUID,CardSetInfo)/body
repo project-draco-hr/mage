@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{W}");
+  this.subtype.add("Human");
+  this.subtype.add("Knight");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.transformable=true;
+  this.secondSideCardClazz=ItThatRidesAsOne.class;
+  this.addAbility(FirstStrikeAbility.getInstance());
+  this.addAbility(LifelinkAbility.getInstance());
+  this.addAbility(new TransformAbility());
+  TriggeredAbility triggered=new OnEventTriggeredAbility(GameEvent.EventType.END_TURN_STEP_PRE,"beginning of the end step",true,new TransformSourceEffect(true));
+  this.addAbility(new ConditionalTriggeredAbility(triggered,new YouGainedLifeCondition(Condition.ComparisonType.GreaterThan,2),ruleText),new PlayerGainedLifeWatcher());
+}

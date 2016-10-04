@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.SORCERY},"{X}{R}");
+  this.getSpellAbility().addEffect(new DamageTargetEffect(new ManacostVariableValue()));
+  this.getSpellAbility().addEffect(new CantRegenerateTargetEffect(Duration.EndOfTurn,"That creature"));
+  Effect effect=new DealtDamageToCreatureBySourceDies(this,Duration.EndOfTurn);
+  effect.setText("If the creature would die this turn, exile it instead");
+  this.getSpellAbility().addEffect(effect);
+  this.getSpellAbility().addTarget(new TargetCreatureOrPlayer());
+  this.getSpellAbility().addWatcher(new DamagedByWatcher());
+}

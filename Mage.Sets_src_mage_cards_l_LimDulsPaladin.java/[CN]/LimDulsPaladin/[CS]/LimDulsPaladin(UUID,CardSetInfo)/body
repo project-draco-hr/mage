@@ -1,0 +1,17 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{B}{R}");
+  this.subtype.add("Human");
+  this.subtype.add("Knight");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(3);
+  this.addAbility(TrampleAbility.getInstance());
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,new LimDulsPaladinEffect(),TargetController.YOU,false));
+  this.addAbility(new BecomesBlockedTriggeredAbility(new BoostSourceEffect(6,3,Duration.EndOfTurn),false));
+  Effect effect=new AssignNoCombatDamageSourceEffect(Duration.EndOfTurn);
+  effect.setText("it assigns no combat damage this turn");
+  Ability ability=new AttacksAndIsNotBlockedTriggeredAbility(effect,false,true);
+  effect=new LoseLifeTargetEffect(4);
+  effect.setText("and defending player loses 4 life");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

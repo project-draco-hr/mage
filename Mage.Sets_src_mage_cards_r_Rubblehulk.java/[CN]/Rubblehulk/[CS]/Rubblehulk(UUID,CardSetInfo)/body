@@ -1,0 +1,9 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{R}{G}");
+  this.subtype.add("Elemental");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  DynamicValue controlledLands=new PermanentsOnBattlefieldCount(filter);
+  this.addAbility(new SimpleStaticAbility(Zone.ALL,new SetPowerToughnessSourceEffect(controlledLands,Duration.EndOfGame)));
+  this.addAbility(new BloodrushAbility("{1}{R}{G}",new BoostTargetEffect(controlledLands,controlledLands,Duration.EndOfTurn)));
+}

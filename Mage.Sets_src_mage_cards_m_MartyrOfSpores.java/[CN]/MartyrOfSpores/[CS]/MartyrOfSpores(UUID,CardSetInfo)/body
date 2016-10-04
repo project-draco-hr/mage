@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{G}");
+  this.subtype.add("Human");
+  this.subtype.add("Shaman");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Effect effect=new BoostTargetEffect(new RevealTargetFromHandCostCount(),new RevealTargetFromHandCostCount(),Duration.EndOfTurn,true);
+  effect.setText("Target creature gets +X/+X until end of turn.");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new GenericManaCost(1));
+  ability.addCost(new RevealTargetFromHandCost(new TargetCardInHand(0,Integer.MAX_VALUE,filter)));
+  ability.addCost(new SacrificeSourceCost());
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}

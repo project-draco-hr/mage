@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.PLANESWALKER},"{3}{G}{G}");
+  this.subtype.add("Nissa");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(5));
+  LoyaltyAbility ability=new LoyaltyAbility(new UntapTargetEffect(),1);
+  ability.addEffect(new BecomesCreatureTargetEffect(new NissaVitalForceToken(),false,true,Duration.UntilYourNextTurn));
+  ability.addTarget(new TargetLandPermanent(filter));
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new ReturnToHandTargetEffect(),-3);
+  ability.addTarget(new TargetCardInYourGraveyard(new FilterPermanentCard("permanent card from your graveyard")));
+  this.addAbility(ability);
+  this.addAbility(new LoyaltyAbility(new GetEmblemEffect(new NissaVitalForceEmblem()),-6));
+}

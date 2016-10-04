@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{B}{R}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Zombie");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(2),new ManaCostsImpl("{1}{R}"));
+  ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filter,false)));
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.GRAVEYARD,new ReturnSourceFromGraveyardToHandEffect(),new ManaCostsImpl("{1}{B}"));
+  ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,new FilterControlledCreaturePermanent("a creature"),false)));
+  this.addAbility(ability);
+}

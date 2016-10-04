@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{B}{B}");
+  this.subtype.add("Vampire");
+  this.subtype.add("Spirit");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(1);
+  this.addAbility(new CantBlockAbility());
+  ContinuousEffect effect=new GainAbilitySourceEffect(HasteAbility.getInstance(),Duration.WhileOnBattlefield);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(effect,new TenOrLessLifeCondition(TenOrLessLifeCondition.CheckType.AN_OPPONENT),"Bloodghast has haste as long as an opponent has 10 or less life")));
+  this.addAbility(new LandfallAbility(Zone.GRAVEYARD,new ReturnSourceFromGraveyardToBattlefieldEffect(),true));
+}

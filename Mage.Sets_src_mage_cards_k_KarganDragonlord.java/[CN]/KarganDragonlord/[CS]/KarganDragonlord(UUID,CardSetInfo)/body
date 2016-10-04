@@ -1,0 +1,17 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{R}{R}");
+  this.subtype.add("Human");
+  this.subtype.add("Warrior");
+  this.color.setRed(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new LevelUpAbility(new ManaCostsImpl("{R}")));
+  Abilities<Ability> abilities1=new AbilitiesImpl<Ability>();
+  abilities1.add(FlyingAbility.getInstance());
+  Abilities<Ability> abilities2=new AbilitiesImpl<Ability>();
+  abilities2.add(FlyingAbility.getInstance());
+  abilities2.add(TrampleAbility.getInstance());
+  abilities2.add(new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostSourceEffect(1,0,Duration.EndOfTurn),new ManaCostsImpl("{R}")));
+  this.addAbilities(LevelerCardBuilder.construct(new LevelerCardBuilder.LevelAbility(4,7,abilities1,4,4),new LevelerCardBuilder.LevelAbility(8,-1,abilities2,8,8)));
+  setMaxLevelCounters(8);
+}

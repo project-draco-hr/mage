@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{G}");
+  this.subtype.add("Elf");
+  this.subtype.add("Shaman");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  Effect effect=new BoostTargetEffect(new PermanentsOnBattlefieldCount(filter),new PermanentsOnBattlefieldCount(filter),Duration.EndOfTurn);
+  effect.setText("Target creature gets +X/+X until end of turn, where X is the number of artifacts your opponents control");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl("{3}{G}"));
+  ability.addTarget(new TargetCreaturePermanent());
+  ability.addCost(new TapSourceCost());
+  this.addAbility(ability);
+}

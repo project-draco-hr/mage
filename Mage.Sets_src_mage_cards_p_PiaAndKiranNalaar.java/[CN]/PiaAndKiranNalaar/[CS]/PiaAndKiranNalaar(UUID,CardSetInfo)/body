@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{R}{R}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Human");
+  this.subtype.add("Artificer");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Effect effect=new CreateTokenEffect(new ThopterColorlessToken(),2);
+  effect.setText("put two 1/1 colorless Thopter artifact creature tokens with flying onto the battlefield");
+  this.addAbility(new EntersBattlefieldTriggeredAbility(effect));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(2),new ManaCostsImpl("{2}{R}"));
+  ability.addCost(new SacrificeTargetCost(new TargetControlledPermanent(1,1,new FilterControlledArtifactPermanent("an artifact"),true)));
+  ability.addTarget(new TargetCreatureOrPlayer());
+  this.addAbility(ability);
+}

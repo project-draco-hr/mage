@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.LAND},"");
+  Ability manaAbility=new BlackManaAbility();
+  manaAbility.addEffect(new DamageControllerEffect(1));
+  this.addAbility(manaAbility);
+  Ability thresholdAbility=new ConditionalActivatedAbility(Zone.BATTLEFIELD,new BoostTargetEffect(-2,-2,Duration.EndOfTurn),new ManaCostsImpl("{B}"),new CardsInControllerGraveCondition(7));
+  thresholdAbility.addCost(new TapSourceCost());
+  thresholdAbility.addCost(new SacrificeSourceCost());
+  thresholdAbility.addTarget(new TargetCreaturePermanent());
+  thresholdAbility.setAbilityWord(AbilityWord.THRESHOLD);
+  this.addAbility(thresholdAbility);
+}

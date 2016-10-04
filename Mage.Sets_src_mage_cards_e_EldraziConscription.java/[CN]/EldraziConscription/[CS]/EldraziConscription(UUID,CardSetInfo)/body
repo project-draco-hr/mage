@@ -1,0 +1,18 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.TRIBAL,CardType.ENCHANTMENT},"{8}");
+  this.subtype.add("Eldrazi");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(10,10,Duration.WhileOnBattlefield));
+  Effect effect=new GainAbilityAttachedEffect(TrampleAbility.getInstance(),AttachmentType.AURA);
+  effect.setText("and has trample");
+  ability.addEffect(effect);
+  effect=new GainAbilityAttachedEffect(new AnnihilatorAbility(2),AttachmentType.AURA);
+  effect.setText("and annihilator 2. <i>(Whenever it attacks, defending player sacrifices two permanents.)</i>");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

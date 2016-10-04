@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{R}{R}");
+  this.subtype.add("Goblin");
+  this.subtype.add("Mutant");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new MorphAbility(this,new ManaCostsImpl("{R}{R}")));
+  Effect effect=new GainAbilitySourceEffect(TrampleAbility.getInstance(),Duration.EndOfTurn);
+  Ability ability=new TurnedFaceUpSourceTriggeredAbility(effect);
+  effect=new BoostSourceEffect(6,6,Duration.EndOfTurn);
+  ability.addEffect(effect);
+  effect=new SkipNextTurnSourceEffect();
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

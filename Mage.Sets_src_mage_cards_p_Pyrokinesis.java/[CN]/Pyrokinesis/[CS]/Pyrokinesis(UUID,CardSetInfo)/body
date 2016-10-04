@@ -1,0 +1,9 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{4}{R}{R}");
+  FilterOwnedCard filter=new FilterOwnedCard("a red card from your hand");
+  filter.add(new ColorPredicate(ObjectColor.RED));
+  filter.add(Predicates.not(new CardIdPredicate(this.getId())));
+  this.addAbility(new AlternativeCostSourceAbility(new ExileFromHandCost(new TargetCardInHand(filter))));
+  this.getSpellAbility().addEffect(new DamageMultiEffect(4));
+  this.getSpellAbility().addTarget(new TargetCreaturePermanentAmount(4));
+}

@@ -1,0 +1,9 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{B}{B}");
+  this.subtype.add("Elemental");
+  this.power=new MageInt(7);
+  this.toughness=new MageInt(7);
+  this.addAbility(new AsEntersBattlefieldAbility(new ChooseOpponentEffect(Outcome.Detriment)));
+  DynamicValue chosenPlayerHand=new SignInversionDynamicValue(new CardsInChosenPlayerHandCount());
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostSourceEffect(chosenPlayerHand,chosenPlayerHand,Duration.WhileOnBattlefield)));
+}

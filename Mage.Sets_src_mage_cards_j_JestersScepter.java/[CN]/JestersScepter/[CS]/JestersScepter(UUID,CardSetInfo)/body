@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{3}");
+  Ability ability=new EntersBattlefieldTriggeredAbility(new JestersScepterEffect(),false);
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Zone.ALL,new JestersScepterLookAtCardEffect()));
+  Ability ability2=new SimpleActivatedAbility(Zone.BATTLEFIELD,new JestersScepterCounterEffect(),new ManaCostsImpl("{2}"));
+  ability2.addCost(new TapSourceCost());
+  ability2.addCost(new JestersScepterCost());
+  ability2.addTarget(new TargetSpell());
+  this.addAbility(ability2);
+}

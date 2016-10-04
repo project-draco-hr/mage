@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{X}{G}{G}");
+  this.subtype.add("Snake");
+  this.subtype.add("Hydra");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  this.addAbility(new EntersBattlefieldAbility(new EntersBattlefieldWithXCountersEffect(CounterType.P1P1.createInstance())));
+  this.addAbility(new DiesTriggeredAbility(new CreateTokenEffect(new SnakeToken("KTK"),new CountersSourceCount(CounterType.P1P1)),false));
+  this.addAbility(new MorphAbility(this,new ManaCostsImpl("{3}{G}{G}")));
+  Effect effect=new AddCountersSourceEffect(CounterType.P1P1.createInstance(5));
+  effect.setText("put five +1/+1 counters on it");
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new AsTurnedFaceUpEffect(effect,false));
+  ability.setWorksFaceDown(true);
+  this.addAbility(ability);
+}

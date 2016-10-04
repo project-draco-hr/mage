@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.PLANESWALKER},"{3}{R}");
+  this.subtype.add("Daretti");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(3));
+  this.addAbility(new LoyaltyAbility(new DarettiDiscardDrawEffect(),2));
+  LoyaltyAbility loyaltyAbility=new LoyaltyAbility(new DarettiSacrificeEffect(),-2);
+  loyaltyAbility.addTarget(new TargetCardInYourGraveyard(new FilterArtifactCard("artifact card from your graveyard")));
+  this.addAbility(loyaltyAbility);
+  this.addAbility(new LoyaltyAbility(new GetEmblemEffect(new DarettiScrapSavantEmblem()),-10));
+  this.addAbility(CanBeYourCommanderAbility.getInstance());
+}

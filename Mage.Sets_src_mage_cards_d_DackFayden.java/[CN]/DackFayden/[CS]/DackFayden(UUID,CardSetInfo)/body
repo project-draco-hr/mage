@@ -1,0 +1,20 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.PLANESWALKER},"{1}{U}{R}");
+  this.subtype.add("Dack");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(3));
+  LoyaltyAbility ability=new LoyaltyAbility(new DrawCardTargetEffect(2),1);
+  Effect effect=new DiscardTargetEffect(2);
+  effect.setText(", then discards two cards");
+  ability.addEffect(effect);
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+  effect=new GainControlTargetEffect(Duration.EndOfGame,true);
+  effect.setText("Gain control of target artifact");
+  ability=new LoyaltyAbility(effect,-2);
+  ability.addTarget(new TargetArtifactPermanent());
+  this.addAbility(ability);
+  effect=new GetEmblemEffect(new DackFaydenEmblem());
+  effect.setText("You get an emblem with \"Whenever you cast a spell that targets one or more permanents, gain control of those permanents.\"");
+  ability=new LoyaltyAbility(effect,-6);
+  this.addAbility(ability);
+}

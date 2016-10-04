@@ -1,0 +1,18 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{W}{W}");
+  this.subtype.add("Human");
+  this.subtype.add("Wizard");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Effect effect1=new BoostControlledEffect(2,2,Duration.EndOfTurn);
+  effect1.setText("Creatures you control get +2/+2 until end of turn");
+  Ability ability1=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect1,new ManaCostsImpl("{G}{G}"));
+  ability1.addCost(new TapSourceCost());
+  this.addAbility(ability1);
+  Effect effect2=new ReturnToHandTargetEffect();
+  effect2.setText("Return target creature to its owner's hand.");
+  Ability ability2=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect2,new ManaCostsImpl("{U}{U}"));
+  ability2.addTarget(new TargetCreaturePermanent());
+  ability2.addCost(new TapSourceCost());
+  this.addAbility(ability2);
+}

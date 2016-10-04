@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{B}{B}");
+  this.subtype.add("Zombie");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(3);
+  Effect effect=new GainAbilityAllEffect(new SwampwalkAbility(),Duration.WhileOnBattlefield,filter,true);
+  effect.setText("Other Zombie creatures have swampwalk. <i>(They can't be blocked as long as defending player controls a Swamp.)</i>");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  effect=new GainAbilityAllEffect(new SimpleActivatedAbility(Zone.BATTLEFIELD,new RegenerateSourceEffect(),new ManaCostsImpl("{B}")),Duration.WhileOnBattlefield,filter,true);
+  effect.setText("Other Zombies have \"{B}: Regenerate this permanent.\"");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+}

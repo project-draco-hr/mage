@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{R}");
+  this.subtype.add("Human");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Duration.WhileOnBattlefield,filterCreatures,true)));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn),new ManaCostsImpl("{R}"));
+  ability.addCost(new TapSourceCost());
+  ability.addTarget(new TargetControlledCreaturePermanent(filterCreature));
+  this.addAbility(ability);
+}

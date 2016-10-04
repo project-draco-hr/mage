@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.PLANESWALKER},"");
+  this.subtype.add("Liliana");
+  this.color.setBlack(true);
+  this.nightCard=true;
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(3));
+  this.addAbility(new LoyaltyAbility(new DiscardEachPlayerEffect(1,false),2));
+  Ability ability=new LoyaltyAbility(new ReturnFromGraveyardToBattlefieldTargetEffect());
+  ability2Id=ability.getOriginalId();
+  ability.addTarget(new TargetCardInYourGraveyard(filter));
+  this.addAbility(ability);
+  this.addAbility(new LoyaltyAbility(new GetEmblemEffect(new LilianaDefiantNecromancerEmblem()),-8));
+}

@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{W}");
+  this.subtype.add("Incarnation");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(FirstStrikeAbility.getInstance());
+  ContinuousEffect effect=new GainAbilityControlledEffect(FirstStrikeAbility.getInstance(),Duration.WhileOnBattlefield,new FilterCreaturePermanent());
+  ConditionalContinuousEffect valorEffect=new ConditionalContinuousEffect(effect,new PermanentsOnTheBattlefieldCondition(filter),ruleText);
+  this.addAbility(new SimpleStaticAbility(Zone.GRAVEYARD,valorEffect));
+}

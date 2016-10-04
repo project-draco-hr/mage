@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{X}{1}{U}");
+  this.getSpellAbility().addEffect(new FlashOfInsightEffect());
+  Ability ability=new FlashbackAbility(new ManaCostsImpl("{1}{U}"),TimingRule.INSTANT);
+  FilterCard filter=new FilterCard("blue cards from your graveyard");
+  filter.add(new ColorPredicate(ObjectColor.BLUE));
+  filter.add(Predicates.not(new CardIdPredicate(getId())));
+  ability.addCost(new ExileXFromYourGraveCost(filter));
+  this.addAbility(ability);
+}

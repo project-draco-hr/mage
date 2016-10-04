@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{B}{B}");
+  this.subtype.add("Avatar");
+  this.power=new MageInt(6);
+  this.toughness=new MageInt(6);
+  this.addAbility(DeathtouchAbility.getInstance());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ReturnFromGraveyardToHandTargetEffect(),new ManaCostsImpl("{3}{B}{B}"));
+  ability.addTarget(new TargetCardInYourGraveyard(0,3,new FilterCreatureCard("creature cards from your graveyard")));
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.GRAVEYARD,new ReturnFromGraveyardToHandTargetEffect(),new ManaCostsImpl("{3}{B}{B}"));
+  ability.addCost(new ExileSourceFromGraveCost());
+  ability.addTarget(new TargetCardInYourGraveyard(0,3,new FilterCreatureCard("creature cards from your graveyard")));
+  this.addAbility(ability);
+}

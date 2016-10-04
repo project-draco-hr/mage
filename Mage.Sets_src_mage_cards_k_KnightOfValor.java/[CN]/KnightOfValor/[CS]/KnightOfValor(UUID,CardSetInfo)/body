@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{W}");
+  this.subtype.add("Human");
+  this.subtype.add("Knight");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new FlankingAbility());
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("each creature without flanking blocking {this}");
+  filter.add(Predicates.not(new AbilityPredicate(FlankingAbility.class)));
+  filter.add(new BlockingAttackerIdPredicate(this.getId()));
+  this.addAbility(new LimitedTimesPerTurnActivatedAbility(Zone.BATTLEFIELD,new BoostAllEffect(-1,-1,Duration.EndOfTurn,filter,false),new ManaCostsImpl("{1}{W}")));
+}

@@ -1,0 +1,20 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{1}{R}");
+  this.getSpellAbility().getModes().setMinModes(1);
+  this.getSpellAbility().getModes().setMaxModes(1);
+  this.getSpellAbility().addEffect(new DestroyTargetEffect());
+  this.getSpellAbility().addTarget(new TargetArtifactPermanent());
+  Mode mode=new Mode();
+  Effect effect=new BoostTargetEffect(1,1,Duration.EndOfTurn);
+  effect.setText("target creature gets +1/+1");
+  mode.getEffects().add(effect);
+  effect=new GainAbilityTargetEffect(TrampleAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("and gains trample until end of turn");
+  mode.getEffects().add(effect);
+  mode.getTargets().add(new TargetCreaturePermanent());
+  this.getSpellAbility().getModes().addMode(mode);
+  mode=new Mode();
+  mode.getTargets().add(new TargetPermanentOrSuspendedCard());
+  mode.getEffects().add(new FuryCharmRemoveCounterEffect());
+  this.getSpellAbility().getModes().addMode(mode);
+}

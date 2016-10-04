@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{5}{W}{U}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Dragon");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(6);
+  this.addAbility(FlyingAbility.getInstance());
+  this.addAbility(VigilanceAbility.getInstance());
+  Ability ability=new AttacksAllTriggeredAbility(new TapTargetEffect(),false,filterDragon,SetTargetPointer.NONE,false);
+  ability.addEffect(new DontUntapInControllersNextUntapStepTargetEffect("That permanent"));
+  ability.addTarget(new TargetPermanent(filterNonlandPermanent));
+  this.addAbility(ability);
+}

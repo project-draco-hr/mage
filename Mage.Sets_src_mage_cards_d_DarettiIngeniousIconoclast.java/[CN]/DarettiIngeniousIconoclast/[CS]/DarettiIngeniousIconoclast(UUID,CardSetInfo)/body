@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.PLANESWALKER},"{1}{B}{R}");
+  this.subtype.add("Daretti");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(3));
+  LoyaltyAbility ability=new LoyaltyAbility(new CreateTokenEffect(new DarettiConstructToken()),1);
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new DoIfCostPaid(new DestroyTargetEffect(""),new SacrificeTargetCost(new TargetControlledPermanent(new FilterControlledArtifactPermanent("an artifact")))),-1);
+  ability.addTarget(new TargetPermanent(StaticFilters.FILTER_ARTIFACT_CREATURE_PERMANENT));
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new PutTokenOntoBattlefieldCopyTargetEffect(null,null,false,3),-6);
+  ability.addTarget(new TargetCardInGraveyardOrBattlefield(new FilterArtifactCard("artifact card in a graveyard or artifact on the battlefield")));
+  this.addAbility(ability);
+}

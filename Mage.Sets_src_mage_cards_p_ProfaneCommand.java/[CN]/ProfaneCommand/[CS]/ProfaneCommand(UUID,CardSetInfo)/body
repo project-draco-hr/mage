@@ -1,0 +1,23 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.SORCERY},"{X}{B}{B}");
+  DynamicValue xValue=new ManacostVariableValue();
+  this.getSpellAbility().getModes().setMinModes(2);
+  this.getSpellAbility().getModes().setMaxModes(2);
+  this.getSpellAbility().addEffect(new LoseLifeTargetEffect(xValue));
+  this.getSpellAbility().addTarget(new TargetPlayer());
+  Mode mode=new Mode();
+  mode.getEffects().add(new ReturnFromGraveyardToBattlefieldTargetEffect());
+  mode.getTargets().add(new TargetCardInYourGraveyard(new FilterCreatureCard("creature card with converted mana cost X or less from your graveyard")));
+  this.getSpellAbility().addMode(mode);
+  DynamicValue minusValue=new SignInversionDynamicValue(xValue);
+  mode=new Mode();
+  mode.getEffects().add(new BoostTargetEffect(minusValue,minusValue,Duration.EndOfTurn));
+  mode.getTargets().add(new TargetCreaturePermanent());
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  Effect effect=new GainAbilityTargetEffect(FearAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("Up to X target creatures gain fear until end of turn");
+  mode.getEffects().add(effect);
+  mode.getTargets().add(new TargetCreaturePermanent(0,1));
+  this.getSpellAbility().addMode(mode);
+}

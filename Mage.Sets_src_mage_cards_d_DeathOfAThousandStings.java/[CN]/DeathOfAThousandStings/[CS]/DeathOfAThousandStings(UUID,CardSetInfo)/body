@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{4}{B}");
+  this.subtype.add("Arcane");
+  this.getSpellAbility().addEffect(new LoseLifeTargetEffect(1));
+  this.getSpellAbility().addTarget(new TargetPlayer());
+  Effect effect=new GainLifeEffect(1);
+  effect.setText("and you gain 1 life");
+  this.getSpellAbility().addEffect(effect);
+  Ability ability=new ConditionalTriggeredAbility(new BeginningOfUpkeepTriggeredAbility(Zone.GRAVEYARD,new ReturnSourceFromGraveyardToHandEffect(),TargetController.YOU,true),new MoreCardsInHandThanOpponentsCondition(),"At the beginning of your upkeep, if you have more cards in hand than each opponent, you may return {this} from your graveyard to your hand.");
+  this.addAbility(ability);
+}

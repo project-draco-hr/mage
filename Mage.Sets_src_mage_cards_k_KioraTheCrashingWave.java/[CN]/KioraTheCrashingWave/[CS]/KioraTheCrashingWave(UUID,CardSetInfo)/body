@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.PLANESWALKER},"{2}{G}{U}");
+  this.subtype.add("Kiora");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(2));
+  LoyaltyAbility ability=new LoyaltyAbility(new KioraPreventionEffect(),1);
+  ability.addTarget(new TargetPermanent(filter));
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new DrawCardSourceControllerEffect(1),-1);
+  ability.addEffect(new PlayAdditionalLandsControllerEffect(1,Duration.EndOfTurn));
+  this.addAbility(ability);
+  this.addAbility(new LoyaltyAbility(new GetEmblemEffect(new KioraEmblem()),-5));
+}

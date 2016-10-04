@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{W}{U}");
+  this.subtype.add("Elemental");
+  this.subtype.add("Cat");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.addAbility(FlyingAbility.getInstance());
+  DynamicValue xValue=new PermanentsOnBattlefieldCount(filter);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostSourceEffect(xValue,xValue,Duration.WhileOnBattlefield)));
+  this.addAbility(new ForecastAbility(new CreateTokenEffect(new BirdToken()),new ManaCostsImpl("{2}{W}{U}")));
+}

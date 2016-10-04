@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{B}{R}");
+  this.subtype.add("Human");
+  this.subtype.add("Shaman");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  SimpleActivatedAbility ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostTargetEffect(-1,-1,Duration.EndOfTurn),new ManaCostsImpl("{B}{R}"));
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new LoseLifeTargetEffect(1),new ManaCostsImpl("{B}{R}"));
+  ability.addTarget(new TargetPlayer(1,1,false,playerFilter));
+  this.addAbility(ability);
+}

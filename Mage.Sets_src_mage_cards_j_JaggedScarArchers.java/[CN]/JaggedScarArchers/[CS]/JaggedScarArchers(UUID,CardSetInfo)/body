@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{G}{G}");
+  this.subtype.add("Elf");
+  this.subtype.add("Archer");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  this.addAbility(new SimpleStaticAbility(Zone.ALL,new SetPowerToughnessSourceEffect(new PermanentsOnBattlefieldCount(controlledElvesFilter),Duration.EndOfGame)));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(new SourcePermanentPowerCount()),new TapSourceCost());
+  ability.addTarget(new TargetCreaturePermanent(flyingCreatureFilter));
+  this.addAbility(ability);
+}

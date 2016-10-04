@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{W}{B}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Zombie");
+  this.subtype.add("Soldier");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Effect effect=new AddCountersControllerEffect(CounterType.EXPERIENCE.createInstance(1),false);
+  effect.setText("you get an experience counter");
+  Ability ability=new SpellCastControllerTriggeredAbility(effect,filter,false);
+  this.addAbility(ability);
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new DaxosSpiritToken(),1),new ManaCostsImpl("{1}{W}{B}")));
+}

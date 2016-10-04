@@ -1,0 +1,20 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{2}{B}{B}");
+  Ability ability=new BeginningOfUpkeepTriggeredAbility(new DamageTargetEffect(4),TargetController.YOU,false);
+  ability.getModes().setEachModeOnlyOnce(true);
+  ability.addTarget(new TargetCreatureOrPlayer());
+  Effect effect=new GainLifeEffect(4);
+  effect.setText("and you gain 4 life");
+  ability.addEffect(effect);
+  Mode mode=new Mode();
+  mode.getTargets().add(new TargetOpponent());
+  mode.getEffects().add(new DiscardTargetEffect(2));
+  ability.addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new DrawCardSourceControllerEffect(2));
+  ability.addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new LoseGameSourceControllerEffect());
+  ability.addMode(mode);
+  this.addAbility(ability);
+}

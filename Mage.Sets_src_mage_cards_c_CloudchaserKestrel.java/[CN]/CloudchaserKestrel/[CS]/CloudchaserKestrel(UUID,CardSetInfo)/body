@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{W}{W}");
+  this.subtype.add("Bird");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(FlyingAbility.getInstance());
+  Ability ability=new EntersBattlefieldTriggeredAbility(new DestroyTargetEffect(),false);
+  ability.addTarget(new TargetEnchantmentPermanent());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BecomesColorTargetEffect(ObjectColor.WHITE,Duration.EndOfTurn),new ManaCostsImpl("{W}"));
+  ability.addTarget(new TargetPermanent());
+  this.addAbility(ability);
+}

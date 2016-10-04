@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{2}");
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.CHARGE.createInstance(3)),""));
+  Costs costs=new CostsImpl();
+  costs.add(new RemoveCountersSourceCost(CounterType.CHARGE.createInstance()));
+  costs.add(new TapSourceCost());
+  Effect pumpEffect=new BoostTargetEffect(3,0,Duration.EndOfTurn);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,pumpEffect,costs);
+  ability.addManaCost(new GenericManaCost(2));
+  Target target=new TargetCreaturePermanent();
+  ability.addTarget(target);
+  this.addAbility(ability);
+  Ability ability2=new SimpleActivatedAbility(Zone.BATTLEFIELD,new AddCountersSourceEffect(CounterType.CHARGE.createInstance()),new TapSourceCost());
+  ability2.addManaCost(new ManaCostsImpl("{R}{R}"));
+  this.addAbility(ability2);
+}

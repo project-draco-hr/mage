@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{G}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  CardsInAllGraveyardsCount count=new CardsInAllGraveyardsCount(new FilterCreatureCard());
+  Effect effect=new BoostEnchantedEffect(count,count,Duration.WhileOnBattlefield);
+  effect.setText("Enchanted creature gets +X/+X, where X is the number of creature cards in all graveyards");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+}

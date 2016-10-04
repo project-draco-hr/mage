@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{W}");
+  this.subtype.add("Bird");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(2);
+  this.addAbility(FlyingAbility.getInstance());
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new BoostSourceEffect(1,1,Duration.WhileOnBattlefield),new CardsInControllerGraveCondition(7),"As long as seven or more cards are in your graveyard, {this} gets +1/+1"));
+  ability.addEffect(new ConditionalContinuousEffect(new GainAbilitySourceEffect(new ProtectionAbility(filter)),new CardsInControllerGraveCondition(7),"and has protection from black"));
+  ability.setAbilityWord(AbilityWord.THRESHOLD);
+  this.addAbility(ability);
+}

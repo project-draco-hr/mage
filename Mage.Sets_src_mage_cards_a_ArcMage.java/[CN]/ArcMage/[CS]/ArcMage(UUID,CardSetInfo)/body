@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{R}");
+  this.subtype.add("Human");
+  this.subtype.add("Spellshaper");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Effect effect=new DamageMultiEffect(2);
+  effect.setText("{this} deals 2 damage divided as you choose among one or two target creatures and/or players");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl("{2}{R}"));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new DiscardCardCost());
+  ability.addTarget(new TargetCreatureOrPlayerAmount(2));
+  this.addAbility(ability);
+}

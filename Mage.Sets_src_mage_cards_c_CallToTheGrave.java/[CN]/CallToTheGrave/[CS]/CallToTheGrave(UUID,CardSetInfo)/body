@@ -1,0 +1,7 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{4}{B}");
+  Ability ability=new BeginningOfUpkeepTriggeredAbility(new SacrificeEffect(filter,1,"that player "),TargetController.ANY,false);
+  this.addAbility(ability);
+  TriggeredAbility triggered=new OnEventTriggeredAbility(GameEvent.EventType.END_TURN_STEP_PRE,"beginning of the end step",true,new SacrificeSourceEffect());
+  this.addAbility(new ConditionalTriggeredAbility(triggered,new CreatureCountCondition(0,TargetController.ANY),ruleText));
+}

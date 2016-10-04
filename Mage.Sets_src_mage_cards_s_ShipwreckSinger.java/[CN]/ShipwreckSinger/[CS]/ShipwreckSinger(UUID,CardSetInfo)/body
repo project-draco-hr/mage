@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{U}{B}");
+  this.subtype.add("Siren");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(2);
+  this.addAbility(FlyingAbility.getInstance());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new AttacksIfAbleTargetEffect(Duration.EndOfTurn),new ManaCostsImpl("{1}{U}"));
+  Target target=new TargetCreaturePermanent(filter);
+  ability.addTarget(target);
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostAllEffect(-1,-1,Duration.EndOfTurn,filterAttacking,false),new ManaCostsImpl("{1}{B}"));
+  ability.addCost(new TapSourceCost());
+  this.addAbility(ability);
+}

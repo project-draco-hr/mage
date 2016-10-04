@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{B}{R}{G}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Human");
+  this.subtype.add("Hunter");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  this.addAbility(new MenaceAbility());
+  this.addAbility(DeathtouchAbility.getInstance());
+  this.addAbility(HasteAbility.getInstance());
+  Ability ability=new EntersBattlefieldTriggeredAbility(new AddCountersTargetEffect(CounterType.BOUNTY.createInstance()));
+  ability.addTarget(new TargetOpponentsCreaturePermanent());
+  this.addAbility(ability);
+  this.addAbility(new BountyAbility(new DrawDiscardControllerEffect(2,2,true)));
+}

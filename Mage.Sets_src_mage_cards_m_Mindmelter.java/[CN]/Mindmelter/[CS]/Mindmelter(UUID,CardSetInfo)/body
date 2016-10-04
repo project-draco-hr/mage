@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{U}{B}");
+  this.subtype.add("Eldrazi");
+  this.subtype.add("Drone");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new DevoidAbility(this.color));
+  this.addAbility(new CantBeBlockedSourceAbility());
+  Effect effect=new ExileFromZoneTargetEffect(Zone.HAND,null,"",new FilterCard());
+  effect.setText("Target opponent exiles a card from his or her hand");
+  Ability ability=new ActivateAsSorceryActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl("{3}{C}"));
+  ability.addTarget(new TargetOpponent());
+  this.addAbility(ability);
+}

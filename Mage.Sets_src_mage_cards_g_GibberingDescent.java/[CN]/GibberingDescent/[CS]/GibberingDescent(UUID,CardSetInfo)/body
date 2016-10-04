@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{4}{B}{B}");
+  Effect effect=new LoseLifeTargetEffect(1);
+  effect.setText("that player loses 1 life");
+  Ability ability=new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,effect,TargetController.ANY,false,true);
+  effect=new DiscardTargetEffect(1);
+  effect.setText("and discards a card");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousRuleModifyingEffect(new GibberingDescentSkipUpkeepEffect(),HellbentCondition.getInstance())));
+  this.addAbility(new MadnessAbility(this,new ManaCostsImpl<>("{2}{B}{B}")));
+}

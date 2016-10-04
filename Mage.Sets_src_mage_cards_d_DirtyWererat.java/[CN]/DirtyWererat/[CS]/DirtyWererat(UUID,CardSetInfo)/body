@@ -1,0 +1,17 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{B}");
+  this.subtype.add("Human");
+  this.subtype.add("Rat");
+  this.subtype.add("Minion");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(3);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new RegenerateSourceEffect(),new ManaCostsImpl("{B}"));
+  ability.addCost(new DiscardCardCost());
+  this.addAbility(ability);
+  Ability thresholdAbility=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new BoostSourceEffect(2,2,Duration.WhileOnBattlefield),new CardsInControllerGraveCondition(7),"If seven or more cards are in your graveyard, {this} gets +2/+2"));
+  Effect effect=new ConditionalRestrictionEffect(new CantBlockSourceEffect(Duration.WhileOnBattlefield),new CardsInControllerGraveCondition(7));
+  effect.setText("and can't block");
+  thresholdAbility.addEffect(effect);
+  thresholdAbility.setAbilityWord(AbilityWord.THRESHOLD);
+  this.addAbility(thresholdAbility);
+}

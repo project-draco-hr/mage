@@ -1,0 +1,18 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{G}{W}{U}");
+  this.subtype.add("Phelddagrif");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostSourceEffect(1,1,Duration.EndOfTurn),new ManaCostsImpl("{G}"));
+  ability.addEffect(new CreateTokenTargetEffect(new HippoToken()));
+  ability.addTarget(new TargetOpponent());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainAbilitySourceEffect(new ProtectionAbility(filter),Duration.EndOfTurn),new ManaCostsImpl("{W}"));
+  ability.addEffect(new GainLifeTargetEffect(2));
+  ability.addTarget(new TargetOpponent());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainAbilitySourceEffect(FlyingAbility.getInstance(),Duration.EndOfTurn),new ManaCostsImpl("{U}"));
+  ability.addEffect(new DrawCardTargetEffect(1,true));
+  ability.addTarget(new TargetOpponent());
+  this.addAbility(ability);
+}

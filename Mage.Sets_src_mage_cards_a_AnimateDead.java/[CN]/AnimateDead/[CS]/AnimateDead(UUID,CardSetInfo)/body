@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{B}");
+  this.subtype.add("Aura");
+  TargetCardInGraveyard auraTarget=new TargetCardInGraveyard(new FilterCreatureCard("creature card in a graveyard"));
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AnimateDeadAttachEffect(Outcome.PutCreatureInPlay));
+  Ability enchantAbility=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(enchantAbility);
+  Ability ability=new ConditionalTriggeredAbility(new EntersBattlefieldTriggeredAbility(new AnimateDeadReAttachEffect(),false),SourceOnBattlefieldCondition.getInstance(),"When {this} enters the battlefield, if it's on the battlefield, it loses \"enchant creature card in a graveyard\" and gains \"enchant creature put onto the battlefield with {this}.\" Return enchanted creature card to the battlefield under your control and attach {this} to it.");
+  ability.addEffect(new AnimateDeadChangeAbilityEffect());
+  this.addAbility(ability);
+  this.addAbility(new LeavesBattlefieldTriggeredAbility(new AnimateDeadLeavesBattlefieldTriggeredEffect(),false));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(-1,0,Duration.WhileOnBattlefield)));
+}

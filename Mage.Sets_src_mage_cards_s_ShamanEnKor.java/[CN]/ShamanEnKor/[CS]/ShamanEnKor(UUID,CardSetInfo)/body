@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{W}");
+  this.subtype.add("Kor");
+  this.subtype.add("Cleric");
+  this.subtype.add("Shaman");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(2);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new RedirectDamageFromSourceToTargetEffect(Duration.EndOfTurn,1,true),new GenericManaCost(0));
+  ability.addTarget(new TargetControlledCreaturePermanent());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ShamanEnKorRedirectFromTargetEffect(),new ManaCostsImpl("{1}{W}"));
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}

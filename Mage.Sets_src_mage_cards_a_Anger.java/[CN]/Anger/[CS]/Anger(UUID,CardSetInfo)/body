@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{R}");
+  this.subtype.add("Incarnation");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(HasteAbility.getInstance());
+  ContinuousEffect effect=new GainAbilityControlledEffect(HasteAbility.getInstance(),Duration.WhileOnBattlefield,new FilterCreaturePermanent());
+  ConditionalContinuousEffect angerEffect=new ConditionalContinuousEffect(effect,new PermanentsOnTheBattlefieldCondition(filter),ruleText);
+  this.addAbility(new SimpleStaticAbility(Zone.GRAVEYARD,angerEffect));
+}

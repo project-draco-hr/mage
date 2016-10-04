@@ -1,0 +1,18 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.SORCERY},"{R}{G}");
+  this.getSpellAbility().addEffect(new DestroyTargetEffect());
+  Target target=new TargetArtifactPermanent();
+  this.getSpellAbility().addTarget(target);
+  Mode mode=new Mode();
+  mode.getEffects().add(new DestroyTargetEffect());
+  target=new TargetPermanent(new FilterEnchantmentPermanent());
+  mode.getTargets().add(target);
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  Effect effect=new DestroyTargetEffect(false,true);
+  effect.setText("destroy target artifact and target enchantment");
+  mode.getEffects().add(effect);
+  mode.getTargets().add(new TargetArtifactPermanent());
+  mode.getTargets().add(new TargetEnchantmentPermanent());
+  this.getSpellAbility().addMode(mode);
+}

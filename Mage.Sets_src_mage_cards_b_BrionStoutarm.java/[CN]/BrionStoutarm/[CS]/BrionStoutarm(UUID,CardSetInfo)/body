@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{R}{W}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Giant");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  this.addAbility(LifelinkAbility.getInstance());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BrionStoutarmEffect(),new ManaCostsImpl("{R}"));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filter,true)));
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+}

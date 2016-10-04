@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{W}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Human");
+  this.subtype.add("Ally");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(4);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new SearchLibraryPutInHandEffect(new TargetCardInLibrary(filter),true,true),true));
+  DynamicValue xValue=new GeneralTazriColorCount();
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostControlledEffect(xValue,xValue,Duration.EndOfTurn,new FilterCreaturePermanent("Ally","Ally creatures"),false),new ManaCostsImpl("{W}{U}{B}{R}{G}")));
+}

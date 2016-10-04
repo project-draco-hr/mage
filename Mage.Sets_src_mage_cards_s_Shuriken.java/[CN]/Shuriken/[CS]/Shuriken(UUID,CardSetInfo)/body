@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{1}");
+  this.subtype.add("Equipment");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ShurikenDamageEffect(),new TapSourceCost());
+  ability.addTarget(new TargetCreaturePermanent());
+  ability.addCost(new ShurikenUnattachCost());
+  ability.addEffect(new ShurikenControlEffect());
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(ability,AttachmentType.EQUIPMENT,Duration.WhileOnBattlefield)));
+  this.addAbility(new EquipAbility(Outcome.PreventDamage,new GenericManaCost(2)));
+}

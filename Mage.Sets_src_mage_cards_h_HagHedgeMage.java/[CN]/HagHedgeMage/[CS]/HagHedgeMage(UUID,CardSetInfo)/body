@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{B/G}");
+  this.subtype.add("Hag");
+  this.subtype.add("Shaman");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability ability=new ConditionalTriggeredAbility(new EntersBattlefieldTriggeredAbility(new DiscardTargetEffect(1),true),new PermanentsOnTheBattlefieldCondition(filter,CountType.MORE_THAN,1),rule);
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+  Ability ability2=new ConditionalTriggeredAbility(new EntersBattlefieldTriggeredAbility(new PutOnLibraryTargetEffect(true),true),new PermanentsOnTheBattlefieldCondition(filter2,CountType.MORE_THAN,1),rule2);
+  ability2.addTarget(new TargetCardInYourGraveyard());
+  this.addAbility(ability2);
+}

@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{R}{R}");
+  this.subtype.add("Orgg");
+  this.power=new MageInt(6);
+  this.toughness=new MageInt(6);
+  this.addAbility(TrampleAbility.getInstance());
+  Effect effect=new CantAttackIfDefenderControlsPermanent(filter);
+  effect.setText("{this} can't attack if defending player controls an untapped creature with power 3 or greater.");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  Effect effectBlock=new CantBlockCreaturesSourceEffect(filter2);
+  effectBlock.setText("{this} can't block creatures with power 3 or greater.");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effectBlock));
+}

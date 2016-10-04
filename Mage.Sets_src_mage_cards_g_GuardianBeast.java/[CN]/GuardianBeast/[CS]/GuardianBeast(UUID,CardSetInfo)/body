@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{B}");
+  this.subtype.add("Beast");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(4);
+  Effect effect=new ConditionalContinuousEffect(new GainAbilityControlledEffect(IndestructibleAbility.getInstance(),Duration.WhileOnBattlefield,filter),new InvertCondition(new SourceTappedCondition()),"noncreature artifacts you control can't be enchanted, they're indestructible, and other players can't gain control of them");
+  GuardianBeastConditionalEffect effect2=new GuardianBeastConditionalEffect(this.getId());
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect2));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+}

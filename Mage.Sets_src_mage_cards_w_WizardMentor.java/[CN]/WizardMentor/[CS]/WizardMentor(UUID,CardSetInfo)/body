@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{U}");
+  this.subtype.add("Human");
+  this.subtype.add("Wizard");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Effect effect=new ReturnToHandSourceEffect(true);
+  effect.setText("Return Wizard Mentor");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new TapSourceCost());
+  ability.addEffect(effect);
+  effect=new ReturnToHandTargetEffect();
+  ability.addEffect(effect);
+  effect.setText("and another target creature you control to their owners' hands");
+  ability.addTarget(new TargetControlledCreaturePermanent(filter));
+  this.addAbility(ability);
+}

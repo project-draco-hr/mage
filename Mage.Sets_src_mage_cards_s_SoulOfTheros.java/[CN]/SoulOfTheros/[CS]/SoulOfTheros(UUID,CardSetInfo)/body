@@ -1,0 +1,22 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{W}{W}");
+  this.subtype.add("Avatar");
+  this.power=new MageInt(6);
+  this.toughness=new MageInt(6);
+  this.addAbility(VigilanceAbility.getInstance());
+  Effect effect1=new BoostControlledEffect(2,2,Duration.EndOfTurn);
+  effect1.setText("Creatures you control get +2/+2");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect1,new ManaCostsImpl("{4}{W}{W}"));
+  Effect effect2=new GainAbilityControlledEffect(FirstStrikeAbility.getInstance(),Duration.EndOfTurn);
+  effect2.setText("and gain first strike");
+  ability.addEffect(effect2);
+  Effect effect3=new GainAbilityControlledEffect(LifelinkAbility.getInstance(),Duration.EndOfTurn);
+  effect3.setText("and lifelink until end of turn");
+  ability.addEffect(effect3);
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.GRAVEYARD,effect1,new ManaCostsImpl("{4}{W}{W}"));
+  ability.addCost(new ExileSourceFromGraveCost());
+  ability.addEffect(effect2);
+  ability.addEffect(effect3);
+  this.addAbility(ability);
+}

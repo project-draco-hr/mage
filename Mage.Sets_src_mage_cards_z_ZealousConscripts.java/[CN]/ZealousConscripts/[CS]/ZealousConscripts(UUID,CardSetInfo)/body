@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{R}");
+  this.subtype.add("Human");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  this.addAbility(HasteAbility.getInstance());
+  Ability ability=new EntersBattlefieldTriggeredAbility(new GainControlTargetEffect(Duration.EndOfTurn));
+  ability.addTarget(new TargetPermanent());
+  ability.addEffect(new UntapTargetEffect());
+  ability.addEffect(new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn,"It gains haste until end of turn"));
+  this.addAbility(ability);
+}

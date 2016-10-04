@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{G}{G}");
+  this.subtype.add("Wurm");
+  this.power=new MageInt(6);
+  this.toughness=new MageInt(6);
+  this.addAbility(new KickerAbility("{4}"));
+  Ability ability=new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.TIME.createInstance(2)));
+  ability.setRuleVisible(false);
+  this.addAbility(ability);
+  this.addAbility(new VanishingUpkeepAbility(2));
+  this.addAbility(new VanishingSacrificeAbility());
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.TIME.createInstance(3)),KickedCondition.getInstance(),"If {this} was kicked, it enters the battlefield with three additional time counters on it.",""));
+}

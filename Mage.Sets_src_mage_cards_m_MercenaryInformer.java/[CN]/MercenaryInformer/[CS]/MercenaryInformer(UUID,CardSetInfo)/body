@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{W}");
+  this.subtype.add("Human");
+  this.subtype.add("Rebel");
+  this.subtype.add("Mercenary");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(1);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new CantBeTargetedSourceEffect(filterBlack,Duration.WhileOnBattlefield)));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new PutOnLibraryTargetEffect(false),new ManaCostsImpl("{2}{W}"));
+  ability.addTarget(new TargetPermanent(filterMercenary));
+  this.addAbility(ability);
+}

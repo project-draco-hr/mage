@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{B}{B}");
+  this.subtype.add("Spirit");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(3)),"with three +1/+1 counters on it"));
+  Ability ability=new ActivateAsSorceryActivatedAbility(Zone.BATTLEFIELD,new DiscardTargetEffect(1),new ManaCostsImpl("{2}{B}"));
+  ability.addCost(new RemoveCountersSourceCost(CounterType.P1P1.createInstance()));
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+}

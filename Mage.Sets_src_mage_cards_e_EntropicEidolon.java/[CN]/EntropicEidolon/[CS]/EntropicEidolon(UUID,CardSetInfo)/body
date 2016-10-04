@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{B}");
+  this.subtype.add("Spirit");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new LoseLifeTargetEffect(1),new ManaCostsImpl("{B}"));
+  Effect effect=new GainLifeEffect(1);
+  effect.setText("and you gain 1 life");
+  ability.addEffect(effect);
+  ability.addCost(new SacrificeSourceCost());
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+  this.addAbility(new SpellCastControllerTriggeredAbility(Zone.GRAVEYARD,new ReturnSourceFromGraveyardToHandEffect(),filter,true,false));
+}

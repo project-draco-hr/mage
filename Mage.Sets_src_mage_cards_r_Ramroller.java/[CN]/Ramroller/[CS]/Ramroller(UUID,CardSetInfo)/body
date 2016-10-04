@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT,CardType.CREATURE},"{3}");
+  this.subtype.add("Juggernaut");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(3);
+  this.addAbility(new AttacksEachTurnStaticAbility());
+  Condition condition=new PermanentsOnTheBattlefieldCondition(filter,CountType.MORE_THAN,0);
+  ConditionalContinuousEffect effect=new ConditionalContinuousEffect(new BoostSourceEffect(2,0,Duration.WhileOnBattlefield),condition,"{this} gets +2/+0 as long as you control another artifact.");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+}

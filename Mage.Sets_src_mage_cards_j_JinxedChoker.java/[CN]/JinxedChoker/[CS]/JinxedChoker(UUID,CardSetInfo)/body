@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{3}");
+  Ability endStepAbility=new BeginningOfYourEndStepTriggeredAbility(new JinxedChokerChangeControllerEffect(),false);
+  endStepAbility.addTarget(new TargetOpponent());
+  AddCountersSourceEffect addCountersSourceEffect=new AddCountersSourceEffect(CounterType.CHARGE.createInstance());
+  addCountersSourceEffect.setText("");
+  endStepAbility.addEffect(addCountersSourceEffect);
+  this.addAbility(endStepAbility);
+  Ability upkeepAbility=new OnEventTriggeredAbility(GameEvent.EventType.UPKEEP_STEP_PRE,"beginning of your upkeep",new DamageControllerEffect(new JinxedChokerDynamicValue()),false);
+  this.addAbility(upkeepAbility);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new JinxedChokerCounterEffect(),new ManaCostsImpl("{3}"));
+  this.addAbility(ability);
+}

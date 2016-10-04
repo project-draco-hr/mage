@@ -1,0 +1,8 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{3}{R}");
+  this.addAbility(new EntersBattlefieldAbility(new ChooseModeEffect("Khans or Dragons?","Khans","Dragons"),null,"As {this} enters the battlefield, choose Khans or Dragons.",""));
+  this.addAbility(new ConditionalTriggeredAbility(new BeginningOfUpkeepTriggeredAbility(new OutpostSiegeExileEffect(),TargetController.YOU,false),new ModeChoiceSourceCondition("Khans"),ruleTrigger1));
+  Ability ability2=new ConditionalTriggeredAbility(new ZoneChangeAllTriggeredAbility(Zone.BATTLEFIELD,Zone.BATTLEFIELD,null,new DamageTargetEffect(1),new FilterControlledCreaturePermanent(),"",false),new ModeChoiceSourceCondition("Dragons"),ruleTrigger2);
+  ability2.addTarget(new TargetCreatureOrPlayer());
+  this.addAbility(ability2);
+}

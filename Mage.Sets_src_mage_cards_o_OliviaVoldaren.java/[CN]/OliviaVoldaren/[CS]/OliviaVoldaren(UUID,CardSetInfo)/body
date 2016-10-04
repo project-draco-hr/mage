@@ -1,0 +1,22 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{B}{R}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Vampire");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  String rule="Gain control of target Vampire for as long as you control {this}";
+  FilterPermanent filter2=new FilterPermanent();
+  filter2.add(new ControllerPredicate(TargetController.YOU));
+  filter2.add(new CardIdPredicate(this.getId()));
+  this.addAbility(FlyingAbility.getInstance());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new ManaCostsImpl("{1}{R}"));
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  Effect effect=new AddCardSubTypeTargetEffect("Vampire",Duration.WhileOnBattlefield);
+  effect.setText("That creature becomes a Vampire in addition to its other types");
+  ability.addEffect(effect);
+  ability.addEffect(new AddCountersSourceEffect(CounterType.P1P1.createInstance()));
+  this.addAbility(ability);
+  Ability ability2=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new GainControlTargetEffect(Duration.Custom),new PermanentsOnTheBattlefieldCondition(filter2),rule),new ManaCostsImpl("{3}{B}{B}"));
+  ability2.addTarget(new TargetCreaturePermanent(vampireFilter));
+  this.addAbility(ability2);
+}

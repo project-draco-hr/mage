@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT,CardType.CREATURE},"{U}{B}");
+  this.subtype.add("Human");
+  this.subtype.add("Rogue");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new LoseLifeTargetEffect(1),new ManaCostsImpl("{U}{B}"));
+  ability.addCost(new TapSourceCost());
+  Effect revealEffect=new RevealHandTargetEffect(TargetController.ANY);
+  revealEffect.setText("and reveals his or her hand");
+  ability.addEffect(revealEffect);
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+}

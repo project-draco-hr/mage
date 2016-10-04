@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{B}{B}");
+  this.subtype.add("Horror");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(1);
+  this.addAbility(new CantBlockAbility());
+  FilterCard filter=new FilterCreatureCard("two other creature cards from your graveyard");
+  filter.add(Predicates.not(new CardIdPredicate(this.getId())));
+  Ability ability=new SimpleActivatedAbility(Zone.GRAVEYARD,new ReturnSourceFromGraveyardToBattlefieldEffect(false),new ManaCostsImpl("{B}{B}"));
+  ability.addCost(new ExileFromGraveCost(new TargetCardInYourGraveyard(2,filter)));
+  this.addAbility(ability);
+}

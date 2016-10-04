@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{B}{B}");
+  this.subtype.add("Vampire");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  this.transformable=true;
+  this.secondSideCardClazz=LordOfLineage.class;
+  this.addAbility(FlyingAbility.getInstance());
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new VampireToken()),new TapSourceCost()));
+  this.addAbility(new TransformAbility());
+  Ability ability=new ActivateIfConditionActivatedAbility(Zone.BATTLEFIELD,new TransformSourceEffect(true),new ManaCostsImpl("{B}"),new PermanentsOnTheBattlefieldCondition(filter,CountType.MORE_THAN,4));
+  this.addAbility(ability);
+}

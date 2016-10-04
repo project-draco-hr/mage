@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{G}");
+  this.subtype.add("Plant");
+  this.subtype.add("Wall");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(3);
+  this.addAbility(DefenderAbility.getInstance());
+  this.addAbility(new SimpleManaAbility(Zone.BATTLEFIELD,new BasicManaEffect(Mana.RedMana(2)),new SacrificeSourceCost()));
+  FilterAttackingCreature filter=new FilterAttackingCreature("creature it's blocking");
+  filter.add(new BlockedByIdPredicate(this.getId()));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(2),new ManaCostsImpl("{R}"));
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  ability.addCost(new SacrificeSourceCost());
+  this.addAbility(ability,new BlockedByWatcher());
+}

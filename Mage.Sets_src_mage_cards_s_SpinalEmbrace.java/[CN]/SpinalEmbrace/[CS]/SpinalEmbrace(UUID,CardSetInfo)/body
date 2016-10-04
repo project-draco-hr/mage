@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{3}{U}{U}{B}");
+  this.addAbility(new CastOnlyDuringPhaseStepSourceAbility(TurnPhase.COMBAT));
+  this.getSpellAbility().addTarget(new TargetPermanent(filter));
+  this.getSpellAbility().addEffect(new UntapTargetEffect());
+  Effect effect=new GainControlTargetEffect(Duration.EndOfTurn);
+  effect.setText("and gain control of it");
+  this.getSpellAbility().addEffect(effect);
+  this.getSpellAbility().addEffect(new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn));
+  this.getSpellAbility().addEffect(new SpinalEmbraceAddDelayedEffect());
+}

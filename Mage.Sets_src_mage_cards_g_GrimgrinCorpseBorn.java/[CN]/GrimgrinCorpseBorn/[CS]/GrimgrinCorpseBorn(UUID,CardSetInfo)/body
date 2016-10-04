@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{U}{B}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Zombie");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  Ability ability=new EntersBattlefieldTappedAbility("{this} enters the battlefield tapped and doesn't untap during your untap step.");
+  ability.addEffect(new DontUntapInControllersUntapStepSourceEffect());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new UntapSourceEffect(),new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filter,false)));
+  ability.addEffect(new AddCountersSourceEffect(CounterType.P1P1.createInstance()));
+  this.addAbility(ability);
+  this.addAbility(new GrimgrinCorpseBornAbility());
+}

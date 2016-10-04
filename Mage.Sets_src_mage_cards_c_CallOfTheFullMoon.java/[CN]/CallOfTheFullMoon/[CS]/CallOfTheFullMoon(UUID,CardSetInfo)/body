@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{R}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Benefit));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(3,2,Duration.WhileOnBattlefield));
+  Effect effect=new GainAbilityAttachedEffect(TrampleAbility.getInstance(),AttachmentType.AURA);
+  effect.setText("and has trample.");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  TriggeredAbility ability2=new BeginningOfUpkeepTriggeredAbility(new SacrificeSourceEffect(),TargetController.ANY,false);
+  this.addAbility(new ConditionalTriggeredAbility(ability2,TwoOrMoreSpellsWereCastLastTurnCondition.getInstance(),"At the beginning of each upkeep, if a player cast two or more spells last turn, sacrifice {this}."));
+}

@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{U}{U}{U}");
+  this.subtype.add("Elemental");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(2);
+  String rule="you may gain control of target creature for as long as you control Roil Elemental";
+  FilterPermanent filter=new FilterPermanent();
+  filter.add(new ControllerPredicate(TargetController.YOU));
+  filter.add(new CardIdPredicate(this.getId()));
+  this.addAbility(FlyingAbility.getInstance());
+  ConditionalContinuousEffect effect=new ConditionalContinuousEffect(new GainControlTargetEffect(Duration.Custom),new PermanentsOnTheBattlefieldCondition(filter),rule);
+  Ability ability=new LandfallAbility(Zone.BATTLEFIELD,effect,true);
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}

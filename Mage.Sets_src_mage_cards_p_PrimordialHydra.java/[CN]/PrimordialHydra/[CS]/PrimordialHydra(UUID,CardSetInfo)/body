@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{X}{G}{G}");
+  this.subtype.add("Hydra");
+  this.color.setGreen(true);
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  this.addAbility(new EntersBattlefieldAbility(new EntersBattlefieldWithXCountersEffect(CounterType.P1P1.createInstance())));
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(new PrimordialHydraDoubleEffect(),TargetController.YOU,false));
+  ConditionalContinuousEffect effect=new ConditionalContinuousEffect(new GainAbilitySourceEffect(TrampleAbility.getInstance()),new SourceHasCounterCondition(CounterType.P1P1,10),staticText);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+}

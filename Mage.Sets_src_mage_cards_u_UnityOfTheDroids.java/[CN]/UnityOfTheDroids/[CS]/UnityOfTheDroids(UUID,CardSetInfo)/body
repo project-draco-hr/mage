@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{W}{U}{B}");
+  this.getSpellAbility().addEffect(new PreventDamageToTargetEffect(Duration.EndOfTurn));
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent(artifactCreatureFilter));
+  Mode mode=new Mode();
+  mode.getEffects().add(new LookLibraryAndPickControllerEffect(new StaticValue(4),false,new StaticValue(1),new FilterCard(),Zone.GRAVEYARD,false,false));
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new DestroyTargetEffect());
+  mode.getTargets().add(new TargetCreaturePermanent(nonArtifactCreatureFilter));
+  this.getSpellAbility().addMode(mode);
+}

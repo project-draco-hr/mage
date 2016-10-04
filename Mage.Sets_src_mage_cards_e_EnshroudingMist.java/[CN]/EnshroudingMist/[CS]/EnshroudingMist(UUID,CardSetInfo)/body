@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{W}");
+  this.getSpellAbility().addEffect(new BoostTargetEffect(1,1,Duration.EndOfTurn));
+  Effect effect=new PreventDamageToTargetEffect(Duration.EndOfTurn,Integer.MAX_VALUE);
+  effect.setText("Prevent all damage that would dealt to it this turn");
+  this.getSpellAbility().addEffect(effect);
+  OneShotEffect effect2=new UntapTargetEffect();
+  effect2.setText("untap it");
+  this.getSpellAbility().addEffect(new ConditionalOneShotEffect(effect2,RenownedTargetCondition.getInstance()));
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent());
+}

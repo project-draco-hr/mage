@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{B}");
+  this.subtype.add("Human");
+  this.subtype.add("Mercenary");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.addAbility(FlyingAbility.getInstance());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new SearchLibraryPutInPlayEffect(new TargetCardInLibrary(filter)),new TapSourceCost());
+  ability.addCost(new SacrificeTargetCost(new TargetControlledPermanent(landFilter)));
+  this.addAbility(ability);
+}

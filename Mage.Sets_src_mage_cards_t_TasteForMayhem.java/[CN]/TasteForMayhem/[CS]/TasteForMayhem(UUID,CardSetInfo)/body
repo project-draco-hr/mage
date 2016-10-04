@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{R}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(2,0)));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new BoostEnchantedEffect(2,0),HellbentCondition.getInstance(),"<i>Hellbent</i> &mdash; Enchanted creature gets an additional +2/+0 as long as you have no cards in hand")));
+}

@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{2}");
+  Effect drawEffect=new DrawCardSourceControllerEffect(1);
+  drawEffect.setText("you draw a card");
+  Ability ability=new EntersBattlefieldTriggeredAbility(drawEffect);
+  Effect lifeEffect=new LoseLifeSourceControllerEffect(1);
+  lifeEffect.setText("and you lose 1 life");
+  ability.addEffect(lifeEffect);
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,drawEffect,new ManaCostsImpl<>("{2}{B}"));
+  ability.addCost(new SacrificeSourceCost());
+  ability.addEffect(lifeEffect);
+  this.addAbility(ability);
+}

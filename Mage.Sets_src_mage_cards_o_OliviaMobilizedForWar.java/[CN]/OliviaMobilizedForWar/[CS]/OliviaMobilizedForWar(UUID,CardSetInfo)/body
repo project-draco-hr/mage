@@ -1,0 +1,19 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{B}{R}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Vampire");
+  this.subtype.add("Knight");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  this.addAbility(FlyingAbility.getInstance());
+  Effect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance());
+  effect.setText("put a +1/+1 counter on that creature");
+  DoIfCostPaid doIfCostPaid=new DoIfCostPaid(effect,new DiscardCardCost());
+  effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText(", it gains haste until end of turn,");
+  doIfCostPaid.addEffect(effect);
+  effect=new BecomesCreatureTypeTargetEffect(Duration.WhileOnBattlefield,new ArrayList<>(Arrays.asList("Vampire")),false);
+  effect.setText("and it becomes a Vampire in addition to its other types");
+  doIfCostPaid.addEffect(effect);
+  this.addAbility(new EntersBattlefieldControlledTriggeredAbility(Zone.BATTLEFIELD,doIfCostPaid,filter,false,SetTargetPointer.PERMANENT,null));
+}

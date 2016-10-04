@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{B}{B}");
+  this.subtype.add("Avatar");
+  this.subtype.add("Praetor");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  this.addAbility(FirstStrikeAbility.getInstance());
+  this.addAbility(TrampleAbility.getInstance());
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(new AddCountersSourceEffect(CounterType.M2M2.createInstance()),TargetController.YOU,false));
+  Ability ability=new LimitedTimesPerTurnActivatedAbility(Zone.BATTLEFIELD,new RemoveCounterSourceEffect(CounterType.M2M2.createInstance()),new SacrificeTargetCost(new TargetControlledCreaturePermanent(new FilterControlledCreaturePermanent("a creature"))),1,new IsStepCondition(PhaseStep.UPKEEP,true));
+  ability.addEffect(new EbonPraetorEffect());
+  this.addAbility(ability);
+}

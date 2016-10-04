@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{3}{W}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetPermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.LoseAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new GainLifeEffect(4)));
+  Effect effect=new CantAttackBlockAttachedEffect(AttachmentType.AURA);
+  effect.setText("Enchanted permanent can't attack or block,");
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,effect);
+  ability.addEffect(new FaithsFettersEffect());
+  this.addAbility(ability);
+}

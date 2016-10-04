@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{G}");
+  this.subtype.add("Human");
+  this.subtype.add("Shaman");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Ability ability=new LimitedTimesPerTurnActivatedAbility(Zone.BATTLEFIELD,new BecomesCreatureSourceEffect(new RhinoToken(),"",Duration.EndOfTurn),new ManaCostsImpl("{G}"));
+  Mode mode=new Mode();
+  mode.getEffects().add(new BecomesCreatureSourceEffect(new BirdToken(),"",Duration.EndOfTurn));
+  ability.addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new BecomesCreatureSourceEffect(new PlantToken(),"",Duration.EndOfTurn));
+  ability.addMode(mode);
+  this.addAbility(ability);
+}

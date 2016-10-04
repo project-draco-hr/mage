@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{U}");
+  this.subtype.add("Eldrazi");
+  this.subtype.add("Processor");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(5);
+  this.addAbility(new DevoidAbility(this.color));
+  Ability ability=new EntersBattlefieldTriggeredAbility(new DoIfCostPaid(new ReturnFromGraveyardToHandTargetEffect(),new ExileOpponentsCardFromExileToGraveyardCost(true)),false);
+  ability.addTarget(new TargetCardInYourGraveyard(new FilterInstantOrSorceryCard("instant or sorcery card from your graveyard")));
+  this.addAbility(ability);
+}

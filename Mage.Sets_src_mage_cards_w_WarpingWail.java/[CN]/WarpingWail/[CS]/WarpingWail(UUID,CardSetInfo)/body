@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{1}{C}");
+  Effect effect=new ExileTargetEffect();
+  effect.setText("Exile target creature with power or toughness 1 or less.");
+  this.getSpellAbility().addEffect(effect);
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent(filterCreature));
+  Mode mode=new Mode();
+  mode.getEffects().add(new CounterTargetEffect());
+  mode.getTargets().add(new TargetSpell(filterSorcery));
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  effect=new CreateTokenEffect(new EldraziScionToken());
+  effect.setText("Put a 1/1 colorless Eldrazi Scion creature token onto the battlefield. It has \"Sacrifice this creature: Add {C} to your mana pool.\"");
+  mode.getEffects().add(effect);
+  this.getSpellAbility().addMode(mode);
+}

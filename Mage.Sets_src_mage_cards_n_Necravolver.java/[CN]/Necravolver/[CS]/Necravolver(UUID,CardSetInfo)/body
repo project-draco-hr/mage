@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{B}");
+  this.subtype.add("Volver");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  KickerAbility kickerAbility=new KickerAbility("{1}{G}");
+  kickerAbility.addKickerCost("{W}");
+  this.addAbility(kickerAbility);
+  Ability ability=new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(2)),new KickedCostCondition("{1}{G}"),"If {this} was kicked with its {1}{G} kicker, it enters the battlefield with two +1/+1 counters on it and with trample.","");
+  ability.addEffect(new GainAbilitySourceEffect(TrampleAbility.getInstance(),Duration.WhileOnBattlefield));
+  this.addAbility(ability);
+  ability=new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(1)),new KickedCostCondition("{W}"),"If {this} was kicked with its {W} kicker, it enters the battlefield with a +1/+1 counter on it and with \"Whenever {this} deals damage, you gain that much life.\"","");
+  ability.addEffect(new GainAbilitySourceEffect(new DealsDamageGainLifeSourceTriggeredAbility(),Duration.WhileOnBattlefield));
+  this.addAbility(ability);
+}

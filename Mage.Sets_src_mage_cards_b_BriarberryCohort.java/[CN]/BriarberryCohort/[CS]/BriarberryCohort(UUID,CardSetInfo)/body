@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{U}");
+  this.subtype.add("Faerie");
+  this.subtype.add("Soldier");
+  this.color.setBlue(true);
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.addAbility(FlyingAbility.getInstance());
+  Condition condition=new PermanentsOnTheBattlefieldCondition(filter,CountType.MORE_THAN,0);
+  Effect effect=new ConditionalContinuousEffect(new BoostSourceEffect(1,1,Duration.WhileOnBattlefield),condition,rule);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+}

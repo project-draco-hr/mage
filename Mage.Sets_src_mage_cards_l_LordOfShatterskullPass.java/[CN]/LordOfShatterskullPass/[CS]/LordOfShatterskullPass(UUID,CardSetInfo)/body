@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{R}");
+  this.subtype.add("Minotaur");
+  this.subtype.add("Shaman");
+  this.color.setRed(true);
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  this.addAbility(new LevelUpAbility(new ManaCostsImpl("{1}{R}")));
+  Abilities<Ability> abilities1=new AbilitiesImpl<Ability>();
+  Abilities<Ability> abilities2=new AbilitiesImpl<Ability>();
+  abilities2.add(new AttacksTriggeredAbility(new LordOfShatterskullPassEffect(),false));
+  this.addAbilities(LevelerCardBuilder.construct(new LevelerCardBuilder.LevelAbility(1,5,abilities1,6,6),new LevelerCardBuilder.LevelAbility(6,-1,abilities2,6,6)));
+  setMaxLevelCounters(6);
+}

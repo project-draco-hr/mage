@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{7}{W}{W}");
+  this.subtype.add("Bringer");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  this.addAbility(new AlternativeCostSourceAbility(new ManaCostsImpl("{W}{U}{B}{R}{G}")));
+  this.addAbility(TrampleAbility.getInstance());
+  Ability ability=new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,new ReturnFromGraveyardToBattlefieldTargetEffect(),TargetController.YOU,true);
+  ability.addTarget(new TargetCardInYourGraveyard(new FilterArtifactCard("artifact card from your graveyard")));
+  this.addAbility(ability);
+}

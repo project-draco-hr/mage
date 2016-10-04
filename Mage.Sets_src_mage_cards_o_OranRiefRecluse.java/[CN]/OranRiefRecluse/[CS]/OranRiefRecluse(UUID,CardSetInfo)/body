@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{G}");
+  this.subtype.add("Spider");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(3);
+  this.addAbility(new KickerAbility("{2}{G}"));
+  this.addAbility(ReachAbility.getInstance());
+  EntersBattlefieldTriggeredAbility ability=new EntersBattlefieldTriggeredAbility(new DestroyTargetEffect(),false);
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(new ConditionalTriggeredAbility(ability,KickedCondition.getInstance(),"When {this} enters the battlefield, if it was kicked, destroy target creature with flying."));
+}

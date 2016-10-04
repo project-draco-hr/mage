@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{B}{B}");
+  this.subtype.add("Zombie");
+  this.subtype.add("Wizard");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability firstPart=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Duration.WhileOnBattlefield,filterSkeletons,false));
+  firstPart.addEffect(new GainAbilityControlledEffect(DeathtouchAbility.getInstance(),Duration.WhileOnBattlefield,filterSkeletons,false));
+  this.addAbility(firstPart);
+  Ability secondPart=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Duration.WhileOnBattlefield,filterZombie,true));
+  secondPart.addEffect(new GainAbilityControlledEffect(DeathtouchAbility.getInstance(),Duration.WhileOnBattlefield,filterZombie,true));
+  this.addAbility(secondPart);
+}

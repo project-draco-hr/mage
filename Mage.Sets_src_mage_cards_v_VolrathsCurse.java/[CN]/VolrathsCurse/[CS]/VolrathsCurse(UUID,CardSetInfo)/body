@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{U}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new VolrathsCurseRestrictionEffect());
+  ability.addEffect(new VolrathsCurseCantActivateAbilitiesEffect());
+  this.addAbility(ability);
+  this.addAbility(new VolrathsCurseSpecialAction());
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new ReturnToHandSourceEffect(true),new ManaCostsImpl("{1}{U}")));
+}

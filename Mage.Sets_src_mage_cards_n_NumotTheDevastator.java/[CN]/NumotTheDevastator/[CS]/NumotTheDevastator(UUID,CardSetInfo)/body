@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{R}{W}{U}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Dragon");
+  this.power=new MageInt(6);
+  this.toughness=new MageInt(6);
+  this.addAbility(FlyingAbility.getInstance());
+  OneShotEffect effect=new DestroyTargetEffect();
+  effect.setText("destroy up to two target lands");
+  Ability ability=new DealsCombatDamageToAPlayerTriggeredAbility(new DoIfCostPaid(effect,new ManaCostsImpl("{2}{R}")),false);
+  ability.addTarget(new TargetLandPermanent(0,2,new FilterLandPermanent("lands"),false));
+  this.addAbility(ability);
+}

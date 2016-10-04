@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT,CardType.CREATURE},"{5}");
+  this.subtype.add("Masticore");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  this.addAbility(FirstStrikeAbility.getInstance());
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,new SacrificeSourceUnlessPaysEffect(new DiscardTargetCost(new TargetCardInHand())),TargetController.YOU,false));
+  Ability ability=new BeginningOfDrawTriggeredAbility(Zone.BATTLEFIELD,new DamageTargetEffect(3),TargetController.YOU,true);
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}

@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"");
+  this.subtype.add("Werewolf");
+  this.nightCard=true;
+  this.transformable=true;
+  this.color.setGreen(true);
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  Effect effect=new ConditionalContinuousEffect(new BoostControlledEffect(1,1,Duration.WhileOnBattlefield,filter,true),new TransformedCondition(),null);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  this.addAbility(new ConditionalTriggeredAbility(new BeginningOfYourEndStepTriggeredAbility(new CreateTokenEffect(new WolfToken()),false),new TransformedCondition(),ruleText));
+  TriggeredAbility ability=new BeginningOfUpkeepTriggeredAbility(new TransformSourceEffect(false),TargetController.ANY,false);
+  this.addAbility(new ConditionalTriggeredAbility(ability,TwoOrMoreSpellsWereCastLastTurnCondition.getInstance(),TransformAbility.TWO_OR_MORE_SPELLS_TRANSFORM_RULE));
+}

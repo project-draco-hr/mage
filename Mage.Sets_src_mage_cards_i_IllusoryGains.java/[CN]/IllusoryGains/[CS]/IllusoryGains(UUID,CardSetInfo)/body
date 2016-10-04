@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{3}{U}{U}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.GainControl));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ControlEnchantedEffect()));
+  this.addAbility(new EntersBattlefieldAllTriggeredAbility(Zone.BATTLEFIELD,new IllusoryGainsEffect(),filter,false,SetTargetPointer.PERMANENT,"Whenever a creature enters the battlefield under an opponent's control, you attach Illusory Gains to that creature."));
+}

@@ -1,0 +1,8 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{B}{B}");
+  Ability ability=new ConditionalTriggeredAbility(new CastSourceTriggeredAbility(new CopySourceSpellEffect(),true),new LockedInCondition(MorbidCondition.getInstance()),"<i>Morbid</i> - When you cast {this}, if a creature died this turn, you may copy {this} and may choose a new target for the copy");
+  ability.setRuleAtTheTop(true);
+  this.addAbility(ability);
+  this.getSpellAbility().addEffect(new DestroyTargetEffect());
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent(filter));
+}

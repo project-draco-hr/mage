@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{W}");
+  this.subtype.add("Human");
+  this.subtype.add("Nomad");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ReturnToHandTargetEffect(),new TapSourceCost());
+  ability.addTarget(new TargetCardInASingleGraveyard(2,2,filter));
+  Effect effect=new DestroyTargetEffect();
+  effect.setTargetPointer(new SecondTargetPointer());
+  ability.addEffect(effect);
+  ability.addTarget(new TargetAttackingCreature());
+  this.addAbility(ability);
+}

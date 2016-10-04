@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{4}");
+  this.subtype.add("Vehicle");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(3);
+  this.addAbility(TrampleAbility.getInstance());
+  this.addAbility(HasteAbility.getInstance());
+  Effect effect=new AddCardTypeSourceEffect(CardType.ARTIFACT,Duration.EndOfTurn);
+  effect.setText("it becomes an artifact");
+  Ability ability=new EntersBattlefieldTriggeredAbility(effect);
+  effect=new AddCardTypeSourceEffect(CardType.CREATURE,Duration.EndOfTurn);
+  effect.setText(" creature until end of turn");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  this.addAbility(new CrewAbility(2));
+}

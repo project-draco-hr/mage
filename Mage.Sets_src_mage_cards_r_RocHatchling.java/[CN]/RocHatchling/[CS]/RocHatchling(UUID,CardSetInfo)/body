@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{R}");
+  this.subtype.add("Bird");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(1);
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.SHELL.createInstance(4)),"with four shell counters on it"));
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(new RemoveCounterSourceEffect(CounterType.SHELL.createInstance()),TargetController.YOU,false));
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new BoostSourceEffect(3,2,Duration.WhileOnBattlefield),new SourceHasCounterCondition(CounterType.SHELL,0,0),"As long as {this} has no shell counters on it, it gets +3/+2"));
+  ability.addEffect(new ConditionalContinuousEffect(new GainAbilitySourceEffect(FlyingAbility.getInstance()),new SourceHasCounterCondition(CounterType.SHELL,0,0),"and has flying"));
+  this.addAbility(ability);
+}

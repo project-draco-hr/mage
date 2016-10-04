@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{U}");
+  this.subtype.add("Illusion");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  this.addAbility(FlyingAbility.getInstance());
+  Ability ability=new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.TIME.createInstance(3)));
+  ability.setRuleVisible(false);
+  this.addAbility(ability);
+  this.addAbility(new VanishingUpkeepAbility(3));
+  this.addAbility(new VanishingSacrificeAbility());
+  Effect effect=new PutTokenOntoBattlefieldCopySourceEffect(2);
+  effect.setText("put two tokens into play that are copies of it");
+  this.addAbility(new ConditionalTriggeredAbility(new DiesCreatureTriggeredAbility(effect,false),new LastTimeCounterRemovedCondition(),"When {this} dies, if it had no time counters on it, put two tokens that are copies of it onto the battlefield."));
+}

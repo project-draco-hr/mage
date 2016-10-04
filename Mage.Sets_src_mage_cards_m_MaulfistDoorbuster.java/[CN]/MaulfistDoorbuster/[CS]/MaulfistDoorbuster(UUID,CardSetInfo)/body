@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{R}");
+  this.subtype.add("Human");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(2);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new GetEnergyCountersControllerEffect(2)));
+  DoIfCostPaid doIfCostPaidEffect=new DoIfCostPaid(new CantBlockTargetEffect(Duration.EndOfTurn),new PayEnergyCost(1));
+  Ability ability=new AttacksTriggeredAbility(doIfCostPaidEffect,false,"Whenever {this} attacks, you may pay {E}. If you do, target creature can't block this turn.");
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}

@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{X}{B}{B}");
+  this.subtype.add("Arcane");
+  FilterOwnedCard filter=new FilterOwnedCard("a black card with converted mana cost X from your hand");
+  filter.add(new ColorPredicate(ObjectColor.BLACK));
+  filter.add(Predicates.not(new CardIdPredicate(this.getId())));
+  this.addAbility(new AlternativeCostSourceAbility(new ExileFromHandCost(new TargetCardInHand(filter),true)));
+  DynamicValue x=new SignInversionDynamicValue(new ExileFromHandCostCardConvertedMana());
+  this.getSpellAbility().addEffect(new BoostTargetEffect(x,x,Duration.EndOfTurn,true));
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent());
+}

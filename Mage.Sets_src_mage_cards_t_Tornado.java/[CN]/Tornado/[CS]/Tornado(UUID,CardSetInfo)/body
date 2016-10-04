@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{4}{G}");
+  this.addAbility(new CumulativeUpkeepAbility(new ManaCostsImpl("{G}")));
+  Ability ability=new LimitedTimesPerTurnActivatedAbility(Zone.BATTLEFIELD,new DestroyTargetEffect(),new ManaCostsImpl("{2}{G}"));
+  DynamicValue lifeToPayAmount=new MultipliedValue(new CountersSourceCount(CounterType.VELOCITY),3);
+  ability.addCost(new PayLifeCost(lifeToPayAmount,"3 life for each velocity counter on {source}"));
+  ability.addTarget(new TargetPermanent());
+  Effect effect=new AddCountersSourceEffect(CounterType.VELOCITY.createInstance());
+  effect.setText("and put a velocity counter on {source}");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

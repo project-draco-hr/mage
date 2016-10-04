@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{U}");
+  this.subtype.add("Homarid");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.TIDE.createInstance()),"with a tide counter on it."));
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(new AddCountersSourceEffect(CounterType.TIDE.createInstance()),TargetController.YOU,false));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new BoostSourceEffect(-1,-1,Duration.WhileOnBattlefield),new SourceHasCounterCondition(CounterType.TIDE,1,1),"As long as there is exactly one tide counter on {this}, it gets -1/-1.")));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new BoostSourceEffect(1,1,Duration.WhileOnBattlefield),new SourceHasCounterCondition(CounterType.TIDE,3,3),"As long as there are exactly three tide counter on {this}, it gets +1/+1.")));
+  this.addAbility(new HomaridTriggeredAbility(new RemoveAllCountersSourceEffect(CounterType.TIDE)));
+}

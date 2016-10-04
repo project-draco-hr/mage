@@ -1,0 +1,9 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{U}");
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent(filter));
+  this.getSpellAbility().addEffect(new BoostTargetEffect(0,1,Duration.EndOfTurn));
+  this.getSpellAbility().addEffect(new GainAbilityTargetEffect(HexproofAbility.getInstance(),Duration.EndOfTurn));
+  OverloadAbility ability=new OverloadAbility(this,new BoostAllEffect(0,1,Duration.EndOfTurn,filter,false),new ManaCostsImpl("{1}{U}"));
+  ability.addEffect(new GainAbilityAllEffect(HexproofAbility.getInstance(),Duration.EndOfTurn,filter));
+  this.addAbility(ability);
+}

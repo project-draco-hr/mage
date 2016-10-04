@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{2}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Equipment");
+  this.addAbility(new UmezawasJitteAbility());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostEquippedEffect(2,2,Duration.EndOfTurn),new RemoveCountersSourceCost(CounterType.CHARGE.createInstance()));
+  Mode mode=new Mode();
+  mode.getEffects().add(new BoostTargetEffect(-1,-1,Duration.EndOfTurn));
+  mode.getTargets().add(new TargetCreaturePermanent());
+  ability.addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new GainLifeEffect(2));
+  ability.addMode(mode);
+  this.addAbility(ability);
+  this.addAbility(new EquipAbility(Outcome.AddAbility,new GenericManaCost(2)));
+}

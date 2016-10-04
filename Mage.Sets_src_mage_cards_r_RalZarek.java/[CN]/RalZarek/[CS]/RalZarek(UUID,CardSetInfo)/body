@@ -1,0 +1,21 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.PLANESWALKER},"{2}{U}{R}");
+  this.subtype.add("Ral");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(4));
+  LoyaltyAbility ability1=new LoyaltyAbility(new TapTargetEffect(),1);
+  TargetPermanent firstTarget=new TargetPermanent();
+  firstTarget.setTargetTag(1);
+  ability1.addTarget(firstTarget);
+  Effect effect=new UntapTargetEffect();
+  effect.setText(", then untap another target permanent");
+  effect.setTargetPointer(new SecondTargetPointer());
+  ability1.addEffect(effect);
+  TargetPermanent secondTarget=new TargetPermanent(secondFilter);
+  secondTarget.setTargetTag(2);
+  ability1.addTarget(secondTarget);
+  this.addAbility(ability1);
+  LoyaltyAbility ability2=new LoyaltyAbility(new DamageTargetEffect(3),-2);
+  ability2.addTarget(new TargetCreatureOrPlayer());
+  this.addAbility(ability2);
+  this.addAbility(new LoyaltyAbility(new RalZarekExtraTurnsEffect(),-7));
+}

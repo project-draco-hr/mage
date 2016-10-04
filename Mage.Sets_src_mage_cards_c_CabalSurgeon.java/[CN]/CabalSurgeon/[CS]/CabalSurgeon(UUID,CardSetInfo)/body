@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{B}{B}");
+  this.subtype.add("Human");
+  this.subtype.add("Minion");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(1);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ReturnToHandTargetEffect(),new ManaCostsImpl("{2}{B}{B}"));
+  ability.addTarget(new TargetCardInYourGraveyard(filter));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new ExileFromGraveCost(new TargetCardInYourGraveyard(2,new FilterCard("cards from your graveyard"))));
+  this.addAbility(ability);
+}

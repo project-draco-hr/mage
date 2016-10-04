@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"");
+  this.subtype.add("Eldrazi");
+  this.subtype.add("Horror");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(5);
+  this.nightCard=true;
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityControlledEffect(VigilanceAbility.getInstance(),Duration.WhileOnBattlefield,new FilterControlledCreaturePermanent("Eldrazi","Eldrazi you control "))));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new EldraziHorrorToken()),new GenericManaCost(2));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filter,true)));
+  this.addAbility(ability);
+}

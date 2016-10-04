@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{G}{G}");
+  this.subtype.add("Spike");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(3))));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new AddCountersTargetEffect(CounterType.P1P1.createInstance()),new GenericManaCost(2));
+  ability.addCost(new RemoveCountersSourceCost(CounterType.P1P1.createInstance()));
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+  Ability ability2=new SimpleActivatedAbility(Zone.BATTLEFIELD,new PreventAllDamageByAllPermanentsEffect(Duration.EndOfTurn,true),new GenericManaCost(1));
+  ability2.addCost(new RemoveCountersSourceCost(CounterType.P1P1.createInstance()));
+  this.addAbility(ability2);
+}

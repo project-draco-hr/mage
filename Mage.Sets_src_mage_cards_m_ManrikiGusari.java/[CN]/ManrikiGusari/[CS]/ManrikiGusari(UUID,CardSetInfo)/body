@@ -1,0 +1,9 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{2}");
+  this.subtype.add("Equipment");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEquippedEffect(1,2)));
+  Ability gainedAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DestroyTargetEffect(),new TapSourceCost());
+  gainedAbility.addTarget(new TargetPermanent(filter));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(gainedAbility,AttachmentType.EQUIPMENT)));
+  this.addAbility(new EquipAbility(Outcome.BoostCreature,new GenericManaCost(1)));
+}

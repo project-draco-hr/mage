@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"");
+  this.subtype.add("Aura");
+  this.subtype.add("Curse");
+  this.color.setBlack(true);
+  this.nightCard=true;
+  this.transformable=true;
+  TargetPlayer auraTarget=new TargetPlayer();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Damage));
+  this.addAbility(new EnchantAbility(auraTarget.getTargetName()));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new InfectiousCurseCostReductionEffect()));
+  InfectiousCurseAbility curseAbility=new InfectiousCurseAbility();
+  curseAbility.addEffect(new GainLifeEffect(1));
+  this.addAbility(curseAbility);
+}

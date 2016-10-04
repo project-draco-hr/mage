@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.SORCERY},"{3}{B}{B}");
+  Ability ability=(new MadnessAbility(this,new ManaCostsImpl("{X}{B}{B}")));
+  ability.setRuleAtTheTop(true);
+  this.addAbility(ability);
+  DynamicValue xValue=new FromUnderTheFloorboardsManacostVariableValue();
+  Effect effect=new CreateTokenEffect(new ZombieToken(),xValue,true,false);
+  effect.setText("Put three 2/2 black Zombie creature tokens onto the battlefield tapped and you gain 3 life. If {this} madness cost was paid, instead put X of those tokens onto the battlefield tapped and you gain X life.");
+  this.getSpellAbility().addEffect(effect);
+  this.getSpellAbility().addEffect(new GainLifeEffect(xValue));
+}

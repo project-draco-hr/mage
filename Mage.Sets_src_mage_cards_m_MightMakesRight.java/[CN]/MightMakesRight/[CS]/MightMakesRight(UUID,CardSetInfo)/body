@@ -1,0 +1,9 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{5}{R}");
+  TriggeredAbility gainControlAbility=new BeginningOfCombatTriggeredAbility(new GainControlTargetEffect(Duration.EndOfTurn),TargetController.YOU,false);
+  gainControlAbility.addEffect(new UntapTargetEffect());
+  gainControlAbility.addEffect(new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn));
+  gainControlAbility.addTarget(new TargetCreaturePermanent(filter));
+  Ability conditionalAbility=new ConditionalTriggeredAbility(gainControlAbility,ControlsEachCreatureWithGreatestPowerCondition.getInstance(),ruleText);
+  this.addAbility(conditionalAbility);
+}
