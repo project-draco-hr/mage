@@ -15,16 +15,34 @@
       fastDbMode=Boolean.valueOf(arg.replace(fastDBModeArg,""));
     }
   }
+  if (ConfigSettings.getInstance().isAuthenticationActivated()) {
+    logger.info("Check authorized user DB version ...");
+    if (!AuthorizedUserRepository.instance.checkAlterAndMigrateAuthorizedUser()) {
+      logger.fatal("Failed to start server.");
+      return;
+    }
+    logger.info("Done.");
+  }
   logger.info("Loading extension packages...");
   List<ExtensionPackage> extensions=new ArrayList<>();
-  if (!extensionFolder.exists())   if (!extensionFolder.mkdirs())   logger.error("Could not create extensions directory.");
-  File[] extensionDirectories=extensionFolder.listFiles();
-  if (extensionDirectories != null)   for (  File f : extensionDirectories)   if (f.isDirectory())   try {
-    logger.info(" - Loading extension from " + f);
-    extensions.add(ExtensionPackageLoader.loadExtension(f));
+  if (!extensionFolder.exists()) {
+    if (!extensionFolder.mkdirs()) {
+      logger.error("Could not create extensions directory.");
+    }
   }
- catch (  IOException e) {
-    logger.error("Could not load extension in " + f + "!",e);
+  File[] extensionDirectories=extensionFolder.listFiles();
+  if (extensionDirectories != null) {
+    for (    File f : extensionDirectories) {
+      if (f.isDirectory()) {
+        try {
+          logger.info(" - Loading extension from " + f);
+          extensions.add(ExtensionPackageLoader.loadExtension(f));
+        }
+ catch (        IOException e) {
+          logger.error("Could not load extension in " + f + "!",e);
+        }
+      }
+    }
   }
   logger.info("Done.");
   if (!extensions.isEmpty()) {

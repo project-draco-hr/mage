@@ -10,8 +10,24 @@
         return;
       }
     }
-    if (!messageType.equals(MessageType.GAME) && message.equals(lastMessage)) {
-      return;
+    if (!messageType.equals(MessageType.GAME)) {
+      if (message.equals(lastMessage)) {
+        return;
+      }
+      if (messageType.equals(MessageType.TALK)) {
+        User user=UserManager.getInstance().getUserByName(userName);
+        if (user != null) {
+          if (user.getChatLockedUntil() != null) {
+            if (user.getChatLockedUntil().compareTo(Calendar.getInstance().getTime()) > 0) {
+              chatSessions.get(chatId).broadcastInfoToUser(user,"Your chat is muted until " + SystemUtil.dateFormat.format(user.getChatLockedUntil()));
+              return;
+            }
+ else {
+              user.setChatLockedUntil(null);
+            }
+          }
+        }
+      }
     }
     lastMessage=message;
     chatSession.broadcast(userName,message,color,withTime,messageType,soundToPlay);
