@@ -1,0 +1,14 @@
+{
+  super(ownerId,11,"Conclave's Blessing",Rarity.COMMON,new CardType[]{CardType.ENCHANTMENT},"{3}{W}");
+  this.expansionSetCode="RAV";
+  this.subtype.add("Aura");
+  this.addAbility(new ConvokeAbility());
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  this.addAbility(new EnchantAbility(auraTarget.getTargetName()));
+  PermanentsOnBattlefieldCount value=new PermanentsOnBattlefieldCount(filter,2);
+  BoostEnchantedEffect effect=new BoostEnchantedEffect(new StaticValue(0),value,Duration.WhileOnBattlefield);
+  effect.setText("Enchanted creature gets +0/+2 for each other creature you control.");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+}
