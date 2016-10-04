@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",5);
+  addCard(Zone.HAND,playerA,"Wretched Confluence");
+  addCard(Zone.GRAVEYARD,playerA,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Wretched Confluence","mode=1targetPlayer=PlayerA^mode=2Pillarfield Ox^mode=3Silvercoat Lion");
+  setModeChoice(playerA,"1");
+  setModeChoice(playerA,"2");
+  setModeChoice(playerA,"3");
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Wretched Confluence",1);
+  assertLife(playerA,19);
+  assertLife(playerB,20);
+  assertHandCount(playerA,2);
+  assertPowerToughness(playerB,"Pillarfield Ox",0,2);
+  assertGraveyardCount(playerA,"Silvercoat Lion",0);
+}

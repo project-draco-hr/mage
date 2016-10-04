@@ -2,6 +2,9 @@
   for (  Map.Entry<UUID,Mode> entry : modes.entrySet()) {
     this.put(entry.getKey(),entry.getValue().copy());
   }
+  for (  Map.Entry<UUID,Mode> entry : modes.duplicateModes.entrySet()) {
+    this.put(entry.getKey(),entry.getValue().copy());
+  }
   this.minModes=modes.minModes;
   this.maxModes=modes.maxModes;
   this.selectedModes.addAll(modes.getSelectedModes());
@@ -9,7 +12,7 @@
     this.currentMode=values().iterator().next();
   }
  else {
-    this.currentMode=get(selectedModes.get(0));
+    this.currentMode=get(modes.getMode().getId());
   }
   this.modeChooser=modes.modeChooser;
   this.eachModeOnlyOnce=modes.eachModeOnlyOnce;

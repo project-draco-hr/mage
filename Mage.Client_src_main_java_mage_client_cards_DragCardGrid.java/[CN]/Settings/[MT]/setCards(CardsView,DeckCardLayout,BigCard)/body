@@ -1,0 +1,93 @@
+{
+  if (bigCard != null) {
+    lastBigCard=bigCard;
+  }
+  boolean didModify=false;
+  for (int i=0; i < cardGrid.size(); ++i) {
+    ArrayList<ArrayList<CardView>> gridRow=cardGrid.get(i);
+    for (int j=0; j < gridRow.size(); ++j) {
+      ArrayList<CardView> stack=gridRow.get(j);
+      for (int k=0; k < stack.size(); ++k) {
+        CardView card=stack.get(k);
+        if (!cardsView.containsKey(card.getId())) {
+          removeCardView(card);
+          stack.remove(k--);
+          didModify=true;
+        }
+      }
+    }
+  }
+  if (didModify) {
+    trimGrid();
+  }
+  if (layout == null) {
+    for (    CardView newCard : cardsView.values()) {
+      if (!cardViews.containsKey(newCard.getId())) {
+        addCardView(newCard);
+        sortIntoGrid(newCard);
+        didModify=true;
+      }
+    }
+  }
+ else {
+    didModify=true;
+    loadSettings(Settings.parse(layout.getSettings()));
+    Map<String,Map<String,ArrayList<CardView>>> trackedCards=new HashMap<>();
+    for (    CardView newCard : cardsView.values()) {
+      if (!cardViews.containsKey(newCard.getId())) {
+        addCardView(newCard);
+        Map<String,ArrayList<CardView>> forSetCode;
+        if (trackedCards.containsKey(newCard.getExpansionSetCode())) {
+          forSetCode=trackedCards.get(newCard.getExpansionSetCode());
+        }
+ else {
+          forSetCode=new HashMap<>();
+          trackedCards.put(newCard.getExpansionSetCode(),forSetCode);
+        }
+        ArrayList<CardView> list;
+        if (forSetCode.containsKey(newCard.getCardNumber())) {
+          list=forSetCode.get(newCard.getCardNumber());
+        }
+ else {
+          list=new ArrayList<>();
+          forSetCode.put(newCard.getCardNumber(),list);
+        }
+        list.add(newCard);
+      }
+    }
+    cardGrid=new ArrayList<>();
+    maxStackSize=new ArrayList<>();
+    for (    List<List<DeckCardInfo>> row : layout.getCards()) {
+      ArrayList<ArrayList<CardView>> gridRow=new ArrayList<>();
+      int thisMaxStackSize=0;
+      cardGrid.add(gridRow);
+      for (      List<DeckCardInfo> stack : row) {
+        ArrayList<CardView> gridStack=new ArrayList<>();
+        gridRow.add(gridStack);
+        for (        DeckCardInfo info : stack) {
+          if (trackedCards.containsKey(info.getSetCode()) && trackedCards.get(info.getSetCode()).containsKey(info.getCardNum())) {
+            ArrayList<CardView> candidates=trackedCards.get(info.getSetCode()).get(info.getCardNum());
+            if (candidates.size() > 0) {
+              gridStack.add(candidates.remove(0));
+              thisMaxStackSize=Math.max(thisMaxStackSize,gridStack.size());
+            }
+          }
+        }
+      }
+      maxStackSize.add(thisMaxStackSize);
+    }
+    for (    Map<String,ArrayList<CardView>> tracked : trackedCards.values()) {
+      for (      ArrayList<CardView> orphans : tracked.values()) {
+        for (        CardView orphan : orphans) {
+          LOGGER.info("Orphan when setting with layout: ");
+          sortIntoGrid(orphan);
+        }
+      }
+    }
+  }
+  if (didModify) {
+    layoutGrid();
+    cardScroll.revalidate();
+    repaint();
+  }
+}

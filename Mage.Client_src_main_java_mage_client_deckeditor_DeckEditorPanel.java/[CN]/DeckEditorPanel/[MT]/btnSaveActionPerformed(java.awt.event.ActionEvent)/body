@@ -20,7 +20,10 @@
         fileName+=".dck";
       }
       setCursor(new Cursor(Cursor.WAIT_CURSOR));
-      Sets.saveDeck(fileName,deck.getDeckCardLists());
+      DeckCardLists cardLists=deck.getDeckCardLists();
+      cardLists.setCardLayout(deckArea.getCardLayout());
+      cardLists.setSideboardLayout(deckArea.getSideboardLayout());
+      Sets.saveDeck(fileName,cardLists);
     }
  catch (    FileNotFoundException ex) {
       JOptionPane.showMessageDialog(MageFrame.getDesktop(),ex.getMessage() + "\nTry ensuring that the selected directory is writable.","Error saving deck",JOptionPane.ERROR_MESSAGE);
