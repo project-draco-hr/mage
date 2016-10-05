@@ -6,6 +6,20 @@
     if (authorizedUser == null || !authorizedUser.doCredentialsMatch(userName,password)) {
       return "Wrong username or password. In case you haven't, please register your account first.";
     }
+    if (!authorizedUser.active) {
+      return "Your profile is deactivated, you can't sign on.";
+    }
+    if (authorizedUser.lockedUntil != null) {
+      if (authorizedUser.lockedUntil.compareTo(Calendar.getInstance().getTime()) > 0) {
+        return "Your profile is deactivated until " + SystemUtil.dateFormat.format(authorizedUser.lockedUntil);
+      }
+ else {
+        User user=UserManager.getInstance().createUser(userName,host,authorizedUser);
+        if (user != null && authorizedUser.lockedUntil != null) {
+          user.setLockedUntil(null);
+        }
+      }
+    }
   }
   User user=UserManager.getInstance().createUser(userName,host,authorizedUser);
   boolean reconnect=false;
