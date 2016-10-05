@@ -1,0 +1,19 @@
+{
+  if (event.getTargetId().equals(source.getControllerId())) {
+    Spell spell=null;
+    StackObject stackObject=game.getStack().getStackObject(event.getSourceId());
+    if (stackObject == null) {
+      stackObject=(StackObject)game.getLastKnownInformation(event.getSourceId(),Zone.STACK);
+    }
+    if (stackObject instanceof Spell) {
+      spell=(Spell)stackObject;
+    }
+    if (spell != null && instantOrSorceryfilter.match(spell.getCard(),game)) {
+      TargetPlayer target=new TargetPlayer();
+      target.add(spell.getControllerId(),game);
+      redirectTarget=target;
+      return true;
+    }
+  }
+  return false;
+}

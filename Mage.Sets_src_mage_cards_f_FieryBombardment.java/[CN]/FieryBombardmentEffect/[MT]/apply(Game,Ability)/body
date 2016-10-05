@@ -1,0 +1,25 @@
+{
+  int damage=0;
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof SacrificeTargetCost) {
+      for (      Permanent permanent : ((SacrificeTargetCost)cost).getPermanents()) {
+        if (permanent != null) {
+          damage=permanent.getManaCost().getMana().getRed();
+        }
+      }
+    }
+  }
+  if (damage > 0) {
+    Player player=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+    if (player != null) {
+      player.damage(damage,source.getSourceId(),game,false,true);
+    }
+ else {
+      Permanent creature=game.getPermanent(this.getTargetPointer().getFirst(game,source));
+      if (creature != null) {
+        creature.damage(damage,source.getSourceId(),game,false,true);
+      }
+    }
+  }
+  return true;
+}

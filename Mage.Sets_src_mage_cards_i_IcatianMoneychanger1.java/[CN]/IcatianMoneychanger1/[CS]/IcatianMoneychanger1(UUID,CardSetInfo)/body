@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{W}");
+  this.subtype.add("Human");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(2);
+  Effect effect=new AddCountersSourceEffect(CounterType.CREDIT.createInstance(3));
+  effect.setText("with three credit counters on it");
+  this.addAbility(new EntersBattlefieldAbility(effect));
+  effect=new DamageControllerEffect(3);
+  effect.setText("it deals 3 damage to you");
+  this.addAbility(new EntersBattlefieldTriggeredAbility(effect,false));
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(new AddCountersSourceEffect(CounterType.CREDIT.createInstance()),TargetController.YOU,false));
+  this.addAbility(new ConditionalActivatedAbility(Zone.BATTLEFIELD,new GainLifeEffect(new CountersSourceCount(CounterType.CREDIT)),new SacrificeSourceCost(),new IsStepCondition(PhaseStep.UPKEEP),null));
+}

@@ -1,0 +1,14 @@
+{
+  if (ability instanceof AttacksCreatureYouControlTriggeredAbility) {
+    FilterCreaturePermanent filterDefender=new FilterCreaturePermanent("creature defending player controls");
+    for (    Effect effect : ability.getEffects()) {
+      if (effect instanceof EliteScaleguardTapEffect) {
+        filterDefender.add(new ControllerIdPredicate(game.getCombat().getDefendingPlayerId(effect.getTargetPointer().getFirst(game,ability),game)));
+        break;
+      }
+    }
+    ability.getTargets().clear();
+    TargetCreaturePermanent target=new TargetCreaturePermanent(filterDefender);
+    ability.addTarget(target);
+  }
+}

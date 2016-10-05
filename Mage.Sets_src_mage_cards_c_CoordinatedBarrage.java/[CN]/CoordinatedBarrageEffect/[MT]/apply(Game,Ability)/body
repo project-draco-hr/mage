@@ -1,0 +1,20 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Choice choice=new ChoiceImpl(true);
+    choice.setMessage("Choose a creature type");
+    choice.setChoices(CardRepository.instance.getCreatureTypes());
+    if (controller.choose(Outcome.Damage,choice,game)) {
+      String chosenType=choice.getChoice();
+      FilterControlledPermanent filter=new FilterControlledPermanent();
+      filter.add(new SubtypePredicate(chosenType));
+      int damageDealt=game.getBattlefield().count(filter,source.getSourceId(),source.getControllerId(),game);
+      Permanent permanent=game.getPermanent(this.getTargetPointer().getFirst(game,source));
+      if (permanent != null) {
+        permanent.damage(damageDealt,source.getSourceId(),game,false,true);
+      }
+      return true;
+    }
+  }
+  return false;
+}

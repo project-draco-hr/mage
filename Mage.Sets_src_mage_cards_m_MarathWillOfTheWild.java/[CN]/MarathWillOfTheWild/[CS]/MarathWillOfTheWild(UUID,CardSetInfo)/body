@@ -1,0 +1,30 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{R}{G}{W}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Elemental");
+  this.subtype.add("Beast");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  Effect effect=new AddCountersSourceEffect(CounterType.P1P1.createInstance(0),new ManaSpentToCastCount(),true);
+  effect.setText("with a number of +1/+1 counters on it equal to the amount of mana spent to cast it");
+  this.addAbility(new EntersBattlefieldAbility(effect));
+  effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance(0),new ManacostVariableValue());
+  effect.setText("Put X +1/+1 counters on target creature");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl("{X}"));
+  ability.addCost(new MarathWillOfTheWildRemoveCountersCost());
+  ability.addTarget(new TargetCreaturePermanent());
+  Mode mode=new Mode();
+  mode.getEffects().add(new DamageTargetEffect(new ManacostVariableValue()));
+  mode.getTargets().add(new TargetCreatureOrPlayer());
+  ability.addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new MarathWillOfTheWildCreateTokenEffect());
+  ability.addMode(mode);
+  for (  VariableCost cost : ability.getManaCosts().getVariableCosts()) {
+    if (cost instanceof VariableManaCost) {
+      ((VariableManaCost)cost).setMinX(1);
+      break;
+    }
+  }
+  this.addAbility(ability);
+}

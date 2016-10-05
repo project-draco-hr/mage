@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{R}");
+  this.subtype.add("Goblin");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(1);
+  this.addAbility(new MorphAbility(this,new SacrificeTargetCost(new TargetControlledPermanent(2,2,filterSacrifice,false))));
+  Effect effect=new DamageMultiEffect(3);
+  effect.setText("it deals 3 damage divided as you choose among one, two, or three target creatures");
+  Ability ability=new TurnedFaceUpSourceTriggeredAbility(effect);
+  ability.addTarget(new TargetCreaturePermanentAmount(3));
+  this.addAbility(ability);
+}

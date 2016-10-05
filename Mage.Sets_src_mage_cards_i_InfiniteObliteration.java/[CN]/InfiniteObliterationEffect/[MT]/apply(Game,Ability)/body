@@ -1,0 +1,23 @@
+{
+  Player player=game.getPlayer(getTargetPointer().getFirst(game,source));
+  Player controller=game.getPlayer(source.getControllerId());
+  if (player != null && controller != null) {
+    Choice cardChoice=new ChoiceImpl();
+    cardChoice.setChoices(CardRepository.instance.getCreatureNames());
+    cardChoice.clearChoice();
+    cardChoice.setMessage("Name a creature card");
+    while (!controller.choose(Outcome.Exile,cardChoice,game)) {
+      if (!controller.canRespond()) {
+        return false;
+      }
+    }
+    String cardName;
+    cardName=cardChoice.getChoice();
+    MageObject sourceObject=game.getObject(source.getSourceId());
+    if (sourceObject != null) {
+      game.informPlayers(sourceObject.getName() + " named card: [" + cardName+ "]");
+    }
+    super.applySearchAndExile(game,source,cardName,player.getId());
+  }
+  return true;
+}

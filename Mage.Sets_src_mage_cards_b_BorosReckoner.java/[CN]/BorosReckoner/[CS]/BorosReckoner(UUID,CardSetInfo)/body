@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{R/W}{R/W}{R/W}");
+  this.subtype.add("Minotaur");
+  this.subtype.add("Wizard");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  Ability ability=new DealtDamageToSourceTriggeredAbility(Zone.BATTLEFIELD,new BorosReckonerDealDamageEffect(),false);
+  ability.addTarget(new TargetCreatureOrPlayer());
+  this.addAbility(ability);
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainAbilitySourceEffect(FirstStrikeAbility.getInstance(),Duration.EndOfTurn),new ManaCostsImpl("{R/W}")));
+}

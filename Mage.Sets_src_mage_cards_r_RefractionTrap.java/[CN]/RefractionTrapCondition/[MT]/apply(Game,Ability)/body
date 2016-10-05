@@ -1,0 +1,16 @@
+{
+  SpellsCastWatcher watcher=(SpellsCastWatcher)game.getState().getWatchers().get(SpellsCastWatcher.class.getName());
+  if (watcher != null) {
+    for (    UUID opponentId : game.getOpponents(source.getControllerId())) {
+      List<Spell> spells=watcher.getSpellsCastThisTurn(opponentId);
+      if (spells != null) {
+        for (        Spell spell : spells) {
+          if ((spell.getCardType().contains(CardType.SORCERY) || spell.getCardType().contains(CardType.INSTANT)) && spell.getColor(game).isRed()) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

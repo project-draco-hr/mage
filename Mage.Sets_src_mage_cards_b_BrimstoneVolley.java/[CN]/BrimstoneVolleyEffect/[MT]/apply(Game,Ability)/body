@@ -1,0 +1,18 @@
+{
+  int damage=3;
+  Watcher watcher=game.getState().getWatchers().get("Morbid");
+  if (watcher.conditionMet()) {
+    damage=5;
+  }
+  Permanent permanent=game.getPermanent(targetPointer.getFirst(game,source));
+  if (permanent != null) {
+    permanent.damage(damage,source.getSourceId(),game,false,true);
+    return true;
+  }
+  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  if (player != null) {
+    player.damage(damage,source.getSourceId(),game,false,true);
+    return true;
+  }
+  return false;
+}

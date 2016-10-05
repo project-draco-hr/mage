@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{4}");
+  this.addAbility(new SunburstAbility(this));
+  DynamicValue value=new SignInversionDynamicValue(new RemovedCountersForCostValue());
+  Effect effect=new BoostTargetEffect(value,value,Duration.EndOfTurn);
+  effect.setText("Target creature gets -X/-X until end of turn");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new TapSourceCost());
+  ability.addCost(new RemoveVariableCountersSourceCost(CounterType.CHARGE.createInstance()));
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}

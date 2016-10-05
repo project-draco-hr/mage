@@ -1,0 +1,16 @@
+{
+  if (ability instanceof SimpleActivatedAbility) {
+    int xValue=ability.getManaCostsToPay().getX();
+    for (    Cost cost : ability.getCosts()) {
+      if (cost instanceof ExileFromGraveCost) {
+        ExileFromGraveCost exileCost=(ExileFromGraveCost)cost;
+        for (        Target target : exileCost.getTargets()) {
+          if (target instanceof TargetCardInYourGraveyard) {
+            target.setMaxNumberOfTargets(xValue);
+            target.setMinNumberOfTargets(xValue);
+          }
+        }
+      }
+    }
+  }
+}

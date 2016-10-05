@@ -1,0 +1,19 @@
+{
+  Card sourceCard=game.getCard(source.getSourceId());
+  if (sourceCard == null) {
+    return false;
+  }
+  for (  Player player : game.getPlayers().values()) {
+    if (player.getLibrary().size() > 0) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        Cards cards=new CardsImpl();
+        cards.add(card);
+        player.revealCards(sourceCard.getName() + ": Revealed by " + player.getName(),cards,game);
+        player.loseLife(card.getConvertedManaCost(),game,false);
+        card.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+      }
+    }
+  }
+  return true;
+}

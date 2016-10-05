@@ -1,0 +1,12 @@
+{
+  int xValue=source.getManaCostsToPay().getX();
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(new FilterNonlandPermanent(),source.getControllerId(),source.getSourceId(),game)) {
+    if (permanent.getConvertedManaCost() == xValue) {
+      PlayerDamagedBySourceWatcher watcher=(PlayerDamagedBySourceWatcher)game.getState().getWatchers().get("PlayerDamagedBySource",permanent.getControllerId());
+      if (watcher != null && watcher.hasSourceDoneDamage(source.getSourceId(),game)) {
+        permanent.destroy(source.getSourceId(),game,false);
+      }
+    }
+  }
+  return true;
+}

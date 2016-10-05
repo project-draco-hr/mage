@@ -1,0 +1,19 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{R}{G}");
+  this.subtype.add("Beast");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(4);
+  this.addAbility(DefenderAbility.getInstance());
+  this.addAbility(HexproofAbility.getInstance());
+  Ability ability=new MonstrosityAbility("{R}{G}",1);
+  ability.addCost(new SacrificeTargetCost(new TargetControlledPermanent(new FilterControlledLandPermanent("a land"))));
+  this.addAbility(ability);
+  ability=new BecomesMonstrousSourceTriggeredAbility(new LoseAbilitySourceEffect(HexproofAbility.getInstance()));
+  Effect effect=new GainAbilitySourceEffect(FirstStrikeAbility.getInstance());
+  effect.setText("and gains first strike");
+  ability.addEffect(effect);
+  effect=new GainAbilitySourceEffect(DeathtouchAbility.getInstance());
+  effect.setText("and deathtouch");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

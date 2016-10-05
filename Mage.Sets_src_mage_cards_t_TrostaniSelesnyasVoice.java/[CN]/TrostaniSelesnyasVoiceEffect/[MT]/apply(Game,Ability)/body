@@ -1,0 +1,17 @@
+{
+  UUID creatureId=(UUID)getValue("lifeSource");
+  Integer zoneChangeCounter=(Integer)getValue("zoneChangeCounter");
+  Permanent creature=game.getPermanent(creatureId);
+  if (creature == null || creature.getZoneChangeCounter(game) != zoneChangeCounter) {
+    creature=(Permanent)game.getLastKnownInformation(creatureId,Zone.BATTLEFIELD,zoneChangeCounter);
+  }
+  if (creature != null) {
+    int amount=creature.getToughness().getValue();
+    Player player=game.getPlayer(source.getControllerId());
+    if (player != null) {
+      player.gainLife(amount,game);
+    }
+    return true;
+  }
+  return false;
+}

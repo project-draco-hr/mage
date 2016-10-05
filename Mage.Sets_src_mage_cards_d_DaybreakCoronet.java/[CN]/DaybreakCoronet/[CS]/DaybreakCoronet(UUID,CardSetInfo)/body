@@ -1,0 +1,22 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{W}{W}");
+  this.subtype.add("Aura");
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("creature with another Aura attached to it.");
+  filter.add(new AuraAttachedPredicate(this.getId()));
+  TargetPermanent auraTarget=new TargetCreaturePermanent(filter);
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(3,3,Duration.WhileOnBattlefield));
+  Effect effect=new GainAbilityAttachedEffect(FirstStrikeAbility.getInstance(),AttachmentType.AURA);
+  effect.setText("and has first strike");
+  ability.addEffect(effect);
+  effect=new GainAbilityAttachedEffect(VigilanceAbility.getInstance(),AttachmentType.AURA);
+  effect.setText(", vigilance");
+  ability.addEffect(effect);
+  effect=new GainAbilityAttachedEffect(LifelinkAbility.getInstance(),AttachmentType.AURA);
+  effect.setText(", and lifelink");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

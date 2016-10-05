@@ -1,0 +1,16 @@
+{
+  Permanent permanent=game.getPermanent(sourceId);
+  if (permanent != null) {
+    for (    UUID attachmentId : permanent.getAttachments()) {
+      Permanent attachment=game.getPermanent(attachmentId);
+      if (attachment != null && attachment.getName().equals("Shuriken")) {
+        paid=permanent.removeAttachment(attachmentId,game);
+        if (paid) {
+          equipment=attachment;
+          break;
+        }
+      }
+    }
+  }
+  return paid;
+}

@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{2}{U}{U}");
+  this.getSpellAbility().getModes().setMinModes(1);
+  this.getSpellAbility().getModes().setMaxModes(1);
+  getSpellAbility().addEffect(new CounterTargetEffect());
+  getSpellAbility().addTarget(new TargetSpell());
+  Mode mode=new Mode();
+  mode.getEffects().add(new ChooseNewTargetsTargetEffect());
+  mode.getTargets().add(new TargetSpell());
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new CopyTargetSpellEffect());
+  mode.getTargets().add(new TargetSpell(filter));
+  this.getSpellAbility().getModes().addMode(mode);
+}

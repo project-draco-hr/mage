@@ -1,0 +1,13 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        controller.moveCards(player.getGraveyard().getCards(filter,game),Zone.BATTLEFIELD,source,game);
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{1}");
+  this.subtype.add("Equipment");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(new SkulkAbility(),AttachmentType.EQUIPMENT)));
+  Ability ability=new DealsDamageToAPlayerAttachedTriggeredAbility(new DrawCardSourceControllerEffect(1),"equipped creature",true);
+  Effect effect=new DiscardControllerEffect(1);
+  effect.setText("If you do, discard a card");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  this.addAbility(new EquipAbility(Outcome.AddAbility,new GenericManaCost(2)));
+}

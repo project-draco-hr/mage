@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{G}");
+  this.subtype.add("Human");
+  this.subtype.add("Druid");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(2);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new UntapTargetEffect(),new TapSourceCost());
+  ability.addTarget(new TargetLandPermanent());
+  this.addAbility(ability);
+  ability=new ConditionalActivatedAbility(Zone.BATTLEFIELD,new UntapTargetEffect(),new TapSourceCost(),new CardsInControllerGraveCondition(7));
+  ability.addTarget(new TargetLandPermanent(0,3,new FilterLandPermanent(),false));
+  ability.setAbilityWord(AbilityWord.THRESHOLD);
+  this.addAbility(ability);
+}

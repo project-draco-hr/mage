@@ -1,0 +1,16 @@
+{
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  Permanent attachment=game.getPermanent(source.getSourceId());
+  if (permanent != null && attachment != null) {
+    if (attachment.getAttachedTo() != null) {
+      Permanent oldTarget=game.getPermanent(attachment.getAttachedTo());
+      if (oldTarget != null) {
+        oldTarget.removeAttachment(source.getSourceId(),game);
+      }
+    }
+    boolean result;
+    result=permanent.addAttachment(source.getSourceId(),game);
+    return result;
+  }
+  return false;
+}

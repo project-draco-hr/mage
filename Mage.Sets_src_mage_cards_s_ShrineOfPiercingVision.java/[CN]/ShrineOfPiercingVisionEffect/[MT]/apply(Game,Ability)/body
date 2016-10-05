@@ -1,0 +1,29 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+  if (player == null || permanent == null) {
+    return false;
+  }
+  int count=permanent.getCounters(game).getCount(CounterType.CHARGE);
+  Cards cards=new CardsImpl();
+  count=Math.min(player.getLibrary().size(),count);
+  for (int i=0; i < count; i++) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      cards.add(card);
+    }
+  }
+  player.lookAtCards("Shrine of Piercing Vision",cards,game);
+  if (!cards.isEmpty()) {
+    TargetCard target=new TargetCard(Zone.LIBRARY,new FilterCard("card to put into your hand"));
+    if (player.choose(Outcome.DrawCard,cards,target,game)) {
+      Card card=cards.get(target.getFirstTarget(),game);
+      if (card != null) {
+        cards.remove(card);
+        card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+      }
+    }
+  }
+  player.putCardsOnBottomOfLibrary(cards,game,source,true);
+  return true;
+}

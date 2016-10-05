@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Choice typeChoice=new ChoiceImpl(true);
+    typeChoice.setMessage("Choose a creature type:");
+    typeChoice.setChoices(CardRepository.instance.getCreatureTypes());
+    while (!player.choose(outcome,typeChoice,game)) {
+      if (!player.canRespond()) {
+        return false;
+      }
+    }
+    if (typeChoice.getChoice() != null) {
+      game.informPlayers(player.getLogName() + " has chosen " + typeChoice.getChoice());
+    }
+    FilterCreaturePermanent filter=new FilterCreaturePermanent("All creatures of the chosen type");
+    filter.add(new SubtypePredicate(typeChoice.getChoice()));
+    ContinuousEffect effect=new BoostAllEffect(-1,-1,Duration.WhileOnBattlefield,filter,false);
+    game.addEffect(effect,source);
+  }
+  return false;
+}

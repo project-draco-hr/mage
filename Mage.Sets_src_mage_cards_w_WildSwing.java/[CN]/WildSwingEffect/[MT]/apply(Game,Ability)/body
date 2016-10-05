@@ -1,0 +1,15 @@
+{
+  MageObject sourceObject=source.getSourceObject(game);
+  if (!source.getTargets().isEmpty() && sourceObject != null) {
+    Target target=source.getTargets().get(0);
+    if (target != null && !target.getTargets().isEmpty()) {
+      Permanent targetPermanent=game.getPermanent(target.getTargets().get(RandomUtil.nextInt(target.getTargets().size())));
+      if (targetPermanent != null) {
+        game.informPlayers(sourceObject.getLogName() + ": The randomly chosen target to destroy is " + targetPermanent.getLogName());
+        targetPermanent.destroy(source.getSourceId(),game,false);
+      }
+      return true;
+    }
+  }
+  return false;
+}

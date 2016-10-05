@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{B}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.UnboostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(-1,-1,Duration.WhileOnBattlefield));
+  Effect effect=new CantActivateAbilitiesAttachedEffect();
+  effect.setText("and its activated abilities can't be activated");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

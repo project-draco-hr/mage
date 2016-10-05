@@ -1,0 +1,19 @@
+{
+  if (abilityToModify instanceof SpellAbility) {
+    if (source.getControllerId().equals(abilityToModify.getControllerId())) {
+      for (      UUID modeId : abilityToModify.getModes().getSelectedModes()) {
+        Mode mode=abilityToModify.getModes().get(modeId);
+        for (        Target target : mode.getTargets()) {
+          for (          UUID targetUUID : target.getTargets()) {
+            Permanent enchantment=game.getPermanent(source.getSourceId());
+            UUID attachedTo=enchantment.getAttachedTo();
+            if (targetUUID.equals(attachedTo)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

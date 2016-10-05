@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{R}{R}");
+  this.subtype.add("Dragon");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(4);
+  this.addAbility(FlyingAbility.getInstance());
+  Ability ability=new ActivateIfConditionActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new ManaCostsImpl("{1}{R}"),new SourceAttackingCondition());
+  ability.addTarget(new TargetCreaturePermanent());
+  Effect effect=new CantBlockTargetEffect(Duration.EndOfCombat);
+  effect.setText("That creature can't block this combat");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

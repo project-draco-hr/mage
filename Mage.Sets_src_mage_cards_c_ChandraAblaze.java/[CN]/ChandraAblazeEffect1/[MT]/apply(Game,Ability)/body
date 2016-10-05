@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    TargetDiscard target=new TargetDiscard(player.getId());
+    player.choose(Outcome.Discard,target,source.getSourceId(),game);
+    Card card=player.getHand().get(target.getFirstTarget(),game);
+    if (card != null) {
+      player.discard(card,source,game);
+      source.getEffects().get(1).setValue("discardedCard",card);
+      game.getState().setValue(source.getSourceId().toString(),card);
+      return true;
+    }
+  }
+  return false;
+}

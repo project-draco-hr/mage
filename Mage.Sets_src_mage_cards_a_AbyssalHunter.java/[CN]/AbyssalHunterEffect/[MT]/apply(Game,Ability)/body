@@ -1,0 +1,15 @@
+{
+  Permanent hunter=game.getPermanent(source.getSourceId());
+  if (hunter == null) {
+    hunter=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+  }
+  Permanent targetCreature=game.getPermanent(source.getTargets().getFirstTarget());
+  if (targetCreature != null) {
+    targetCreature.tap(game);
+    if (hunter != null) {
+      targetCreature.damage(hunter.getPower().getValue(),hunter.getId(),game,false,true);
+    }
+    return true;
+  }
+  return false;
+}

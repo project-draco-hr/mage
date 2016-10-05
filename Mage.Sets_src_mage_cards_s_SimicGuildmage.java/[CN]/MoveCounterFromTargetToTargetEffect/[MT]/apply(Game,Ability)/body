@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Permanent fromPermanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+    Permanent toPermanent=null;
+    if (source.getTargets().size() > 1) {
+      toPermanent=game.getPermanent(source.getTargets().get(1).getFirstTarget());
+    }
+    if (fromPermanent == null || toPermanent == null || !fromPermanent.getControllerId().equals(toPermanent.getControllerId())) {
+      return false;
+    }
+    fromPermanent.removeCounters(CounterType.P1P1.createInstance(1),game);
+    toPermanent.addCounters(CounterType.P1P1.createInstance(1),game);
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,22 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent == null) {
+    return false;
+  }
+  if (permanent.getImprinted().size() > 0) {
+    Card card=game.getCard(permanent.getImprinted().get(0));
+    if (card != null) {
+      PutTokenOntoBattlefieldCopyTargetEffect effect=new PutTokenOntoBattlefieldCopyTargetEffect(source.getControllerId(),null,true);
+      effect.setTargetPointer(new FixedTarget(card.getId(),card.getZoneChangeCounter(game)));
+      effect.apply(game,source);
+      for (      Permanent addedToken : effect.getAddedPermanent()) {
+        ExileTargetEffect exileEffect=new ExileTargetEffect();
+        exileEffect.setTargetPointer(new FixedTarget(addedToken,game));
+        DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(exileEffect);
+        game.addDelayedTriggeredAbility(delayedAbility,source);
+      }
+      return true;
+    }
+  }
+  return false;
+}

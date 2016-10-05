@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{B}{B}");
+  this.subtype.add("Horror");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Effect boostEffect=new BoostSourceEffect(2,2,Duration.EndOfTurn);
+  boostEffect.setText("{this} gets +2/+2");
+  Ability ability=new DiscardsACardOpponentTriggeredAbility(boostEffect,false);
+  Effect fearEffect=new GainAbilitySourceEffect(FearAbility.getInstance(),Duration.EndOfTurn);
+  fearEffect.setText("and gains fear until end of turn");
+  ability.addEffect(fearEffect);
+  this.addAbility(ability);
+}

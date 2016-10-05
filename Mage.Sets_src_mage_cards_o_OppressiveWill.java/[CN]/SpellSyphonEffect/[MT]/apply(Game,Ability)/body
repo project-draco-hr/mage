@@ -1,0 +1,20 @@
+{
+  StackObject spell=game.getStack().getStackObject(targetPointer.getFirst(game,source));
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (sourceObject != null && spell != null) {
+    Player player=game.getPlayer(spell.getControllerId());
+    Player controller=game.getPlayer(source.getControllerId());
+    if (player != null && controller != null) {
+      int amount=controller.getHand().size();
+      if (amount > 0) {
+        GenericManaCost cost=new GenericManaCost(amount);
+        if (!cost.pay(source,game,spell.getControllerId(),spell.getControllerId(),false)) {
+          game.informPlayers(sourceObject.getLogName() + ": cost wasn't payed - countering target spell.");
+          return game.getStack().counter(source.getFirstTarget(),source.getSourceId(),game);
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}

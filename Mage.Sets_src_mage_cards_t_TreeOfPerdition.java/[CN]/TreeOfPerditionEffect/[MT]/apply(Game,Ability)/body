@@ -1,0 +1,23 @@
+{
+  Player opponent=game.getPlayer(source.getFirstTarget());
+  if (opponent != null && opponent.isLifeTotalCanChange()) {
+    Permanent perm=game.getPermanent(source.getSourceId());
+    if (perm != null) {
+      int amount=perm.getToughness().getValue();
+      int life=opponent.getLife();
+      if (life == amount) {
+        return false;
+      }
+      if (life < amount && !opponent.isCanGainLife()) {
+        return false;
+      }
+      if (life > amount && !opponent.isCanLoseLife()) {
+        return false;
+      }
+      opponent.setLife(amount,game);
+      perm.getToughness().modifyBaseValue(life);
+      return true;
+    }
+  }
+  return false;
+}

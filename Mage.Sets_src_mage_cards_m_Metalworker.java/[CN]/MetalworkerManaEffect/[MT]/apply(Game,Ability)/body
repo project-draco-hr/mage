@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller == null || sourceObject == null) {
+    return false;
+  }
+  if (controller.getHand().count(filter,game) > 0) {
+    TargetCardInHand target=new TargetCardInHand(0,Integer.MAX_VALUE,filter);
+    if (controller.choose(Outcome.Benefit,target,source.getSourceId(),game)) {
+      Cards cards=new CardsImpl(target.getTargets());
+      controller.revealCards(sourceObject.getIdName(),cards,game);
+      Mana mana=Mana.ColorlessMana(target.getTargets().size() * 2);
+      checkToFirePossibleEvents(mana,game,source);
+      controller.getManaPool().addMana(mana,game,source);
+    }
+  }
+  return true;
+}

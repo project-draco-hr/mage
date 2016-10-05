@@ -1,0 +1,15 @@
+{
+  for (  UUID playerId : game.getState().getPlayersInRange(source.getControllerId(),game)) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      int diff=player.getLife() - game.getBattlefield().countAll(filter,playerId,game);
+      if (diff > 0) {
+        player.loseLife(diff,game,false);
+      }
+      if (diff < 0) {
+        player.gainLife(-diff,game);
+      }
+    }
+  }
+  return true;
+}

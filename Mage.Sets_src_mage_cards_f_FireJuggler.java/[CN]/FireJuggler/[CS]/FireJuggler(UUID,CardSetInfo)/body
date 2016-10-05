@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{R}");
+  this.subtype.add("Goblin");
+  this.subtype.add("Shaman");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  FilterPermanent filter=new FilterPermanent("each creature blocking it");
+  filter.add(new BlockingAttackerIdPredicate(this.getId()));
+  this.addAbility(new BecomesBlockedTriggeredAbility(new DoIfClashWonEffect(new DamageAllEffect(4,filter)),false));
+}

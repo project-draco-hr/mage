@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{B}{B}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Demon");
+  this.subtype.add("Spirit");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  DynamicValue xValue=new CardsInControllerHandCount();
+  this.addAbility(new SimpleStaticAbility(Zone.ALL,new SetPowerToughnessSourceEffect(xValue,Duration.EndOfGame)));
+  DynamicValue xMinusValue=new SignInversionDynamicValue(xValue);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostAllEffect(xMinusValue,xMinusValue,Duration.EndOfTurn,new FilterCreaturePermanent(),false,"All creatures get -X/-X until end of turn, where X is the number of cards in your hand"),new ManaCostsImpl("{B}"));
+  ability.addCost(new SacrificeSourceCost());
+  this.addAbility(ability);
+}

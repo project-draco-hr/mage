@@ -1,0 +1,14 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment != null) {
+    Permanent land=game.getPermanent(enchantment.getAttachedTo());
+    if (land != null) {
+      Player player=game.getPlayer(land.getControllerId());
+      if (player != null) {
+        player.getManaPool().addMana(getMana(game,source),game,source);
+        return true;
+      }
+    }
+  }
+  return false;
+}

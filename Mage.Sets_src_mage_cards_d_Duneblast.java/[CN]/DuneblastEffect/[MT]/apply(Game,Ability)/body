@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Target target=new TargetCreaturePermanent(0,1,new FilterCreaturePermanent("creature to keep"),true);
+    target.setRequired(true);
+    Permanent creatureToKeep=null;
+    if (controller.choose(outcome,target,source.getSourceId(),game)) {
+      creatureToKeep=game.getPermanent(target.getFirstTarget());
+    }
+    for (    Permanent creature : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),source.getSourceId(),game)) {
+      if (creature != creatureToKeep) {
+        creature.destroy(source.getSourceId(),game,false);
+      }
+    }
+    return true;
+  }
+  return false;
+}

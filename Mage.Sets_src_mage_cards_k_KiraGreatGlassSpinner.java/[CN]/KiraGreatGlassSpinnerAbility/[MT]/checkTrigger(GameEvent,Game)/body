@@ -1,0 +1,15 @@
+{
+  if (event.getTargetId().equals(this.getSourceId())) {
+    Permanent permanent=game.getPermanent(event.getTargetId());
+    if (permanent != null && permanent.getCardType().contains(CardType.CREATURE)) {
+      CreatureWasTargetedThisTurnWatcher watcher=(CreatureWasTargetedThisTurnWatcher)game.getState().getWatchers().get("CreatureWasTargetedThisTurn");
+      if (watcher != null && watcher.notMoreThanOnceTargetedThisTurn(permanent,game)) {
+        for (        Effect effect : getEffects()) {
+          effect.setTargetPointer(new FixedTarget(event.getSourceId()));
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}

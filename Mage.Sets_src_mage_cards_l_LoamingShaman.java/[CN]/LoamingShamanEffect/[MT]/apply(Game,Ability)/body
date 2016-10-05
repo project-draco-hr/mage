@@ -1,0 +1,14 @@
+{
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (targetPlayer != null) {
+    for (    UUID targetCard : source.getTargets().get(1).getTargets()) {
+      Card card=targetPlayer.getGraveyard().get(targetCard,game);
+      if (card != null) {
+        card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
+      }
+    }
+    targetPlayer.shuffleLibrary(source,game);
+    return true;
+  }
+  return false;
+}

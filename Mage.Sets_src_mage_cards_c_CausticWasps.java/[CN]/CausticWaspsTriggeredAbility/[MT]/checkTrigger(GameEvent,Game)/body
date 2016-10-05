@@ -1,0 +1,14 @@
+{
+  if (event.getSourceId().equals(this.sourceId) && ((DamagedPlayerEvent)event).isCombatDamage()) {
+    Player player=game.getPlayer(event.getTargetId());
+    if (player != null) {
+      FilterPermanent filter=new FilterPermanent("an artifact controlled by " + player.getLogName());
+      filter.add(Predicates.or(new CardTypePredicate(CardType.ARTIFACT)));
+      filter.add(new ControllerIdPredicate(event.getTargetId()));
+      this.getTargets().clear();
+      this.addTarget(new TargetPermanent(filter));
+      return true;
+    }
+  }
+  return false;
+}

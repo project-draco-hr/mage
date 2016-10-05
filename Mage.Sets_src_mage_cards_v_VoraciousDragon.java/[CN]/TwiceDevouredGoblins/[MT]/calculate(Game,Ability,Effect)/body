@@ -1,0 +1,22 @@
+{
+  Permanent sourcePermanent=game.getPermanent(sourceAbility.getSourceId());
+  if (sourcePermanent != null) {
+    for (    Ability ability : sourcePermanent.getAbilities()) {
+      if (ability instanceof DevourAbility) {
+        for (        Effect abilityEffect : ability.getEffects()) {
+          if (abilityEffect instanceof DevourEffect) {
+            DevourEffect devourEffect=(DevourEffect)abilityEffect;
+            int amountGoblins=0;
+            for (            ArrayList<String> subtypesItem : devourEffect.getSubtypes(game,sourcePermanent.getId())) {
+              if (subtypesItem.contains("Goblin")) {
+                ++amountGoblins;
+              }
+            }
+            return amountGoblins * 2;
+          }
+        }
+      }
+    }
+  }
+  return 0;
+}

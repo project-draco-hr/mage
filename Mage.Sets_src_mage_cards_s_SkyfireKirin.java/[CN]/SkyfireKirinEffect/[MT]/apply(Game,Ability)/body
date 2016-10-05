@@ -1,0 +1,15 @@
+{
+  Permanent targetCreature=null;
+  for (  Target target : source.getTargets()) {
+    if (target instanceof TargetPermanent) {
+      targetCreature=game.getPermanent(target.getFirstTarget());
+    }
+  }
+  if (targetCreature != null) {
+    ContinuousEffect effect=new GainControlTargetEffect(Duration.EndOfTurn);
+    effect.setTargetPointer(new FixedTarget(targetCreature.getId()));
+    game.addEffect(effect,source);
+    return true;
+  }
+  return false;
+}

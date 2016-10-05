@@ -1,0 +1,12 @@
+{
+  List<Spell> spellsToCounter=new LinkedList<Spell>();
+  for (  StackObject stackObject : game.getStack()) {
+    if (stackObject instanceof Spell && !stackObject.getControllerId().equals(source.getControllerId())) {
+      spellsToCounter.add((Spell)stackObject);
+    }
+  }
+  for (  Spell spell : spellsToCounter) {
+    game.getStack().counter(spell.getId(),source.getSourceId(),game);
+  }
+  return true;
+}

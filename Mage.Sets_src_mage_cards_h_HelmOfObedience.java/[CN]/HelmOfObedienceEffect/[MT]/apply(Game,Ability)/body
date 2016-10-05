@@ -1,0 +1,37 @@
+{
+  Player targetOpponent=game.getPlayer(targetPointer.getFirst(game,source));
+  if (targetOpponent != null) {
+    int max=amount.calculate(game,source,this);
+    if (max != 0) {
+      int numberOfCard=0;
+      while (targetOpponent.getLibrary().size() > 0) {
+        Card card=targetOpponent.getLibrary().removeFromTop(game);
+        if (card != null) {
+          if (targetOpponent.moveCards(card,Zone.GRAVEYARD,source,game)) {
+            if (card.getCardType().contains(CardType.CREATURE)) {
+              Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+              if (sourcePermanent != null) {
+                sourcePermanent.sacrifice(source.getSourceId(),game);
+              }
+              if (game.getState().getZone(card.getId()).equals(Zone.GRAVEYARD)) {
+                card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),source.getControllerId());
+              }
+              break;
+            }
+ else {
+              numberOfCard++;
+              if (numberOfCard >= max) {
+                break;
+              }
+            }
+          }
+        }
+ else {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

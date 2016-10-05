@@ -1,0 +1,35 @@
+{
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  String cardName=(String)game.getState().getValue(source.getSourceId().toString() + NameACardEffect.INFO_KEY);
+  if (sourceObject == null || targetPlayer == null || cardName == null || cardName.isEmpty()) {
+    return false;
+  }
+  Cards cardsToReveal=new CardsImpl();
+  Cards cardsToBury=new CardsImpl();
+  Card namedCard=null;
+  boolean namedCardFound=false;
+  while (targetPlayer.getLibrary().size() > 0) {
+    Card card=targetPlayer.getLibrary().removeFromTop(game);
+    if (card != null) {
+      cardsToReveal.add(card);
+      if (card.getName().equals(cardName)) {
+        namedCardFound=true;
+        namedCard=card;
+        break;
+      }
+ else {
+        cardsToBury.add(card);
+      }
+    }
+  }
+  targetPlayer.revealCards(sourceObject.getIdName(),cardsToReveal,game);
+  if (namedCardFound) {
+    targetPlayer.moveCards(cardsToBury,Zone.GRAVEYARD,source,game);
+    targetPlayer.moveCards(namedCard,Zone.LIBRARY,source,game);
+  }
+ else {
+    targetPlayer.shuffleLibrary(source,game);
+  }
+  return true;
+}

@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Card card=null;
+    for (    Cost cost : source.getCosts()) {
+      if (cost instanceof ExileTopCardLibraryCost) {
+        card=((ExileTopCardLibraryCost)cost).getCard();
+      }
+    }
+    if (card != null) {
+      int amount=card.getConvertedManaCost();
+      if (amount > 0) {
+        return new AddCountersSourceEffect(CounterType.P1P1.createInstance(amount)).apply(game,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{R}");
+  this.subtype.add("Goblin");
+  this.subtype.add("Rogue");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(1);
+  Ability ability=new ConditionalTriggeredAbility(new EntersBattlefieldTriggeredAbility(new DestroyTargetEffect()),new ManaWasSpentCondition(ColoredManaSymbol.G),"When {this} enters the battlefield, if {G} was spent to cast Tin Street Hooligan, destroy target artifact.");
+  ability.addTarget(new TargetArtifactPermanent());
+  this.addAbility(ability,new ManaSpentToCastWatcher());
+}

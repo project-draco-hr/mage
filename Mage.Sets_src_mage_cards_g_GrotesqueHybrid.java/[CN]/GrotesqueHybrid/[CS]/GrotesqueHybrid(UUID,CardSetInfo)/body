@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{B}");
+  this.subtype.add("Zombie");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  this.addAbility(new DealsCombatDamageToACreatureTriggeredAbility(new DestroyTargetEffect(true),false,true));
+  Effect effect=new GainAbilitySourceEffect(FlyingAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("{this} gains flying");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new DiscardCardCost());
+  effect=new GainAbilitySourceEffect(new ProtectionAbility(filter),Duration.EndOfTurn);
+  effect.setText("and protection from green and from white until end of turn");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

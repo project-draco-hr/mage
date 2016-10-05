@@ -1,0 +1,12 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent creature=game.getPermanent(getTargetPointer().getFirst(game,source));
+  if (controller != null && creature != null) {
+    creature.destroy(source.getSourceId(),game,false);
+    if (ClashEffect.getInstance().apply(game,source)) {
+      controller.gainLife(creature.getToughness().getValue(),game);
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,25 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  int cmc=0;
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof PayVariableLoyaltyCost) {
+      cmc=((PayVariableLoyaltyCost)cost).getAmount();
+    }
+  }
+  FilterArtifactCard filter=new FilterArtifactCard(new StringBuilder("artifact card with converted mana cost ").append(cmc).append(" or less").toString());
+  filter.add(new ConvertedManaCostPredicate(ComparisonType.LessThan,cmc + 1));
+  TargetCardInLibrary target=new TargetCardInLibrary(filter);
+  if (controller.searchLibrary(target,game)) {
+    Card card=controller.getLibrary().getCard(target.getFirstTarget(),game);
+    if (card != null) {
+      controller.moveCards(card,Zone.BATTLEFIELD,source,game);
+    }
+    controller.shuffleLibrary(source,game);
+    return true;
+  }
+  controller.shuffleLibrary(source,game);
+  return false;
+}

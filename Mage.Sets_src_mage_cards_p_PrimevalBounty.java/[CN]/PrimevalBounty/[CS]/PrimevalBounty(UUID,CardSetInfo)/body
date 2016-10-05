@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{5}{G}");
+  this.addAbility(new SpellCastControllerTriggeredAbility(new CreateTokenEffect(new BeastToken()),filterCreature,false));
+  Effect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance(3));
+  Ability ability=new SpellCastControllerTriggeredAbility(effect,filterNonCreature,false);
+  ability.addTarget(new TargetControlledCreaturePermanent());
+  this.addAbility(ability);
+  effect=new GainLifeEffect(3);
+  ability=new EntersBattlefieldControlledTriggeredAbility(effect,new FilterLandPermanent("a land"));
+  this.addAbility(ability);
+}

@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{R}");
+  this.subtype.add("Goblin");
+  this.subtype.add("Shaman");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  TargetCardInLibrary target=new TargetCardInLibrary(1,1,new FilterCard(filter));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new SearchLibraryPutInPlayEffect(target),new ManaCostsImpl("{2}{R}"));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filterBlack,false)));
+  ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filterRed,false)));
+  ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filterGreen,false)));
+  this.addAbility(ability);
+}

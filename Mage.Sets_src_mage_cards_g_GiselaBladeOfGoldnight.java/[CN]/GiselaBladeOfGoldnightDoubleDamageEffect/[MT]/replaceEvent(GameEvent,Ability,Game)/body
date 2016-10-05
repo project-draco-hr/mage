@@ -1,0 +1,24 @@
+{
+switch (event.getType()) {
+case DAMAGE_PLAYER:
+    if (event.getTargetId().equals(source.getControllerId())) {
+      preventDamage(event,source,source.getControllerId(),game);
+    }
+ else     if (game.getOpponents(source.getControllerId()).contains(event.getTargetId())) {
+      event.setAmount(event.getAmount() * 2);
+    }
+  break;
+case DAMAGE_CREATURE:
+case DAMAGE_PLANESWALKER:
+Permanent permanent=game.getPermanent(event.getTargetId());
+if (permanent != null) {
+if (permanent.getControllerId().equals(source.getControllerId())) {
+  preventDamage(event,source,permanent.getId(),game);
+}
+ else if (game.getOpponents(source.getControllerId()).contains(permanent.getControllerId())) {
+  event.setAmount(event.getAmount() * 2);
+}
+}
+}
+return false;
+}

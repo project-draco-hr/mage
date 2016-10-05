@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    FilterCard filter=new FilterCard("instant or sorcery card");
+    filter.add(Predicates.or(new CardTypePredicate(CardType.INSTANT),new CardTypePredicate(CardType.SORCERY)));
+    Card[] cards=player.getGraveyard().getCards(filter,game).toArray(new Card[0]);
+    if (cards.length > 0) {
+      Card card=cards[RandomUtil.nextInt(cards.length)];
+      card.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+      game.informPlayers(new StringBuilder("Charmbreaker Devils: ").append(card.getName()).append(" returned to the hand of ").append(player.getLogName()).toString());
+      return true;
+    }
+  }
+  return false;
+}

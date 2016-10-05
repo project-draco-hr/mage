@@ -1,0 +1,27 @@
+{
+switch (layer) {
+case TypeChangingEffects_4:
+    if (sublayer == SubLayer.NA) {
+      affectedObjectList.clear();
+      for (      Permanent permanent : game.getBattlefield().getAllActivePermanents(filter,game)) {
+        if (permanent != null) {
+          affectedObjectList.add(new MageObjectReference(permanent,game));
+          permanent.getCardType().add(CardType.CREATURE);
+        }
+      }
+    }
+  break;
+case PTChangingEffects_7:
+if (sublayer == SubLayer.SetPT_7b) {
+  for (Iterator<MageObjectReference> it=affectedObjectList.iterator(); it.hasNext(); ) {
+    Permanent permanent=it.next().getPermanent(game);
+    if (permanent != null) {
+      int manaCost=permanent.getConvertedManaCost();
+      permanent.getPower().setValue(manaCost);
+      permanent.getToughness().setValue(manaCost);
+    }
+  }
+}
+}
+return true;
+}

@@ -1,0 +1,16 @@
+{
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  if (permanent != null) {
+    if (permanent.moveToExile(source.getSourceId(),"Long Road Home",source.getSourceId(),game)) {
+      ExileZone exile=game.getExile().getExileZone(source.getSourceId());
+      if (exile != null && !exile.isEmpty()) {
+        Card card=game.getCard(permanent.getId());
+        if (card != null) {
+          game.addDelayedTriggeredAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new LongRoadHomeReturnFromExileEffect(new MageObjectReference(card,game))),source);
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}

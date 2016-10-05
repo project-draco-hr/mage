@@ -1,0 +1,29 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Cards cards=new CardsImpl();
+    int cardsCount=Math.min(7,player.getLibrary().size());
+    for (int i=0; i < cardsCount; i++) {
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        cards.add(card);
+      }
+    }
+    if (cards.size() > 0) {
+      player.lookAtCards("Ancestral Memories",cards,game);
+      TargetCard target=new TargetCard(Math.min(2,cards.size()),Zone.LIBRARY,new FilterCard("two cards to put in your hand"));
+      if (player.choose(Outcome.Benefit,cards,target,game)) {
+        for (        UUID targetId : (List<UUID>)target.getTargets()) {
+          Card card=cards.get(targetId,game);
+          if (card != null) {
+            card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+            cards.remove(card);
+          }
+        }
+      }
+      player.moveCards(cards,Zone.GRAVEYARD,source,game);
+    }
+    return true;
+  }
+  return false;
+}

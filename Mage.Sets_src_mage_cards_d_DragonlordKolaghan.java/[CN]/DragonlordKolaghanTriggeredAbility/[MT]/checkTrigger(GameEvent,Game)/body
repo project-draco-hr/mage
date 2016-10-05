@@ -1,0 +1,21 @@
+{
+  Player controller=game.getPlayer(getControllerId());
+  if (controller != null && controller.hasOpponent(event.getPlayerId(),game)) {
+    Spell spell=game.getStack().getSpell(event.getSourceId());
+    if (spell != null && !spell.isFaceDown(game) && (spell.getCardType().contains(CardType.CREATURE) || spell.getCardType().contains(CardType.PLANESWALKER))) {
+      Player opponent=game.getPlayer(event.getPlayerId());
+      boolean sameName=false;
+      for (      Card graveCard : opponent.getGraveyard().getCards(game)) {
+        if (graveCard.getName().equals(spell.getName())) {
+          sameName=true;
+          break;
+        }
+      }
+      if (sameName) {
+        this.getEffects().get(0).setTargetPointer(new FixedTarget(event.getPlayerId()));
+        return true;
+      }
+    }
+  }
+  return false;
+}

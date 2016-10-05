@@ -1,0 +1,16 @@
+{
+  Set<CardType> cardTypes=getOpponentPermanentCardTypes(sourceId,sourceControllerId,game);
+  Set<UUID> possibleTargets=new HashSet<>();
+  MageObject targetSource=game.getObject(sourceId);
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(filter,sourceControllerId,sourceId,game)) {
+    if (!targets.containsKey(permanent.getId()) && permanent.canBeTargetedBy(targetSource,sourceControllerId,game)) {
+      for (      CardType type : permanent.getCardType()) {
+        if (cardTypes.contains(type)) {
+          possibleTargets.add(permanent.getId());
+          break;
+        }
+      }
+    }
+  }
+  return possibleTargets;
+}

@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{2}");
+  Ability ability=new EntersBattlefieldTappedAbility(ruleText);
+  ((EntersBattlefieldEffect)ability.getEffects().get(0)).addEffect(new AddCountersSourceEffect(CounterType.CHARGE.createInstance(3)));
+  this.addAbility(ability);
+  RemoveCountersSourceCost removeCounterCost=new RemoveCountersSourceCost(CounterType.CHARGE.createInstance());
+  ability=new AnyColorManaAbility();
+  ability.addCost(removeCounterCost);
+  this.addAbility(ability);
+}

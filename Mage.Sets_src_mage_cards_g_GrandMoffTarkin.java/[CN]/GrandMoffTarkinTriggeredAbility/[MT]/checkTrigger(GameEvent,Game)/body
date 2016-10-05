@@ -1,0 +1,14 @@
+{
+  if (game.getOpponents(controllerId).contains(event.getPlayerId())) {
+    Player opponent=game.getPlayer(event.getPlayerId());
+    if (opponent != null) {
+      this.getTargets().clear();
+      FilterCreaturePermanent filter=new FilterCreaturePermanent("target creature that player controls");
+      filter.add(new ControllerIdPredicate(event.getPlayerId()));
+      TargetPermanent target=new TargetPermanent(filter);
+      this.addTarget(target);
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,15 @@
+{
+  SpellAbility spellAbility=(SpellAbility)abilityToModify;
+  Mana mana=spellAbility.getManaCostsToPay().getMana();
+  Player player=game.getPlayer(source.getControllerId());
+  if (mana.getGeneric() > 0 && player != null && player.getLife() < 4) {
+    int newCount=mana.getGeneric() - 6;
+    if (newCount < 0) {
+      newCount=0;
+    }
+    mana.setGeneric(newCount);
+    spellAbility.getManaCostsToPay().load(mana.toString());
+    return true;
+  }
+  return false;
+}

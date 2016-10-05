@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{R}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(TrampleAbility.getInstance(),AttachmentType.AURA,Duration.WhileOnBattlefield));
+  Effect effect=new GainAbilityAttachedEffect(HasteAbility.getInstance(),AttachmentType.AURA,Duration.WhileOnBattlefield);
+  effect.setText("and haste");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

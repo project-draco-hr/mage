@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{B}");
+  this.subtype.add("Zombie");
+  this.subtype.add("Wizard");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.addAbility(new SkipUntapOptionalAbility());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ReturnFromGraveyardToBattlefieldTargetEffect(),new ManaCostsImpl("{2}{B}"));
+  ability.addCost(new TapSourceCost());
+  ability.addTarget(new TargetCardInGraveyard(new FilterCreatureCard("creature card from a graveyard")));
+  ability.addEffect(new CoffinQueenCreateDelayedTriggerEffect());
+  this.addAbility(ability);
+}

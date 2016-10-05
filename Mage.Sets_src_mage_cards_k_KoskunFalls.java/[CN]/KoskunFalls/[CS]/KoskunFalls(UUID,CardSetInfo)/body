@@ -1,0 +1,8 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{2}{B}{B}");
+  this.supertype.add("World");
+  Effect effect=new SacrificeSourceUnlessPaysEffect(new TapTargetCost(new TargetControlledCreaturePermanent(1,1,filterCreature,true)));
+  effect.setText("sacrifice Koskun Falls unless you tap an untapped creature you control");
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,effect,TargetController.YOU,false));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new CantAttackYouUnlessPayManaAllEffect(new ManaCostsImpl("{2}"))));
+}

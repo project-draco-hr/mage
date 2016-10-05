@@ -1,0 +1,14 @@
+{
+  Player player=game.getPlayer(getTargetPointer().getFirst(game,source));
+  Object object=(String)game.getState().getValue(source.getSourceId().toString() + NameACardEffect.INFO_KEY);
+  if (player != null && object instanceof String) {
+    String namedCard=(String)object;
+    for (    Card card : player.getHand().getCards(game)) {
+      if (card != null && card.getName().equals(namedCard)) {
+        return new SearchLibraryPutInHandEffect(new TargetCardInLibrary(filter),true,true).apply(game,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

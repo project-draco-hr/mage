@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    Set<Card> toExile=new HashSet<>();
+    toExile.addAll(game.getBattlefield().getAllActivePermanents(filter,source.getControllerId(),game));
+    if (!toExile.isEmpty()) {
+      UUID exileId=CardUtil.getExileZoneId(game,source.getSourceId(),source.getSourceObjectZoneChangeCounter());
+      controller.moveCardsToExile(toExile,source,game,true,exileId,sourceObject.getIdName());
+      DragonToken2 token=new DragonToken2();
+      token.putOntoBattlefield(toExile.size(),game,source.getSourceId(),source.getControllerId());
+    }
+    return true;
+  }
+  return false;
+}

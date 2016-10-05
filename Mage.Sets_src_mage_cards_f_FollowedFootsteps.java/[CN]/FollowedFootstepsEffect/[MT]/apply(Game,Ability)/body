@@ -1,0 +1,10 @@
+{
+  Permanent enchantment=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  Permanent target=game.getPermanentOrLKIBattlefield(enchantment.getAttachedTo());
+  if (target != null) {
+    Effect effect=new PutTokenOntoBattlefieldCopyTargetEffect();
+    effect.setTargetPointer(new FixedTarget(enchantment.getAttachedTo()));
+    return effect.apply(game,source);
+  }
+  return false;
+}

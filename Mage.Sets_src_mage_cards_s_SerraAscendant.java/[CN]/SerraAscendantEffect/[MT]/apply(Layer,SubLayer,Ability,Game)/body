@@ -1,0 +1,23 @@
+{
+  Permanent creature=game.getPermanent(source.getSourceId());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (creature != null && controller != null) {
+    if (controller.getLife() >= 30) {
+switch (layer) {
+case PTChangingEffects_7:
+        if (sublayer == SubLayer.ModifyPT_7c) {
+          creature.addPower(5);
+          creature.addToughness(5);
+        }
+      break;
+case AbilityAddingRemovingEffects_6:
+    if (sublayer == SubLayer.NA) {
+      creature.addAbility(FlyingAbility.getInstance(),source.getSourceId(),game);
+    }
+  break;
+}
+}
+return true;
+}
+return false;
+}

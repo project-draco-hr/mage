@@ -1,0 +1,46 @@
+{
+  List<UUID> perms=new ArrayList<>();
+  if (source != null) {
+    Card sourceCard=game.getCard(source.getSourceId());
+    Permanent saccedPermanent=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
+    Player controller=game.getPlayer(source.getControllerId());
+    if (controller != null && sourceCard != null && saccedPermanent != null) {
+      FilterControlledPermanent filter=new FilterControlledPermanent();
+      String message="permanent with type (";
+      boolean firstType=true;
+      ArrayList<CardTypePredicate> cardTypes=new ArrayList<>();
+      for (      CardType type : saccedPermanent.getCardType()) {
+        cardTypes.add(new CardTypePredicate(type));
+        if (firstType) {
+          message+=type;
+          firstType=false;
+        }
+ else {
+          message+=" or " + type;
+        }
+      }
+      message+=") to sacrifice";
+      filter.add(Predicates.or(cardTypes));
+      filter.setMessage(message);
+      for (      UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+        Player player=game.getPlayer(playerId);
+        if (player != null && !playerId.equals(source.getControllerId())) {
+          TargetControlledPermanent target=new TargetControlledPermanent(filter);
+          target.setNotTarget(true);
+          if (target.canChoose(player.getId(),game)) {
+            player.chooseTarget(Outcome.Sacrifice,target,source,game);
+            perms.addAll(target.getTargets());
+          }
+        }
+      }
+      for (      UUID permID : perms) {
+        Permanent permanent=game.getPermanent(permID);
+        if (permanent != null) {
+          permanent.sacrifice(source.getSourceId(),game);
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

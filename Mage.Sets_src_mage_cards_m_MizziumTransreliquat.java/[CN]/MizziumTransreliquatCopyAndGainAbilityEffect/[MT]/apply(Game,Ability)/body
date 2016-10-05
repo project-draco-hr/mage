@@ -1,0 +1,12 @@
+{
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  Permanent copyFromPermanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+  if (sourcePermanent != null && copyFromPermanent != null) {
+    Permanent newPermanent=game.copyPermanent(copyFromPermanent,sourcePermanent.getId(),source,new EmptyApplyToPermanent());
+    Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new MizziumTransreliquatCopyAndGainAbilityEffect(),new ManaCostsImpl("{1}{U}{R}"));
+    ability.addTarget(new TargetArtifactPermanent());
+    newPermanent.addAbility(ability,source.getSourceId(),game);
+    return true;
+  }
+  return false;
+}

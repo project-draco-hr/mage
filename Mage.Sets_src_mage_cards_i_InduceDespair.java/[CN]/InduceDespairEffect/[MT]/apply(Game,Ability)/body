@@ -1,0 +1,12 @@
+{
+  RevealTargetFromHandCost cost=(RevealTargetFromHandCost)source.getCosts().get(0);
+  Permanent creature=game.getPermanent(targetPointer.getFirst(game,source));
+  if (cost != null && creature != null) {
+    int cmcBoost=-1 * cost.convertedManaCosts;
+    ContinuousEffect effect=new BoostTargetEffect(cmcBoost,cmcBoost,Duration.EndOfTurn);
+    effect.setTargetPointer(new FixedTarget(creature.getId(),creature.getZoneChangeCounter(game)));
+    game.addEffect(effect,source);
+    return true;
+  }
+  return false;
+}

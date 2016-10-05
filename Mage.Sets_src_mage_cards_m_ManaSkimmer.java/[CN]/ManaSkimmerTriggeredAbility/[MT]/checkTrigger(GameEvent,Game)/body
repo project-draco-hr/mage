@@ -1,0 +1,12 @@
+{
+  Permanent source=game.getPermanent(event.getSourceId());
+  if (source != null && source.getId().equals(this.getSourceId())) {
+    FilterLandPermanent filter=new FilterLandPermanent("land that player controls");
+    filter.add(new ControllerIdPredicate(event.getPlayerId()));
+    filter.setMessage("land controlled by " + game.getPlayer(event.getTargetId()).getLogName());
+    this.getTargets().clear();
+    this.addTarget(new TargetPermanent(filter));
+    return true;
+  }
+  return false;
+}

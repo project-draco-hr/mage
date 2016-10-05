@@ -1,0 +1,11 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards cards=new CardsImpl();
+    cards.addAll(controller.getGraveyard().getCards(new FilterCreatureCard(),game));
+    controller.putCardsOnTopOfLibrary(cards,game,source,false);
+    controller.shuffleLibrary(source,game);
+    return true;
+  }
+  return false;
+}

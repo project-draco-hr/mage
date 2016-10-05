@@ -1,0 +1,16 @@
+{
+  Permanent battlemaster=game.getPermanent(source.getSourceId());
+  if (battlemaster != null) {
+    FilterPermanent filter=new FilterPermanent();
+    filter.add(new SubtypePredicate("Equipment"));
+    for (    Permanent equipment : game.getBattlefield().getAllActivePermanents(filter,game)) {
+      if (equipment != null) {
+        if (!battlemaster.cantBeAttachedBy(equipment,game)) {
+          battlemaster.addAttachment(equipment.getId(),game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

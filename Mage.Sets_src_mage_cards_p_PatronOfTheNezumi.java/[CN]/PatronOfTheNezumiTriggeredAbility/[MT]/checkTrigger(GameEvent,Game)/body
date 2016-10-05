@@ -1,0 +1,11 @@
+{
+  ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+  if (zEvent.getFromZone() == Zone.BATTLEFIELD && zEvent.getToZone() == Zone.GRAVEYARD) {
+    Card card=game.getCard(zEvent.getTargetId());
+    if (card != null && game.getOpponents(controllerId).contains(card.getOwnerId())) {
+      this.getEffects().get(0).setTargetPointer(new FixedTarget(zEvent.getPlayerId()));
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(filter,game)) {
+      if (permanent.getControllerId().equals(source.getControllerId())) {
+        PutTokenOntoBattlefieldCopyTargetEffect effect=new PutTokenOntoBattlefieldCopyTargetEffect();
+        effect.setTargetPointer(new FixedTarget(permanent,game));
+        effect.apply(game,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

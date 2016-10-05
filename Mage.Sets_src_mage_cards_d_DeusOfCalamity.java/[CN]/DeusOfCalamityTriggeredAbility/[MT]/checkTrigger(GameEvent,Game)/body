@@ -1,0 +1,11 @@
+{
+  if (event.getSourceId().equals(this.getSourceId()) && event.getAmount() > 5 && game.getOpponents(this.getControllerId()).contains(event.getTargetId())) {
+    FilterLandPermanent filter=new FilterLandPermanent("land of the damaged player");
+    filter.add(new ControllerIdPredicate(event.getTargetId()));
+    Target target=new TargetLandPermanent(filter);
+    this.getTargets().clear();
+    this.addTarget(target);
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{U}{U}");
+  this.subtype.add("Merfolk");
+  this.subtype.add("Rogue");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability ability=new BecomesTappedSourceTriggeredAbility(new GrimoireThiefExileEffect(),false);
+  ability.addTarget(new TargetOpponent());
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Zone.ALL,new GrimoireThiefLookEffect()));
+  Ability ability2=new SimpleActivatedAbility(Zone.BATTLEFIELD,new GrimoireThiefCounterspellEffect(),new ManaCostsImpl("{U}"));
+  ability2.addCost(new SacrificeSourceCost());
+  this.addAbility(ability2);
+}

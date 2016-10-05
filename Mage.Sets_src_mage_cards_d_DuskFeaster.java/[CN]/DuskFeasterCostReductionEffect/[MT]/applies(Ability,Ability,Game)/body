@@ -1,0 +1,13 @@
+{
+  boolean hasDelirium=false;
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    HashSet<CardType> foundCardTypes=new HashSet<>();
+    for (    Card card : controller.getGraveyard().getCards(game)) {
+      foundCardTypes.addAll(card.getCardType());
+    }
+    int number=foundCardTypes.size();
+    hasDelirium=number > 3;
+  }
+  return abilityToModify.getSourceId().equals(source.getSourceId()) && (abilityToModify instanceof SpellAbility) && hasDelirium;
+}

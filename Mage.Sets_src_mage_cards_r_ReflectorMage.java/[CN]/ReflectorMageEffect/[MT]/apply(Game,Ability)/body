@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Permanent targetCreature=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (targetCreature != null) {
+      controller.moveCards(targetCreature,Zone.HAND,source,game);
+      if (!targetCreature.getName().isEmpty()) {
+        game.addEffect(new ExclusionRitualReplacementEffect(targetCreature.getName(),targetCreature.getOwnerId()),source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

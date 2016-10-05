@@ -1,0 +1,23 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (controller != null && sourcePermanent != null) {
+    UUID exileId=CardUtil.getCardExileZoneId(game,source);
+    int numberOfCards=0;
+    ExileZone exileZone=game.getExile().getExileZone(exileId);
+    if (exileZone != null) {
+      for (      Card card : exileZone.getCards(game)) {
+        if (card.getOwnerId().equals(controller.getId())) {
+          numberOfCards++;
+          card.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+          card.setFaceDown(false,game);
+        }
+      }
+    }
+    if (numberOfCards > 0) {
+      game.informPlayers(sourcePermanent.getLogName() + ": " + controller.getLogName()+ " returns "+ numberOfCards+ " card"+ (numberOfCards > 1 ? "s" : "")+ " from exile to hand");
+    }
+    return true;
+  }
+  return false;
+}

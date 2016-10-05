@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{5}{B}{B}");
+  this.subtype.add("Demon");
+  this.power=new MageInt(6);
+  this.toughness=new MageInt(4);
+  this.addAbility(FlyingAbility.getInstance());
+  Ability regenAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new RegenerateSourceEffect(),new ManaCostsImpl("{B}"));
+  regenAbility.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,regenFilter,true)));
+  this.addAbility(regenAbility);
+  Ability destroyAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DestroyTargetEffect(),new ManaCostsImpl("{2}{B}"));
+  destroyAbility.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(2,2,destroyFilter,true)));
+  destroyAbility.addTarget(new TargetCreaturePermanent());
+  this.addAbility(destroyAbility);
+}

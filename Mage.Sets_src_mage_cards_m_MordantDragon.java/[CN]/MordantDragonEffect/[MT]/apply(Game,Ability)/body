@@ -1,0 +1,19 @@
+{
+  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  if (player != null) {
+    int amount=(Integer)getValue("damage");
+    if (amount > 0) {
+      FilterCreaturePermanent filter=new FilterCreaturePermanent("creature " + player.getLogName() + " controls");
+      filter.add(new ControllerIdPredicate(player.getId()));
+      TargetCreaturePermanent target=new TargetCreaturePermanent(filter);
+      if (target.canChoose(source.getControllerId(),game) && target.choose(Outcome.Damage,source.getControllerId(),source.getSourceId(),game)) {
+        UUID creature=target.getFirstTarget();
+        if (creature != null) {
+          game.getPermanent(creature).damage(amount,source.getSourceId(),game,false,true);
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

@@ -1,0 +1,15 @@
+{
+  CardsPutIntoGraveyardWatcher watcher=(CardsPutIntoGraveyardWatcher)game.getState().getWatchers().get("CardsPutIntoGraveyardWatcher");
+  if (watcher != null) {
+    FilterCard filter=new FilterCreatureCard(textFilter);
+    List<CardIdPredicate> uuidPredicates=new ArrayList<>();
+    for (    MageObjectReference mor : watcher.getCardsPutToGraveyardFromBattlefield()) {
+      if (game.getState().getZoneChangeCounter(mor.getSourceId()) == mor.getZoneChangeCounter()) {
+        uuidPredicates.add(new CardIdPredicate(mor.getSourceId()));
+      }
+    }
+    filter.add(Predicates.or(uuidPredicates));
+    ability.getTargets().clear();
+    ability.addTarget(new TargetCardInGraveyard(filter));
+  }
+}

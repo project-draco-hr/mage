@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null && player.getLibrary().size() > 0) {
+    CardsImpl cards=new CardsImpl();
+    Library library=player.getLibrary();
+    Card card=null;
+    do {
+      card=library.removeFromTop(game);
+      if (card != null) {
+        cards.add(card);
+        card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+      }
+    }
+ while (library.size() > 0 && card != null && card.getCardType().contains(CardType.LAND));
+    if (!cards.isEmpty()) {
+      player.revealCards("Treasure Hunt",cards,game);
+    }
+    return true;
+  }
+  return false;
+}

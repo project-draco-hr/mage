@@ -1,0 +1,24 @@
+{
+  Player player=game.getPlayer(getTargetPointer().getFirst(game,source));
+  MageObject sourceObject=source.getSourceObject(game);
+  if (player == null || sourceObject == null) {
+    return false;
+  }
+  int landsToReveal=4;
+  Cards cards=new CardsImpl();
+  while (player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      cards.add(card);
+      if (card.getCardType().contains(CardType.LAND)) {
+        --landsToReveal;
+        if (landsToReveal < 1) {
+          break;
+        }
+      }
+    }
+  }
+  player.revealCards("by " + sourceObject.getName() + " from "+ player.getName(),cards,game);
+  player.moveCards(cards,Zone.GRAVEYARD,source,game);
+  return true;
+}

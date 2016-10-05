@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{B}");
+  this.subtype.add("Zabrak");
+  this.subtype.add("Hunter");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new DontUntapInControllersUntapStepSourceEffect()));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new AddCountersTargetEffect(CounterType.BOUNTY.createInstance()),new TapSourceCost());
+  ability.addTarget(new TargetOpponentsCreaturePermanent());
+  this.addAbility(ability);
+  this.addAbility(new BountyAbility(new UntapSourceEffect()));
+}

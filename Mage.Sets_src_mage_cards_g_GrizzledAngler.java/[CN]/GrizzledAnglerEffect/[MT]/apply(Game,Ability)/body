@@ -1,0 +1,10 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    controller.moveCards(controller.getLibrary().getTopCards(game,2),Zone.GRAVEYARD,source,game);
+    if (controller.getGraveyard().count(filter,source.getSourceId(),source.getControllerId(),game) >= 1) {
+      return new TransformSourceEffect(true).apply(game,source);
+    }
+  }
+  return false;
+}

@@ -1,0 +1,17 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{2}{B}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  Effect effect=new GainAbilityAttachedEffect(FlyingAbility.getInstance(),AttachmentType.AURA,Duration.WhileOnBattlefield);
+  Ability gainedAbility=new SimpleStaticAbility(Zone.BATTLEFIELD,effect);
+  this.addAbility(gainedAbility);
+  gainedAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostSourceEffect(2,1,Duration.EndOfTurn),new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,new FilterControlledCreaturePermanent("a creature"),true)));
+  effect=new GainAbilityAttachedEffect(gainedAbility,AttachmentType.AURA,Duration.WhileOnBattlefield);
+  effect.setText("Enchanted creature has \"Sacrifice a creature: This creature gets +2/+1 until end of turn.\"");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  this.addAbility(new PutIntoGraveFromBattlefieldSourceTriggeredAbility(new ReturnToHandSourceEffect()));
+}

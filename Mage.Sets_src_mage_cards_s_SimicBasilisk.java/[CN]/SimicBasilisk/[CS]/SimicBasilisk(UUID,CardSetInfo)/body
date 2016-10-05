@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{G}{G}");
+  this.subtype.add("Basilisk");
+  this.subtype.add("Mutant");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  this.addAbility(new GraftAbility(this,3));
+  Effect effect=new CreateDelayedTriggeredAbilityEffect(new AtTheEndOfCombatDelayedTriggeredAbility(new DestroyTargetEffect()),true);
+  effect.setText("destroy that creature at end of combat");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainAbilityTargetEffect(new DealsDamageToACreatureTriggeredAbility(effect,true,false,true),Duration.EndOfTurn),new ManaCostsImpl("{1}{G}"));
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability);
+}

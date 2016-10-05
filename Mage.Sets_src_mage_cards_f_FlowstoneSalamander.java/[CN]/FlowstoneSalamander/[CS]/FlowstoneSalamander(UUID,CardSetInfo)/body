@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{R}{R}");
+  this.subtype.add("Salamander");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(4);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new ManaCostsImpl("{R"));
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("creature blocking it");
+  filter.add(new BlockingAttackerIdPredicate(this.getId()));
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability);
+}

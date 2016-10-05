@@ -1,0 +1,12 @@
+{
+  DamageDoneWatcher watcher=(DamageDoneWatcher)game.getState().getWatchers().get("DamageDone");
+  if (watcher != null) {
+    if (input instanceof MageObject) {
+      return watcher.isDamaged(input.getId(),((MageObject)input).getZoneChangeCounter(game),game);
+    }
+    if (input instanceof Player) {
+      return watcher.isDamaged(input.getId(),0,game);
+    }
+  }
+  return false;
+}

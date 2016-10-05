@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    DragonOnTheBattlefieldWhileSpellWasCastWatcher watcher=(DragonOnTheBattlefieldWhileSpellWasCastWatcher)game.getState().getWatchers().get("DragonOnTheBattlefieldWhileSpellWasCastWatcher");
+    if (watcher != null && watcher.castWithConditionTrue(source.getId())) {
+      Permanent permanent=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
+      if (permanent != null) {
+        Player player=game.getPlayer(permanent.getControllerId());
+        if (player != null) {
+          player.damage(3,source.getSourceId(),game,false,true);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

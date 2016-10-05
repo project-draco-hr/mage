@@ -1,0 +1,18 @@
+{
+  Card card=game.getCard(objectToReturn.getSourceId());
+  if (card != null && objectToReturn.refersTo(card,game)) {
+    Player owner=game.getPlayer(card.getOwnerId());
+    if (owner != null) {
+      if (card instanceof MeldCard) {
+        MeldCard meldCard=(MeldCard)card;
+        game.addEffect(new LongRoadHomeEntersBattlefieldEffect(new MageObjectReference(meldCard.getTopHalfCard(),game)),source);
+        game.addEffect(new LongRoadHomeEntersBattlefieldEffect(new MageObjectReference(meldCard.getBottomHalfCard(),game)),source);
+      }
+ else {
+        game.addEffect(new LongRoadHomeEntersBattlefieldEffect(objectToReturn),source);
+      }
+      owner.moveCards(card,Zone.BATTLEFIELD,source,game,false,false,true,null);
+    }
+  }
+  return true;
+}

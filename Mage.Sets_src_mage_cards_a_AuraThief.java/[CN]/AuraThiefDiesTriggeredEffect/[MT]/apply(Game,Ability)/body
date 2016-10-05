@@ -1,0 +1,10 @@
+{
+  boolean ret=false;
+  for (  Permanent enchantment : game.getBattlefield().getActivePermanents(new FilterEnchantmentPermanent(),source.getControllerId(),source.getControllerId(),game)) {
+    ContinuousEffect gainControl=new GainControlTargetEffect(Duration.EndOfGame);
+    gainControl.setTargetPointer(new FixedTarget(enchantment.getId()));
+    game.addEffect(gainControl,source);
+    ret=true;
+  }
+  return ret;
+}

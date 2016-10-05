@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.LAND},"");
+  this.addAbility(new ColorlessManaAbility());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new AddCountersSourceEffect(CounterType.STORAGE.createInstance()),new ManaCostsImpl("{1}"));
+  ability.addCost(new TapSourceCost());
+  this.addAbility(ability);
+  ability=new DynamicManaAbility(Mana.ColorlessMana(1),new RemovedCountersForCostValue(),new TapSourceCost(),"Add {C} to your mana pool for each storage counter removed this way",true,new CountersSourceCount(CounterType.STORAGE));
+  ability.addCost(new RemoveVariableCountersSourceCost(CounterType.STORAGE.createInstance(),"Remove X storage counters from {this}"));
+  this.addAbility(ability);
+}

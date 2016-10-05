@@ -1,0 +1,42 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    ObjectColor color=(ObjectColor)game.getState().getValue(source.getSourceId() + "_color");
+    if (color == null) {
+      return false;
+    }
+    String colorString=color.toString();
+    for (    Permanent perm : game.getBattlefield().getActivePermanents(source.getControllerId(),game)) {
+      setObjectColor(perm,colorString,game);
+    }
+    for (    MageObject object : game.getStack()) {
+      if (object instanceof Spell) {
+        setObjectColor(object,colorString,game);
+      }
+    }
+    for (    Card card : game.getExile().getAllCards(game)) {
+      setCardColor(card,colorString,game);
+    }
+    for (    CommandObject commandObject : game.getState().getCommand()) {
+      if (commandObject instanceof Commander) {
+        setObjectColor(commandObject,colorString,game);
+      }
+    }
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        for (        Card card : player.getHand().getCards(game)) {
+          setCardColor(card,colorString,game);
+        }
+        for (        Card card : player.getLibrary().getCards(game)) {
+          setCardColor(card,colorString,game);
+        }
+        for (        Card card : player.getGraveyard().getCards(game)) {
+          setCardColor(card,colorString,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

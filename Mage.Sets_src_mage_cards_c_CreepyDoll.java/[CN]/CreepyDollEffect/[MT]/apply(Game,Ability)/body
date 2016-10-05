@@ -1,0 +1,13 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    if (player.flipCoin(game)) {
+      UUID targetId=getTargetPointer().getFirst(game,source);
+      Permanent permanent=game.getPermanent(targetId);
+      if (permanent != null) {
+        permanent.destroy(source.getSourceId(),game,false);
+      }
+    }
+  }
+  return false;
+}

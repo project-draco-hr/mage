@@ -1,0 +1,29 @@
+{
+  Spell spell=(Spell)game.getStack().getStackObject(getTargetPointer().getFirst(game,source));
+  Player controller=game.getPlayer(spell.getControllerId());
+  if (controller != null) {
+    Cost costToPay;
+    if (cost != null) {
+      costToPay=cost.copy();
+    }
+ else {
+      costToPay=new GenericManaCost(genericMana.calculate(game,source,this));
+    }
+    String message;
+    if (costToPay instanceof ManaCost) {
+      message="Would you like to pay " + costToPay.getText() + " to prevent counter effect?";
+    }
+ else {
+      message=costToPay.getText() + " to prevent counter effect?";
+    }
+    costToPay.clearPaid();
+    if (!(controller.chooseUse(Outcome.Benefit,message,source,game) && costToPay.pay(source,game,spell.getSourceId(),spell.getControllerId(),false,null))) {
+      game.getStack().counter(spell.getId(),source.getSourceId(),game);
+    }
+    if (ClashEffect.getInstance().apply(game,source)) {
+      controller.moveCards(controller.getLibrary().getTopCards(game,4),Zone.GRAVEYARD,source,game);
+    }
+    return true;
+  }
+  return false;
+}

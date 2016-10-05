@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{G}{G}");
+  this.subtype.add("Elemental");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  this.addAbility(new BeginningOfEndStepTriggeredAbility(new ManifestEffect(1),TargetController.YOU,false));
+  Ability abilityToGain=new DiesTriggeredAbility(new ManifestEffect(1));
+  Effect effect=new GainAbilityControlledEffect(abilityToGain,Duration.EndOfTurn,filter);
+  effect.setText("Until end of turn, face-up, nontoken creatures you control gain \"When this creature dies, manifest the top card of your library.\"");
+  this.addAbility(new SimpleActivatedAbility(Zone.ALL,effect,new SacrificeSourceCost()));
+}

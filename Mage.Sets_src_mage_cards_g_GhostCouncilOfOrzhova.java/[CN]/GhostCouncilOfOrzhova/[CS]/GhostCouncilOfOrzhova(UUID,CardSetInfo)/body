@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{W}{W}{B}{B}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Spirit");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  Ability ability=new EntersBattlefieldTriggeredAbility(new GhostCouncilOfOrzhovaEffect());
+  ability.addTarget(new TargetOpponent());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ExileReturnBattlefieldOwnerNextEndStepSourceEffect(true),new GenericManaCost(1));
+  ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent()));
+  this.addAbility(ability);
+}

@@ -1,0 +1,12 @@
+{
+  Card card=game.getCard(this.getTargetPointer().getFirst(game,source));
+  if (card != null) {
+    ContinuousEffect effect=new SinsOfThePastCastFromGraveyardEffect();
+    effect.setTargetPointer(new FixedTarget(card.getId()));
+    game.addEffect(effect,source);
+    effect=new SinsOfThePastReplacementEffect(card.getId());
+    game.addEffect(effect,source);
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,12 @@
+{
+  Spell spell=game.getState().getStack().getSpell(getTargetPointer().getFirst(game,source));
+  if (spell != null) {
+    Player controller=game.getPlayer(source.getControllerId());
+    if (controller != null) {
+      int life=spell.getConvertedManaCost();
+      controller.gainLife(life,game);
+      return true;
+    }
+  }
+  return false;
+}

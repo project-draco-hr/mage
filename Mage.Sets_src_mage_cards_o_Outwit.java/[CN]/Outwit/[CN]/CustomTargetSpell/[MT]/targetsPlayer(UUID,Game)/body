@@ -1,0 +1,17 @@
+{
+  StackObject spell=game.getStack().getStackObject(id);
+  if (spell != null) {
+    Ability ability=spell.getStackAbility();
+    if (ability != null && !ability.getTargets().isEmpty()) {
+      for (      Target target : ability.getTargets()) {
+        for (        UUID playerId : target.getTargets()) {
+          Player player=game.getPlayer(playerId);
+          if (player != null) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

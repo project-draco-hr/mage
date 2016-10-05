@@ -1,0 +1,17 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{10}");
+  this.subtype.add("Eldrazi");
+  this.subtype.add("Boar");
+  this.power=new MageInt(7);
+  this.toughness=new MageInt(7);
+  this.addAbility(new EmergeAbility(this,new ManaCostsImpl<>("{6}{G}{G}{G}")));
+  Effect effect=new BoostControlledEffect(2,2,Duration.EndOfTurn);
+  effect.setText("creatures you control get +2/+2");
+  Ability ability=new CastSourceTriggeredAbility(effect);
+  effect=new GainAbilityControlledEffect(TrampleAbility.getInstance(),Duration.EndOfTurn,new FilterCreaturePermanent());
+  effect.setText("and gain trample until end of turn");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  this.addAbility(TrampleAbility.getInstance());
+  this.addAbility(HasteAbility.getInstance());
+}

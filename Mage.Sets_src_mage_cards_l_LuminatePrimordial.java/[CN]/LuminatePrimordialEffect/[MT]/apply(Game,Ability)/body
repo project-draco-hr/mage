@@ -1,0 +1,16 @@
+{
+  for (  Target target : source.getTargets()) {
+    if (target instanceof TargetCreaturePermanent) {
+      Permanent targetCreature=game.getPermanent(target.getFirstTarget());
+      if (targetCreature != null && !targetCreature.getControllerId().equals(source.getControllerId())) {
+        int amountLife=targetCreature.getPower().getValue();
+        Player controller=game.getPlayer(targetCreature.getControllerId());
+        targetCreature.moveToExile(null,null,source.getSourceId(),game);
+        if (controller != null && amountLife != 0) {
+          controller.gainLife(amountLife,game);
+        }
+      }
+    }
+  }
+  return true;
+}

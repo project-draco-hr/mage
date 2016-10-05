@@ -1,0 +1,8 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{B}");
+  this.subtype.add("Zombie");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new BeginningOfEndStepTriggeredAbility(new AddCountersSourceEffect(CounterType.CORPSE.createInstance(),new CreaturesDiedThisTurnCount(),true),TargetController.ANY,false),new CreaturesDiedWatcher());
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new RegenerateSourceEffect(),new RemoveCountersSourceCost(CounterType.CORPSE.createInstance())));
+}

@@ -1,0 +1,28 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int numberColors=ColorsOfManaSpentToCastCount.getInstance().calculate(game,source,this);
+    FilterCard filter=new FilterCard();
+    filter.add(Predicates.or(new CardTypePredicate(CardType.CREATURE),new CardTypePredicate(CardType.INSTANT),new CardTypePredicate(CardType.SORCERY)));
+    filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.LessThan,numberColors + 1));
+    TargetCardInLibrary target=new TargetCardInLibrary(filter);
+    controller.searchLibrary(target,game);
+    Card card=controller.getLibrary().getCard(target.getFirstTarget(),game);
+    if (card != null) {
+      controller.moveCards(card,Zone.EXILED,source,game);
+    }
+    controller.shuffleLibrary(source,game);
+    if (card != null) {
+      if (controller.chooseUse(outcome,"Cast " + card.getName() + " without paying its mana cost?",source,game)) {
+        if (card.getSpellAbility() != null) {
+          controller.cast(card.getSpellAbility(),game,true);
+        }
+ else {
+          Logger.getLogger(BringToLightEffect.class).error("Bring to Light: spellAbility == null " + card.getName());
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

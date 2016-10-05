@@ -1,0 +1,30 @@
+{
+  Permanent permanent=null;
+  if (game != null && source != null) {
+    permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+  }
+  if (permanent != null && game != null) {
+    Mana mana=new Mana();
+    for (    ManaAbility ability : permanent.getAbilities().getManaAbilities(Zone.BATTLEFIELD)) {
+      for (      Mana netMana : ability.getNetMana(game)) {
+        mana.add(netMana);
+      }
+    }
+    boolean tappedLands=false;
+    for (    Permanent opponentPermanent : game.getBattlefield().getActivePermanents(filter,permanent.getControllerId(),game)) {
+      if (opponentPermanent.getControllerId() == permanent.getControllerId()) {
+        Mana opponentLandMana=new Mana();
+        for (        ManaAbility ability : opponentPermanent.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
+          for (          Mana netMana : ability.getNetMana(game)) {
+            opponentLandMana.add(netMana);
+          }
+        }
+        if (mana.containsAny(opponentLandMana)) {
+          tappedLands=opponentPermanent.tap(game) || tappedLands;
+        }
+      }
+    }
+    return tappedLands;
+  }
+  return false;
+}

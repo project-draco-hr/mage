@@ -1,0 +1,25 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player targetOpponent=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (controller != null && targetOpponent != null) {
+    boolean bothHeads=false;
+    while (!bothHeads) {
+      if (!targetOpponent.canRespond() || !controller.canRespond()) {
+        return false;
+      }
+      boolean controllerFlip=controller.flipCoin(game);
+      boolean opponentFlip=targetOpponent.flipCoin(game);
+      if (controllerFlip && opponentFlip) {
+        bothHeads=true;
+      }
+      if (!controllerFlip) {
+        controller.damage(1,source.getSourceId(),game,false,true);
+      }
+      if (!opponentFlip) {
+        targetOpponent.damage(1,source.getSourceId(),game,false,true);
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{B}{B}{B}");
+  this.subtype.add("Zombie");
+  this.subtype.add("Scout");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BecomesBasicLandTargetEffect(Duration.EndOfTurn,"Swamp"),new TapTargetCost(new TargetControlledPermanent(filter)));
+  ability.addTarget(new TargetLandPermanent());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainAbilityTargetEffect(new SwampwalkAbility(false),Duration.EndOfTurn),new TapTargetCost(new TargetControlledPermanent(filter)));
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}

@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{W}{W}");
+  this.subtype.add("Angel");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  this.addAbility(FlyingAbility.getInstance());
+  ConditionalContinuousEffect effect=new ConditionalContinuousEffect(new GainAbilityTargetEffect(IndestructibleAbility.getInstance(),Duration.Custom),new SourceOnBattlefieldControlUnchangedCondition(),"another target permanent is indestructible for as long as you control Aegis Angel");
+  Ability ability=new EntersBattlefieldTriggeredAbility(effect,false);
+  Target target=new TargetPermanent(filter);
+  ability.addTarget(target);
+  this.addAbility(ability);
+}

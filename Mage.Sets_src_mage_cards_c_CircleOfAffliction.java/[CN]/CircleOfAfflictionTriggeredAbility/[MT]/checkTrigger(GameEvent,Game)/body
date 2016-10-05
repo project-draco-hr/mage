@@ -1,0 +1,15 @@
+{
+  Permanent circleOfAffliction=game.getPermanentOrLKIBattlefield(getSourceId());
+  if (circleOfAffliction != null) {
+    ObjectColor chosenColor=(ObjectColor)game.getState().getValue(circleOfAffliction.getId() + "_color");
+    if (chosenColor != null) {
+      MageObject damageSource=game.getObject(event.getSourceId());
+      if (damageSource != null) {
+        if (damageSource.getColor(game).shares(chosenColor)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

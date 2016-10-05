@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.PLANESWALKER},"{3}{W}{W}");
+  this.subtype.add("Nahiri");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(3));
+  this.addAbility(new LoyaltyAbility(new NahiriTheLithomancerFirstAbilityEffect(),2));
+  this.addAbility(new LoyaltyAbility(new NahiriTheLithomancerSecondAbilityEffect(),-2));
+  Effect effect=new CreateTokenEffect(new NahiriTheLithomancerEquipmentToken());
+  effect.setText("Put a colorless Equipment artifact token named Stoneforged Blade onto the battlefield. It has indestructible, \"Equipped creature gets +5/+5 and has double strike,\" and equip {0}");
+  this.addAbility(new LoyaltyAbility(effect,-10));
+  this.addAbility(CanBeYourCommanderAbility.getInstance());
+}

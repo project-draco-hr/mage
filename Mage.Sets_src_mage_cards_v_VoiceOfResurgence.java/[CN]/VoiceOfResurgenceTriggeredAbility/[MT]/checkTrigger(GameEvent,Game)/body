@@ -1,0 +1,13 @@
+{
+  if (event.getType() == GameEvent.EventType.SPELL_CAST) {
+    Spell spell=game.getStack().getSpell(event.getTargetId());
+    if (spell != null && game.getOpponents(super.getControllerId()).contains(spell.getControllerId()) && game.getActivePlayerId().equals(super.getControllerId())) {
+      return true;
+    }
+  }
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && getSourceId().equals(event.getTargetId())) {
+    ZoneChangeEvent zce=(ZoneChangeEvent)event;
+    return zce.getFromZone().equals(Zone.BATTLEFIELD) && zce.getToZone().equals(Zone.GRAVEYARD);
+  }
+  return false;
+}

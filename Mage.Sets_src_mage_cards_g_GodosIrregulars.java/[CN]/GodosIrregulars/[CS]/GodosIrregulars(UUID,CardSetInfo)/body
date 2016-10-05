@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{R}");
+  this.subtype.add("Human");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new ManaCostsImpl("{R"));
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("creature blocking it");
+  filter.add(new BlockingAttackerIdPredicate(this.getId()));
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability);
+}

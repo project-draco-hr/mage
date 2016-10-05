@@ -1,0 +1,20 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{4}");
+  Ability ability1=new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainLifeEffect(4),new GenericManaCost(1));
+  ability1.addCost(new TapSourceCost());
+  ability1.addCost(new DiscardTargetCost(new TargetCardInHand()));
+  this.addAbility(ability1);
+  Ability ability2=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new GoatToken()),new GenericManaCost(1));
+  ability2.addCost(new TapSourceCost());
+  ability2.addCost(new PayLifeCost(1));
+  this.addAbility(ability2);
+  Ability ability3=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ReturnFromGraveyardToHandTargetEffect(),new GenericManaCost(1));
+  ability3.addTarget(new TargetCardInGraveyard(new FilterArtifactCard("an artifact card in your graveyard")));
+  ability3.addCost(new TapSourceCost());
+  ability3.addCost(new SacrificeTargetCost(new TargetControlledPermanent(new FilterControlledCreaturePermanent("a creature"))));
+  this.addAbility(ability3);
+  Ability ability4=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DrawCardSourceControllerEffect(1),new GenericManaCost(1));
+  ability4.addCost(new TapSourceCost());
+  ability4.addCost(new SacrificeTargetCost(new TargetControlledPermanent(new FilterControlledArtifactPermanent("an artifact"))));
+  this.addAbility(ability4);
+}

@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Cards cards=new CardsImpl();
+    Card card=player.getLibrary().getFromTop(game);
+    cards.add(card);
+    player.revealCards("Cruel Deceiver",cards,game);
+    if (card != null && card.getCardType().contains(CardType.LAND)) {
+      game.addEffect(new BoostSourceEffect(2,2,Duration.EndOfTurn),source);
+      game.addEffect(new GainAbilitySourceEffect(TrampleAbility.getInstance(),Duration.EndOfTurn),source);
+    }
+    return true;
+  }
+  return false;
+}

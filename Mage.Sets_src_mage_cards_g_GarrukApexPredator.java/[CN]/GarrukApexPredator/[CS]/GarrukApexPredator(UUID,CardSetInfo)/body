@@ -1,0 +1,19 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.PLANESWALKER},"{5}{B}{G}");
+  this.subtype.add("Garruk");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(5));
+  LoyaltyAbility ability=new LoyaltyAbility(new DestroyTargetEffect(),1);
+  ability.addTarget(new TargetPermanent(filter));
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new CreateTokenEffect(new GarrukApexPredatorBeastToken()),1);
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new DestroyTargetEffect(),-3);
+  ability.addEffect(new GarrukApexPredatorEffect3());
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+  Effect effect=new GetEmblemTargetPlayerEffect(new GarrukApexPredatorEmblem());
+  effect.setText("Target opponent gets an emblem with \"Whenever a creature attacks you, it gets +5/+5 and gains trample until end of turn.\"");
+  ability=new LoyaltyAbility(effect,-8);
+  ability.addTarget(new TargetOpponent());
+  this.addAbility(ability);
+}

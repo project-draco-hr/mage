@@ -1,0 +1,46 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (sourceObject != null && controller != null) {
+    Cards cards=new CardsImpl();
+    cards.addAll(controller.getLibrary().getTopCards(game,4));
+    boolean creatureCardFound=false;
+    boolean landCardFound=false;
+    for (    UUID cardId : cards) {
+      Card card=game.getCard(cardId);
+      if (card != null) {
+        cards.add(card);
+        if (card.getCardType().contains(CardType.CREATURE)) {
+          creatureCardFound=true;
+        }
+        if (card.getCardType().contains(CardType.LAND)) {
+          landCardFound=true;
+        }
+      }
+    }
+    if (!cards.isEmpty()) {
+      controller.revealCards(sourceObject.getName(),cards,game);
+      if ((creatureCardFound || landCardFound) && controller.chooseUse(Outcome.DrawCard,"Put a creature card and/or a land card into your hand?",source,game)) {
+        TargetCard target=new TargetCard(Zone.LIBRARY,new FilterCreatureCard("creature card to put into your hand"));
+        if (creatureCardFound && controller.chooseTarget(Outcome.DrawCard,cards,target,source,game)) {
+          Card card=cards.get(target.getFirstTarget(),game);
+          if (card != null) {
+            cards.remove(card);
+            controller.moveCards(card,Zone.HAND,source,game);
+          }
+        }
+        target=new TargetCard(Zone.LIBRARY,new FilterLandCard("land card to put into your hand"));
+        if (landCardFound && controller.chooseTarget(Outcome.DrawCard,cards,target,source,game)) {
+          Card card=cards.get(target.getFirstTarget(),game);
+          if (card != null) {
+            cards.remove(card);
+            controller.moveCards(card,Zone.HAND,source,game);
+          }
+        }
+      }
+    }
+    controller.moveCards(cards,Zone.GRAVEYARD,source,game);
+    return true;
+  }
+  return false;
+}

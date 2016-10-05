@@ -1,0 +1,43 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Map<Permanent,Integer> chosenCards=new HashMap<>(2);
+    int maxCount=0;
+    FilterNonlandPermanent filter=new FilterNonlandPermanent("a nonland permanent " + controller.getLogName() + " doesn't control");
+    filter.add(Predicates.not(new ControllerIdPredicate(controller.getId())));
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        Target target=new TargetNonlandPermanent(filter);
+        target.setNotTarget(true);
+        if (player.choose(Outcome.Exile,target,source.getSourceId(),game)) {
+          Permanent permanent=game.getPermanent(target.getFirstTarget());
+          if (permanent != null) {
+            if (chosenCards.containsKey(permanent)) {
+              int count=chosenCards.get(permanent) + 1;
+              if (count > maxCount) {
+                maxCount=count;
+              }
+              chosenCards.put(permanent,count);
+            }
+ else {
+              if (maxCount == 0) {
+                maxCount=1;
+              }
+              chosenCards.put(permanent,1);
+            }
+            game.informPlayers(player.getLogName() + " has chosen: " + permanent.getName());
+          }
+        }
+      }
+    }
+    for (    Entry<Permanent,Integer> entry : chosenCards.entrySet()) {
+      if (entry.getValue() == maxCount) {
+        Permanent permanent=entry.getKey();
+        controller.moveCardToExileWithInfo(permanent,null,"",source.getSourceId(),game,Zone.BATTLEFIELD,true);
+      }
+    }
+    return true;
+  }
+  return false;
+}

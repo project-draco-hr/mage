@@ -1,0 +1,12 @@
+{
+  Permanent targetCreature=game.getPermanent(source.getFirstTarget());
+  if (targetCreature != null) {
+    FilterCreaturePermanent filter=new FilterCreaturePermanent();
+    filter.add(new PermanentIdPredicate(targetCreature.getId()));
+    game.addEffect(new PreventAllDamageByAllPermanentsEffect(filter,Duration.EndOfTurn,false),source);
+    if (targetCreature.getColor(game).contains(ObjectColor.BLACK) || targetCreature.getColor(game).contains(ObjectColor.RED)) {
+      return targetCreature.destroy(source.getSourceId(),game,false);
+    }
+  }
+  return false;
+}

@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{G}{G}");
+  this.subtype.add("Human");
+  this.subtype.add("Monk");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.flipCard=true;
+  this.flipCardName="Ichiga, Who Topples Oaks";
+  this.addAbility(new SpellCastControllerTriggeredAbility(new AddCountersSourceEffect(CounterType.KI.createInstance()),filter,true));
+  this.addAbility(new ConditionalTriggeredAbility(new OnEventTriggeredAbility(GameEvent.EventType.END_TURN_STEP_PRE,"beginning of the end step",true,new FlipSourceEffect(new IchigaWhoTopplesOaks()),true),new SourceHasCounterCondition(CounterType.KI,2,Integer.MAX_VALUE),"At the beginning of the end step, if there are two or more ki counters on {this}, you may flip it."));
+}

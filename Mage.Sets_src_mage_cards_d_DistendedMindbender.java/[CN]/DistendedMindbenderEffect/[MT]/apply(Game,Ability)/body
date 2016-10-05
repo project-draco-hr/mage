@@ -1,0 +1,29 @@
+{
+  Player opponent=game.getPlayer(source.getFirstTarget());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (opponent != null && controller != null) {
+    opponent.revealCards("Distended Mindbender",opponent.getHand(),game);
+    TargetCard targetThreeOrLess=new TargetCard(1,Zone.HAND,filterThreeOrLess);
+    TargetCard targetFourOrGreater=new TargetCard(1,Zone.HAND,filterFourOrGreater);
+    if (controller.choose(Outcome.Benefit,opponent.getHand(),targetThreeOrLess,game)) {
+      List<UUID> targets=targetThreeOrLess.getTargets();
+      for (      UUID targetId : targets) {
+        Card card=opponent.getHand().get(targetId,game);
+        if (card != null) {
+          opponent.discard(card,source,game);
+        }
+      }
+    }
+    if (controller.choose(Outcome.Benefit,opponent.getHand(),targetFourOrGreater,game)) {
+      List<UUID> targets=targetFourOrGreater.getTargets();
+      for (      UUID targetId : targets) {
+        Card card=opponent.getHand().get(targetId,game);
+        if (card != null) {
+          opponent.discard(card,source,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

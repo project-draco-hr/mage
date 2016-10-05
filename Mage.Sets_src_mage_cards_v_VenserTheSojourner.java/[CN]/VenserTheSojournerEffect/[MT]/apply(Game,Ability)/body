@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    if (getTargetPointer().getFirst(game,source) != null) {
+      Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+      if (permanent != null) {
+        if (controller.moveCardToExileWithInfo(permanent,source.getSourceId(),sourceObject.getIdName(),source.getSourceId(),game,Zone.BATTLEFIELD,true)) {
+          game.addDelayedTriggeredAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Zone.BATTLEFIELD)),source);
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

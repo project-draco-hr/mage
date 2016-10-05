@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{R}{R}");
+  this.subtype.add("Human");
+  this.subtype.add("Wizard");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new LoseLifeTargetEffect(2),new ManaCostsImpl("{B}{B}"));
+  ability.addEffect(new GainLifeEffect(2));
+  ability.addCost(new TapSourceCost());
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostControlledEffect(2,2,Duration.EndOfTurn),new ManaCostsImpl("{G}{G}"));
+  ability.addCost(new TapSourceCost());
+  this.addAbility(ability);
+}

@@ -1,0 +1,13 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Card card=game.getCard(source.getSourceId());
+  if (card != null && controller != null) {
+    Permanent permanent=game.getPermanent(source.getFirstTarget());
+    if (permanent != null) {
+      permanent.destroy(source.getSourceId(),game,false);
+    }
+    controller.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.GRAVEYARD,true,true);
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,24 @@
+{
+  for (  Permanent land : game.getBattlefield().getActivePermanents(new FilterLandPermanent(),source.getControllerId(),game)) {
+switch (layer) {
+case TypeChangingEffects_4:
+      if (!land.getSubtype(game).contains("Island")) {
+        land.getSubtype(game).add("Island");
+      }
+    break;
+case AbilityAddingRemovingEffects_6:
+  boolean addAbility=true;
+for (Ability existingAbility : land.getAbilities()) {
+  if (existingAbility instanceof BlueManaAbility) {
+    addAbility=false;
+    break;
+  }
+}
+if (addAbility) {
+land.addAbility(new BlueManaAbility(),source.getSourceId(),game);
+}
+break;
+}
+}
+return true;
+}

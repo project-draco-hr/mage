@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{W}{W}");
+  this.subtype.add("Human");
+  this.subtype.add("Cleric");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability ability=new EntersBattlefieldTriggeredAbility(new BanisherPriestExileEffect());
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  ability.addEffect(new CreateDelayedTriggeredAbilityEffect(new OnLeaveReturnExiledToBattlefieldAbility()));
+  this.addAbility(ability);
+}

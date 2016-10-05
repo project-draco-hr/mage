@@ -1,0 +1,20 @@
+{
+  if ((event.getType() == EventType.DAMAGED_PLAYER && event.getTargetId().equals(this.getControllerId())) && ((DamagedEvent)event).isCombatDamage()) {
+    if (!game.getPhase().getStep().equals(stepTriggeredPlayer) || game.getTurnNum() != turnTriggeredPlayer) {
+      stepTriggeredPlayer=game.getPhase().getStep();
+      turnTriggeredPlayer=game.getTurnNum();
+      return true;
+    }
+  }
+  if (event.getType() == EventType.DAMAGED_PLANESWALKER && ((DamagedEvent)event).isCombatDamage()) {
+    Permanent permanent=game.getPermanent(event.getTargetId());
+    if (permanent != null && permanent.getControllerId().equals(this.getControllerId())) {
+      if (!game.getPhase().getStep().equals(stepTriggeredPlansewalker) || game.getTurnNum() != turnTriggeredPlaneswalker) {
+        stepTriggeredPlansewalker=game.getPhase().getStep();
+        turnTriggeredPlaneswalker=game.getTurnNum();
+        return true;
+      }
+    }
+  }
+  return false;
+}

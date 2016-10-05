@@ -1,0 +1,25 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Card sourceCard=game.getCard(source.getSourceId());
+  if (player == null || sourceCard == null) {
+    return false;
+  }
+  int xCost=source.getManaCostsToPay().getX();
+  FilterCard filter=new FilterCard(new StringBuilder("creature card with converted mana cost ").append(xCost).append(" or less").toString());
+  filter.add(new CardTypePredicate(CardType.CREATURE));
+  filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.LessThan,xCost + 1));
+  TargetCardInLibrary target=new TargetCardInLibrary(0,1,filter);
+  if (player.searchLibrary(target,game)) {
+    if (target.getTargets().size() > 0) {
+      Card card=player.getLibrary().getCard(target.getFirstTarget(),game);
+      if (card != null) {
+        game.informPlayers(new StringBuilder(sourceCard.getName()).append(": Put ").append(card.getName()).append(" onto the battlefield").toString());
+        card.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),source.getControllerId());
+      }
+    }
+    player.shuffleLibrary(source,game);
+    return true;
+  }
+  player.shuffleLibrary(source,game);
+  return false;
+}

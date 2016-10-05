@@ -1,0 +1,25 @@
+{
+  for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(filter,blocker.getControllerId(),game)) {
+    if (permanent.isTapped() && !game.getState().getContinuousEffects().asThough(this.getId(),AsThoughEffectType.BLOCK_TAPPED,source,blocker.getControllerId(),game)) {
+      return false;
+    }
+    for (    Map.Entry<RestrictionEffect,HashSet<Ability>> entry : game.getContinuousEffects().getApplicableRestrictionEffects(permanent,game).entrySet()) {
+      for (      Ability ability : entry.getValue()) {
+        if (!entry.getKey().canBlock(attacker,permanent,ability,game)) {
+          return false;
+        }
+      }
+    }
+    for (    Map.Entry<RestrictionEffect,HashSet<Ability>> restrictionEntry : game.getContinuousEffects().getApplicableRestrictionEffects(attacker,game).entrySet()) {
+      for (      Ability ability : restrictionEntry.getValue()) {
+        if (!(restrictionEntry.getKey() instanceof CantBeBlockedUnlessAllEffect) && !restrictionEntry.getKey().canBeBlocked(attacker,permanent,ability,game)) {
+          return false;
+        }
+      }
+    }
+    if (attacker.hasProtectionFrom(permanent,game)) {
+      return false;
+    }
+  }
+  return true;
+}

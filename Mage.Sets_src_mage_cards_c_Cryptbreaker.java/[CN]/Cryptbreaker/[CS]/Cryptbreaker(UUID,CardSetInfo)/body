@@ -1,0 +1,17 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{B}");
+  this.subtype.add("Zombie");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new ZombieToken()),new ManaCostsImpl("{1}{B}"));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new DiscardCardCost());
+  this.addAbility(ability);
+  Effect effect=new DrawCardSourceControllerEffect(1);
+  effect.setText("You draw a card");
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new TapTargetCost(new TargetControlledCreaturePermanent(3,3,filter,true)));
+  effect=new LoseLifeSourceControllerEffect(1);
+  effect.setText("and you lose 1 life");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

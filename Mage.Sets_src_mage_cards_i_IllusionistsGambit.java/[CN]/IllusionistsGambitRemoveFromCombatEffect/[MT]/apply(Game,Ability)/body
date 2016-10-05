@@ -1,0 +1,19 @@
+{
+  List<UUID> attackers=game.getCombat().getAttackers();
+  for (  UUID attackerId : attackers) {
+    Permanent creature=game.getPermanent(attackerId);
+    if (creature != null) {
+      creature.removeFromCombat(game);
+      creature.untap(game);
+    }
+  }
+  if (!attackers.isEmpty()) {
+    Phase phase=game.getTurn().getPhase();
+    game.getState().getTurnMods().add(new TurnMod(game.getActivePlayerId(),TurnPhase.COMBAT,null,false));
+    ContinuousEffect effect=new IllusionistsGambitRequirementEffect(attackers,phase);
+    game.addEffect(effect,source);
+    effect=new IllusionistsGambitRestrictionEffect(attackers,phase);
+    game.addEffect(effect,source);
+  }
+  return true;
+}

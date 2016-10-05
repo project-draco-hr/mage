@@ -1,0 +1,8 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.SORCERY},"{2}{R}");
+  Effect effect=new CreateDelayedTriggeredAbilityEffect(new HowlOfTheHordeDelayedTriggeredAbility());
+  effect.setText("When you cast your next instant or sorcery spell this turn, copy that spell. You may choose new targets for the copy.");
+  this.getSpellAbility().addEffect(effect);
+  this.getSpellAbility().addEffect(new ConditionalOneShotEffect(new CreateDelayedTriggeredAbilityEffect(new HowlOfTheHordeDelayedTriggeredAbility()),RaidCondition.getInstance(),"<br><br><i>Raid</i> - If you attacked with a creature this turn, when you cast your next instant or sorcery spell this turn, copy that spell an additional time. You may choose new targets for the copy."));
+  this.getSpellAbility().addWatcher(new PlayerAttackedWatcher());
+}

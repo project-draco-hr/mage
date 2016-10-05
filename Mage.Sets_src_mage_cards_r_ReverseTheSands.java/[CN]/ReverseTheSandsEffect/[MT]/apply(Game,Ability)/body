@@ -1,0 +1,37 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Choice lifeChoice=new ChoiceImpl(true);
+    Set<String> choices=new HashSet<String>();
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        choices.add(new StringBuilder(Integer.toString(player.getLife())).append(" life of ").append(player.getLogName()).toString());
+      }
+    }
+    lifeChoice.setChoices(choices);
+    for (    UUID playersId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      Player player=game.getPlayer(playersId);
+      if (player != null) {
+        String selectedChoice;
+        if (choices.size() > 1) {
+          lifeChoice.setMessage("Which players life should get player " + player.getLogName());
+          controller.choose(Outcome.Detriment,lifeChoice,game);
+          selectedChoice=lifeChoice.getChoice();
+        }
+ else {
+          selectedChoice=choices.iterator().next();
+        }
+        int index=selectedChoice.indexOf(" ");
+        if (index > 0) {
+          String lifeString=selectedChoice.substring(0,index);
+          int life=Integer.parseInt(lifeString);
+          player.setLife(life,game);
+          choices.remove(selectedChoice);
+          game.informPlayers(new StringBuilder("Player ").append(player.getLogName()).append(" life set to ").append(life).toString());
+        }
+      }
+    }
+  }
+  return false;
+}

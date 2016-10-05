@@ -1,0 +1,13 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cost cost=new ManaCostsImpl("{U}{U}");
+    String message="Would you like to pay {U}{U} to prevent {this} from phasing out?";
+    if (!(controller.chooseUse(Outcome.Benefit,message,source,game) && cost.pay(source,game,source.getSourceId(),controller.getId(),false,null))) {
+      permanent.phaseOut(game);
+    }
+    return true;
+  }
+  return false;
+}

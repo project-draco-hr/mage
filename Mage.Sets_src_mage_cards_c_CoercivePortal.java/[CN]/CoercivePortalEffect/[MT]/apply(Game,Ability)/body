@@ -1,0 +1,29 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int carnageCount=0;
+    int homageCount=0;
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        if (player.chooseUse(Outcome.DestroyPermanent,"Choose carnage?",source,game)) {
+          carnageCount++;
+          game.informPlayers(player.getLogName() + " has voted for carnage");
+        }
+ else {
+          homageCount++;
+          game.informPlayers(player.getLogName() + " has voted for homage");
+        }
+      }
+    }
+    if (carnageCount > homageCount) {
+      new SacrificeSourceEffect().apply(game,source);
+      new DestroyAllEffect(new FilterNonlandPermanent()).apply(game,source);
+    }
+ else {
+      controller.drawCards(1,game);
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{W}{W}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Cat");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  this.addAbility(FirstStrikeAbility.getInstance());
+  DynamicValue xValue=new AttackingCreatureCount("the number of attacking creatures");
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostControlledEffect(xValue,xValue,Duration.EndOfTurn,new FilterAttackingCreature("Attacking creatures"),false),new ManaCostsImpl("{3}{W}{W}")));
+}

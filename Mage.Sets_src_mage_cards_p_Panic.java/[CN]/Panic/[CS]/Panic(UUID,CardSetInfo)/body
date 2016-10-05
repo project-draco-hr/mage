@@ -1,0 +1,7 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{R}");
+  this.addAbility(new CastOnlyDuringPhaseStepSourceAbility(TurnPhase.COMBAT,BeforeBlockersAreDeclaredCondition.getInstance()));
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent());
+  this.getSpellAbility().addEffect(new CantBlockTargetEffect(Duration.EndOfTurn));
+  this.getSpellAbility().addEffect(new CreateDelayedTriggeredAbilityEffect(new AtTheBeginOfNextUpkeepDelayedTriggeredAbility(new DrawCardSourceControllerEffect(1)),false));
+}

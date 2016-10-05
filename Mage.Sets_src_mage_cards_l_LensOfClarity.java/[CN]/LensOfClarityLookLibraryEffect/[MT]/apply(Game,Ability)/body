@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject mageObject=game.getObject(source.getSourceId());
+  if (controller == null || mageObject == null) {
+    return false;
+  }
+  Card card=controller.getLibrary().getFromTop(game);
+  if (card != null) {
+    Cards cards=new CardsImpl();
+    cards.add(card);
+    controller.lookAtCards("top card of library - " + controller.getName(),cards,game);
+    game.informPlayers(controller.getLogName() + " looks at the top card of his or her library");
+  }
+ else {
+    return false;
+  }
+  return true;
+}

@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{G}{G}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Elf");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability ezuriRegen=new SimpleActivatedAbility(Zone.BATTLEFIELD,new RegenerateTargetEffect(),new ManaCostsImpl("{G}"));
+  TargetControlledCreaturePermanent regenTarget=new TargetControlledCreaturePermanent(1,1,notEzuri,false);
+  regenTarget.setTargetName("another target Elf");
+  ezuriRegen.addTarget(regenTarget);
+  this.addAbility(ezuriRegen);
+  Ability ezuriBoost=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostControlledEffect(3,3,Duration.EndOfTurn,elfFilter,false),new ManaCostsImpl("{2}{G}{G}{G}"));
+  ezuriBoost.addEffect(new GainAbilityControlledEffect(TrampleAbility.getInstance(),Duration.EndOfTurn,elfFilter));
+  this.addAbility(ezuriBoost);
+}

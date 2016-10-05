@@ -1,0 +1,24 @@
+{
+  Player sourcePlayer=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(source.getTargets().getFirstTarget());
+  if (sourcePlayer != null && targetPlayer != null) {
+    int lifePlayer1=sourcePlayer.getLife();
+    int lifePlayer2=targetPlayer.getLife();
+    if (Math.abs(lifePlayer1 - lifePlayer2) > 5) {
+      return false;
+    }
+    if (lifePlayer1 == lifePlayer2) {
+      return false;
+    }
+    if (lifePlayer1 < lifePlayer2 && (!sourcePlayer.isCanGainLife() || !targetPlayer.isCanLoseLife())) {
+      return false;
+    }
+    if (lifePlayer1 > lifePlayer2 && (!sourcePlayer.isCanLoseLife() || !targetPlayer.isCanGainLife())) {
+      return false;
+    }
+    sourcePlayer.setLife(lifePlayer2,game);
+    targetPlayer.setLife(lifePlayer1,game);
+    return true;
+  }
+  return false;
+}

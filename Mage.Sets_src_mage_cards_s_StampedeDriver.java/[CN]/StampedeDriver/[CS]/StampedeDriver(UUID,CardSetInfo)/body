@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{G}");
+  this.subtype.add("Human");
+  this.subtype.add("Spellshaper");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Duration.EndOfTurn),new ManaCostsImpl("{1}{G}"));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new DiscardTargetCost(new TargetCardInHand()));
+  ability.addEffect(new GainAbilityControlledEffect(TrampleAbility.getInstance(),Duration.EndOfTurn,new FilterCreaturePermanent()));
+  this.addAbility(ability);
+}

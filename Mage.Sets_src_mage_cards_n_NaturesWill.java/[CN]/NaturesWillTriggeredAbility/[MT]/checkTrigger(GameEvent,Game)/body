@@ -1,0 +1,23 @@
+{
+  if (event.getType() == EventType.DAMAGED_PLAYER) {
+    DamagedPlayerEvent damageEvent=(DamagedPlayerEvent)event;
+    Permanent p=game.getPermanent(event.getSourceId());
+    if (damageEvent.isCombatDamage() && p != null && p.getControllerId().equals(this.getControllerId())) {
+      madeDamge=true;
+      damagedPlayers.add(event.getPlayerId());
+    }
+  }
+  if (event.getType().equals(EventType.COMBAT_DAMAGE_STEP_POST)) {
+    if (madeDamge) {
+      Set<UUID> damagedPlayersCopy=new HashSet<UUID>();
+      damagedPlayersCopy.addAll(damagedPlayers);
+      for (      Effect effect : this.getEffects()) {
+        effect.setValue("damagedPlayers",damagedPlayersCopy);
+      }
+      damagedPlayers.clear();
+      madeDamge=false;
+      return true;
+    }
+  }
+  return false;
+}

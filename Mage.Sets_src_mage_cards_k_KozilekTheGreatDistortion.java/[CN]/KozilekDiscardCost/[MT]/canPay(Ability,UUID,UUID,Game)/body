@@ -1,0 +1,18 @@
+{
+  if (game.getStack().isEmpty()) {
+    return false;
+  }
+  Set<Integer> stackCMC=new HashSet<>();
+  for (  StackObject stackObject : game.getStack()) {
+    if (stackObject instanceof Spell) {
+      stackCMC.add(stackObject.getConvertedManaCost());
+    }
+  }
+  Player controller=game.getPlayer(ability.getControllerId());
+  for (  Card card : controller.getHand().getCards(game)) {
+    if (stackCMC.contains(card.getConvertedManaCost())) {
+      return true;
+    }
+  }
+  return false;
+}

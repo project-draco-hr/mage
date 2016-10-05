@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{W}{W}");
+  this.subtype.add("Kor");
+  this.subtype.add("Soldier");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new KickerAbility("{1}{W}"));
+  this.addAbility(FlyingAbility.getInstance());
+  EntersBattlefieldTriggeredAbility ability=new EntersBattlefieldTriggeredAbility(new GainAbilityTargetEffect(FlyingAbility.getInstance(),Duration.EndOfTurn),false);
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(new ConditionalTriggeredAbility(ability,KickedCondition.getInstance(),"When {this} enters the battlefield, if it was kicked, target creature gains flying until end of turn."));
+}

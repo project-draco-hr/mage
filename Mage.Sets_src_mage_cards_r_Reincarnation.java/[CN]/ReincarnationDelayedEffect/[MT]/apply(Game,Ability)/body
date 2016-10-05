@@ -1,0 +1,20 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent permanent=(Permanent)game.getLastKnownInformation(target,Zone.BATTLEFIELD);
+  if (permanent != null && controller != null) {
+    Player player=game.getPlayer(permanent.getOwnerId());
+    if (player != null) {
+      FilterCreatureCard filter=new FilterCreatureCard(new StringBuilder("a creature card from ").append(player.getLogName()).append("'s graveyard").toString());
+      filter.add(new OwnerIdPredicate(player.getId()));
+      Target targetCreature=new TargetCardInGraveyard(filter);
+      if (targetCreature.canChoose(source.getSourceId(),controller.getId(),game) && controller.chooseTarget(outcome,targetCreature,source,game)) {
+        Card card=game.getCard(targetCreature.getFirstTarget());
+        if (card != null && game.getState().getZone(card.getId()).equals(Zone.GRAVEYARD)) {
+          return card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),player.getId());
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,18 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{U}{U}");
+  this.subtype.add("Shapeshifter");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  this.addAbility(new MorphAbility(this,new ManaCostsImpl("{1}{U}")));
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new AsTurnedFaceUpEffect(new VesuvanShapeshifterEffect(),false));
+  ability.setWorksFaceDown(true);
+  this.addAbility(ability);
+  Effect effect=new CopyPermanentEffect(new FilterCreaturePermanent(),new vesuvanShapeShifterFaceUpApplier());
+  effect.setText(effectText);
+  ability=new EntersBattlefieldAbility(effect,true);
+  ability.setWorksFaceDown(false);
+  this.addAbility(ability);
+  effect=new VesuvanShapeshifterFaceDownEffect();
+  ability=new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,effect,TargetController.YOU,true);
+  this.addAbility(ability);
+}

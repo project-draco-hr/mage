@@ -1,0 +1,44 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Cards allCards=new CardsImpl();
+    Cards cards=new CardsImpl();
+    allCards.addAll(player.getLibrary().getCardList());
+    allCards.addAll(player.getGraveyard());
+    int number=Math.min(5,allCards.size());
+    TargetCard target=new TargetCard(number,number,Zone.ALL,new FilterCard());
+    if (player.choose(Outcome.Benefit,allCards,target,game)) {
+      for (      UUID uuid : allCards) {
+        if (!target.getTargets().contains(uuid)) {
+          Card card=game.getCard(uuid);
+          if (card != null) {
+            card.moveToExile(null,"Doomsday",source.getSourceId(),game);
+          }
+        }
+ else {
+          cards.add(uuid);
+        }
+      }
+      target=new TargetCard(Zone.ALL,new FilterCard("Card to put on top"));
+      while (cards.size() > 1 && player.canRespond()) {
+        player.choose(Outcome.Neutral,cards,target,game);
+        Card card=cards.get(target.getFirstTarget(),game);
+        if (card != null) {
+          cards.remove(card);
+          card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
+        }
+        target.clearChosen();
+      }
+      if (cards.size() == 1) {
+        Card card=cards.get(cards.iterator().next(),game);
+        card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
+      }
+    }
+    int amount=(player.getLife() + 1) / 2;
+    if (amount > 0) {
+      player.loseLife(amount,game,false);
+    }
+    return true;
+  }
+  return false;
+}

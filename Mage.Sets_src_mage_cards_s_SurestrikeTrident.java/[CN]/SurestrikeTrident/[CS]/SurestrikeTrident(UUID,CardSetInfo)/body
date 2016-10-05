@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{2}");
+  this.subtype.add("Equipment");
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(FirstStrikeAbility.getInstance(),AttachmentType.EQUIPMENT));
+  DynamicValue xValue=new SourcePermanentPowerCount();
+  Effect effect=new DamageTargetEffect(xValue);
+  effect.setText("This creature deals damage equal to its power to target player");
+  Ability gainedAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new TapSourceCost());
+  gainedAbility.addTarget(new TargetPlayer());
+  gainedAbility.addCost(new SurestrikeTridentUnattachCost(getName(),getId()));
+  effect=new GainAbilityAttachedEffect(gainedAbility,AttachmentType.EQUIPMENT);
+  effect.setText("and \"{T}, Unattach {this}: This creature deals damage equal to its power to target player.\"");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  this.addAbility(new EquipAbility(Outcome.Benefit,new GenericManaCost(4)));
+}

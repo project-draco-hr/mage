@@ -1,0 +1,35 @@
+{
+  List<Card> chosenCards=new ArrayList<Card>();
+  List<String> namesFiltered=new ArrayList<String>();
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  List<Permanent> creatures=game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game);
+  for (  Permanent creature : creatures) {
+    final String creatureName=creature.getName();
+    if (!namesFiltered.contains(creatureName)) {
+      StringBuilder sb=new StringBuilder();
+      sb.append("Search for ").append(creatureName).append(" in your library?");
+      if (player.chooseUse(Outcome.PutCreatureInPlay,sb.toString(),source,game)) {
+        FilterCreatureCard filter=new FilterCreatureCard("creature card named" + creatureName);
+        filter.add(new NamePredicate(creatureName));
+        TargetCardInLibrary target=new TargetCardInLibrary(filter);
+        if (player.searchLibrary(target,game)) {
+          Card card=player.getLibrary().getCard(target.getFirstTarget(),game);
+          if (card != null) {
+            chosenCards.add(card);
+          }
+        }
+      }
+ else {
+        namesFiltered.add(creatureName);
+      }
+    }
+  }
+  for (  Card card : chosenCards) {
+    card.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),source.getControllerId());
+  }
+  player.shuffleLibrary(source,game);
+  return true;
+}

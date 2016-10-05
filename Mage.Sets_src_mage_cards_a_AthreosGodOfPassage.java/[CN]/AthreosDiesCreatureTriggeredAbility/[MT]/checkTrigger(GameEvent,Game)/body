@@ -1,0 +1,13 @@
+{
+  ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+  if (zEvent.getFromZone().equals(Zone.BATTLEFIELD) && zEvent.getToZone().equals(Zone.GRAVEYARD)) {
+    Permanent permanent=(Permanent)game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
+    if (permanent != null && filter.match(permanent,sourceId,controllerId,game)) {
+      for (      Effect effect : this.getEffects()) {
+        effect.setValue("creatureId",event.getTargetId());
+      }
+      return true;
+    }
+  }
+  return false;
+}

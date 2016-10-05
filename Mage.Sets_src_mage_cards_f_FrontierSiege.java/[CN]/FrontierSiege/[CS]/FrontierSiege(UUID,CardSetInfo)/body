@@ -1,0 +1,8 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{3}{G}");
+  this.addAbility(new EntersBattlefieldAbility(new ChooseModeEffect("Khans or Dragons?","Khans","Dragons"),null,"As {this} enters the battlefield, choose Khans or Dragons.",""));
+  this.addAbility(new ConditionalTriggeredAbility(new FrontierSiegeKhansTriggeredAbility(),new ModeChoiceSourceCondition("Khans"),ruleTrigger1));
+  Ability ability2=new ConditionalTriggeredAbility(new EntersBattlefieldControlledTriggeredAbility(Zone.BATTLEFIELD,new FrontierSiegeFightEffect(),filter,true,SetTargetPointer.PERMANENT,""),new ModeChoiceSourceCondition("Dragons"),ruleTrigger2);
+  ability2.addTarget(new TargetCreaturePermanent(filter2));
+  this.addAbility(ability2);
+}

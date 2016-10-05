@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{W}");
+  this.subtype.add("Kor");
+  this.subtype.add("Artificer");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(2);
+  TargetCardInLibrary target=new TargetCardInLibrary(1,1,filter);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new SearchLibraryPutInHandEffect(target,true,true),true));
+  SimpleActivatedAbility ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new PutPermanentOnBattlefieldEffect(filter),new ManaCostsImpl("{1}{W}"));
+  ability.addCost(new TapSourceCost());
+  this.addAbility(ability);
+}

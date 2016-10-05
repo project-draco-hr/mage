@@ -1,0 +1,31 @@
+{
+  Permanent sourcePermanent=(Permanent)game.getLastKnownInformation(targetPointer.getFirst(game,source),Zone.BATTLEFIELD);
+  if (sourcePermanent == null) {
+    return false;
+  }
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  Cards revealed=new CardsImpl();
+  Card artifactCard=null;
+  Cards nonArtifactCards=new CardsImpl();
+  Player targetController=game.getPlayer(sourcePermanent.getControllerId());
+  while (artifactCard == null && targetController.getLibrary().size() > 0) {
+    Card card=targetController.getLibrary().removeFromTop(game);
+    revealed.add(card);
+    if (card.getCardType().contains(CardType.ARTIFACT)) {
+      artifactCard=card;
+    }
+ else {
+      nonArtifactCards.add(card);
+    }
+  }
+  targetController.revealCards(sourcePermanent.getIdName(),revealed,game);
+  if (artifactCard != null) {
+    targetController.moveCards(artifactCard,Zone.BATTLEFIELD,source,game);
+  }
+  targetController.putCardsOnTopOfLibrary(nonArtifactCards,game,source,false);
+  targetController.shuffleLibrary(source,game);
+  return true;
+}

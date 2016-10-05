@@ -1,0 +1,15 @@
+{
+  for (  CombatGroup group : game.getCombat().getGroups()) {
+    if (group.getAttackers().contains(sourceAbility.getSourceId())) {
+      UUID defenderId=group.getDefenderId();
+      if (group.isDefenderIsPlaneswalker()) {
+        Permanent permanent=game.getPermanent(defenderId);
+        if (permanent != null) {
+          defenderId=permanent.getControllerId();
+        }
+      }
+      return game.getBattlefield().countAll(new FilterLandPermanent(),defenderId,game);
+    }
+  }
+  return 0;
+}

@@ -1,0 +1,12 @@
+{
+  if (super.checkTrigger(event,game)) {
+    Permanent permanent=(Permanent)game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
+    if (permanent != null) {
+      for (      Effect effect : this.getEffects()) {
+        effect.setValue("power",permanent.getPower().getValue());
+      }
+      return true;
+    }
+  }
+  return false;
+}

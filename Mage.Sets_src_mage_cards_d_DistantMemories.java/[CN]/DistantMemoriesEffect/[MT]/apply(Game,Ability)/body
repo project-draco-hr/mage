@@ -1,0 +1,35 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  TargetCardInLibrary target=new TargetCardInLibrary();
+  if (player.searchLibrary(target,game)) {
+    Card card=player.getLibrary().remove(target.getFirstTarget(),game);
+    if (card != null) {
+      card.moveToZone(Zone.EXILED,source.getSourceId(),game,false);
+      player.shuffleLibrary(source,game);
+      StringBuilder sb=new StringBuilder();
+      sb.append("Have ").append(player.getLogName()).append(" put ").append(card.getName());
+      sb.append(" in his hand? If none of his opponents says yes, he'll draw three cards.");
+      boolean putInHand=false;
+      Set<UUID> opponents=game.getOpponents(source.getControllerId());
+      for (      UUID opponentUuid : opponents) {
+        Player opponent=game.getPlayer(opponentUuid);
+        if (opponent != null && !putInHand && opponent.chooseUse(Outcome.Neutral,sb.toString(),source,game)) {
+          putInHand=true;
+        }
+      }
+      if (putInHand) {
+        game.getExile().getPermanentExile().remove(card);
+        card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+      }
+ else {
+        player.drawCards(3,game);
+      }
+      return true;
+    }
+  }
+  player.shuffleLibrary(source,game);
+  return false;
+}

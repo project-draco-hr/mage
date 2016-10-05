@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{1}{U}");
+  FilterPermanent filter=new FilterPermanent("Aura that's attached to a permanent");
+  filter.add(new SubtypePredicate("Aura"));
+  filter.add(new AttachedToPermanentPredicate());
+  this.getSpellAbility().addTarget(new TargetPermanent(filter));
+  Effect gainControlEffect=new GainControlTargetEffect(Duration.EndOfGame);
+  this.getSpellAbility().addEffect(gainControlEffect);
+  this.getSpellAbility().addEffect(new MoveTargetAuraEffect());
+}

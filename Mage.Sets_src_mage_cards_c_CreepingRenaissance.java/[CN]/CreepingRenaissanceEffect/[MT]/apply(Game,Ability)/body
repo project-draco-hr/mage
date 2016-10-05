@@ -1,0 +1,30 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Choice typeChoice=new ChoiceImpl();
+    typeChoice.setMessage("Choose permanent type");
+    typeChoice.getChoices().add(CardType.ARTIFACT.toString());
+    typeChoice.getChoices().add(CardType.CREATURE.toString());
+    typeChoice.getChoices().add(CardType.ENCHANTMENT.toString());
+    typeChoice.getChoices().add(CardType.LAND.toString());
+    typeChoice.getChoices().add(CardType.PLANESWALKER.toString());
+    while (controller.canRespond() && !controller.choose(Outcome.ReturnToHand,typeChoice,game)) {
+    }
+    String typeName=typeChoice.getChoice();
+    CardType chosenType=null;
+    for (    CardType cardType : CardType.values()) {
+      if (cardType.toString().equals(typeName)) {
+        chosenType=cardType;
+      }
+    }
+    if (chosenType != null) {
+      for (      Card card : controller.getGraveyard().getCards(game)) {
+        if (card.getCardType().contains(chosenType)) {
+          card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}

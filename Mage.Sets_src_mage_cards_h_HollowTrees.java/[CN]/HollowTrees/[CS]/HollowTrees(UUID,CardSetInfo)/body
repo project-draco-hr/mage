@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.LAND},"");
+  this.addAbility(new EntersBattlefieldTappedAbility());
+  this.addAbility(new SkipUntapOptionalAbility());
+  OneShotEffect addStorageCounter=new AddCountersSourceEffect(CounterType.STORAGE.createInstance());
+  Effect effect=new ConditionalOneShotEffect(addStorageCounter,SourceTappedCondition.getInstance(),"if {this} is tapped, put a storage counter on it");
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,effect,TargetController.YOU,false));
+  Ability ability=new DynamicManaAbility(Mana.GreenMana(1),new RemovedCountersForCostValue(),new TapSourceCost(),"Add {G} to your mana pool for each storage counter removed this way",true,new CountersSourceCount(CounterType.STORAGE));
+  ability.addCost(new RemoveVariableCountersSourceCost(CounterType.STORAGE.createInstance(),"Remove any number of storage counters from {this}"));
+  this.addAbility(ability);
+}

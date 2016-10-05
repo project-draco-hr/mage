@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{B}{B}");
+  this.subtype.add("Human");
+  this.subtype.add("Knight");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("creature blocking {this}");
+  filter.add(new BlockingAttackerIdPredicate(this.getId()));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DestroyTargetEffect(),new ManaCostsImpl("{B}{B}"));
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability);
+}

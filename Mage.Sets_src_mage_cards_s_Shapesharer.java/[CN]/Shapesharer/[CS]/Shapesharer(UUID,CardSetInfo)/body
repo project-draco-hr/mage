@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{U}");
+  this.subtype.add("Shapeshifter");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.addAbility(ChangelingAbility.getInstance());
+  Ability copyAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ShapesharerEffect(),new ManaCostsImpl("{2}{U}"));
+  copyAbility.addTarget(new TargetPermanent(filterShapeshifter));
+  copyAbility.addTarget(new TargetCreaturePermanent());
+  this.addAbility(copyAbility);
+}

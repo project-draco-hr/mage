@@ -1,0 +1,22 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  MageObject mageObject=game.getObject(source.getSourceId());
+  if (player != null && mageObject != null) {
+    Cost cost=new DiscardTargetCost(new TargetCardInHand(new FilterNonlandCard()));
+    String message="Discard a nonland card to search your library?";
+    if (cost.canPay(source,source.getSourceId(),source.getControllerId(),game) && player.chooseUse(Outcome.Detriment,message,source,game)) {
+      if (cost.pay(source,game,source.getSourceId(),source.getControllerId(),false,null)) {
+        Card card=game.getCard(cost.getTargets().getFirstTarget());
+        if (card == null) {
+          return false;
+        }
+        String targetName=new StringBuilder("card with converted mana cost of ").append(card.getConvertedManaCost()).toString();
+        FilterCard filter=new FilterCard(targetName);
+        filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,card.getConvertedManaCost()));
+        return new SearchLibraryPutInHandEffect(new TargetCardInLibrary(filter),true,true).apply(game,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

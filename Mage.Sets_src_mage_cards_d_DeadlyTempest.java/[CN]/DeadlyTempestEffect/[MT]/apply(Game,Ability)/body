@@ -1,0 +1,23 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    HashMap<UUID,Integer> destroyedCreatures=new HashMap<>();
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),source.getSourceId(),game)) {
+      if (permanent.destroy(source.getSourceId(),game,false)) {
+        int count=destroyedCreatures.containsKey(permanent.getControllerId()) ? destroyedCreatures.get(permanent.getControllerId()) : 0;
+        destroyedCreatures.put(permanent.getControllerId(),count + 1);
+      }
+    }
+    for (    UUID playerId : game.getState().getPlayerList(source.getControllerId())) {
+      int count=destroyedCreatures.containsKey(playerId) ? destroyedCreatures.get(playerId) : 0;
+      if (count > 0) {
+        Player player=game.getPlayer(playerId);
+        if (player != null) {
+          player.loseLife(count,game,false);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

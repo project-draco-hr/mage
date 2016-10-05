@@ -1,0 +1,19 @@
+{
+  Integer damage=(Integer)this.getValue("damageAmount");
+  if (damage != null && damage > 0) {
+    UUID damagedCreatureId=(UUID)this.getValue("damagedCreatureId");
+    Permanent creature=game.getPermanent(damagedCreatureId);
+    if (creature == null) {
+      creature=(Permanent)game.getLastKnownInformation(damagedCreatureId,Zone.BATTLEFIELD);
+    }
+    if (creature != null) {
+      for (      Permanent permanent : game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),creature.getControllerId(),game)) {
+        if (!permanent.getId().equals(damagedCreatureId)) {
+          permanent.damage(damage,source.getSourceId(),game,false,true);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

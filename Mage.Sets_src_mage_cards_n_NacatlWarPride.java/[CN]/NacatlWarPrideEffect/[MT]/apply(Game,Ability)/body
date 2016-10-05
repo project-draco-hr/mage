@@ -1,0 +1,34 @@
+{
+  Permanent origNactalWarPride=game.getPermanent(source.getSourceId());
+  if (origNactalWarPride == null) {
+    return false;
+  }
+  UUID defenderId=game.getCombat().getDefendingPlayerId(origNactalWarPride.getId(),game);
+  int count=0;
+  if (defenderId != null) {
+    count=game.getBattlefield().countAll(new FilterControlledCreaturePermanent(),defenderId,game);
+  }
+  if (count == 0) {
+    return false;
+  }
+  List<Permanent> copies=new ArrayList<>();
+  for (int i=0; i < count; i++) {
+    EmptyToken token=new EmptyToken();
+    CardUtil.copyTo(token).from(origNactalWarPride);
+    token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId(),true,true);
+    for (    UUID tokenId : token.getLastAddedTokenIds()) {
+      Permanent tokenPermanent=game.getPermanent(tokenId);
+      if (tokenPermanent != null) {
+        copies.add(tokenPermanent);
+      }
+    }
+  }
+  if (!copies.isEmpty()) {
+    FixedTargets fixedTargets=new FixedTargets(copies,game);
+    ExileTargetEffect exileEffect=new ExileTargetEffect();
+    exileEffect.setTargetPointer(fixedTargets);
+    game.addDelayedTriggeredAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(exileEffect),source);
+    return true;
+  }
+  return false;
+}

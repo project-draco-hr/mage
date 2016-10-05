@@ -1,0 +1,16 @@
+{
+  RevealTargetFromHandCost cost=(RevealTargetFromHandCost)source.getCosts().get(0);
+  Permanent creature=game.getPermanent(getTargetPointer().getFirst(game,source));
+  Player controller=game.getPlayer(source.getControllerId());
+  if (cost != null && creature != null && controller != null) {
+    List<Card> revealedCards=cost.getRevealedCards();
+    if (!revealedCards.isEmpty()) {
+      Card card=revealedCards.iterator().next();
+      if (card != null && card.getPower().getValue() >= creature.getPower().getValue()) {
+        controller.moveCards(creature,Zone.EXILED,source,game);
+      }
+    }
+    return true;
+  }
+  return false;
+}

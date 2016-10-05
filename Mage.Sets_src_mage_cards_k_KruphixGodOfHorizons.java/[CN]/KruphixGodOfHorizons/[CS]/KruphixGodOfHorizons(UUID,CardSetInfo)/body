@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT,CardType.CREATURE},"{3}{G}{U}");
+  this.supertype.add("Legendary");
+  this.subtype.add("God");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(7);
+  this.addAbility(IndestructibleAbility.getInstance());
+  Effect effect=new LoseCreatureTypeSourceEffect(new DevotionCount(ColoredManaSymbol.G,ColoredManaSymbol.U),7);
+  effect.setText("As long as your devotion to green and blue is less than seven, Kruhpix isn't a creature");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  effect=new MaximumHandSizeControllerEffect(Integer.MAX_VALUE,Duration.WhileOnBattlefield,MaximumHandSizeControllerEffect.HandSizeModification.SET);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new KruphixGodOfHorizonsEffect()));
+}

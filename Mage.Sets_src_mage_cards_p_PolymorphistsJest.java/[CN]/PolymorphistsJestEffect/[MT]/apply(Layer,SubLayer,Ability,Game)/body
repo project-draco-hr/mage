@@ -1,0 +1,37 @@
+{
+  for (Iterator<MageObjectReference> it=affectedObjectList.iterator(); it.hasNext(); ) {
+    Permanent permanent=it.next().getPermanent(game);
+    if (permanent != null) {
+switch (layer) {
+case TypeChangingEffects_4:
+        if (sublayer == SubLayer.NA) {
+          permanent.getSubtype(game).clear();
+          permanent.getSubtype(game).add("Frog");
+        }
+      break;
+case ColorChangingEffects_5:
+    if (sublayer == SubLayer.NA) {
+      permanent.getColor(game).setBlack(false);
+      permanent.getColor(game).setGreen(false);
+      permanent.getColor(game).setBlue(false);
+      permanent.getColor(game).setWhite(false);
+      permanent.getColor(game).setBlack(false);
+      permanent.getColor(game).setColor(ObjectColor.BLUE);
+    }
+  break;
+case AbilityAddingRemovingEffects_6:
+permanent.removeAllAbilities(source.getSourceId(),game);
+break;
+case PTChangingEffects_7:
+if (sublayer == SubLayer.SetPT_7b) {
+permanent.getPower().setValue(1);
+permanent.getToughness().setValue(1);
+}
+}
+}
+ else {
+it.remove();
+}
+}
+return true;
+}

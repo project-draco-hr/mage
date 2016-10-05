@@ -1,0 +1,17 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{6}{R}{R}{R}");
+  this.subtype.add("Dragon");
+  this.power=new MageInt(6);
+  this.toughness=new MageInt(6);
+  this.addAbility(FlyingAbility.getInstance());
+  Effect effect=new DamageTargetEffect(new ManacostVariableValue());
+  effect.setText("{this} deals X damage to target creature. Spend only red mana on X");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl("{X}"));
+  ability.addCost(new TapSourceCost());
+  VariableCost variableCost=ability.getManaCostsToPay().getVariableCosts().get(0);
+  if (variableCost instanceof VariableManaCost) {
+    ((VariableManaCost)variableCost).setFilter(filterRedMana);
+  }
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}

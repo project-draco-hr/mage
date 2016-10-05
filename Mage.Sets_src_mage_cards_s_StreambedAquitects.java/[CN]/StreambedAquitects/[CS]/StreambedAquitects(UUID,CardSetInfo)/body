@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{U}{U}");
+  this.subtype.add("Merfolk");
+  this.subtype.add("Scout");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(3);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostTargetEffect(1,1,Duration.EndOfTurn),new TapSourceCost());
+  ability.addEffect(new GainAbilityTargetEffect(new IslandwalkAbility(false),Duration.EndOfTurn));
+  Target target=new TargetCreaturePermanent(filter);
+  ability.addTarget(target);
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BecomesBasicLandTargetEffect(Duration.EndOfTurn,"Island"),new TapSourceCost());
+  target=new TargetLandPermanent();
+  ability.addTarget(target);
+  this.addAbility(ability);
+}

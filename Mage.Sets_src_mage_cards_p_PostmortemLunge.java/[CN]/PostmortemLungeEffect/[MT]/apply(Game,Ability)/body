@@ -1,0 +1,22 @@
+{
+  Card card=game.getCard(source.getFirstTarget());
+  if (card != null) {
+    Player cardOwner=game.getPlayer(card.getOwnerId());
+    if (cardOwner == null) {
+      return false;
+    }
+    if (cardOwner.moveCards(card,Zone.BATTLEFIELD,source,game)) {
+      Permanent permanent=game.getPermanent(card.getId());
+      if (permanent != null) {
+        ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.Custom);
+        effect.setTargetPointer(new FixedTarget(permanent,game));
+        game.addEffect(effect,source);
+        ExileTargetEffect exileEffect=new ExileTargetEffect(null,null,Zone.BATTLEFIELD);
+        exileEffect.setTargetPointer(new FixedTarget(permanent,game));
+        game.addDelayedTriggeredAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(exileEffect),source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

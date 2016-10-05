@@ -1,0 +1,33 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    Cards topCards=new CardsImpl();
+    topCards.addAll(controller.getLibrary().getTopCards(game,3));
+    if (!topCards.isEmpty()) {
+      controller.lookAtCards(sourceObject.getIdName(),topCards,game);
+      int number=topCards.count(new FilterInstantOrSorceryCard(),source.getSourceId(),source.getControllerId(),game);
+      if (number > 0) {
+        if (controller.chooseUse(outcome,"Reveal an instant or sorcery card from the looked at cards and put it into your hand?",source,game)) {
+          Card card;
+          if (number == 1) {
+            card=topCards.getCards(new FilterInstantOrSorceryCard(),source.getSourceId(),source.getControllerId(),game).iterator().next();
+          }
+ else {
+            Target target=new TargetCard(Zone.LIBRARY,new FilterInstantOrSorceryCard());
+            controller.chooseTarget(outcome,target,source,game);
+            card=topCards.get(target.getFirstTarget(),game);
+          }
+          if (card != null) {
+            controller.moveCards(card,Zone.HAND,source,game);
+            controller.revealCards(sourceObject.getIdName(),new CardsImpl(card),game);
+            topCards.remove(card);
+          }
+        }
+        controller.putCardsOnBottomOfLibrary(topCards,game,source,true);
+      }
+    }
+    return true;
+  }
+  return false;
+}

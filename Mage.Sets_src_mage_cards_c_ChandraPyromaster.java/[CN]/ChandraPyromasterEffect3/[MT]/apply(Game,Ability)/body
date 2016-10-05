@@ -1,0 +1,32 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller == null || sourceObject == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl();
+  cards.addAll(controller.getLibrary().getTopCards(game,10));
+  controller.moveCardsToExile(cards.getCards(game),source,game,true,source.getSourceId(),sourceObject.getIdName());
+  if (cards.getCards(new FilterInstantOrSorceryCard(),game).size() > 0) {
+    TargetCard target=new TargetCard(Zone.EXILED,new FilterInstantOrSorceryCard());
+    if (controller.chooseTarget(Outcome.PlayForFree,cards,target,source,game)) {
+      Card card=cards.get(target.getFirstTarget(),game);
+      if (card != null) {
+        if (controller.chooseUse(outcome,"Do you wish to cast copy 1 of " + card.getName(),source,game)) {
+          Card copy1=card.copy();
+          controller.cast(copy1.getSpellAbility(),game,true);
+        }
+        if (controller.chooseUse(outcome,"Do you wish to cast copy 2 of " + card.getName(),source,game)) {
+          Card copy2=card.copy();
+          controller.cast(copy2.getSpellAbility(),game,true);
+        }
+        if (controller.chooseUse(outcome,"Do you wish to cast copy 3 of " + card.getName(),source,game)) {
+          Card copy3=card.copy();
+          controller.cast(copy3.getSpellAbility(),game,true);
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}

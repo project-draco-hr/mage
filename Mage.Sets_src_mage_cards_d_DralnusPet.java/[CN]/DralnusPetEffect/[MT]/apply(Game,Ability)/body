@@ -1,0 +1,23 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent == null && source.getAbilityType().equals(AbilityType.STATIC)) {
+    permanent=game.getPermanentEntering(source.getSourceId());
+  }
+  if (controller != null && permanent != null) {
+    SpellAbility spellAbility=(SpellAbility)getValue(EntersBattlefieldEffect.SOURCE_CAST_SPELL_ABILITY);
+    if (spellAbility != null && spellAbility.getSourceId().equals(source.getSourceId()) && permanent.getZoneChangeCounter(game) == spellAbility.getSourceObjectZoneChangeCounter()) {
+      int cmc=0;
+      for (      Cost cost : spellAbility.getCosts()) {
+        if (cost instanceof DiscardCardCost && ((DiscardCardCost)cost).getCards().size() > 0) {
+          cmc=((DiscardCardCost)cost).getCards().get(0).getConvertedManaCost();
+        }
+        if (cmc > 0) {
+          return new AddCountersSourceEffect(CounterType.P1P1.createInstance(cmc),true).apply(game,source);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

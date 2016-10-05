@@ -1,0 +1,8 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.SORCERY},"{2}{U}");
+  this.getSpellAbility().addEffect(new DaysUndoingEffect());
+  Effect effect=new DrawCardAllEffect(7);
+  effect.setText(", then draws seven cards");
+  this.getSpellAbility().addEffect(effect);
+  this.getSpellAbility().addEffect(new ConditionalOneShotEffect(new EndTurnEffect(),MyTurnCondition.getInstance(),"If it's your turn, end the turn"));
+}

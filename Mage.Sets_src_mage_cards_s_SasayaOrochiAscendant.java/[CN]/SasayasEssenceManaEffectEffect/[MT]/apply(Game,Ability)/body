@@ -1,0 +1,77 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Mana mana=(Mana)this.getValue("mana");
+  Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+  if (controller != null && mana != null && permanent != null) {
+    FilterPermanent filter=new FilterLandPermanent();
+    filter.add(Predicates.not(new PermanentIdPredicate(permanent.getId())));
+    filter.add(new NamePredicate(permanent.getName()));
+    int count=game.getBattlefield().countAll(filter,controller.getId(),game);
+    if (count > 0) {
+      Choice choice=new ChoiceImpl(true);
+      choice.setMessage("Pick the type of mana to produce");
+      if (mana.getBlack() > 0) {
+        choice.getChoices().add("Black");
+      }
+      if (mana.getRed() > 0) {
+        choice.getChoices().add("Red");
+      }
+      if (mana.getBlue() > 0) {
+        choice.getChoices().add("Blue");
+      }
+      if (mana.getGreen() > 0) {
+        choice.getChoices().add("Green");
+      }
+      if (mana.getWhite() > 0) {
+        choice.getChoices().add("White");
+      }
+      if (mana.getColorless() > 0) {
+        choice.getChoices().add("Colorless");
+      }
+      if (choice.getChoices().size() > 0) {
+        Mana newMana=new Mana();
+        for (int i=0; i < count; i++) {
+          choice.clearChoice();
+          if (choice.getChoices().size() == 1) {
+            choice.setChoice(choice.getChoices().iterator().next());
+          }
+ else {
+            while (!choice.isChosen()) {
+              controller.choose(outcome,choice,game);
+              if (!controller.canRespond()) {
+                return false;
+              }
+            }
+          }
+          if (choice.getChoice() == null) {
+            return false;
+          }
+switch (choice.getChoice()) {
+case "Black":
+            newMana.increaseBlack();
+          break;
+case "Blue":
+        newMana.increaseBlue();
+      break;
+case "Red":
+    newMana.increaseRed();
+  break;
+case "Green":
+newMana.increaseGreen();
+break;
+case "White":
+newMana.increaseWhite();
+break;
+case "Colorless":
+newMana.increaseColorless();
+break;
+}
+}
+controller.getManaPool().addMana(newMana,game,source);
+checkToFirePossibleEvents(newMana,game,source);
+}
+}
+return true;
+}
+return false;
+}

@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{G}");
+  this.subtype.add("Insect");
+  this.subtype.add("Druid");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new ProtectionAbility(filter));
+  PermanentsOnBattlefieldCount count=new PermanentsOnBattlefieldCount(filter2);
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new BoostSourceEffect(count,count,Duration.WhileOnBattlefield),new CardsInControllerGraveCondition(7),"{this} gets +1/+1 for each black permanent your opponents control as long as seven or more cards are in your graveyard"));
+  ability.setAbilityWord(AbilityWord.THRESHOLD);
+  this.addAbility(ability);
+}

@@ -1,0 +1,34 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller == null || sourceObject == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl();
+  int xValue=source.getManaCostsToPay().getX();
+  int numberCards=Math.min(controller.getLibrary().size(),xValue);
+  for (int i=0; i < numberCards; i++) {
+    Card card=controller.getLibrary().removeFromTop(game);
+    cards.add(card);
+  }
+  if (cards.size() > 0) {
+    controller.revealCards(sourceObject.getIdName(),cards,game);
+    FilterCard filter=new FilterCard("cards with converted mana cost " + xValue + " or less to put onto the battlefield");
+    filter.add(new ConvertedManaCostPredicate(ComparisonType.LessThan,xValue + 1));
+    filter.add(Predicates.or(new CardTypePredicate(CardType.ARTIFACT),new CardTypePredicate(CardType.CREATURE),new CardTypePredicate(CardType.ENCHANTMENT),new CardTypePredicate(CardType.LAND),new CardTypePredicate(CardType.PLANESWALKER)));
+    TargetCard target1=new TargetCard(0,Integer.MAX_VALUE,Zone.LIBRARY,filter);
+    target1.setRequired(false);
+    controller.choose(Outcome.PutCardInPlay,cards,target1,game);
+    Set<Card> toBattlefield=new LinkedHashSet<>();
+    for (    UUID cardId : target1.getTargets()) {
+      Card card=cards.get(cardId,game);
+      if (card != null) {
+        cards.remove(card);
+        toBattlefield.add(card);
+      }
+    }
+    controller.moveCards(toBattlefield,Zone.BATTLEFIELD,source,game,false,false,false,null);
+    controller.moveCards(cards,Zone.GRAVEYARD,source,game);
+  }
+  return true;
+}

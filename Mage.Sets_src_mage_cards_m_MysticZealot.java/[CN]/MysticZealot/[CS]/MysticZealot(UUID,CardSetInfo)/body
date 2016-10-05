@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{W}");
+  this.subtype.add("Human");
+  this.subtype.add("Nomad");
+  this.subtype.add("Mystic");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(4);
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new BoostSourceEffect(1,1,Duration.WhileOnBattlefield),new CardsInControllerGraveCondition(7),"As long as seven or more cards are in your graveyard, {this} gets +1/+1"));
+  ability.addEffect(new ConditionalContinuousEffect(new GainAbilitySourceEffect(FlyingAbility.getInstance()),new CardsInControllerGraveCondition(7),"and has flying"));
+  ability.setAbilityWord(AbilityWord.THRESHOLD);
+  this.addAbility(ability);
+}

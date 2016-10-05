@@ -1,0 +1,14 @@
+{
+  StackObject source=game.getStack().getStackObject(input.getSourceId());
+  if (source != null) {
+    if (source.getStackAbility().getTargets().isEmpty() || source.getStackAbility().getTargets().get(0).getTargets().isEmpty()) {
+      return true;
+    }
+    Permanent firstTarget=game.getPermanent(source.getStackAbility().getTargets().get(0).getTargets().get(0));
+    Permanent inputPermanent=game.getPermanent(input.getObject().getId());
+    if (firstTarget != null && inputPermanent != null) {
+      return firstTarget.getControllerId().equals(inputPermanent.getControllerId());
+    }
+  }
+  return true;
+}

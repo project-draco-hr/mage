@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{R}");
+  this.subtype.add("Human");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(4);
+  Ability ability=new ConditionalTriggeredAbility(new EntersBattlefieldTriggeredAbility(new GainControlTargetEffect(Duration.EndOfTurn)),new PermanentsOnTheBattlefieldCondition(filter,PermanentsOnTheBattlefieldCondition.CountType.MORE_THAN,1),"When {this} enters the battlefield, if you control two or more Gates, gain control of target creature an opponent controls until end of turn. Untap that creature. That creature gains haste until end of turn.");
+  ability.addEffect(new UntapTargetEffect());
+  ability.addEffect(new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn));
+  Target target=new TargetCreaturePermanent(targetFilter);
+  ability.addTarget(target);
+  this.addAbility(ability);
+}

@@ -1,0 +1,16 @@
+{
+  if (!event.getTargetId().equals(this.getSourceId())) {
+    return false;
+  }
+  Permanent sourcePermanent=game.getPermanent(event.getSourceId());
+  if (sourcePermanent != null && FILTER_CREATURE.match(sourcePermanent,getSourceId(),getControllerId(),game)) {
+    for (    Effect effect : getEffects()) {
+      if (effect instanceof DamageTargetEffect) {
+        effect.setTargetPointer(new FixedTarget(sourcePermanent.getId()));
+        ((DamageTargetEffect)effect).setAmount(new StaticValue(event.getAmount()));
+      }
+    }
+    return true;
+  }
+  return false;
+}

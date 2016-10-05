@@ -1,0 +1,33 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    while (controller.chooseUse(Outcome.Benefit,choiceText,source,game)) {
+      Cards cards=controller.getSideboard();
+      if (cards.isEmpty()) {
+        game.informPlayer(controller,"You have no cards outside the game.");
+        break;
+      }
+      Set<Card> filtered=cards.getCards(filter,game);
+      if (filtered.isEmpty()) {
+        game.informPlayer(controller,"You have no " + filter.getMessage() + " outside the game (your sideboard).");
+        break;
+      }
+      Cards filteredCards=new CardsImpl();
+      for (      Card card : filtered) {
+        filteredCards.add(card.getId());
+      }
+      TargetCard target=new TargetCard(Zone.OUTSIDE,filter);
+      if (controller.choose(Outcome.Benefit,filteredCards,target,game)) {
+        Card card=controller.getSideboard().get(target.getFirstTarget(),game);
+        if (card != null) {
+          card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+          Cards revealCard=new CardsImpl();
+          revealCard.add(card);
+          controller.revealCards("Glittering Wish",revealCard,game);
+          break;
+        }
+      }
+    }
+  }
+  return true;
+}

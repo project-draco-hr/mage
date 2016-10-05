@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    TargetDiscard target=new TargetDiscard(0,2,new FilterCard(),controller.getId());
+    target.choose(outcome,controller.getId(),source.getSourceId(),game);
+    int count=0;
+    for (    UUID cardId : target.getTargets()) {
+      Card card=game.getCard(cardId);
+      if (card != null) {
+        controller.discard(card,source,game);
+        count++;
+      }
+    }
+    controller.drawCards(count,game);
+    return true;
+  }
+  return false;
+}

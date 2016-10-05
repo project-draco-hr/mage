@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{R}");
+  this.subtype.add("Goblin");
+  this.subtype.add("Rogue");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Effect effect=new DestroyTargetEffect();
+  effect.setText("destroy target artifact defending player controls");
+  DoIfCostPaid effect2=new DoIfCostPaid(effect,new ManaCostsImpl("{R}"),"Pay {R} to destroy artifact of defending player?");
+  effect=new AssignNoCombatDamageSourceEffect(Duration.EndOfTurn);
+  effect.setText("and {this} assigns no combat damage this turn");
+  effect2.addEffect(effect);
+  this.addAbility(new GoblinVandalTriggeredAbility(effect2));
+}

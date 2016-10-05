@@ -1,0 +1,28 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (controller != null && sourcePermanent != null) {
+    ActivationInfo info;
+    Object object=game.getState().getValue(source.getSourceId() + "ActivationInfo");
+    if (object instanceof ActivationInfo) {
+      info=(ActivationInfo)object;
+      if (info.turn != game.getTurnNum() || sourcePermanent.getZoneChangeCounter(game) != info.zoneChangeCounter) {
+        info.turn=game.getTurnNum();
+        info.zoneChangeCounter=sourcePermanent.getZoneChangeCounter(game);
+        info.activations=0;
+      }
+    }
+ else {
+      info=new ActivationInfo();
+      info.turn=game.getTurnNum();
+      info.zoneChangeCounter=sourcePermanent.getZoneChangeCounter(game);
+      game.getState().setValue(source.getSourceId() + "ActivationInfo",info);
+    }
+    info.activations++;
+    if (info.activations == 3) {
+      game.addEffect(new GainAbilityControlledEffect(FirstStrikeAbility.getInstance(),Duration.EndOfTurn),source);
+    }
+    return true;
+  }
+  return false;
+}

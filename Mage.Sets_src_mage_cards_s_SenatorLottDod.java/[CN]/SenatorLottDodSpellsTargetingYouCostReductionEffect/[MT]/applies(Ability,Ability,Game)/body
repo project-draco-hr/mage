@@ -1,0 +1,18 @@
+{
+  if (abilityToModify instanceof SpellAbility) {
+    if (game.getOpponents(source.getControllerId()).contains(abilityToModify.getControllerId())) {
+      for (      UUID modeId : abilityToModify.getModes().getSelectedModes()) {
+        Mode mode=abilityToModify.getModes().get(modeId);
+        for (        Target target : mode.getTargets()) {
+          for (          UUID targetUUID : target.getTargets()) {
+            Player player=game.getPlayer(targetUUID);
+            if (player != null && player.getId().equals(source.getControllerId())) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

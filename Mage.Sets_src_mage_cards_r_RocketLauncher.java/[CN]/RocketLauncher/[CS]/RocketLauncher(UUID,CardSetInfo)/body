@@ -1,0 +1,8 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{4}");
+  Watcher watcher=new RocketLauncherWatcher(this.getId());
+  Ability ability=new ConditionalActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new GenericManaCost(2),new ControlledTurnCondition());
+  ability.addTarget(new TargetCreatureOrPlayer());
+  ability.addEffect(new CreateDelayedTriggeredAbilityEffect(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new DestroySourceEffect(true))));
+  this.addAbility(ability,watcher);
+}

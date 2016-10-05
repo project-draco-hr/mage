@@ -1,0 +1,17 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{G}");
+  this.subtype.add("Plant");
+  this.subtype.add("Wall");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(4);
+  this.addAbility(DefenderAbility.getInstance());
+  this.addAbility(ReachAbility.getInstance());
+  this.addAbility(new SkipUntapOptionalAbility());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new TapTargetEffect(),new TapSourceCost());
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("creature with flying blocked by {this}");
+  filter.add(new AbilityPredicate(FlyingAbility.class));
+  filter.add(new BlockedByIdPredicate(this.getId()));
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  ability.addEffect(new DontUntapAsLongAsSourceTappedEffect());
+  this.addAbility(ability);
+}

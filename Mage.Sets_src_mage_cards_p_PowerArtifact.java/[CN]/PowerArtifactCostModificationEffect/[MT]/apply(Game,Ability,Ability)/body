@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(abilityToModify.getControllerId());
+  if (controller != null) {
+    Mana mana=abilityToModify.getManaCostsToPay().getMana();
+    int reduce=mana.getGeneric();
+    if (reduce > 0 && mana.count() == mana.getGeneric()) {
+      reduce--;
+    }
+    if (reduce > 2) {
+      reduce=2;
+    }
+    CardUtil.reduceCost(abilityToModify,reduce);
+  }
+  return true;
+}

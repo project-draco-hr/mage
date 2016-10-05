@@ -1,0 +1,19 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.SORCERY},"{3}{G}{G}");
+  this.getSpellAbility().getModes().setMinModes(2);
+  this.getSpellAbility().getModes().setMaxModes(2);
+  this.getSpellAbility().addEffect(new GainLifeTargetEffect(7));
+  this.getSpellAbility().addTarget(new TargetPlayer());
+  Mode mode=new Mode();
+  mode.getEffects().add(new PutOnLibraryTargetEffect(true));
+  Target target=new TargetPermanent(filterNonCreature);
+  mode.getTargets().add(target);
+  this.getSpellAbility().getModes().addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new PrimalCommandShuffleGraveyardEffect());
+  mode.getTargets().add(new TargetPlayer());
+  this.getSpellAbility().getModes().addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new SearchLibraryPutInHandEffect(new TargetCardInLibrary(new FilterCreatureCard()),true,true));
+  this.getSpellAbility().getModes().addMode(mode);
+}

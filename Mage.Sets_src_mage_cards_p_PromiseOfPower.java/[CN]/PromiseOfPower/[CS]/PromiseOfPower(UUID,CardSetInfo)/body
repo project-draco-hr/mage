@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.SORCERY},"{2}{B}{B}{B}");
+  this.getSpellAbility().getModes().setMinModes(1);
+  this.getSpellAbility().getModes().setMaxModes(1);
+  Effect effect=new DrawCardSourceControllerEffect(5);
+  effect.setText("You draw five cards");
+  this.getSpellAbility().addEffect(effect);
+  effect=new LoseLifeSourceControllerEffect(5);
+  effect.setText("and you lose 5 life");
+  this.getSpellAbility().addEffect(effect);
+  Mode mode=new Mode();
+  mode.getEffects().add(new PromiseOfPowerEffect());
+  this.getSpellAbility().getModes().addMode(mode);
+  this.addAbility(new EntwineAbility("{4}"));
+}

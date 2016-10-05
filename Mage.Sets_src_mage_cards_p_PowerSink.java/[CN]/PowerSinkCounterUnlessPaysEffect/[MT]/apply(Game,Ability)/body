@@ -1,0 +1,37 @@
+{
+  StackObject spell=game.getStack().getStackObject(targetPointer.getFirst(game,source));
+  if (spell != null) {
+    Player player=game.getPlayer(spell.getControllerId());
+    Player controller=game.getPlayer(source.getControllerId());
+    MageObject sourceObject=game.getObject(source.getSourceId());
+    if (player != null && controller != null && sourceObject != null) {
+      int amount=source.getManaCostsToPay().getX();
+      if (amount > 0) {
+        GenericManaCost cost=new GenericManaCost(amount);
+        StringBuilder sb=new StringBuilder("Pay ").append(cost.getText()).append("?");
+        if (player.chooseUse(Outcome.Benefit,sb.toString(),source,game)) {
+          if (cost.pay(source,game,source.getSourceId(),player.getId(),false)) {
+            game.informPlayers(new StringBuilder(sourceObject.getName()).append(": additional cost was paid").toString());
+            return true;
+          }
+        }
+        if (game.getStack().counter(source.getFirstTarget(),source.getSourceId(),game)) {
+          game.informPlayers(new StringBuilder(sourceObject.getName()).append(": additional cost wasn't paid - countering ").append(spell.getName()).toString());
+        }
+        List<Permanent> lands=game.getBattlefield().getAllActivePermanents(new FilterLandPermanent(),player.getId(),game);
+        for (        Permanent land : lands) {
+          Abilities<Ability> landAbilities=land.getAbilities();
+          for (          Ability ability : landAbilities) {
+            if (ability instanceof ManaAbility) {
+              land.tap(game);
+              break;
+            }
+          }
+        }
+        player.getManaPool().emptyPool(game);
+      }
+      return true;
+    }
+  }
+  return false;
+}

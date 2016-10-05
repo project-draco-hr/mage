@@ -1,0 +1,19 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{4}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Equipment");
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(DefenderAbility.getInstance(),AttachmentType.EQUIPMENT));
+  Effect effect=new GainAbilityControlledEffect(TrampleAbility.getInstance(),Duration.EndOfTurn,new FilterCreaturePermanent(),true);
+  effect.setText("Other creatures you control gain trample");
+  Ability gainedAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new GenericManaCost(2));
+  DynamicValue xValue=new SourcePermanentPowerCount();
+  effect=new BoostControlledEffect(xValue,xValue,Duration.EndOfTurn,new FilterCreaturePermanent(),true,true);
+  effect.setText("and get +X/+X until end of turn, where X is this creature's power");
+  gainedAbility.addEffect(effect);
+  gainedAbility.addCost(new TapSourceCost());
+  effect=new GainAbilityAttachedEffect(gainedAbility,AttachmentType.EQUIPMENT);
+  effect.setText("and \"{2}, {T}: Other creatures you control gain trample and get +X/+X until end of turn, where X is this creature's power.\"");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  this.addAbility(new EquipAbility(Outcome.BoostCreature,new GenericManaCost(3)));
+}

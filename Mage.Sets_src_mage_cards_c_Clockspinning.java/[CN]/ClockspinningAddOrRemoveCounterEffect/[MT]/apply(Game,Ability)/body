@@ -1,0 +1,39 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  Card card=game.getCard(source.getFirstTarget());
+  if (player != null && permanent != null) {
+    if (player.chooseUse(Outcome.Neutral,"Do you want to to remove a counter?",source,game)) {
+      RemoveCounterTargetEffect effect=new RemoveCounterTargetEffect();
+      effect.setTargetPointer(new FixedTarget(source.getFirstTarget()));
+      effect.apply(game,source);
+    }
+ else {
+      Counter counter=selectCounterType(game,source,permanent);
+      if (counter != null) {
+        AddCountersTargetEffect effect=new AddCountersTargetEffect(counter);
+        effect.setTargetPointer(new FixedTarget(source.getFirstTarget()));
+        effect.apply(game,source);
+      }
+    }
+    return true;
+  }
+  if (player != null && card != null) {
+    if (player.chooseUse(Outcome.Neutral,"Do you want to to remove a counter?",source,game)) {
+      Counter counter=selectCounterType(game,source,card);
+      RemoveCounterTargetEffect effect=new RemoveCounterTargetEffect(counter);
+      effect.setTargetPointer(new FixedTarget(source.getFirstTarget()));
+      effect.apply(game,source);
+    }
+ else {
+      Counter counter=selectCounterType(game,source,card);
+      if (counter != null) {
+        AddCountersTargetEffect effect=new AddCountersTargetEffect(counter);
+        effect.setTargetPointer(new FixedTarget(source.getFirstTarget()));
+        effect.apply(game,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

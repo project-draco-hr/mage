@@ -1,0 +1,35 @@
+{
+  Cards cardsPicked=new CardsImpl();
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    GameEvent event=GameEvent.getEvent(GameEvent.EventType.SEARCH_LIBRARY,source.getControllerId(),source.getControllerId(),source.getControllerId(),Integer.MAX_VALUE);
+    if (!game.replaceEvent(event)) {
+      int manaCostLeftToFetch=6;
+      int librarySearchLimit=event.getAmount();
+      FilterCard filter=new FilterCreatureCard("number of creature cards with total converted mana cost 6 or less (6 CMC left)");
+      filter.add(new ConvertedManaCostPredicate(ComparisonType.LessThan,manaCostLeftToFetch + 1));
+      TargetCardInLibrary target=new TargetCardInLibrary(0,1,filter);
+      target.setCardLimit(librarySearchLimit);
+      while (target.canChoose(source.getSourceId(),source.getControllerId(),game)) {
+        target.choose(Outcome.PutCreatureInPlay,source.getControllerId(),source.getControllerId(),game);
+        Card card=player.getLibrary().remove(target.getFirstTarget(),game);
+        if (card == null) {
+          break;
+        }
+        cardsPicked.add(card);
+        game.getState().getLookedAt(source.getControllerId()).add("Protean Hulk",cardsPicked);
+        librarySearchLimit--;
+        if (librarySearchLimit == 0) {
+          break;
+        }
+        manaCostLeftToFetch-=card.getConvertedManaCost();
+        filter=new FilterCreatureCard("number of creature cards with total converted mana cost 6 or less (" + manaCostLeftToFetch + " CMC left)");
+        filter.add(new ConvertedManaCostPredicate(ComparisonType.LessThan,manaCostLeftToFetch + 1));
+        target=new TargetCardInLibrary(0,1,filter);
+        target.setCardLimit(librarySearchLimit);
+      }
+      game.fireEvent(GameEvent.getEvent(GameEvent.EventType.LIBRARY_SEARCHED,source.getControllerId(),source.getControllerId()));
+    }
+  }
+  return cardsPicked;
+}

@@ -1,0 +1,9 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.SORCERY},"{X}{X}{R}");
+  DynamicValue xValue=new ConflagrateVariableValue();
+  this.getSpellAbility().addEffect(new DamageMultiEffect(xValue));
+  this.getSpellAbility().addTarget(new TargetCreatureOrPlayerAmount(xValue));
+  Ability ability=new FlashbackAbility(new ManaCostsImpl("{R}{R}"),TimingRule.SORCERY);
+  ability.addCost(new DiscardXTargetCost(new FilterCard("cards")));
+  this.addAbility(ability);
+}

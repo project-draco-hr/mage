@@ -1,0 +1,10 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards cards=new CardsImpl(source.getTargets().get(0).getTargets());
+    game.getState().setValue(CardUtil.getCardZoneString("ParadoxicalOutcomeEffect",source.getSourceId(),game),cards.size());
+    controller.moveCards(new CardsImpl(source.getTargets().get(0).getTargets()),Zone.HAND,source,game);
+    return true;
+  }
+  return false;
+}

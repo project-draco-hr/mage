@@ -1,0 +1,17 @@
+{
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (targetPlayer != null) {
+    if (targetPlayer.getLibrary().size() > 0) {
+      Card card=targetPlayer.getLibrary().removeFromTop(game);
+      if (card != null) {
+        targetPlayer.moveCards(card,Zone.GRAVEYARD,source,game);
+        int amount=card.getConvertedManaCost();
+        if (amount > 0) {
+          game.addEffect(new BoostSourceEffect(amount,amount,Duration.EndOfTurn),source);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

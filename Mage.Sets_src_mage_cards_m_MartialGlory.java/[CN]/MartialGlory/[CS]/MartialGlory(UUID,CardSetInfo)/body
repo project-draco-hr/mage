@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{R}{W}");
+  Effect effect=new BoostTargetEffect(3,0,Duration.EndOfTurn);
+  effect.setText("Target creature gets +3/+0 until end of turn");
+  Target target=new TargetCreaturePermanent(new FilterCreaturePermanent("first creature"));
+  this.getSpellAbility().addEffect(effect);
+  this.getSpellAbility().addTarget(target);
+  Effect effect2=new BoostTargetEffect(0,3,Duration.EndOfTurn);
+  effect2.setText("<br></br>Target creature gets +0/+3 until end of turn");
+  effect2.setTargetPointer(SecondTargetPointer.getInstance());
+  target=new TargetCreaturePermanent(new FilterCreaturePermanent("second creature (can be the same as the first)"));
+  this.getSpellAbility().addEffect(effect2);
+  this.getSpellAbility().addTarget(target);
+}

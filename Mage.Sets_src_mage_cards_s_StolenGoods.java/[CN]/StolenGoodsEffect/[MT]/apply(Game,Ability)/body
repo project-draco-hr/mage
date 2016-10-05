@@ -1,0 +1,22 @@
+{
+  Player opponent=game.getPlayer(targetPointer.getFirst(game,source));
+  MageObject sourceObject=source.getSourceObject(game);
+  if (opponent != null && opponent.getLibrary().size() > 0 && sourceObject != null) {
+    Library library=opponent.getLibrary();
+    Card card;
+    do {
+      card=library.removeFromTop(game);
+      if (card != null) {
+        opponent.moveCardsToExile(card,source,game,true,source.getSourceId(),sourceObject.getIdName());
+      }
+    }
+ while (library.size() > 0 && card != null && card.getCardType().contains(CardType.LAND));
+    if (card != null) {
+      ContinuousEffect effect=new StolenGoodsCastFromExileEffect();
+      effect.setTargetPointer(new FixedTarget(card.getId(),card.getZoneChangeCounter(game)));
+      game.addEffect(effect,source);
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,9 @@
+{
+  if (ability.getOriginalId().equals(originalId)) {
+    UUID creatureId=ability.getEffects().get(0).getTargetPointer().getFirst(game,ability);
+    Permanent creature=(Permanent)game.getLastKnownInformation(creatureId,Zone.BATTLEFIELD);
+    if (creature != null) {
+      ability.getEffects().get(0).setTargetPointer(new FixedTarget(creature.getControllerId()));
+    }
+  }
+}

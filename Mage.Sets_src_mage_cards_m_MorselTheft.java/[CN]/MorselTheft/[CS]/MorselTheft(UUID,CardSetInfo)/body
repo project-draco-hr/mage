@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.TRIBAL,CardType.SORCERY},"{2}{B}{B}");
+  this.subtype.add("Rogue");
+  this.addAbility(new ProwlAbility(this,"{1}{B}"));
+  getSpellAbility().addEffect(new LoseLifeTargetEffect(3));
+  Effect effect=new GainLifeEffect(3);
+  effect.setText("and you gain 3 life");
+  getSpellAbility().addEffect(effect);
+  getSpellAbility().addTarget(new TargetPlayer());
+  getSpellAbility().addEffect(new ConditionalOneShotEffect(new DrawCardSourceControllerEffect(1),ProwlCondition.getInstance()));
+}

@@ -1,0 +1,23 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    Permanent targetCreature=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (targetCreature != null) {
+      Player controllerOfTargetCreature=game.getPlayer(targetCreature.getControllerId());
+      if (controllerOfTargetCreature != null) {
+        if (controllerOfTargetCreature.getHand().size() > 0) {
+          Cards cards=new CardsImpl();
+          Card card=controllerOfTargetCreature.getHand().getRandom(game);
+          cards.add(card);
+          controllerOfTargetCreature.revealCards(sourceObject.getName(),cards,game);
+          int damage=card.getConvertedManaCost();
+          targetCreature.damage(damage,source.getSourceId(),game,false,true);
+          controllerOfTargetCreature.damage(damage,source.getSourceId(),game,false,true);
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

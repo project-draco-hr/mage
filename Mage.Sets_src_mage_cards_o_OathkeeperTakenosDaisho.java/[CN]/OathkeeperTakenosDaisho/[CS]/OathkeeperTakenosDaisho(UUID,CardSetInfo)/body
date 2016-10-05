@@ -1,0 +1,9 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{3}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Equipment");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEquippedEffect(3,1,Duration.WhileOnBattlefield)));
+  this.addAbility(new ConditionalTriggeredAbility(new DiesAttachedTriggeredAbility(new ReturnToBattlefieldUnderYourControlAttachedEffect(),"equipped creature",false),new OathkeeperEquippedMatchesFilterCondition(filter),""));
+  this.addAbility(new PutIntoGraveFromBattlefieldSourceTriggeredAbility(new ExileEquippedEffect()));
+  this.addAbility(new EquipAbility(Outcome.BoostCreature,new ManaCostsImpl("{2}")));
+}

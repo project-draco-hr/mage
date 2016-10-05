@@ -1,0 +1,28 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent creature=game.getPermanent(getTargetPointer().getFirst(game,source));
+  if (controller != null && creature != null) {
+    Set<Card> toHand=new HashSet<>();
+    for (    CombatGroup combatGroup : game.getCombat().getGroups()) {
+      if (combatGroup.getBlockers().contains(creature.getId())) {
+        for (        UUID attackerId : combatGroup.getAttackers()) {
+          Permanent attacker=game.getPermanent(attackerId);
+          if (attacker != null) {
+            toHand.add(attacker);
+          }
+        }
+      }
+ else       if (combatGroup.getAttackers().contains(creature.getId())) {
+        for (        UUID blockerId : combatGroup.getBlockers()) {
+          Permanent blocker=game.getPermanent(blockerId);
+          if (blocker != null) {
+            toHand.add(blocker);
+          }
+        }
+      }
+    }
+    controller.moveCards(toHand,Zone.HAND,source,game);
+    return true;
+  }
+  return false;
+}

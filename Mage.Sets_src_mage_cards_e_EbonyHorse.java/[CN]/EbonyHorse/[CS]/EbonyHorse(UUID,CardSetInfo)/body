@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{3}");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new UntapTargetEffect(),new GenericManaCost(2));
+  ability.addCost(new TapSourceCost());
+  Effect effect=new PreventCombatDamageToSourceEffect(Duration.EndOfTurn);
+  effect.setText("Prevent all combat damage that would be dealt to");
+  ability.addEffect(effect);
+  effect=new PreventCombatDamageBySourceEffect(Duration.EndOfTurn);
+  effect.setText("and dealt by that creature this turn");
+  ability.addEffect(effect);
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability);
+}

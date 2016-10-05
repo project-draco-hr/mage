@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{R}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  this.addAbility(new EnchantAbility(auraTarget.getTargetName()));
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(2,2,Duration.WhileOnBattlefield));
+  Effect effect=new AttacksIfAbleAttachedEffect(Duration.WhileOnBattlefield,AttachmentType.AURA);
+  effect.setText("and attacks each turn if able");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

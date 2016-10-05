@@ -1,0 +1,21 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards cards=new CardsImpl();
+    cards.addAll(controller.getLibrary().getTopCards(game,3));
+    if (!cards.isEmpty()) {
+      controller.revealCards("Borborygmous Enraged",cards,game);
+      Cards landCards=new CardsImpl();
+      for (      Card card : cards.getCards(game)) {
+        if (card.getCardType().contains(CardType.LAND)) {
+          landCards.add(card);
+          cards.remove(card);
+        }
+      }
+      controller.moveCards(landCards,Zone.HAND,source,game);
+      controller.moveCards(cards,Zone.GRAVEYARD,source,game);
+    }
+    return true;
+  }
+  return false;
+}

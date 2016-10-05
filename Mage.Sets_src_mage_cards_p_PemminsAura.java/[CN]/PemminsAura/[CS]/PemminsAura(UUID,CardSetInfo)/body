@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{U}{U}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new UntapEnchantedEffect(),new ManaCostsImpl("{U}")));
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(FlyingAbility.getInstance(),AttachmentType.AURA,Duration.EndOfTurn),new ManaCostsImpl("{U}")));
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(ShroudAbility.getInstance(),AttachmentType.AURA,Duration.EndOfTurn),new ManaCostsImpl("{U}")));
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new PemminsAuraBoostEnchantedEffect(),new ManaCostsImpl("{1}")));
+}

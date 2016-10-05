@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Set<Card> creatureCards=new LinkedHashSet<>();
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        for (        Card card : player.getGraveyard().getCards(game)) {
+          if (card.getCardType().contains(CardType.CREATURE)) {
+            creatureCards.add(card);
+          }
+        }
+      }
+    }
+    controller.moveCards(creatureCards,Zone.BATTLEFIELD,source,game,false,false,false,null);
+    return true;
+  }
+  return false;
+}

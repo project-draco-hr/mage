@@ -1,0 +1,34 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  int cmc=0;
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof RemoveVariableCountersSourceCost) {
+      cmc=((RemoveVariableCountersSourceCost)cost).getAmount();
+    }
+  }
+  FilterNonlandCard filter=new FilterNonlandCard("nonland card with converted mana cost X = " + cmc);
+  filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,cmc));
+  TargetCardInLibrary target=new TargetCardInLibrary(filter);
+  if (player.searchLibrary(target,game)) {
+    Card card=player.getLibrary().getCard(target.getFirstTarget(),game);
+    if (card != null) {
+      card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+      String name="Reveal";
+      Cards cards=new CardsImpl();
+      cards.add(card);
+      Card sourceCard=game.getCard(source.getSourceId());
+      if (sourceCard != null) {
+        name=sourceCard.getName();
+      }
+      player.revealCards(name,cards,game);
+      game.informPlayers(player.getLogName() + " reveals " + card.getName());
+    }
+    player.shuffleLibrary(source,game);
+    return true;
+  }
+  player.shuffleLibrary(source,game);
+  return false;
+}

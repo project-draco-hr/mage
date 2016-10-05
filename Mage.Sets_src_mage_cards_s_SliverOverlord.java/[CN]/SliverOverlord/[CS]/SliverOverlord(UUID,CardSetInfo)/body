@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{W}{U}{B}{R}{G}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Sliver");
+  this.subtype.add("Mutant");
+  this.power=new MageInt(7);
+  this.toughness=new MageInt(7);
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new SearchLibraryPutInHandEffect(new TargetCardInLibrary(filter),true,true),new ManaCostsImpl("{3}")));
+  Ability ability=(new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainControlTargetEffect(Duration.EndOfGame),new ManaCostsImpl("{3}")));
+  Target target=new TargetPermanent(new FilterCreaturePermanent("Sliver","Sliver"));
+  ability.addTarget(target);
+  this.addAbility(ability);
+}

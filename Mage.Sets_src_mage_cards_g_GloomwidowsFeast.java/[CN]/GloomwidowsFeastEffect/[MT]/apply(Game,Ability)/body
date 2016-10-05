@@ -1,0 +1,13 @@
+{
+  Permanent targetCreature=game.getPermanent(source.getFirstTarget());
+  if (targetCreature != null) {
+    targetCreature.destroy(source.getSourceId(),game,false);
+    Permanent destroyedCreature=game.getPermanentOrLKIBattlefield(source.getFirstTarget());
+    if (destroyedCreature.getColor(game).isBlue() || destroyedCreature.getColor(game).isBlack()) {
+      SpiderToken token=new SpiderToken();
+      token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
+      return true;
+    }
+  }
+  return false;
+}

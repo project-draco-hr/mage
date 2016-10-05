@@ -1,0 +1,15 @@
+{
+  boolean retValue=false;
+  GameEvent preventEvent=new GameEvent(GameEvent.EventType.PREVENT_DAMAGE,source.getFirstTarget(),source.getSourceId(),source.getControllerId(),event.getAmount(),false);
+  int damage=event.getAmount();
+  if (!game.replaceEvent(preventEvent)) {
+    event.setAmount(0);
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.PREVENTED_DAMAGE,source.getFirstTarget(),source.getSourceId(),source.getControllerId(),damage));
+    retValue=true;
+  }
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    permanent.addCounters(CounterType.M1M1.createInstance(damage),game);
+  }
+  return retValue;
+}

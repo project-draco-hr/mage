@@ -1,0 +1,12 @@
+{
+  Card card=game.getCard(getTargetPointer().getFirst(game,source));
+  Player controller=game.getPlayer(source.getControllerId());
+  if (card != null && controller != null) {
+    controller.moveCards(card,Zone.BATTLEFIELD,source,game);
+    Effect effect=new AttachEffect(Outcome.AddAbility);
+    effect.setTargetPointer(new FixedTarget(card.getId()));
+    effect.apply(game,source);
+    return true;
+  }
+  return false;
+}

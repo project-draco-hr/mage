@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (controller != null && sourceObject != null && sourceObject.equals(sourcePermanent)) {
+    sourcePermanent.untap(game);
+    ContinuousEffect effect=new GainControlTargetEffect(Duration.Custom,true,getTargetPointer().getFirst(game,source));
+    effect.setTargetPointer(new FixedTarget(sourcePermanent.getId()));
+    effect.setText("and gains control of it");
+    game.addEffect(effect,source);
+    return true;
+  }
+  return false;
+}

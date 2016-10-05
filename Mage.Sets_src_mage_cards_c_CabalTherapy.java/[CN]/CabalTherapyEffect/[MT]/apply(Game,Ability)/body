@@ -1,0 +1,16 @@
+{
+  Player targetPlayer=game.getPlayer(targetPointer.getFirst(game,source));
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (targetPlayer != null && controller != null && sourceObject != null) {
+    String cardName=(String)game.getState().getValue(source.getSourceId().toString() + NameACardEffect.INFO_KEY);
+    Cards hand=targetPlayer.getHand();
+    for (    Card card : hand.getCards(game)) {
+      if (card.getName().equals(cardName)) {
+        targetPlayer.discard(card,source,game);
+      }
+    }
+    targetPlayer.revealCards("Cabal Therapy",hand,game);
+  }
+  return true;
+}

@@ -1,0 +1,28 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null && controller.chooseUse(outcome,"Search your library and/or graveyard for a card named Chandra, Pyrogenius?",source,game)) {
+    Cards allCards=new CardsImpl();
+    boolean librarySearched=false;
+    if (controller.chooseUse(outcome,"Search also your library?",source,game)) {
+      librarySearched=true;
+      allCards.addAll(controller.getLibrary().getCardList());
+    }
+    allCards.addAll(controller.getGraveyard());
+    FilterCard filter=new FilterCard("a card named Chandra, Pyrogenius");
+    filter.add(new NamePredicate("Chandra, Pyrogenius"));
+    TargetCard target=new TargetCard(0,1,Zone.ALL,new FilterCard());
+    if (controller.choose(outcome,allCards,target,game)) {
+      Card cardFound=game.getCard(target.getFirstTarget());
+      if (cardFound != null) {
+        controller.revealCards(sourceObject.getIdName(),new CardsImpl(cardFound),game);
+        controller.moveCards(cardFound,Zone.HAND,source,game);
+      }
+    }
+    if (librarySearched) {
+      controller.shuffleLibrary(source,game);
+    }
+    return true;
+  }
+  return false;
+}

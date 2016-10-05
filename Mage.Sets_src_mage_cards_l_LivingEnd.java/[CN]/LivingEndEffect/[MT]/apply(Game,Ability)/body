@@ -1,0 +1,31 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    Map<UUID,Set<Card>> exiledCards=new HashMap<>();
+    for (    UUID playerId : game.getState().getPlayersInRange(source.getControllerId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        Set<Card> cardsPlayer=player.getGraveyard().getCards(new FilterCreatureCard(),game);
+        if (!cardsPlayer.isEmpty()) {
+          exiledCards.put(player.getId(),cardsPlayer);
+          player.moveCards(cardsPlayer,Zone.EXILED,source,game);
+        }
+      }
+    }
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game)) {
+      permanent.sacrifice(source.getSourceId(),game);
+    }
+    for (    UUID playerId : game.getState().getPlayersInRange(source.getControllerId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        Set<Card> cardsPlayer=exiledCards.get(playerId);
+        if (cardsPlayer != null && !cardsPlayer.isEmpty()) {
+          player.moveCards(cardsPlayer,Zone.BATTLEFIELD,source,game,false,false,false,null);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

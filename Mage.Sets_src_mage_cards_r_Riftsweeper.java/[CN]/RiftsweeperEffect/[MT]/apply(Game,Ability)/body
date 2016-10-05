@@ -1,0 +1,11 @@
+{
+  Card card=game.getCard(targetPointer.getFirst(game,source));
+  if (card != null) {
+    card.getCounters(game).clear();
+    card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
+    game.getPlayer(card.getOwnerId()).shuffleLibrary(source,game);
+    game.informPlayers(new StringBuilder("Riftsweeper: Choosen card was ").append(card.getName()).toString());
+    return true;
+  }
+  return false;
+}

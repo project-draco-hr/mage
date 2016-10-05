@@ -1,0 +1,15 @@
+{
+  Permanent permanent=game.getPermanent(getSourceId());
+  if (permanent != null) {
+    ObjectColor color=(ObjectColor)game.getState().getValue(getSourceId() + "_color");
+    if (color != null) {
+      for (      Permanent perm : game.getBattlefield().getAllActivePermanents(controllerId)) {
+        if (perm.getColor(game).contains(color)) {
+          return false;
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}

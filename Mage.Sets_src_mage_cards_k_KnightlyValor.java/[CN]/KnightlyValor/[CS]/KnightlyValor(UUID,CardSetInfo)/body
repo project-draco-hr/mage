@@ -1,0 +1,17 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{4}{W}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Detriment));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new CreateTokenEffect(new KnightToken())));
+  Effect effect=new BoostEnchantedEffect(2,2,Duration.WhileOnBattlefield);
+  effect.setText("Enchanted creature gets +2/+2");
+  SimpleStaticAbility ability2=new SimpleStaticAbility(Zone.BATTLEFIELD,effect);
+  effect=new GainAbilityAttachedEffect(VigilanceAbility.getInstance(),AttachmentType.AURA);
+  effect.setText("and has vigilance");
+  ability2.addEffect(effect);
+  this.addAbility(ability2);
+}

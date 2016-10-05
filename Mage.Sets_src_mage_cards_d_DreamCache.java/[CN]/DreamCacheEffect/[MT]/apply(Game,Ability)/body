@@ -1,0 +1,20 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    controller.drawCards(3,game);
+    boolean putOnTop=controller.chooseUse(Outcome.Neutral,"Put cards on top?",source,game);
+    TargetCardInHand target=new TargetCardInHand(2,2,new FilterCard());
+    controller.chooseTarget(Outcome.Detriment,target,source,game);
+    Cards cardsToLibrary=new CardsImpl(target.getTargets());
+    if (!cardsToLibrary.isEmpty()) {
+      if (putOnTop) {
+        controller.putCardsOnTopOfLibrary(cardsToLibrary,game,source,false);
+      }
+ else {
+        controller.putCardsOnBottomOfLibrary(cardsToLibrary,game,source,false);
+      }
+    }
+    return true;
+  }
+  return false;
+}

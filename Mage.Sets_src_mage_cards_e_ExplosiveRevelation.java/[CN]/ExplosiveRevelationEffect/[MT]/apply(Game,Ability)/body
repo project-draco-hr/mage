@@ -1,0 +1,35 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null && player.getLibrary().size() > 0) {
+    CardsImpl cards=new CardsImpl();
+    Library library=player.getLibrary();
+    Card card=null;
+    do {
+      card=library.removeFromTop(game);
+      if (card != null) {
+        cards.add(card);
+      }
+    }
+ while (library.size() > 0 && card != null && card.getCardType().contains(CardType.LAND));
+    if (!cards.isEmpty()) {
+      player.revealCards("Explosive Revelation",cards,game);
+    }
+    int damage=card.getConvertedManaCost();
+    for (    UUID targetId : targetPointer.getTargets(game,source)) {
+      Permanent targetedCreature=game.getPermanent(targetId);
+      if (targetedCreature != null) {
+        targetedCreature.damage(damage,source.getSourceId(),game,false,true);
+      }
+ else {
+        Player targetedPlayer=game.getPlayer(targetId);
+        if (targetedPlayer != null) {
+          targetedPlayer.damage(damage,source.getSourceId(),game,false,true);
+        }
+      }
+    }
+    card.moveToZone(Zone.HAND,id,game,true);
+    cards.remove(card);
+    return player.putCardsOnBottomOfLibrary(cards,game,source,true);
+  }
+  return false;
+}

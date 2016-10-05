@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{X}{W}{W}");
+  this.subtype.add("Arcane");
+  FilterOwnedCard filter=new FilterOwnedCard("a white card with converted mana cost X from your hand");
+  filter.add(new ColorPredicate(ObjectColor.WHITE));
+  filter.add(Predicates.not(new CardIdPredicate(this.getId())));
+  this.addAbility(new AlternativeCostSourceAbility(new ExileFromHandCost(new TargetCardInHand(filter),true)));
+  this.getSpellAbility().addEffect(new ShiningShoalPreventDamageTargetEffect(Duration.EndOfTurn,new ExileFromHandCostCardConvertedMana()));
+  this.getSpellAbility().addTarget(new TargetSource());
+  this.getSpellAbility().addTarget(new TargetCreatureOrPlayer());
+}

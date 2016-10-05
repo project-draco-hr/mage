@@ -1,0 +1,13 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    int zoneChangeCounter=(sourceObject instanceof PermanentToken) ? source.getSourceObjectZoneChangeCounter() : source.getSourceObjectZoneChangeCounter() - 1;
+    ExileZone exZone=game.getExile().getExileZone(CardUtil.getExileZoneId(game,source.getSourceId(),zoneChangeCounter));
+    if (exZone != null) {
+      controller.moveCards(exZone,Zone.HAND,source,game);
+    }
+    return true;
+  }
+  return false;
+}

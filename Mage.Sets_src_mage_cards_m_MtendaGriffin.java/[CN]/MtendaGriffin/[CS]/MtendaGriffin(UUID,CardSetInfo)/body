@@ -1,0 +1,17 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{W}");
+  this.subtype.add("Griffin");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(FlyingAbility.getInstance());
+  Effect effect=new ReturnToHandSourceEffect(true);
+  effect.setText("Return Mtenda Griffin to its owner's hand");
+  Ability ability=new ActivateIfConditionActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl("{W}"),new IsStepCondition(PhaseStep.UPKEEP));
+  effect=new ReturnToHandTargetEffect();
+  ability.addCost(new TapSourceCost());
+  effect.setText("and return target Griffin card from your graveyard to your hand");
+  ability.addEffect(effect);
+  Target target=new TargetCardInYourGraveyard(filter);
+  ability.addTarget(target);
+  this.addAbility(ability);
+}

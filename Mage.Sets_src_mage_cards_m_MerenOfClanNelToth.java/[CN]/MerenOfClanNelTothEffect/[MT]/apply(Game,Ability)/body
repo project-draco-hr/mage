@@ -1,0 +1,19 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    int amount=player.getCounters().getCount(CounterType.EXPERIENCE);
+    Card card=game.getCard(targetPointer.getFirst(game,source));
+    if (card != null) {
+      Zone targetZone=Zone.HAND;
+      String text=" put into hand of ";
+      if (card.getConvertedManaCost() <= amount) {
+        targetZone=Zone.BATTLEFIELD;
+        text=" put onto battlefield for ";
+      }
+      card.moveToZone(targetZone,source.getSourceId(),game,false);
+      game.informPlayers(new StringBuilder("Meren of Clan Nel Toth: ").append(card.getName()).append(text).append(player.getLogName()).toString());
+      return true;
+    }
+  }
+  return false;
+}

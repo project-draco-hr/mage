@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    Cost cost : source.getCosts()) {
+      if (cost instanceof SacrificeTargetCost) {
+        int amount=((SacrificeTargetCost)cost).getPermanents().get(0).getToughness().getValue();
+        if (amount > 0) {
+          controller.gainLife(amount,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

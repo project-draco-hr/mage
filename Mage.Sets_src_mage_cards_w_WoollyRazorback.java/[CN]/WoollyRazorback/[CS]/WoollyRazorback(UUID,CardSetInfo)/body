@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{W}{W}");
+  this.subtype.add("Boar");
+  this.subtype.add("Beast");
+  this.power=new MageInt(7);
+  this.toughness=new MageInt(7);
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.ICE.createInstance(3)),"with three ice counters on it"));
+  ConditionalReplacementEffect effect=new ConditionalReplacementEffect(new PreventCombatDamageBySourceEffect(Duration.WhileOnBattlefield),new SourceHasCounterCondition(CounterType.ICE));
+  effect.setText("as long as {this} has an ice counter on it, prevent all combat damage it would deal");
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalReplacementEffect(effect));
+  ability.addEffect(new ConditionalContinuousEffect(new GainAbilitySourceEffect(DefenderAbility.getInstance()),new SourceHasCounterCondition(CounterType.ICE),"and it has defender"));
+  this.addAbility(ability);
+  this.addAbility(new BlocksTriggeredAbility(new RemoveCounterSourceEffect(CounterType.ICE.createInstance()),false));
+}

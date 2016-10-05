@@ -1,0 +1,15 @@
+{
+  Player sourcePlayer=game.getPlayer(source.getControllerId());
+  if (sourcePlayer == null) {
+    return false;
+  }
+  for (  UUID playerId : game.getState().getPlayersInRange(sourcePlayer.getId(),game)) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      for (      Card c : player.getHand().getCards(game)) {
+        player.discard(c,source,game);
+      }
+    }
+  }
+  return true;
+}

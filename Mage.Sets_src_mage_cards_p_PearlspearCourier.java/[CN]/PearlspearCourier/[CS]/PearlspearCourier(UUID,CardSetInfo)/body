@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{W}");
+  this.subtype.add("Human");
+  this.subtype.add("Soldier");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(1);
+  this.addAbility(new SkipUntapOptionalAbility());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new BoostTargetEffect(2,2,Duration.Custom),SourceTappedCondition.getInstance(),"target Soldier creature gets +2/+2"),new ManaCostsImpl("{2}{W}"));
+  ability.addEffect(new ConditionalContinuousEffect(new GainAbilityTargetEffect(VigilanceAbility.getInstance(),Duration.Custom),SourceTappedCondition.getInstance(),"and has vigilance for as long as {this} remains tapped"));
+  ability.addCost(new TapSourceCost());
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability);
+}

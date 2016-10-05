@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    if (controller.getLibrary().size() > 0) {
+      Card card=controller.getLibrary().getFromTop(game);
+      if (card != null) {
+        CardsImpl cards=new CardsImpl();
+        cards.add(card);
+        controller.lookAtCards("Rummaging Wizard",cards,game);
+        if (controller.chooseUse(Outcome.Neutral,"Do you wish to put the card into your graveyard?",source,game)) {
+          return controller.moveCards(card,Zone.GRAVEYARD,source,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

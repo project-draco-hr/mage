@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{6}");
+  Effect effect=new DestroyTargetEffect();
+  effect.setText("Destroy target Aura attached to a land");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl("{2}"));
+  Mode mode=new Mode();
+  mode.getEffects().add(new PreventDamageToTargetEffect(Duration.EndOfTurn));
+  mode.getTargets().add(new TargetLandPermanent());
+  ability.addMode(mode);
+  this.addAbility(ability);
+}

@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{R}");
+  this.subtype.add("Goblin");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Effect effect=new AttacksIfAbleAllEffect(otherGoblinFilter);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect),new AttackedThisTurnWatcher());
+  this.addAbility(new BeginningOfCombatTriggeredAbility(new CreateTokenEffect(new GoblinTokenWithHaste()),TargetController.YOU,false));
+  this.addAbility(new AttacksTriggeredAbility(new BoostSourceEffect(new PermanentsOnBattlefieldCount(attackingFilter),new StaticValue(0),Duration.EndOfTurn,true),false));
+}

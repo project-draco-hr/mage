@@ -1,0 +1,21 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int max=Integer.MIN_VALUE;
+    boolean onlyOnePlayer=false;
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        if (player.getLife() > max) {
+          max=player.getLife();
+          onlyOnePlayer=true;
+        }
+ else         if (player.getLife() == max) {
+          onlyOnePlayer=false;
+        }
+      }
+    }
+    return onlyOnePlayer;
+  }
+  return false;
+}

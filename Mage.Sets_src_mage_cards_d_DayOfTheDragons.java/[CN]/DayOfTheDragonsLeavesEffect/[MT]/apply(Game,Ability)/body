@@ -1,0 +1,21 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null) {
+    for (    Permanent dragon : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
+      if (dragon != null) {
+        dragon.sacrifice(source.getSourceId(),game);
+      }
+    }
+    int zoneChangeCounter=source.getSourceObjectZoneChangeCounter();
+    if (zoneChangeCounter > 0 && !(sourceObject instanceof PermanentToken)) {
+      zoneChangeCounter--;
+    }
+    ExileZone exile=game.getExile().getExileZone(CardUtil.getExileZoneId(game,source.getSourceId(),zoneChangeCounter));
+    if (exile != null) {
+      controller.moveCards(exile,Zone.BATTLEFIELD,source,game);
+    }
+    return true;
+  }
+  return false;
+}

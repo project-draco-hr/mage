@@ -1,0 +1,14 @@
+{
+  int opponentCount=0;
+  Player controller=game.getPlayer(sourceAbility.getControllerId());
+  if (controller != null) {
+    int startingLifeTotal=game.getLife();
+    for (    UUID opponentId : game.getOpponents(controller.getId())) {
+      Player opponent=game.getPlayer(opponentId);
+      if (opponent != null && opponent.getLife() < startingLifeTotal / 2) {
+        opponentCount++;
+      }
+    }
+  }
+  return opponentCount;
+}

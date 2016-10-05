@@ -1,0 +1,14 @@
+{
+  if (event.getType() == GameEvent.EventType.ENTERS_THE_BATTLEFIELD && event.getTargetId().equals(getSourceId())) {
+    return true;
+  }
+  if (event.getType() == GameEvent.EventType.DAMAGED_PLAYER) {
+    if (((DamagedPlayerEvent)event).isCombatDamage()) {
+      Permanent creature=game.getPermanent(event.getSourceId());
+      if (creature != null && creature.getControllerId().equals(controllerId)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

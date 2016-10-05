@@ -1,0 +1,21 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{R}{R}{W}{W}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Angel");
+  this.power=new MageInt(6);
+  this.toughness=new MageInt(3);
+  this.addAbility(FlyingAbility.getInstance());
+  this.addAbility(VigilanceAbility.getInstance());
+  this.addAbility(HasteAbility.getInstance());
+  Effect effect=new RaziaBorosArchangelEffect(Duration.EndOfTurn,3);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new TapSourceCost());
+  Target target=new TargetControlledCreaturePermanent();
+  target.setTargetTag(1);
+  ability.addTarget(target);
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("another creature (damage is redirected to)");
+  filter.add(new AnotherTargetPredicate(2));
+  target=new TargetCreaturePermanent(filter);
+  target.setTargetTag(2);
+  ability.addTarget(target);
+  this.addAbility(ability);
+}

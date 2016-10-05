@@ -1,0 +1,14 @@
+{
+  Spell spell=game.getStack().getSpell(source.getFirstTarget());
+  if (spell != null) {
+    Player player=game.getPlayer(spell.getControllerId());
+    String message="Have Molten Influence do 4 damage to you?";
+    if (player.chooseUse(Outcome.Damage,message,source,game)) {
+      player.damage(4,source.getSourceId(),game,false,true);
+    }
+ else {
+      spell.counter(source.getSourceId(),game);
+    }
+  }
+  return false;
+}

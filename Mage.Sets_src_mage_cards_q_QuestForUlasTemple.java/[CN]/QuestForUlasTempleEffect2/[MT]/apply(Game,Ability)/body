@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    TargetCardInHand target=new TargetCardInHand(filter);
+    if (target.canChoose(source.getSourceId(),controller.getId(),game) && controller.chooseUse(Outcome.PutCreatureInPlay,query,source,game)) {
+      if (controller.choose(Outcome.PutCreatureInPlay,target,source.getSourceId(),game)) {
+        Card card=game.getCard(target.getFirstTarget());
+        controller.moveCards(card,Zone.BATTLEFIELD,source,game);
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,39 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Card sourceCard=game.getCard(source.getSourceId());
+  if (player == null || sourceCard == null) {
+    return false;
+  }
+  Player opponent=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (opponent == null) {
+    return false;
+  }
+  GiftsUngivenTarget target=new GiftsUngivenTarget();
+  if (player.searchLibrary(target,game)) {
+    if (target.getTargets().size() > 0) {
+      Cards cards=new CardsImpl();
+      for (      UUID cardId : target.getTargets()) {
+        Card card=player.getLibrary().remove(cardId,game);
+        if (card != null) {
+          cards.add(card);
+        }
+      }
+      player.revealCards(sourceCard.getIdName(),cards,game);
+      CardsImpl cardsToKeep=new CardsImpl();
+      if (cards.size() > 2) {
+        cardsToKeep.addAll(cards);
+        TargetCard targetDiscard=new TargetCard(2,Zone.LIBRARY,new FilterCard("cards to put in graveyard"));
+        if (opponent.choose(Outcome.Discard,cards,targetDiscard,game)) {
+          cardsToKeep.removeAll(targetDiscard.getTargets());
+          cards.removeAll(cardsToKeep);
+        }
+      }
+      player.moveCards(cards,Zone.GRAVEYARD,source,game);
+      player.moveCards(cardsToKeep,Zone.HAND,source,game);
+    }
+    player.shuffleLibrary(source,game);
+    return true;
+  }
+  player.shuffleLibrary(source,game);
+  return false;
+}

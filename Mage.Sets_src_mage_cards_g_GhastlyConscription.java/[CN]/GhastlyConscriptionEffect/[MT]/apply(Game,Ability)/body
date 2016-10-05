@@ -1,0 +1,34 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (controller != null && targetPlayer != null) {
+    ArrayList<Card> cardsToManifest=new ArrayList<>();
+    for (    Card card : targetPlayer.getGraveyard().getCards(new FilterCreatureCard(),game)) {
+      cardsToManifest.add(card);
+      controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.GRAVEYARD,true);
+    }
+    if (cardsToManifest.isEmpty()) {
+      return true;
+    }
+    Collections.shuffle(cardsToManifest);
+    game.informPlayers(controller.getLogName() + " shuffles the face-down pile");
+    Ability newSource=source.copy();
+    newSource.setWorksFaceDown(true);
+    for (    Card card : cardsToManifest) {
+      ManaCosts manaCosts=null;
+      if (card.getCardType().contains(CardType.CREATURE)) {
+        manaCosts=card.getSpellAbility().getManaCosts();
+        if (manaCosts == null) {
+          manaCosts=new ManaCostsImpl("{0}");
+        }
+      }
+      MageObjectReference objectReference=new MageObjectReference(card.getId(),card.getZoneChangeCounter(game) + 1,game);
+      game.addEffect(new BecomesFaceDownCreatureEffect(manaCosts,objectReference,Duration.Custom,FaceDownType.MANIFESTED),newSource);
+    }
+    Set<Card> toBattlefield=new LinkedHashSet();
+    toBattlefield.addAll(cardsToManifest);
+    controller.moveCards(toBattlefield,Zone.BATTLEFIELD,source,game,false,true,false,null);
+    return true;
+  }
+  return false;
+}

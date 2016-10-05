@@ -1,0 +1,19 @@
+{
+  ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+  if (zEvent.getFromZone() == Zone.BATTLEFIELD && zEvent.getToZone() == Zone.GRAVEYARD && zEvent.getTarget().getCardType().contains(CardType.CREATURE)) {
+    boolean damageDealt=false;
+    for (    MageObjectReference mor : zEvent.getTarget().getDealtDamageByThisTurn()) {
+      if (mor.equals(creatureToCheck)) {
+        damageDealt=true;
+        break;
+      }
+    }
+    if (damageDealt) {
+      for (      Effect effect : getEffects()) {
+        effect.setTargetPointer(new FixedTarget(zEvent.getTarget().getControllerId()));
+      }
+      return true;
+    }
+  }
+  return false;
+}

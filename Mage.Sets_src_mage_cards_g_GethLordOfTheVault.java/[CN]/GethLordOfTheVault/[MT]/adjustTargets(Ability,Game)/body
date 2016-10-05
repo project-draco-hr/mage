@@ -1,0 +1,11 @@
+{
+  if (ability.getOriginalId().equals(originalId)) {
+    int xValue=ability.getManaCostsToPay().getX();
+    ability.getTargets().clear();
+    FilterCard filter=new FilterCard("artifact or creature card with converted mana cost " + xValue + " from an opponent's graveyard");
+    filter.add(Predicates.or(new CardTypePredicate(CardType.ARTIFACT),new CardTypePredicate(CardType.CREATURE)));
+    filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,xValue));
+    Target target=new TargetCardInOpponentsGraveyard(filter);
+    ability.addTarget(target);
+  }
+}

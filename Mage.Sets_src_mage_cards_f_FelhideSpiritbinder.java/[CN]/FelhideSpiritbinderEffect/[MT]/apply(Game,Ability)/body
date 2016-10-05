@@ -1,0 +1,17 @@
+{
+  Permanent permanent=game.getPermanentOrLKIBattlefield(source.getFirstTarget());
+  if (permanent != null) {
+    PutTokenOntoBattlefieldCopyTargetEffect effect=new PutTokenOntoBattlefieldCopyTargetEffect(null,CardType.ENCHANTMENT,true);
+    effect.setTargetPointer(getTargetPointer());
+    if (effect.apply(game,source)) {
+      for (      Permanent tokenPermanent : effect.getAddedPermanent()) {
+        ExileTargetEffect exileEffect=new ExileTargetEffect();
+        exileEffect.setTargetPointer(new FixedTarget(tokenPermanent,game));
+        DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(exileEffect);
+        game.addDelayedTriggeredAbility(delayedAbility,source);
+      }
+      return true;
+    }
+  }
+  return false;
+}

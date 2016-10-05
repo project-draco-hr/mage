@@ -1,0 +1,17 @@
+{
+  Spell spell;
+  spell=game.getStack().getSpell(((FixedTarget)getTargetPointer()).getTarget());
+  if (spell == null) {
+    spell=(Spell)game.getLastKnownInformation(((FixedTarget)getTargetPointer()).getTarget(),Zone.STACK);
+  }
+  Player player=game.getPlayer(source.getControllerId());
+  if (spell != null && player != null) {
+    for (    UUID playerId : game.getState().getPlayersInRange(player.getId(),game)) {
+      if (!playerId.equals(spell.getControllerId())) {
+        spell.createCopyOnStack(game,source,playerId,true);
+      }
+    }
+    return true;
+  }
+  return false;
+}

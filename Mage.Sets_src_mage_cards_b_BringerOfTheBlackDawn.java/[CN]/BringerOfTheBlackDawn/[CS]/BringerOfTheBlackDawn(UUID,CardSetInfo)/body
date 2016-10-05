@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{7}{B}{B}");
+  this.subtype.add("Bringer");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  this.addAbility(new AlternativeCostSourceAbility(new ManaCostsImpl("{W}{U}{B}{R}{G}")));
+  this.addAbility(TrampleAbility.getInstance());
+  Ability ability=new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,new DoIfCostPaid(new SearchLibraryPutOnLibraryEffect(new TargetCardInLibrary()),new PayLifeCost(2)),TargetController.YOU,false);
+  this.addAbility(ability);
+}

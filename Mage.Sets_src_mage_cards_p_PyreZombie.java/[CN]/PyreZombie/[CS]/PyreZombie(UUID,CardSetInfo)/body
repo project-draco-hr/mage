@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{B}{R}");
+  this.subtype.add("Zombie");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(1);
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(Zone.GRAVEYARD,new DoIfCostPaid(new ReturnToHandSourceEffect(),new ManaCostsImpl("{1}{B}{B}")),TargetController.YOU,false));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(2),new ManaCostsImpl("{1}{R}{R}"));
+  ability.addCost(new SacrificeSourceCost());
+  ability.addTarget(new TargetCreatureOrPlayer());
+  this.addAbility(ability);
+}

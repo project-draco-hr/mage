@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{R}");
+  this.subtype.add("Human");
+  this.subtype.add("Rogue");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(2);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new GetEnergyCountersControllerEffect(4)));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new TapSourceCost());
+  ability.addTarget(new TargetCreaturePermanent());
+  ability.addCost(new PayEnergyCost(2));
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(6),new TapSourceCost());
+  ability.addTarget(new TargetPlayer());
+  ability.addCost(new PayEnergyCost(8));
+  this.addAbility(ability);
+}

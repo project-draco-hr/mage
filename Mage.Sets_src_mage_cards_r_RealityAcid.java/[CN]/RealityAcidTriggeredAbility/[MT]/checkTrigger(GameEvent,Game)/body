@@ -1,0 +1,15 @@
+{
+  if (super.checkTrigger(event,game)) {
+    Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(getSourceId());
+    if (sourcePermanent != null && sourcePermanent.getAttachedTo() != null) {
+      Permanent attachedTo=game.getPermanent(sourcePermanent.getAttachedTo());
+      if (attachedTo != null) {
+        for (        Effect effect : getEffects()) {
+          effect.setTargetPointer(new FixedTarget(attachedTo.getId(),attachedTo.getZoneChangeCounter(game)));
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{G}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  Ability asThough=new SimpleStaticAbility(Zone.BATTLEFIELD,new CanAttackAsThoughItHadHasteEnchantedEffect(Duration.WhileOnBattlefield));
+  Ability haste=new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(asThough,AttachmentType.AURA,Duration.WhileOnBattlefield,"Enchanted creature can attack as though it had haste."));
+  this.addAbility(haste);
+  this.addAbility(new LimitedTimesPerTurnActivatedAbility(Zone.BATTLEFIELD,new UntapEnchantedEffect(),new GenericManaCost(0),1,MyTurnCondition.getInstance()));
+}

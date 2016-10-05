@@ -1,0 +1,28 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  String cardName=(String)game.getState().getValue(source.getSourceId().toString() + NameACardEffect.INFO_KEY);
+  if (sourceObject != null && controller != null && cardName != null && !cardName.isEmpty()) {
+    if (controller.getHand().size() > 0) {
+      Cards revealed=new CardsImpl();
+      Card card=controller.getHand().getRandom(game);
+      revealed.add(card);
+      controller.revealCards(sourceObject.getIdName(),revealed,game);
+      if (card.getName().equals(cardName)) {
+        Permanent creature=game.getPermanent(targetPointer.getFirst(game,source));
+        if (creature != null) {
+          creature.damage(2,source.getSourceId(),game,false,true);
+          return true;
+        }
+        Player player=game.getPlayer(targetPointer.getFirst(game,source));
+        if (player != null) {
+          player.damage(2,source.getSourceId(),game,false,true);
+          return true;
+        }
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
+}

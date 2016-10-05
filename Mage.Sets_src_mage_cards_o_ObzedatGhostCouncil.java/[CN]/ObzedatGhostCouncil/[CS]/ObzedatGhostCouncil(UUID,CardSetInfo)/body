@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{W}{W}{B}{B}");
+  this.subtype.add("Spirit");
+  this.subtype.add("Advisor");
+  this.supertype.add("Legendary");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  Ability ability=new EntersBattlefieldTriggeredAbility(new LoseLifeTargetEffect(2));
+  ability.addEffect(new GainLifeEffect(2));
+  ability.addTarget(new TargetOpponent());
+  this.addAbility(ability);
+  Ability ability2=new BeginningOfYourEndStepTriggeredAbility(new ObzedatGhostCouncilExileSourceEffect(),true);
+  ability2.addEffect(new CreateDelayedTriggeredAbilityEffect(new BeginningOfYourUpkeepdelayTriggeredAbility()));
+  this.addAbility(ability2);
+}

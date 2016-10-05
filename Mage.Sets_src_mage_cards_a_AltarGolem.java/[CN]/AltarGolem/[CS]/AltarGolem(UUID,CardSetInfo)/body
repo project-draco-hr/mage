@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT,CardType.CREATURE},"{7}");
+  this.subtype.add("Golem");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  this.addAbility(TrampleAbility.getInstance());
+  DynamicValue amount=new PermanentsOnBattlefieldCount(new FilterCreaturePermanent("creatures in play"));
+  this.addAbility(new SimpleStaticAbility(Zone.ALL,new SetPowerToughnessSourceEffect(amount,Duration.EndOfGame)));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new DontUntapInControllersUntapStepSourceEffect()));
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new UntapSourceEffect(),new TapTargetCost(new TargetControlledCreaturePermanent(5,5,filter,true))));
+}

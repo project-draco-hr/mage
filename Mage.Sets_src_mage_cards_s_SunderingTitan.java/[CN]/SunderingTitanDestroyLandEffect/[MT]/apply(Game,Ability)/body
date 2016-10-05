@@ -1,0 +1,30 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  Set<UUID> lands=new HashSet<>();
+  if (controller != null && sourcePermanent != null) {
+    for (    String landName : new String[]{"Forest","Island","Mountain","Plains","Swamp"}) {
+      FilterLandPermanent filter=new FilterLandPermanent(landName + " to destroy");
+      filter.add(new SubtypePredicate(landName));
+      Target target=new TargetLandPermanent(1,1,filter,true);
+      if (target.canChoose(source.getSourceId(),source.getControllerId(),game)) {
+        controller.chooseTarget(outcome,target,source,game);
+        lands.add(target.getFirstTarget());
+      }
+    }
+    if (!lands.isEmpty()) {
+      int destroyedLands=0;
+      for (      UUID landId : lands) {
+        Permanent land=game.getPermanent(landId);
+        if (land != null) {
+          if (land.destroy(source.getSourceId(),game,false)) {
+            destroyedLands++;
+          }
+        }
+      }
+      game.informPlayers(sourcePermanent.getLogName() + ": " + destroyedLands+ (destroyedLands > 1 ? " lands were" : "land was")+ " destroyed");
+    }
+    return true;
+  }
+  return false;
+}

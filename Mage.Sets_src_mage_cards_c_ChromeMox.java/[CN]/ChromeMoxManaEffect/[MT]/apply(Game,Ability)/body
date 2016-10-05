@@ -1,0 +1,60 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  Player player=game.getPlayer(source.getControllerId());
+  if (permanent != null && player != null) {
+    List<UUID> imprinted=permanent.getImprinted();
+    if (imprinted.size() > 0) {
+      Card imprintedCard=game.getCard(imprinted.get(0));
+      if (imprintedCard != null) {
+        Choice choice=new ChoiceImpl(true);
+        choice.setMessage("Pick a mana color");
+        ObjectColor color=imprintedCard.getColor(game);
+        if (color.isBlack()) {
+          choice.getChoices().add("Black");
+        }
+        if (color.isRed()) {
+          choice.getChoices().add("Red");
+        }
+        if (color.isBlue()) {
+          choice.getChoices().add("Blue");
+        }
+        if (color.isGreen()) {
+          choice.getChoices().add("Green");
+        }
+        if (color.isWhite()) {
+          choice.getChoices().add("White");
+        }
+        if (choice.getChoices().size() > 0) {
+          Mana mana=new Mana();
+          if (choice.getChoices().size() == 1) {
+            choice.setChoice(choice.getChoices().iterator().next());
+          }
+ else {
+            player.choose(outcome,choice,game);
+          }
+          if (choice.getChoice().equals("Black")) {
+            player.getManaPool().addMana(Mana.BlackMana(1),game,source);
+          }
+ else           if (choice.getChoice().equals("Blue")) {
+            player.getManaPool().addMana(Mana.BlueMana(1),game,source);
+          }
+ else           if (choice.getChoice().equals("Red")) {
+            player.getManaPool().addMana(Mana.RedMana(1),game,source);
+          }
+ else           if (choice.getChoice().equals("Green")) {
+            player.getManaPool().addMana(Mana.GreenMana(1),game,source);
+          }
+ else           if (choice.getChoice().equals("White")) {
+            player.getManaPool().addMana(Mana.WhiteMana(1),game,source);
+          }
+ else           if (choice.getChoice().equals("Colorless")) {
+            player.getManaPool().addMana(Mana.ColorlessMana(1),game,source);
+          }
+          checkToFirePossibleEvents(mana,game,source);
+          player.getManaPool().addMana(mana,game,source);
+        }
+      }
+    }
+  }
+  return true;
+}

@@ -1,0 +1,30 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int x=2;
+    Mana mana=new Mana();
+    for (int i=0; i < x; i++) {
+      ChoiceColor choiceColor=new ChoiceColor();
+      while (controller.canRespond() && !controller.choose(Outcome.Benefit,choiceColor,game)) {
+      }
+      if (choiceColor.getColor().isBlack()) {
+        mana.increaseBlack();
+      }
+ else       if (choiceColor.getColor().isBlue()) {
+        mana.increaseBlue();
+      }
+ else       if (choiceColor.getColor().isRed()) {
+        mana.increaseRed();
+      }
+ else       if (choiceColor.getColor().isGreen()) {
+        mana.increaseGreen();
+      }
+ else       if (choiceColor.getColor().isWhite()) {
+        mana.increaseWhite();
+      }
+    }
+    controller.getManaPool().addMana(mana,game,source);
+    return true;
+  }
+  return false;
+}

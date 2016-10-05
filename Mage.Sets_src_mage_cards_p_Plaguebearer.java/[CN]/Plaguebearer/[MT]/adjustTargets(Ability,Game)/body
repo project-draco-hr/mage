@@ -1,0 +1,11 @@
+{
+  if (ability.getOriginalId().equals(originalId)) {
+    int xValue=ability.getManaCostsToPay().getX();
+    ability.getTargets().clear();
+    FilterCreaturePermanent filter=new FilterCreaturePermanent(new StringBuilder("nonblack creature with converted mana cost ").append(xValue).toString());
+    filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,xValue));
+    filter.add(Predicates.not(new ColorPredicate(ObjectColor.BLACK)));
+    Target target=new TargetPermanent(filter);
+    ability.addTarget(target);
+  }
+}

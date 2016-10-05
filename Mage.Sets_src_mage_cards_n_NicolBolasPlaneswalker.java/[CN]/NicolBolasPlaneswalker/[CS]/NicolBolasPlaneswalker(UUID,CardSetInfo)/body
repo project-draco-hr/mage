@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.PLANESWALKER},"{4}{U}{B}{B}{R}");
+  this.subtype.add("Bolas");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(5));
+  LoyaltyAbility ability=new LoyaltyAbility(new DestroyTargetEffect(),3);
+  ability.addTarget(new TargetPermanent(filter));
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new GainControlTargetEffect(Duration.Custom),-2);
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+  ability=new LoyaltyAbility(new DamageTargetEffect(7),-9);
+  ability.addTarget(new TargetPlayer());
+  ability.addEffect(new DiscardTargetEffect(7));
+  ability.addEffect(new SacrificeEffect(new FilterPermanent(),7,"then"));
+  this.addAbility(ability);
+}

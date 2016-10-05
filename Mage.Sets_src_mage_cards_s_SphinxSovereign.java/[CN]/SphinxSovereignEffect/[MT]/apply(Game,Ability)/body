@@ -1,0 +1,21 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent permanent=(Permanent)source.getSourceObject(game);
+  if (controller != null && permanent != null) {
+    if (!permanent.isTapped()) {
+      controller.gainLife(3,game);
+    }
+ else {
+      for (      UUID opponentId : game.getState().getPlayersInRange(controller.getId(),game)) {
+        if (controller.hasOpponent(opponentId,game)) {
+          Player opponent=game.getPlayer(opponentId);
+          if (opponent != null) {
+            opponent.loseLife(3,game,false);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  ManaPool pool=controller.getManaPool();
+  int blackMana=pool.getBlack();
+  int whiteMana=pool.getWhite();
+  int blueMana=pool.getBlue();
+  int greenMana=pool.getGreen();
+  int redMana=pool.getRed();
+  int colorlessMana=pool.getColorless();
+  int manaPoolTotal=blackMana + whiteMana + blueMana+ greenMana+ redMana+ colorlessMana;
+  Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+  if (controller != null && permanent != null) {
+    if (permanent.getConvertedManaCost() == manaPoolTotal) {
+      return permanent.destroy(source.getSourceId(),game,false);
+    }
+  }
+  return false;
+}

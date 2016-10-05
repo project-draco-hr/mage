@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{3}");
+  FilterArtifactPermanent filter=new FilterArtifactPermanent();
+  filter.add(Predicates.not(new PermanentIdPredicate(getId())));
+  SourceTappedBeforeUntapStepCondition condition=new SourceTappedBeforeUntapStepCondition();
+  condition.setPermanentId(this.getId());
+  Effect effect=new ConditionalContinuousRuleModifyingEffect(new DontUntapInControllersUntapStepAllEffect(Duration.WhileOnBattlefield,TargetController.ANY,filter),condition);
+  effect.setText("Artifacts tapped this way don't untap during their controllers' untap steps for as long as {this} remains tapped");
+  Effect effect2=new TapAllEffect(filter);
+  effect2.setText("Tap all other artifacts");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect2,new ManaCostsImpl("{2}"));
+  ability.addCost(new TapSourceCost());
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

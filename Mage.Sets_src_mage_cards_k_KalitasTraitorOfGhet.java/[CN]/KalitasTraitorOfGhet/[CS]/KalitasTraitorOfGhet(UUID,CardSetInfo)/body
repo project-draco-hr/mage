@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{B}{B}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Vampire");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(4);
+  this.addAbility(LifelinkAbility.getInstance());
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new KalitasTraitorOfGhetEffect()));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new AddCountersSourceEffect(CounterType.P1P1.createInstance(2)),new ManaCostsImpl("{2}{B}"));
+  ability.addCost(new SacrificeTargetCost(new TargetControlledCreaturePermanent(filter)));
+  this.addAbility(ability);
+}

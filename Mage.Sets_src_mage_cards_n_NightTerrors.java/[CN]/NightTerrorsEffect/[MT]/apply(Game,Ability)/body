@@ -1,0 +1,16 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (player != null && targetPlayer != null) {
+    targetPlayer.revealCards("Night Terrors",targetPlayer.getHand(),game);
+    TargetCard target=new TargetCard(Zone.HAND,new FilterNonlandCard("nonland card to exile"));
+    if (player.choose(Outcome.Exile,targetPlayer.getHand(),target,game)) {
+      Card card=targetPlayer.getHand().get(target.getFirstTarget(),game);
+      if (card != null) {
+        card.moveToExile(null,"",source.getSourceId(),game);
+      }
+    }
+    return true;
+  }
+  return false;
+}

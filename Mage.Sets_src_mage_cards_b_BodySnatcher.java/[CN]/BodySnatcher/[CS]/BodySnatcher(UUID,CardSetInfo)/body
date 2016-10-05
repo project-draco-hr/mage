@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{B}{B}");
+  this.subtype.add("Minion");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new ExileSourceUnlessPaysEffect(new DiscardTargetCost(new TargetCardInHand(new FilterCreatureCard("a creature card"))))));
+  Effect effect=new ReturnFromGraveyardToBattlefieldTargetEffect();
+  effect.setText("and return target creature card from your graveyard to the battlefield");
+  Ability ability=new DiesTriggeredAbility(new ExileSourceEffect(),false);
+  ability.addEffect(effect);
+  ability.addTarget(new TargetCardInYourGraveyard(new FilterCreatureCard("creature card from your graveyard")));
+  this.addAbility(ability);
+}

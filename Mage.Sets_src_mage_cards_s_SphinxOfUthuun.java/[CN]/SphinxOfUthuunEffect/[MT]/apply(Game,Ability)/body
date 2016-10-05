@@ -1,0 +1,79 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (player == null || sourceObject == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl();
+  int count=Math.min(player.getLibrary().size(),5);
+  for (int i=0; i < count; i++) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      cards.add(card);
+    }
+  }
+  player.revealCards(sourceObject.getName(),cards,game);
+  Set<UUID> opponents=game.getOpponents(source.getControllerId());
+  if (!opponents.isEmpty()) {
+    Player opponent=game.getPlayer(opponents.iterator().next());
+    TargetCard target=new TargetCard(0,cards.size(),Zone.LIBRARY,new FilterCard("cards to put in the first pile"));
+    target.setRequired(false);
+    List<Card> pile1=new ArrayList<>();
+    Cards pile1CardsIds=new CardsImpl();
+    if (opponent.choose(Outcome.Neutral,cards,target,game)) {
+      List<UUID> targets=target.getTargets();
+      for (      UUID targetId : targets) {
+        Card card=game.getCard(targetId);
+        if (card != null) {
+          pile1.add(card);
+          pile1CardsIds.add(card.getId());
+        }
+      }
+    }
+    List<Card> pile2=new ArrayList<>();
+    Cards pile2CardsIds=new CardsImpl();
+    for (    UUID cardId : cards) {
+      Card card=game.getCard(cardId);
+      if (card != null && !pile1.contains(card)) {
+        pile2.add(card);
+        pile2CardsIds.add(card.getId());
+      }
+    }
+    boolean choice=player.choosePile(Outcome.DestroyPermanent,"Choose a pile to put into hand.",pile1,pile2,game);
+    Zone pile1Zone=Zone.GRAVEYARD;
+    Zone pile2Zone=Zone.HAND;
+    if (choice) {
+      pile1Zone=Zone.HAND;
+      pile2Zone=Zone.GRAVEYARD;
+    }
+    StringBuilder sb=new StringBuilder(sourceObject.getLogName()).append(": Pile 1, going to ").append(pile1Zone.equals(Zone.HAND) ? "Hand" : "Graveyard").append(": ");
+    int i=0;
+    for (    UUID cardUuid : pile1CardsIds) {
+      i++;
+      Card card=game.getCard(cardUuid);
+      if (card != null) {
+        sb.append(card.getName());
+        if (i < pile1CardsIds.size()) {
+          sb.append(", ");
+        }
+        card.moveToZone(pile1Zone,source.getSourceId(),game,false);
+      }
+    }
+    game.informPlayers(sb.toString());
+    sb=new StringBuilder(sourceObject.getLogName()).append(": Pile 2, going to ").append(pile2Zone.equals(Zone.HAND) ? "Hand" : "Graveyard").append(":");
+    i=0;
+    for (    UUID cardUuid : pile2CardsIds) {
+      Card card=game.getCard(cardUuid);
+      if (card != null) {
+        i++;
+        sb.append(" ").append(card.getName());
+        if (i < pile2CardsIds.size()) {
+          sb.append(", ");
+        }
+        card.moveToZone(pile2Zone,source.getSourceId(),game,false);
+      }
+    }
+    game.informPlayers(sb.toString());
+  }
+  return true;
+}

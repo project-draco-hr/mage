@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(targetPointer.getFirst(game,source));
+  if (permanent != null && controller != null) {
+    if (permanent.isAttacking()) {
+      if (controller.chooseUse(Outcome.Neutral,"Put " + permanent.getIdName() + " on top of its owner's library (otherwise return to hand)?",source,game)) {
+        new PutOnLibraryTargetEffect(true).apply(game,source);
+      }
+ else {
+        new ReturnToHandTargetEffect().apply(game,source);
+      }
+    }
+ else {
+      new ReturnToHandTargetEffect().apply(game,source);
+    }
+    return true;
+  }
+  return false;
+}

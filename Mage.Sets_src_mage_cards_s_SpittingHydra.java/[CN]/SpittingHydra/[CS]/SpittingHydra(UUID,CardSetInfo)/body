@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{R}{R}");
+  this.subtype.add("Hydra");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  Effect effect=new AddCountersSourceEffect(CounterType.P1P1.createInstance(4));
+  effect.setText("with four +1/+1 counters on it");
+  this.addAbility(new EntersBattlefieldAbility(effect));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new ManaCostsImpl("{1}{R}"));
+  ability.addCost(new RemoveCountersSourceCost(CounterType.P1P1.createInstance(1)));
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}

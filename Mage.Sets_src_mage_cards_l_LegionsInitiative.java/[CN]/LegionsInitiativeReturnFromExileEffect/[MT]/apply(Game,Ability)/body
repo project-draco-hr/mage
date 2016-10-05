@@ -1,0 +1,19 @@
+{
+  ExileZone exile=game.getExile().getExileZone(source.getSourceId());
+  if (exile != null) {
+    exile=exile.copy();
+    for (    UUID cardId : exile) {
+      Card card=game.getCard(cardId);
+      card.moveToZone(Zone.BATTLEFIELD,source.getSourceId(),game,false);
+      Permanent returnedCreature=game.getPermanent(cardId);
+      if (returnedCreature != null) {
+        ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn);
+        effect.setTargetPointer(new FixedTarget(returnedCreature.getId()));
+        game.addEffect(effect,source);
+      }
+    }
+    game.getExile().getExileZone(source.getSourceId()).clear();
+    return true;
+  }
+  return false;
+}

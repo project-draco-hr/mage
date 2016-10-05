@@ -1,0 +1,33 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Choice numberChoice=new ChoiceImpl();
+    Set<String> numbers=new HashSet<>(16);
+    for (int i=0; i <= 15; i++) {
+      numbers.add(Integer.toString(i));
+    }
+    numberChoice.setChoices(numbers);
+    numberChoice.setMessage("Choose a number");
+    controller.choose(Outcome.DestroyPermanent,numberChoice,game);
+    int number=Integer.parseInt(numberChoice.getChoice());
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(source.getControllerId(),game)) {
+      if ((permanent.getCardType().contains(CardType.ARTIFACT) || permanent.getCardType().contains(CardType.CREATURE)) && permanent.getConvertedManaCost() == number) {
+        permanent.destroy(source.getSourceId(),game,false);
+      }
+    }
+    FilterCard filterCard=new FilterCard();
+    filterCard.add(new ConvertedManaCostPredicate(Filter.ComparisonType.Equal,number));
+    filterCard.add(Predicates.not(new CardTypePredicate(CardType.LAND)));
+    Player targetPlayer=game.getPlayer(targetPointer.getFirst(game,source));
+    if (targetPlayer != null) {
+      targetPlayer.revealCards("Void",targetPlayer.getHand(),game);
+      for (      Card card : targetPlayer.getHand().getCards(game)) {
+        if (filterCard.match(card,game)) {
+          targetPlayer.discard(card,source,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

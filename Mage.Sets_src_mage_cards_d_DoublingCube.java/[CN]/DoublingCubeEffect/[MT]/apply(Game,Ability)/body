@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  ManaPool pool=controller.getManaPool();
+  int blackMana=pool.getBlack();
+  int whiteMana=pool.getWhite();
+  int blueMana=pool.getBlue();
+  int greenMana=pool.getGreen();
+  int redMana=pool.getRed();
+  int colorlessMana=pool.getColorless();
+  Mana mana=new Mana(redMana,greenMana,blueMana,whiteMana,blackMana,colorlessMana,0,0);
+  checkToFirePossibleEvents(mana,game,source);
+  pool.addMana(mana,game,source);
+  return true;
+}

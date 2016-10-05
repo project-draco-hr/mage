@@ -1,0 +1,17 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (player != null && targetPlayer != null) {
+    int exiledCards=0;
+    for (    Card card : targetPlayer.getGraveyard().getCards(game)) {
+      if (filter.match(card,game)) {
+        if (card.moveToExile(null,"",source.getSourceId(),game)) {
+          exiledCards++;
+        }
+      }
+    }
+    player.gainLife(exiledCards * 3,game);
+    return true;
+  }
+  return false;
+}

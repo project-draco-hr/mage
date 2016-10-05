@@ -1,0 +1,8 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{W}{W}{W}");
+  this.addAbility(new AsEntersBattlefieldAbility(new ChooseColorEffect(Outcome.Detriment)));
+  this.addAbility(new AsEntersBattlefieldAbility(new ChooseOpponentEffect(Outcome.Detriment)));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostAllEffect(2,1,Duration.WhileOnBattlefield,filter,false)));
+  TriggeredAbility triggered=new OnEventTriggeredAbility(GameEvent.EventType.STEP_CHANGED,"end Jihad",true,new SacrificeSourceEffect());
+  this.addAbility(new ConditionalTriggeredAbility(triggered,new NoColoredPermanentOpponentCondition(),"no nontoken permanents of the chosen color, sacrifice Jihad"));
+}

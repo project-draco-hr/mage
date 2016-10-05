@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    ChoiceColor choice=new ChoiceColor();
+    controller.choose(Outcome.ReturnToHand,choice,game);
+    ObjectColor color=choice.getColor();
+    if (color != null) {
+      FilterPermanent filter=new FilterPermanent();
+      filter.add(new ColorPredicate(color));
+      for (      Permanent permanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
+        permanent.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+      }
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,17 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{U}{R}{W}");
+  this.getSpellAbility().addEffect(new PutOnLibraryTargetEffect(true));
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent());
+  Mode mode=new Mode();
+  mode.getEffects().add(new DamageTargetEffect(4));
+  mode.getTargets().add(new TargetOpponent());
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  Effect effect=new BoostControlledEffect(1,1,Duration.EndOfTurn);
+  effect.setText("Creatures you control get +1/+1");
+  mode.getEffects().add(effect);
+  effect=new GainAbilityControlledEffect(LifelinkAbility.getInstance(),Duration.EndOfTurn,new FilterControlledCreaturePermanent());
+  effect.setText("and gain lifelink until end of turn");
+  mode.getEffects().add(effect);
+  this.getSpellAbility().addMode(mode);
+}

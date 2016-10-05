@@ -1,0 +1,28 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int deathCount=0;
+    int tortureCount=0;
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        if (player.chooseUse(Outcome.Sacrifice,"Choose death?",source,game)) {
+          deathCount++;
+          game.informPlayers(player.getLogName() + " has voted for death");
+        }
+ else {
+          tortureCount++;
+          game.informPlayers(player.getLogName() + " has voted for torture");
+        }
+      }
+    }
+    if (deathCount > tortureCount) {
+      new SacrificeOpponentsEffect(new FilterControlledCreaturePermanent("a creature")).apply(game,source);
+    }
+ else {
+      new TyrantsChoiceLoseLifeEffect().apply(game,source);
+    }
+    return true;
+  }
+  return false;
+}

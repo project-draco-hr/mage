@@ -1,0 +1,14 @@
+{
+  AttackedThisTurnWatcher watcher=(AttackedThisTurnWatcher)game.getState().getWatchers().get("AttackedThisTurn");
+  if (watcher != null) {
+    for (    UUID targetId : chosenCreatures) {
+      if (!watcher.getAttackedThisTurnCreatures().contains(targetId)) {
+        Effect effect=new DestroyTargetEffect();
+        effect.setTargetPointer(new FixedTarget(targetId));
+        effect.apply(game,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

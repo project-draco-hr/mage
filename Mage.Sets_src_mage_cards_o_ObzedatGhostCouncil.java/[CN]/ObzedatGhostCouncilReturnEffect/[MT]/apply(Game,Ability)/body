@@ -1,0 +1,13 @@
+{
+  Card card=game.getCard(source.getSourceId());
+  if (card != null) {
+    ExileZone currentZone=game.getState().getExile().getExileZone(source.getSourceId());
+    if (currentZone != null && currentZone.size() > 0) {
+      Player owner=game.getPlayer(card.getOwnerId());
+      if (owner != null && owner.moveCards(card,Zone.BATTLEFIELD,source,game)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

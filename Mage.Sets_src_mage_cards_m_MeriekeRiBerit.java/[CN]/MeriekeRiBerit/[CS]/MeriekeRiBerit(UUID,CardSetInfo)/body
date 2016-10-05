@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{W}{U}{B}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Human");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new DontUntapInControllersUntapStepSourceEffect()));
+  ConditionalContinuousEffect MeriekeRiBeritGainControlEffect=new ConditionalContinuousEffect(new GainControlTargetEffect(Duration.Custom),new SourceOnBattlefieldControlUnchangedCondition(),"Gain control of target creature for as long as you control {this}");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,MeriekeRiBeritGainControlEffect,new TapSourceCost());
+  ability.addTarget(new TargetPermanent(new FilterCreaturePermanent("target creature")));
+  ability.addEffect(new MeriekeRiBeritCreateDelayedTriggerEffect());
+  this.addAbility(ability);
+}

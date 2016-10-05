@@ -1,0 +1,10 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent targetPermanent=game.getPermanentOrLKIBattlefield(targetPointer.getFirst(game,source));
+  if (controller != null && targetPermanent != null) {
+    int newToughness=targetPermanent.getPower().getValue() + 1;
+    game.addEffect(new SetToughnessSourceEffect(new StaticValue(newToughness),Duration.Custom),source);
+    return true;
+  }
+  return false;
+}

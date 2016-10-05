@@ -1,0 +1,19 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{R}");
+  this.subtype.add("Human");
+  this.subtype.add("Shaman");
+  this.color.setRed(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new LevelUpAbility(new ManaCostsImpl("{3}{R}")));
+  Abilities<Ability> abilities1=new AbilitiesImpl<Ability>();
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new TapSourceCost());
+  ability.addTarget(new TargetCreatureOrPlayer());
+  abilities1.add(ability);
+  Abilities<Ability> abilities2=new AbilitiesImpl<Ability>();
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(3),new TapSourceCost());
+  ability.addTarget(new TargetCreatureOrPlayer());
+  abilities2.add(ability);
+  this.addAbilities(LevelerCardBuilder.construct(new LevelerCardBuilder.LevelAbility(1,2,abilities1,2,3),new LevelerCardBuilder.LevelAbility(3,-1,abilities2,2,4)));
+  setMaxLevelCounters(3);
+}

@@ -1,0 +1,13 @@
+{
+  if (event.getSourceId().equals(this.getSourceId())) {
+    FilterCreaturePermanent filter=new FilterCreaturePermanent("creature defending player controls with toughness 2 or less");
+    UUID defenderId=game.getCombat().getDefendingPlayerId(sourceId,game);
+    filter.add(new ControllerIdPredicate(defenderId));
+    filter.add(new ToughnessPredicate(Filter.ComparisonType.LessThan,3));
+    this.getTargets().clear();
+    TargetCreaturePermanent target=new TargetCreaturePermanent(filter);
+    this.addTarget(target);
+    return true;
+  }
+  return false;
+}

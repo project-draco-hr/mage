@@ -1,0 +1,14 @@
+{
+  FilterPermanent zombiesBattlefield=new FilterPermanent("Zombies on the battlefield");
+  FilterCard zombiesInGraveyard=new FilterCard("Zombie cards in all graveyards");
+  zombiesBattlefield.add(new SubtypePredicate("Zombie"));
+  zombiesInGraveyard.add(new SubtypePredicate("Zombie"));
+  int count=game.getBattlefield().count(zombiesBattlefield,sourceAbility.getSourceId(),sourceAbility.getControllerId(),game);
+  for (  UUID playerId : game.getState().getPlayersInRange(sourceAbility.getControllerId(),game)) {
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      count+=player.getGraveyard().count(zombiesInGraveyard,game);
+    }
+  }
+  return count;
+}

@@ -1,0 +1,15 @@
+{
+  Set<UUID> possibleTargets=new HashSet<>();
+  MageObject object=game.getObject(sourceId);
+  if (object != null && object instanceof StackObject) {
+    Player targetPlayer=game.getPlayer(((StackObject)object).getStackAbility().getFirstTarget());
+    if (targetPlayer != null) {
+      for (      Card card : targetPlayer.getGraveyard().getCards(filter,sourceId,sourceControllerId,game)) {
+        if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.TARGET,card.getId(),sourceId,sourceControllerId))) {
+          possibleTargets.add(card.getId());
+        }
+      }
+    }
+  }
+  return possibleTargets;
+}

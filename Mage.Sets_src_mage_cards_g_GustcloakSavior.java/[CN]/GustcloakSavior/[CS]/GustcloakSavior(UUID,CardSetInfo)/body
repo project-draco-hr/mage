@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{W}");
+  this.subtype.add("Bird");
+  this.subtype.add("Soldier");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(4);
+  this.addAbility(FlyingAbility.getInstance());
+  Effect effect=new UntapTargetEffect();
+  effect.setText("you may untap that creature");
+  Ability ability=new BecomesBlockedAllTriggeredAbility(effect,true,filter,true);
+  effect=new RemoveFromCombatTargetEffect();
+  effect.setText("and remove it from combat");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

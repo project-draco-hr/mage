@@ -1,0 +1,11 @@
+{
+  Player targetPlayer=game.getPlayer(source.getTargets().getFirstTarget());
+  if (targetPlayer != null) {
+    Permanent creature=(Permanent)game.getLastKnownInformation(this.getTargetPointer().getFirst(game,source),Zone.BATTLEFIELD);
+    if (creature != null) {
+      targetPlayer.damage(creature.getPower().getValue(),creature.getId(),game,false,true);
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,12 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent triggeringLand=((LandfallAbility)source).getTriggeringPermanent();
+  if (controller == null || triggeringLand == null) {
+    return false;
+  }
+  Zone toZone=Zone.HAND;
+  if (triggeringLand.getSubtype(game).contains("Plains") && controller.chooseUse(Outcome.PutCardInPlay,"Put the card to battlefield instead?",source,game)) {
+    toZone=Zone.BATTLEFIELD;
+  }
+  return controller.moveCards(new CardsImpl(targetPointer.getTargets(game,source)),toZone,source,game);
+}

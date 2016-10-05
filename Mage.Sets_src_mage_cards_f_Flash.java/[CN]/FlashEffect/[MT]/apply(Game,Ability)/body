@@ -1,0 +1,27 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null || !player.chooseUse(Outcome.PutCreatureInPlay,choiceText,source,game)) {
+    return false;
+  }
+  TargetCardInHand target=new TargetCardInHand(new FilterCreatureCard());
+  if (player.choose(Outcome.PutCreatureInPlay,target,source.getSourceId(),game)) {
+    Card card=game.getCard(target.getFirstTarget());
+    if (card != null) {
+      card.putOntoBattlefield(game,Zone.HAND,source.getSourceId(),source.getControllerId());
+      ManaCosts<ManaCost> reducedCost=CardUtil.removeVariableManaCost(CardUtil.reduceCost(card.getManaCost(),2));
+      StringBuilder sb=new StringBuilder("Pay ").append(reducedCost.getText()).append("?");
+      if (player.chooseUse(Outcome.Benefit,sb.toString(),source,game)) {
+        reducedCost.clearPaid();
+        if (reducedCost.pay(source,game,source.getSourceId(),source.getControllerId(),false,null)) {
+          return true;
+        }
+      }
+      Permanent permanent=game.getPermanent(card.getId());
+      if (permanent != null) {
+        permanent.sacrifice(source.getSourceId(),game);
+      }
+      return true;
+    }
+  }
+  return false;
+}

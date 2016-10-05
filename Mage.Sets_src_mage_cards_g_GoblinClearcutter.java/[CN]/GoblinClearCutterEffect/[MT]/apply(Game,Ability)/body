@@ -1,0 +1,33 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Choice manaChoice=new ChoiceImpl();
+    Set<String> choices=new LinkedHashSet<>();
+    choices.add("Red");
+    choices.add("Green");
+    manaChoice.setChoices(choices);
+    manaChoice.setMessage("Select color of mana to add");
+    for (int i=0; i < 3; i++) {
+      Mana mana=new Mana();
+      while (!player.choose(Outcome.Benefit,manaChoice,game)) {
+        if (!player.canRespond()) {
+          return false;
+        }
+      }
+      if (manaChoice.getChoice() == null) {
+        return false;
+      }
+switch (manaChoice.getChoice()) {
+case "Green":
+        mana.increaseGreen();
+      break;
+case "Red":
+    mana.increaseRed();
+  break;
+}
+player.getManaPool().addMana(mana,game,source);
+}
+return true;
+}
+return false;
+}

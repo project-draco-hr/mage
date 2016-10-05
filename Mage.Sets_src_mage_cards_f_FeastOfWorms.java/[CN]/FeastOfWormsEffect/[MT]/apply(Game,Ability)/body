@@ -1,0 +1,21 @@
+{
+  Permanent permanent=game.getPermanentOrLKIBattlefield(id);
+  Player targetPlayer=null;
+  if (permanent != null) {
+    targetPlayer=game.getPlayer(permanent.getControllerId());
+  }
+  if (targetPlayer != null && permanent != null && (permanent.getSupertype().get(0).equals("Legendary"))) {
+    FilterControlledPermanent filter=new FilterControlledLandPermanent("land to sacrifice");
+    filter.add(new ControllerIdPredicate(targetPlayer.getId()));
+    TargetControlledPermanent target=new TargetControlledPermanent(1,1,filter,false);
+    if (target.canChoose(targetPlayer.getId(),game)) {
+      targetPlayer.chooseTarget(Outcome.Sacrifice,target,source,game);
+      Permanent land=game.getPermanent(target.getFirstTarget());
+      if (land != null) {
+        land.sacrifice(source.getSourceId(),game);
+      }
+    }
+    return true;
+  }
+  return false;
+}

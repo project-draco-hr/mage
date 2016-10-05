@@ -1,0 +1,25 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards cardsToHand=new CardsImpl();
+    Target target=new TargetCardInYourGraveyard(new FilterCreatureCard("creature card from your graveyard"));
+    target.setNotTarget(true);
+    if (target.canChoose(source.getSourceId(),controller.getId(),game) && controller.chooseTarget(outcome,target,source,game)) {
+      Card card=game.getCard(target.getFirstTarget());
+      if (card != null) {
+        cardsToHand.add(card);
+      }
+    }
+    target=new TargetCardInYourGraveyard(new FilterLandCard("land card from your graveyard"));
+    target.setNotTarget(true);
+    if (target.canChoose(source.getSourceId(),controller.getId(),game) && controller.chooseTarget(outcome,target,source,game)) {
+      Card card=game.getCard(target.getFirstTarget());
+      if (card != null) {
+        cardsToHand.add(card);
+      }
+    }
+    controller.moveCards(cardsToHand,Zone.HAND,source,game);
+    return true;
+  }
+  return false;
+}

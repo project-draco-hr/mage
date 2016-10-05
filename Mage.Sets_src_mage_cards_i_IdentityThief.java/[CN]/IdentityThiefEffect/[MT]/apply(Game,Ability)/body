@@ -1,0 +1,18 @@
+{
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (controller != null && permanent != null && sourcePermanent != null) {
+    Permanent permanentReset=permanent.copy();
+    permanentReset.getCounters(game).clear();
+    permanentReset.getPower().resetToBaseValue();
+    permanentReset.getToughness().resetToBaseValue();
+    CopyEffect copyEffect=new CopyEffect(Duration.EndOfTurn,permanentReset,source.getSourceId());
+    if (controller.moveCardToExileWithInfo(permanent,source.getSourceId(),sourcePermanent.getIdName(),source.getSourceId(),game,Zone.BATTLEFIELD,true)) {
+      game.addEffect(copyEffect,source);
+      game.addDelayedTriggeredAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Zone.BATTLEFIELD,false)),source);
+      return true;
+    }
+  }
+  return false;
+}

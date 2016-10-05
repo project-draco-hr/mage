@@ -1,0 +1,20 @@
+{
+  Permanent permanent=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
+  Permanent sourceObject=game.getPermanent(source.getSourceId());
+  if (permanent != null && sourceObject != null) {
+    PutTokenOntoBattlefieldCopyTargetEffect effect=new PutTokenOntoBattlefieldCopyTargetEffect();
+    effect.setTargetPointer(new FixedTarget(permanent,game));
+    effect.apply(game,source);
+    game.getState().setValue(source.getSourceId() + "_token",effect.getAddedPermanent());
+    for (    Permanent addedToken : effect.getAddedPermanent()) {
+      Effect sacrificeEffect=new SacrificeTargetEffect("sacrifice Dance of Many");
+      sacrificeEffect.setTargetPointer(new FixedTarget(sourceObject,game));
+      LeavesBattlefieldTriggeredAbility triggerAbility=new LeavesBattlefieldTriggeredAbility(sacrificeEffect,false);
+      ContinuousEffect continuousEffect=new GainAbilityTargetEffect(triggerAbility,Duration.WhileOnBattlefield);
+      continuousEffect.setTargetPointer(new FixedTarget(addedToken,game));
+      game.addEffect(continuousEffect,source);
+    }
+    return true;
+  }
+  return false;
+}

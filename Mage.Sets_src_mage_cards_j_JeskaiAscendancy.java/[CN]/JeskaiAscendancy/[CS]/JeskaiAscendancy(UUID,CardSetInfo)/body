@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{U}{R}{W}");
+  Effect effect=new BoostControlledEffect(1,1,Duration.EndOfTurn);
+  Ability ability=new SpellCastControllerTriggeredAbility(effect,filterNonCreature,false);
+  effect=new UntapAllControllerEffect(new FilterCreaturePermanent(),"Untap those creatures");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  effect=new DrawDiscardControllerEffect(1,1);
+  effect.setText("you may draw a card. If you do, discard a card");
+  ability=new SpellCastControllerTriggeredAbility(effect,filterNonCreature,true);
+  this.addAbility(ability);
+}

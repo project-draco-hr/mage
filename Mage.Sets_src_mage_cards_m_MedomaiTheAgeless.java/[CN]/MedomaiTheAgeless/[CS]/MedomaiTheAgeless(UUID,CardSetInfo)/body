@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{W}{U}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Sphinx");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  this.addAbility(FlyingAbility.getInstance());
+  this.addAbility(new DealsCombatDamageToAPlayerTriggeredAbility(new AddExtraTurnControllerEffect(),false));
+  Effect effect=new ConditionalRestrictionEffect(new CantAttackAnyPlayerSourceEffect(Duration.WhileOnBattlefield),ExtraTurnCondition.getInstance());
+  effect.setText("{this} can't attack during extra turns");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+}

@@ -1,0 +1,17 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  if (player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().getFromTop(game);
+    Cards cards=new CardsImpl();
+    cards.add(card);
+    player.revealCards("Pain Seer",cards,game);
+    if (card != null && card.moveToZone(Zone.HAND,source.getSourceId(),game,false)) {
+      player.loseLife(card.getConvertedManaCost(),game,false);
+      return true;
+    }
+  }
+  return false;
+}

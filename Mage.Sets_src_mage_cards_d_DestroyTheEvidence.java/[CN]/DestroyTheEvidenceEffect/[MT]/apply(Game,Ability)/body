@@ -1,0 +1,28 @@
+{
+  Permanent landPermanent=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
+  MageObject sourceObject=source.getSourceObject(game);
+  if (sourceObject != null && landPermanent != null) {
+    Player player=game.getPlayer(landPermanent.getControllerId());
+    if (player == null) {
+      return false;
+    }
+    boolean landFound=false;
+    Cards cards=new CardsImpl();
+    while (player.getLibrary().size() > 0 && !landFound) {
+      if (!player.canRespond()) {
+        return false;
+      }
+      Card card=player.getLibrary().removeFromTop(game);
+      if (card != null) {
+        cards.add(card);
+        if (card.getCardType().contains(CardType.LAND)) {
+          landFound=true;
+        }
+      }
+    }
+    player.revealCards(sourceObject.getName(),cards,game,true);
+    player.moveCards(cards,Zone.GRAVEYARD,source,game);
+    return true;
+  }
+  return false;
+}

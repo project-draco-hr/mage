@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{R}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetNonBasicLandPermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Detriment));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new BecomesTappedAttachedTriggeredAbility(new DestroyAttachedEffect("it"),"enchanted land"));
+}

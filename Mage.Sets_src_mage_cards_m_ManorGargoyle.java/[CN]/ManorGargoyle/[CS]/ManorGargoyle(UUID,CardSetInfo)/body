@@ -1,0 +1,19 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT,CardType.CREATURE},"{5}");
+  this.subtype.add("Gargoyle");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  this.addAbility(DefenderAbility.getInstance());
+  GainAbilitySourceEffect gainEffect=new GainAbilitySourceEffect(IndestructibleAbility.getInstance());
+  gainEffect.setDependedToType(DependencyType.LooseDefenderEffect);
+  ConditionalContinuousEffect effect=new ConditionalContinuousEffect(gainEffect,HasDefenderCondition.getInstance(),rule);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  ContinuousEffect effect2=new LoseAbilitySourceEffect(DefenderAbility.getInstance(),Duration.EndOfTurn);
+  effect2.addDependencyType(DependencyType.LooseDefenderEffect);
+  effect2.setText("Until end of turn, {this} loses defender");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect2,new ManaCostsImpl("{1}"));
+  effect2=new GainAbilitySourceEffect(FlyingAbility.getInstance(),Duration.EndOfTurn);
+  effect2.setText("and gains flying");
+  ability.addEffect(effect2);
+  this.addAbility(ability);
+}

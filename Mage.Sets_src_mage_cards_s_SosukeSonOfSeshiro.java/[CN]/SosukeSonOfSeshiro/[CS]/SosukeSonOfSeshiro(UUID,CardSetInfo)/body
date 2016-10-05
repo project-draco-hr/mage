@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{G}{G}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Snake");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(4);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostControlledEffect(1,0,Duration.WhileOnBattlefield,filter,true)));
+  Effect effect=new CreateDelayedTriggeredAbilityEffect(new AtTheEndOfCombatDelayedTriggeredAbility(new DestroyTargetEffect()),true);
+  effect.setText("destroy that creature at end of combat");
+  this.addAbility(new SosukeSonOfSeshiroTriggeredAbility(effect));
+}

@@ -1,0 +1,34 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (controller != null && sourcePermanent != null) {
+    UUID opponentId;
+    if (game.getOpponents(controller.getId()).size() == 1) {
+      opponentId=game.getOpponents(controller.getId()).iterator().next();
+    }
+ else {
+      Target target=new TargetOpponent();
+      controller.choose(outcome,target,source.getSourceId(),game);
+      opponentId=target.getFirstTarget();
+    }
+    if (opponentId != null) {
+      Player opponent=game.getPlayer(opponentId);
+      if (opponent != null) {
+        StringBuilder sb=new StringBuilder("Have " + controller.getLogName() + " draw three cards?");
+        if (opponent.chooseUse(outcome,sb.toString(),source,game)) {
+          if (!game.isSimulation()) {
+            game.informPlayers(opponent.getLogName() + " lets " + controller.getLogName()+ " draw three cards");
+          }
+          return new DrawCardSourceControllerEffect(3).apply(game,source);
+        }
+ else {
+          if (!game.isSimulation()) {
+            game.informPlayers(opponent.getLogName() + " does not let " + controller.getLogName()+ " draw three cards");
+          }
+          return new CombustibleGearhulkMillAndDamageEffect().apply(game,source);
+        }
+      }
+    }
+  }
+  return false;
+}

@@ -1,0 +1,20 @@
+{
+  Token token=new SaprolingBurstToken(new MageObjectReference(source.getSourceObject(game),game));
+  token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    Object object=game.getState().getValue(CardUtil.getCardZoneString("_tokensCreated",source.getSourceId(),game));
+    Set<UUID> tokensCreated;
+    if (object != null) {
+      tokensCreated=(Set<UUID>)object;
+    }
+ else {
+      tokensCreated=new HashSet<>();
+    }
+    for (    UUID tokenId : token.getLastAddedTokenIds()) {
+      tokensCreated.add(tokenId);
+    }
+    game.getState().setValue(CardUtil.getCardZoneString("_tokensCreated",source.getSourceId(),game),tokensCreated);
+  }
+  return true;
+}

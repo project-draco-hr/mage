@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{W}{W}");
+  this.subtype.add("Human");
+  this.subtype.add("Knight");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new FlankingAbility());
+  Ability ability=new AttacksTriggeredAbility(new TapTargetEffect(),true);
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+  Ability ability2=new BecomesBlockedTriggeredAbility(new UntapSourceEffect(),true);
+  Effect effect=new RemoveFromCombatSourceEffect();
+  effect.setText("and remove it from combat");
+  ability2.addEffect(effect);
+  this.addAbility(ability2);
+}

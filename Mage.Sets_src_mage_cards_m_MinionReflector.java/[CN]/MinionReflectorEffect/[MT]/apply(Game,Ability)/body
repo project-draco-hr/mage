@@ -1,0 +1,15 @@
+{
+  Permanent permanent=game.getPermanentOrLKIBattlefield(this.getTargetPointer().getFirst(game,source));
+  if (permanent != null) {
+    PutTokenOntoBattlefieldCopyTargetEffect effect=new PutTokenOntoBattlefieldCopyTargetEffect(source.getControllerId(),null,true);
+    effect.setTargetPointer(new FixedTarget(permanent,game));
+    effect.apply(game,source);
+    for (    Permanent addedToken : effect.getAddedPermanent()) {
+      ContinuousEffect continuousEffect=new GainAbilityTargetEffect(new BeginningOfEndStepTriggeredAbility(new SacrificeSourceEffect(),TargetController.ANY,true),Duration.Custom);
+      continuousEffect.setTargetPointer(new FixedTarget(addedToken.getId()));
+      game.addEffect(continuousEffect,source);
+    }
+    return true;
+  }
+  return false;
+}

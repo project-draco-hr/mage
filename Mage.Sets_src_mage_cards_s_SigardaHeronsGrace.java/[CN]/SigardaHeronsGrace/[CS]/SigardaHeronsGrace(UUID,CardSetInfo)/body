@@ -1,0 +1,18 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{G}{W}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Angel");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(5);
+  this.addAbility(FlyingAbility.getInstance());
+  Effect effect=new GainAbilityControllerEffect(HexproofAbility.getInstance(),Duration.WhileOnBattlefield);
+  effect.setText("You and");
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,effect);
+  effect=new GainAbilityControlledEffect(HexproofAbility.getInstance(),Duration.WhileOnBattlefield,filter);
+  effect.setText("and Humans you control have hexproof");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new HumanSoldierToken()),new GenericManaCost(2));
+  ability.addCost(new ExileFromGraveCost(new TargetCardInYourGraveyard()));
+  this.addAbility(ability);
+}

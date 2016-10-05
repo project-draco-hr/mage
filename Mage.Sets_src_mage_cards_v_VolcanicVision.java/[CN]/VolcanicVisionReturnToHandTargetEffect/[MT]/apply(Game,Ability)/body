@@ -1,0 +1,23 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  for (  UUID targetId : targetPointer.getTargets(game,source)) {
+switch (game.getState().getZone(targetId)) {
+case GRAVEYARD:
+      Card card=game.getCard(targetId);
+    if (card != null) {
+      controller.moveCards(card,Zone.HAND,source,game);
+      int damage=card.getConvertedManaCost();
+      if (damage > 0) {
+        for (        Permanent creature : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
+          creature.damage(damage,source.getSourceId(),game,false,true);
+        }
+      }
+    }
+  break;
+}
+}
+return true;
+}

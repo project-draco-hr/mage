@@ -1,0 +1,19 @@
+{
+  if (protectionFilter == null) {
+    Permanent permanent=game.getPermanent(source.getSourceId());
+    if (permanent != null) {
+      ObjectColor color=(ObjectColor)game.getState().getValue(permanent.getId() + "_color");
+      if (color != null) {
+        protectionFilter=new FilterPermanent(color.getDescription());
+        protectionFilter.add(new ColorPredicate(color));
+      }
+    }
+  }
+  if (protectionFilter != null) {
+    for (    Permanent perm : game.getBattlefield().getAllActivePermanents(filter,source.getControllerId(),game)) {
+      perm.addAbility(new ProtectionAbility(protectionFilter),source.getSourceId(),game);
+    }
+    return true;
+  }
+  return false;
+}

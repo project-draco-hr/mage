@@ -1,0 +1,14 @@
+{
+  if (event.getType() == GameEvent.EventType.LOST_CONTROL && event.getPlayerId().equals(controllerId) && event.getTargetId().equals(sourceId)) {
+    condition=true;
+    game.replaceEvent(event);
+    return;
+  }
+  if (event.getType() == GameEvent.EventType.ZONE_CHANGE && event.getTargetId().equals(sourceId)) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getFromZone() == Zone.BATTLEFIELD) {
+      condition=true;
+      game.replaceEvent(event);
+    }
+  }
+}

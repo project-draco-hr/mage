@@ -1,0 +1,8 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{1}");
+  SimpleActivatedAbility ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new SearchLibraryPutInHandEffect(new TargetCardInLibrary(filter),true),new ManaCostsImpl("{2}"));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new SacrificeSourceCost());
+  this.addAbility(ability);
+  this.addAbility(new DiesTriggeredAbility(new DoIfCostPaid(new DrawCardSourceControllerEffect(1),new ManaCostsImpl("{G}"))));
+}

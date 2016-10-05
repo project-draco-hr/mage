@@ -1,0 +1,15 @@
+{
+  if (ability.getOriginalId().equals(originalId)) {
+    for (    Effect effect : ability.getEffects()) {
+      if (effect instanceof CantBeBlockedTargetEffect) {
+        int manaX=ability.getManaCostsToPay().getX();
+        ability.getTargets().clear();
+        FilterCreaturePermanent newFilter=new FilterCreaturePermanent(new StringBuilder("creature with power ").append(manaX).append(" or less").toString());
+        filter.add(new PowerPredicate(Filter.ComparisonType.LessThan,manaX + 1));
+        Target target=new TargetCreaturePermanent(newFilter);
+        ability.addTarget(target);
+        break;
+      }
+    }
+  }
+}

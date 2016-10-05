@@ -1,0 +1,31 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID attackerId : game.getCombat().getAttackers()) {
+      Permanent attacker=game.getPermanent(attackerId);
+      if (attacker != null && source.getControllerId().equals(game.getCombat().getDefendingPlayerId(attackerId,game))) {
+        PutTokenOntoBattlefieldCopyTargetEffect effect=new PutTokenOntoBattlefieldCopyTargetEffect(source.getControllerId(),null,false);
+        effect.setTargetPointer(new FixedTarget(attacker,game));
+        effect.apply(game,source);
+        CombatGroup group=game.getCombat().findGroup(attacker.getId());
+        boolean isCreature=false;
+        if (group != null) {
+          for (          Permanent addedToken : effect.getAddedPermanent()) {
+            if (addedToken.getCardType().contains(CardType.CREATURE)) {
+              group.addBlockerToGroup(addedToken.getId(),attackerId,game);
+              isCreature=true;
+            }
+          }
+          ExileTargetEffect exileEffect=new ExileTargetEffect("Exile those tokens at end of combat");
+          exileEffect.setTargetPointer(new FixedTargets(effect.getAddedPermanent(),game));
+          game.addDelayedTriggeredAbility(new AtTheEndOfCombatDelayedTriggeredAbility(exileEffect),source);
+          if (isCreature) {
+            group.pickBlockerOrder(attacker.getControllerId(),game);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

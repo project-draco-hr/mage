@@ -1,0 +1,17 @@
+{
+  Permanent permanent=game.getPermanent(permanentId);
+  if (permanent != null && permanent.getZoneChangeCounter(game) <= zoneChangeCounter) {
+    permanent.addAbility(ability,source.getSourceId(),game);
+    return true;
+  }
+ else {
+    if (game.getState().getZoneChangeCounter(permanentId) >= zoneChangeCounter) {
+      discard();
+    }
+    Spell spell=game.getStack().getSpell(targetPointer.getFirst(game,source));
+    if (spell != null) {
+      game.getState().addOtherAbility(spell.getCard(),ability,true);
+    }
+  }
+  return true;
+}

@@ -1,0 +1,23 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{R}{R}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Human");
+  this.subtype.add("Spellshaper");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DestroyTargetEffect(),new ManaCostsImpl("{R}"));
+  ability.addTarget(new TargetPermanent(filter));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new DiscardCardCost());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(3),new ManaCostsImpl("{1}{R}"));
+  ability.addTarget(new TargetCreatureOrPlayer());
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new DiscardCardCost());
+  ability.addEffect(new CantRegenerateEffect());
+  this.addAbility(ability,new DamagedByWatcher());
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageEverythingEffect(6),new ManaCostsImpl("{5}{R}{R}"));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new DiscardCardCost());
+  this.addAbility(ability);
+}

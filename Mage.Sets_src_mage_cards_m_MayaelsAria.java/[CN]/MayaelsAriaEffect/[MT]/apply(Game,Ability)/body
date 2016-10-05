@@ -1,0 +1,25 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  FilterCreaturePermanent filter=new FilterCreaturePermanent();
+  filter.add(new PowerPredicate(Filter.ComparisonType.GreaterThan,4));
+  if (game.getState().getBattlefield().countAll(filter,controller.getId(),game) > 0) {
+    for (    Permanent creature : game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game)) {
+      creature.addCounters(CounterType.P1P1.createInstance(),game);
+    }
+  }
+  game.applyEffects();
+  filter=new FilterCreaturePermanent();
+  filter.add(new PowerPredicate(Filter.ComparisonType.GreaterThan,9));
+  if (game.getState().getBattlefield().countAll(filter,controller.getId(),game) > 0) {
+    controller.gainLife(10,game);
+  }
+  filter=new FilterCreaturePermanent();
+  filter.add(new PowerPredicate(Filter.ComparisonType.GreaterThan,19));
+  if (game.getState().getBattlefield().countAll(filter,controller.getId(),game) > 0) {
+    controller.won(game);
+  }
+  return true;
+}

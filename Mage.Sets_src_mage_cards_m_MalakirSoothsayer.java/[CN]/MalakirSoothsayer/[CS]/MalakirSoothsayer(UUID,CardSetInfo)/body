@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{B}");
+  this.subtype.add("Vampire");
+  this.subtype.add("Shaman");
+  this.subtype.add("Ally");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  SimpleActivatedAbility ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DrawCardSourceControllerEffect(1),new TapSourceCost());
+  ability.setAbilityWord(AbilityWord.COHORT);
+  ability.addCost(new TapTargetCost(new TargetControlledCreaturePermanent(1,1,filter,false)));
+  Effect effect=new LoseLifeSourceControllerEffect(1);
+  effect.setText("and you lose a life");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

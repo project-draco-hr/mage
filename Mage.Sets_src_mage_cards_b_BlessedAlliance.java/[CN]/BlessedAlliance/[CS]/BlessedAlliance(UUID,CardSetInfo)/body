@@ -1,0 +1,20 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{1}{W}");
+  this.addAbility(new EscalateAbility(new GenericManaCost(2)));
+  this.getSpellAbility().getModes().setMinModes(1);
+  this.getSpellAbility().getModes().setMaxModes(3);
+  Effect effect=new GainLifeTargetEffect(4);
+  effect.setText("Target player gains 4 life");
+  this.getSpellAbility().addEffect(effect);
+  this.getSpellAbility().addTarget(new TargetPlayer(1,1,false,filterGainLife));
+  Mode mode=new Mode();
+  effect=new UntapTargetEffect();
+  effect.setText("Untap up to two target creatures");
+  mode.getEffects().add(effect);
+  mode.getTargets().add(new TargetCreaturePermanent(0,2,filterCreature,false));
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new SacrificeEffect(new FilterAttackingCreature(),1,"Target opponent"));
+  mode.getTargets().add(new TargetPlayer(1,1,false,filterSacrifice));
+  this.getSpellAbility().addMode(mode);
+}

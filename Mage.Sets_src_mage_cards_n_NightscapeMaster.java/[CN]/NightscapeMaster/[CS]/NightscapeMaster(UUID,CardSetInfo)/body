@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{B}{B}");
+  this.subtype.add("Zombie");
+  this.subtype.add("Wizard");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability returnAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ReturnToHandTargetEffect(),new ManaCostsImpl("{U}{U}"));
+  returnAbility.addTarget(new TargetCreaturePermanent());
+  returnAbility.addCost(new TapSourceCost());
+  this.addAbility(returnAbility);
+  Ability damageAbility=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(2),new ManaCostsImpl("{R}{R}"));
+  damageAbility.addTarget(new TargetCreaturePermanent());
+  damageAbility.addCost(new TapSourceCost());
+  this.addAbility(damageAbility);
+}

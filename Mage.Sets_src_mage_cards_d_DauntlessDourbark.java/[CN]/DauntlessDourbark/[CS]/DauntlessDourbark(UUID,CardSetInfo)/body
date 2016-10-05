@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{G}");
+  this.subtype.add("Treefolk");
+  this.subtype.add("Warrior");
+  this.color.setGreen(true);
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  DynamicValue amount=new PermanentsOnBattlefieldCount(filter);
+  this.addAbility(new SimpleStaticAbility(Zone.ALL,new SetPowerToughnessSourceEffect(amount,Duration.EndOfGame)));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new GainAbilitySourceEffect(TrampleAbility.getInstance(),Duration.WhileOnBattlefield),new PermanentsOnTheBattlefieldCondition(filter2),rule)));
+}

@@ -1,0 +1,14 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    int amount=0;
+    for (    Permanent p : game.getBattlefield().getActivePermanents(new FilterControlledCreaturePermanent(),source.getControllerId(),game)) {
+      if (p.getPower().getValue() > amount) {
+        amount=p.getPower().getValue();
+      }
+    }
+    player.drawCards(amount,game);
+    return true;
+  }
+  return false;
+}

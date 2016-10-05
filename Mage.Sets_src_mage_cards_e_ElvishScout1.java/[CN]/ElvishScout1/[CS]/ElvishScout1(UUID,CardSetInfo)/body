@@ -1,0 +1,17 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{G}");
+  this.subtype.add("Elf");
+  this.subtype.add("Scout");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new UntapTargetEffect(),new ManaCostsImpl("{G}"));
+  ability.addCost(new TapSourceCost());
+  Effect effect=new PreventDamageByTargetEffect(Duration.EndOfTurn,true);
+  effect.setText("Prevent all combat damage that would be dealt to");
+  ability.addEffect(effect);
+  effect=new PreventDamageToTargetEffect(Duration.EndOfTurn,Integer.MAX_VALUE,true);
+  effect.setText("and dealt by it this turn");
+  ability.addEffect(effect);
+  ability.addTarget(new TargetControlledCreaturePermanent(filter));
+  this.addAbility(ability);
+}

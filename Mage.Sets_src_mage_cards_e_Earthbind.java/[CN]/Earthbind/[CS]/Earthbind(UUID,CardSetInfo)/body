@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{R}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.LoseAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  Ability ability2=new EntersBattlefieldTriggeredAbility(new EarthbindEffect());
+  Effect effect=new LoseAbilityAttachedEffect(FlyingAbility.getInstance(),AttachmentType.AURA);
+  effect.setText("");
+  ability2.addEffect(effect);
+  this.addAbility(ability2);
+}

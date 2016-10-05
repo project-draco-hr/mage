@@ -1,0 +1,20 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  if (controller != null && permanent != null) {
+    FilterPermanent filter=new FilterPermanent();
+    if (permanent.getName().isEmpty()) {
+      filter.add(new PermanentIdPredicate(permanent.getId()));
+    }
+ else {
+      filter.add(new NamePredicate(permanent.getName()));
+    }
+    Cards cardsToHand=new CardsImpl();
+    for (    Permanent perm : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
+      cardsToHand.add(perm);
+    }
+    controller.moveCards(cardsToHand,Zone.HAND,source,game);
+    return true;
+  }
+  return true;
+}

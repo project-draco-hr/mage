@@ -1,0 +1,12 @@
+{
+  if (((DamagedCreatureEvent)event).isCombatDamage()) {
+    Permanent permanent=game.getPermanent(event.getSourceId());
+    if (permanent == null) {
+      permanent=(Permanent)game.getLastKnownInformation(event.getSourceId(),Zone.BATTLEFIELD);
+    }
+    if (permanent != null && permanent.getCardType().contains(CardType.CREATURE) && permanent.getControllerId().equals(this.getControllerId())) {
+      return true;
+    }
+  }
+  return false;
+}

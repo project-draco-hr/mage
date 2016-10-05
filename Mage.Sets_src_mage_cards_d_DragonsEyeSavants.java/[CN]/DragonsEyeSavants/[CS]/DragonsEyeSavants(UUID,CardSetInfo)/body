@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{U}");
+  this.subtype.add("Human");
+  this.subtype.add("Wizard");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(6);
+  this.addAbility(new MorphAbility(this,new RevealTargetFromHandCost(new TargetCardInHand(filter))));
+  Effect effect=new LookAtTargetPlayerHandEffect();
+  effect.setText("look at target opponent's hand");
+  Ability ability=new TurnedFaceUpSourceTriggeredAbility(effect);
+  ability.addTarget(new TargetOpponent());
+  this.addAbility(ability);
+}

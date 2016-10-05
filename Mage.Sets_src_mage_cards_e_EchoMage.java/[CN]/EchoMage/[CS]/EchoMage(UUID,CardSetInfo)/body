@@ -1,0 +1,21 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{U}{U}");
+  this.subtype.add("Human");
+  this.subtype.add("Wizard");
+  this.color.setBlue(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(3);
+  this.addAbility(new LevelUpAbility(new ManaCostsImpl("{1}{U}")));
+  Abilities<Ability> abilities1=new AbilitiesImpl<Ability>();
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CopyTargetSpellEffect(),new ManaCostsImpl("{U}{U}"));
+  ability.addTarget(new TargetSpell(filter));
+  ability.addCost(new TapSourceCost());
+  abilities1.add(ability);
+  Abilities<Ability> abilities2=new AbilitiesImpl<Ability>();
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new EchoMageEffect(),new ManaCostsImpl("{U}{U}"));
+  ability.addTarget(new TargetSpell(filter));
+  ability.addCost(new TapSourceCost());
+  abilities2.add(ability);
+  this.addAbilities(LevelerCardBuilder.construct(new LevelerCardBuilder.LevelAbility(2,3,abilities1,2,4),new LevelerCardBuilder.LevelAbility(4,-1,abilities2,2,5)));
+  setMaxLevelCounters(4);
+}

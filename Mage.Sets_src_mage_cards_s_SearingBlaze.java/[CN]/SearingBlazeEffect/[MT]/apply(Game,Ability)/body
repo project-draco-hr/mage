@@ -1,0 +1,16 @@
+{
+  LandfallWatcher watcher=(LandfallWatcher)game.getState().getWatchers().get("LandPlayed");
+  Player player=game.getPlayer(source.getTargets().get(0).getFirstTarget());
+  Permanent creature=game.getPermanent(source.getTargets().get(1).getFirstTarget());
+  int damage=1;
+  if (watcher != null && watcher.landPlayed(source.getControllerId())) {
+    damage=3;
+  }
+  if (player != null) {
+    player.damage(damage,source.getSourceId(),game,false,true);
+  }
+  if (creature != null) {
+    creature.damage(damage,source.getSourceId(),game,false,true);
+  }
+  return true;
+}

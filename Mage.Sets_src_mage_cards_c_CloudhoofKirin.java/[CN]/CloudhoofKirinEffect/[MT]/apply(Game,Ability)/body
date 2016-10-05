@@ -1,0 +1,15 @@
+{
+  Spell spell=game.getStack().getSpell(targetPointer.getFirst(game,source));
+  if (spell != null) {
+    Player targetPlayer=null;
+    for (    Target target : source.getTargets()) {
+      if (target instanceof TargetPlayer) {
+        targetPlayer=game.getPlayer(target.getFirstTarget());
+      }
+    }
+    if (targetPlayer != null) {
+      return targetPlayer.moveCards(targetPlayer.getLibrary().getTopCards(game,spell.getConvertedManaCost()),Zone.GRAVEYARD,source,game);
+    }
+  }
+  return false;
+}

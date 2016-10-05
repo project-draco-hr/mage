@@ -1,0 +1,12 @@
+{
+  Set<UUID> dependentTo=null;
+  for (  ContinuousEffect effect : allEffectsInLayer) {
+    if (effect.getDependencyTypes().contains(DependencyType.AuraAddingRemoving)) {
+      if (dependentTo == null) {
+        dependentTo=new HashSet<>();
+      }
+      dependentTo.add(effect.getId());
+    }
+  }
+  return dependentTo;
+}

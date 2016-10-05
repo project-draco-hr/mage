@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{R}");
+  this.subtype.add("Giant");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  this.addAbility(HasteAbility.getInstance());
+  Condition condition=new CastRedSpellThisTurnCondition();
+  this.addAbility(new EntersBattlefieldAbility(new ConditionalOneShotEffect(new AddCountersSourceEffect(CounterType.M1M1.createInstance(2)),new InvertCondition(condition),""),"with two -1/-1 counters on it unless you've cast another red spell this turn"),new HotHeadedGiantWatcher(this.getId()));
+}

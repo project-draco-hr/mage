@@ -1,0 +1,19 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{7}{R}{R}");
+  this.subtype.add("Bringer");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  this.addAbility(new AlternativeCostSourceAbility(new ManaCostsImpl("{W}{U}{B}{R}{G}")));
+  this.addAbility(TrampleAbility.getInstance());
+  Effect effect=new UntapTargetEffect();
+  effect.setText("untap target creature");
+  Ability ability=new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,effect,TargetController.YOU,true);
+  effect=new GainControlTargetEffect(Duration.EndOfTurn);
+  effect.setText("and gain control of it until end of turn.");
+  ability.addEffect(effect);
+  effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("That creature gains haste until end of turn.");
+  ability.addEffect(effect);
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}

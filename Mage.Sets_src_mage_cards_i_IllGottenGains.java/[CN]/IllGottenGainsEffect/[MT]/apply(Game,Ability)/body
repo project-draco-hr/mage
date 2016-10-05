@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        Target target=new TargetCardInYourGraveyard(0,3,new FilterCard());
+        if (target.choose(Outcome.ReturnToHand,player.getId(),source.getSourceId(),game)) {
+          player.moveCards(new CardsImpl(target.getTargets()),Zone.HAND,source,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

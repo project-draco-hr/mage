@@ -1,0 +1,9 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    TargetCard target=new TargetCardInHand(0,2,new FilterLandCard("up to two land cards to put onto the battlefield tapped"));
+    controller.chooseTarget(outcome,controller.getHand(),target,source,game);
+    return controller.moveCards(new CardsImpl(target.getTargets()).getCards(game),Zone.BATTLEFIELD,source,game,true,false,false,null);
+  }
+  return false;
+}

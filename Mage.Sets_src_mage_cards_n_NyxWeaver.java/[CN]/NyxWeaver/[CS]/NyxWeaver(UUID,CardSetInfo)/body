@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT,CardType.CREATURE},"{1}{B}{G}");
+  this.subtype.add("Spider");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(3);
+  this.addAbility(ReachAbility.getInstance());
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(new PutTopCardOfLibraryIntoGraveControllerEffect(2),TargetController.YOU,false));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ReturnFromGraveyardToHandTargetEffect(),new ManaCostsImpl("{1}{B}{G}"));
+  ability.addCost(new ExileSourceCost());
+  ability.addTarget(new TargetCardInYourGraveyard());
+  this.addAbility(ability);
+}

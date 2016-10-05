@@ -1,0 +1,16 @@
+{
+  Permanent p=game.getBattlefield().getPermanent(source.getSourceId());
+  if (p == null) {
+    p=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+    if (p == null) {
+      return false;
+    }
+  }
+  int count=p.getCounters(game).getCount(CounterType.CHARGE);
+  for (  Permanent perm : game.getBattlefield().getAllActivePermanents()) {
+    if (perm.getConvertedManaCost() == count && !(perm.getCardType().contains(CardType.LAND))) {
+      perm.destroy(source.getSourceId(),game,false);
+    }
+  }
+  return true;
+}

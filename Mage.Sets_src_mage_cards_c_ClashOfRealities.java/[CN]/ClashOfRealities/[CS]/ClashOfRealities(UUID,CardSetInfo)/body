@@ -1,0 +1,9 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{3}{R}");
+  Ability ability1=new ClashOfRealitiesTriggeredAbility(new DamageTargetEffect(3),"When this permanent enters the battlefield, ");
+  ability1.addTarget(new TargetCreaturePermanent(filterNotSpirit));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAllEffect(ability1,Duration.WhileOnBattlefield,filterSpirit,"All Spirits have \"When this permanent enters the battlefield, you may have it deal 3 damage to target non-Spirit creature.\"")));
+  Ability ability2=new ClashOfRealitiesTriggeredAbility(new DamageTargetEffect(3),"When this creature enters the battlefield, ");
+  ability2.addTarget(new TargetCreaturePermanent(filterSpirit));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAllEffect(ability2,Duration.WhileOnBattlefield,filterNotSpirit,"Non-Spirit creatures have \"When this creature enters the battlefield, you may have it deal 3 damage to target Spirit creature.\"")));
+}

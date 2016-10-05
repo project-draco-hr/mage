@@ -1,0 +1,13 @@
+{
+  GameEvent preventEvent=new GameEvent(GameEvent.EventType.PREVENT_DAMAGE,source.getFirstTarget(),source.getSourceId(),source.getControllerId(),event.getAmount(),false);
+  if (!game.replaceEvent(preventEvent)) {
+    int preventedDamage=event.getAmount();
+    game.fireEvent(GameEvent.getEvent(GameEvent.EventType.PREVENTED_DAMAGE,source.getFirstTarget(),source.getSourceId(),source.getControllerId(),preventedDamage));
+    Player player=game.getPlayer(source.getControllerId());
+    if (player != null) {
+      player.moveCards(player.getLibrary().getTopCards(game,preventedDamage),Zone.EXILED,source,game);
+    }
+    return true;
+  }
+  return false;
+}

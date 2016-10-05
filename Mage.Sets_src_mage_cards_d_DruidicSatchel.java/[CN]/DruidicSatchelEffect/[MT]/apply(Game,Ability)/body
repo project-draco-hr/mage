@@ -1,0 +1,22 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Card card=player.getLibrary().getFromTop(game);
+  if (card != null) {
+    if (card.getCardType().contains(CardType.CREATURE)) {
+      Token token=new SaprolingToken();
+      token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
+    }
+    if (card.getCardType().contains(CardType.LAND)) {
+      player.getLibrary().getCard(card.getId(),game);
+      card.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),source.getControllerId());
+    }
+    if (!card.getCardType().contains(CardType.CREATURE) && !card.getCardType().contains(CardType.LAND)) {
+      player.gainLife(2,game);
+    }
+    Cards cards=new CardsImpl();
+    cards.add(card);
+    player.revealCards("Druidic Satchel",cards,game);
+    return true;
+  }
+  return false;
+}

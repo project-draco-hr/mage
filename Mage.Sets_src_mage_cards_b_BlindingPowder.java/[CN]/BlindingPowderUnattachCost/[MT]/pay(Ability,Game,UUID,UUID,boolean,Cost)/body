@@ -1,0 +1,15 @@
+{
+  Permanent permanent=game.getPermanent(sourceId);
+  if (permanent != null) {
+    for (    UUID attachmentId : permanent.getAttachments()) {
+      Permanent attachment=game.getPermanent(attachmentId);
+      if (attachment != null && attachment.getId().equals(sourceEquipmentId)) {
+        paid=permanent.removeAttachment(attachmentId,game);
+        if (paid) {
+          break;
+        }
+      }
+    }
+  }
+  return paid;
+}

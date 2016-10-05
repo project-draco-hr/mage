@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{U}");
+  this.subtype.add("Aura");
+  this.addAbility(FlashAbility.getInstance());
+  TargetPermanent auraTarget=new TargetCreaturePermanent(filter);
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Detriment));
+  this.addAbility(new EnchantAbility(auraTarget.getTargetName()));
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new TapEnchantedEffect()));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new DontUntapInControllersUntapStepEnchantedEffect()));
+}

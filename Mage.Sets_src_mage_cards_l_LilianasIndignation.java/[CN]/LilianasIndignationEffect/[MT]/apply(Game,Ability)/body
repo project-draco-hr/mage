@@ -1,0 +1,24 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int x=source.getManaCostsToPay().getX();
+    if (x > 0) {
+      Cards cardsToGraveyard=new CardsImpl();
+      cardsToGraveyard.addAll(controller.getLibrary().getTopCards(game,x));
+      if (!cardsToGraveyard.isEmpty()) {
+        Set<Card> movedCards=controller.moveCardsToGraveyardWithInfo(cardsToGraveyard.getCards(game),source,game,Zone.LIBRARY);
+        Cards cardsMoved=new CardsImpl();
+        cardsMoved.addAll(movedCards);
+        int creatures=cardsMoved.count(new FilterCreatureCard(),game);
+        if (creatures > 0) {
+          Player targetPlayer=game.getPlayer(getTargetPointer().getFirst(game,source));
+          if (targetPlayer != null) {
+            targetPlayer.loseLife(creatures * 2,game,false);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

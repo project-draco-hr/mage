@@ -1,0 +1,9 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{1}");
+  this.subtype.add("Equipment");
+  PermanentsOnBattlefieldCount countEnchantments=new PermanentsOnBattlefieldCount(new FilterEnchantmentPermanent(filter));
+  Effect effect=new BoostEquippedEffect(countEnchantments,countEnchantments);
+  effect.setText("Equipped creature gets +1/+1 for each enchantment you control");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  this.addAbility(new EquipAbility(Outcome.AddAbility,new GenericManaCost(1)));
+}

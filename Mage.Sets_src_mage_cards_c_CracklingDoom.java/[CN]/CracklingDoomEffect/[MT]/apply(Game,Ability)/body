@@ -1,0 +1,47 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    ArrayList<Permanent> toSacrifice=new ArrayList<>();
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      if (controller.hasOpponent(playerId,game)) {
+        Player opponent=game.getPlayer(playerId);
+        if (opponent != null) {
+          int greatestPower=Integer.MIN_VALUE;
+          int numberOfCreatures=0;
+          Permanent permanentToSacrifice=null;
+          for (          Permanent permanent : game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),playerId,game)) {
+            if (permanent.getPower().getValue() > greatestPower) {
+              greatestPower=permanent.getPower().getValue();
+              numberOfCreatures=1;
+              permanentToSacrifice=permanent;
+            }
+ else             if (permanent.getPower().getValue() == greatestPower) {
+              numberOfCreatures++;
+            }
+          }
+          if (numberOfCreatures == 1) {
+            if (permanentToSacrifice != null) {
+              toSacrifice.add(permanentToSacrifice);
+            }
+          }
+ else           if (greatestPower != Integer.MIN_VALUE) {
+            FilterControlledCreaturePermanent filter=new FilterControlledCreaturePermanent("creature to sacrifice with power equal to " + greatestPower);
+            filter.add(new PowerPredicate(Filter.ComparisonType.Equal,greatestPower));
+            Target target=new TargetControlledCreaturePermanent(filter);
+            if (opponent.choose(outcome,target,playerId,game)) {
+              Permanent permanent=game.getPermanent(target.getFirstTarget());
+              if (permanent != null) {
+                toSacrifice.add(permanent);
+              }
+            }
+          }
+        }
+      }
+    }
+    for (    Permanent permanent : toSacrifice) {
+      permanent.sacrifice(source.getSourceId(),game);
+    }
+    return true;
+  }
+  return false;
+}

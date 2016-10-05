@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+    if (controller.flipCoin(game) && sourcePermanent != null) {
+      ContinuousEffect effect=new BoostTargetEffect(1,1,Duration.EndOfTurn);
+      effect.setTargetPointer(new FixedTarget(sourcePermanent,game));
+      game.addEffect(effect,source);
+      effect=new GainAbilityTargetEffect(FlyingAbility.getInstance(),Duration.EndOfTurn);
+      effect.setTargetPointer(new FixedTarget(sourcePermanent,game));
+      game.addEffect(effect,source);
+    }
+    return true;
+  }
+  return false;
+}

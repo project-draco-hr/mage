@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.SORCERY},"{4}{W}{W}");
+  this.getSpellAbility().getModes().setMinModes(2);
+  this.getSpellAbility().getModes().setMaxModes(2);
+  this.getSpellAbility().addEffect(new DestroyAllEffect(new FilterArtifactPermanent("artifacts")));
+  Mode mode=new Mode();
+  mode.getEffects().add(new DestroyAllEffect(new FilterEnchantmentPermanent("enchantments")));
+  this.getSpellAbility().getModes().addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new DestroyAllEffect(filter3orLess));
+  this.getSpellAbility().getModes().addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new DestroyAllEffect(filter4orMore));
+  this.getSpellAbility().getModes().addMode(mode);
+}

@@ -1,0 +1,15 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    List<UUID> attachments=permanent.getAttachments();
+    for (    UUID attachmentUUID : attachments) {
+      Permanent attachment=game.getPermanent(attachmentUUID);
+      if (attachment != null) {
+        if (attachment.getSubtype(game).contains("Equipment")) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

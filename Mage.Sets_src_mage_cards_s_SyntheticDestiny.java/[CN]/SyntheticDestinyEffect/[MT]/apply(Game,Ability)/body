@@ -1,0 +1,11 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Set<Card> cardsToExile=new HashSet<>();
+    cardsToExile.addAll(game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),controller.getId(),game));
+    controller.moveCards(cardsToExile,Zone.EXILED,source,game);
+    game.addDelayedTriggeredAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new SyntheticDestinyDelayedEffect(cardsToExile.size())),source);
+    return true;
+  }
+  return false;
+}

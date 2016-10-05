@@ -1,0 +1,12 @@
+{
+  if (game.getOpponents(getControllerId()).contains(event.getPlayerId())) {
+    CastSpellLastTurnWatcher watcher=(CastSpellLastTurnWatcher)game.getState().getWatchers().get(CastSpellLastTurnWatcher.class.getName());
+    if (watcher != null && watcher.getAmountOfSpellsPlayerCastOnCurrentTurn(event.getPlayerId()) == 1) {
+      for (      Effect effect : getEffects()) {
+        effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+      }
+      return true;
+    }
+  }
+  return false;
+}

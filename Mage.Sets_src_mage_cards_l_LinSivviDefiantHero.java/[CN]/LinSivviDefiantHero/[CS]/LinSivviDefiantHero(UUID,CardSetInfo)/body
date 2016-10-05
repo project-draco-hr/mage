@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{W}{W}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Human");
+  this.subtype.add("Rebel");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(3);
+  SimpleActivatedAbility ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new LinSivviDefiantHeroEffect(),new ManaCostsImpl("{X}"));
+  ability.addCost(new TapSourceCost());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new PutOnLibraryTargetEffect(false,rule),new GenericManaCost(3));
+  ability.addTarget(new TargetCardInYourGraveyard(1,filter));
+  this.addAbility(ability);
+}

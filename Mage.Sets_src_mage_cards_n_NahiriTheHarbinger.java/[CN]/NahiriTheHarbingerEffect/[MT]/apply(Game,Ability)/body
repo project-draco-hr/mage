@@ -1,0 +1,24 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    if (controller.searchLibrary(target,game)) {
+      if (target.getTargets().size() > 0) {
+        Card card=controller.getLibrary().getCard(target.getFirstTarget(),game);
+        controller.moveCards(card,Zone.BATTLEFIELD,source,game);
+        Permanent permanent=game.getPermanent(card.getId());
+        if (permanent != null) {
+          ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.Custom);
+          effect.setTargetPointer(new FixedTarget(permanent.getId(),permanent.getZoneChangeCounter(game)));
+          game.addEffect(effect,source);
+          Effect effect2=new ReturnToHandTargetEffect();
+          effect2.setTargetPointer(new FixedTarget(permanent.getId(),permanent.getZoneChangeCounter(game)));
+          DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect2);
+          game.addDelayedTriggeredAbility(delayedAbility,source);
+        }
+      }
+      controller.shuffleLibrary(source,game);
+    }
+    return true;
+  }
+  return false;
+}

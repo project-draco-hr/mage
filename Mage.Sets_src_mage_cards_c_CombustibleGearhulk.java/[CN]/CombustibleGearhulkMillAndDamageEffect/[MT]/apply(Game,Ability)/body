@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int sumCMC=0;
+    Set<Card> cardList=controller.getLibrary().getTopCards(game,3);
+    for (    Card card : cardList) {
+      int test=card.getConvertedManaCost();
+      sumCMC+=test;
+    }
+    controller.moveCards(cardList,Zone.GRAVEYARD,source,game);
+    Player targetPlayer=game.getPlayer(targetPointer.getFirst(game,source));
+    if (targetPlayer != null) {
+      targetPlayer.damage(sumCMC,source.getSourceId(),game,false,true);
+      return true;
+    }
+  }
+  return false;
+}

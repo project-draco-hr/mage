@@ -1,0 +1,24 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(new FilterBasicLandCard());
+    if (controller.searchLibrary(target,game)) {
+      Card card=game.getCard(target.getFirstTarget());
+      if (card != null) {
+        Cards cardsToReveal=new CardsImpl(card);
+        controller.revealCards(sourceObject.getIdName(),cardsToReveal,game);
+        boolean controlWastes=game.getBattlefield().countAll(filterWastes,controller.getId(),game) > 0;
+        if (controlWastes && controller.chooseUse(outcome,"Put " + card.getLogName() + " onto battlefield tapped?",source,game)) {
+          controller.moveCards(card,Zone.BATTLEFIELD,source,game,true,false,true,null);
+        }
+ else {
+          controller.moveCards(card,Zone.HAND,source,game);
+        }
+      }
+    }
+    controller.shuffleLibrary(source,game);
+    return true;
+  }
+  return false;
+}

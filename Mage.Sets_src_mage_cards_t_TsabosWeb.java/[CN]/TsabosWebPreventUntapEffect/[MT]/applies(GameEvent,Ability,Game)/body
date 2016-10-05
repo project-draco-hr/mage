@@ -1,0 +1,13 @@
+{
+  if (game.getTurn().getStepType() == PhaseStep.UNTAP) {
+    Permanent permanent=game.getPermanent(event.getTargetId());
+    if (permanent != null && permanent.getCardType().contains(CardType.LAND)) {
+      for (      Ability ability : permanent.getAbilities()) {
+        if (!(ability instanceof PlayLandAbility) && !(ability instanceof ManaAbility) && ability instanceof ActivatedAbility) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

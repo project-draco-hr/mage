@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null && controller.getLibrary().size() > 0) {
+    Card card=controller.getLibrary().getFromTop(game);
+    Cards cards=new CardsImpl(card);
+    controller.revealCards(sourceObject.getIdName(),cards,game);
+    if (!controller.chooseUse(Outcome.PlayForFree,"Play " + card.getName() + " without paying its mana cost?",source,game) || !controller.playCard(card,game,true,true)) {
+      card.moveToZone(Zone.EXILED,source.getSourceId(),game,false);
+    }
+    return true;
+  }
+  return false;
+}

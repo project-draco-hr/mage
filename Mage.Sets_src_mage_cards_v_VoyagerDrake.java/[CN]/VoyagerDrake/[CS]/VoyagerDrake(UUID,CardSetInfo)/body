@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{U}");
+  this.subtype.add("Drake");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  this.addAbility(new MultikickerAbility("{U}"));
+  this.addAbility(FlyingAbility.getInstance());
+  Ability ability=new ConditionalTriggeredAbility(new EntersBattlefieldTriggeredAbility(new GainAbilityTargetEffect(FlyingAbility.getInstance(),Duration.EndOfTurn),false),KickedCondition.getInstance(),"When {this} enters the battlefield, up to X target creatures gain flying until end of turn, where X is the number of times {this} was kicked.");
+  originalId=ability.getOriginalId();
+  this.addAbility(ability);
+}

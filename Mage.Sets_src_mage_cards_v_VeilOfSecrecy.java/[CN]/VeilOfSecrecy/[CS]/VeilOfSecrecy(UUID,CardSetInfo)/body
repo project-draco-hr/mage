@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{1}{U}");
+  this.subtype.add("Arcane");
+  Effect effect=new GainAbilityTargetEffect(ShroudAbility.getInstance(),Duration.EndOfTurn);
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent());
+  effect.setText("Target creature gains shroud until end of turn");
+  this.getSpellAbility().addEffect(effect);
+  effect=new CantBeBlockedTargetEffect();
+  effect.setText("and can't be blocked this turn");
+  this.getSpellAbility().addEffect(effect);
+  this.addAbility(new SpliceOntoArcaneAbility(new ReturnToHandChosenControlledPermanentCost(new TargetControlledCreaturePermanent(filter))));
+}

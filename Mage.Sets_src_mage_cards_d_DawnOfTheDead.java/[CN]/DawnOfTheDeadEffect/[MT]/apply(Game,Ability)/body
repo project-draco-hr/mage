@@ -1,0 +1,20 @@
+{
+  Card card=game.getCard(this.getTargetPointer().getFirst(game,source));
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && card != null) {
+    if (controller.moveCards(card,Zone.BATTLEFIELD,source,game)) {
+      Permanent creature=game.getPermanent(card.getId());
+      if (creature != null) {
+        ContinuousEffect effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn);
+        effect.setTargetPointer(new FixedTarget(creature,game));
+        game.addEffect(effect,source);
+        ExileTargetEffect exileEffect=new ExileTargetEffect(null,null,Zone.BATTLEFIELD);
+        exileEffect.setTargetPointer(new FixedTarget(creature,game));
+        DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(exileEffect);
+        game.addDelayedTriggeredAbility(delayedAbility,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

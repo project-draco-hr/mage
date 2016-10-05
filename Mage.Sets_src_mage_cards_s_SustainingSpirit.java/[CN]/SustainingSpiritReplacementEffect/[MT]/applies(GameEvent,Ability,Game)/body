@@ -1,0 +1,10 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    Player controller=game.getPlayer(source.getControllerId());
+    if (controller != null && (controller.getLife() > 0) && (controller.getLife() - event.getAmount()) < 1 && event.getPlayerId().equals(controller.getId())) {
+      event.setAmount(controller.getLife() - 1);
+    }
+  }
+  return false;
+}

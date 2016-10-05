@@ -1,0 +1,18 @@
+{
+  MageObject sourceObject=game.getObject(abilityToModify.getSourceId());
+  if (sourceObject != null) {
+    int amount=0;
+    for (    UUID cardId : game.getPlayer(source.getControllerId()).getGraveyard()) {
+      Card card=game.getCard(cardId);
+      if (card != null && card.getName().equals(sourceObject.getName())) {
+        amount++;
+      }
+    }
+    if (amount > 0) {
+      SpellAbility spellAbility=(SpellAbility)abilityToModify;
+      CardUtil.adjustCost(spellAbility,amount);
+    }
+    return true;
+  }
+  return false;
+}

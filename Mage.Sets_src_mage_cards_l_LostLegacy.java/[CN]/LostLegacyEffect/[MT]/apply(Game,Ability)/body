@@ -1,0 +1,16 @@
+{
+  String cardName=(String)game.getState().getValue(source.getSourceId().toString() + NameACardEffect.INFO_KEY);
+  Player targetPlayer=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (targetPlayer != null && cardName != null && !cardName.isEmpty()) {
+    FilterCard filter=new FilterCard();
+    filter.add(new NamePredicate(cardName));
+    int cardsInHandBefore=targetPlayer.getHand().count(filter,game);
+    boolean result=super.applySearchAndExile(game,source,cardName,targetPointer.getFirst(game,source));
+    int cardsExiled=cardsInHandBefore - targetPlayer.getHand().count(filter,game);
+    if (cardsExiled > 0) {
+      targetPlayer.drawCards(cardsExiled,game);
+    }
+    return result;
+  }
+  return false;
+}

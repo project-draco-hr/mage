@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards cards=new CardsImpl();
+    for (    UUID cardId : this.getTargetPointer().getTargets(game,source)) {
+      Card card=controller.getGraveyard().get(cardId,game);
+      if (card != null) {
+        cards.add(card);
+      }
+    }
+    return controller.putCardsOnBottomOfLibrary(cards,game,source,true);
+  }
+  return false;
+}

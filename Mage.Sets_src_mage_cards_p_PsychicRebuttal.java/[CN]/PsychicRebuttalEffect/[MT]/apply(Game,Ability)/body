@@ -1,0 +1,22 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  Spell spell=game.getStack().getSpell(getTargetPointer().getFirst(game,source));
+  if (spell != null) {
+    game.getStack().counter(spell.getId(),source.getSourceId(),game);
+    if (SpellMasteryCondition.getInstance().apply(game,source) && controller.chooseUse(Outcome.PlayForFree,"Copy " + spell.getName() + " (you may choose new targets for the copy)?",source,game)) {
+      StackObject newStackObject=spell.createCopyOnStack(game,source,source.getControllerId(),true);
+      if (newStackObject != null && newStackObject instanceof Spell) {
+        String activateMessage=((Spell)newStackObject).getActivatedMessage(game);
+        if (activateMessage.startsWith(" casts ")) {
+          activateMessage=activateMessage.substring(6);
+        }
+        game.informPlayers(controller.getLogName() + activateMessage);
+      }
+    }
+    return true;
+  }
+  return false;
+}

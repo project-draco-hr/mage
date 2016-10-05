@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Card molten=game.getCard(source.getSourceId());
+  if (controller != null) {
+    ElementalToken token=new ElementalToken();
+    token.putOntoBattlefield(2,game,source.getSourceId(),source.getControllerId());
+    if (controller.flipCoin(game)) {
+      molten.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+      game.informPlayers(controller.getLogName() + " won the flip.  " + molten.getLogName()+ " is returned to "+ controller.getLogName()+ "'s hand.");
+    }
+    return true;
+  }
+  return false;
+}
