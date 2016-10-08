@@ -68,23 +68,25 @@
       }
       DeckCardLayout layout=new DeckCardLayout(grid,settings);
       int expectedCount=0;
-      if (target.equals("MAIN")) {
+switch (target) {
+case "MAIN":
         deckList.setCardLayout(layout);
-        expectedCount=deckList.getCards().size();
-      }
- else       if (target.equals("SIDEBOARD")) {
-        deckList.setSideboardLayout(layout);
-        expectedCount=deckList.getSideboard().size();
-      }
+      expectedCount=deckList.getCards().size();
+    break;
+case "SIDEBOARD":
+  deckList.setSideboardLayout(layout);
+expectedCount=deckList.getSideboard().size();
+break;
+default :
+sbMessage.append("Bad target `").append(target).append("` for layout.\n");
+break;
+}
+if (totalCardCount != expectedCount) {
+sbMessage.append("Layout mismatch: Expected ").append(expectedCount).append(" cards, but got ").append(totalCardCount).append(" in layout `").append(target).append("`\n.");
+}
+}
  else {
-        sbMessage.append("Bad target `" + target + "` for layout.\n");
-      }
-      if (totalCardCount != expectedCount) {
-        sbMessage.append("Layout mismatch: Expected " + expectedCount + " cards, but got "+ totalCardCount+ " in layout `"+ target+ "`\n.");
-      }
-    }
- else {
-      sbMessage.append("Malformed layout line");
-    }
-  }
+sbMessage.append("Malformed layout line");
+}
+}
 }
