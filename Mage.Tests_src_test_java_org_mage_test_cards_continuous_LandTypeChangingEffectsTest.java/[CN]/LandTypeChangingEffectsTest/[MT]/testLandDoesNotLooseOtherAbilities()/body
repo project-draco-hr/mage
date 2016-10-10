@@ -1,0 +1,15 @@
+{
+  addCard(Zone.HAND,playerA,"Aquitect's Will");
+  addCard(Zone.BATTLEFIELD,playerA,"Island",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Forbidding Watchtower",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Plains",2);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Aquitect's Will","Forbidding Watchtower");
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerB,"{1}{W}:");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerA,"Aquitect's Will",1);
+  assertPermanentCount(playerB,"Forbidding Watchtower",1);
+  assertCounterCount("Forbidding Watchtower",CounterType.FLOOD,1);
+  assertType("Forbidding Watchtower",CardType.LAND,"Island");
+  assertPowerToughness(playerB,"Forbidding Watchtower",1,5);
+}

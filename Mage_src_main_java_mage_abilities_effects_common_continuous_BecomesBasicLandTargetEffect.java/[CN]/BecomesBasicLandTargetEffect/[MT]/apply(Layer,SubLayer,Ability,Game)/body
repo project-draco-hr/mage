@@ -7,18 +7,29 @@ case TypeChangingEffects_4:
         if (!land.getCardType().contains(CardType.LAND)) {
           land.getCardType().add(CardType.LAND);
         }
-      land.removeAllAbilities(source.getSourceId(),game);
-    land.getSubtype(game).removeAll(CardRepository.instance.getLandTypes());
-  land.getSubtype(game).addAll(landTypes);
-break;
+      if (loseOther) {
+        land.removeAllAbilities(source.getSourceId(),game);
+        land.getSubtype(game).removeAll(CardRepository.instance.getLandTypes());
+        land.getSubtype(game).addAll(landTypes);
+      }
+ else {
+        landTypesToAdd.clear();
+        for (        String subtype : landTypes) {
+          if (!land.getSubtype(game).contains(subtype)) {
+            land.getSubtype(game).add(subtype);
+            landTypesToAdd.add(subtype);
+          }
+        }
+      }
+    break;
 case AbilityAddingRemovingEffects_6:
-for (String landType : landTypes) {
+  for (  String landType : landTypesToAdd) {
 switch (landType) {
 case "Swamp":
-  land.addAbility(new BlackManaAbility(),source.getSourceId(),game);
-break;
+      land.addAbility(new BlackManaAbility(),source.getSourceId(),game);
+    break;
 case "Mountain":
-land.addAbility(new RedManaAbility(),source.getSourceId(),game);
+  land.addAbility(new RedManaAbility(),source.getSourceId(),game);
 break;
 case "Forest":
 land.addAbility(new GreenManaAbility(),source.getSourceId(),game);
