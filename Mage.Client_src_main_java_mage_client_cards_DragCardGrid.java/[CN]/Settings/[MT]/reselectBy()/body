@@ -1,0 +1,54 @@
+{
+  deselectAll();
+  boolean useText=false;
+  String searchStr="";
+  if (searchByTextField.getText().length() > 3) {
+    useText=true;
+    searchStr=searchByTextField.getText().toLowerCase();
+  }
+  for (  CardType cardType : selectByTypeButtons.keySet()) {
+    AbstractButton button=selectByTypeButtons.get(cardType);
+    if (button != null) {
+      if (button.isSelected()) {
+        for (        ArrayList<ArrayList<CardView>> gridRow : cardGrid) {
+          for (          ArrayList<CardView> stack : gridRow) {
+            for (            CardView card : stack) {
+              boolean s=card.getCardTypes().contains(cardType);
+              card.setSelected(s);
+              cardViews.get(card.getId()).update(card);
+            }
+          }
+        }
+      }
+    }
+  }
+  if (useText) {
+    for (    ArrayList<ArrayList<CardView>> gridRow : cardGrid) {
+      for (      ArrayList<CardView> stack : gridRow) {
+        for (        CardView card : stack) {
+          boolean s=card.isSelected();
+          if (!s) {
+            s|=card.getName().toLowerCase().contains(searchStr);
+          }
+          if (!s) {
+            for (            String str : card.getSuperTypes()) {
+              s|=str.toLowerCase().contains(searchStr);
+            }
+            for (            String str : card.getSubTypes()) {
+              s|=str.toLowerCase().contains(searchStr);
+            }
+          }
+          if (!s) {
+            for (            String str : card.getRules()) {
+              s|=str.toLowerCase().contains(searchStr);
+            }
+          }
+          card.setSelected(s);
+          cardViews.get(card.getId()).update(card);
+        }
+      }
+    }
+  }
+  layoutGrid();
+  repaint();
+}
