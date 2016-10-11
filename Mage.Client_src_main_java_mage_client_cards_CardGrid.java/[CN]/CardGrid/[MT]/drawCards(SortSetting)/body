@@ -11,8 +11,11 @@ switch (sortSetting.getSortBy()) {
 case NAME:
       Collections.sort(sortedCards,new CardNameComparator());
     break;
+case CARD_TYPE:
+  Collections.sort(sortedCards,new CardTypeComparator());
+break;
 case RARITY:
-  Collections.sort(sortedCards,new CardRarityComparator());
+Collections.sort(sortedCards,new CardRarityComparator());
 break;
 case COLOR:
 Collections.sort(sortedCards,new CardColorComparator());
@@ -33,6 +36,12 @@ lastCard=cardImg;
 switch (sortSetting.getSortBy()) {
 case NAME:
 if (!cardImg.getOriginal().getName().equals(lastCard.getOriginal().getName())) {
+curColumn++;
+curRow=0;
+}
+break;
+case CARD_TYPE:
+if (!cardImg.getOriginal().getCardTypes().equals(lastCard.getOriginal().getCardTypes())) {
 curColumn++;
 curRow=0;
 }
