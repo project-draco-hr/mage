@@ -1,0 +1,26 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",5);
+  addCard(Zone.HAND,playerA,"Tamiyo's Journal");
+  addCard(Zone.HAND,playerA,"Port Town");
+  addCard(Zone.HAND,playerA,"Island");
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion",3);
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox",3);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Tamiyo's Journal");
+  attack(2,playerB,"Pillarfield Ox");
+  attack(3,playerA,"Silvercoat Lion");
+  rollbackTurns(3,PhaseStep.END_TURN,playerA,0);
+  attack(4,playerB,"Pillarfield Ox");
+  attack(5,playerA,"Silvercoat Lion");
+  rollbackTurns(5,PhaseStep.END_TURN,playerA,0);
+  attack(6,playerB,"Pillarfield Ox");
+  playLand(7,PhaseStep.PRECOMBAT_MAIN,playerA,"Port Town");
+  attack(7,playerA,"Silvercoat Lion");
+  rollbackTurns(7,PhaseStep.END_TURN,playerA,0);
+  setStopAt(7,PhaseStep.POSTCOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerA,"Port Town",1);
+  assertTapped("Port Town",false);
+  assertPermanentCount(playerA,"Clue",3);
+  assertLife(playerA,14);
+  assertLife(playerB,14);
+}
