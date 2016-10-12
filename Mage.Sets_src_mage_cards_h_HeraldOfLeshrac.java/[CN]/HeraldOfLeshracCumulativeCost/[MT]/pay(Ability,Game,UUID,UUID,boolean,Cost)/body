@@ -1,0 +1,11 @@
+{
+  Target target=new TargetPermanent(filter);
+  if (target.choose(Outcome.GainControl,controllerId,sourceId,game)) {
+    ContinuousEffect effect=new GainControlTargetEffect(Duration.EndOfGame);
+    effect.setTargetPointer(new FixedTarget(target.getFirstTarget()));
+    game.addEffect(effect,ability);
+    game.applyEffects();
+    paid=true;
+  }
+  return paid;
+}
