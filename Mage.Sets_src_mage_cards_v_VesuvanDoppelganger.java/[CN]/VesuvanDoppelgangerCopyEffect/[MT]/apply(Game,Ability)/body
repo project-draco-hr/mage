@@ -1,6 +1,10 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  final Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent == null) {
+    permanent=game.getPermanentEntering(source.getSourceId());
+  }
+  final Permanent sourcePermanent=permanent;
   if (controller != null && sourcePermanent != null) {
     Target target=new TargetPermanent(new FilterCreaturePermanent("target creature (you copy from)"));
     target.setRequired(true);
