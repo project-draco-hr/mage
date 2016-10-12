@@ -6,7 +6,10 @@
       Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
       if (permanent != null) {
         if (controller.moveCardToExileWithInfo(permanent,source.getSourceId(),sourceObject.getIdName(),source.getSourceId(),game,Zone.BATTLEFIELD,true)) {
-          game.addDelayedTriggeredAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Zone.BATTLEFIELD)),source);
+          Effect effect=new ReturnToBattlefieldUnderYourControlTargetEffect();
+          effect.setText("Return it to the battlefield under your control at the beginning of the next end step");
+          effect.setTargetPointer(new FixedTarget(permanent.getId(),game));
+          game.addDelayedTriggeredAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect),source);
           return true;
         }
       }

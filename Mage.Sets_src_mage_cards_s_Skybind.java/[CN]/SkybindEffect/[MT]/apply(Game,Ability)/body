@@ -3,8 +3,10 @@
   Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
   if (permanent != null && sourcePermanent != null) {
     if (permanent.moveToExile(source.getSourceId(),sourcePermanent.getName(),source.getSourceId(),game)) {
-      AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Zone.BATTLEFIELD));
-      game.addDelayedTriggeredAbility(delayedAbility,source);
+      Effect effect=new ReturnToBattlefieldUnderOwnerControlTargetEffect();
+      effect.setText("Return that card to the battlefield under its owner's control at the beginning of the next end step");
+      effect.setTargetPointer(new FixedTarget(getTargetPointer().getFirst(game,source),game));
+      game.addDelayedTriggeredAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect),source);
       return true;
     }
   }
