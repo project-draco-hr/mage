@@ -1,12 +1,9 @@
 {
   Card card=game.getCard(objectId);
   if (card != null && affectedControllerId.equals(card.getOwnerId()) && game.getState().getZone(card.getId()) == Zone.EXILED) {
-    Map<UUID,HashSet<MageObjectReference>> exiledCards=(Map)game.getState().getValue(UbaMask.UBA_MASK_VALUE_KEY);
-    if (exiledCards != null) {
-      Set<MageObjectReference> exiledCardsByPlayer=exiledCards.get(affectedControllerId);
-      if (exiledCardsByPlayer != null) {
-        return exiledCardsByPlayer.contains(new MageObjectReference(card,game));
-      }
+    HashSet<MageObjectReference> exiledCardsByPlayer=(HashSet)game.getState().getValue(UbaMask.UBA_MASK_VALUE_KEY + affectedControllerId);
+    if (exiledCardsByPlayer != null) {
+      return exiledCardsByPlayer.contains(new MageObjectReference(card,game));
     }
   }
   return false;

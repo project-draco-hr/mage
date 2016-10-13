@@ -5,9 +5,9 @@
       abilitiesToAdd=new HashSet<>();
       this.objectReference=new MageObjectReference(permanent,game);
       String keyString=CardUtil.getCardZoneString("delvedCards",source.getSourceId(),game,true);
-      List<Card> delvedCards=(List<Card>)game.getState().getValue(keyString);
+      Cards delvedCards=(Cards)game.getState().getValue(keyString);
       if (delvedCards != null) {
-        for (        Card card : delvedCards) {
+        for (        Card card : delvedCards.getCards(game)) {
           if (!card.getCardType().contains(CardType.CREATURE)) {
             continue;
           }
@@ -54,10 +54,8 @@
     }
     return true;
   }
- else {
-    if (abilitiesToAdd != null) {
-      abilitiesToAdd=null;
-    }
+ else   if (abilitiesToAdd != null) {
+    abilitiesToAdd=null;
   }
   return false;
 }
