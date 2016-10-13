@@ -1,0 +1,22 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Swamp",8);
+  addCard(Zone.HAND,playerA,"Gonti, Lord of Luxury",1);
+  addCard(Zone.LIBRARY,playerB,"Rashmi, Eternities Crafter");
+  skipInitShuffling();
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Forest",2);
+  addCard(Zone.HAND,playerB,"Aether Tradewinds",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Gonti, Lord of Luxury");
+  addTarget(playerA,playerB);
+  setChoice(playerA,"Rashmi, Eternities Crafter");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Rashmi, Eternities Crafter");
+  castSpell(1,PhaseStep.END_TURN,playerB,"Aether Tradewinds","Silvercoat Lion^Rashmi, Eternities Crafter");
+  castSpell(2,PhaseStep.PRECOMBAT_MAIN,playerB,"Rashmi, Eternities Crafter");
+  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Aether Tradewinds",1);
+  assertHandCount(playerB,"Silvercoat Lion",1);
+  assertHandCount(playerB,"Rashmi, Eternities Crafter",0);
+  assertPermanentCount(playerB,"Rashmi, Eternities Crafter",1);
+}
