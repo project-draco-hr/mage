@@ -1,0 +1,17 @@
+{
+  Player player=game.getPlayer(event.getPlayerId());
+  if (player != null) {
+    int amount=xCosts.calculate(game,source,this);
+    if (amount > 0) {
+      String mana=new StringBuilder("{").append(amount).append("}").toString();
+      ManaCostsImpl cost=new ManaCostsImpl(mana);
+      if (cost.canPay(source,source.getSourceId(),event.getPlayerId(),game) && player.chooseUse(Outcome.Benefit,new StringBuilder("Pay").append(mana).append(" to declare attacker?").toString(),source,game)) {
+        if (cost.payOrRollback(source,game,source.getSourceId(),event.getPlayerId())) {
+          return false;
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}
