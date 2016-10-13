@@ -2,7 +2,7 @@
   deselectAll();
   boolean useText=false;
   String searchStr="";
-  if (searchByTextField.getText().length() > 3) {
+  if (searchByTextField.getText().length() >= 3) {
     useText=true;
     searchStr=searchByTextField.getText().toLowerCase();
   }
@@ -13,7 +13,7 @@
         for (        ArrayList<ArrayList<CardView>> gridRow : cardGrid) {
           for (          ArrayList<CardView> stack : gridRow) {
             for (            CardView card : stack) {
-              boolean s=card.getCardTypes().contains(cardType);
+              boolean s=card.isSelected() | card.getCardTypes().contains(cardType);
               card.setSelected(s);
               cardViews.get(card.getId()).update(card);
             }
@@ -37,6 +37,23 @@
             for (            String str : card.getSubTypes()) {
               s|=str.toLowerCase().contains(searchStr);
             }
+          }
+          if (!s) {
+            s|=card.getRarity().toString().toLowerCase().contains(searchStr);
+          }
+          if (!s) {
+            String t="";
+            for (            CardType type : card.getCardTypes()) {
+              t+=" " + type.toString();
+            }
+            s|=t.toLowerCase().contains(searchStr);
+          }
+          if (!s) {
+            String mc="";
+            for (            String m : card.getManaCost()) {
+              mc+=m;
+            }
+            s|=mc.toLowerCase().contains(searchStr);
           }
           if (!s) {
             for (            String str : card.getRules()) {
