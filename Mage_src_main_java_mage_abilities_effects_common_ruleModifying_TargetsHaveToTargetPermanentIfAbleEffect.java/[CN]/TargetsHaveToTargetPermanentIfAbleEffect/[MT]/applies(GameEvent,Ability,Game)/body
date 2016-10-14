@@ -1,0 +1,31 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && controller.isHuman() && controller.hasOpponent(event.getPlayerId(),game)) {
+    StackObject stackObject=game.getStack().getStackObject(event.getSourceId());
+    if (stackObject.isCopy()) {
+      return false;
+    }
+    Ability ability=(Ability)getValue("targetAbility");
+    if (ability != null) {
+      List<Permanent> allowedPermanents=game.getBattlefield().getActivePermanents(filter,event.getPlayerId(),event.getSourceId(),game);
+      if (!allowedPermanents.isEmpty()) {
+        boolean canTargetAllowedPermanent=false;
+        for (        UUID modeId : ability.getModes().getSelectedModes()) {
+          ability.getModes().setActiveMode(modeId);
+          for (          Target target : ability.getTargets()) {
+            for (            Permanent allowedPermanent : allowedPermanents) {
+              if (target.getTargets().contains(allowedPermanent.getId())) {
+                return false;
+              }
+              if (target.canTarget(allowedPermanent.getId(),source,game)) {
+                canTargetAllowedPermanent=true;
+              }
+            }
+          }
+        }
+        return canTargetAllowedPermanent;
+      }
+    }
+  }
+  return false;
+}
