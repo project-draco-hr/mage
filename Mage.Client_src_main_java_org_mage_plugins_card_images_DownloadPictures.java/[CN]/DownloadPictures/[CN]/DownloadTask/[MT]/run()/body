@@ -12,18 +12,15 @@
     if (useSpecifiedPaths) {
       if (card != null && card.isToken()) {
         imagePath=CardImageUtils.getTokenBasePath() + actualFilename;
-        ;
+      }
+ else       if (card != null) {
+        imagePath=CardImageUtils.getImageBasePath() + actualFilename;
       }
  else {
-        if (card != null) {
-          imagePath=CardImageUtils.getImageBasePath() + actualFilename;
-        }
- else {
-          imagePath=Constants.IO.imageBaseDir;
-        }
+        imagePath=Constants.IO.imageBaseDir;
       }
       String tmpFile=filePath + "temporary" + actualFilename;
-      temporaryFile=new File(tmpFile.toString());
+      temporaryFile=new File(tmpFile);
       if (!temporaryFile.exists()) {
         temporaryFile.getParentFile().mkdirs();
       }

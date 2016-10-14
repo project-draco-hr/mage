@@ -2,8 +2,18 @@
   Matcher m=parser.matcher(str);
   if (m.find()) {
     Settings s=new Settings();
-    s.sort=Sort.valueOf(m.group(1));
-    s.separateCreatures=Boolean.valueOf(m.group(2));
+    if (m.groupCount() > 0) {
+      s.sort=Sort.valueOf(m.group(1));
+    }
+    if (m.groupCount() > 1) {
+      s.separateCreatures=Boolean.valueOf(m.group(2));
+    }
+    if (m.groupCount() > 2) {
+      s.cardSize=Integer.valueOf(m.group(3));
+    }
+ else {
+      s.cardSize=50;
+    }
     return s;
   }
  else {
