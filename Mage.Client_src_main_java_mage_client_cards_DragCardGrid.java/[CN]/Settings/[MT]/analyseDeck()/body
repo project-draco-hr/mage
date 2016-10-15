@@ -1,0 +1,108 @@
+{
+  HashMap<String,Integer> qtys=new HashMap<>();
+  HashMap<String,Integer> pips=new HashMap<>();
+  HashMap<String,Integer> sourcePips=new HashMap<>();
+  HashMap<String,Integer> manaCounts=new HashMap<>();
+  pips.put("#w}",0);
+  pips.put("#u}",0);
+  pips.put("#b}",0);
+  pips.put("#r}",0);
+  pips.put("#g}",0);
+  pips.put("#c}",0);
+  qtys.put("plains",0);
+  qtys.put("island",0);
+  qtys.put("swamp",0);
+  qtys.put("mountain",0);
+  qtys.put("forest",0);
+  qtys.put("basic",0);
+  qtys.put("wastes",0);
+  manaCounts=new HashMap<>();
+  for (  ArrayList<ArrayList<CardView>> gridRow : cardGrid) {
+    for (    ArrayList<CardView> stack : gridRow) {
+      for (      CardView card : stack) {
+        String t="";
+        for (        CardType type : card.getCardTypes()) {
+          t+=" " + type.toString();
+        }
+        for (        String str : card.getSuperTypes()) {
+          t+=" " + str.toLowerCase();
+        }
+        for (        String str : card.getSubTypes()) {
+          t+=" " + str.toLowerCase();
+        }
+        for (        String qty : qtys.keySet()) {
+          int value=qtys.get(qty);
+          if (t.toLowerCase().contains(qty)) {
+            qtys.put(qty,++value);
+          }
+          for (          String str : card.getRules()) {
+            if (str.toLowerCase().contains(qty)) {
+              qtys.put(qty,++value);
+            }
+          }
+        }
+        if (card.getName().equals("Wastes")) {
+          int value=qtys.get("wastes");
+          qtys.put("wastes",++value);
+        }
+        String mc="";
+        for (        String m : card.getManaCost()) {
+          mc+=m;
+        }
+        mc=mc.replaceAll("\\{([WUBRG]).([WUBRG])\\}","{$1}{$2}");
+        mc=mc.replaceAll("\\{","#");
+        mc=mc.toLowerCase();
+        for (        String pip : pips.keySet()) {
+          int value=pips.get(pip);
+          while (mc.toLowerCase().contains(pip)) {
+            pips.put(pip,++value);
+            mc=mc.replaceFirst(pip,"");
+          }
+        }
+        for (        String str : card.getRules()) {
+          Matcher m=pattern.matcher(str);
+          while (m.find()) {
+            System.out.println("0=" + m.group(0) + ",,,1="+ m.group(1)+ ",,,2="+ m.group(2)+ ",,,3="+ m.group(3));
+            str="Add" + m.group(1) + m.group(3)+ "to your mana pool";
+            System.out.println("Found " + m.group(2) + " in "+ card.getName());
+            int num=1;
+            if (manaCounts.get(m.group(2)) != null) {
+              num=manaCounts.get(m.group(2));
+              num++;
+            }
+            manaCounts.put(m.group(2),num);
+            m=pattern.matcher(str);
+          }
+        }
+      }
+    }
+  }
+  String finalInfo="Found the following quantity of mana costs, mana sources and land types:<br><font size=-1><ul>";
+  for (  String qty : qtys.keySet()) {
+    int value=qtys.get(qty);
+    if (value > 0) {
+      finalInfo+="<li>" + qty + " = "+ value;
+    }
+  }
+  for (  String source : sourcePips.keySet()) {
+    int value=sourcePips.get(source);
+    if (value > 0) {
+      finalInfo+="<li>" + "Mana source " + source + " = "+ value;
+    }
+  }
+  for (  String pip : pips.keySet()) {
+    int value=pips.get(pip);
+    if (value > 0) {
+      finalInfo+="<li>" + pip.toUpperCase() + " mana pip/s = "+ value;
+    }
+  }
+  for (  String mana : manaCounts.keySet()) {
+    int value=manaCounts.get(mana);
+    if (value > 0) {
+      finalInfo+="<li>" + mana.toUpperCase() + " mana sources = "+ value;
+    }
+  }
+  finalInfo=finalInfo.replaceAll("#","\\{");
+  finalInfo+="</ul>";
+  MageFrame.getInstance().showMessage(finalInfo);
+}
