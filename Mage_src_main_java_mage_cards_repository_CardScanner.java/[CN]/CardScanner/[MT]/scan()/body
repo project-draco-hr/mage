@@ -4,12 +4,7 @@
   }
   scanned=true;
   List<CardInfo> cardsToAdd=new ArrayList<>();
-  Map<ClassLoader,List<String>> packageMap=new HashMap<>();
   for (  ExpansionSet set : Sets.getInstance().values()) {
-    ClassLoader cl=set.getClass().getClassLoader();
-    if (!packageMap.containsKey(cl))     packageMap.put(cl,new ArrayList<String>());
-    List<String> packages=packageMap.get(cl);
-    packages.add(set.getPackageName());
     ExpansionRepository.instance.add(new ExpansionInfo(set));
   }
   ExpansionRepository.instance.setContentVersion(ExpansionRepository.instance.getContentVersionConstant());
