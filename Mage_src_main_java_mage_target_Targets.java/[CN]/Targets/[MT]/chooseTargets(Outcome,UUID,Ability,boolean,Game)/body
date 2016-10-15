@@ -3,6 +3,7 @@
     if (!canChoose(source.getSourceId(),playerId,game)) {
       return false;
     }
+    int state=game.bookmarkState();
     while (!isChosen()) {
       Target target=this.getUnchosen().get(0);
       UUID targetController=playerId;
@@ -16,7 +17,8 @@
         return false;
       }
       if (this.getUnchosen().isEmpty() && game.replaceEvent(new GameEvent(GameEvent.EventType.TARGETS_VALID,source.getSourceId(),source.getSourceId(),source.getControllerId()),source)) {
-        this.clearChosen();
+        game.restoreState(state,"Targets");
+        clearChosen();
       }
     }
   }
