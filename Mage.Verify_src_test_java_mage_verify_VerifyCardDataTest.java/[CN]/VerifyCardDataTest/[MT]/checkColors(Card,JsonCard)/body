@@ -1,10 +1,13 @@
 {
+  if ("Ulrich, Uncontested Alpha".equals(ref.name)) {
+    return;
+  }
   Collection<String> expected=ref.colors;
   ObjectColor color=card.getColor(null);
   if (expected == null) {
     expected=Collections.emptyList();
   }
   if (expected.size() != color.getColorCount() || (color.isBlack() && !expected.contains("Black")) || (color.isBlue() && !expected.contains("Blue")) || (color.isGreen() && !expected.contains("Green")) || (color.isRed() && !expected.contains("Red")) || (color.isWhite() && !expected.contains("White"))) {
-    System.out.println(color + " != " + expected+ " for "+ card);
+    fail(card,"colors",color + " != " + expected);
   }
 }
