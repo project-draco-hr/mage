@@ -10,7 +10,10 @@
     CopyEffect copyEffect=new CopyEffect(Duration.EndOfTurn,permanentReset,source.getSourceId());
     if (controller.moveCardToExileWithInfo(permanent,source.getSourceId(),sourcePermanent.getIdName(),source.getSourceId(),game,Zone.BATTLEFIELD,true)) {
       game.addEffect(copyEffect,source);
-      game.addDelayedTriggeredAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(source.getSourceId(),Zone.BATTLEFIELD,false)),source);
+      Effect effect=new ReturnToBattlefieldUnderOwnerControlTargetEffect();
+      effect.setText("Return the exiled card to the battlefield under its owner's control at the beginning of the next end step");
+      effect.setTargetPointer(new FixedTarget(source.getFirstTarget(),game));
+      game.addDelayedTriggeredAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect),source);
       return true;
     }
   }

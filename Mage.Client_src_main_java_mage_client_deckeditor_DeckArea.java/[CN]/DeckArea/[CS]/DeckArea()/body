@@ -18,6 +18,13 @@
       hiddenCards.clear();
       loadDeck(lastDeck,lastBigCard);
     }
+    @Override public void duplicateCards(    Collection<CardView> cards){
+      sideboardList.deselectAll();
+      for (      CardView card : cards) {
+        CardView newCard=new CardView(card);
+        deckList.addCardView(newCard,true);
+      }
+    }
   }
 );
   sideboardList.addDragCardGridListener(new DragCardGrid.DragCardGridListener(){
@@ -33,6 +40,13 @@
     @Override public void showAll(){
       hiddenCards.clear();
       loadDeck(lastDeck,lastBigCard);
+    }
+    @Override public void duplicateCards(    Collection<CardView> cards){
+      deckList.deselectAll();
+      for (      CardView card : cards) {
+        CardView newCard=new CardView(card);
+        sideboardList.addCardView(newCard,true);
+      }
     }
   }
 );

@@ -1,0 +1,31 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",5);
+  addCard(Zone.HAND,playerA,"Clone");
+  addCard(Zone.HAND,playerA,"Vesuvan Doppelganger");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Phyrexian Vault",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Clone");
+  setChoice(playerA,"Silvercoat Lion");
+  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerB,"{2}");
+  castSpell(3,PhaseStep.PRECOMBAT_MAIN,playerA,"Vesuvan Doppelganger");
+  setChoice(playerA,"Silvercoat Lion");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertGraveyardCount(playerB,"Silvercoat Lion",1);
+  assertGraveyardCount(playerA,"Vesuvan Doppelganger",0);
+  assertPermanentCount(playerA,"Silvercoat Lion",2);
+  assertPermanentCount(playerB,"Silvercoat Lion",0);
+  assertHandCount(playerB,2);
+  boolean whiteLion=false;
+  boolean blueLion=false;
+  for (  Permanent permanent : currentGame.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),playerA.getId(),currentGame)) {
+    if (permanent.getColor(currentGame).isWhite()) {
+      whiteLion=true;
+    }
+    if (permanent.getColor(currentGame).isBlue()) {
+      blueLion=true;
+    }
+  }
+  Assert.assertTrue("There should be a white and a blue Silvercoat Lion be on the battlefield",blueLion && whiteLion);
+}

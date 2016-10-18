@@ -1,17 +1,20 @@
 {
-  Player player=game.getPlayer(source.getControllerId());
-  if (player.getHand().size() > 0) {
-    TargetCard target=new TargetCard(Zone.HAND,filter);
-    player.choose(Outcome.Benefit,player.getHand(),target,game);
-    Card card=player.getHand().get(target.getFirstTarget(),game);
-    if (card != null) {
-      card.moveToExile(getId(),"Prototype Portal (Imprint)",source.getSourceId(),game);
-      Permanent permanent=game.getPermanent(source.getSourceId());
-      if (permanent != null) {
-        permanent.imprint(card.getId(),game);
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    if (controller.getHand().size() > 0) {
+      TargetCard target=new TargetCard(Zone.HAND,StaticFilters.FILTER_CARD_ARTIFACT);
+      controller.choose(Outcome.Benefit,controller.getHand(),target,game);
+      Card card=controller.getHand().get(target.getFirstTarget(),game);
+      if (card != null) {
+        controller.moveCardsToExile(card,source,game,true,source.getSourceId(),sourceObject.getIdName() + " (Imprint)");
+        Permanent permanent=game.getPermanent(source.getSourceId());
+        if (permanent != null) {
+          permanent.imprint(card.getId(),game);
+        }
       }
-      return true;
     }
+    return true;
   }
-  return true;
+  return false;
 }

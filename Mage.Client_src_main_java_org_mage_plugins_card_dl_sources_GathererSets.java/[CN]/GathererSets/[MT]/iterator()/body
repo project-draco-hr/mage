@@ -1,15 +1,31 @@
 {
+  Calendar c=Calendar.getInstance();
+  c.setTime(new Date());
+  c.add(Calendar.DATE,-14);
+  Date compareDate=c.getTime();
   ArrayList<DownloadJob> jobs=new ArrayList<>();
   for (  String symbol : symbols) {
-    jobs.add(generateDownloadJob(symbol,"C"));
-    jobs.add(generateDownloadJob(symbol,"U"));
-    jobs.add(generateDownloadJob(symbol,"R"));
+    ExpansionSet exp=Sets.findSet(symbol);
+    if (exp != null && exp.getReleaseDate().before(compareDate)) {
+      jobs.add(generateDownloadJob(symbol,"C"));
+      jobs.add(generateDownloadJob(symbol,"U"));
+      jobs.add(generateDownloadJob(symbol,"R"));
+    }
   }
   for (  String symbol : withMythics) {
-    jobs.add(generateDownloadJob(symbol,"C"));
-    jobs.add(generateDownloadJob(symbol,"U"));
-    jobs.add(generateDownloadJob(symbol,"R"));
-    jobs.add(generateDownloadJob(symbol,"M"));
+    ExpansionSet exp=Sets.findSet(symbol);
+    if (exp != null && exp.getReleaseDate().before(compareDate)) {
+      jobs.add(generateDownloadJob(symbol,"C"));
+      jobs.add(generateDownloadJob(symbol,"U"));
+      jobs.add(generateDownloadJob(symbol,"R"));
+      jobs.add(generateDownloadJob(symbol,"M"));
+    }
+  }
+  for (  String symbol : onlyMythics) {
+    ExpansionSet exp=Sets.findSet(symbol);
+    if (exp != null && exp.getReleaseDate().before(compareDate)) {
+      jobs.add(generateDownloadJob(symbol,"M"));
+    }
   }
   return jobs.iterator();
 }

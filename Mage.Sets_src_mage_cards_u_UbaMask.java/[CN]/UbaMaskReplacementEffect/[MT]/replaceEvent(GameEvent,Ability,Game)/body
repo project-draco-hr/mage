@@ -1,6 +1,8 @@
 {
   if (event.getType().equals(GameEvent.EventType.PLAY_TURN)) {
-    game.getState().setValue(UbaMask.UBA_MASK_VALUE_KEY,null);
+    for (    UUID playerId : game.getPlayerList()) {
+      game.getState().setValue(UbaMask.UBA_MASK_VALUE_KEY + source.getSourceId() + playerId,null);
+    }
     return false;
   }
   MageObject sourceObject=source.getSourceObject(game);
@@ -9,15 +11,10 @@
     Card card=player.getLibrary().getFromTop(game);
     if (card != null) {
       player.moveCardsToExile(card,source,game,true,source.getId(),sourceObject.getIdName());
-      Map<UUID,HashSet<MageObjectReference>> exiledCards=(Map)game.getState().getValue(UbaMask.UBA_MASK_VALUE_KEY);
-      if (exiledCards == null) {
-        exiledCards=new HashMap<>();
-        game.getState().setValue(UbaMask.UBA_MASK_VALUE_KEY,exiledCards);
-      }
-      HashSet<MageObjectReference> exiledCardsByPlayer=exiledCards.get(event.getPlayerId());
+      HashSet<MageObjectReference> exiledCardsByPlayer=(HashSet)game.getState().getValue(UbaMask.UBA_MASK_VALUE_KEY + event.getPlayerId());
       if (exiledCardsByPlayer == null) {
         exiledCardsByPlayer=new HashSet<>();
-        exiledCards.put(event.getPlayerId(),exiledCardsByPlayer);
+        game.getState().setValue(UbaMask.UBA_MASK_VALUE_KEY + event.getPlayerId(),exiledCardsByPlayer);
       }
       exiledCardsByPlayer.add(new MageObjectReference(card.getId(),game));
     }

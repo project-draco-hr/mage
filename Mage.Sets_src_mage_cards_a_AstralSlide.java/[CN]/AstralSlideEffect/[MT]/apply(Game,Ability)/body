@@ -6,8 +6,10 @@
     if (permanent != null) {
       UUID exileId=UUID.randomUUID();
       if (controller.moveCardsToExile(permanent,source,game,true,exileId,sourceObject.getIdName())) {
-        AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new ReturnFromExileEffect(exileId,Zone.BATTLEFIELD,false));
-        game.addDelayedTriggeredAbility(delayedAbility,source);
+        Effect effect=new ReturnToBattlefieldUnderOwnerControlTargetEffect();
+        effect.setText("Return that card to the battlefield under its owner's control at the beginning of the next end step");
+        effect.setTargetPointer(new FixedTarget(permanent.getId(),game));
+        game.addDelayedTriggeredAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect),source);
       }
     }
     return true;

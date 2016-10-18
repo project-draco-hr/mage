@@ -1,0 +1,14 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Briarbridge Patrol",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Pillarfield Ox",1);
+  attack(1,playerA,"Briarbridge Patrol");
+  block(1,playerB,"Pillarfield Ox","Briarbridge Patrol");
+  attack(3,playerA,"Briarbridge Patrol");
+  block(3,playerB,"Pillarfield Ox","Briarbridge Patrol");
+  rollbackTurns(3,PhaseStep.POSTCOMBAT_MAIN,playerA,0);
+  setStopAt(3,PhaseStep.END_TURN);
+  execute();
+  assertLife(playerA,20);
+  assertLife(playerB,20);
+  assertPermanentCount(playerA,"Clue",2);
+}
