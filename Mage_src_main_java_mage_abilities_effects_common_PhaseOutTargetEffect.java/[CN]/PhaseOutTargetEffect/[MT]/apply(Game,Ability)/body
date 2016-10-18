@@ -1,6 +1,17 @@
 {
-  for (  UUID target : targetPointer.getTargets(game,source)) {
-    Permanent permanent=game.getPermanent(target);
+  if (!useOnlyTargetPointer && source.getTargets().size() > 1) {
+    for (    Target target : source.getTargets()) {
+      for (      UUID targetId : target.getTargets()) {
+        Permanent permanent=game.getPermanent(targetId);
+        if (permanent != null) {
+          permanent.phaseOut(game);
+        }
+      }
+    }
+    return true;
+  }
+  for (  UUID targetId : this.getTargetPointer().getTargets(game,source)) {
+    Permanent permanent=game.getPermanent(targetId);
     if (permanent != null) {
       permanent.phaseOut(game);
     }
