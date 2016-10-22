@@ -1,5 +1,10 @@
 {
   if (game.getState().getPriorityPlayerId() != null) {
+    if (getId() == null) {
+      logger.fatal("Player with no ID: " + name);
+      this.quit(game);
+      return;
+    }
     logger.debug("Setting game priority to " + getId() + " ["+ methodName+ "]");
     game.getState().setPriorityPlayerId(getId());
   }
