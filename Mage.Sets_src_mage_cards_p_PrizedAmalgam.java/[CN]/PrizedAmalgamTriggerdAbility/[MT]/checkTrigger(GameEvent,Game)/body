@@ -1,16 +1,22 @@
 {
+  boolean result=false;
   if (super.checkTrigger(event,game)) {
     EntersTheBattlefieldEvent entersEvent=(EntersTheBattlefieldEvent)event;
     if (entersEvent.getFromZone().equals(Zone.GRAVEYARD)) {
-      return true;
+      result=true;
     }
-    if (entersEvent.getFromZone().equals(Zone.STACK) && entersEvent.getTarget().getControllerId().equals(getControllerId())) {
+ else     if (entersEvent.getFromZone().equals(Zone.STACK) && entersEvent.getTarget().getControllerId().equals(getControllerId())) {
       CastFromGraveyardWatcher watcher=(CastFromGraveyardWatcher)game.getState().getWatchers().get(CastFromGraveyardWatcher.class.getName());
       if (watcher != null) {
         int zcc=game.getState().getZoneChangeCounter(event.getSourceId());
-        return watcher.spellWasCastFromGraveyard(event.getSourceId(),zcc - 1);
+        result=watcher.spellWasCastFromGraveyard(event.getSourceId(),zcc - 1);
       }
     }
   }
-  return false;
+  if (result) {
+    for (    Effect effect : getEffects()) {
+      effect.setTargetPointer(new FixedTarget(getSourceId(),game.getState().getZoneChangeCounter(getSourceId())));
+    }
+  }
+  return result;
 }

@@ -1,4 +1,15 @@
 {
+  if (ability.getControllerId() == null) {
+    String sourceName="no sourceId";
+    if (ability.getSourceId() != null) {
+      MageObject mageObject=getObject(ability.getSourceId());
+      if (mageObject != null) {
+        sourceName=mageObject.getName();
+      }
+    }
+    logger.fatal("Added triggered ability without controller: " + sourceName + " rule: "+ ability.getRule());
+    return;
+  }
   if (ability instanceof TriggeredManaAbility || ability instanceof DelayedTriggeredManaAbility) {
     Ability manaAbiltiy=ability.copy();
     manaAbiltiy.activate(this,false);

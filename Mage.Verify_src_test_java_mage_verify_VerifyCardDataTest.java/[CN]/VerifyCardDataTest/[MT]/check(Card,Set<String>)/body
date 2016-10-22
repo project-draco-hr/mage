@@ -1,0 +1,19 @@
+{
+  JsonCard ref=MtgJson.card(card.getName());
+  if (ref == null) {
+    warn(card,"Missing card reference");
+    return;
+  }
+  checkAll(card,ref);
+  if (tokens != null) {
+    JsonCard ref2=null;
+    if (card.isFlipCard()) {
+      ref2=MtgJson.card(card.getFlipCardName());
+    }
+    for (    String token : tokens) {
+      if (!(token.equals(card.getName()) || containsInTypesOrText(ref,token) || containsInTypesOrText(ref,token.toLowerCase())|| (ref2 != null && (containsInTypesOrText(ref2,token) || containsInTypesOrText(ref2,token.toLowerCase()))))) {
+        System.out.println("unexpected token " + token + " in "+ card);
+      }
+    }
+  }
+}

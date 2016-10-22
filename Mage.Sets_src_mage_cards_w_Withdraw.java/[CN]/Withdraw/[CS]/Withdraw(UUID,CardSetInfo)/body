@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{U}{U}");
+  this.getSpellAbility().addEffect(new WithdrawEffect());
+  Target target=new TargetCreaturePermanent(new FilterCreaturePermanent("creature to return unconditionally"));
+  target.setTargetTag(1);
+  this.getSpellAbility().addTarget(target);
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("another creature to return unless {1} is paid");
+  filter.add(new AnotherTargetPredicate(2));
+  target=new TargetCreaturePermanent(filter);
+  target.setTargetTag(2);
+  this.getSpellAbility().addTarget(target);
+}

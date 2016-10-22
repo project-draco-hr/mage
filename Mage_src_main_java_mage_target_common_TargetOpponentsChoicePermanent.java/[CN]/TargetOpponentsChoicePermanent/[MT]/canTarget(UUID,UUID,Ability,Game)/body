@@ -1,6 +1,19 @@
 {
+  Permanent permanent=game.getPermanent(id);
   if (opponentId != null) {
-    return super.canTarget(opponentId,id,source,game);
+    if (permanent != null) {
+      if (source != null) {
+        boolean canSourceControllerTarget=true;
+        if (!isNotTarget()) {
+          if (!permanent.canBeTargetedBy(game.getObject(source.getId()),controllerId,game) || !permanent.canBeTargetedBy(game.getObject(source.getSourceId()),controllerId,game)) {
+            canSourceControllerTarget=false;
+          }
+        }
+        canSourceControllerTarget&=super.canTarget(opponentId,id,source,game);
+        canSourceControllerTarget&=filter.match(permanent,source.getSourceId(),opponentId,game);
+        return canSourceControllerTarget;
+      }
+    }
   }
   return false;
 }
