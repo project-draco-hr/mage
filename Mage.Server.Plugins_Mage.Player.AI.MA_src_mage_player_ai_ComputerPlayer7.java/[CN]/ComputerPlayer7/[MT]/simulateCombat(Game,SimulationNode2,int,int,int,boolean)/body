@@ -22,16 +22,14 @@
       }
     }
   }
- else {
-    if (!game.getStep().skipStep(game,game.getActivePlayerId())) {
-      game.fireEvent(new GameEvent(GameEvent.EventType.DECLARE_BLOCKERS_STEP_PRE,null,null,game.getActivePlayerId()));
-      if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_BLOCKERS,game.getActivePlayerId(),game.getActivePlayerId()))) {
-        val=simulateBlockers(game,node,game.getCombat().getDefenders().iterator().next(),depth,alpha,beta,counter);
-      }
+ else   if (!game.getStep().skipStep(game,game.getActivePlayerId())) {
+    game.fireEvent(new GameEvent(GameEvent.EventType.DECLARE_BLOCKERS_STEP_PRE,null,null,game.getActivePlayerId()));
+    if (!game.replaceEvent(GameEvent.getEvent(GameEvent.EventType.DECLARING_BLOCKERS,game.getActivePlayerId(),game.getActivePlayerId()))) {
+      val=simulateBlockers(game,node,game.getCombat().getDefenders().iterator().next(),depth,alpha,beta,counter);
     }
- else     if (!counter) {
-      finishCombat(game);
-    }
+  }
+ else   if (!counter) {
+    finishCombat(game);
   }
   if (val == null) {
     val=GameStateEvaluator2.evaluate(playerId,game);
