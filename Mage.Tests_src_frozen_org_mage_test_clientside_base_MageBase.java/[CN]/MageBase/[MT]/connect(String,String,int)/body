@@ -6,7 +6,7 @@
     sessionId=server.registerClient(userName,UUID.randomUUID());
     CallbackClient client=new CallbackClient(){
       @Override public void processCallback(      ClientCallback callback){
-        logger.info("IN >> " + callback.getMessageId() + " - "+ callback.getMethod());
+        logger.log(Level.INFO,"IN >> {0} - {1}",new Object[]{callback.getMessageId(),callback.getMethod()});
         try {
           if (callback.getMethod().equals("startGame")) {
             TableClientMessage data=(TableClientMessage)callback.getData();
@@ -29,15 +29,15 @@ synchronized (syncStart) {
           }
  else           if (callback.getMethod().equals("gameTarget")) {
             GameClientMessage message=(GameClientMessage)callback.getData();
-            logger.info("TARGET >> " + message.getMessage() + " >> "+ message.getTargets());
+            logger.log(Level.INFO,"TARGET >> {0} >> {1}",new Object[]{message.getMessage(),message.getTargets()});
             if (message.getMessage().equals("Select a starting player")) {
-              logger.info("  Sending >> " + playerId);
+              logger.log(Level.INFO,"  Sending >> {0}",playerId);
               server.sendPlayerUUID(gameId,sessionId,playerId);
             }
           }
  else           if (callback.getMethod().equals("gameSelect")) {
             GameClientMessage message=(GameClientMessage)callback.getData();
-            logger.info("SELECT >> " + message.getMessage());
+            logger.log(Level.INFO,"SELECT >> {0}",message.getMessage());
             if (phaseToWait == null) {
 synchronized (sync) {
                 sync.wait();
