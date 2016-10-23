@@ -5,10 +5,7 @@
     player.loseLife(3,game,false);
     TargetCardInLibrary target=new TargetCardInLibrary();
     if (player.searchLibrary(target,game)) {
-      for (      UUID cardId : target.getTargets()) {
-        Card card=player.getLibrary().getCard(cardId,game);
-        player.putInHand(card,game);
-      }
+      player.moveCards(new CardsImpl(target.getTargets()),Zone.HAND,source,game);
     }
     player.shuffleLibrary(source,game);
     return true;
