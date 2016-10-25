@@ -23,10 +23,10 @@ case PERMANENT:
       }
     break;
 case PLAYER:
-  UUID defendingPlayerId=game.getCombat().getDefendingPlayerId(permanent.getId(),game);
-if (defendingPlayerId != null) {
+  UUID playerId=controller ? permanent.getControllerId() : game.getCombat().getDefendingPlayerId(permanent.getId(),game);
+if (playerId != null) {
   for (  Effect effect : getEffects()) {
-    effect.setTargetPointer(new FixedTarget(defendingPlayerId));
+    effect.setTargetPointer(new FixedTarget(playerId));
   }
 }
 break;
