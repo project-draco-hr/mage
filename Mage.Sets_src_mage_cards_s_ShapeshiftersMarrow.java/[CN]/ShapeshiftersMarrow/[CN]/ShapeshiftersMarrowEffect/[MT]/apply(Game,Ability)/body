@@ -1,0 +1,16 @@
+{
+  Player activePlayer=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+  if (activePlayer != null) {
+    Card card=activePlayer.getLibrary().getFromTop(game);
+    if (card != null) {
+      activePlayer.revealCards("Shapeshifter's Marrow",new CardsImpl(card),game);
+      if (card.getCardType().contains(CardType.CREATURE)) {
+        activePlayer.moveCards(activePlayer.getLibrary().getTopCards(game,1),Zone.GRAVEYARD,source,game);
+        CopyEffect copyEffect=new CopyEffect(Duration.Custom,card,source.getSourceId());
+        game.addEffect(copyEffect,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}
