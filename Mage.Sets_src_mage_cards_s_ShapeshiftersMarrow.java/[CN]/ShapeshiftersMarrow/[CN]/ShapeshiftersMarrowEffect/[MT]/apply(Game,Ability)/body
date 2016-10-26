@@ -1,9 +1,10 @@
 {
   Player activePlayer=game.getPlayer(this.getTargetPointer().getFirst(game,source));
-  if (activePlayer != null) {
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (activePlayer != null && sourceObject != null) {
     Card card=activePlayer.getLibrary().getFromTop(game);
     if (card != null) {
-      activePlayer.revealCards("Shapeshifter's Marrow",new CardsImpl(card),game);
+      activePlayer.revealCards(sourceObject.getIdName(),new CardsImpl(card),game);
       if (card.getCardType().contains(CardType.CREATURE)) {
         activePlayer.moveCards(activePlayer.getLibrary().getTopCards(game,1),Zone.GRAVEYARD,source,game);
         CopyEffect copyEffect=new CopyEffect(Duration.Custom,card,source.getSourceId());
