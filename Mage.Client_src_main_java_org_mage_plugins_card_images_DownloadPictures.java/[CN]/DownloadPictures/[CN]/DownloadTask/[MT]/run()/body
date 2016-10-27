@@ -46,28 +46,38 @@ synchronized (sync) {
       return;
     }
     BufferedOutputStream out;
-    URLConnection httpConn=url.openConnection(p);
-    setUpConnection(httpConn);
-    httpConn.connect();
-    int responseCode=((HttpURLConnection)httpConn).getResponseCode();
-    if (responseCode == 200) {
-      try (BufferedInputStream in=new BufferedInputStream(((HttpURLConnection)httpConn).getInputStream())){
-        out=new BufferedOutputStream(new TFileOutputStream(temporaryFile));
-        byte[] buf=new byte[1024];
-        int len;
-        while ((len=in.read(buf)) != -1) {
-          if (cancel) {
-            in.close();
-            out.flush();
-            out.close();
-            temporaryFile.delete();
-            return;
+    boolean useTempFile=false;
+    int responseCode=0;
+    URLConnection httpConn=null;
+    if (temporaryFile != null && temporaryFile.length() > 100) {
+      useTempFile=true;
+    }
+ else {
+      httpConn=url.openConnection(p);
+      setUpConnection(httpConn);
+      httpConn.connect();
+      responseCode=((HttpURLConnection)httpConn).getResponseCode();
+    }
+    if (responseCode == 200 || useTempFile) {
+      if (!useTempFile) {
+        try (BufferedInputStream in=new BufferedInputStream(((HttpURLConnection)httpConn).getInputStream())){
+          out=new BufferedOutputStream(new TFileOutputStream(temporaryFile));
+          byte[] buf=new byte[1024];
+          int len;
+          while ((len=in.read(buf)) != -1) {
+            if (cancel) {
+              in.close();
+              out.flush();
+              out.close();
+              temporaryFile.delete();
+              return;
+            }
+            out.write(buf,0,len);
           }
-          out.write(buf,0,len);
         }
+         out.flush();
+        out.close();
       }
-       out.flush();
-      out.close();
       if (card != null && card.isTwoFacedCard()) {
         BufferedImage image=ImageIO.read(temporaryFile);
         if (image.getHeight() == 470) {
@@ -87,7 +97,6 @@ synchronized (sync) {
           outputFile.getParentFile().mkdirs();
           new TFile(temporaryFile).cp_rp(outputFile);
         }
-        temporaryFile.delete();
       }
  else {
         outputFile.getParentFile().mkdirs();
@@ -111,7 +120,6 @@ catch (  Exception e) {
   }
  finally {
     if (temporaryFile != null) {
-      temporaryFile.delete();
     }
   }
 synchronized (sync) {
