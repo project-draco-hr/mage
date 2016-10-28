@@ -10,15 +10,12 @@
 switch (reason) {
 case Disconnected:
         session.kill(reason);
-      LogServiceImpl.instance.log(LogKeys.KEY_SESSION_KILLED,sessionId);
-    break;
+      break;
 case SessionExpired:
-  session.kill(reason);
-LogServiceImpl.instance.log(LogKeys.KEY_SESSION_EXPIRED,sessionId);
-break;
+    session.kill(reason);
+  break;
 case LostConnection:
 session.userLostConnection();
-LogServiceImpl.instance.log(LogKeys.KEY_SESSION_DISCONNECTED,sessionId);
 break;
 default :
 logger.error("endSession: unexpected reason  " + reason.toString() + " - sessionId: "+ sessionId);
