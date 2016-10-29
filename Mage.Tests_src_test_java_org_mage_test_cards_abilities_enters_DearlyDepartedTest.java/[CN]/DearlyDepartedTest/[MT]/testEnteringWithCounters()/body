@@ -1,14 +1,14 @@
 {
   addCard(Zone.BATTLEFIELD,playerA,"Plains",5);
   addCard(Zone.GRAVEYARD,playerA,"Dearly Departed");
-  addCard(Zone.BATTLEFIELD,playerA,"Thraben Doomsayer");
-  activateAbility(2,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Put a 1/1 white Human creature token onto the battlefield.");
-  setStopAt(2,PhaseStep.BEGIN_COMBAT);
+  addCard(Zone.HAND,playerA,"Thraben Doomsayer");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Thraben Doomsayer");
+  activateAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Create a 1/1 white Human creature token.");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
   execute();
   assertLife(playerA,20);
   assertLife(playerB,20);
+  assertPowerToughness(playerA,"Thraben Doomsayer",3,3);
   assertPermanentCount(playerA,"Human",1);
-  Permanent humanToken=getPermanent("Human",playerA.getId());
-  Assert.assertEquals(2,humanToken.getPower().getValue());
-  Assert.assertEquals(2,humanToken.getToughness().getValue());
+  assertPowerToughness(playerA,"Human",2,2);
 }
