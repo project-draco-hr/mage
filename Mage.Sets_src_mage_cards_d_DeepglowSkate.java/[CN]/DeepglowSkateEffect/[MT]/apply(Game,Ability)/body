@@ -1,0 +1,16 @@
+{
+  boolean didOne=false;
+  for (  Target target : source.getTargets()) {
+    for (    UUID targetID : target.getTargets()) {
+      Permanent permanent=game.getPermanent(targetID);
+      if (permanent != null) {
+        for (        Counter counter : permanent.getCounters(game).values()) {
+          Counter newCounter=new Counter(counter.getName(),counter.getCount());
+          permanent.addCounters(newCounter,game);
+          didOne=true;
+        }
+      }
+    }
+  }
+  return didOne;
+}
