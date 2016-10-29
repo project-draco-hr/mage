@@ -1,6 +1,8 @@
 {
   super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{3}");
-  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new WireflyHiveEffect(),new GenericManaCost(3));
+  FilterPermanent filter=new FilterPermanent("permanents named Wirefly");
+  filter.add(new NamePredicate("Wirefly"));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new FlipCoinEffect(new CreateTokenEffect(new WireflyToken()),new DestroyAllEffect(filter)),new GenericManaCost(3));
   ability.addCost(new TapSourceCost());
   this.addAbility(ability);
 }
