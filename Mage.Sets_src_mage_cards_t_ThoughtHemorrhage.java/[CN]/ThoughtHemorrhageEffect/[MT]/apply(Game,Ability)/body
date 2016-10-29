@@ -22,12 +22,14 @@
           controller.moveCardToExileWithInfo(checkCard,null,"",source.getSourceId(),game,Zone.GRAVEYARD,true);
         }
       }
-      TargetCardInHand targetCardsHand=new TargetCardInHand(0,Integer.MAX_VALUE,filterNamedCards);
-      controller.chooseTarget(outcome,targetPlayer.getGraveyard(),targetCardsHand,source,game);
-      for (      UUID cardId : targetCardsHand.getTargets()) {
-        Card card=game.getCard(cardId);
-        if (card != null) {
-          controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.HAND,true);
+      TargetCardInHand targetCardInHand=new TargetCardInHand(0,Integer.MAX_VALUE,filterNamedCards);
+      if (controller.chooseTarget(Outcome.Exile,targetPlayer.getHand(),targetCardInHand,source,game)) {
+        List<UUID> targets=targetCardInHand.getTargets();
+        for (        UUID targetId : targets) {
+          Card targetCard=targetPlayer.getHand().get(targetId,game);
+          if (targetCard != null) {
+            controller.moveCardToExileWithInfo(targetCard,null,"",source.getSourceId(),game,Zone.HAND,true);
+          }
         }
       }
       TargetCardInLibrary targetCardsLibrary=new TargetCardInLibrary(0,Integer.MAX_VALUE,filterNamedCards);
