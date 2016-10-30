@@ -1,10 +1,9 @@
 {
   Permanent permanent=game.getPermanent(source.getSourceId());
-  Permanent targetCreature=game.getPermanent(getTargetPointer().getFirst(game,source));
-  if (targetCreature == null) {
-    targetCreature=(Permanent)game.getLastKnownInformation(getTargetPointer().getFirst(game,source),Zone.BATTLEFIELD);
+  Permanent targetCreature=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
+  if (targetCreature != null && permanent != null) {
+    game.copyPermanent(Duration.EndOfTurn,targetCreature,permanent.getId(),source,new EmptyApplyToPermanent());
+    return true;
   }
-  Permanent newPermanent=game.copyPermanent(targetCreature,permanent.getId(),source,new EmptyApplyToPermanent());
-  newPermanent.addAbility(new UnstableShapeshifterTriggeredAbility(),source.getSourceId(),game);
   return false;
 }
