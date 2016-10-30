@@ -1,0 +1,11 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourceObject=(Permanent)source.getSourceObjectIfItStillExists(game);
+  if (sourceObject != null) {
+    if (sourceObject.getCounters(game).containsKey(CounterType.SPITE)) {
+      controller.drawCards(sourceObject.getCounters(game).getCount(CounterType.SPITE),game);
+      controller.gainLife(sourceObject.getCounters(game).getCount(CounterType.SPITE),game);
+    }
+  }
+  return false;
+}

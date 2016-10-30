@@ -1,0 +1,31 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  int count=0;
+  if (controller != null) {
+    Mana mana=new Mana();
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(controller.getId())) {
+      if (mana.getBlack() == 0 && permanent.getColor(game).isBlack()) {
+        mana.increaseBlack();
+        count++;
+      }
+      if (mana.getBlue() == 0 && permanent.getColor(game).isBlue()) {
+        mana.increaseBlue();
+        count++;
+      }
+      if (mana.getRed() == 0 && permanent.getColor(game).isRed()) {
+        mana.increaseRed();
+        count++;
+      }
+      if (mana.getGreen() == 0 && permanent.getColor(game).isGreen()) {
+        mana.increaseGreen();
+        count++;
+      }
+      if (mana.getWhite() == 0 && permanent.getColor(game).isWhite()) {
+        mana.increaseWhite();
+        count++;
+      }
+    }
+    return count;
+  }
+  return 0;
+}
