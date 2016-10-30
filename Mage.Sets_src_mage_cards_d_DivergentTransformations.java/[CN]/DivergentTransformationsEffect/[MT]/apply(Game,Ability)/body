@@ -1,0 +1,41 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    List<UUID> controllerList=new ArrayList<>();
+    Cards toExile=new CardsImpl();
+    for (    UUID targetId : getTargetPointer().getTargets(game,source)) {
+      Permanent permanent=game.getPermanent(targetId);
+      if (permanent != null) {
+        toExile.add(permanent);
+        controllerList.add(permanent.getControllerId());
+      }
+    }
+    controller.moveCards(toExile,Zone.EXILED,source,game);
+    for (    UUID playerId : controllerList) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        if (player.getLibrary().size() > 0) {
+          Cards cards=new CardsImpl();
+          Card card=player.getLibrary().removeFromTop(game);
+          cards.add(card);
+          while (!card.getCardType().contains(CardType.CREATURE) && player.getLibrary().size() > 0) {
+            card=player.getLibrary().removeFromTop(game);
+            cards.add(card);
+          }
+          if (card.getCardType().contains(CardType.CREATURE)) {
+            card.putOntoBattlefield(game,Zone.LIBRARY,source.getSourceId(),player.getId());
+          }
+          if (cards.size() > 0) {
+            player.revealCards(sourceObject.getIdName(),cards,game);
+            Set<Card> cardsToShuffle=cards.getCards(game);
+            cardsToShuffle.remove(card);
+            player.getLibrary().addAll(cardsToShuffle,game);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
