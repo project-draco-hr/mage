@@ -1,0 +1,11 @@
+{
+  PreventionEffectData preventionEffectData=super.preventDamageAction(event,source,game);
+  int damage=preventionEffectData.getPreventedDamage();
+  if (damage > 0) {
+    Permanent attackingCreature=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (attackingCreature != null) {
+      attackingCreature.damage(damage,source.getSourceId(),game,false,true);
+    }
+  }
+  return preventionEffectData;
+}
