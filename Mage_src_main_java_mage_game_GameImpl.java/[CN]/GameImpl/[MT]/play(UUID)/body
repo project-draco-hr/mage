@@ -2,6 +2,7 @@
   if (!isPaused() && !gameOver(null)) {
     playerList=state.getPlayerList(nextPlayerId);
     Player playerByOrder=getPlayer(playerList.get());
+    state.setPlayerByOrderId(playerByOrder.getId());
     while (!isPaused() && !gameOver(null)) {
       playExtraTurns();
       GameEvent event=new GameEvent(GameEvent.EventType.PLAY_TURN,null,null,playerByOrder.getId());
@@ -12,6 +13,7 @@
       }
       playExtraTurns();
       playerByOrder=playerList.getNext(this);
+      state.setPlayerByOrderId(playerByOrder.getId());
     }
   }
   if (gameOver(null) && !isSimulation()) {
