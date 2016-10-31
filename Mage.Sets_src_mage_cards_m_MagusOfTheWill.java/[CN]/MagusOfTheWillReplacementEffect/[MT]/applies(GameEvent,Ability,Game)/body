@@ -1,0 +1,12 @@
+{
+  if (((ZoneChangeEvent)event).getToZone() == Zone.GRAVEYARD) {
+    Card card=game.getCard(event.getTargetId());
+    if (card != null && card.getOwnerId().equals(source.getControllerId())) {
+      Permanent permanent=((ZoneChangeEvent)event).getTarget();
+      if (permanent == null || !(permanent instanceof PermanentToken)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
