@@ -1,0 +1,30 @@
+{
+  UUID aautomaton=source.getSourceId();
+  Player player=game.getPlayer(source.getControllerId());
+  FilterPermanent filterEquipment=new FilterPermanent("Equipment");
+  filterEquipment.add(new CardTypePredicate(CardType.ARTIFACT));
+  filterEquipment.add(new SubtypePredicate("Equipment"));
+  if (player == null) {
+    return false;
+  }
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent == null) {
+    return false;
+  }
+  int countBattlefield=game.getBattlefield().getAllActivePermanents(filterEquipment,game).size() - permanent.getAttachments().size();
+  while (player.canRespond() && countBattlefield > 0 && player.chooseUse(Outcome.Benefit,"Attach a target Equipment?",source,game)) {
+    Target targetEquipment=new TargetPermanent(filterEquipment);
+    if (player.choose(Outcome.Benefit,targetEquipment,source.getSourceId(),game)) {
+      Permanent aura=game.getPermanent(targetEquipment.getFirstTarget());
+      if (aura != null) {
+        Permanent attachedTo=game.getPermanent(aura.getAttachedTo());
+        if (attachedTo != null) {
+          attachedTo.removeAttachment(aura.getId(),game);
+        }
+        permanent.addAttachment(aura.getId(),game);
+      }
+    }
+    countBattlefield=game.getBattlefield().getAllActivePermanents(filterEquipment,game).size() - permanent.getAttachments().size();
+  }
+  return true;
+}
