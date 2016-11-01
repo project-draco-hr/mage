@@ -1,0 +1,39 @@
+{
+  if (currentConnection == null || !reconnect) {
+    String server=MagePreferences.getServerAddress();
+    int port=MagePreferences.getServerPort();
+    String userName=MagePreferences.getUserName(server);
+    String password=MagePreferences.getPassword(server);
+    String proxyServer=PREFS.get("proxyAddress","");
+    int proxyPort=Integer.parseInt(PREFS.get("proxyPort","0"));
+    ProxyType proxyType=ProxyType.valueByText(PREFS.get("proxyType","None"));
+    String proxyUsername=PREFS.get("proxyUsername","");
+    String proxyPassword=PREFS.get("proxyPassword","");
+    setCursor(new Cursor(Cursor.WAIT_CURSOR));
+    currentConnection=new Connection();
+    currentConnection.setUsername(userName);
+    currentConnection.setPassword(password);
+    currentConnection.setHost(server);
+    currentConnection.setPort(port);
+    currentConnection.setProxyType(proxyType);
+    currentConnection.setProxyHost(proxyServer);
+    currentConnection.setProxyPort(proxyPort);
+    currentConnection.setProxyUsername(proxyUsername);
+    currentConnection.setProxyPassword(proxyPassword);
+    setUserPrefsToConnection(currentConnection);
+  }
+  try {
+    LOGGER.debug("connecting (auto): " + currentConnection.getProxyType().toString() + " "+ currentConnection.getProxyHost()+ " "+ currentConnection.getProxyPort()+ " "+ currentConnection.getProxyUsername());
+    if (MageFrame.connect(currentConnection)) {
+      showGames(false);
+      return true;
+    }
+ else {
+      showMessage("Unable to connect to server");
+    }
+  }
+  finally {
+    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+  }
+  return false;
+}
