@@ -1,6 +1,7 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null) {
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
     while (controller.chooseUse(Outcome.Benefit,choiceText,source,game)) {
       Cards cards=controller.getSideboard();
       if (cards.isEmpty()) {
@@ -23,7 +24,7 @@
           card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
           Cards revealCard=new CardsImpl();
           revealCard.add(card);
-          controller.revealCards("Glittering Wish",revealCard,game);
+          controller.revealCards(sourceObject.getIdName(),revealCard,game);
           break;
         }
       }
