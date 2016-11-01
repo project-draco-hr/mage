@@ -51,5 +51,21 @@
  else {
     invalid.put("Commander","Sideboard must contain only the commander");
   }
+  for (  Card card : deck.getCards()) {
+    if (!isSetAllowed(card.getExpansionSetCode())) {
+      if (!legalSets(card)) {
+        invalid.put(card.getName(),"Not allowed Set: " + card.getExpansionSetCode());
+        valid=false;
+      }
+    }
+  }
+  for (  Card card : deck.getSideboard()) {
+    if (!isSetAllowed(card.getExpansionSetCode())) {
+      if (!legalSets(card)) {
+        invalid.put(card.getName(),"Not allowed Set: " + card.getExpansionSetCode());
+        valid=false;
+      }
+    }
+  }
   return valid;
 }
