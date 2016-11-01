@@ -9,8 +9,11 @@
  else {
       TargetCard target=new TargetCard(Zone.ALL,new FilterCard("card to put on the bottom of your library (last one chosen will be bottommost)"));
       target.setRequired(true);
-      while (isInGame() && cards.size() > 1) {
+      while (cards.size() > 1) {
         this.choose(Outcome.Neutral,cards,target,game);
+        if (!canRespond()) {
+          return false;
+        }
         UUID targetObjectId=target.getFirstTarget();
         cards.remove(targetObjectId);
         moveObjectToLibrary(targetObjectId,source == null ? null : source.getSourceId(),game,false,false);

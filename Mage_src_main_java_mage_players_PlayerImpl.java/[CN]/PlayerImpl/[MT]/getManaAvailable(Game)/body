@@ -3,11 +3,15 @@
   List<Abilities<ManaAbility>> sourceWithoutManaCosts=new ArrayList<>();
   List<Abilities<ManaAbility>> sourceWithCosts=new ArrayList<>();
   for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
+    Boolean canUse=null;
     boolean canAdd=false;
     boolean withCost=false;
     Abilities<ManaAbility> manaAbilities=permanent.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game);
     for (    ManaAbility ability : manaAbilities) {
-      if (ability.canActivate(playerId,game)) {
+      if (canUse == null) {
+        canUse=permanent.canUseActivatedAbilities(game);
+      }
+      if (canUse && ability.canActivate(playerId,game)) {
         canAdd=true;
         if (!ability.getManaCosts().isEmpty()) {
           withCost=true;

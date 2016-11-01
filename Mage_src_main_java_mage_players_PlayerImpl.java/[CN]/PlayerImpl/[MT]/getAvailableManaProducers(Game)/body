@@ -1,13 +1,17 @@
 {
   List<MageObject> result=new ArrayList<>();
   for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
+    Boolean canUse=null;
     boolean canAdd=false;
     for (    ManaAbility ability : permanent.getAbilities().getManaAbilities(Zone.BATTLEFIELD)) {
       if (!ability.getManaCosts().isEmpty()) {
         canAdd=false;
         break;
       }
-      if (ability.canActivate(playerId,game)) {
+      if (canUse == null) {
+        canUse=permanent.canUseActivatedAbilities(game);
+      }
+      if (canUse && ability.canActivate(playerId,game)) {
         canAdd=true;
       }
     }
