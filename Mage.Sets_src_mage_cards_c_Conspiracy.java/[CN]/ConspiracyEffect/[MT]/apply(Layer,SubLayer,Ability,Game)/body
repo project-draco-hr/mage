@@ -24,10 +24,12 @@
         setCreatureSubtype(card,choice,game);
       }
     }
-    if (controller.getCommanderId() != null && game.getState().getZone(controller.getCommanderId()).equals(Zone.COMMAND)) {
-      Card card=game.getCard(controller.getCommanderId());
-      if (card.getCardType().contains(CardType.CREATURE)) {
-        setCreatureSubtype(card,choice,game);
+    for (    UUID commanderId : controller.getCommandersIds()) {
+      if (game.getState().getZone(commanderId).equals(Zone.COMMAND)) {
+        Card card=game.getCard(commanderId);
+        if (card.getCardType().contains(CardType.CREATURE)) {
+          setCreatureSubtype(card,choice,game);
+        }
       }
     }
     for (Iterator<StackObject> iterator=game.getStack().iterator(); iterator.hasNext(); ) {
