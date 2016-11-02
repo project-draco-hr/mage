@@ -1,8 +1,12 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    Permanent commander=game.getPermanent(controller.getCommanderId());
-    return commander != null && commander.getControllerId().equals(source.getControllerId());
+    for (    UUID commanderId : controller.getCommandersIds()) {
+      Permanent commander=game.getPermanent(commanderId);
+      if (commander != null && commander.getControllerId().equals(source.getControllerId())) {
+        return true;
+      }
+    }
   }
   return false;
 }

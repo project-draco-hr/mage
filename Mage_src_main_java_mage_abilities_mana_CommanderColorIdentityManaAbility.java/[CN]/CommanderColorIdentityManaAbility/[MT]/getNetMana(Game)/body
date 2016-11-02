@@ -2,29 +2,26 @@
   if (netMana.isEmpty() && game != null) {
     Player controller=game.getPlayer(getControllerId());
     if (controller != null) {
-      if (commanderMana == null) {
-        Card commander=game.getCard(controller.getCommanderId());
+      for (      UUID commanderId : controller.getCommandersIds()) {
+        Card commander=game.getCard(commanderId);
         if (commander != null) {
-          commanderMana=CardUtil.getColorIdentity(commander);
+          FilterMana commanderMana=CardUtil.getColorIdentity(commander);
+          if (commanderMana.isBlack()) {
+            netMana.add(new Mana(ColoredManaSymbol.B));
+          }
+          if (commanderMana.isBlue()) {
+            netMana.add(new Mana(ColoredManaSymbol.U));
+          }
+          if (commanderMana.isGreen()) {
+            netMana.add(new Mana(ColoredManaSymbol.G));
+          }
+          if (commanderMana.isRed()) {
+            netMana.add(new Mana(ColoredManaSymbol.R));
+          }
+          if (commanderMana.isWhite()) {
+            netMana.add(new Mana(ColoredManaSymbol.W));
+          }
         }
- else {
-          commanderMana=new FilterMana();
-        }
-      }
-      if (commanderMana.isBlack()) {
-        netMana.add(new Mana(ColoredManaSymbol.B));
-      }
-      if (commanderMana.isBlue()) {
-        netMana.add(new Mana(ColoredManaSymbol.U));
-      }
-      if (commanderMana.isGreen()) {
-        netMana.add(new Mana(ColoredManaSymbol.G));
-      }
-      if (commanderMana.isRed()) {
-        netMana.add(new Mana(ColoredManaSymbol.R));
-      }
-      if (commanderMana.isWhite()) {
-        netMana.add(new Mana(ColoredManaSymbol.W));
       }
     }
   }

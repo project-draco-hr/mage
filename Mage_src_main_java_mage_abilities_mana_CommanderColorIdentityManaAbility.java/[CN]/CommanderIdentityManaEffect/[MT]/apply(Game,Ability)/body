@@ -1,31 +1,28 @@
 {
   Player controller=game.getPlayer(source.getControllerId());
   if (controller != null) {
-    if (commanderMana == null) {
-      Card commander=game.getCard(controller.getCommanderId());
-      if (commander != null) {
-        commanderMana=CardUtil.getColorIdentity(commander);
-      }
- else {
-        commanderMana=new FilterMana();
-      }
-    }
     Choice choice=new ChoiceImpl();
     choice.setMessage("Pick a mana color");
-    if (commanderMana.isBlack()) {
-      choice.getChoices().add("Black");
-    }
-    if (commanderMana.isRed()) {
-      choice.getChoices().add("Red");
-    }
-    if (commanderMana.isBlue()) {
-      choice.getChoices().add("Blue");
-    }
-    if (commanderMana.isGreen()) {
-      choice.getChoices().add("Green");
-    }
-    if (commanderMana.isWhite()) {
-      choice.getChoices().add("White");
+    for (    UUID commanderId : controller.getCommandersIds()) {
+      Card commander=game.getCard(commanderId);
+      if (commander != null) {
+        FilterMana commanderMana=CardUtil.getColorIdentity(commander);
+        if (commanderMana.isWhite()) {
+          choice.getChoices().add("White");
+        }
+        if (commanderMana.isBlue()) {
+          choice.getChoices().add("Blue");
+        }
+        if (commanderMana.isBlack()) {
+          choice.getChoices().add("Black");
+        }
+        if (commanderMana.isRed()) {
+          choice.getChoices().add("Red");
+        }
+        if (commanderMana.isGreen()) {
+          choice.getChoices().add("Green");
+        }
+      }
     }
     if (choice.getChoices().size() > 0) {
       if (choice.getChoices().size() == 1) {
