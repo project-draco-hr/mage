@@ -10,6 +10,9 @@
           return false;
         }
         paid|=controller.moveCardToExileWithInfo(permanent,exileId,sourceObject.getIdName() + " championed permanents",sourceId,game,Zone.BATTLEFIELD,true);
+        if (paid) {
+          game.fireEvent(GameEvent.getEvent(GameEvent.EventType.CREATURE_CHAMPIONED,permanent.getId(),sourceId,controllerId));
+        }
       }
     }
   }
