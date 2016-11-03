@@ -5,7 +5,7 @@
   }
   if (permanent != null && game != null) {
     Mana mana=new Mana();
-    for (    ManaAbility ability : permanent.getAbilities().getManaAbilities(Zone.BATTLEFIELD)) {
+    for (    ActivatedManaAbilityImpl ability : permanent.getAbilities().getActivatedManaAbilities(Zone.BATTLEFIELD)) {
       for (      Mana netMana : ability.getNetMana(game)) {
         mana.add(netMana);
       }
@@ -14,7 +14,7 @@
     for (    Permanent opponentPermanent : game.getBattlefield().getActivePermanents(filter,permanent.getControllerId(),game)) {
       if (opponentPermanent.getControllerId() == permanent.getControllerId()) {
         Mana opponentLandMana=new Mana();
-        for (        ManaAbility ability : opponentPermanent.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game)) {
+        for (        ActivatedManaAbilityImpl ability : opponentPermanent.getAbilities().getAvailableActivatedManaAbilities(Zone.BATTLEFIELD,game)) {
           for (          Mana netMana : ability.getNetMana(game)) {
             opponentLandMana.add(netMana);
           }

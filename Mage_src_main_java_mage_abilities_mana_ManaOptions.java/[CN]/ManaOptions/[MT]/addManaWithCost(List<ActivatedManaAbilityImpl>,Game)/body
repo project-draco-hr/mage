@@ -1,0 +1,81 @@
+{
+  if (isEmpty()) {
+    this.add(new Mana());
+  }
+  if (!abilities.isEmpty()) {
+    if (abilities.size() == 1) {
+      ActivatedManaAbilityImpl ability=abilities.get(0);
+      List<Mana> netManas=abilities.get(0).getNetMana(game);
+      if (ability.getManaCosts().isEmpty()) {
+        if (netManas.size() == 1) {
+          addMana(netManas.get(0));
+        }
+ else {
+          List<Mana> copy=copy();
+          this.clear();
+          for (          Mana netMana : netManas) {
+            for (            Mana mana : copy) {
+              Mana newMana=new Mana();
+              newMana.add(mana);
+              newMana.add(netMana);
+              this.add(newMana);
+            }
+          }
+        }
+      }
+ else       if (netManas.size() == 1) {
+        subtractCostAddMana(ability.getManaCosts().getMana(),netManas.get(0),ability.getCosts().isEmpty());
+      }
+ else {
+        List<Mana> copy=copy();
+        this.clear();
+        for (        Mana netMana : netManas) {
+          for (          Mana mana : copy) {
+            Mana newMana=new Mana();
+            newMana.add(mana);
+            newMana.add(netMana);
+            subtractCostAddMana(ability.getManaCosts().getMana(),netMana,ability.getCosts().isEmpty());
+          }
+        }
+      }
+    }
+ else     if (abilities.size() > 1) {
+      List<Mana> copy=copy();
+      this.clear();
+      for (      ActivatedManaAbilityImpl ability : abilities) {
+        List<Mana> netManas=ability.getNetMana(game);
+        if (ability.getManaCosts().isEmpty()) {
+          for (          Mana netMana : netManas) {
+            for (            Mana mana : copy) {
+              Mana newMana=new Mana();
+              newMana.add(mana);
+              newMana.add(netMana);
+              this.add(newMana);
+            }
+          }
+        }
+ else {
+          for (          Mana netMana : netManas) {
+            for (            Mana previousMana : copy) {
+              CombineWithExisting:               for (              Mana manaOption : ability.getManaCosts().getManaOptions()) {
+                Mana newMana=new Mana(previousMana);
+                if (previousMana.includesMana(manaOption)) {
+                  newMana.subtractCost(manaOption);
+                  newMana.add(netMana);
+                  for (                  Mana existingMana : this) {
+                    Mana moreValuable=Mana.getMoreValuableMana(newMana,existingMana);
+                    if (moreValuable != null) {
+                      existingMana.setToMana(moreValuable);
+                      continue CombineWithExisting;
+                    }
+                  }
+                  this.add(newMana);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

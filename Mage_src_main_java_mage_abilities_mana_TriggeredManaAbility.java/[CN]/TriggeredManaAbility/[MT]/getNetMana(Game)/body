@@ -1,0 +1,16 @@
+{
+  if (!getEffects().isEmpty()) {
+    Effect effect=getEffects().get(0);
+    if (effect != null && game != null) {
+      ArrayList<Mana> newNetMana=new ArrayList<>();
+      if (effect instanceof DynamicManaEffect) {
+        newNetMana.add(((DynamicManaEffect)effect).computeMana(true,game,this));
+      }
+ else       if (effect instanceof Effect) {
+        newNetMana.add(((ManaEffect)effect).getMana(game,this));
+      }
+      return newNetMana;
+    }
+  }
+  return netMana;
+}

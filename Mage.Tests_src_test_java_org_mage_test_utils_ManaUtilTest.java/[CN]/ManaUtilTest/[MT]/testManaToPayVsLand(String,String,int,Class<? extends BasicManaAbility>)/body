@@ -2,10 +2,10 @@
   ManaCost unpaid=new ManaCostsImpl(manaToPay);
   Card card=CardRepository.instance.findCard(landName).getCard();
   Assert.assertNotNull(card);
-  HashMap<UUID,ManaAbility> useableAbilities=getManaAbilities(card);
+  HashMap<UUID,ActivatedManaAbilityImpl> useableAbilities=getManaAbilities(card);
   Assert.assertEquals(expected1,useableAbilities.size());
-  useableAbilities=ManaUtil.tryToAutoPay(unpaid,(LinkedHashMap<UUID,ManaAbility>)useableAbilities);
+  useableAbilities=ManaUtil.tryToAutoPay(unpaid,(LinkedHashMap<UUID,ActivatedManaAbilityImpl>)useableAbilities);
   Assert.assertEquals(1,useableAbilities.size());
-  ManaAbility ability=useableAbilities.values().iterator().next();
+  ActivatedManaAbilityImpl ability=useableAbilities.values().iterator().next();
   Assert.assertTrue("Wrong mana ability has been chosen",expectedChosen.isInstance(ability));
 }

@@ -1,13 +1,13 @@
 {
   ManaOptions available=new ManaOptions();
-  List<Abilities<ManaAbility>> sourceWithoutManaCosts=new ArrayList<>();
-  List<Abilities<ManaAbility>> sourceWithCosts=new ArrayList<>();
+  List<Abilities<ActivatedManaAbilityImpl>> sourceWithoutManaCosts=new ArrayList<>();
+  List<Abilities<ActivatedManaAbilityImpl>> sourceWithCosts=new ArrayList<>();
   for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
     Boolean canUse=null;
     boolean canAdd=false;
     boolean withCost=false;
-    Abilities<ManaAbility> manaAbilities=permanent.getAbilities().getAvailableManaAbilities(Zone.BATTLEFIELD,game);
-    for (    ManaAbility ability : manaAbilities) {
+    Abilities<ActivatedManaAbilityImpl> manaAbilities=permanent.getAbilities().getAvailableActivatedManaAbilities(Zone.BATTLEFIELD,game);
+    for (    ActivatedManaAbilityImpl ability : manaAbilities) {
       if (canUse == null) {
         canUse=permanent.canUseActivatedAbilities(game);
       }
@@ -28,10 +28,10 @@
       }
     }
   }
-  for (  Abilities<ManaAbility> manaAbilities : sourceWithoutManaCosts) {
+  for (  Abilities<ActivatedManaAbilityImpl> manaAbilities : sourceWithoutManaCosts) {
     available.addMana(manaAbilities,game);
   }
-  for (  Abilities<ManaAbility> manaAbilities : sourceWithCosts) {
+  for (  Abilities<ActivatedManaAbilityImpl> manaAbilities : sourceWithCosts) {
     available.addManaWithCost(manaAbilities,game);
   }
   return available;
