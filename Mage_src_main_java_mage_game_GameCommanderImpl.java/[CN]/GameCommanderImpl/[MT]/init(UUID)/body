@@ -3,10 +3,10 @@
   for (  UUID playerId : state.getPlayerList(startingPlayerId)) {
     Player player=getPlayer(playerId);
     if (player != null) {
-      if (player.getSideboard().size() > 0) {
-        Card commander=getCard((UUID)player.getSideboard().toArray()[0]);
+      while (player.getSideboard().size() > 0) {
+        Card commander=this.getCard(player.getSideboard().iterator().next());
         if (commander != null) {
-          player.setCommanderId(commander.getId());
+          player.addCommanderId(commander.getId());
           commander.moveToZone(Zone.COMMAND,null,this,true);
           commander.getAbilities().setControllerId(player.getId());
           ability.addEffect(new CommanderReplacementEffect(commander.getId(),alsoHand,alsoLibrary));

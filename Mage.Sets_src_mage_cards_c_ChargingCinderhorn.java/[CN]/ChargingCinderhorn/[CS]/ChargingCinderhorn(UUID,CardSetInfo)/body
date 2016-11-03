@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{R}");
+  this.subtype.add("Elemental");
+  this.subtype.add("Ox");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(2);
+  this.addAbility(HasteAbility.getInstance());
+  ChargingCinderhornDamageTargetEffect effect=new ChargingCinderhornDamageTargetEffect();
+  effect.setText("if no creatures attacked this turn, put a fury counter on {this}. Then {this} deals damage equal to the number of fury counters on it to that player");
+  BeginningOfEndStepTriggeredAbility ability=new BeginningOfEndStepTriggeredAbility(Zone.BATTLEFIELD,effect,TargetController.ANY,new ChargingCinderhornCondition(),false);
+  this.addAbility(ability,new AttackedThisTurnWatcher());
+}
