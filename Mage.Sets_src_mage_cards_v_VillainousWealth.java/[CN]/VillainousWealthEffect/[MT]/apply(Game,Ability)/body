@@ -12,6 +12,9 @@
       controller.moveCards(cardsToExile,Zone.EXILED,source,game);
       if (controller.chooseUse(Outcome.PlayForFree,"Cast cards exiled with " + mageObject.getLogName() + "  without paying its mana cost?",source,game)) {
         OuterLoop:         while (cardsToExile.count(filter,game) > 0) {
+          if (!controller.canRespond()) {
+            return false;
+          }
           TargetCardInExile target=new TargetCardInExile(0,1,filter,exileId,false);
           target.setNotTarget(true);
           while (cardsToExile.count(filter,game) > 0 && controller.choose(Outcome.PlayForFree,cardsToExile,target,game)) {
