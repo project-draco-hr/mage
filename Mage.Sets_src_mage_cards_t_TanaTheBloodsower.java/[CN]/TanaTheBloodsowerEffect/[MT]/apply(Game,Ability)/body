@@ -1,10 +1,11 @@
 {
-  Player controller=game.getPlayer(source.getControllerId());
-  if (controller != null) {
-    Integer damage=(Integer)getValue("damage");
-    if (damage > 0) {
-      return new CreateTokenEffect(new SaprolingToken(),damage).apply(game,source);
+  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  if (player != null) {
+    int amount=(Integer)getValue("damage");
+    if (amount > 0) {
+      return new CreateTokenEffect(new SaprolingToken(),amount).apply(game,source);
     }
+    return true;
   }
   return false;
 }
