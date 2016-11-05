@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    TymnaTheWeaverWatcher watcher=(TymnaTheWeaverWatcher)game.getState().getWatchers().get(TymnaTheWeaverWatcher.class.getName());
+    if (watcher != null) {
+      int cardsToDraw=watcher.opponentsThatGotCombatDamage(source.getControllerId(),game);
+      Cost cost=new PayLifeCost(cardsToDraw);
+      if (cost.canPay(source,source.getSourceId(),source.getControllerId(),game) && cost.pay(source,game,source.getSourceId(),source.getControllerId(),false)) {
+        controller.drawCards(cardsToDraw,game);
+      }
+      return true;
+    }
+  }
+  return false;
+}

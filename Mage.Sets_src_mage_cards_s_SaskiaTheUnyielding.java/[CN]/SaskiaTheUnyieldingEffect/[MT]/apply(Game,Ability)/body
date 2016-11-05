@@ -1,0 +1,12 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    UUID playerId=(UUID)game.getState().getValue(source.getSourceId() + "_player");
+    Player player=game.getPlayer(playerId);
+    if (player != null && player.canRespond()) {
+      player.damage((Integer)this.getValue("damage"),source.getSourceId(),game,false,true);
+    }
+    return true;
+  }
+  return false;
+}
