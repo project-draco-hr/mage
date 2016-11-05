@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent equipment=game.getPermanent(source.getFirstTarget());
+  if (controller != null && equipment != null) {
+    if (super.apply(game,source)) {
+      Permanent germ=game.getPermanent(this.getLastAddedTokenId());
+      if (germ != null) {
+        germ.addAttachment(equipment.getId(),game);
+        return true;
+      }
+    }
+  }
+  return false;
+}
