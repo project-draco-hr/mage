@@ -1,23 +1,26 @@
 {
-  Player playerControls=game.getPlayer(source.getControllerId());
-  if (playerControls != null) {
+  Player Controller=game.getPlayer(source.getControllerId());
+  MageObject mageObject=game.getPermanentEntering(source.getSourceId());
+  if (mageObject == null) {
+    mageObject=game.getPermanent(source.getSourceId());
+  }
+  if (Controller != null) {
     Choice numberChoice=new ChoiceImpl();
     numberChoice.setMessage("Choose a number beween 0 and 7");
-    HashSet<String> numbers=new HashSet<String>();
-    for (int i=1; i <= 7; i++) {
+    HashSet<String> numbers=new HashSet<>();
+    for (int i=0; i <= 7; i++) {
       numbers.add(Integer.toString(i));
     }
     numberChoice.setChoices(numbers);
-    while (!playerControls.choose(Outcome.Neutral,numberChoice,game)) {
-      if (!playerControls.canRespond()) {
+    while (!Controller.choose(Outcome.Neutral,numberChoice,game)) {
+      if (!Controller.canRespond()) {
         return false;
       }
     }
     game.informPlayers("Shapeshifter, chosen number: [" + numberChoice.getChoice() + "]");
-    Shapeshifter shapeShifter=(Shapeshifter)game.getCard(source.getSourceId());
-    if (shapeShifter != null) {
-      shapeShifter.lastChosenNumber=Integer.parseInt(numberChoice.getChoice());
-      return true;
+    game.getState().setValue(source.getSourceId().toString() + "_Shapeshifter",numberChoice.getChoice());
+    if (mageObject instanceof Permanent) {
+      ((Permanent)mageObject).addInfo("lastChosenNumber",CardUtil.addToolTipMarkTags("Last chosen number: " + numberChoice.getChoice()),game);
     }
   }
   return false;

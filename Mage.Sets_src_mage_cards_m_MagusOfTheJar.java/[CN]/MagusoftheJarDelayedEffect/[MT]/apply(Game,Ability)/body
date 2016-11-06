@@ -1,0 +1,17 @@
+{
+  Cards cards=(Cards)this.getValue("MagusoftheJarCards");
+  if (cards != null) {
+    for (    UUID playerId : game.getState().getPlayersInRange(source.getControllerId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        player.discard(player.getHand().size(),false,source,game);
+      }
+    }
+    for (Iterator<Card> it=cards.getCards(game).iterator(); it.hasNext(); ) {
+      Card card=it.next();
+      card.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+    }
+    return true;
+  }
+  return false;
+}
