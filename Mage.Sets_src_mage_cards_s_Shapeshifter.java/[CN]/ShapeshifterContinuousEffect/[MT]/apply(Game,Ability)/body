@@ -1,0 +1,11 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    String lastChosen=(String)game.getState().getValue(source.getSourceId().toString() + "_Shapeshifter");
+    int lastChosenNumber=Integer.parseInt(lastChosen);
+    permanent.getPower().modifyBaseValue(lastChosenNumber);
+    permanent.getToughness().modifyBaseValue(7 - lastChosenNumber);
+    return true;
+  }
+  return false;
+}
