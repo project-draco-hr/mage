@@ -1,0 +1,13 @@
+{
+  Player player1=game.getPlayer(getTargetPointer().getFirst(game,source));
+  Player player2=null;
+  if (getTargetPointer().getTargets(game,source).size() > 1) {
+    player2=game.getPlayer(getTargetPointer().getTargets(game,source).get(1));
+  }
+  if (player1 != null && player2 != null) {
+    game.getState().getTurnMods().add(new TurnMod(player1.getId(),player2.getId()));
+    game.getState().getTurnMods().add(new TurnMod(player2.getId(),player1.getId()));
+    return true;
+  }
+  return false;
+}
