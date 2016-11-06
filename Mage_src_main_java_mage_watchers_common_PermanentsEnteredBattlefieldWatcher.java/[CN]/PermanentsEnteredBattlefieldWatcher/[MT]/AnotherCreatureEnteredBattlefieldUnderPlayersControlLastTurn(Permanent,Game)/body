@@ -1,7 +1,9 @@
 {
-  for (  Permanent permanent : enteringBattlefield.get(sourcePermanent.getControllerId())) {
-    if (!permanent.getId().equals(sourcePermanent.getId()) || permanent.getZoneChangeCounter(game) != sourcePermanent.getZoneChangeCounter(game)) {
-      return true;
+  if (enteringBattlefieldLastTurn.containsKey(sourcePermanent.getControllerId())) {
+    for (    Permanent permanent : enteringBattlefieldLastTurn.get(sourcePermanent.getControllerId())) {
+      if (!permanent.getId().equals(sourcePermanent.getId()) || permanent.getZoneChangeCounter(game) != sourcePermanent.getZoneChangeCounter(game)) {
+        return true;
+      }
     }
   }
   return false;
