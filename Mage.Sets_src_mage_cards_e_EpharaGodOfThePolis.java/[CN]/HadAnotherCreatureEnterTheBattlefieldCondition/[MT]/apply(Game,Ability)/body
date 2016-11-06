@@ -1,4 +1,5 @@
 {
-  Watcher watcher=game.getState().getWatchers().get("CreatureEnteredBattlefieldLastTurnWatcher",source.getSourceId());
-  return watcher != null && watcher.conditionMet();
+  Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  PermanentsEnteredBattlefieldWatcher watcher=(PermanentsEnteredBattlefieldWatcher)game.getState().getWatchers().get(PermanentsEnteredBattlefieldWatcher.class.getName());
+  return sourcePermanent != null && watcher != null && watcher.AnotherCreatureEnteredBattlefieldUnderPlayersControlLastTurn(sourcePermanent,game);
 }
