@@ -1,0 +1,22 @@
+{
+  PlayerLostLifeWatcher watcher=(PlayerLostLifeWatcher)game.getState().getWatchers().get("PlayerLostLifeWatcher");
+  UUID player=game.getActivePlayerId();
+  PlayerList playerList=game.getState().getPlayerList().copy();
+  Player currentPlayer=null;
+  UUID sourcePlayerId=source.getControllerId();
+  Player firstPlayer=null;
+  if (playerList != null) {
+    firstPlayer=playerList.getCurrent(game);
+    currentPlayer=playerList.getNext(game);
+  }
+  while (watcher != null && currentPlayer != null) {
+    if (currentPlayer != null && currentPlayer.getId() != sourcePlayerId && watcher.getLiveLost(currentPlayer.getId()) > 0) {
+      return true;
+    }
+    if (currentPlayer == firstPlayer) {
+      return false;
+    }
+    currentPlayer=playerList.getNext(game);
+  }
+  return false;
+}
