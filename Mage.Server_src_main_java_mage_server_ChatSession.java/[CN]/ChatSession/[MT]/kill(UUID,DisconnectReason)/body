@@ -4,7 +4,7 @@
       logger.fatal("User kill without disconnect reason  userId: " + userId);
       reason=DisconnectReason.Undefined;
     }
-    if (reason != null && userId != null && clients.containsKey(userId)) {
+    if (userId != null && clients.containsKey(userId)) {
       String userName=clients.get(userId);
       if (!reason.equals(DisconnectReason.LostConnection)) {
         clients.remove(userId);
@@ -34,7 +34,7 @@ default :
 message=" left (" + reason.toString() + ")";
 }
 if (message != null) {
-broadcast(null,userName + message,MessageColor.BLUE,true,MessageType.STATUS);
+broadcast(null,userName + message,MessageColor.BLUE,true,MessageType.STATUS,null);
 }
 }
 }

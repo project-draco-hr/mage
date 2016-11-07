@@ -1,0 +1,17 @@
+{
+  try {
+    if (JOptionPane.showConfirmDialog(null,"Are you sure you mean to lock user: " + userName + " for "+ durationMinute+ " minutes?","WARNING",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+      if (isConnected()) {
+        server.lockUser(sessionId,userName,durationMinute);
+        return true;
+      }
+    }
+  }
+ catch (  MageException ex) {
+    handleMageException(ex);
+  }
+catch (  Throwable t) {
+    handleThrowable(t);
+  }
+  return false;
+}

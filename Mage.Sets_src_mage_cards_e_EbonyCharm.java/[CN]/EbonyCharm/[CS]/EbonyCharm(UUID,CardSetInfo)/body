@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{B}");
+  this.getSpellAbility().addEffect(new EbonyCharmDrainEffect());
+  this.getSpellAbility().addTarget(new TargetOpponent());
+  Mode mode=new Mode();
+  mode.getEffects().add(new EbonyCharmExileEffect());
+  mode.getTargets().add((new TargetCardInASingleGraveyard(0,3,new FilterCard("up to three target cards from a single graveyard"))));
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  mode.getTargets().add(new TargetCreaturePermanent());
+  mode.getEffects().add(new GainAbilityTargetEffect(FearAbility.getInstance(),Duration.EndOfTurn));
+  this.getSpellAbility().addMode(mode);
+}

@@ -1,0 +1,22 @@
+{
+  int countersRemoved=0;
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (sourcePermanent != null) {
+    for (    Permanent creature : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
+      if (creature != sourcePermanent) {
+        int numberCounters=creature.getCounters(game).getCount(CounterType.P1P1);
+        if (numberCounters > 0) {
+          creature.removeCounters(CounterType.P1P1.getName(),numberCounters,game);
+          countersRemoved+=numberCounters;
+        }
+      }
+    }
+    if (countersRemoved > 0) {
+      if (sourcePermanent != null) {
+        sourcePermanent.addCounters(CounterType.P1P1.createInstance(countersRemoved),game);
+        return true;
+      }
+    }
+  }
+  return false;
+}

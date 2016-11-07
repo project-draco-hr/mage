@@ -1,0 +1,26 @@
+{
+  DamageEvent damageEvent=(DamageEvent)event;
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  if (sourcePermanent != null) {
+    Permanent targetPermanent=game.getPermanent(event.getTargetId());
+    StringBuilder message=new StringBuilder();
+    message.append(sourcePermanent.getName()).append(": gets ");
+    message.append(damageEvent.getAmount()).append(" damage redirected from ");
+    if (targetPermanent != null) {
+      message.append(targetPermanent.getName());
+    }
+ else {
+      Player targetPlayer=game.getPlayer(event.getTargetId());
+      if (targetPlayer != null) {
+        message.append(targetPlayer.getLogName());
+      }
+ else {
+        message.append("unknown");
+      }
+    }
+    game.informPlayers(message.toString());
+    sourcePermanent.damage(damageEvent.getAmount(),damageEvent.getSourceId(),game,damageEvent.isCombatDamage(),damageEvent.isPreventable(),event.getAppliedEffects());
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,39 @@
+{
+  Permanent permanent=game.getPermanentOrLKIBattlefield(this.getTargetPointer().getFirst(game,source));
+  if (permanent != null) {
+    Effect effect=new PutTokenOntoBattlefieldCopyTargetEffect();
+    effect.setTargetPointer(getTargetPointer());
+    effect.apply(game,source);
+    Set<UUID> playersSaidYes=new HashSet<>();
+    PlayerList playerList=game.getPlayerList().copy();
+    playerList.setCurrent(game.getActivePlayerId());
+    Player player=game.getPlayer(game.getActivePlayerId());
+    do {
+      if (game.getOpponents(source.getControllerId()).contains(player.getId())) {
+        String decision;
+        if (player.chooseUse(outcome,"Create a copy of target creature for you?",source,game)) {
+          playersSaidYes.add(player.getId());
+          decision=" chooses to copy ";
+        }
+ else {
+          decision=" won't copy ";
+        }
+        game.informPlayers((new StringBuilder(player.getLogName()).append(decision).append(permanent.getName()).toString()));
+      }
+      player=playerList.getNext(game);
+    }
+ while (!player.getId().equals(game.getActivePlayerId()));
+    for (    UUID playerId : playersSaidYes) {
+      effect=new PutTokenOntoBattlefieldCopyTargetEffect(playerId);
+      effect.setTargetPointer(getTargetPointer());
+      effect.apply(game,source);
+    }
+    if (playersSaidYes.size() > 0) {
+      effect=new PutTokenOntoBattlefieldCopyTargetEffect();
+      effect.setTargetPointer(getTargetPointer());
+      effect.apply(game,source);
+    }
+    return true;
+  }
+  return false;
+}

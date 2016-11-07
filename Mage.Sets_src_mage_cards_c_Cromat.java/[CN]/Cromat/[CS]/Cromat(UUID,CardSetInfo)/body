@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{W}{U}{B}{R}{G}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Illusion");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("creature blocking or blocked by Cromat");
+  filter.add(Predicates.or(new BlockedByIdPredicate(this.getId()),new BlockingAttackerIdPredicate(this.getId())));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DestroyTargetEffect(),new ManaCostsImpl("{W}{B}"));
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability);
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainAbilitySourceEffect(FlyingAbility.getInstance(),Duration.EndOfTurn),new ManaCostsImpl("{U}{R}")));
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new RegenerateSourceEffect(),new ManaCostsImpl("{B}{G}")));
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostSourceEffect(1,1,Duration.EndOfTurn),new ManaCostsImpl("{R}{W}")));
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new PutOnLibrarySourceEffect(true),new ManaCostsImpl("{G}{U}")));
+}

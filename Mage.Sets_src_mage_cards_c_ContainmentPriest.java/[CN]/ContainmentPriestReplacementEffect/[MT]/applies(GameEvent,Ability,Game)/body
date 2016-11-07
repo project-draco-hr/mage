@@ -1,0 +1,16 @@
+{
+  if (((ZoneChangeEvent)event).getToZone() == Zone.BATTLEFIELD) {
+    Card card=game.getCard(event.getTargetId());
+    Object entersTransformed=game.getState().getValue(TransformAbility.VALUE_KEY_ENTER_TRANSFORMED + event.getTargetId());
+    if (entersTransformed instanceof Boolean && (Boolean)entersTransformed && card.getSecondCardFace() != null) {
+      card=card.getSecondCardFace();
+    }
+    if (card.getCardType().contains(CardType.CREATURE)) {
+      CreatureWasCastWatcher watcher=(CreatureWasCastWatcher)game.getState().getWatchers().get("CreatureWasCast");
+      if (watcher != null && !watcher.wasCreatureCastThisTurn(event.getTargetId())) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

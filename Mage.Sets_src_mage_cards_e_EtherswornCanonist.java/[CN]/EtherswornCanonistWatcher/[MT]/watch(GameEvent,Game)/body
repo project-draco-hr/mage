@@ -1,0 +1,14 @@
+{
+  if (event.getType() == GameEvent.EventType.SPELL_CAST && event.getPlayerId() != null) {
+    Spell spell=game.getStack().getSpell(event.getTargetId());
+    if (spell == null) {
+      MageObject mageObject=game.getLastKnownInformation(event.getTargetId(),Zone.STACK);
+      if (mageObject instanceof Spell) {
+        spell=(Spell)mageObject;
+      }
+    }
+    if (spell != null && !spell.getCardType().contains(CardType.ARTIFACT)) {
+      castNonartifactSpell.add(event.getPlayerId());
+    }
+  }
+}

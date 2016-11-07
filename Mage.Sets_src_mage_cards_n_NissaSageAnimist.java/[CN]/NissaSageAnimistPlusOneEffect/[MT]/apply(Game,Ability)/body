@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (sourceObject != null && controller != null && controller.getLibrary().size() > 0) {
+    Card card=controller.getLibrary().getFromTop(game);
+    if (card == null) {
+      return false;
+    }
+    controller.revealCards(sourceObject.getIdName(),new CardsImpl(card),game);
+    Zone targetZone=Zone.HAND;
+    if (card.getCardType().contains(CardType.LAND)) {
+      targetZone=Zone.BATTLEFIELD;
+    }
+    return controller.moveCards(card,targetZone,source,game);
+  }
+  return true;
+}

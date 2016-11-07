@@ -1,0 +1,9 @@
+{
+  if (ability.getOriginalId().equals(originalId)) {
+    int xValue=ability.getManaCostsToPay().getX();
+    ability.getTargets().clear();
+    FilterCreaturePermanent filter=new FilterCreaturePermanent("creature with converted mana cost " + xValue);
+    filter.add(new ConvertedManaCostPredicate(ComparisonType.Equal,xValue));
+    ability.getTargets().add(new TargetCreaturePermanent(filter));
+  }
+}

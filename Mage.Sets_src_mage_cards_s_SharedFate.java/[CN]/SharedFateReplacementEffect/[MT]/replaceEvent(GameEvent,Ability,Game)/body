@@ -1,0 +1,18 @@
+{
+  Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+  Player playerToDraw=game.getPlayer(event.getPlayerId());
+  if (playerToDraw != null && sourcePermanent != null) {
+    TargetOpponent target=new TargetOpponent(true);
+    if (playerToDraw.choose(Outcome.DrawCard,target,source.getSourceId(),game)) {
+      Player chosenPlayer=game.getPlayer(target.getFirstTarget());
+      if (chosenPlayer != null) {
+        Card card=chosenPlayer.getLibrary().getFromTop(game);
+        if (card != null) {
+          playerToDraw.moveCardsToExile(card,source,game,false,CardUtil.getExileZoneId(source.getSourceId().toString() + sourcePermanent.getZoneChangeCounter(game) + playerToDraw.getId().toString(),game),"Shared Fate (" + playerToDraw.getName() + ")");
+          card.setFaceDown(true,game);
+        }
+      }
+    }
+  }
+  return true;
+}

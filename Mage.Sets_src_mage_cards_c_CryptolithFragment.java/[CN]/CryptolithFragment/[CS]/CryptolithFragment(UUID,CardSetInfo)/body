@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{3}");
+  this.transformable=true;
+  this.secondSideCardClazz=AuroraOfEmrakul.class;
+  this.addAbility(new EntersBattlefieldTappedAbility());
+  Ability AnyColorManaAbility=new AnyColorManaAbility();
+  AnyColorManaAbility.addEffect(new LoseLifeAllPlayersEffect(1));
+  this.addAbility(AnyColorManaAbility);
+  this.addAbility(new TransformAbility());
+  this.addAbility(new ConditionalTriggeredAbility(new BeginningOfUpkeepTriggeredAbility(new TransformSourceEffect(true),TargetController.YOU,false),new TenOrLessLifeCondition(TenOrLessLifeCondition.CheckType.EACH_PLAYER),"At the beginning of your upkeep, if each player has 10 or less life, transform Cryptolith Fragment."));
+}

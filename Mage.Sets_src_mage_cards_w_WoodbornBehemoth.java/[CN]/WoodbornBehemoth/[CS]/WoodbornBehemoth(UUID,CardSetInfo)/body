@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{G}{G}");
+  this.subtype.add("Elemental");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  PermanentsOnTheBattlefieldCondition eightOrMoreLandCondition=new PermanentsOnTheBattlefieldCondition(new FilterLandPermanent(),PermanentsOnTheBattlefieldCondition.CountType.MORE_THAN,7);
+  ConditionalContinuousEffect effect1=new ConditionalContinuousEffect(new BoostSourceEffect(4,4,Duration.WhileOnBattlefield),eightOrMoreLandCondition,"As long as you control eight or more lands, {this} gets +4/+4");
+  ConditionalContinuousEffect effect2=new ConditionalContinuousEffect(new GainAbilitySourceEffect(TrampleAbility.getInstance(),Duration.WhileOnBattlefield),eightOrMoreLandCondition," and has trample");
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,effect1);
+  ability.addEffect(effect2);
+  this.addAbility(ability);
+}

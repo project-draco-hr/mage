@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{G}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  Effect effect=new CreateTokenTargetEffect(new SquirrelToken(),new NumericSetToEffectValues("that much","damage"));
+  effect.setText("its controller creates that many 1/1 green Squirrel creature tokens");
+  this.addAbility(new DamageDealtToAttachedTriggeredAbility(Zone.BATTLEFIELD,effect,false,SetTargetPointer.PLAYER));
+}

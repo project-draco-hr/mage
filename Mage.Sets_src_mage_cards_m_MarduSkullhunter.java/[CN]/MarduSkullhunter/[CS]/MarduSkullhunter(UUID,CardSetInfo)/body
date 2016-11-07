@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{B}");
+  this.subtype.add("Human");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(1);
+  this.addAbility(new EntersBattlefieldTappedAbility());
+  Ability ability=new ConditionalTriggeredAbility(new EntersBattlefieldTriggeredAbility(new DiscardTargetEffect(1)),RaidCondition.getInstance(),"<i>Raid</i> - When {this} enters the battlefield, if you attacked with a creature this turn, target opponent discards a card.");
+  ability.addTarget(new TargetOpponent());
+  this.addAbility(ability,new PlayerAttackedWatcher());
+}

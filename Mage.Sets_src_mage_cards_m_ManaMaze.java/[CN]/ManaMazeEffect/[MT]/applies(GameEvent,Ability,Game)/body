@@ -1,0 +1,10 @@
+{
+  Card card=game.getCard(event.getSourceId());
+  if (card != null) {
+    LastSpellCastWatcher watcher=(LastSpellCastWatcher)game.getState().getWatchers().get(LastSpellCastWatcher.class.getName());
+    if (watcher != null && watcher.lastSpellCast != null) {
+      return card.getColor(game).contains(watcher.lastSpellCast.getColor(game));
+    }
+  }
+  return false;
+}

@@ -4,16 +4,20 @@
     ExileFromGraveCost exileFromGraveCost=(ExileFromGraveCost)source.getCosts().get(0);
     List<Card> exiledCards=exileFromGraveCost.getExiledCards();
     if (exiledCards.size() > 0) {
+      Cards toDelve=new CardsImpl();
+      for (      Card card : exiledCards) {
+        toDelve.add(card);
+      }
       ManaPool manaPool=controller.getManaPool();
-      manaPool.addMana(new Mana(0,0,0,0,0,0,0,exiledCards.size()),game,source);
+      manaPool.addMana(new Mana(0,0,0,0,0,0,0,toDelve.size()),game,source);
       manaPool.unlockManaType(ManaType.COLORLESS);
       String keyString=CardUtil.getCardZoneString("delvedCards",source.getSourceId(),game);
-      @SuppressWarnings("unchecked") List<Card> delvedCards=(List<Card>)game.getState().getValue(keyString);
+      @SuppressWarnings("unchecked") Cards delvedCards=(Cards)game.getState().getValue(keyString);
       if (delvedCards == null) {
-        game.getState().setValue(keyString,exiledCards);
+        game.getState().setValue(keyString,toDelve);
       }
  else {
-        delvedCards.addAll(exiledCards);
+        delvedCards.addAll(toDelve);
       }
     }
     return true;

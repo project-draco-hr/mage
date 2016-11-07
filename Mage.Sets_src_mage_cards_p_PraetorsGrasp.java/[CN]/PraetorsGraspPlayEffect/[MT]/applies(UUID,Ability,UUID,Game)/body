@@ -1,0 +1,18 @@
+{
+  if (objectId.equals(cardId) && affectedControllerId.equals(source.getControllerId())) {
+    Player controller=game.getPlayer(source.getControllerId());
+    UUID exileId=CardUtil.getExileZoneId(game,source.getSourceId(),source.getSourceObjectZoneChangeCounter());
+    if (exileId != null && controller != null) {
+      ExileZone exileZone=game.getExile().getExileZone(exileId);
+      if (exileZone != null && exileZone.contains(cardId)) {
+        if (controller.chooseUse(outcome,"Play the exiled card?",source,game)) {
+          return true;
+        }
+      }
+ else {
+        discard();
+      }
+    }
+  }
+  return false;
+}

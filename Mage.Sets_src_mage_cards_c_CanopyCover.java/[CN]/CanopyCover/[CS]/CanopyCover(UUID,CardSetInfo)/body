@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{G}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new OrchardSpiritEffect()));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new CantBeTargetedAttachedEffect(filter,Duration.WhileOnBattlefield,AttachmentType.AURA,TargetController.OPPONENT)));
+}

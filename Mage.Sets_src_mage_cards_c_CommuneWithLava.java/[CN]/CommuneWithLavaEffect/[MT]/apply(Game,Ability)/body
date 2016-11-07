@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Card sourceCard=game.getCard(source.getSourceId());
+  if (controller != null) {
+    int amount=source.getManaCostsToPay().getX();
+    Set<Card> cards=controller.getLibrary().getTopCards(game,amount);
+    controller.moveCardsToExile(cards,source,game,true,CardUtil.getCardExileZoneId(game,source),sourceCard.getIdName());
+    for (    Card card : cards) {
+      ContinuousEffect effect=new CommuneWithLavaMayPlayEffect();
+      effect.setTargetPointer(new FixedTarget(card.getId()));
+      game.addEffect(effect,source);
+    }
+    return true;
+  }
+  return false;
+}

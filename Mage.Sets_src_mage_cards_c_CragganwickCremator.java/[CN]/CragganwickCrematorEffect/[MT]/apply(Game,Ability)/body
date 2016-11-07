@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Card discardedCard=controller.discardOne(true,source,game);
+    if (discardedCard != null && discardedCard.getCardType().contains(CardType.CREATURE)) {
+      Player targetedPlayer=game.getPlayer(source.getFirstTarget());
+      if (targetedPlayer != null) {
+        int damage=discardedCard.getPower().getValue();
+        targetedPlayer.damage(damage,source.getSourceId(),game,false,true);
+      }
+    }
+    return true;
+  }
+  return false;
+}

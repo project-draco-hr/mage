@@ -1,0 +1,15 @@
+{
+  if (!canLoseLife) {
+    return 0;
+  }
+  GameEvent event=new GameEvent(GameEvent.EventType.LOSE_LIFE,playerId,playerId,playerId,amount,atCombat);
+  if (!game.replaceEvent(event)) {
+    this.life-=event.getAmount();
+    if (!game.isSimulation()) {
+      game.informPlayers(this.getLogName() + " loses " + event.getAmount()+ " life");
+    }
+    game.fireEvent(new GameEvent(GameEvent.EventType.LOST_LIFE,playerId,playerId,playerId,amount,atCombat));
+    return amount;
+  }
+  return 0;
+}

@@ -1,0 +1,28 @@
+{
+  PreventionEffectData preventionData=preventDamageAction(event,source,game);
+  if (preventionData.getPreventedDamage() > 0) {
+    MageObject damageDealingObject=game.getObject(event.getSourceId());
+    UUID objectControllerId=null;
+    if (damageDealingObject instanceof Permanent) {
+      if (((Permanent)damageDealingObject).getCardType().contains(CardType.CREATURE)) {
+        ((Permanent)damageDealingObject).damage(preventionData.getPreventedDamage(),source.getSourceId(),game,false,true);
+      }
+ else {
+        objectControllerId=((Permanent)damageDealingObject).getControllerId();
+      }
+    }
+ else     if (damageDealingObject instanceof Ability) {
+      objectControllerId=((Ability)damageDealingObject).getControllerId();
+    }
+ else     if (damageDealingObject instanceof Spell) {
+      objectControllerId=((Spell)damageDealingObject).getControllerId();
+    }
+    if (objectControllerId != null) {
+      Player objectController=game.getPlayer(objectControllerId);
+      if (objectController != null) {
+        objectController.damage(preventionData.getPreventedDamage(),source.getSourceId(),game,false,true);
+      }
+    }
+  }
+  return true;
+}

@@ -1,0 +1,26 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int manaCostExiled=0;
+    for (    Cost cost : source.getCosts()) {
+      if (cost.isPaid() && cost instanceof ExileTargetCost) {
+        for (        Card card : ((ExileTargetCost)cost).getPermanents()) {
+          manaCostExiled+=card.getConvertedManaCost();
+        }
+      }
+    }
+    ChoiceColor choice=new ChoiceColor();
+    controller.choose(Outcome.PutManaInPool,choice,game);
+    if (choice.getColor() == null) {
+      return false;
+    }
+    Mana chosen=choice.getMana(manaCostExiled + 1);
+    Mana mana=new FoodChainManaBuilder().setMana(chosen,source,game).build();
+    if (mana != null) {
+      checkToFirePossibleEvents(mana,game,source);
+      controller.getManaPool().addMana(mana,game,source);
+      return true;
+    }
+  }
+  return false;
+}

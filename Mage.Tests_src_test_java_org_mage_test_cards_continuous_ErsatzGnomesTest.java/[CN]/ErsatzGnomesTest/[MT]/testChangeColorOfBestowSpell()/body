@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",4);
+  addCard(Zone.BATTLEFIELD,playerA,"Silvercoat Lion");
+  addCard(Zone.HAND,playerA,"Hopeful Eidolon");
+  addCard(Zone.BATTLEFIELD,playerA,"Ersatz Gnomes");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",1);
+  addCard(Zone.HAND,playerB,"Unsummon");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Hopeful Eidolon using bestow","Silvercoat Lion");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Target spell","Hopeful Eidolon");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertHandCount(playerA,"Hopeful Eidolon",0);
+  assertPermanentCount(playerA,"Hopeful Eidolon",1);
+  assertPowerToughness(playerA,"Silvercoat Lion",3,3);
+  assertTapped("Ersatz Gnomes",true);
+  Permanent eidolon=getPermanent("Hopeful Eidolon",playerA);
+  Assert.assertTrue("Hopeful Eidolon Enchantment has to be colorless",eidolon.getColor(currentGame).isColorless());
+}

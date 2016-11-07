@@ -1,0 +1,20 @@
+{
+  Player opponent=game.getPlayer(targetPointer.getFirst(game,source));
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  String cardName=(String)game.getState().getValue(source.getSourceId().toString() + NameACardEffect.INFO_KEY);
+  if (opponent != null && sourceObject != null && !cardName.isEmpty()) {
+    if (opponent.getHand().size() > 0) {
+      Cards revealed=new CardsImpl();
+      Card card=opponent.getHand().getRandom(game);
+      if (card != null) {
+        revealed.add(card);
+        opponent.revealCards(sourceObject.getName(),revealed,game);
+        if (card.getName().equals(cardName)) {
+          opponent.discard(card,source,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,16 @@
+{
+  UUID targetId=null;
+  for (  Target target : source.getTargets()) {
+    targetId=target.getFirstTarget();
+  }
+  if (targetId != null) {
+    FixedTarget fixedTarget=new FixedTarget(targetId);
+    ContinuousEffect continuousEffect=new BecomesCreatureTargetEffect(new AwakenElementalToken(),false,true,Duration.Custom);
+    continuousEffect.setTargetPointer(fixedTarget);
+    game.addEffect(continuousEffect,source);
+    Effect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance(3));
+    effect.setTargetPointer(fixedTarget);
+    return effect.apply(game,source);
+  }
+  return true;
+}

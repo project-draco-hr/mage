@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{W}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.PreventDamage));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new WardOfPietyPreventDamageTargetEffect(),new ManaCostsImpl("{1}{W}"));
+  ability.addTarget(new TargetCreatureOrPlayer());
+  this.addAbility(ability);
+}

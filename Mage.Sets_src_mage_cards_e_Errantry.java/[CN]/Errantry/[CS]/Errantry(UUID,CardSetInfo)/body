@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{R}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Benefit));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(3,0,Duration.WhileOnBattlefield));
+  Effect effect=new CanAttackOnlyAloneEffect();
+  effect.setText("and can only attack alone");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

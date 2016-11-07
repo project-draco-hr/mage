@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{U}");
+  this.subtype.add("Shapeshifter");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.addAbility(ChangelingAbility.getInstance());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainAbilityTargetEffect(ChangelingAbility.getInstance(),Duration.EndOfTurn,null,false,Layer.TypeChangingEffects_4,SubLayer.NA),new TapSourceCost());
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new LoseAllCreatureTypesTargetEffect(Duration.EndOfTurn),new TapSourceCost());
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}

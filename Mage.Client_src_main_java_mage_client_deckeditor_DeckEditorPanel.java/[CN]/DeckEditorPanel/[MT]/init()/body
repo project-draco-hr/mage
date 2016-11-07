@@ -1,5 +1,4 @@
 {
-  this.cardSelector.setVisible(true);
   this.jPanel1.setVisible(true);
   for (  ICardGrid component : this.cardSelector.getCardGridComponents()) {
     component.clearCardEventListeners();
@@ -18,10 +17,10 @@ case "alt-double-click":
       }
     break;
 case "remove-main":
-  DeckEditorPanel.this.deckArea.getDeckList().handleDoubleClick();
+  DeckEditorPanel.this.deckArea.getDeckList().removeSelection();
 break;
 case "remove-sideboard":
-DeckEditorPanel.this.deckArea.getSideboardList().handleDoubleClick();
+DeckEditorPanel.this.deckArea.getSideboardList().removeSelection();
 break;
 }
 refreshDeck();
@@ -64,6 +63,25 @@ break;
 case "set-number":
 {
 setCardNumberToCardsList(event,deck.getCards());
+break;
+}
+case "remove-specific-card":
+{
+SimpleCardView cardView=(SimpleCardView)event.getSource();
+for (Card card : deck.getCards()) {
+if (card.getId().equals(cardView.getId())) {
+deck.getCards().remove(card);
+storeTemporaryCard(card);
+break;
+}
+}
+break;
+}
+case "add-specific-card":
+{
+SimpleCardView cardView=(CardView)event.getSource();
+deck.getCards().add(retrieveTemporaryCard(cardView));
+break;
 }
 }
 }
@@ -85,11 +103,30 @@ hidePopup();
 refreshDeck();
 break;
 }
+case "remove-specific-card":
+{
+SimpleCardView cardView=(SimpleCardView)event.getSource();
+for (Card card : deck.getCards()) {
+if (card.getId().equals(cardView.getId())) {
+deck.getCards().remove(card);
+storeTemporaryCard(card);
+break;
+}
+}
+break;
+}
+case "add-specific-card":
+{
+SimpleCardView cardView=(CardView)event.getSource();
+deck.getCards().add(retrieveTemporaryCard(cardView));
+break;
+}
 }
 }
 }
 }
 );
+this.deckArea.clearSideboardEventListeners();
 this.deckArea.addSideboardEventListener(new Listener<Event>(){
 @Override public void event(Event event){
 if (mode.equals(DeckEditorMode.FREE_BUILDING)) {
@@ -120,11 +157,48 @@ break;
 case "set-number":
 {
 setCardNumberToCardsList(event,deck.getSideboard());
+break;
+}
+case "remove-specific-card":
+{
+cardView=(SimpleCardView)event.getSource();
+for (Card card : deck.getSideboard()) {
+if (card.getId().equals(cardView.getId())) {
+deck.getSideboard().remove(card);
+storeTemporaryCard(card);
+break;
+}
+}
+break;
+}
+case "add-specific-card":
+{
+cardView=(CardView)event.getSource();
+deck.getSideboard().add(retrieveTemporaryCard(cardView));
+break;
 }
 }
 }
  else {
 switch (event.getEventName()) {
+case "remove-specific-card":
+{
+SimpleCardView cardView=(SimpleCardView)event.getSource();
+for (Card card : deck.getSideboard()) {
+if (card.getId().equals(cardView.getId())) {
+deck.getSideboard().remove(card);
+storeTemporaryCard(card);
+break;
+}
+}
+break;
+}
+case "add-specific-card":
+{
+SimpleCardView cardView=(CardView)event.getSource();
+deck.getSideboard().add(retrieveTemporaryCard(cardView));
+break;
+}
 case "double-click":
 case "alt-double-click":
 SimpleCardView cardView=(SimpleCardView)event.getSource();

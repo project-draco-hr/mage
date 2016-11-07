@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT,CardType.CREATURE},"{4}{U}");
+  this.subtype.add("Vedalken");
+  this.subtype.add("Knight");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  this.addAbility(FlyingAbility.getInstance());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DestroyTargetEffect(),new ManaCostsImpl("{1}{W}{B}"));
+  ability.addCost(new TapSourceCost());
+  Target target=new TargetPermanent(filter);
+  ability.addTarget(target);
+  this.addAbility(ability);
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new UntapSourceEffect(),new ManaCostsImpl("{2}{U}")));
+}

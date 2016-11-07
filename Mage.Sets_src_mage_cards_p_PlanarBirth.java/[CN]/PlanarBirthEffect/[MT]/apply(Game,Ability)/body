@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards toBattlefield=new CardsImpl();
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        toBattlefield.addAll(player.getGraveyard().getCards(new FilterBasicLandCard(),source.getSourceId(),controller.getId(),game));
+      }
+    }
+    controller.moveCards(toBattlefield.getCards(game),Zone.BATTLEFIELD,source,game,true,false,true,null);
+    return true;
+  }
+  return false;
+}

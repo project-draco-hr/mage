@@ -1,0 +1,15 @@
+{
+  int count=0;
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(new FilterEnchantmentPermanent(),source.getControllerId(),source.getSourceId(),game)) {
+    if (permanent.destroy(source.getSourceId(),game,false)) {
+      count++;
+    }
+  }
+  if (count > 0) {
+    Player player=game.getPlayer(source.getControllerId());
+    if (player != null) {
+      player.gainLife(count,game);
+    }
+  }
+  return true;
+}

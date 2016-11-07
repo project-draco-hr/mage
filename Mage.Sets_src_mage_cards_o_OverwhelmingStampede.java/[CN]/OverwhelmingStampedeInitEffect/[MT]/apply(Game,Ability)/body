@@ -1,0 +1,15 @@
+{
+  int maxPower=0;
+  for (  Permanent perm : game.getBattlefield().getAllActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game)) {
+    if (perm.getPower().getValue() > maxPower) {
+      maxPower=perm.getPower().getValue();
+    }
+  }
+  ContinuousEffect effect=new GainAbilityControlledEffect(TrampleAbility.getInstance(),Duration.EndOfStep,new FilterCreaturePermanent());
+  game.addEffect(effect,source);
+  if (maxPower != 0) {
+    effect=new BoostControlledEffect(maxPower,maxPower,Duration.EndOfTurn);
+    game.addEffect(effect,source);
+  }
+  return true;
+}

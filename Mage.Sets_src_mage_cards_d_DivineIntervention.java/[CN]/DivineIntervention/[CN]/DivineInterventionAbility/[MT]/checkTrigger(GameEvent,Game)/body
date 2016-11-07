@@ -1,0 +1,26 @@
+{
+  if (event.getData().equals(CounterType.INTERVENTION.getName()) && event.getTargetId().equals(this.getSourceId())) {
+    boolean onlyYouOnStack=true;
+    boolean onlyOpponentOnStack=true;
+    UUID you=getControllerId();
+    boolean firstOnStack=false;
+    for (    StackObject stackObject : game.getStack()) {
+      if (stackObject.getControllerId() != null && !firstOnStack) {
+        if (you != stackObject.getControllerId()) {
+          onlyYouOnStack=false;
+        }
+ else         if (you == stackObject.getControllerId()) {
+          onlyOpponentOnStack=false;
+        }
+        firstOnStack=true;
+      }
+    }
+    if (onlyYouOnStack && !onlyOpponentOnStack) {
+      return true;
+    }
+ else     if (!onlyYouOnStack && onlyOpponentOnStack) {
+      return false;
+    }
+  }
+  return false;
+}

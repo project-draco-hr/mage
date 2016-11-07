@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{R}{W}");
+  this.getSpellAbility().addEffect(new DamageTargetEffect(4));
+  this.getSpellAbility().addTarget(new TargetPlayer());
+  Mode mode=new Mode();
+  Effect effect=new GainAbilityAllEffect(IndestructibleAbility.getInstance(),Duration.EndOfTurn,new FilterControlledPermanent(),false);
+  effect.setText("permanents you control are indestructible this turn");
+  mode.getEffects().add(effect);
+  this.getSpellAbility().addMode(mode);
+  Mode mode2=new Mode();
+  mode2.getEffects().add(new GainAbilityTargetEffect(DoubleStrikeAbility.getInstance(),Duration.EndOfTurn));
+  mode2.getTargets().add(new TargetCreaturePermanent());
+  this.getSpellAbility().addMode(mode2);
+}

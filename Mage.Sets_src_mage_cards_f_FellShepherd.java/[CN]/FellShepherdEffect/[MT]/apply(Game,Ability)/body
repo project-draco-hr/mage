@@ -1,0 +1,21 @@
+{
+  FellShepherdWatcher watcher=(FellShepherdWatcher)game.getState().getWatchers().get("YourCreaturesPutToGraveFromBattlefield",source.getControllerId());
+  if (watcher != null) {
+    StringBuilder sb=new StringBuilder();
+    for (    UUID creatureId : watcher.getCreaturesIds()) {
+      if (game.getState().getZone(creatureId).equals(Zone.GRAVEYARD)) {
+        Card card=game.getCard(creatureId);
+        if (card != null) {
+          card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+          sb.append(" ").append(card.getName());
+        }
+      }
+    }
+    if (sb.length() > 0) {
+      sb.insert(0,"Fell Shepherd - returning to hand:");
+      game.informPlayers(sb.toString());
+    }
+    return true;
+  }
+  return false;
+}

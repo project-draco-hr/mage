@@ -1,0 +1,12 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  Permanent creature=game.getPermanent(targetPointer.getFirst(game,source));
+  if (permanent != null && creature != null) {
+    Player controller=game.getPlayer(creature.getControllerId());
+    Zone currentZone=game.getState().getZone(creature.getId());
+    if (currentZone.equals(Zone.BATTLEFIELD)) {
+      controller.moveCardsToExile(creature,source,game,true,CardUtil.getCardExileZoneId(game,source),permanent.getIdName());
+    }
+  }
+  return false;
+}

@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{4}");
+  this.supertype.add("Legendary");
+  Ability ability1=new SimpleActivatedAbility(Zone.BATTLEFIELD,new AddCountersSourceEffect(CounterType.STUDY.createInstance()),new ManaCostsImpl("{1}"));
+  ability1.addCost(new TapSourceCost());
+  ability1.addCost(new DiscardTargetCost(new TargetCardInHand()));
+  this.addAbility(ability1);
+  Ability ability2=new SimpleActivatedAbility(Zone.BATTLEFIELD,new GrimoireOfTheDeadEffect(),new TapSourceCost());
+  ability2.addCost(new RemoveCountersSourceCost(CounterType.STUDY.createInstance(3)));
+  ability2.addCost(new SacrificeSourceCost());
+  this.addAbility(ability2);
+}

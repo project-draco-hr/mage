@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{U}");
+  this.subtype.add("Incarnation");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(FlyingAbility.getInstance());
+  ContinuousEffect effect=new GainAbilityControlledEffect(FlyingAbility.getInstance(),Duration.WhileOnBattlefield,new FilterCreaturePermanent());
+  ConditionalContinuousEffect wonderEffect=new ConditionalContinuousEffect(effect,new PermanentsOnTheBattlefieldCondition(filter),ruleText);
+  this.addAbility(new SimpleStaticAbility(Zone.GRAVEYARD,wonderEffect));
+}

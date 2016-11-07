@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{W}{U}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Elder");
+  this.subtype.add("Dragon");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(4);
+  this.addAbility(FlyingAbility.getInstance());
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new GainAbilitySourceEffect(HexproofAbility.getInstance(),Duration.WhileOnBattlefield),new InvertCondition(new SourceTappedCondition()),"{this} has hexproof as long as it's untapped")));
+  this.addAbility(new DealsCombatDamageToAPlayerTriggeredAbility(new LookLibraryAndPickControllerEffect(new StaticValue(3),false,new StaticValue(1),new FilterCard(),Zone.LIBRARY,false,false),false));
+}

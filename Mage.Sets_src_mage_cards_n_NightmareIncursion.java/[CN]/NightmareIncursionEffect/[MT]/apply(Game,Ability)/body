@@ -1,0 +1,23 @@
+{
+  boolean result=false;
+  Player controller=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (controller != null && targetPlayer != null) {
+    int amount=new PermanentsOnBattlefieldCount(filter).calculate(game,source,this);
+    TargetCardInLibrary target=new TargetCardInLibrary(0,amount,new FilterCard());
+    if (controller.searchLibrary(target,game,targetPlayer.getId())) {
+      List<UUID> targetId=target.getTargets();
+      for (      UUID targetCard : targetId) {
+        Card card=targetPlayer.getLibrary().remove(targetCard,game);
+        if (card != null) {
+          controller.moveCardToExileWithInfo(card,null,null,source.getSourceId(),game,Zone.LIBRARY,true);
+          result=true;
+        }
+      }
+    }
+  }
+  if (targetPlayer != null) {
+    targetPlayer.shuffleLibrary(source,game);
+  }
+  return result;
+}

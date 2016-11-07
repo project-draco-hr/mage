@@ -1,0 +1,33 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player opponent=game.getPlayer(source.getFirstTarget());
+  if (controller == null || opponent == null)   return false;
+  if (controller.getLibrary().size() >= 3 && controller.searchLibrary(target,game)) {
+    if (target.getTargets().size() == 3) {
+      Cards cards=new CardsImpl();
+      for (      UUID cardId : (List<UUID>)target.getTargets()) {
+        Card card=controller.getLibrary().getCard(cardId,game);
+        if (card != null) {
+          cards.add(card);
+        }
+      }
+      controller.revealCards("Reveal",cards,game);
+      TargetCard targetCard=new TargetCard(Zone.LIBRARY,new FilterCard());
+      while (!opponent.choose(Outcome.Neutral,cards,targetCard,game)) {
+        if (!opponent.canRespond()) {
+          return false;
+        }
+      }
+      Card card=cards.get(targetCard.getFirstTarget(),game);
+      if (card != null) {
+        cards.remove(card);
+        controller.moveCards(card,Zone.HAND,source,game);
+      }
+      controller.moveCards(cards,Zone.GRAVEYARD,source,game);
+    }
+    controller.shuffleLibrary(source,game);
+    return true;
+  }
+  controller.shuffleLibrary(source,game);
+  return false;
+}

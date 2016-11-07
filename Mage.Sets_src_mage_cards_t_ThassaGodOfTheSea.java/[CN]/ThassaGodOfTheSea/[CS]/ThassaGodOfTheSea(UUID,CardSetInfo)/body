@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT,CardType.CREATURE},"{2}{U}");
+  this.supertype.add("Legendary");
+  this.subtype.add("God");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  this.addAbility(IndestructibleAbility.getInstance());
+  Effect effect=new LoseCreatureTypeSourceEffect(new DevotionCount(ColoredManaSymbol.U),5);
+  effect.setText("As long as your devotion to blue is less than five, Thassa isn't a creature.<i>(Each {U} in the mana costs of permanents you control counts towards your devotion to blue.)</i>");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,new ScryEffect(1),TargetController.YOU,false));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CantBeBlockedTargetEffect(Duration.EndOfTurn),new ManaCostsImpl("{1}{U}"));
+  ability.addTarget(new TargetControlledCreaturePermanent());
+  this.addAbility(ability);
+}

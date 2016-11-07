@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (controller == null || targetPlayer == null) {
+    return false;
+  }
+  if (controller.searchLibrary(target,game)) {
+    if (target.getTargets().size() > 0) {
+      targetPlayer.moveCards(new CardsImpl(target.getTargets()).getCards(game),Zone.BATTLEFIELD,source,game,true,false,false,null);
+    }
+    controller.shuffleLibrary(source,game);
+    return true;
+  }
+  return false;
+}

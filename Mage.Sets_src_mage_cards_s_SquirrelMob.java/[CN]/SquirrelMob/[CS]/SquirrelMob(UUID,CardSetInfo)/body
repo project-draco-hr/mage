@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{G}{G}");
+  this.subtype.add("Squirrel");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("other Squirrel");
+  filter.add(new SubtypePredicate("Squirrel"));
+  filter.add(Predicates.not(new PermanentIdPredicate(this.getId())));
+  DynamicValue xValue=new PermanentsOnBattlefieldCount(filter);
+  Effect effect=new BoostSourceEffect(xValue,xValue,Duration.WhileOnBattlefield,false);
+  effect.setText("{this} gets +1/+1 for each other Squirrel on the battlefield");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+}

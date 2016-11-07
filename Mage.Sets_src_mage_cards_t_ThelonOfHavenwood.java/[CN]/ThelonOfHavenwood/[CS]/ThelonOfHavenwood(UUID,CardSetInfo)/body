@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{G}{G}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Elf");
+  this.subtype.add("Druid");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ThelonOfHavenwoodBoostEffect()));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new AddCountersAllEffect(CounterType.SPORE.createInstance(),filterPermanent),new ManaCostsImpl<>("{B}{G}"));
+  ability.addCost(new ExileFromGraveCost(new TargetCardInASingleGraveyard(1,1,filterCard)));
+  this.addAbility(ability);
+}

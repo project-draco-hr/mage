@@ -1,0 +1,8 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{R}");
+  this.supertype.add("Legendary");
+  Ability ability=new EntersBattlefieldTriggeredAbility(new DamageTargetEffect(3),false);
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability);
+  this.addAbility(new ConditionalTriggeredAbility(new BeginningOfEndStepTriggeredAbility(new DamagePlayersEffect(Outcome.Damage,new StaticValue(2),TargetController.OPPONENT),TargetController.ANY,false),OathOfChandraCondition.getInstance(),"At the beginning of each end step, if a planeswalker entered the battlefield under your control this turn, {this} deals 2 damage to each opponent."),new OathOfChandraWatcher());
+}

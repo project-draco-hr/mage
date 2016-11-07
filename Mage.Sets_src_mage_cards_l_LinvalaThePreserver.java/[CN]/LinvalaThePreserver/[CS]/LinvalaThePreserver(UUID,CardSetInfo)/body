@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{W}{W}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Angel");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  this.addAbility(FlyingAbility.getInstance());
+  this.addAbility(new ConditionalTriggeredAbility(new EntersBattlefieldTriggeredAbility(new GainLifeEffect(5),false),new OpponentHasMoreLifeCondition(),"When {this} enters the battlefield, if an opponent has more life than you, you gain 5 life."));
+  this.addAbility(new ConditionalTriggeredAbility(new EntersBattlefieldTriggeredAbility(new CreateTokenEffect(new LinvalaAngelToken()),false),new OpponentControlsMoreCondition(new FilterCreaturePermanent()),"When {this} enters the battlefield, if an opponent controls more creatures than you, create a 3/3 white Angel creature token with flying."));
+}

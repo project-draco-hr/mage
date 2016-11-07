@@ -1,0 +1,15 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  boolean isAttached=false;
+  if (permanent != null) {
+    UUID attachedTo=permanent.getAttachedTo();
+    Permanent attachment=game.getPermanent(attachedTo);
+    if (attachment != null) {
+      isAttached=true;
+    }
+  }
+  if (isAttached && game.getActivePlayerId().equals(source.getControllerId()) && game.getPlayer(source.getControllerId()).hasOpponent(event.getPlayerId(),game)) {
+    return true;
+  }
+  return false;
+}

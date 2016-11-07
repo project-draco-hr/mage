@@ -1,0 +1,24 @@
+{
+  int affectedTargets=0;
+  if (source.getTargets().size() > 1 && targetPointer instanceof FirstTargetPointer) {
+    for (    Target target : source.getTargets()) {
+      for (      UUID permanentId : target.getTargets()) {
+        Permanent permanent=game.getPermanent(permanentId);
+        if (permanent != null && permanent.getToughness().getValue() <= game.getPlayer(source.getControllerId()).getGraveyard().size()) {
+          permanent.destroy(source.getSourceId(),game,noRegen);
+          affectedTargets++;
+        }
+      }
+    }
+  }
+ else   if (targetPointer.getTargets(game,source).size() > 0) {
+    for (    UUID permanentId : targetPointer.getTargets(game,source)) {
+      Permanent permanent=game.getPermanent(permanentId);
+      if (permanent != null && permanent.getToughness().getValue() <= game.getPlayer(source.getControllerId()).getGraveyard().size()) {
+        permanent.destroy(source.getSourceId(),game,noRegen);
+        affectedTargets++;
+      }
+    }
+  }
+  return affectedTargets > 0;
+}

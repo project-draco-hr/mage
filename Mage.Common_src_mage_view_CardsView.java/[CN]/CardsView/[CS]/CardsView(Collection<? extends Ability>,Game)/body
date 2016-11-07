@@ -12,7 +12,15 @@ case GRAVEYARD:
     if (sourceObject == null) {
       sourceObject=game.getPermanent(ability.getSourceId());
     }
-  isCard=true;
+  if (sourceObject == null) {
+    sourceObject=game.getObject(ability.getSourceId());
+    if (sourceObject instanceof PermanentToken) {
+      isPermanent=true;
+    }
+  }
+ else {
+    isCard=true;
+  }
 break;
 case BATTLEFIELD:
 sourceObject=game.getPermanent(ability.getSourceId());

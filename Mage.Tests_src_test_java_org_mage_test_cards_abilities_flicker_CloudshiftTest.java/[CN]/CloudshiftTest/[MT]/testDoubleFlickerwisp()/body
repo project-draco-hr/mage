@@ -1,0 +1,17 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",6);
+  addCard(Zone.HAND,playerA,"Flickerwisp",2);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion");
+  addCard(Zone.BATTLEFIELD,playerB,"Courser of Kruphix");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Flickerwisp");
+  addTarget(playerA,"Silvercoat Lion");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Flickerwisp");
+  addTarget(playerA,"Flickerwisp");
+  addTarget(playerA,"Courser of Kruphix");
+  setStopAt(2,PhaseStep.PRECOMBAT_MAIN);
+  execute();
+  assertPermanentCount(playerA,"Flickerwisp",2);
+  assertPermanentCount(playerB,"Silvercoat Lion",1);
+  assertPermanentCount(playerB,"Courser of Kruphix",0);
+  assertExileCount("Courser of Kruphix",1);
+}

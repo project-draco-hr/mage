@@ -1,0 +1,19 @@
+{
+  Player player=game.getPlayer(source.getFirstTarget());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && player != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(0,7,new FilterCard("cards from player's library to exile"));
+    if (controller.searchLibrary(target,game,player.getId())) {
+      List<UUID> targets=target.getTargets();
+      for (      UUID targetId : targets) {
+        Card card=player.getLibrary().remove(targetId,game);
+        if (card != null) {
+          controller.moveCardToExileWithInfo(card,null,null,source.getSourceId(),game,Zone.LIBRARY,true);
+        }
+      }
+    }
+    player.shuffleLibrary(source,game);
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (player == null) {
+    return false;
+  }
+  FilterPermanent filter=new FilterArtifactPermanent();
+  filter.add(new ControllerIdPredicate(player.getId()));
+  List<Permanent> permanents=game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game);
+  for (  Permanent permanent : permanents) {
+    ContinuousEffect effect=new HellkiteTyrantControlEffect(source.getControllerId());
+    effect.setTargetPointer(new FixedTarget(permanent.getId()));
+    game.addEffect(effect,source);
+  }
+  return true;
+}

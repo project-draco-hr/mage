@@ -39,16 +39,18 @@
     return false;
   }
   for (  UUID modeId : this.getModes().getSelectedModes()) {
-    Mode mode=this.getModes().get(modeId);
-    this.getModes().setActiveMode(mode);
+    this.getModes().setActiveMode(modeId);
     if (sourceObject != null && !this.getAbilityType().equals(AbilityType.TRIGGERED)) {
       sourceObject.adjustTargets(this,game);
     }
-    if (!(this instanceof FlashbackAbility) && mode.getTargets().size() > 0 && mode.getTargets().chooseTargets(getEffects().get(0).getOutcome(),this.controllerId,this,noMana,game) == false) {
-      if ((variableManaCost != null || announceString != null) && !game.isSimulation()) {
-        game.informPlayer(controller,(sourceObject != null ? sourceObject.getIdName() : "") + ": no valid targets with this value of X");
+    if (!(this instanceof FlashbackAbility) && getTargets().size() > 0) {
+      Outcome outcome=getEffects().isEmpty() ? Outcome.Detriment : getEffects().get(0).getOutcome();
+      if (getTargets().chooseTargets(outcome,this.controllerId,this,noMana,game) == false) {
+        if ((variableManaCost != null || announceString != null) && !game.isSimulation()) {
+          game.informPlayer(controller,(sourceObject != null ? sourceObject.getIdName() : "") + ": no valid targets with this value of X");
+        }
+        return false;
       }
-      return false;
     }
   }
   for (  Cost cost : optionalCosts) {
@@ -76,7 +78,7 @@
       }
     }
   }
-  if (this instanceof ManaAbility && !costs.pay(this,game,sourceId,controllerId,noMana,null)) {
+  if (this instanceof ActivatedManaAbilityImpl && !costs.pay(this,game,sourceId,controllerId,noMana,null)) {
     logger.debug("activate mana ability failed - non mana costs");
     return false;
   }

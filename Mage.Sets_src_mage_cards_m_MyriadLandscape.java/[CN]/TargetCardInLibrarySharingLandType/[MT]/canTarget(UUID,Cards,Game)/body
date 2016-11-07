@@ -1,0 +1,37 @@
+{
+  if (super.canTarget(id,cards,game)) {
+    if (!getTargets().isEmpty()) {
+      HashSet<String> landTypes=null;
+      for (      UUID landId : getTargets()) {
+        Card landCard=game.getCard(landId);
+        if (landCard != null) {
+          if (landTypes == null) {
+            landTypes=new HashSet<>();
+            landTypes.addAll(landCard.getSubtype(game));
+          }
+ else {
+            for (Iterator<String> iterator=landTypes.iterator(); iterator.hasNext(); ) {
+              String next=iterator.next();
+              if (!landCard.getSubtype(game).contains(next)) {
+                iterator.remove();
+              }
+            }
+          }
+        }
+      }
+      Card card=game.getCard(id);
+      if (card != null && landTypes != null) {
+        for (Iterator<String> iterator=landTypes.iterator(); iterator.hasNext(); ) {
+          String next=iterator.next();
+          if (card.getSubtype(game).contains(next)) {
+            return true;
+          }
+        }
+      }
+    }
+ else {
+      return true;
+    }
+  }
+  return false;
+}

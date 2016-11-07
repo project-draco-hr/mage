@@ -1,0 +1,34 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && controller.getLibrary().size() > 0) {
+    CardsImpl cards=new CardsImpl();
+    Library library=controller.getLibrary();
+    Card card=null;
+    do {
+      card=library.removeFromTop(game);
+      if (card != null) {
+        cards.add(card);
+      }
+    }
+ while (library.size() > 0 && card != null && !card.getCardType().contains(CardType.ARTIFACT));
+    if (!cards.isEmpty()) {
+      controller.revealCards(sourceObject.getIdName(),cards,game);
+    }
+    int revealed=cards.size();
+    if (card != null && card.getCardType().contains(CardType.ARTIFACT)) {
+      controller.moveCards(card,Zone.BATTLEFIELD,source,game);
+      cards.remove(card);
+    }
+    while (cards.size() > 0) {
+      card=cards.getRandom(game);
+      if (card != null) {
+        cards.remove(card);
+        controller.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.HAND,false,false);
+      }
+    }
+    controller.damage(revealed,source.getSourceId(),game,false,true);
+    return true;
+  }
+  return false;
+}

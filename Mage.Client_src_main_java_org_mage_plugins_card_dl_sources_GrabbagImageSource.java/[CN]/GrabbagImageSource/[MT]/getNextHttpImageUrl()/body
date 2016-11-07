@@ -2,15 +2,10 @@
   if (copyUrlToImage == null) {
     setupLinks();
   }
-  try {
-    Thread.sleep(2000);
-  }
- catch (  InterruptedException ex) {
-  }
   for (  String key : copyUrlToImageDone.keySet()) {
     if (copyUrlToImageDone.get(key) < maxTimes) {
       copyUrlToImageDone.put(key,maxTimes);
-      return key;
+      return getSourceName(key) + key;
     }
   }
   if (maxTimes < 2) {
@@ -19,7 +14,7 @@
   for (  String key : copyUrlToImageDone.keySet()) {
     if (copyUrlToImageDone.get(key) < maxTimes) {
       copyUrlToImageDone.put(key,maxTimes);
-      return key;
+      return getSourceName(key) + key;
     }
   }
   return null;

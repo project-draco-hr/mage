@@ -1,0 +1,12 @@
+{
+  if (super.checkTrigger(event,game)) {
+    UUID defendingPlayerId=game.getCombat().getDefendingPlayerId(getSourceId(),game);
+    FilterPermanent filter=new FilterCreaturePermanent();
+    filter.add(new ControllerIdPredicate(defendingPlayerId));
+    Target target=new TargetPermanent(filter);
+    this.getTargets().clear();
+    this.addTarget(target);
+    return true;
+  }
+  return false;
+}

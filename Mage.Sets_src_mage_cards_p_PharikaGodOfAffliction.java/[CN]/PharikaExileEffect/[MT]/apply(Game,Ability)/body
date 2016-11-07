@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Card targetCard=game.getCard(source.getFirstTarget());
+    if (targetCard != null) {
+      if (game.getState().getZone(source.getFirstTarget()).equals(Zone.GRAVEYARD)) {
+        controller.moveCardToExileWithInfo(targetCard,null,"",source.getSourceId(),game,Zone.GRAVEYARD,true);
+      }
+      Player tokenController=game.getPlayer(targetCard.getOwnerId());
+      if (tokenController != null) {
+        return new PharikaSnakeToken().putOntoBattlefield(1,game,source.getSourceId(),tokenController.getId());
+      }
+    }
+  }
+  return false;
+}

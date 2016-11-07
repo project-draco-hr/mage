@@ -1,0 +1,49 @@
+{
+  if (isEmpty()) {
+    this.add(new Mana());
+  }
+  if (!abilities.isEmpty()) {
+    if (abilities.size() == 1) {
+      List<Mana> netManas=abilities.get(0).getNetMana(game);
+      if (netManas.size() == 1) {
+        addMana(netManas.get(0));
+      }
+ else {
+        List<Mana> copy=copy();
+        this.clear();
+        for (        Mana netMana : netManas) {
+          for (          Mana mana : copy) {
+            Mana newMana=new Mana();
+            newMana.add(mana);
+            newMana.add(netMana);
+            this.add(newMana);
+          }
+        }
+      }
+    }
+ else     if (abilities.size() > 1) {
+      List<Mana> copy=copy();
+      this.clear();
+      for (      ActivatedManaAbilityImpl ability : abilities) {
+        for (        Mana netMana : ability.getNetMana(game)) {
+          SkipAddMana:           for (          Mana mana : copy) {
+            Mana newMana=new Mana();
+            newMana.add(mana);
+            newMana.add(netMana);
+            for (            Mana existingMana : this) {
+              if (existingMana.equalManaValue(newMana)) {
+                continue SkipAddMana;
+              }
+              Mana moreValuable=Mana.getMoreValuableMana(newMana,existingMana);
+              if (moreValuable != null) {
+                existingMana.setToMana(moreValuable);
+                continue SkipAddMana;
+              }
+            }
+            this.add(newMana);
+          }
+        }
+      }
+    }
+  }
+}

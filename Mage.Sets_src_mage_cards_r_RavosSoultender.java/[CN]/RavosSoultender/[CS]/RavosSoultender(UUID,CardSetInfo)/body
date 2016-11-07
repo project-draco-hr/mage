@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{W}{B}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Human");
+  this.subtype.add("Cleric");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(FlyingAbility.getInstance());
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Duration.WhileOnBattlefield,true)));
+  Ability ability=new BeginningOfUpkeepTriggeredAbility(new ReturnFromGraveyardToHandTargetEffect(),TargetController.YOU,true);
+  ability.addTarget(new TargetCardInYourGraveyard(new FilterCreatureCard("creature card from your graveyard")));
+  this.addAbility(ability);
+  this.addAbility(PartnerAbility.getInstance());
+}

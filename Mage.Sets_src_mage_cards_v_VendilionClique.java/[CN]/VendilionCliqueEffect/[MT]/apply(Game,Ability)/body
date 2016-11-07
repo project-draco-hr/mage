@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (player != null && controller != null && sourceObject != null) {
+    TargetCard targetCard=new TargetCard(Zone.ALL,new FilterNonlandCard());
+    targetCard.setRequired(false);
+    if (controller.choose(Outcome.Discard,player.getHand(),targetCard,game)) {
+      Card card=game.getCard(targetCard.getFirstTarget());
+      if (card != null) {
+        CardsImpl cards=new CardsImpl();
+        cards.add(card);
+        player.revealCards(sourceObject.getIdName(),cards,game);
+        player.putCardsOnBottomOfLibrary(cards,game,source,true);
+        player.drawCards(1,game);
+      }
+    }
+    return true;
+  }
+  return false;
+}

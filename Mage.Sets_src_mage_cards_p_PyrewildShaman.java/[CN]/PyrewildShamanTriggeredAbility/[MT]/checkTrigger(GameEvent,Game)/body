@@ -1,0 +1,21 @@
+{
+  if (event.getType() == GameEvent.EventType.DAMAGED_PLAYER) {
+    if (((DamagedEvent)event).isCombatDamage()) {
+      Permanent creature=game.getPermanent(event.getSourceId());
+      if (creature != null && creature.getControllerId().equals(controllerId) && !damagedPlayerIds.contains(event.getTargetId())) {
+        damagedPlayerIds.add(event.getTargetId());
+        return true;
+      }
+    }
+  }
+  if (event.getType().equals(GameEvent.EventType.END_COMBAT_STEP_POST)) {
+    damagedPlayerIds.clear();
+  }
+  if (event.getType().equals(GameEvent.EventType.ZONE_CHANGE) && event.getTargetId().equals(getSourceId())) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getFromZone().equals(Zone.GRAVEYARD)) {
+      damagedPlayerIds.clear();
+    }
+  }
+  return false;
+}

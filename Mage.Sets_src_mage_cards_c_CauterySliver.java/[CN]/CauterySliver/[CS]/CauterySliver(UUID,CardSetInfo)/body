@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{R}{W}");
+  this.subtype.add("Sliver");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Ability ability1=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new ManaCostsImpl("1"));
+  ability1.addCost(new SacrificeSourceCost());
+  ability1.addTarget(new TargetCreatureOrPlayer());
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAllEffect(ability1,Duration.WhileOnBattlefield,filter,"All Slivers have \"{1}, Sacrifice this permanent: This permanent deals 1 damage to target creature or player.\"")));
+  Ability ability2=new SimpleActivatedAbility(Zone.BATTLEFIELD,new PreventDamageToTargetEffect(Duration.EndOfTurn,1),new ManaCostsImpl("1"));
+  ability2.addCost(new SacrificeSourceCost());
+  ability2.addTarget(new TargetSliverCreatureOrPlayer());
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAllEffect(ability2,Duration.WhileOnBattlefield,filter,"All Slivers have \"{1}, Sacrifice this permanent: Prevent the next 1 damage that would be dealt to target Sliver creature or player this turn.\"")));
+}

@@ -30,6 +30,16 @@
   newEffect.setApplier(applier);
   Ability newAbility=source.copy();
   newEffect.init(newAbility,this);
+  if (Duration.Custom.equals(duration)) {
+    for (    Effect effect : getState().getContinuousEffects().getLayeredEffects(this)) {
+      if (effect instanceof CopyEffect) {
+        CopyEffect copyEffect=(CopyEffect)effect;
+        if (copyEffect.getSourceId().equals(copyToPermanentId) && copyEffect.getDuration().equals(Duration.Custom)) {
+          copyEffect.discard();
+        }
+      }
+    }
+  }
   state.addEffect(newEffect,newAbility);
   return newBluePrint;
 }

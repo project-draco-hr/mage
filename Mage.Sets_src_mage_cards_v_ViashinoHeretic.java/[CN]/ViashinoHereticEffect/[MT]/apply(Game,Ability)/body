@@ -1,0 +1,13 @@
+{
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  if (permanent != null) {
+    int couvertedManaCost=permanent.getConvertedManaCost();
+    Player player=game.getPlayer(permanent.getControllerId());
+    permanent.destroy(source.getSourceId(),game,false);
+    if (player != null) {
+      player.damage(couvertedManaCost,source.getSourceId(),game,false,true);
+    }
+    return true;
+  }
+  return false;
+}

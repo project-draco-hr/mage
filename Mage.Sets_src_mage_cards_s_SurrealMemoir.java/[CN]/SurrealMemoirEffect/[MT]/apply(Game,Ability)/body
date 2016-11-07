@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    FilterCard filter=new FilterCard("instant card");
+    filter.add(new CardTypePredicate(CardType.INSTANT));
+    Card[] cards=player.getGraveyard().getCards(filter,game).toArray(new Card[0]);
+    if (cards.length > 0) {
+      Card card=cards[RandomUtil.nextInt(cards.length)];
+      card.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+      game.informPlayers(card.getName() + "returned to the hand of" + player.getLogName());
+      return true;
+    }
+  }
+  return false;
+}

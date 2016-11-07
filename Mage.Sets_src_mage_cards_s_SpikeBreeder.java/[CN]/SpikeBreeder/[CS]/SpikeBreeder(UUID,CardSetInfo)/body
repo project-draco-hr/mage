@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{G}");
+  this.subtype.add("Spike");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.P1P1.createInstance(3)),"with three +1/+1 counters on it"));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new AddCountersTargetEffect(CounterType.P1P1.createInstance()),new GenericManaCost(2));
+  ability.addCost(new RemoveCountersSourceCost(CounterType.P1P1.createInstance()));
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+  Ability ability2=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new SpikeToken()),new GenericManaCost(2));
+  ability2.addCost(new RemoveCountersSourceCost(CounterType.P1P1.createInstance()));
+  this.addAbility(ability2);
+}

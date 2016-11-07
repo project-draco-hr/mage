@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{W}{U}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Detriment));
+  this.addAbility(new EnchantAbility(auraTarget.getTargetName()));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new DontUntapInControllersUntapStepEnchantedEffect()));
+  ForecastAbility ability=new ForecastAbility(new TapTargetEffect(),new ManaCostsImpl("{W}{U}"));
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}

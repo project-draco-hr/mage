@@ -1,0 +1,37 @@
+{
+  Card card=game.getPlayer(source.getControllerId()).getGraveyard().getTopCard(game);
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (card == null || permanent == null || !card.getCardType().contains(CardType.CREATURE)) {
+    return false;
+  }
+  permanent.getPower().setValue(card.getPower().getValue());
+  permanent.getToughness().setValue(card.getToughness().getValue());
+  permanent.getColor(game).setColor(card.getColor(game));
+  permanent.getManaCost().clear();
+  permanent.getManaCost().add(card.getManaCost());
+  permanent.getCardType().clear();
+  permanent.setName(card.getName());
+  for (  CardType type : card.getCardType()) {
+    if (!permanent.getCardType().contains(type)) {
+      permanent.getCardType().add(type);
+    }
+  }
+  permanent.getSubtype(game).clear();
+  for (  String type : card.getSubtype(game)) {
+    if (!permanent.getSubtype(game).contains(type)) {
+      permanent.getSubtype(game).add(type);
+    }
+  }
+  permanent.getSupertype().clear();
+  for (  String type : card.getSupertype()) {
+    if (!permanent.getSupertype().contains(type)) {
+      permanent.getSupertype().add(type);
+    }
+  }
+  for (  Ability ability : card.getAbilities()) {
+    if (!permanent.getAbilities().contains(ability)) {
+      permanent.addAbility(ability,source.getSourceId(),game);
+    }
+  }
+  return true;
+}

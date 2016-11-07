@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null) {
+    return false;
+  }
+  CardsImpl cards=new CardsImpl();
+  int amount=Math.min(2,player.getLibrary().size());
+  for (int i=0; i < amount; i++) {
+    cards.add(player.getLibrary().removeFromTop(game));
+  }
+  player.revealCards("Lair Delve",cards,game);
+  Set<Card> cardsList=cards.getCards(game);
+  for (  Card card : cardsList) {
+    if (card.getCardType().contains(CardType.CREATURE) || card.getCardType().contains(CardType.LAND)) {
+      card.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+      cards.remove(card);
+    }
+  }
+  player.putCardsOnBottomOfLibrary(cards,game,source,true);
+  return true;
+}

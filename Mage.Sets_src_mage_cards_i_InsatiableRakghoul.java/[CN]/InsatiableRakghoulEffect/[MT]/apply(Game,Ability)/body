@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    NonArtifactCreaturesDiedWatcher watcher=(NonArtifactCreaturesDiedWatcher)game.getState().getWatchers().get("NonArtifactCreaturesDiedWatcher");
+    if (watcher != null && watcher.conditionMet()) {
+      Permanent permanent=game.getPermanentEntering(source.getSourceId());
+      if (permanent != null) {
+        permanent.addCounters(CounterType.P1P1.createInstance(1),game);
+      }
+    }
+    return true;
+  }
+  return false;
+}

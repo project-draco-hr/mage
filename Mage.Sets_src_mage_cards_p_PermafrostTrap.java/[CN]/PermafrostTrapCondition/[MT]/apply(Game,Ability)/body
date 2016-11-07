@@ -1,0 +1,16 @@
+{
+  PermanentsEnteredBattlefieldWatcher watcher=(PermanentsEnteredBattlefieldWatcher)game.getState().getWatchers().get(PermanentsEnteredBattlefieldWatcher.class.getName());
+  if (watcher != null) {
+    for (    UUID opponentId : game.getOpponents(source.getControllerId())) {
+      List<Permanent> permanents=watcher.getThisTurnEnteringPermanents(opponentId);
+      if (permanents != null) {
+        for (        Permanent permanent : permanents) {
+          if (permanent.getCardType().contains(CardType.CREATURE) && permanent.getColor(game).isGreen()) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

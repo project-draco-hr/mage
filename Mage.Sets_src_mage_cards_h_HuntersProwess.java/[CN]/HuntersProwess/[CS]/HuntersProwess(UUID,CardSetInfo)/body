@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.SORCERY},"{4}{G}");
+  Effect effect=new BoostTargetEffect(3,3,Duration.EndOfTurn);
+  effect.setText("Until end of turn, target creature gets +3/+3");
+  this.getSpellAbility().addEffect(effect);
+  effect=new GainAbilityTargetEffect(TrampleAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("and gains trample");
+  this.getSpellAbility().addEffect(effect);
+  Ability grantedAbility=new DealsCombatDamageToAPlayerTriggeredAbility(new HuntersProwessDrawEffect(),false,true);
+  this.getSpellAbility().addEffect(new GainAbilityTargetEffect(grantedAbility,Duration.EndOfTurn,"and \"Whenever this creature deals combat damage to a player, draw that many cards.\""));
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent());
+}

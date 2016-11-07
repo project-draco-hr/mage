@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{U}{U}{U}");
+  this.subtype.add("Leviathan");
+  this.power=new MageInt(12);
+  this.toughness=new MageInt(12);
+  this.addAbility(TrampleAbility.getInstance());
+  this.addAbility(new EntersBattlefieldTappedAbility());
+  Effect effect=new SacrificeSourceUnlessPaysEffect(new SacrificeTargetCost(new TargetControlledPermanent(5,5,new FilterControlledLandPermanent("five lands"),true)));
+  effect.setText("sacrifice it unless you sacrifice five lands");
+  this.addAbility(new EntersBattlefieldTriggeredAbility(effect,false));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new DontUntapInControllersUntapStepSourceEffect()));
+  this.addAbility(new JokulmorderTriggeredAbility());
+}

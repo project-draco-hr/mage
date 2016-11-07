@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{B}{B}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetLandPermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageEverythingEffect(1),new TapSourceCost());
+  Effect effect=new GainAbilityAttachedEffect(ability,AttachmentType.AURA);
+  effect.setText("Enchanted land has \"{T}: This land deals 1 damage to each creature and each player.\"");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+}

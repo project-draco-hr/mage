@@ -1,0 +1,19 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{R}");
+  this.subtype.add("Human");
+  this.subtype.add("Knight");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(FirstStrikeAbility.getInstance());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DragonsoulKnightEffect(),new ManaCostsImpl("{W}{U}{B}{R}{G}"));
+  Effect effect=new BoostSourceEffect(5,3,Duration.EndOfTurn);
+  effect.setText("gets +5/+3");
+  ability.addEffect(effect);
+  effect=new GainAbilitySourceEffect(FlyingAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("and gains flying");
+  ability.addEffect(effect);
+  effect=new GainAbilitySourceEffect(TrampleAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("and trample");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

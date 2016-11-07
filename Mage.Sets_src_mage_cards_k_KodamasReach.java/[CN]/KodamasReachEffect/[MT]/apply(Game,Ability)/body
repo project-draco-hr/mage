@@ -1,0 +1,41 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller == null || sourceObject == null) {
+    return false;
+  }
+  TargetCardInLibrary target=new TargetCardInLibrary(0,2,new FilterBasicLandCard());
+  if (controller.searchLibrary(target,game)) {
+    if (target.getTargets().size() > 0) {
+      Cards revealed=new CardsImpl();
+      for (      UUID cardId : target.getTargets()) {
+        Card card=controller.getLibrary().getCard(cardId,game);
+        revealed.add(card);
+      }
+      controller.revealCards(sourceObject.getIdName(),revealed,game);
+      if (target.getTargets().size() == 2) {
+        TargetCard target2=new TargetCard(Zone.LIBRARY,filter);
+        controller.choose(Outcome.Benefit,revealed,target2,game);
+        Card card=revealed.get(target2.getFirstTarget(),game);
+        if (card != null) {
+          controller.moveCards(card,Zone.BATTLEFIELD,source,game,true,false,false,null);
+          revealed.remove(card);
+        }
+        card=revealed.getCards(game).iterator().next();
+        if (card != null) {
+          controller.moveCards(card,Zone.HAND,source,game);
+        }
+      }
+ else       if (target.getTargets().size() == 1) {
+        Card card=revealed.getCards(game).iterator().next();
+        if (card != null) {
+          controller.moveCards(card,Zone.BATTLEFIELD,source,game,true,false,false,null);
+        }
+      }
+    }
+    controller.shuffleLibrary(source,game);
+    return true;
+  }
+  controller.shuffleLibrary(source,game);
+  return false;
+}

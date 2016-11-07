@@ -1,0 +1,13 @@
+{
+  Card card=cards.get(id,game);
+  if (card != null) {
+    for (    UUID targetId : this.getTargets()) {
+      Card iCard=game.getCard(targetId);
+      if (iCard != null && iCard.getName().equals(card.getName())) {
+        return false;
+      }
+    }
+    return filter.match(card,game);
+  }
+  return false;
+}

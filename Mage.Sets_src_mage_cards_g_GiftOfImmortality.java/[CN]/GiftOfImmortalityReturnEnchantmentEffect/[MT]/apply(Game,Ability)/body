@@ -1,0 +1,13 @@
+{
+  Card aura=game.getCard(source.getSourceId());
+  if (aura != null && game.getState().getZone(aura.getId()).equals(Zone.GRAVEYARD)) {
+    Player controller=game.getPlayer(source.getControllerId());
+    Permanent creature=game.getPermanent(getTargetPointer().getFirst(game,source));
+    if (controller != null && creature != null) {
+      game.getState().setValue("attachTo:" + aura.getId(),creature);
+      aura.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),controller.getId());
+      return creature.addAttachment(aura.getId(),game);
+    }
+  }
+  return false;
+}

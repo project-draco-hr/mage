@@ -1,0 +1,15 @@
+{
+  Player sourcePlayer=game.getPlayer(source.getControllerId());
+  if (sourcePlayer != null) {
+    boolean haveMoreLife=false;
+    for (    UUID id : game.getOpponents(source.getControllerId())) {
+      Player opponent=game.getPlayer(id);
+      if (opponent != null && opponent.getLife() < sourcePlayer.getLife()) {
+        haveMoreLife=true;
+        break;
+      }
+    }
+    if (haveMoreLife)     sourcePlayer.drawCards(1,game);
+  }
+  return false;
+}

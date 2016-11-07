@@ -1,0 +1,39 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(targetPointer.getFirst(game,source));
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (player != null) {
+    Choice typeChoice=new ChoiceImpl(true);
+    typeChoice.setMessage("Choose a creature type:");
+    typeChoice.setChoices(CardRepository.instance.getCreatureTypes());
+    while (!player.choose(outcome,typeChoice,game)) {
+      if (!player.canRespond()) {
+        return false;
+      }
+    }
+    if (typeChoice.getChoice() != null) {
+      game.informPlayers(sourceObject.getLogName() + " chosen type: " + typeChoice.getChoice());
+    }
+    targetPlayer.revealCards("hand of " + targetPlayer.getName(),targetPlayer.getHand(),game);
+    FilterCard filterCard=new FilterCard();
+    filterCard.add(new SubtypePredicate(typeChoice.getChoice()));
+    List<Card> toDiscard=new ArrayList<>();
+    for (    Card card : targetPlayer.getHand().getCards(game)) {
+      if (filterCard.match(card,game)) {
+        toDiscard.add(card);
+      }
+    }
+    for (    Card card : toDiscard) {
+      targetPlayer.discard(card,source,game);
+    }
+    FilterCreaturePermanent filterCreaturePermanent=new FilterCreaturePermanent();
+    filterCreaturePermanent.add(new SubtypePredicate(typeChoice.getChoice()));
+    for (    Permanent creature : game.getBattlefield().getActivePermanents(filterCreaturePermanent,source.getSourceId(),game)) {
+      if (creature.getControllerId().equals(targetPlayer.getId())) {
+        creature.destroy(source.getSourceId(),game,true);
+      }
+    }
+    return true;
+  }
+  return false;
+}

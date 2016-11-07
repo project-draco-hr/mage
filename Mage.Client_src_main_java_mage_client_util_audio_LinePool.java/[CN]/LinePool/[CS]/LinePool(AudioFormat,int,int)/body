@@ -1,5 +1,4 @@
 {
-  format=audioFormat;
   this.alwaysActive=alwaysActive;
   mixer=AudioSystem.getMixer(null);
   DataLine.Info lineInfo=new DataLine.Info(SourceDataLine.class,audioFormat);
@@ -9,7 +8,7 @@
       freeLines.add(line);
     }
  catch (    LineUnavailableException e) {
-      e.printStackTrace();
+      log.warn("Failed to get line from mixer",e);
     }
   }
   new Timer("Line cleanup",true).scheduleAtFixedRate(new TimerTask(){

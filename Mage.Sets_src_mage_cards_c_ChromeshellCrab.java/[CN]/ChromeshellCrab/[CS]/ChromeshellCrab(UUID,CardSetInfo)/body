@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{U}");
+  this.subtype.add("Crab");
+  this.subtype.add("Beast");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  this.addAbility(new MorphAbility(this,new ManaCostsImpl("{4}{U}")));
+  Effect effect=new ExchangeControlTargetEffect(Duration.EndOfGame,rule,false,true);
+  effect.setText("exchange control of target creature you control and target creature an opponent controls");
+  Ability ability=new TurnedFaceUpSourceTriggeredAbility(effect,false,true);
+  ability.addTarget(new TargetControlledCreaturePermanent());
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability);
+}

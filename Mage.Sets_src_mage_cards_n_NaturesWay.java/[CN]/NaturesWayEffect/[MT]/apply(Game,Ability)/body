@@ -1,0 +1,12 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent controlledCreature=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
+  if (controller != null && controlledCreature != null) {
+    Permanent targetCreature=game.getPermanent(source.getTargets().get(1).getFirstTarget());
+    if (targetCreature != null) {
+      targetCreature.damage(controlledCreature.getPower().getValue(),controlledCreature.getId(),game,false,true);
+    }
+    return true;
+  }
+  return false;
+}

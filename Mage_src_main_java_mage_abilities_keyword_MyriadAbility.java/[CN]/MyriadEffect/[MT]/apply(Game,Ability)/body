@@ -3,6 +3,11 @@
   Permanent sourceObject=game.getPermanentOrLKIBattlefield(source.getSourceId());
   if (controller != null && sourceObject != null) {
     UUID defendingPlayerId=game.getCombat().getDefendingPlayerId(source.getSourceId(),game);
+    if (defendingPlayerId == null) {
+      Logger.getLogger(MyriadEffect.class).error("defending player == null source: " + sourceObject.getName() + " attacking: "+ (sourceObject.isAttacking() ? "Y" : "N"));
+      return false;
+    }
+    List<Permanent> tokens=new ArrayList<>();
     for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
       if (playerId != defendingPlayerId && controller.hasOpponent(playerId,game)) {
         Player opponent=game.getPlayer(playerId);
@@ -10,12 +15,14 @@
           PutTokenOntoBattlefieldCopyTargetEffect effect=new PutTokenOntoBattlefieldCopyTargetEffect(controller.getId(),null,false,1,true,true,playerId);
           effect.setTargetPointer(new FixedTarget(sourceObject,game));
           effect.apply(game,source);
-          ExileTargetEffect exileEffect=new ExileTargetEffect();
-          exileEffect.setTargetPointer(new FixedTargets(effect.getAddedPermanent(),game));
-          DelayedTriggeredAbility delayedAbility=new AtTheEndOfCombatDelayedTriggeredAbility(exileEffect);
-          game.addDelayedTriggeredAbility(delayedAbility,source);
+          tokens.addAll(effect.getAddedPermanent());
         }
       }
+    }
+    if (!tokens.isEmpty()) {
+      ExileTargetEffect exileEffect=new ExileTargetEffect();
+      exileEffect.setTargetPointer(new FixedTargets(tokens,game));
+      game.addDelayedTriggeredAbility(new AtTheEndOfCombatDelayedTriggeredAbility(exileEffect),source);
     }
     return true;
   }

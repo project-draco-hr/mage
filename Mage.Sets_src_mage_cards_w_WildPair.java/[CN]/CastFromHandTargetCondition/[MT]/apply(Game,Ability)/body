@@ -1,0 +1,22 @@
+{
+  UUID targetId=source.getEffects().get(0).getTargetPointer().getFirst(game,source);
+  Permanent permanent=game.getPermanentEntering(targetId);
+  int zccDiff=0;
+  if (permanent == null) {
+    permanent=game.getPermanentOrLKIBattlefield(targetId);
+    zccDiff=-1;
+  }
+  if (permanent != null) {
+    Spell spell=game.getStack().getSpell(targetId);
+    if (spell == null || spell.getZoneChangeCounter(game) != permanent.getZoneChangeCounter(game) + zccDiff) {
+      if (game.getLastKnownInformation(targetId,Zone.STACK,permanent.getZoneChangeCounter(game) + zccDiff) == null) {
+        return false;
+      }
+    }
+    CastFromHandWatcher watcher=(CastFromHandWatcher)game.getState().getWatchers().get(CastFromHandWatcher.class.getName());
+    if (watcher != null && watcher.spellWasCastFromHand(targetId)) {
+      return true;
+    }
+  }
+  return false;
+}

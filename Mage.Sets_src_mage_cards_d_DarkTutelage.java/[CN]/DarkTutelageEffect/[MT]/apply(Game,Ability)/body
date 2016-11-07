@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null && player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().removeFromTop(game);
+    if (card != null) {
+      card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+      player.loseLife(card.getConvertedManaCost(),game,false);
+      Cards cards=new CardsImpl();
+      cards.add(card);
+      player.revealCards("Dark Tutelage",cards,game);
+      return true;
+    }
+  }
+  return false;
+}

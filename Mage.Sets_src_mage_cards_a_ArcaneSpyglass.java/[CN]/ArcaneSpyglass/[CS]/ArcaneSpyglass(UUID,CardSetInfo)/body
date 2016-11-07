@@ -1,0 +1,9 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{4}");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DrawCardSourceControllerEffect(1),new GenericManaCost(2));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new SacrificeTargetCost(new TargetControlledPermanent(filter)));
+  ability.addEffect(new AddCountersSourceEffect(CounterType.CHARGE.createInstance()));
+  this.addAbility(ability);
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new DrawCardSourceControllerEffect(1),new RemoveCountersSourceCost(CounterType.CHARGE.createInstance(3))));
+}

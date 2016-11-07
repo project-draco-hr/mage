@@ -1,0 +1,30 @@
+{
+  Permanent permanentToCopy=game.getPermanentOrLKIBattlefield(getTargetPointer().getFirst(game,source));
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && permanentToCopy != null) {
+    PutTokenOntoBattlefieldCopyTargetEffect effect=new PutTokenOntoBattlefieldCopyTargetEffect(null,CardType.ARTIFACT,false);
+    effect.setTargetPointer(new FixedTarget(permanentToCopy,game));
+    if (effect.apply(game,source)) {
+      String oldTokens=(String)game.getState().getValue(source.getSourceId().toString() + source.getSourceObjectZoneChangeCounter());
+      StringBuilder sb=new StringBuilder();
+      for (      Permanent permanent : effect.getAddedPermanent()) {
+        if (sb.length() > 0) {
+          sb.append(";");
+        }
+        sb.append(permanent.getId());
+      }
+      game.getState().setValue(source.getSourceId().toString() + source.getSourceObjectZoneChangeCounter(),sb.toString());
+      if (oldTokens != null) {
+        Cards cards=new CardsImpl();
+        StringTokenizer tokenizer=new StringTokenizer(oldTokens,";");
+        while (tokenizer.hasMoreTokens()) {
+          String tokenId=tokenizer.nextToken();
+          cards.add(UUID.fromString(tokenId));
+        }
+        controller.moveCards(cards,Zone.EXILED,source,game);
+      }
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{4}{W}");
+  this.getSpellAbility().getModes().setMinModes(1);
+  this.getSpellAbility().getModes().setMaxModes(1);
+  this.getSpellAbility().addEffect(new BoostControlledEffect(2,2,Duration.EndOfTurn));
+  Mode mode=new Mode();
+  Effect effect=new GainAbilityControlledEffect(new DealsDamageGainLifeSourceTriggeredAbility(),Duration.EndOfTurn);
+  effect.setText("until end of turn, creatures you control gain \"Whenever this creature deals damage, you gain that much life.\"");
+  mode.getEffects().add(effect);
+  this.getSpellAbility().getModes().addMode(mode);
+  this.addAbility(new EntwineAbility("{1}{W}"));
+}

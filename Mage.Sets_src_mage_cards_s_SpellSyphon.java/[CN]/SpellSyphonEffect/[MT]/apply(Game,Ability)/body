@@ -1,0 +1,21 @@
+{
+  StackObject spell=game.getStack().getStackObject(targetPointer.getFirst(game,source));
+  if (spell != null) {
+    Player player=game.getPlayer(spell.getControllerId());
+    Player controller=game.getPlayer(source.getControllerId());
+    if (player != null && controller != null) {
+      int amount=game.getBattlefield().count(filter,source.getSourceId(),controller.getId(),game);
+      if (amount == 0) {
+        game.informPlayers("Spell Syphon: no blue permanents in controller's battlefield.");
+      }
+ else {
+        GenericManaCost cost=new GenericManaCost(amount);
+        if (!cost.pay(source,game,spell.getControllerId(),spell.getControllerId(),false)) {
+          game.informPlayers("Spell Syphon: cost wasn't payed - countering target spell.");
+          return game.getStack().counter(source.getFirstTarget(),source.getSourceId(),game);
+        }
+      }
+    }
+  }
+  return false;
+}

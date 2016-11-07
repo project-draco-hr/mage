@@ -1,0 +1,7 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.SORCERY},"{4}{B}");
+  this.getSpellAbility().addEffect(new SacrificeEffect(filter,1,"Target player"));
+  this.getSpellAbility().addTarget(new TargetPlayer());
+  Ability ability=new ConditionalTriggeredAbility(new BeginningOfUpkeepTriggeredAbility(Zone.GRAVEYARD,new ReturnSourceFromGraveyardToHandEffect(),TargetController.YOU,true),new MoreCardsInHandThanOpponentsCondition(),"At the beginning of your upkeep, if you have more cards in hand than each opponent, you may return {this} from your graveyard to your hand.");
+  this.addAbility(ability);
+}

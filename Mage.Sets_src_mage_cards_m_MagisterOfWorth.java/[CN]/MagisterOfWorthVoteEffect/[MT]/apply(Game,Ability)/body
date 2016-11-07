@@ -1,0 +1,30 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int graceCount=0;
+    int condemnationCount=0;
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        if (player.chooseUse(Outcome.DestroyPermanent,"Choose grace?",source,game)) {
+          graceCount++;
+          game.informPlayers(player.getLogName() + " has chosen: grace");
+        }
+ else {
+          condemnationCount++;
+          game.informPlayers(player.getLogName() + " has chosen: condemnation");
+        }
+      }
+    }
+    if (graceCount > condemnationCount) {
+      new MagisterOfWorthReturnFromGraveyardEffect().apply(game,source);
+    }
+ else {
+      FilterPermanent filter=new FilterCreaturePermanent("creatures other than {this}");
+      filter.add(new AnotherPredicate());
+      new DestroyAllEffect(filter).apply(game,source);
+    }
+    return true;
+  }
+  return false;
+}

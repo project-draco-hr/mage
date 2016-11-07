@@ -1,0 +1,23 @@
+{
+  StackObject spell=game.getStack().getStackObject(targetPointer.getFirst(game,source));
+  if (spell != null) {
+    Player player=game.getPlayer(spell.getControllerId());
+    Player controller=game.getPlayer(source.getControllerId());
+    MageObject sourceObject=game.getObject(source.getSourceId());
+    if (player != null && controller != null && sourceObject != null) {
+      int amount=new GreatestPowerCountCreatureYouControl().calculate(game,source,this);
+      GenericManaCost cost=new GenericManaCost(amount);
+      StringBuilder sb=new StringBuilder("Pay {").append(amount).append("}? (otherwise ").append(spell.getName()).append(" will be countered)");
+      if (player.chooseUse(Outcome.Benefit,sb.toString(),source,game)) {
+        cost.pay(source,game,source.getSourceId(),player.getId(),false);
+      }
+      if (!cost.isPaid()) {
+        if (game.getStack().counter(source.getFirstTarget(),source.getSourceId(),game)) {
+          game.informPlayers(new StringBuilder(sourceObject.getName()).append(": cost wasn't payed - countering ").append(spell.getName()).toString());
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

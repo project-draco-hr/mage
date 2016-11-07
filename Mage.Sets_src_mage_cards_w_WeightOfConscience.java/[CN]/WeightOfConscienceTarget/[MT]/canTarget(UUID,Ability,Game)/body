@@ -1,0 +1,25 @@
+{
+  if (super.canTarget(id,game)) {
+    Permanent targetPermanent=game.getPermanent(id);
+    if (targetPermanent != null) {
+      if (this.getTargets().isEmpty()) {
+        for (        Permanent permanent : game.getBattlefield().getActivePermanents(filterUntapped,source.getControllerId(),game)) {
+          for (          String subtype : permanent.getSubtype(game)) {
+            if (!CardUtil.isNonCreatureSubtype(subtype)) {
+              if (game.getBattlefield().contains(new FilterControlledCreaturePermanent(subtype,subtype),source.getControllerId(),game,2)) {
+                return true;
+              }
+            }
+          }
+        }
+      }
+ else {
+        Permanent firstTarget=game.getPermanent(this.getTargets().get(0));
+        if (firstTarget != null && CardUtil.shareSubtypes(firstTarget,targetPermanent,game)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

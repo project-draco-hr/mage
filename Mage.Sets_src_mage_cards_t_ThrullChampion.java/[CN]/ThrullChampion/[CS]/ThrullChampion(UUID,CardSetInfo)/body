@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{B}");
+  this.subtype.add("Thrull");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostAllEffect(1,1,Duration.WhileOnBattlefield,filter,false)));
+  ConditionalContinuousEffect ThrullChampionGainControlEffect=new ConditionalContinuousEffect(new GainControlTargetEffect(Duration.Custom),new SourceOnBattlefieldControlUnchangedCondition(),"Gain control of target Thrull for as long as you control {this}");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,ThrullChampionGainControlEffect,new TapSourceCost());
+  ability.addTarget(new TargetPermanent(filter));
+  this.addAbility(ability);
+}

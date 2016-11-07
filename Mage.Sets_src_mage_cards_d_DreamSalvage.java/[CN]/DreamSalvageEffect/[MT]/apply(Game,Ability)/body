@@ -1,0 +1,10 @@
+{
+  CardsDiscardedThisTurnWatcher watcher=(CardsDiscardedThisTurnWatcher)game.getState().getWatchers().get("CardsDiscardedThisTurnWatcher");
+  Player targetOpponent=game.getPlayer(source.getFirstTarget());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (targetOpponent != null && controller != null && watcher != null && watcher.getAmountCardsDiscarded(targetOpponent.getId()) > 0) {
+    controller.drawCards(watcher.getAmountCardsDiscarded(targetOpponent.getId()),game);
+    return true;
+  }
+  return false;
+}

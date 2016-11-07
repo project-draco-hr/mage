@@ -1,0 +1,20 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  if (controller != null && permanent != null) {
+    Player player=game.getPlayer(permanent.getControllerId());
+    controller.moveCardToExileWithInfo(permanent,null,"",source.getSourceId(),game,Zone.BATTLEFIELD,true);
+    if (player.chooseUse(Outcome.PutCardInPlay,"Search your library for a basic land card?",source,game)) {
+      TargetCardInLibrary target=new TargetCardInLibrary(new FilterBasicLandCard());
+      if (player.searchLibrary(target,game)) {
+        Card card=player.getLibrary().getCard(target.getFirstTarget(),game);
+        if (card != null) {
+          player.moveCards(card,Zone.BATTLEFIELD,source,game,true,false,false,null);
+        }
+      }
+      player.shuffleLibrary(source,game);
+    }
+    return true;
+  }
+  return false;
+}

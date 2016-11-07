@@ -1,0 +1,34 @@
+{
+  Spell spell=game.getStack().getSpell(targetPointer.getFirst(game,source));
+  MageObject sourceObject=source.getSourceObject(game);
+  if (sourceObject != null && spell != null) {
+    Player spellController=game.getPlayer(spell.getControllerId());
+    if (spellController != null && spellController.moveCardToExileWithInfo(spell,source.getSourceId(),sourceObject.getIdName(),source.getSourceId(),game,Zone.STACK,true)) {
+      if (spellController.getLibrary().size() > 0) {
+        Library library=spellController.getLibrary();
+        Card card;
+        do {
+          card=library.removeFromTop(game);
+          if (card != null) {
+            spellController.moveCardToExileWithInfo(card,source.getSourceId(),sourceObject.getIdName(),source.getSourceId(),game,Zone.LIBRARY,true);
+          }
+        }
+ while (library.size() > 0 && card != null && !sharesType(card,spell.getCardType()));
+        if (card != null && sharesType(card,spell.getCardType()) && !card.getCardType().contains(CardType.LAND) && card.getSpellAbility().canChooseTarget(game)) {
+          if (spellController.chooseUse(Outcome.PlayForFree,"Cast " + card.getLogName() + " without paying cost?",source,game)) {
+            spellController.cast(card.getSpellAbility(),game,true);
+          }
+        }
+        ExileZone exile=game.getExile().getExileZone(source.getSourceId());
+        if (exile != null) {
+          while (exile.size() > 0) {
+            card=exile.getRandom(game);
+            spellController.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.EXILED,false,false);
+          }
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}

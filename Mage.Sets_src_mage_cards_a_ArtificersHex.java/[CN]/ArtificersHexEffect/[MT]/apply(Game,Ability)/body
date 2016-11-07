@@ -1,0 +1,13 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  if (enchantment != null && enchantment.getAttachedTo() != null) {
+    Permanent equipment=game.getPermanent(enchantment.getAttachedTo());
+    if (equipment != null && equipment.getAttachedTo() != null) {
+      Permanent creature=game.getPermanent(equipment.getAttachedTo());
+      if (creature != null && creature.getCardType().contains(CardType.CREATURE)) {
+        return creature.destroy(source.getSourceId(),game,false);
+      }
+    }
+  }
+  return false;
+}

@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Card aura=game.getCard(source.getFirstTarget());
+  if (controller == null || aura == null) {
+    return false;
+  }
+  FilterControlledCreaturePermanent FILTER=new FilterControlledCreaturePermanent("Aura card in a graveyard");
+  TargetControlledPermanent target=new TargetControlledPermanent(FILTER);
+  target.setNotTarget(true);
+  if (target.canChoose(source.getControllerId(),game) && controller.choose(Outcome.PutCardInPlay,target,source.getSourceId(),game)) {
+    Permanent permanent=game.getPermanent(target.getFirstTarget());
+    if (permanent != null && !permanent.cantBeAttachedBy(aura,game)) {
+      game.getState().setValue("attachTo:" + aura.getId(),permanent);
+      controller.moveCards(aura,Zone.BATTLEFIELD,source,game);
+      return permanent.addAttachment(aura.getId(),game);
+    }
+  }
+  return false;
+}

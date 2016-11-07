@@ -6,7 +6,7 @@ case CHECK_STATE_PLAYERS:
         checkPlayersState();
       break;
 case INFO:
-    ChatManager.getInstance().broadcast(chatId,"",event.getMessage(),MessageColor.BLACK,true,MessageType.STATUS);
+    ChatManager.getInstance().broadcast(chatId,"",event.getMessage(),MessageColor.BLACK,true,MessageType.STATUS,null);
   logger.debug(tournament.getId() + " " + event.getMessage());
 break;
 case START_DRAFT:
@@ -24,6 +24,18 @@ case START_MATCH:
 if (!isAbort()) {
 initTournament();
 startMatch(event.getPair(),event.getMatchOptions());
+}
+break;
+case START_MULTIPLAYER_MATCH:
+if (!isAbort()) {
+initTournament();
+MatchOptions matchOptions=event.getMatchOptions();
+if (matchOptions != null && event.getMultiplayerRound() != null) {
+for (TournamentPlayer player : event.getMultiplayerRound().getAllPlayers()) {
+matchOptions.getPlayerTypes().add(player.getPlayerType());
+}
+}
+startMultiplayerMatch(event.getMultiplayerRound(),event.getMatchOptions());
 }
 break;
 case END:
@@ -52,7 +64,7 @@ for (TournamentPlayer player : tournament.getPlayers()) {
 if (!player.getPlayer().isHuman()) {
 player.setJoined();
 logger.debug("player " + player.getPlayer().getId() + " has joined tournament "+ tournament.getId());
-ChatManager.getInstance().broadcast(chatId,"",player.getPlayer().getLogName() + " has joined the tournament",MessageColor.BLACK,true,MessageType.STATUS);
+ChatManager.getInstance().broadcast(chatId,"",player.getPlayer().getLogName() + " has joined the tournament",MessageColor.BLACK,true,MessageType.STATUS,null);
 }
 }
 checkStart();

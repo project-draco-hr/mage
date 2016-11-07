@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{1}{G}{W}","{1}{W}{B}",true);
+  Effect effect=new GainAbilityAllEffect(IndestructibleAbility.getInstance(),Duration.EndOfTurn,new FilterControlledCreaturePermanent("Creatures you controll"),false);
+  effect.setText("Creatures you control are indestructible this turn");
+  getLeftHalfCard().getSpellAbility().addEffect(effect);
+  getLeftHalfCard().getSpellAbility().addEffect(new UntapAllControllerEffect(new FilterControlledCreaturePermanent(),"Untap each creature you control"));
+  getRightHalfCard().getSpellAbility().addEffect(new GainAbilityControlledEffect(DeathtouchAbility.getInstance(),Duration.EndOfTurn,new FilterCreaturePermanent("Creatures")));
+  effect=new GainAbilityControlledEffect(LifelinkAbility.getInstance(),Duration.EndOfTurn,new FilterCreaturePermanent("Creatures"));
+  effect.setText("Creatures you control gain lifelink until end of turn");
+  getRightHalfCard().getSpellAbility().addEffect(effect);
+}

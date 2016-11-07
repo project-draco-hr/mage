@@ -1,0 +1,14 @@
+{
+  int pow=input.getObject().getPower().getValue();
+  for (  UUID id : game.getPlayerList()) {
+    Player player=game.getPlayer(id);
+    if (player != null) {
+      for (      Permanent p : game.getBattlefield().getActivePermanents(new FilterControlledCreaturePermanent(),id,game)) {
+        if (p.getPower().getValue() >= pow && !p.equals(input.getObject())) {
+          return false;
+        }
+      }
+    }
+  }
+  return true;
+}

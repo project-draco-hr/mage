@@ -1,0 +1,22 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT,CardType.CREATURE},"{3}{UP}");
+  this.subtype.add("Shapeshifter");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  ApplyToPermanent phyrexianMetamorphApplier=new ApplyToPermanent(){
+    @Override public Boolean apply(    Game game,    Permanent permanent){
+      return apply(game,(MageObject)permanent);
+    }
+    @Override public Boolean apply(    Game game,    MageObject mageObject){
+      if (!mageObject.getCardType().contains(CardType.ARTIFACT)) {
+        mageObject.getCardType().add(CardType.ARTIFACT);
+      }
+      return true;
+    }
+  }
+;
+  Effect effect=new CopyPermanentEffect(filter,phyrexianMetamorphApplier);
+  effect.setText("You may have {this} enter the battlefield as a copy of any artifact or creature on the battlefield, except it's an artifact in addition to its other types");
+  Ability ability=new SimpleStaticAbility(Zone.ALL,new EntersBattlefieldEffect(effect,"",true));
+  this.addAbility(ability);
+}

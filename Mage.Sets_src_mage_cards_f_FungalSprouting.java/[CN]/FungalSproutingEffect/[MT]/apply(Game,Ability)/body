@@ -1,0 +1,13 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    int amount=0;
+    for (    Permanent p : game.getBattlefield().getActivePermanents(new FilterControlledCreaturePermanent(),source.getControllerId(),game)) {
+      if (p.getPower().getValue() > amount)       amount=p.getPower().getValue();
+    }
+    SaprolingToken token=new SaprolingToken();
+    token.putOntoBattlefield(amount,game,source.getSourceId(),source.getControllerId());
+    return true;
+  }
+  return false;
+}

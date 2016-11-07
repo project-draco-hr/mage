@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{R}");
+  this.subtype.add("Goblin");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new HatchetBullyEffect(),new ManaCostsImpl("{2}{R}"));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new HatchetBullyCost());
+  ability.addTarget(new TargetCreatureOrPlayer());
+  Target target=new TargetControlledCreaturePermanent();
+  target.setNotTarget(true);
+  ability.addTarget(target);
+  this.addAbility(ability);
+}

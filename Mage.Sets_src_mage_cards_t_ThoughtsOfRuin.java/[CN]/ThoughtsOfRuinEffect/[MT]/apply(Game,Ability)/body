@@ -1,0 +1,34 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int amount=controller.getHand().size();
+    if (amount > 0) {
+      List<Permanent> permanentsToSacrifice=new ArrayList<Permanent>();
+      for (      UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+        Player player=game.getPlayer(playerId);
+        if (player != null) {
+          int lands=game.getState().getBattlefield().countAll(filter,playerId,game);
+          if (amount >= lands) {
+            permanentsToSacrifice.addAll(game.getState().getBattlefield().getAllActivePermanents(filter,playerId,game));
+          }
+ else {
+            FilterLandPermanent playerFilter=filter.copy();
+            playerFilter.add(new ControllerIdPredicate(playerId));
+            Target target=new TargetLandPermanent(amount,amount,playerFilter,true);
+            player.choose(outcome,target,source.getSourceId(),game);
+            for (            UUID landId : target.getTargets()) {
+              Permanent permanent=game.getPermanent(landId);
+              if (permanent != null) {
+                permanentsToSacrifice.add(permanent);
+              }
+            }
+          }
+        }
+      }
+      for (      Permanent permanent : permanentsToSacrifice) {
+        permanent.sacrifice(source.getSourceId(),game);
+      }
+    }
+  }
+  return false;
+}

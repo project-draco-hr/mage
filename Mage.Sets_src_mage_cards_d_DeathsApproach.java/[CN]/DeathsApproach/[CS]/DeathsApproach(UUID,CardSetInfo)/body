@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{B}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.UnboostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  DynamicValue unboost=new SignInversionDynamicValue(new CardsInEnchantedCreaturesControllerGraveyardCount(new FilterCreatureCard("the number of creature cards in its controller's graveyard")));
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(unboost,unboost,Duration.WhileOnBattlefield));
+  this.addAbility(ability);
+}

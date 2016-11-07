@@ -1,0 +1,15 @@
+{
+  if (super.checkTrigger(event,game)) {
+    SpellsCastWatcher watcher=(SpellsCastWatcher)game.getState().getWatchers().get(SpellsCastWatcher.class.getName());
+    if (watcher != null) {
+      List<Spell> spells=watcher.getSpellsCastThisTurn(event.getPlayerId());
+      if (spells != null && spells.size() == 1) {
+        for (        Effect effect : getEffects()) {
+          effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}

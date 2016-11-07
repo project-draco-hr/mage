@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{B}");
+  this.subtype.add("Aura");
+  this.addAbility(new SimpleStaticAbility(Zone.ALL,new CastAsThoughItHadFlashSourceEffect(Duration.EndOfGame)));
+  this.addAbility(new SacrificeIfCastAtInstantTimeTriggeredAbility());
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(3,-1,Duration.WhileOnBattlefield));
+  Effect effect=new SetCardColorAttachedEffect(ObjectColor.BLACK,Duration.WhileOnBattlefield,AttachmentType.AURA);
+  effect.setText("and is black");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

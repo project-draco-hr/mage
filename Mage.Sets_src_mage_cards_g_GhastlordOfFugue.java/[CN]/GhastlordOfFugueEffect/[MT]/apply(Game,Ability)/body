@@ -1,0 +1,19 @@
+{
+  Player targetPlayer=game.getPlayer(getTargetPointer().getFirst(game,source));
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (targetPlayer != null && sourceObject != null && controller != null) {
+    targetPlayer.revealCards(sourceObject.getName(),targetPlayer.getHand(),game);
+    TargetCardInHand target=new TargetCardInHand(new FilterCard());
+    target.setNotTarget(true);
+    Card chosenCard=null;
+    if (controller.choose(Outcome.Benefit,targetPlayer.getHand(),target,game)) {
+      chosenCard=game.getCard(target.getFirstTarget());
+    }
+    if (chosenCard != null) {
+      controller.moveCards(chosenCard,Zone.EXILED,source,game);
+    }
+    return true;
+  }
+  return false;
+}

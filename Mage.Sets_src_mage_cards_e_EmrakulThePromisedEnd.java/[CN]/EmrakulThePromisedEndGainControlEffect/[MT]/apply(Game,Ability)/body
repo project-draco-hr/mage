@@ -1,0 +1,12 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+  if (controller != null && targetPlayer != null) {
+    TurnMod controlPlayerTurnMod=new TurnMod(targetPlayer.getId(),controller.getId());
+    TurnMod extraTurnMod=new TurnMod(targetPlayer.getId(),false);
+    controlPlayerTurnMod.setSubsequentTurnMod(extraTurnMod);
+    game.getState().getTurnMods().add(controlPlayerTurnMod);
+    return true;
+  }
+  return false;
+}

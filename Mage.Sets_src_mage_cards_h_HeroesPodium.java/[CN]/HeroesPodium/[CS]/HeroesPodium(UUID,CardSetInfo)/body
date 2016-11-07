@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{5}");
+  this.supertype.add("Legendary");
+  DynamicValue xValue=new HeroesPodiumLegendaryCount();
+  Effect effect=new BoostControlledEffect(xValue,xValue,Duration.WhileOnBattlefield,filter,false);
+  effect.setText("Each legendary creature you control gets +1/+1 for each other legendary creature you control");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new HeroesPodiumEffect(),new ManaCostsImpl("{X}"));
+  ability.addCost(new TapSourceCost());
+  this.addAbility(ability);
+}

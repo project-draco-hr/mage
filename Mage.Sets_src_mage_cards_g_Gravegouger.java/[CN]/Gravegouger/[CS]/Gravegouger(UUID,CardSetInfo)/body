@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{B}");
+  this.subtype.add("Nightmare");
+  this.subtype.add("Horror");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  Effect effect=new ExileTargetForSourceEffect();
+  effect.setText("exile up to two target cards from a single graveyard");
+  Ability ability=new EntersBattlefieldTriggeredAbility(effect,false);
+  ability.addTarget(new TargetCardInASingleGraveyard(0,2,new FilterCard("cards from a single graveyard")));
+  this.addAbility(ability);
+  this.addAbility(new LeavesBattlefieldTriggeredAbility(new ReturnFromExileForSourceEffect(Zone.GRAVEYARD),false));
+}

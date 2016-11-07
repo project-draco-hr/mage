@@ -1,0 +1,16 @@
+{
+  int opponentsMostLife=Integer.MIN_VALUE;
+  Player controller=game.getPlayer(sourceAbility.getControllerId());
+  if (controller != null) {
+    for (    UUID playerUUID : game.getState().getPlayersInRange(controller.getId(),game)) {
+      if (controller.hasOpponent(playerUUID,game)) {
+        Player opponent=game.getPlayer(playerUUID);
+        if (opponent != null && opponent.getLife() > opponentsMostLife) {
+          opponentsMostLife=opponent.getLife();
+        }
+      }
+    }
+    return controller.getLife() - opponentsMostLife;
+  }
+  return 0;
+}

@@ -1,0 +1,12 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    if (new PermanentHasCounterCondition(CounterType.BOUNTY,0,new FilterOpponentsCreaturePermanent(),PermanentHasCounterCondition.CountType.MORE_THAN).apply(game,source)) {
+      return true;
+    }
+    Effect effect=new SacrificeControllerEffect(new FilterControlledCreaturePermanent(),1,"");
+    effect.apply(game,source);
+    return true;
+  }
+  return false;
+}

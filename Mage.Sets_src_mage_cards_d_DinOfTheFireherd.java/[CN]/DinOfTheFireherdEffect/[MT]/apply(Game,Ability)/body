@@ -1,0 +1,18 @@
+{
+  boolean applied;
+  Token token=new DinOfTheFireherdToken();
+  applied=token.putOntoBattlefield(1,game,source.getSourceId(),source.getControllerId());
+  int blackCreaturesControllerControls=game.getBattlefield().countAll(blackCreatureFilter,source.getControllerId(),game);
+  int redCreaturesControllerControls=game.getBattlefield().countAll(redCreatureFilter,source.getControllerId(),game);
+  Player targetOpponent=game.getPlayer(targetPointer.getFirst(game,source));
+  if (targetOpponent != null) {
+    Effect effect=new SacrificeEffect(new FilterControlledCreaturePermanent(),blackCreaturesControllerControls,"Target Opponent");
+    effect.setTargetPointer(new FixedTarget(targetOpponent.getId()));
+    effect.apply(game,source);
+    Effect effect2=new SacrificeEffect(new FilterControlledLandPermanent(),redCreaturesControllerControls,"Target Opponent");
+    effect2.setTargetPointer(new FixedTarget(targetOpponent.getId()));
+    effect2.apply(game,source);
+    applied=true;
+  }
+  return applied;
+}

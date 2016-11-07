@@ -1,0 +1,23 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    UUID targetId=getTargetPointer().getFirst(game,source);
+    Card card=game.getCard(targetId);
+    if (card != null) {
+      controller.moveCards(card,Zone.BATTLEFIELD,source,game);
+      Permanent creature=game.getPermanent(card.getId());
+      if (creature != null) {
+        ContinuousEffect hasteEffect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.Custom);
+        hasteEffect.setTargetPointer(new FixedTarget(creature,game));
+        game.addEffect(hasteEffect,source);
+        ReturnToHandTargetEffect returnToHandEffect=new ReturnToHandTargetEffect();
+        returnToHandEffect.setText("return that creature to your hand");
+        returnToHandEffect.setTargetPointer(new FixedTarget(creature,game));
+        DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(returnToHandEffect);
+        game.addDelayedTriggeredAbility(delayedAbility,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

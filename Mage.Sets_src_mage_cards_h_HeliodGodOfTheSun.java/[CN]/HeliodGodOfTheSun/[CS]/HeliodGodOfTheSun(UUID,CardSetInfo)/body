@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT,CardType.CREATURE},"{3}{W}");
+  this.supertype.add("Legendary");
+  this.subtype.add("God");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(6);
+  this.addAbility(IndestructibleAbility.getInstance());
+  Effect effect=new LoseCreatureTypeSourceEffect(new DevotionCount(ColoredManaSymbol.W),5);
+  effect.setText("As long as your devotion to white is less than five, Heliod isn't a creature.<i>(Each {W} in the mana costs of permanents you control counts towards your devotion to white.)</i>");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityControlledEffect(VigilanceAbility.getInstance(),Duration.WhileOnBattlefield,new FilterCreaturePermanent(),true)));
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new HeliodGodOfTheSunToken()),new ManaCostsImpl("{2}{W}{W}")));
+}

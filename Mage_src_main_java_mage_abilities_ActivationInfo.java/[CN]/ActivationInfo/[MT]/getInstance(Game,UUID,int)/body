@@ -1,9 +1,14 @@
 {
   String key="ActivationInfo" + sourceId.toString() + zoneChangeCounter;
-  ActivationInfo activationInfo=(ActivationInfo)game.getState().getValue(key);
-  if (activationInfo == null) {
-    activationInfo=new ActivationInfo(game);
-    game.getState().setValue(key,activationInfo);
+  Integer activations=(Integer)game.getState().getValue(key);
+  ActivationInfo activationInfo;
+  if (activations != null) {
+    Integer turnNum=(Integer)game.getState().getValue(key + "T");
+    activationInfo=new ActivationInfo(game,turnNum,activations);
   }
+ else {
+    activationInfo=new ActivationInfo(game,game.getTurnNum(),0);
+  }
+  activationInfo.setKey(key);
   return activationInfo;
 }

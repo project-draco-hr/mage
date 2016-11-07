@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{B}");
+  this.subtype.add("Human");
+  this.subtype.add("Spellshaper");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  ManacostVariableValue manaX=new ManacostVariableValue();
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostTargetEffect(manaX,new StaticValue(0),Duration.EndOfTurn),new ManaCostsImpl("{X}{B}"));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new DiscardCardCost());
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}

@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{2}{B}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  Ability ability2=new BeginningOfUpkeepTriggeredAbility(new SacrificeControllerEffect(new FilterControlledCreaturePermanent(),1,""),TargetController.YOU,false);
+  this.addAbility(ability2);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(3,3,Duration.WhileOnBattlefield)));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(TrampleAbility.getInstance(),AttachmentType.AURA)));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new SetCardSubtypeAttachedEffect(setSubtypes,Duration.WhileOnBattlefield,AttachmentType.AURA)));
+}

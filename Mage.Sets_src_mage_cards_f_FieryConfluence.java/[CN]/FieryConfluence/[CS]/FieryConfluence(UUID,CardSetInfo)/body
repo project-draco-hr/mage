@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.SORCERY},"{2}{R}{R}");
+  this.getSpellAbility().getModes().setMinModes(3);
+  this.getSpellAbility().getModes().setMaxModes(3);
+  this.getSpellAbility().getModes().setEachModeMoreThanOnce(true);
+  this.getSpellAbility().addEffect(new DamageAllEffect(1,new FilterCreaturePermanent()));
+  Mode mode=new Mode();
+  mode.getEffects().add(new DamagePlayersEffect(2,TargetController.OPPONENT));
+  this.getSpellAbility().getModes().addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new DestroyTargetEffect());
+  mode.getTargets().add(new TargetArtifactPermanent());
+  this.getSpellAbility().getModes().addMode(mode);
+}

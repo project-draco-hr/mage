@@ -1,0 +1,21 @@
+{
+  Cards cardsToBattlefield=new CardsImpl();
+  boolean threshold=false;
+  DynamicValue c=new CardsInControllerGraveyardCount();
+  int numCards=c.calculate(game,source,this);
+  if (numCards >= 7) {
+    threshold=true;
+  }
+  Player controller=game.getPlayer(source.getControllerId());
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(new FilterEnchantmentPermanent(),source.getControllerId(),source.getSourceId(),game)) {
+    if (permanent != null && permanent.destroy(source.getSourceId(),game,false)) {
+      if (threshold && controller != null && permanent.getOwnerId().equals(controller.getId())) {
+        cardsToBattlefield.add(permanent);
+      }
+    }
+  }
+  if (threshold && controller != null) {
+    controller.moveCards(cardsToBattlefield,Zone.BATTLEFIELD,source,game);
+  }
+  return true;
+}

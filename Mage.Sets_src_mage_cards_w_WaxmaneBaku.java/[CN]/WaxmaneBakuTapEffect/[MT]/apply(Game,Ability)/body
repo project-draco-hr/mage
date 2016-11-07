@@ -1,0 +1,22 @@
+{
+  int numberToTap=0;
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof RemoveVariableCountersSourceCost) {
+      numberToTap=((RemoveVariableCountersSourceCost)cost).getAmount();
+    }
+  }
+  TargetPermanent target=new TargetPermanent(numberToTap,filter);
+  if (target.canChoose(source.getControllerId(),game) && target.choose(Outcome.Tap,source.getControllerId(),source.getSourceId(),game)) {
+    if (!target.getTargets().isEmpty()) {
+      List<UUID> targets=target.getTargets();
+      for (      UUID targetId : targets) {
+        Permanent permanent=game.getPermanent(targetId);
+        if (permanent != null) {
+          permanent.tap(game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

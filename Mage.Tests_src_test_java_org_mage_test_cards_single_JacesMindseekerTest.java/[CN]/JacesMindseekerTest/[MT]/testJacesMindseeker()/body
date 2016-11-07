@@ -1,0 +1,20 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",6);
+  addCard(Zone.HAND,playerA,"Jace's Mindseeker",1);
+  addCard(Zone.LIBRARY,playerB,"Silvercoat Lion",2);
+  addCard(Zone.LIBRARY,playerB,"Lightning Bolt",1);
+  addCard(Zone.LIBRARY,playerB,"Silvercoat Lion",2);
+  skipInitShuffling();
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Jace's Mindseeker");
+  addTarget(playerA,playerB);
+  setChoice(playerA,"Yes");
+  setChoice(playerA,"Lightning Bolt");
+  addTarget(playerA,playerB);
+  setStopAt(1,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertPermanentCount(playerA,"Jace's Mindseeker",1);
+  assertGraveyardCount(playerB,"Lightning Bolt",1);
+  assertGraveyardCount(playerB,"Silvercoat Lion",4);
+  assertLife(playerA,20);
+  assertLife(playerB,17);
+}

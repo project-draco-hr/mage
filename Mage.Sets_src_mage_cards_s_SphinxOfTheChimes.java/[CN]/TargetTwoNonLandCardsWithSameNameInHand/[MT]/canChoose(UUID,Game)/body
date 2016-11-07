@@ -1,0 +1,16 @@
+{
+  Cards cardsToCheck=new CardsImpl();
+  Player player=game.getPlayer(sourceControllerId);
+  for (  Card card : player.getHand().getCards(filter,game)) {
+    cardsToCheck.add(card.getId());
+  }
+  int possibleCards=0;
+  for (  UUID cardToCheck : cardsToCheck) {
+    FilterCard nameFilter=new FilterCard();
+    nameFilter.add(new NamePredicate(game.getCard(cardToCheck).getName()));
+    if (cardsToCheck.count(nameFilter,game) > 1) {
+      ++possibleCards;
+    }
+  }
+  return possibleCards > 0;
+}

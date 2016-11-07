@@ -1,0 +1,19 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{R}{R}");
+  this.subtype.add("Orc");
+  this.subtype.add("Cleric");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CantBeRegeneratedTargetEffect(Duration.EndOfTurn),new ManaCostsImpl("{R}{R}"));
+  ability.addCost(new TapSourceCost());
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new RegenerateTargetEffect(),new ManaCostsImpl("{B}{B}{R}"));
+  ability.addCost(new TapSourceCost());
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new RegenerateTargetEffect(),new ManaCostsImpl("{R}{G}{G}"));
+  ability.addCost(new TapSourceCost());
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability);
+}

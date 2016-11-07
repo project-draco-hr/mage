@@ -1,0 +1,13 @@
+{
+  List<UUID> attachments=new LinkedList();
+  attachments.addAll(input.getAttachments());
+  for (  UUID uuid : attachments) {
+    if (!uuid.equals(ownId)) {
+      Permanent attachment=game.getPermanent(uuid);
+      if (attachment != null && attachment.getSubtype(game).contains("Aura")) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

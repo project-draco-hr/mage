@@ -1,0 +1,25 @@
+{
+  Spell spell=game.getStack().getSpell(targetPointer.getFirst(game,source));
+  if (spell != null) {
+    int cmc=spell.getConvertedManaCost();
+    Player targetPlayer=null;
+    for (    Target target : source.getTargets()) {
+      if (target instanceof TargetPlayer) {
+        targetPlayer=game.getPlayer(target.getFirstTarget());
+      }
+    }
+    if (targetPlayer != null) {
+      if (targetPlayer.getHand().size() > 0) {
+        targetPlayer.revealCards("Infernal Kirin",targetPlayer.getHand(),game);
+        for (        UUID uuid : targetPlayer.getHand().copy()) {
+          Card card=game.getCard(uuid);
+          if (card != null && card.getConvertedManaCost() == cmc) {
+            targetPlayer.discard(card,source,game);
+          }
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}

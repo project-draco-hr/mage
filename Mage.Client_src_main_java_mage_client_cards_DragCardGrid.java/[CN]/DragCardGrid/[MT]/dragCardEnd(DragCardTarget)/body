@@ -1,0 +1,24 @@
+{
+  if (target == this) {
+  }
+ else   if (target == null) {
+  }
+ else {
+    for (    ArrayList<ArrayList<CardView>> gridRow : cardGrid) {
+      for (      ArrayList<CardView> stack : gridRow) {
+        for (int i=0; i < stack.size(); ++i) {
+          CardView card=stack.get(i);
+          if (card.isSelected()) {
+            stack.set(i,null);
+            removeCardView(card);
+            eventSource.removeSpecificCard(card,"remove-specific-card");
+          }
+        }
+      }
+    }
+    trimGrid();
+    layoutGrid();
+    cardScroll.revalidate();
+    cardScroll.repaint();
+  }
+}

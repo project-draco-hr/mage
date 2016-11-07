@@ -1,0 +1,21 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int count=0;
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      if (controller.hasOpponent(playerId,game)) {
+        Player opponent=game.getPlayer(playerId);
+        if (opponent != null) {
+          if (opponent.getHand().size() >= 4) {
+            count++;
+          }
+        }
+      }
+    }
+    if (count > 0) {
+      return new CreateTokenEffect(new WolfToken("C14"),count).apply(game,source);
+    }
+    return true;
+  }
+  return false;
+}

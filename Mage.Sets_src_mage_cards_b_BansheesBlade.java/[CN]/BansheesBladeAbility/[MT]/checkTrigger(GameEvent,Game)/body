@@ -1,0 +1,13 @@
+{
+  if (event instanceof DamagedEvent && ((DamagedEvent)event).isCombatDamage() && !usedInPhase) {
+    Permanent permanent=game.getPermanent(event.getSourceId());
+    if (permanent != null && permanent.getAttachments().contains(this.getSourceId())) {
+      usedInPhase=true;
+      return true;
+    }
+  }
+  if (event.getType().equals(GameEvent.EventType.COMBAT_DAMAGE_STEP_PRE)) {
+    usedInPhase=false;
+  }
+  return false;
+}

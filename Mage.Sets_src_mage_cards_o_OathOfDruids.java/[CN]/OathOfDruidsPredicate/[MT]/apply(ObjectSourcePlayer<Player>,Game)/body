@@ -1,0 +1,13 @@
+{
+  Player targetPlayer=input.getObject();
+  UUID activePlayerId=game.getActivePlayerId();
+  if (targetPlayer == null || activePlayerId == null) {
+    return false;
+  }
+  if (targetPlayer.getId().equals(activePlayerId)) {
+    return false;
+  }
+  int countTargetPlayer=game.getBattlefield().countAll(filter,targetPlayer.getId(),game);
+  int countActivePlayer=game.getBattlefield().countAll(filter,activePlayerId,game);
+  return countTargetPlayer > countActivePlayer;
+}

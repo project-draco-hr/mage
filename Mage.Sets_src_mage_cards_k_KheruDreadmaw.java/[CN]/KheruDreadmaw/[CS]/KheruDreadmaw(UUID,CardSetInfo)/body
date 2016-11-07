@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{B}");
+  this.subtype.add("Zombie");
+  this.subtype.add("Crocodile");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  this.addAbility(DefenderAbility.getInstance());
+  Effect effect=new GainLifeEffect(new SacrificeCostCreaturesToughness());
+  effect.setText("You gain life equal to the sacrificed creature's toughness");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl<>("{1}{G}"));
+  ability.addCost(new SacrificeTargetCost(new TargetControlledPermanent(filter)));
+  this.addAbility(ability);
+}

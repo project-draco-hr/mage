@@ -1,0 +1,18 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{2}{U}{R}");
+  Ability ability=new DevoidAbility(this.color);
+  ability.setRuleAtTheTop(true);
+  this.addAbility(ability);
+  this.getSpellAbility().getModes().setMinModes(1);
+  this.getSpellAbility().getModes().setMaxModes(2);
+  this.getSpellAbility().addTarget(new TargetSpellOrPermanent(1,1,filter,false));
+  this.getSpellAbility().addEffect(new ReturnToHandTargetEffect());
+  Mode mode=new Mode();
+  mode.getEffects().add(new DamageTargetEffect(2));
+  mode.getTargets().add(new TargetCreatureOrPlaneswalker());
+  Effect effect=new DealtDamageToCreatureBySourceDies(this,Duration.EndOfTurn);
+  effect.setText("If that permanent would be put into a graveyard this turn, exile it instead");
+  mode.getEffects().add(effect);
+  this.getSpellAbility().addMode(mode);
+  this.getSpellAbility().addWatcher(new DamagedByWatcher(true));
+}

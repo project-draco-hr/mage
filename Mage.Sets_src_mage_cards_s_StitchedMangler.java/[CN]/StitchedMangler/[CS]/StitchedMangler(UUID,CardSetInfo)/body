@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{U}");
+  this.subtype.add("Zombie");
+  this.subtype.add("Horror");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(3);
+  this.addAbility(new EntersBattlefieldTappedAbility());
+  EntersBattlefieldTriggeredAbility ability=new EntersBattlefieldTriggeredAbility(new TapTargetEffect());
+  Effect effect=new DontUntapInControllersNextUntapStepTargetEffect();
+  effect.setText("That creature doesn't untap during its controller's next untap step");
+  ability.addEffect(effect);
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability);
+}

@@ -1,0 +1,11 @@
+{
+  Permanent equipment=game.getPermanent(this.getSourceId());
+  if (equipment != null) {
+    Permanent permanent=game.getPermanent(equipment.getAttachedTo());
+    if (permanent != null && event.getPlayerId().equals(permanent.getControllerId())) {
+      this.getEffects().get(0).setTargetPointer(new FixedTarget(permanent.getControllerId()));
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{B}{B}{R}{R}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Zombie");
+  this.subtype.add("Dragon");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  this.addAbility(FlyingAbility.getInstance());
+  Ability ability=new EntersBattlefieldTriggeredAbility(new ReturnFromGraveyardToBattlefieldTargetEffect(),true);
+  Target target=new TargetCardInYourGraveyard(filterCard);
+  ability.addTarget(target);
+  this.addAbility(ability);
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostAllEffect(1,1,Duration.EndOfTurn,filter,false),new ManaCostsImpl("{B}{R}")));
+}

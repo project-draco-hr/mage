@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{W}{W}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Human");
+  this.subtype.add("Soldier");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(4);
+  Ability ability1=new BeginningOfUpkeepTriggeredAbility(Zone.BATTLEFIELD,new GerrardCapashenEffect(),TargetController.YOU,false,true);
+  ability1.addTarget(new TargetOpponent());
+  this.addAbility(ability1);
+  Ability ability2=new ActivateIfConditionActivatedAbility(Zone.BATTLEFIELD,new TapTargetEffect(),new ManaCostsImpl("{3}{W}"),new SourceAttackingCondition());
+  ability2.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability2);
+}

@@ -1,0 +1,21 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent cosmicHorror=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (controller != null && cosmicHorror != null) {
+    StringBuilder sb=new StringBuilder(cost.getText()).append("?");
+    if (!sb.toString().toLowerCase().startsWith("exile ") && !sb.toString().toLowerCase().startsWith("return ")) {
+      sb.insert(0,"Pay ");
+    }
+    if (controller.chooseUse(Outcome.Benefit,sb.toString(),source,game)) {
+      cost.clearPaid();
+      if (cost.pay(source,game,source.getSourceId(),source.getControllerId(),false,null)) {
+        return true;
+      }
+    }
+    if (cosmicHorror.destroy(source.getSourceId(),game,false)) {
+      controller.damage(7,source.getSourceId(),game,false,true);
+      return true;
+    }
+  }
+  return false;
+}

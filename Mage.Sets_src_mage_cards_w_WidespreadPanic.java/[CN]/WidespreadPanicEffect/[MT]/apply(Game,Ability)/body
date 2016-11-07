@@ -1,0 +1,17 @@
+{
+  Player shuffler=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+  if (shuffler != null) {
+    if (shuffler.getHand().size() > 0) {
+      TargetCardInHand target=new TargetCardInHand();
+      target.setNotTarget(true);
+      target.setTargetName("a card from your hand to put on top of your library");
+      shuffler.choose(Outcome.Detriment,target,source.getSourceId(),game);
+      Card card=shuffler.getHand().get(target.getFirstTarget(),game);
+      if (card != null) {
+        shuffler.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.HAND,true,false);
+      }
+    }
+    return true;
+  }
+  return false;
+}

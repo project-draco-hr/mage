@@ -8,6 +8,7 @@
   this.paused=state.paused;
   this.activePlayerId=state.activePlayerId;
   this.priorityPlayerId=state.priorityPlayerId;
+  this.playerByOrderId=state.playerByOrderId;
   this.turn=state.turn.copy();
   this.stack=state.stack.copy();
   this.command=state.command.copy();
@@ -28,7 +29,12 @@
   this.turnMods=state.turnMods.copy();
   this.watchers=state.watchers.copy();
   for (  Map.Entry<String,Object> entry : state.values.entrySet()) {
-    this.values.put(entry.getKey(),entry.getValue());
+    if (entry.getValue() instanceof HashSet) {
+      this.values.put(entry.getKey(),(HashSet)((HashSet)entry.getValue()).clone());
+    }
+ else {
+      this.values.put(entry.getKey(),entry.getValue());
+    }
   }
   this.zones.putAll(state.zones);
   this.simultaneousEvents.addAll(state.simultaneousEvents);

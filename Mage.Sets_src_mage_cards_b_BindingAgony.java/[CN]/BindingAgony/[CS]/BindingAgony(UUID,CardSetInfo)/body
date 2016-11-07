@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{B}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Detriment));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  Effect effect=new DamageTargetEffect(new NumericSetToEffectValues("that much","damage"));
+  effect.setText("{this} deals that much damage to that creature's controller");
+  this.addAbility(new DamageDealtToAttachedTriggeredAbility(Zone.BATTLEFIELD,effect,false,SetTargetPointer.PLAYER));
+}

@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{G}{G}");
+  this.subtype.add("Elf");
+  this.subtype.add("Druid");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  this.addAbility(new SpellCastControllerTriggeredAbility(new DrawCardSourceControllerEffect(1),filterSpell,true));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainControlAllLandsEffect(Duration.EndOfGame),new TapTargetCost(new TargetControlledCreaturePermanent(7,7,new FilterControlledCreaturePermanent("Druid","Druids you control"),true)));
+  ability.addTarget(new TargetPlayer());
+  this.addAbility(ability);
+}

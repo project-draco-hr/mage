@@ -1,0 +1,14 @@
+{
+  UUID exileId=CardUtil.getCardExileZoneId(game,source);
+  MageObject sourceObject=source.getSourceObject(game);
+  Player opponent=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+  if (opponent != null && sourceObject != null) {
+    for (int i=0; i < 3; i++) {
+      Card card=opponent.getLibrary().getFromTop(game);
+      if (card != null) {
+        card.moveToExile(exileId,sourceObject.getIdName(),source.getSourceId(),game);
+      }
+    }
+  }
+  return false;
+}

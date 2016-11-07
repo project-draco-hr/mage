@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{B}{G}");
+  Effect effect=new CantBeCounteredSourceEffect();
+  effect.setText("{this} can't be countered by spells or abilities");
+  Ability ability=new SimpleStaticAbility(Zone.STACK,effect);
+  ability.setRuleAtTheTop(true);
+  this.addAbility(ability);
+  this.getSpellAbility().addEffect(new DestroyTargetEffect());
+  this.getSpellAbility().addTarget(new TargetNonlandPermanent(filter));
+}

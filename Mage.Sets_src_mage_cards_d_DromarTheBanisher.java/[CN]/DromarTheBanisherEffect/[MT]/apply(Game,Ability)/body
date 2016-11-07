@@ -1,0 +1,15 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    ChoiceColor choice=new ChoiceColor();
+    player.choose(outcome,choice,game);
+    if (choice.getColor() != null) {
+      game.informPlayers(player.getLogName() + " chooses " + choice.getChoice());
+      FilterCreaturePermanent filter=new FilterCreaturePermanent();
+      filter.add(new ColorPredicate(choice.getColor()));
+      new ReturnToHandFromBattlefieldAllEffect(filter).apply(game,source);
+      return true;
+    }
+  }
+  return false;
+}

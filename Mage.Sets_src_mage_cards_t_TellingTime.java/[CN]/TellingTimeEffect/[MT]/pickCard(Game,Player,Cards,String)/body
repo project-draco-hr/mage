@@ -1,0 +1,17 @@
+{
+  if (cards.isEmpty()) {
+    return null;
+  }
+  if (cards.size() == 1) {
+    return cards.getRandom(null);
+  }
+  TargetCard target=new TargetCard(Zone.LIBRARY,new FilterCard(message));
+  if (player.choose(Outcome.Benefit,cards,target,game)) {
+    Card card=cards.get(target.getFirstTarget(),game);
+    if (card != null) {
+      cards.remove(card);
+      return card;
+    }
+  }
+  return null;
+}

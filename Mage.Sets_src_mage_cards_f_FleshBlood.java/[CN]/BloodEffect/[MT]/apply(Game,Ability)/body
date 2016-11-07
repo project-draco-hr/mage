@@ -1,0 +1,17 @@
+{
+  Permanent sourcePermanent=game.getPermanent(source.getFirstTarget());
+  if (sourcePermanent == null) {
+    sourcePermanent=(Permanent)game.getLastKnownInformation(source.getFirstTarget(),Zone.BATTLEFIELD);
+  }
+  Permanent targetCreature=game.getPermanent(source.getTargets().get(1).getFirstTarget());
+  if (sourcePermanent != null && targetCreature != null) {
+    targetCreature.damage(sourcePermanent.getPower().getValue(),sourcePermanent.getId(),game,false,true);
+    return true;
+  }
+  Player targetPlayer=game.getPlayer(source.getTargets().get(1).getFirstTarget());
+  if (sourcePermanent != null && targetPlayer != null) {
+    targetPlayer.damage(sourcePermanent.getPower().getValue(),sourcePermanent.getId(),game,false,true);
+    return true;
+  }
+  return false;
+}

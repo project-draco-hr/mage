@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(game.getActivePlayerId());
+  if (player != null) {
+    for (    Permanent permanent : game.getBattlefield().getAllActivePermanents(player.getId())) {
+      if (!permanent.getCardType().contains(CardType.CREATURE))       continue;
+      if (permanent.getSubtype(game).contains("Wall")) {
+        continue;
+      }
+      AttackedThisTurnWatcher watcher=(AttackedThisTurnWatcher)game.getState().getWatchers().get("AttackedThisTurn");
+      if (watcher != null && watcher.getAttackedThisTurnCreatures().contains(permanent.getId())) {
+        continue;
+      }
+      if (!permanent.wasControlledFromStartOfControllerTurn()) {
+        continue;
+      }
+      permanent.destroy(source.getSourceId(),game,false);
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,26 @@
+{
+  Map<Integer,Set<String>> attackerMap=null;
+  Object object=game.getState().getValue("blockedAttackers" + source.getSourceId());
+  if (object != null && object instanceof Map) {
+    attackerMap=(Map<Integer,Set<String>>)object;
+    for (    Set<String> attackerSet : attackerMap.values()) {
+      List<Permanent> doNotUntapNextUntapStep=new ArrayList<>();
+      for (      Permanent creature : game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),game)) {
+        if (attackerSet.contains(CardUtil.getCardZoneString(null,creature.getId(),game))) {
+          creature.tap(game);
+          doNotUntapNextUntapStep.add(creature);
+          game.informPlayers(new StringBuilder("Triton Tactics: ").append(creature.getName()).append(" doesn't untap during its controller's next untap step").toString());
+        }
+      }
+      if (!doNotUntapNextUntapStep.isEmpty()) {
+        ContinuousEffect effect=new DontUntapInControllersNextUntapStepTargetEffect("This creature");
+        effect.setTargetPointer(new FixedTargets(doNotUntapNextUntapStep,game));
+        game.addEffect(effect,source);
+      }
+    }
+  }
+  if (attackerMap != null) {
+    attackerMap.clear();
+  }
+  return true;
+}

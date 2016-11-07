@@ -1,0 +1,56 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Set<CardType> typesChosen=new HashSet<>();
+    Map<Player,Card> cardsChosen=new HashMap<>();
+    if (!controller.getHand().isEmpty()) {
+      TargetCard controllerTarget=new TargetCard(Zone.HAND,new FilterCard());
+      if (controller.choose(Outcome.Discard,controller.getHand(),controllerTarget,game)) {
+        Card card=controller.getHand().get(controllerTarget.getFirstTarget(),game);
+        if (card != null) {
+          typesChosen=new HashSet<>(card.getCardType());
+          cardsChosen.put(controller,card);
+        }
+      }
+    }
+    Set<Player> opponentsAffected=new HashSet<>();
+    for (    UUID playerId : game.getOpponents(source.getControllerId())) {
+      Player opponent=game.getPlayer(playerId);
+      if (!opponent.getHand().isEmpty()) {
+        TargetCard target=new TargetCard(Zone.HAND,new FilterCard());
+        if (opponent.choose(Outcome.Discard,opponent.getHand(),target,game)) {
+          Card card=opponent.getHand().get(target.getFirstTarget(),game);
+          if (card != null) {
+            if (!typesChosen.isEmpty()) {
+              for (              CardType cType : typesChosen) {
+                for (                CardType oType : card.getCardType()) {
+                  if (cType == oType) {
+                    opponentsAffected.add(opponent);
+                    break;
+                  }
+                }
+              }
+            }
+            cardsChosen.put(opponent,card);
+          }
+        }
+      }
+    }
+    if (!cardsChosen.isEmpty()) {
+      for (      Map.Entry<Player,Card> entry : cardsChosen.entrySet()) {
+        Player player=entry.getKey();
+        Card cardChosen=entry.getValue();
+        if (player != null && cardChosen != null) {
+          player.discard(cardChosen,source,game);
+        }
+      }
+    }
+    if (!opponentsAffected.isEmpty()) {
+      for (      Player opponent : opponentsAffected) {
+        opponent.loseLife(3,game,false);
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,19 @@
+{
+  int maxCMC=0;
+  for (  Permanent creature : game.getBattlefield().getActivePermanents(new FilterControlledCreaturePermanent(),playerId,this.getSourceId(),game)) {
+    int cmc=creature.getConvertedManaCost();
+    if (cmc > maxCMC) {
+      maxCMC=cmc;
+    }
+  }
+  ManaOptions manaOptions=super.getMinimumCostToActivate(playerId,game);
+  for (  Mana mana : manaOptions) {
+    if (mana.getGeneric() > maxCMC) {
+      mana.setGeneric(mana.getGeneric() - maxCMC);
+    }
+ else {
+      mana.setGeneric(0);
+    }
+  }
+  return manaOptions;
+}

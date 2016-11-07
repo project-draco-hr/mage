@@ -1,0 +1,20 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{R}{G}");
+  this.getSpellAbility().getModes().setMinModes(2);
+  this.getSpellAbility().getModes().setMaxModes(2);
+  this.getSpellAbility().addEffect(new CantGainLifeAllEffect(Duration.EndOfTurn,TargetController.OPPONENT));
+  Mode mode=new Mode();
+  mode.getEffects().add(new DamagePlayersEffect(3,TargetController.OPPONENT));
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new PutLandFromHandOntoBattlefieldEffect());
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  Effect effect=new BoostControlledEffect(1,1,Duration.EndOfTurn);
+  effect.setText("Creatures you control get +1/+1");
+  mode.getEffects().add(effect);
+  effect=new GainAbilityControlledEffect(ReachAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("and gain reach until the end of turn");
+  mode.getEffects().add(effect);
+  this.getSpellAbility().addMode(mode);
+}

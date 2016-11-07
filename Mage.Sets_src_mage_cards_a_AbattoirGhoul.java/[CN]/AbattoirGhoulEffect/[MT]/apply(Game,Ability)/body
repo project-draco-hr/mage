@@ -1,0 +1,15 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  Card card=game.getCard(targetPointer.getFirst(game,source));
+  if (card != null) {
+    Permanent creature=(Permanent)game.getLastKnownInformation(card.getId(),Zone.BATTLEFIELD);
+    if (creature != null) {
+      int toughness=creature.getToughness().getValue();
+      if (you != null) {
+        you.gainLife(toughness,game);
+        return true;
+      }
+    }
+  }
+  return false;
+}

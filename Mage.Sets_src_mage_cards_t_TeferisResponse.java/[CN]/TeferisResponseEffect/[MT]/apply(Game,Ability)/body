@@ -1,0 +1,15 @@
+{
+  UUID targetId=source.getFirstTarget();
+  StackObject stackObject=game.getStack().getStackObject(targetId);
+  if (targetId != null && game.getStack().counter(targetId,source.getSourceId(),game)) {
+    UUID permanentId=stackObject.getSourceId();
+    if (permanentId != null) {
+      Permanent usedPermanent=game.getPermanent(permanentId);
+      if (usedPermanent != null) {
+        usedPermanent.destroy(source.getSourceId(),game,false);
+      }
+    }
+    return true;
+  }
+  return false;
+}

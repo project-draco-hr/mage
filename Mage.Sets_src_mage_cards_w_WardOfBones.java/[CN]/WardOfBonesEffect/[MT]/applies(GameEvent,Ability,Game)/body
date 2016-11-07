@@ -1,0 +1,23 @@
+{
+  if (game.getOpponents(source.getControllerId()).contains(event.getPlayerId())) {
+    final Card card=game.getCard(event.getSourceId());
+    final Player opponent=game.getPlayer(event.getPlayerId());
+    if (card == null || opponent == null) {
+      return false;
+    }
+    if (card.getCardType().contains(CardType.CREATURE) && game.getBattlefield().countAll(new FilterCreaturePermanent(),opponent.getId(),game) > game.getBattlefield().countAll(new FilterCreaturePermanent(),source.getControllerId(),game)) {
+      return true;
+    }
+    if (card.getCardType().contains(CardType.ARTIFACT) && game.getBattlefield().countAll(new FilterArtifactPermanent(),opponent.getId(),game) > game.getBattlefield().countAll(new FilterArtifactPermanent(),source.getControllerId(),game)) {
+      return true;
+    }
+    if (card.getCardType().contains(CardType.ENCHANTMENT) && game.getBattlefield().countAll(new FilterEnchantmentPermanent(),opponent.getId(),game) > game.getBattlefield().countAll(new FilterEnchantmentPermanent(),source.getControllerId(),game)) {
+      return true;
+    }
+    final int yourLands=game.getBattlefield().countAll(new FilterLandPermanent(),source.getControllerId(),game);
+    if (card.getCardType().contains(CardType.LAND) && game.getBattlefield().countAll(new FilterLandPermanent(),opponent.getId(),game) > yourLands) {
+      return true;
+    }
+  }
+  return false;
+}

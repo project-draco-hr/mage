@@ -1,0 +1,25 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (player != null && targetPlayer != null) {
+    targetPlayer.revealCards("Thought Prison ",targetPlayer.getHand(),game);
+    TargetCard target=new TargetCard(1,Zone.HAND,filter);
+    if (player.choose(Outcome.Benefit,targetPlayer.getHand(),target,game)) {
+      List<UUID> targets=target.getTargets();
+      for (      UUID targetId : targets) {
+        Card card=targetPlayer.getHand().get(targetId,game);
+        if (card != null) {
+          card.moveToExile(source.getSourceId(),"Thought Prison",source.getSourceId(),game);
+          Permanent permanent=game.getPermanent(source.getSourceId());
+          if (permanent != null) {
+            permanent.imprint(card.getId(),game);
+            permanent.addInfo("imprint",new StringBuilder("[Exiled card - ").append(card.getName()).append("]").toString(),game);
+          }
+          return true;
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

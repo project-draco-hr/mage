@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    boolean costPaid=false;
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      Cost cost=new SacrificeTargetCost(new TargetControlledPermanent(new FilterControlledLandPermanent()));
+      Player player=game.getPlayer(playerId);
+      if (player != null && cost.canPay(source,source.getSourceId(),playerId,game) && player.chooseUse(Outcome.Sacrifice,"Sacrifice a land?",source,game) && cost.pay(source,game,source.getSourceId(),playerId,true,null)) {
+        costPaid=true;
+      }
+    }
+    if (costPaid) {
+      super.apply(game,source);
+    }
+    return true;
+  }
+  return false;
+}

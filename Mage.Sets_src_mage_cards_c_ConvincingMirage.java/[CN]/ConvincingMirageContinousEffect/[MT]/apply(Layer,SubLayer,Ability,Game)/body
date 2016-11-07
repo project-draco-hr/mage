@@ -1,0 +1,39 @@
+{
+  Permanent enchantment=game.getPermanent(source.getSourceId());
+  String choice=(String)game.getState().getValue(source.getSourceId().toString() + ChooseBasicLandTypeEffect.VALUE_KEY);
+  if (enchantment != null && enchantment.getAttachedTo() != null && choice != null) {
+    Permanent land=game.getPermanent(enchantment.getAttachedTo());
+    if (land != null) {
+switch (layer) {
+case TypeChangingEffects_4:
+        if (sublayer == SubLayer.NA) {
+          land.getSubtype(game).clear();
+          land.getSubtype(game).add(choice);
+        }
+      break;
+case AbilityAddingRemovingEffects_6:
+    if (sublayer == SubLayer.NA) {
+      land.getAbilities().clear();
+      if (choice.equals("Forest")) {
+        land.addAbility(new GreenManaAbility(),source.getSourceId(),game);
+      }
+      if (choice.equals("Plains")) {
+        land.addAbility(new WhiteManaAbility(),source.getSourceId(),game);
+      }
+      if (choice.equals("Mountain")) {
+        land.addAbility(new RedManaAbility(),source.getSourceId(),game);
+      }
+      if (choice.equals("Island")) {
+        land.addAbility(new BlueManaAbility(),source.getSourceId(),game);
+      }
+      if (choice.equals("Swamp")) {
+        land.addAbility(new BlackManaAbility(),source.getSourceId(),game);
+      }
+    }
+  break;
+}
+return true;
+}
+}
+return false;
+}

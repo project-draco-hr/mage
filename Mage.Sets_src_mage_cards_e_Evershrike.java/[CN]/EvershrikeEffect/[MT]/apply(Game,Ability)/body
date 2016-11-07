@@ -1,0 +1,38 @@
+{
+  boolean exiled=true;
+  Card evershrikeCard=game.getCard(source.getSourceId());
+  Player controller=game.getPlayer(source.getControllerId());
+  int xAmount=source.getManaCostsToPay().getX() + 1;
+  if (evershrikeCard != null) {
+    if (evershrikeCard.moveToZone(Zone.BATTLEFIELD,source.getSourceId(),game,false)) {
+      Permanent evershrikePermanent=game.getPermanent(source.getSourceId());
+      if (evershrikePermanent == null) {
+        return false;
+      }
+      FilterCard filterAuraCard=new FilterCard("Aura card with converted mana cost X or less from your hand");
+      filterAuraCard.add(new CardTypePredicate(CardType.ENCHANTMENT));
+      filterAuraCard.add(new SubtypePredicate("Aura"));
+      filterAuraCard.add(new AuraCardCanAttachToPermanentId(evershrikePermanent.getId()));
+      filterAuraCard.add(new ConvertedManaCostPredicate(ComparisonType.LessThan,xAmount));
+      int count=controller.getHand().count(filterAuraCard,game);
+      while (controller.canRespond() && count > 0 && controller.chooseUse(Outcome.Benefit,"Do you wish to put an Aura card from your hand onto Evershrike",source,game)) {
+        TargetCard targetAura=new TargetCard(Zone.HAND,filterAuraCard);
+        if (controller.choose(Outcome.Benefit,controller.getHand(),targetAura,game)) {
+          Card aura=game.getCard(targetAura.getFirstTarget());
+          if (aura != null) {
+            game.getState().setValue("attachTo:" + aura.getId(),evershrikePermanent);
+            aura.putOntoBattlefield(game,Zone.HAND,source.getSourceId(),controller.getId());
+            evershrikePermanent.addAttachment(aura.getId(),game);
+            exiled=false;
+            count=controller.getHand().count(filterAuraCard,game);
+          }
+        }
+      }
+      if (exiled) {
+        return evershrikePermanent.moveToExile(source.getSourceId(),"Evershrike Exile",source.getSourceId(),game);
+      }
+      return true;
+    }
+  }
+  return false;
+}

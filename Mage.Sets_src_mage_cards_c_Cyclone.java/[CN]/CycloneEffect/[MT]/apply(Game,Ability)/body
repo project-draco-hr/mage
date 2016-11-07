@@ -1,0 +1,17 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  int total=permanent.getCounters(game).getCount(CounterType.WIND);
+  String greens="";
+  for (int i=0; i < total; i++) {
+    greens+="{G}";
+  }
+  if (this.choice(game,source,player,new ManaCostsImpl(greens))) {
+    DamageEverythingEffect dmg=new DamageEverythingEffect(total);
+    dmg.apply(game,source);
+  }
+ else {
+    permanent.sacrifice(source.getSourceId(),game);
+  }
+  return true;
+}

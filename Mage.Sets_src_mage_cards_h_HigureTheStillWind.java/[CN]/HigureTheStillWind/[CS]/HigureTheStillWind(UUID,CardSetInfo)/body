@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{U}{U}");
+  this.subtype.add("Human");
+  this.subtype.add("Ninja");
+  this.supertype.add("Legendary");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(4);
+  this.addAbility(new NinjutsuAbility(new ManaCostsImpl("{2}{U}{U}")));
+  this.addAbility(new DealsCombatDamageToAPlayerTriggeredAbility(new SearchLibraryPutInHandEffect(new TargetCardInLibrary(filter)),true));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CantBeBlockedTargetEffect(),new GenericManaCost(2));
+  ability.addTarget(new TargetCreaturePermanent(filterCreature));
+  this.addAbility(ability);
+}

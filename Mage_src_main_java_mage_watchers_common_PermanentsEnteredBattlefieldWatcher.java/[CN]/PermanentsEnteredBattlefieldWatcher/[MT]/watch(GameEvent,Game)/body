@@ -1,6 +1,9 @@
 {
   if (event.getType() == GameEvent.EventType.ENTERS_THE_BATTLEFIELD) {
     Permanent perm=game.getPermanentEntering(event.getTargetId());
+    if (perm == null) {
+      perm=game.getPermanent(event.getTargetId());
+    }
     if (perm != null) {
       List<Permanent> permanents;
       if (!enteringBattlefield.containsKey(perm.getControllerId())) {

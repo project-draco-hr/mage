@@ -1,0 +1,29 @@
+{
+  if (!super.applies(event,source,game)) {
+    return false;
+  }
+  boolean catched=false;
+  if (event.getTargetId().equals(source.getControllerId())) {
+    catched=true;
+  }
+ else {
+    Permanent targetPermanent=game.getPermanent(event.getTargetId());
+    if (targetPermanent != null && targetPermanent.getControllerId().equals(source.getControllerId()) && targetPermanent.getCardType().contains(CardType.PLANESWALKER)) {
+      catched=true;
+    }
+  }
+  if (catched) {
+    MageObject damageSource=game.getObject(event.getSourceId());
+    if (damageSource instanceof StackObject) {
+      return !((StackObject)damageSource).getControllerId().equals(source.getControllerId());
+    }
+ else     if (damageSource instanceof Permanent) {
+      return !((Permanent)damageSource).getControllerId().equals(source.getControllerId());
+    }
+ else     if (damageSource instanceof Card) {
+      return !((Card)damageSource).getOwnerId().equals(source.getControllerId());
+    }
+    Logger.getLogger(Comeuppance.class).error("Comeuppance: could not define source objects controller - " + (damageSource != null ? damageSource.getName() : "null"));
+  }
+  return false;
+}

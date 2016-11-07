@@ -1,0 +1,12 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null && !controller.getGraveyard().isEmpty()) {
+    Card card=controller.getGraveyard().getRandom(game);
+    if (card != null) {
+      controller.moveCards(card,Zone.HAND,source,game);
+      return true;
+    }
+    controller.moveCards(controller.getGraveyard(),Zone.GRAVEYARD,source,game);
+  }
+  return false;
+}

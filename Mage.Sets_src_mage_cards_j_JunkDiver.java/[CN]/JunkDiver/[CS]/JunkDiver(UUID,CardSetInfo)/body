@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT,CardType.CREATURE},"{3}");
+  this.subtype.add("Bird");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.addAbility(FlyingAbility.getInstance());
+  Effect effect=new ReturnFromGraveyardToHandTargetEffect();
+  effect.setText("return another target artifact card from your graveyard to your hand");
+  Ability ability=new DiesTriggeredAbility(effect);
+  ability.addTarget(new TargetCardInYourGraveyard(filter));
+  this.addAbility(ability);
+}

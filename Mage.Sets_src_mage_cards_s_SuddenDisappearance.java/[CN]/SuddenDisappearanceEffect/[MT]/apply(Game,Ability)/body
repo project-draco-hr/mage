@@ -1,0 +1,20 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    Set<Card> permsSet=new HashSet<>(game.getBattlefield().getAllActivePermanents(filter,source.getFirstTarget(),game));
+    if (permsSet.size() > 0) {
+      controller.moveCardsToExile(permsSet,source,game,true,source.getSourceId(),sourceObject.getIdName());
+      Cards targets=new CardsImpl();
+      for (      Card card : permsSet) {
+        targets.add(card.getId());
+      }
+      Effect effect=new ReturnToBattlefieldUnderOwnerControlTargetEffect();
+      effect.setText("Return the exiled cards to the battlefield under their owner's control at the beginning of the next end step");
+      effect.setTargetPointer(new FixedTargets(targets,game));
+      game.addDelayedTriggeredAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect),source);
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,9 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{R}");
+  this.subtype.add("Yeti");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  AsThoughEffect effect=new CastAsThoughItHadFlashSourceEffect(Duration.EndOfGame);
+  effect.setText("As long as you control a green or blue permanent, you may cast {this} as though it had flash");
+  this.addAbility(new SimpleStaticAbility(Zone.ALL,new ConditionalAsThoughEffect(effect,new PermanentsOnTheBattlefieldCondition(filter))));
+}

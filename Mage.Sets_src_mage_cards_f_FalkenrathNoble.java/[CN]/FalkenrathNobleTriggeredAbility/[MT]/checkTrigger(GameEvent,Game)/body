@@ -1,0 +1,17 @@
+{
+  ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+  if (zEvent.getFromZone() == Zone.BATTLEFIELD && zEvent.getToZone() == Zone.GRAVEYARD) {
+    Permanent permanent=(Permanent)game.getLastKnownInformation(event.getTargetId(),Zone.BATTLEFIELD);
+    if (permanent != null) {
+      if (permanent.getId().equals(this.getSourceId())) {
+        return true;
+      }
+ else {
+        if (permanent.getCardType().contains(CardType.CREATURE)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

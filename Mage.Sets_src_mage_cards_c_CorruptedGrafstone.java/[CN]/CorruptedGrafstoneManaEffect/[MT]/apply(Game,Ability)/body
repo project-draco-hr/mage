@@ -1,0 +1,58 @@
+{
+  Mana types=getManaTypesInGraveyard(game,source);
+  Choice choice=new ChoiceColor(true);
+  choice.getChoices().clear();
+  choice.setMessage("Pick a mana color");
+  if (types.getBlack() > 0) {
+    choice.getChoices().add("Black");
+  }
+  if (types.getRed() > 0) {
+    choice.getChoices().add("Red");
+  }
+  if (types.getBlue() > 0) {
+    choice.getChoices().add("Blue");
+  }
+  if (types.getGreen() > 0) {
+    choice.getChoices().add("Green");
+  }
+  if (types.getWhite() > 0) {
+    choice.getChoices().add("White");
+  }
+  if (choice.getChoices().size() > 0) {
+    Player player=game.getPlayer(source.getControllerId());
+    if (player != null) {
+      if (choice.getChoices().size() == 1) {
+        choice.setChoice(choice.getChoices().iterator().next());
+      }
+ else {
+        player.choose(outcome,choice,game);
+      }
+      if (choice.getChoice() != null) {
+        Mana computedMana=new Mana();
+switch (choice.getChoice()) {
+case "Black":
+          computedMana.setBlack(1);
+        break;
+case "Blue":
+      computedMana.setBlue(1);
+    break;
+case "Red":
+  computedMana.setRed(1);
+break;
+case "Green":
+computedMana.setGreen(1);
+break;
+case "White":
+computedMana.setWhite(1);
+break;
+}
+checkToFirePossibleEvents(computedMana,game,source);
+player.getManaPool().addMana(computedMana,game,source);
+}
+ else {
+return false;
+}
+}
+}
+return true;
+}

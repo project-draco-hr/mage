@@ -1,0 +1,16 @@
+{
+  boolean result=true;
+  for (  Player player : game.getPlayers().values()) {
+    if (player != null) {
+      Cards cards=player.getGraveyard();
+      for (      Card card : cards.getCards(new FilterArtifactCard(),game)) {
+        if (card != null) {
+          if (!card.putOntoBattlefield(game,Zone.GRAVEYARD,source.getSourceId(),card.getOwnerId(),false)) {
+            result=false;
+          }
+        }
+      }
+    }
+  }
+  return result;
+}

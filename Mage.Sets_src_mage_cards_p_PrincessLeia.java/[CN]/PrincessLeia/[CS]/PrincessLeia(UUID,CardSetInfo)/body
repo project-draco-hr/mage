@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{G}{U}{W}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Human");
+  this.subtype.add("Rebel");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new CreateTokenEffect(new RebelToken(),3)));
+  DynamicValue count=new PermanentsOnBattlefieldCount(filter1);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostSourceEffect(count,count,Duration.WhileOnBattlefield)));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Duration.WhileOnBattlefield,filter2,true)));
+}

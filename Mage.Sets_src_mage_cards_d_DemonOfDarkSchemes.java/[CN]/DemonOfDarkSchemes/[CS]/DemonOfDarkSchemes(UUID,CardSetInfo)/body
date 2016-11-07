@@ -1,0 +1,17 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{B}{B}{B}");
+  this.subtype.add("Demon");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  this.addAbility(FlyingAbility.getInstance());
+  Effect effect=new BoostAllEffect(-2,-2,Duration.EndOfTurn,true);
+  effect.setText("all other creatures get -2/-2 until end of turn");
+  this.addAbility(new EntersBattlefieldTriggeredAbility(effect,false));
+  this.addAbility(new DiesCreatureTriggeredAbility(new GetEnergyCountersControllerEffect(1),false,true));
+  effect=new ReturnFromGraveyardToBattlefieldTargetEffect(true);
+  effect.setText("Put target creature card from a graveyard onto the battlefield under your control tapped");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl("{2}{B}"));
+  ability.addCost(new PayEnergyCost(4));
+  ability.addTarget(new TargetCardInGraveyard(new FilterCreatureCard("creature card from a graveyard")));
+  this.addAbility(ability);
+}

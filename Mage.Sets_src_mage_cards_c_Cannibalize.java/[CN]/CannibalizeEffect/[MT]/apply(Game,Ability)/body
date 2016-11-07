@@ -1,0 +1,24 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    boolean exileDone=false;
+    int count=0;
+    for (    UUID targetId : getTargetPointer().getTargets(game,source)) {
+      Permanent creature=game.getPermanent(targetId);
+      if (creature != null) {
+        if ((count == 0 && controller.chooseUse(Outcome.Exile,"Exile " + creature.getLogName() + "?",source,game)) || (count == 1 && !exileDone)) {
+          controller.moveCardToExileWithInfo(creature,null,"",source.getSourceId(),game,Zone.BATTLEFIELD,true);
+          exileDone=true;
+        }
+ else {
+          creature.addCounters(CounterType.P1P1.createInstance(2),game);
+          game.informPlayers("Added two +1/+1 counters on " + creature.getLogName());
+        }
+        count++;
+      }
+    }
+    return true;
+  }
+  return false;
+}

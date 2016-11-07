@@ -1,0 +1,12 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Choice choice=new ChoiceBasicLandType();
+    if (player.choose(Outcome.Neutral,choice,game)) {
+      game.getState().setValue(source.getSourceId().toString() + "_Terraformer",choice.getChoice());
+    }
+    game.addEffect(new TerraformerContinuousEffect(),source);
+    return true;
+  }
+  return false;
+}

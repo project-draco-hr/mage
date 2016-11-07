@@ -1,0 +1,23 @@
+{
+  int amount=game.getBattlefield().count(filter,source.getSourceId(),source.getControllerId(),game);
+  if (amount > 0) {
+    int damageDealt=amount;
+    Permanent permanent=game.getPermanent(source.getFirstTarget());
+    if (permanent != null) {
+      damageDealt=permanent.damage(amount,source.getSourceId(),game,false,true);
+    }
+ else {
+      Player player=game.getPlayer(source.getFirstTarget());
+      if (player != null) {
+        damageDealt=player.damage(amount,source.getSourceId(),game,false,true);
+      }
+ else       return false;
+    }
+    Player you=game.getPlayer(source.getControllerId());
+    if (you != null) {
+      you.gainLife(damageDealt,game);
+      return true;
+    }
+  }
+  return false;
+}

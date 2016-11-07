@@ -1,0 +1,46 @@
+{
+  Card card=game.getCard(((FixedTarget)getTargetPointer()).getTarget());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (card == null || permanent == null) {
+    discard();
+    return false;
+  }
+  if (IdOfCopiedCard == null || !IdOfCopiedCard.equals(card.getId())) {
+    IdOfCopiedCard=card.getId();
+    cardToCopy=card.copy();
+    cardToCopy.assignNewId();
+  }
+  permanent.getPower().setValue(cardToCopy.getPower().getValue());
+  permanent.getToughness().setValue(cardToCopy.getToughness().getValue());
+  permanent.getColor(game).setColor(cardToCopy.getColor(game));
+  permanent.getManaCost().clear();
+  permanent.getManaCost().add(cardToCopy.getManaCost());
+  permanent.getCardType().clear();
+  for (  CardType type : cardToCopy.getCardType()) {
+    if (!permanent.getCardType().contains(type)) {
+      permanent.getCardType().add(type);
+    }
+  }
+  permanent.getSubtype(game).clear();
+  for (  String type : cardToCopy.getSubtype(game)) {
+    if (!permanent.getSubtype(game).contains(type)) {
+      permanent.getSubtype(game).add(type);
+    }
+  }
+  permanent.getSupertype().clear();
+  permanent.getSupertype().add("Legendary");
+  for (  String type : cardToCopy.getSupertype()) {
+    if (!permanent.getSupertype().contains(type)) {
+      permanent.getSupertype().add(type);
+    }
+  }
+  permanent.removeAllAbilities(source.getSourceId(),game);
+  permanent.addAbility(HexproofAbility.getInstance(),source.getSourceId(),game);
+  permanent.addAbility(new PutCardIntoGraveFromAnywhereAllTriggeredAbility(new LazavDimirEffect(),true,new FilterCreatureCard("a creature card"),TargetController.OPPONENT,SetTargetPointer.CARD),source.getSourceId(),game);
+  for (  Ability ability : cardToCopy.getAbilities()) {
+    if (!permanent.getAbilities().contains(ability)) {
+      permanent.addAbility(ability,source.getSourceId(),game);
+    }
+  }
+  return true;
+}

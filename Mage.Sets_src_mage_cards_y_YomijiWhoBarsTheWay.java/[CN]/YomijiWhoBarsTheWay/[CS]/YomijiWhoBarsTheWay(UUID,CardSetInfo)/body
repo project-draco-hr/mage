@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{5}{W}{W}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Spirit");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  FilterPermanent filter=new FilterPermanent("a legendary permanent other than " + getName());
+  filter.add(new AnotherPredicate());
+  filter.add(new SupertypePredicate("Legendary"));
+  Effect effect=new ReturnToHandTargetEffect();
+  effect.setText("return that card to its owner's hand");
+  this.addAbility(new PutIntoGraveFromBattlefieldAllTriggeredAbility(effect,false,filter,true));
+}

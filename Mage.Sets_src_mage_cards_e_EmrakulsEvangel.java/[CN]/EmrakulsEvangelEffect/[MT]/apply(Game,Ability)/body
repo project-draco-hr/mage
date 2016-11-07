@@ -1,0 +1,17 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    int tokensToCreate=0;
+    for (    Cost cost : source.getCosts()) {
+      if (cost instanceof EmrakulsEvangelCost) {
+        tokensToCreate=((EmrakulsEvangelCost)cost).getNumSacrificed();
+      }
+    }
+    if (tokensToCreate > 0) {
+      EldraziHorrorToken token=new EldraziHorrorToken();
+      token.putOntoBattlefield(tokensToCreate,game,source.getSourceId(),source.getControllerId());
+    }
+    return true;
+  }
+  return false;
+}

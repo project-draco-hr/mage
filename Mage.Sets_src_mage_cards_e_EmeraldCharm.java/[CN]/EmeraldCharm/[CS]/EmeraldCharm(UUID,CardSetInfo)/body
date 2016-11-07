@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{G}");
+  this.getSpellAbility().addEffect(new UntapTargetEffect());
+  this.getSpellAbility().addTarget(new TargetPermanent());
+  Mode mode=new Mode();
+  mode.getEffects().add(new DestroyTargetEffect());
+  mode.getTargets().add(new TargetEnchantmentPermanent(filter));
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new LoseAbilityTargetEffect(FlyingAbility.getInstance(),Duration.EndOfTurn));
+  mode.getTargets().add(new TargetCreaturePermanent());
+  this.getSpellAbility().addMode(mode);
+}

@@ -1,0 +1,9 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.LAND},"");
+  this.addAbility(new CumulativeUpkeepAbility(new PayLifeCost(2)));
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new SacrificeControllerEffect(new FilterControlledLandPermanent(),1,"")));
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("creatures you control");
+  filter.add(new ControllerPredicate(TargetController.YOU));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new CantAttackAnyPlayerAllEffect(Duration.WhileOnBattlefield,filter)));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new PreventDamageToControllerEffect(Duration.WhileOnBattlefield)));
+}

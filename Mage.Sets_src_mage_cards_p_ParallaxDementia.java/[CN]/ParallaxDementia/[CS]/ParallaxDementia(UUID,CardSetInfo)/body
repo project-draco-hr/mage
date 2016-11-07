@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{B}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new FadingAbility(1,this));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(3,2,Duration.WhileOnBattlefield)));
+  this.addAbility(new LeavesBattlefieldTriggeredAbility(new DestroyAttachedEffect("enchanted creature",true),false));
+}

@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.PLANESWALKER},"{2}{W}{W}");
+  this.subtype.add("Gideon");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(4));
+  LoyaltyAbility ability=new LoyaltyAbility(new BecomesCreatureSourceEffect(new GideonAllyOfZendikarToken(),"planeswalker",Duration.EndOfTurn),1);
+  Effect effect=new PreventAllDamageToSourceEffect(Duration.EndOfTurn);
+  effect.setText("Prevent all damage that would be dealt to him this turn");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  this.addAbility(new LoyaltyAbility(new CreateTokenEffect(new KnightAllyToken()),0));
+  this.addAbility(new LoyaltyAbility(new GetEmblemEffect(new GideonAllyOfZendikarEmblem()),-4));
+}

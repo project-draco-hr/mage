@@ -1,0 +1,19 @@
+{
+  Permanent chargingCinderhoof=game.getPermanent(source.getSourceId());
+  if (chargingCinderhoof != null) {
+    chargingCinderhoof.addCounters(CounterType.FURY.createInstance(),game);
+  }
+ else {
+    chargingCinderhoof=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  }
+  if (chargingCinderhoof == null) {
+    return false;
+  }
+  DynamicValue amount=new CountersSourceCount(CounterType.FURY);
+  Player player=game.getPlayer(targetPointer.getFirst(game,source));
+  if (player != null) {
+    player.damage(amount.calculate(game,source,this),source.getSourceId(),game,false,true);
+    return true;
+  }
+  return false;
+}

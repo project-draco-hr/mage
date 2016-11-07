@@ -1,0 +1,39 @@
+{
+  Permanent PanopticMirror=game.getPermanent(source.getSourceId());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (PanopticMirror == null) {
+    PanopticMirror=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+  }
+  if (PanopticMirror != null && PanopticMirror.getImprinted() != null && PanopticMirror.getImprinted().size() > 0 && controller != null) {
+    CardsImpl cards=new CardsImpl();
+    for (    UUID uuid : PanopticMirror.getImprinted()) {
+      Card card=game.getCard(uuid);
+      if (card != null) {
+        if (card.isSplitCard()) {
+          cards.add(((SplitCard)card).getLeftHalfCard());
+          cards.add(((SplitCard)card).getRightHalfCard());
+        }
+ else {
+          cards.add(card);
+        }
+      }
+    }
+    Card cardToCopy;
+    if (cards.size() == 1) {
+      cardToCopy=cards.getCards(game).iterator().next();
+    }
+ else {
+      TargetCard target=new TargetCard(1,Zone.EXILED,new FilterCard("card to copy"));
+      controller.choose(Outcome.Copy,cards,target,game);
+      cardToCopy=cards.get(target.getFirstTarget(),game);
+    }
+    if (cardToCopy != null) {
+      Card copy=game.copyCard(cardToCopy,source,source.getControllerId());
+      if (controller.chooseUse(outcome,"Cast the copied card without paying mana cost?",source,game)) {
+        return controller.cast(copy.getSpellAbility(),game,true);
+      }
+    }
+    return true;
+  }
+  return false;
+}

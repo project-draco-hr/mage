@@ -1,0 +1,15 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    for (    StackObject stackObject : game.getStack()) {
+      if ((stackObject instanceof Spell) && !stackObject.isCopy() && stackObject.getControllerId().equals(source.getControllerId())) {
+        Spell spell=(Spell)stackObject;
+        if (spell.getFromZone().equals(Zone.HAND)) {
+          game.getState().addOtherAbility(spell.getCard(),cascadeAbility);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

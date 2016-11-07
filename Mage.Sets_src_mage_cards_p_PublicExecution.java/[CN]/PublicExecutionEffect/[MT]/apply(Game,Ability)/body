@@ -1,0 +1,15 @@
+{
+  Permanent target=(Permanent)game.getLastKnownInformation(source.getFirstTarget(),Zone.BATTLEFIELD);
+  if (target != null) {
+    UUID opponent=target.getControllerId();
+    if (opponent != null) {
+      FilterCreaturePermanent filter=new FilterCreaturePermanent("each other creature that player controls");
+      filter.add(new ControllerIdPredicate(opponent));
+      filter.add(Predicates.not(new PermanentIdPredicate(target.getId())));
+      ContinuousEffect effect=new BoostAllEffect(-2,0,Duration.EndOfTurn,filter,false);
+      game.addEffect(effect,source);
+      return true;
+    }
+  }
+  return false;
+}

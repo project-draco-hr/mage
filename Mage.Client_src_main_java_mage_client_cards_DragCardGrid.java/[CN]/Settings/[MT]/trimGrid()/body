@@ -1,0 +1,51 @@
+{
+  for (int rowIndex=0; rowIndex < cardGrid.size(); ++rowIndex) {
+    ArrayList<ArrayList<CardView>> gridRow=cardGrid.get(rowIndex);
+    int rowMaxStackSize=0;
+    for (    ArrayList<CardView> stack : gridRow) {
+      for (int i=0; i < stack.size(); ++i) {
+        if (stack.get(i) == null) {
+          stack.remove(i--);
+        }
+      }
+      rowMaxStackSize=Math.max(rowMaxStackSize,stack.size());
+    }
+    if (rowMaxStackSize == 0) {
+      cardGrid.remove(rowIndex);
+      maxStackSize.remove(rowIndex);
+      --rowIndex;
+    }
+ else {
+      maxStackSize.set(rowIndex,rowMaxStackSize);
+    }
+  }
+  if (!cardGrid.isEmpty()) {
+    for (int colIndex=0; colIndex < cardGrid.get(0).size(); ++colIndex) {
+      boolean hasContent=false;
+      for (int rowIndex=0; rowIndex < cardGrid.size(); ++rowIndex) {
+        if (!cardGrid.get(rowIndex).get(colIndex).isEmpty()) {
+          hasContent=true;
+          break;
+        }
+      }
+      if (!hasContent) {
+        for (int rowIndex=0; rowIndex < cardGrid.size(); ++rowIndex) {
+          cardGrid.get(rowIndex).remove(colIndex);
+        }
+        --colIndex;
+      }
+    }
+  }
+  while (stackCountLabels.size() > cardGrid.size()) {
+    ArrayList<JLabel> labels=stackCountLabels.remove(cardGrid.size());
+    for (    JLabel label : labels) {
+      cardContent.remove(label);
+    }
+  }
+  int colCount=cardGrid.isEmpty() ? 0 : cardGrid.get(0).size();
+  for (  ArrayList<JLabel> labels : stackCountLabels) {
+    while (labels.size() > colCount) {
+      cardContent.remove(labels.remove(colCount));
+    }
+  }
+}

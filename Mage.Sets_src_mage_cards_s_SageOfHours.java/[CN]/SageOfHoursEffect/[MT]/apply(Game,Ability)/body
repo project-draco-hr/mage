@@ -1,0 +1,18 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    int countersRemoved=0;
+    for (    Cost cost : source.getCosts()) {
+      if (cost instanceof SageOfHoursCost) {
+        countersRemoved=((SageOfHoursCost)cost).getRemovedCounters();
+      }
+    }
+    int turns=countersRemoved / 5;
+    for (int i=0; i < turns; i++) {
+      game.getState().getTurnMods().add(new TurnMod(player.getId(),false));
+    }
+    game.informPlayers(new StringBuilder("Removed ").append(countersRemoved).append(" +1/+1 counters: ").append(player.getLogName()).append(" takes ").append(CardUtil.numberToText(turns,"an")).append(turns > 1 ? " extra turns " : " extra turn ").append("after this one").toString());
+    return true;
+  }
+  return false;
+}

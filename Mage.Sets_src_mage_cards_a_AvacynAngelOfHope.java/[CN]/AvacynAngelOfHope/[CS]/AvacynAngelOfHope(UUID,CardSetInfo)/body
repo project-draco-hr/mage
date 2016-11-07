@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{5}{W}{W}{W}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Angel");
+  this.power=new MageInt(8);
+  this.toughness=new MageInt(8);
+  this.addAbility(FlyingAbility.getInstance());
+  this.addAbility(VigilanceAbility.getInstance());
+  this.addAbility(IndestructibleAbility.getInstance());
+  FilterControlledPermanent filter=new FilterControlledPermanent("Other permanents you control");
+  Effect effect=new GainAbilityAllEffect(IndestructibleAbility.getInstance(),Duration.WhileOnBattlefield,filter,true);
+  effect.setText("Other permanents you control are indestructible");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+}

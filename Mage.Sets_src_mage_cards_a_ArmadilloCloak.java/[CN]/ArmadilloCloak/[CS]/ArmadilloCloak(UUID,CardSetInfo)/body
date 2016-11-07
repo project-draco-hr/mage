@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{G}{W}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(2,2,Duration.WhileOnBattlefield));
+  Effect effect=new GainAbilityAttachedEffect(TrampleAbility.getInstance(),AttachmentType.AURA);
+  effect.setText("and has trample");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  this.addAbility(new DealsDamageAttachedTriggeredAbility(Zone.BATTLEFIELD,new GainLifeEffect(new NumericSetToEffectValues("that much","damage")),false));
+}

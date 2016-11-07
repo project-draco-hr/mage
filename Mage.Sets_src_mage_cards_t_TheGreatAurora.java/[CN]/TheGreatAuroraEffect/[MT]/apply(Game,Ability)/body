@@ -1,0 +1,52 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Map<UUID,List<Permanent>> permanentsOwned=new HashMap<>();
+    Collection<Permanent> permanents=game.getBattlefield().getActivePermanents(source.getControllerId(),game);
+    for (    Permanent permanent : permanents) {
+      List<Permanent> list=permanentsOwned.get(permanent.getOwnerId());
+      if (list == null) {
+        list=new ArrayList<>();
+        permanentsOwned.put(permanent.getOwnerId(),list);
+      }
+      list.add(permanent);
+    }
+    Map<UUID,Integer> permanentsCount=new HashMap<>();
+    for (    UUID playerId : game.getState().getPlayersInRange(source.getControllerId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        int handCards=player.getHand().size();
+        player.moveCards(player.getHand(),Zone.LIBRARY,source,game);
+        List<Permanent> list=permanentsOwned.remove(player.getId());
+        permanentsCount.put(playerId,handCards + (list != null ? list.size() : 0));
+        if (list != null) {
+          for (          Permanent permanent : list) {
+            player.moveCardToLibraryWithInfo(permanent,source.getSourceId(),game,Zone.BATTLEFIELD,true,true);
+          }
+          player.shuffleLibrary(source,game);
+        }
+      }
+    }
+    game.applyEffects();
+    for (    UUID playerId : game.getState().getPlayersInRange(source.getControllerId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        int count=permanentsCount.get(playerId);
+        if (count > 0) {
+          player.drawCards(count,game);
+        }
+      }
+    }
+    Cards toBattlefield=new CardsImpl();
+    for (    UUID playerId : game.getState().getPlayersInRange(source.getControllerId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        TargetCard target=new TargetCardInHand(0,Integer.MAX_VALUE,new FilterLandCard("put any number of land cards from your hand onto the battlefield"));
+        player.chooseTarget(Outcome.PutLandInPlay,player.getHand(),target,source,game);
+        toBattlefield.addAll(target.getTargets());
+      }
+    }
+    return controller.moveCards(toBattlefield.getCards(game),Zone.BATTLEFIELD,source,game,false,false,true,null);
+  }
+  return false;
+}

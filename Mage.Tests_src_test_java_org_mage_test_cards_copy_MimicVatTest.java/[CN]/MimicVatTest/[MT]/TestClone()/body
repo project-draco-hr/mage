@@ -1,0 +1,18 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Island",6);
+  addCard(Zone.BATTLEFIELD,playerA,"Mimic Vat",1);
+  addCard(Zone.BATTLEFIELD,playerA,"Phyrexian Vault",1);
+  addCard(Zone.HAND,playerA,"Clone",1);
+  addCard(Zone.BATTLEFIELD,playerB,"Silvercoat Lion",1);
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Clone");
+  setChoice(playerA,"Silvercoat Lion");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{2},{T}, Sacrifice a creature");
+  setChoice(playerA,"Yes");
+  activateAbility(3,PhaseStep.PRECOMBAT_MAIN,playerA,"{3},{T}: Create a token");
+  setChoice(playerA,"Silvercoat Lion");
+  setStopAt(3,PhaseStep.BEGIN_COMBAT);
+  execute();
+  assertExileCount("Clone",1);
+  assertPermanentCount(playerB,"Silvercoat Lion",1);
+  assertPermanentCount(playerA,"Silvercoat Lion",1);
+}

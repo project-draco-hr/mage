@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{W}{W}");
+  this.subtype.add("Human");
+  this.subtype.add("Knight");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(FirstStrikeAbility.getInstance());
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Duration.WhileOnBattlefield,filter,true)));
+  FilterCreaturePermanent indestructibleFilter=filter.copy();
+  indestructibleFilter.add(new AnotherPredicate());
+  indestructibleFilter.add(new ControllerPredicate(TargetController.YOU));
+  indestructibleFilter.setMessage("Other Knight creatures you control");
+  Effect effect=new GainAbilityAllEffect(IndestructibleAbility.getInstance(),Duration.WhileOnBattlefield,indestructibleFilter,false);
+  effect.setText("Other Knight creatures you control are indestructible");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+}

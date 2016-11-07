@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{U}{U}");
+  this.subtype.add("Merfolk");
+  this.subtype.add("Soldier");
+  this.color.setBlue(true);
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(2);
+  this.addAbility(new LevelUpAbility(new ManaCostsImpl("{1}")));
+  Abilities<Ability> abilities1=new AbilitiesImpl<Ability>();
+  abilities1.add(FlyingAbility.getInstance());
+  Abilities<Ability> abilities2=new AbilitiesImpl<Ability>();
+  abilities2.add(FlyingAbility.getInstance());
+  abilities2.add(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostControlledEffect(1,1,Duration.WhileOnBattlefield,filter,true)));
+  this.addAbilities(LevelerCardBuilder.construct(new LevelerCardBuilder.LevelAbility(2,3,abilities1,3,3),new LevelerCardBuilder.LevelAbility(4,-1,abilities2,4,4)));
+  setMaxLevelCounters(4);
+}

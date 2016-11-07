@@ -1,0 +1,17 @@
+{
+  Permanent permanent=null;
+  if (permanents.size() == 1) {
+    permanent=permanents.iterator().next();
+  }
+ else   if (permanents.size() > 1) {
+    Cards cards=new CardsImpl();
+    for (    Permanent card : permanents) {
+      cards.add(card);
+    }
+    TargetCard targetCard=new TargetCard(Zone.BATTLEFIELD,new FilterCard());
+    if (player.choose(Outcome.Benefit,cards,targetCard,game)) {
+      permanent=game.getPermanent(targetCard.getFirstTarget());
+    }
+  }
+  return permanent;
+}

@@ -1,0 +1,15 @@
+{
+  if (event.getType() == EventType.DAMAGED_PLAYER) {
+    UUID playerId=event.getPlayerId();
+    if (playerId != null) {
+      Integer amount=amountOfDamageReceivedThisTurn.get(playerId);
+      if (amount == null) {
+        amount=event.getAmount();
+      }
+ else {
+        amount+=event.getAmount();
+      }
+      amountOfDamageReceivedThisTurn.put(playerId,amount);
+    }
+  }
+}

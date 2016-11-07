@@ -1,0 +1,10 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+  if (controller != null) {
+    if (permanent.getConvertedManaCost() <= controller.getHand().size()) {
+      return permanent.destroy(source.getSourceId(),game,false);
+    }
+  }
+  return false;
+}

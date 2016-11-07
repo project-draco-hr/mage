@@ -1,0 +1,14 @@
+{
+  Player opponent=game.getPlayer(targetPointer.getFirst(game,source));
+  if (opponent != null && opponent.getHand().size() > 0) {
+    Cards revealed=new CardsImpl();
+    Card card=opponent.getHand().getRandom(game);
+    if (card != null) {
+      revealed.add(card);
+      opponent.revealCards("Planeswalker's Fury",revealed,game);
+      opponent.damage(card.getConvertedManaCost(),source.getSourceId(),game,false,true);
+    }
+    return true;
+  }
+  return false;
+}

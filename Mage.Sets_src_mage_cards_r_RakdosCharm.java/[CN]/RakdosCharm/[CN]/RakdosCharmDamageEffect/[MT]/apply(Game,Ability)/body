@@ -1,0 +1,12 @@
+{
+  FilterPermanent filter=new FilterPermanent();
+  filter.add(new CardTypePredicate(CardType.CREATURE));
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game)) {
+    Player controller=game.getPlayer(permanent.getControllerId());
+    if (controller != null) {
+      controller.damage(1,permanent.getId(),game,false,true);
+      game.informPlayers("1 damage to " + controller.getLogName() + " from "+ permanent.getName());
+    }
+  }
+  return true;
+}

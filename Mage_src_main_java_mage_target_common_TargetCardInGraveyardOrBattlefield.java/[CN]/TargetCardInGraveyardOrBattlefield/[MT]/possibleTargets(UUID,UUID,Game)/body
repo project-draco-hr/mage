@@ -1,0 +1,10 @@
+{
+  Set<UUID> possibleTargets=super.possibleTargets(sourceId,sourceControllerId,game);
+  MageObject targetSource=game.getObject(sourceId);
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(new FilterPermanent(),sourceControllerId,game)) {
+    if ((notTarget || permanent.canBeTargetedBy(targetSource,sourceControllerId,game)) && filter.match(permanent,sourceId,sourceControllerId,game)) {
+      possibleTargets.add(permanent.getId());
+    }
+  }
+  return possibleTargets;
+}

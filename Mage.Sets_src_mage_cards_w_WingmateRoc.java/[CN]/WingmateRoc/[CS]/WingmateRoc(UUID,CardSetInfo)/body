@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{W}{W}");
+  this.subtype.add("Bird");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(4);
+  this.addAbility(FlyingAbility.getInstance());
+  this.addAbility(new ConditionalTriggeredAbility(new EntersBattlefieldTriggeredAbility(new CreateTokenEffect(new WingmateRocToken())),RaidCondition.getInstance(),"<i>Raid</i> -  When {this} enters the battlefield, if you attacked with a creature this turn, create a 3/4 white Bird creature token with flying."),new PlayerAttackedWatcher());
+  Effect effect=new GainLifeEffect(new AttackingCreatureCount());
+  effect.setText("you gain 1 life for each attacking creature");
+  this.addAbility(new AttacksTriggeredAbility(effect,false));
+}

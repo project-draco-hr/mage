@@ -1,0 +1,9 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{1}");
+  this.subtype.add("Equipment");
+  Effect effect=new PreventCombatDamageToSourceEffect(Duration.EndOfTurn);
+  effect.setText("Prevent all combat damage that would be dealt to this creature this turn");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new BlindingPowderUnattachCost(getName(),getId()));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(ability,AttachmentType.EQUIPMENT,Duration.WhileOnBattlefield)));
+  this.addAbility(new EquipAbility(Outcome.PreventDamage,new GenericManaCost(2)));
+}

@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{5}{W}");
+  this.subtype.add("Sliver");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  Ability ability=new EntersBattlefieldTriggeredAbility(new ConstrictingSliverExileEffect(),true);
+  ability.addTarget(new TargetCreaturePermanent(filterTarget));
+  ability.addEffect(new CreateDelayedTriggeredAbilityEffect(new OnLeaveReturnExiledToBattlefieldAbility()));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAllEffect(ability,Duration.WhileOnBattlefield,new FilterControlledCreaturePermanent("Sliver","Sliver creatures"),"Sliver creatures you control have \"When this creature enters the battlefield, you may exile target creature an opponent controls until this creature leaves the battlefield.\"")));
+}

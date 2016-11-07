@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{W}");
+  this.subtype.add("Wall");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(6);
+  this.addAbility(DefenderAbility.getInstance());
+  Ability ability=new EntersBattlefieldTriggeredAbility(new AddCountersTargetEffect(CounterType.P1P1.createInstance(3)),true);
+  Effect effect=new BecomesCreatureTargetEffect(new WallOfResurgenceToken(),false,true,Duration.Custom);
+  effect.setText("If you do, that land becomes a 0/0 Elemental creature with haste that's still a land");
+  ability.addEffect(effect);
+  ability.addTarget(new TargetControlledPermanent(new FilterControlledLandPermanent()));
+  this.addAbility(ability);
+}

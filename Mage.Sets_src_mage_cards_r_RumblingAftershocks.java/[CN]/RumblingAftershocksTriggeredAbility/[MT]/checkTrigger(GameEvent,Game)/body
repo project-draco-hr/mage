@@ -1,0 +1,16 @@
+{
+  Spell spell=game.getStack().getSpell(event.getTargetId());
+  if (spell != null && spell.getControllerId().equals(controllerId)) {
+    int damageAmount=0;
+    for (    Ability ability : spell.getAbilities()) {
+      if (ability instanceof KickerAbility) {
+        damageAmount+=((KickerAbility)ability).getKickedCounter(game,spell.getSpellAbility());
+      }
+    }
+    if (damageAmount > 0) {
+      this.getEffects().get(0).setValue("damageAmount",damageAmount);
+      return true;
+    }
+  }
+  return false;
+}

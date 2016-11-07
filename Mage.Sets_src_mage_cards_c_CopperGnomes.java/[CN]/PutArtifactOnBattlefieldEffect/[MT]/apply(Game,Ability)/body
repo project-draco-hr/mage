@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null || !controller.chooseUse(Outcome.PutCardInPlay,choiceText,source,game)) {
+    return false;
+  }
+  TargetCardInHand target=new TargetCardInHand(new FilterArtifactCard());
+  if (controller.choose(Outcome.PutCardInPlay,target,source.getSourceId(),game)) {
+    Card card=game.getCard(target.getFirstTarget());
+    if (card != null) {
+      return controller.moveCards(card,Zone.BATTLEFIELD,source,game);
+    }
+  }
+  return false;
+}

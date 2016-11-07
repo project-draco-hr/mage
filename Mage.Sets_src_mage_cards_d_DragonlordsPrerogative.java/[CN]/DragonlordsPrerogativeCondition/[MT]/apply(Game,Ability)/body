@@ -1,0 +1,16 @@
+{
+  boolean applies=false;
+  Spell spell=game.getStack().getSpell(source.getSourceId());
+  if (spell != null && spell.getSpellAbility() != null) {
+    for (    Cost cost : spell.getSpellAbility().getCosts()) {
+      if (cost instanceof RevealTargetFromHandCost) {
+        applies=!((RevealTargetFromHandCost)cost).getTargets().isEmpty();
+        break;
+      }
+    }
+  }
+  if (!applies) {
+    applies=game.getBattlefield().countAll(filter,source.getControllerId(),game) > 0;
+  }
+  return applies;
+}

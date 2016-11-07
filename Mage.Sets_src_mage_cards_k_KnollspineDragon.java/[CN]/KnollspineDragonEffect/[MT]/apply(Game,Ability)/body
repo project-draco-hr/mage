@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player targetOpponent=game.getPlayer(targetPointer.getFirst(game,source));
+  if (controller != null) {
+    new DiscardHandControllerEffect().apply(game,source);
+    if (targetOpponent != null) {
+      AmountOfDamageAPlayerReceivedThisTurnWatcher watcher=(AmountOfDamageAPlayerReceivedThisTurnWatcher)game.getState().getWatchers().get("AmountOfDamageReceivedThisTurn");
+      if (watcher != null) {
+        int drawAmount=watcher.getAmountOfDamageReceivedThisTurn(targetOpponent.getId());
+        controller.drawCards(drawAmount,game);
+        game.informPlayers(controller.getLogName() + "draws " + drawAmount+ " cards");
+        return true;
+      }
+    }
+    game.informPlayers(controller.getLogName() + "drew no cards");
+    return true;
+  }
+  return false;
+}

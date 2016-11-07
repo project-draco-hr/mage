@@ -1,0 +1,11 @@
+{
+  Card card=temporaryCards.get(cardView.getId());
+  if (card == null) {
+    Logger.getLogger(DeckEditorPanel.class).info("Retrieve " + cardView.getCardNumber() + " Failed");
+    card=CardRepository.instance.findCard(cardView.getExpansionSetCode(),cardView.getCardNumber()).getCard();
+  }
+ else {
+    temporaryCards.remove(cardView.getId());
+  }
+  return card;
+}

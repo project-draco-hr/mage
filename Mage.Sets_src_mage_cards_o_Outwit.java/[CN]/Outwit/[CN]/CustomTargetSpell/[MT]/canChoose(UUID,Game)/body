@@ -1,0 +1,14 @@
+{
+  int count=0;
+  for (  StackObject stackObject : game.getStack()) {
+    if (stackObject instanceof Spell && filter.match((Spell)stackObject,game)) {
+      if (targetsPlayer(stackObject.getId(),game)) {
+        count++;
+        if (count >= this.minNumberOfTargets) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

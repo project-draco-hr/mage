@@ -1,0 +1,16 @@
+{
+  List<Effect> effects=getEffects();
+  List<Effect> effectsToRemove=new ArrayList<>();
+  for (  Effect effect : effects) {
+    if (effect instanceof DontUntapInControllersNextUntapStepTargetEffect) {
+      effectsToRemove.add(effect);
+    }
+  }
+  for (  Effect effect : effectsToRemove) {
+    effects.remove(effect);
+  }
+  if (event.getData().equals("controller") && event.getPlayerId().equals(getControllerId()) || event.getData().equals("opponent") && event.getTargetId().equals(getControllerId())) {
+    addEffect(new DontUntapInControllersNextUntapStepTargetEffect());
+  }
+  return true;
+}

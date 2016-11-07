@@ -1,27 +1,23 @@
 {
-  boolean conditionApplies=false;
-  List<Permanent> permanents=game.getBattlefield().getAllActivePermanents(this.filter,source.getControllerId(),game);
+  List<Permanent> permanents=game.getBattlefield().getActivePermanents(this.filter,source.getControllerId(),game);
   for (  Permanent permanent : permanents) {
 switch (this.type) {
 case FEWER_THAN:
       if (permanent.getCounters(game).getCount(this.counterType) < this.amount) {
-        conditionApplies=true;
-        break;
+        return true;
       }
     break;
 case MORE_THAN:
   if (permanent.getCounters(game).getCount(this.counterType) > this.amount) {
-    conditionApplies=true;
-    break;
+    return true;
   }
 break;
 case EQUAL_TO:
 if (permanent.getCounters(game).getCount(this.counterType) == this.amount) {
-conditionApplies=true;
-break;
+return true;
 }
 break;
 }
 }
-return conditionApplies;
+return false;
 }

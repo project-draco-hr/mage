@@ -1,13 +1,17 @@
 {
   List<MageObject> result=new ArrayList<>();
   for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
+    Boolean canUse=null;
     boolean canAdd=false;
-    for (    ManaAbility ability : permanent.getAbilities().getManaAbilities(Zone.BATTLEFIELD)) {
+    for (    ActivatedManaAbilityImpl ability : permanent.getAbilities().getActivatedManaAbilities(Zone.BATTLEFIELD)) {
       if (!ability.getManaCosts().isEmpty()) {
         canAdd=false;
         break;
       }
-      if (ability.canActivate(playerId,game)) {
+      if (canUse == null) {
+        canUse=permanent.canUseActivatedAbilities(game);
+      }
+      if (canUse && ability.canActivate(playerId,game)) {
         canAdd=true;
       }
     }
@@ -17,7 +21,7 @@
   }
   for (  Card card : getHand().getCards(game)) {
     boolean canAdd=false;
-    for (    ManaAbility ability : card.getAbilities(game).getManaAbilities(Zone.HAND)) {
+    for (    ActivatedManaAbilityImpl ability : card.getAbilities(game).getActivatedManaAbilities(Zone.HAND)) {
       if (!ability.getManaCosts().isEmpty()) {
         canAdd=false;
         break;

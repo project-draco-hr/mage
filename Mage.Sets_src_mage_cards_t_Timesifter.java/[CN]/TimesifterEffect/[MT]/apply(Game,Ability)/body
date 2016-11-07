@@ -1,0 +1,37 @@
+{
+  List<UUID> playersExiling=game.getState().getPlayersInRange(source.getControllerId(),game);
+  do {
+    int highestCMC=Integer.MIN_VALUE;
+    List<UUID> playersWithHighestCMC=new ArrayList<>(1);
+    for (    UUID playerId : playersExiling) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        Card card=player.getLibrary().getFromTop(game);
+        if (card != null) {
+          int cardCMC=card.getConvertedManaCost();
+          player.moveCardsToExile(card,source,game,true,null,"");
+          if (cardCMC > highestCMC) {
+            highestCMC=cardCMC;
+            playersWithHighestCMC.clear();
+            playersWithHighestCMC.add(playerId);
+          }
+ else           if (cardCMC == highestCMC) {
+            playersWithHighestCMC.add(playerId);
+          }
+        }
+      }
+    }
+    playersExiling=new ArrayList<>(playersWithHighestCMC);
+  }
+ while (playersExiling.size() > 1);
+  for (  UUID playerId : playersExiling) {
+    Effect effect=new AddExtraTurnTargetEffect();
+    effect.setTargetPointer(new FixedTarget(playerId));
+    effect.apply(game,source);
+    Player player=game.getPlayer(playerId);
+    if (player != null) {
+      game.informPlayers(player.getLogName() + " will take an extra turn after this one.");
+    }
+  }
+  return true;
+}

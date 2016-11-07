@@ -1,0 +1,23 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (sourceObject == null || controller == null) {
+    return false;
+  }
+  if (controller.getLibrary().size() > 0) {
+    Card card=controller.getLibrary().getFromTop(game);
+    Cards cards=new CardsImpl();
+    cards.add(card);
+    controller.revealCards(sourceObject.getName(),cards,game);
+    if (card != null) {
+      if (card.getSubtype(game).contains("Forest")) {
+        Permanent permanent=game.getPermanent(targetPointer.getFirst(game,source));
+        if (permanent != null) {
+          permanent.removeFromCombat(game);
+        }
+      }
+      controller.moveCardToLibraryWithInfo(card,source.getSourceId(),game,Zone.LIBRARY,false,true);
+    }
+  }
+  return true;
+}

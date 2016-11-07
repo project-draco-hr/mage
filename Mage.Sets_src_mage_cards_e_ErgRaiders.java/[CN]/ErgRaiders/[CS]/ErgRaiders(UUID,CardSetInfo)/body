@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{B}");
+  this.subtype.add("Human");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(3);
+  TriggeredAbility ability=new ConditionalTriggeredAbility(new BeginningOfEndStepTriggeredAbility(new DamageControllerEffect(2),TargetController.YOU,false),new ErgRaidersCondition(),"At the beginning of your end step, if {this} didn't attack this turn, {this} deals 2 damage to you unless it came under your control this turn.");
+  ability.addWatcher(new AttackedThisTurnWatcher());
+  this.addAbility(ability);
+}

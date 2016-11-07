@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    ExileZone exileZone=game.getExile().getExileZone(CardUtil.getCardExileZoneId(game,source));
+    if (exileZone != null && exileZone.count(new FilterInstantOrSorceryCard(),game) > 0) {
+      if (controller.chooseUse(outcome,"Cast an instant or sorcery card from exile?",source,game)) {
+        TargetCardInExile target=new TargetCardInExile(new FilterInstantOrSorceryCard(),CardUtil.getCardExileZoneId(game,source));
+        if (controller.choose(Outcome.PlayForFree,exileZone,target,game)) {
+          Card card=game.getCard(target.getFirstTarget());
+          if (card != null) {
+            return controller.cast(card.getSpellAbility(),game,true);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

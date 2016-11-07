@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{7}{R}");
+  this.subtype.add("Giant");
+  this.power=new MageInt(10);
+  this.toughness=new MageInt(10);
+  DelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(new DestroyAllEffect(new FilterPermanent("permanents")));
+  Effect effect=new CreateDelayedTriggeredAbilityEffect(delayedAbility);
+  effect.setText("destroy all permanents at the beginning of the next end step");
+  this.addAbility(new DiesTriggeredAbility(effect,false));
+}

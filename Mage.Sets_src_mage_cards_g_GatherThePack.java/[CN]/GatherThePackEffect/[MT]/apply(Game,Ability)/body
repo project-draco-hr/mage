@@ -1,0 +1,31 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller == null || sourceObject == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl();
+  cards.addAll(controller.getLibrary().getTopCards(game,5));
+  if (!cards.isEmpty()) {
+    controller.revealCards(sourceObject.getIdName(),cards,game);
+    int creatures=cards.count(new FilterCreatureCard(),source.getSourceId(),source.getControllerId(),game);
+    if (creatures > 0) {
+      int max=1;
+      if (SpellMasteryCondition.getInstance().apply(game,source) && creatures > 1) {
+        max++;
+      }
+      TargetCard target=new TargetCard(0,max,Zone.LIBRARY,new FilterCreatureCard("creature card" + (max > 1 ? "s" : "") + " to put into your hand"));
+      if (controller.choose(Outcome.PutCreatureInPlay,cards,target,game)) {
+        Cards cardsToHand=new CardsImpl(target.getTargets());
+        if (cardsToHand.size() > 0) {
+          cards.removeAll(cardsToHand);
+          controller.moveCards(cardsToHand,Zone.HAND,source,game);
+        }
+      }
+    }
+    if (cards.size() > 0) {
+      controller.moveCards(cards,Zone.GRAVEYARD,source,game);
+    }
+  }
+  return true;
+}

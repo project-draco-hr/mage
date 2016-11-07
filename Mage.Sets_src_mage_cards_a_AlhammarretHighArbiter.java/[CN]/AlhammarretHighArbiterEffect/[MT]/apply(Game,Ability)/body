@@ -1,0 +1,29 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards revealedCards=new CardsImpl();
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      if (playerId != controller.getId()) {
+        Player opponent=game.getPlayer(playerId);
+        if (opponent != null) {
+          Cards cards=new CardsImpl(opponent.getHand());
+          opponent.revealCards(opponent.getName() + "'s hand",cards,game);
+          revealedCards.addAll(cards);
+        }
+      }
+    }
+    TargetCard target=new TargetCard(Zone.HAND,new FilterNonlandCard("nonland card from an opponents hand"));
+    controller.chooseTarget(Outcome.Benefit,revealedCards,target,source,game);
+    Card card=game.getCard(target.getFirstTarget());
+    if (card != null) {
+      game.informPlayers("The choosen card name is [" + GameLog.getColoredObjectName(card) + "]");
+      Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+      if (sourcePermanent != null) {
+        sourcePermanent.addInfo("chosen card name",CardUtil.addToolTipMarkTags("Chosen card name: " + card.getName()),game);
+      }
+      game.addEffect(new AlhammarretHighArbiterCantCastEffect(card.getName()),source);
+    }
+    return true;
+  }
+  return false;
+}

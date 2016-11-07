@@ -1,0 +1,20 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null)   return false;
+  TargetCardInLibrary target=new TargetCardInLibrary(new FilterLandCard());
+  if (player.searchLibrary(target,game)) {
+    if (target.getTargets().size() > 0) {
+      UUID cardId=target.getTargets().get(0);
+      Card card=player.getLibrary().remove(cardId,game);
+      if (card != null) {
+        card.moveToExile(source.getSourceId(),"Strata Scythe",source.getSourceId(),game);
+        Permanent permanent=game.getPermanent(source.getSourceId());
+        if (permanent != null) {
+          permanent.imprint(card.getId(),game);
+        }
+      }
+    }
+  }
+  player.shuffleLibrary(source,game);
+  return true;
+}

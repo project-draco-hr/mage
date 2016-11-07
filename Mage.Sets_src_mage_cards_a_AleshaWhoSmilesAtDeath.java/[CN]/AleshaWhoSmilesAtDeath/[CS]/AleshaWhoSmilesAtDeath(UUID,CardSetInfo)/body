@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{R}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Human");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(2);
+  this.addAbility(FirstStrikeAbility.getInstance());
+  Ability ability=new AttacksTriggeredAbility(new DoIfCostPaid(new AleshaWhoSmilesAtDeathEffect(),new ManaCostsImpl("{W/B}{W/B}")),false);
+  ability.addTarget(new TargetCardInYourGraveyard(filter));
+  this.addAbility(ability);
+}

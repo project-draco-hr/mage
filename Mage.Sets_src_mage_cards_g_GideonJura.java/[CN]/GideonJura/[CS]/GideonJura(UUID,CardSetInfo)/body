@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.PLANESWALKER},"{3}{W}{W}");
+  this.subtype.add("Gideon");
+  this.addAbility(new PlanswalkerEntersWithLoyalityCountersAbility(6));
+  LoyaltyAbility ability1=new LoyaltyAbility(new GideonJuraEffect(),2);
+  ability1.addTarget(new TargetOpponent());
+  this.addAbility(ability1);
+  LoyaltyAbility ability2=new LoyaltyAbility(new DestroyTargetEffect(),-2);
+  ability2.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability2);
+  LoyaltyAbility ability3=new LoyaltyAbility(new BecomesCreatureSourceEffect(new GideonJuraToken(),"planeswalker",Duration.EndOfTurn),0);
+  Effect effect=new PreventAllDamageToSourceEffect(Duration.EndOfTurn);
+  effect.setText("Prevent all damage that would be dealt to him this turn");
+  ability3.addEffect(effect);
+  this.addAbility(ability3);
+}

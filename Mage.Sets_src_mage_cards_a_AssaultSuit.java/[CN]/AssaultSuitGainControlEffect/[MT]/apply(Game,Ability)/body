@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Player activePlayer=game.getPlayer(game.getActivePlayerId());
+  Permanent equipment=game.getPermanent(source.getSourceId());
+  if (controller != null && activePlayer != null && equipment != null) {
+    if (equipment.getAttachedTo() != null) {
+      Permanent equippedCreature=game.getPermanent(equipment.getAttachedTo());
+      if (equippedCreature != null && controller.chooseUse(outcome,"Let have " + activePlayer.getLogName() + " gain control of "+ equippedCreature.getLogName()+ "?",source,game)) {
+        equippedCreature.untap(game);
+        ContinuousEffect effect=new GainControlTargetEffect(Duration.EndOfTurn,activePlayer.getId());
+        effect.setTargetPointer(new FixedTarget(equipment.getAttachedTo()));
+        game.addEffect(effect,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

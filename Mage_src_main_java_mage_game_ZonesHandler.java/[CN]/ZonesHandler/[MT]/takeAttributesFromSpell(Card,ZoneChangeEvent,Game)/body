@@ -1,0 +1,16 @@
+{
+  if (Zone.STACK.equals(event.getFromZone())) {
+    Spell spell=game.getStack().getSpell(event.getTargetId());
+    if (spell != null) {
+      boolean doCopy=false;
+      if (!card.getColor(game).equals(spell.getColor(game))) {
+        doCopy=true;
+      }
+      if (doCopy) {
+        card=card.copy();
+        card.getColor(game).setColor(spell.getColor(game));
+      }
+    }
+  }
+  return card;
+}

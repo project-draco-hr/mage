@@ -1,0 +1,32 @@
+{
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (sourceObject != null) {
+    for (    UUID targetId : getTargetPointer().getTargets(game,source)) {
+      Spell spell=game.getStack().getSpell(targetId);
+      if (spell != null) {
+        game.getStack().counter(targetId,source.getSourceId(),game);
+        Player spellController=game.getPlayer(spell.getControllerId());
+        if (spellController != null) {
+          spellController.revealCards(sourceObject.getName(),spellController.getHand(),game);
+          Cards cardsToDiscard=new CardsImpl();
+          for (          SpellAbility spellAbility : spell.getSpellAbilities()) {
+            if (spellAbility.getSpellAbilityType().equals(SpellAbilityType.SPLICE)) {
+              for (              Card card : spellController.getHand().getCards(game)) {
+                if (card.getName().equals(spellAbility.getCardName())) {
+                  cardsToDiscard.add(card);
+                }
+              }
+            }
+          }
+          if (!cardsToDiscard.isEmpty()) {
+            for (            Card card : cardsToDiscard.getCards(game)) {
+              spellController.discard(card,source,game);
+            }
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

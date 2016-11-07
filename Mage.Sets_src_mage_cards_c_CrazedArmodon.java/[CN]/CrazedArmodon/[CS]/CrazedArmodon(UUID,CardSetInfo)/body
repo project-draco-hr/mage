@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{G}{G}");
+  this.subtype.add("Elephant");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  Effect effect=new BoostSourceEffect(3,0,Duration.EndOfTurn);
+  effect.setText("{this} gets +3/+0");
+  Ability ability=new LimitedTimesPerTurnActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl("{G}"));
+  effect=new GainAbilitySourceEffect(TrampleAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("and gains trample until end of turn");
+  ability.addEffect(effect);
+  ability.addEffect(new CreateDelayedTriggeredAbilityEffect(new CrazedArmodonDelayedTriggeredAbility()));
+  this.addAbility(ability);
+}

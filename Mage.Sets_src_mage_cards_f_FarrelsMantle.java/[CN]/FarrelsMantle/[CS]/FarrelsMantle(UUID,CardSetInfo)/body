@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{2}{W}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  FilterPermanent filter=new FilterCreaturePermanent();
+  filter.add(Predicates.not(new AttachmentByUUIDPredicate(this.getId())));
+  Ability ability2=new AttacksAndIsNotBlockedTriggeredAbility(new FarrelsMantleEffect(),true);
+  ability2.addTarget(new TargetPermanent(filter));
+  ability2.addEffect(new AssignNoCombatDamageSourceEffect(Duration.EndOfTurn));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityAttachedEffect(ability2,AttachmentType.AURA)));
+}

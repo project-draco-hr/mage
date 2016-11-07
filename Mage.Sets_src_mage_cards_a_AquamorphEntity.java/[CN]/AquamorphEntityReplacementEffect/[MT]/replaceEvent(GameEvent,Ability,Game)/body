@@ -1,0 +1,38 @@
+{
+  Permanent permanent;
+  if (event instanceof EntersTheBattlefieldEvent) {
+    permanent=((EntersTheBattlefieldEvent)event).getTarget();
+  }
+ else {
+    permanent=game.getPermanent(event.getTargetId());
+  }
+  if (permanent != null) {
+    Choice choice=new ChoiceImpl(true);
+    choice.setMessage("Choose what the creature becomes to");
+    choice.getChoices().add(choice51);
+    choice.getChoices().add(choice15);
+    Player controller=game.getPlayer(source.getControllerId());
+    if (controller != null) {
+      while (!choice.isChosen()) {
+        controller.choose(Outcome.Neutral,choice,game);
+        if (!controller.canRespond()) {
+          return false;
+        }
+      }
+    }
+    int power=0;
+    int toughness=0;
+switch (choice.getChoice()) {
+case choice51:
+      power=5;
+    toughness=1;
+  break;
+case choice15:
+power=1;
+toughness=5;
+break;
+}
+game.addEffect(new SetPowerToughnessSourceEffect(power,toughness,Duration.Custom,SubLayer.SetPT_7b),source);
+}
+return false;
+}

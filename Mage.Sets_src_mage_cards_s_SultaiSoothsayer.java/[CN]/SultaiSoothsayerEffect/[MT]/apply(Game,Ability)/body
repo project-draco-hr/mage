@@ -1,0 +1,22 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    Cards cards=new CardsImpl();
+    cards.addAll(controller.getLibrary().getTopCards(game,4));
+    if (cards.size() > 0) {
+      controller.lookAtCards(sourceObject.getName(),cards,game);
+      TargetCard target=new TargetCard(Zone.LIBRARY,new FilterCard("card to put in your hand"));
+      if (controller.choose(Outcome.Benefit,cards,target,game)) {
+        Card card=cards.get(target.getFirstTarget(),game);
+        if (card != null) {
+          controller.moveCards(card,Zone.HAND,source,game);
+          cards.remove(card);
+        }
+      }
+      controller.moveCards(cards,Zone.GRAVEYARD,source,game);
+    }
+    return true;
+  }
+  return false;
+}

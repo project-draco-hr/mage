@@ -1,0 +1,24 @@
+{
+  if (layout == null) {
+    return;
+  }
+  List<List<List<DeckCardInfo>>> cardGrid=layout.getCards();
+  int height=cardGrid.size();
+  int width=(height > 0) ? cardGrid.get(0).size() : 0;
+  out.print("(" + height + ","+ width+ ")");
+  out.print(layout.getSettings());
+  out.print("|");
+  for (  List<List<DeckCardInfo>> row : cardGrid) {
+    for (    List<DeckCardInfo> stack : row) {
+      out.print("(");
+      for (int i=0; i < stack.size(); ++i) {
+        DeckCardInfo info=stack.get(i);
+        out.printf("[%s:%s]",info.getSetCode(),info.getCardNum());
+        if (i != stack.size() - 1) {
+          out.print(",");
+        }
+      }
+      out.print(")");
+    }
+  }
+}

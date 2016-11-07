@@ -1,0 +1,14 @@
+{
+  if (super.canTarget(playerId,objectId,source,game)) {
+    Set<Integer> usedCMC=new HashSet<>();
+    for (    UUID targetId : this.getTargets()) {
+      Card card=game.getCard(targetId);
+      if (card != null) {
+        usedCMC.add(card.getConvertedManaCost());
+      }
+    }
+    Card card=game.getCard(objectId);
+    return card != null && !usedCMC.contains(card.getConvertedManaCost());
+  }
+  return false;
+}

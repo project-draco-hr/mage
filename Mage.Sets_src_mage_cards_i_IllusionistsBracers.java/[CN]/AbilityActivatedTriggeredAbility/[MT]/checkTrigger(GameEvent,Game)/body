@@ -1,0 +1,12 @@
+{
+  Permanent equipment=game.getPermanent(this.getSourceId());
+  if (equipment != null && equipment.getAttachedTo() != null && equipment.getAttachedTo().equals(event.getSourceId())) {
+    StackAbility stackAbility=(StackAbility)game.getStack().getStackObject(event.getSourceId());
+    if (!(stackAbility.getStackAbility() instanceof ActivatedManaAbilityImpl)) {
+      Effect effect=this.getEffects().get(0);
+      effect.setValue("stackAbility",stackAbility);
+      return true;
+    }
+  }
+  return false;
+}

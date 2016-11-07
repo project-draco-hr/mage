@@ -1,0 +1,23 @@
+{
+  if (affectedControllerId.equals(source.getControllerId())) {
+    Card card=game.getCard(objectId);
+    MageObject sourceObject=source.getSourceObject(game);
+    if (card != null && !card.getCardType().contains(CardType.LAND) && sourceObject != null) {
+      UUID exileId=CardUtil.getExileZoneId(game,source.getSourceId(),source.getSourceObjectZoneChangeCounter());
+      if (exileId != null) {
+        ExileZone exileZone=game.getState().getExile().getExileZone(exileId);
+        if (exileZone != null && exileZone.contains(objectId)) {
+          if (game.getTurnNum() == turnNumber) {
+            if (!exileZone.contains(cardId)) {
+              return false;
+            }
+          }
+          this.turnNumber=game.getTurnNum();
+          this.cardId=objectId;
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

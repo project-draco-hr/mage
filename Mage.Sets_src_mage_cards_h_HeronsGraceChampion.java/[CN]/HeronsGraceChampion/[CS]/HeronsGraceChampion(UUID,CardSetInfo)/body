@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{G}{W}");
+  this.subtype.add("Human");
+  this.subtype.add("Knight");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  this.addAbility(FlashAbility.getInstance());
+  this.addAbility(LifelinkAbility.getInstance());
+  Effect effect=new BoostControlledEffect(1,1,Duration.EndOfTurn,filter,true);
+  effect.setText("other Humans you control gets +1/+1");
+  Ability ability=new EntersBattlefieldTriggeredAbility(effect);
+  effect=new GainAbilityControlledEffect(LifelinkAbility.getInstance(),Duration.EndOfTurn,filter,true);
+  effect.setText("and gain lifelink until end of turn");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

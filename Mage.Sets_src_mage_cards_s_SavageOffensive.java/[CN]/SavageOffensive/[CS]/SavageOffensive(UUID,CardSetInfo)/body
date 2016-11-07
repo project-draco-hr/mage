@@ -1,0 +1,6 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.SORCERY},"{1}{R}");
+  this.addAbility(new KickerAbility("{G}"));
+  this.getSpellAbility().addEffect(new GainAbilityAllEffect(FirstStrikeAbility.getInstance(),Duration.EndOfTurn,filter));
+  this.getSpellAbility().addEffect(new ConditionalOneShotEffect(new AddContinuousEffectToGame(new BoostControlledEffect(1,1,Duration.EndOfTurn)),new LockedInCondition(KickedCondition.getInstance()),"If {this} was kicked, they get +1/+1 until end of turn."));
+}

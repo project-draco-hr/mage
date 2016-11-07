@@ -1,0 +1,13 @@
+{
+  Permanent attacker=game.getPermanent(event.getSourceId());
+  if (attacker == null || !attacker.getAbilities().contains(FlyingAbility.getInstance())) {
+    return false;
+  }
+  if (event.getTargetId().equals(this.getControllerId())) {
+    for (    Effect effect : this.getEffects()) {
+      effect.setTargetPointer(new FixedTarget(attacker.getId()));
+    }
+    return true;
+  }
+  return false;
+}

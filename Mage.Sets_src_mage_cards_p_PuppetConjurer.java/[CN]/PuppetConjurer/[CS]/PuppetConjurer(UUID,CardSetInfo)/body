@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT,CardType.CREATURE},"{1}{B}");
+  this.subtype.add("Human");
+  this.subtype.add("Wizard");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(2);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new HomunculusToken()),new ManaCostsImpl("{U}"));
+  ability.addCost(new TapSourceCost());
+  this.addAbility(ability);
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(new SacrificeEffect(filter,1,""),TargetController.ANY,false));
+}

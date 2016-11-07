@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.SORCERY},"{2}{R}");
+  Ability ability=new DevoidAbility(this.color);
+  ability.setRuleAtTheTop(true);
+  this.addAbility(ability);
+  this.getSpellAbility().addEffect(new DamageTargetEffect(3));
+  this.getSpellAbility().addTarget(new TargetCreatureOrPlayer());
+  Effect effect=new DealtDamageToCreatureBySourceDies(this,Duration.EndOfTurn);
+  effect.setText("If a creature dealt damage this way would die this turn, exile it instead");
+  this.getSpellAbility().addEffect(effect);
+  this.getSpellAbility().addWatcher(new DamagedByWatcher());
+}

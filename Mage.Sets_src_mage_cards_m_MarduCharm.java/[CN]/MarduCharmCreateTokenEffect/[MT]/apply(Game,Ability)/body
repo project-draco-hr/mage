@@ -1,0 +1,17 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    CreateTokenEffect effect=new CreateTokenEffect(new WarriorToken(),2);
+    effect.apply(game,source);
+    for (    UUID tokenId : effect.getLastAddedTokenIds()) {
+      Permanent token=game.getPermanent(tokenId);
+      if (token != null) {
+        ContinuousEffect continuousEffect=new GainAbilityTargetEffect(FirstStrikeAbility.getInstance(),Duration.EndOfTurn);
+        continuousEffect.setTargetPointer(new FixedTarget(tokenId));
+        game.addEffect(continuousEffect,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

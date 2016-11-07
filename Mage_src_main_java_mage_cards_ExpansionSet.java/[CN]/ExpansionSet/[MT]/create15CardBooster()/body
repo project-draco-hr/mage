@@ -1,8 +1,13 @@
 {
   List<Card> theBooster=this.createBooster();
-  List<CardInfo> commons=getCardsByRarity(Rarity.COMMON);
-  while (15 > theBooster.size()) {
-    addToBooster(theBooster,commons);
+  if (15 > theBooster.size()) {
+    List<CardInfo> commons=getCardsByRarity(Rarity.COMMON);
+    while (15 > theBooster.size() && !commons.isEmpty()) {
+      addToBooster(theBooster,commons);
+      if (commons.isEmpty()) {
+        commons=getCardsByRarity(Rarity.COMMON);
+      }
+    }
   }
   while (theBooster.size() > 15) {
     theBooster.remove(0);

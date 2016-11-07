@@ -5,11 +5,21 @@
       entry.getValue().setResults("Auto Eliminated");
     }
   }
-  while (this.getActivePlayers().size() > 1) {
-    tableEventSource.fireTableEvent(TableEvent.EventType.CHECK_STATE_PLAYERS);
-    Round round=createRoundRandom();
-    playRound(round);
-    eliminatePlayers(round);
+  if (options.matchOptions.getNumSeats() == 2) {
+    while (this.getActivePlayers().size() > 1) {
+      tableEventSource.fireTableEvent(TableEvent.EventType.CHECK_STATE_PLAYERS);
+      Round round=createRoundRandom();
+      playRound(round);
+      eliminatePlayers(round);
+    }
+  }
+ else {
+    options.matchOptions.setAttackOption(MultiplayerAttackOption.MULTIPLE);
+    MultiplayerRound round=new MultiplayerRound(0,this,options.matchOptions.getNumSeats());
+    for (    TournamentPlayer player : getActivePlayers()) {
+      round.addPlayer(player);
+    }
+    playMultiplayerRound(round);
   }
   nextStep();
 }

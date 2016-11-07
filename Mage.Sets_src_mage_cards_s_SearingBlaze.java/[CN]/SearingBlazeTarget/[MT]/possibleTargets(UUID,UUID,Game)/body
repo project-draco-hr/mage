@@ -1,0 +1,15 @@
+{
+  Set<UUID> availablePossibleTargets=super.possibleTargets(sourceId,sourceControllerId,game);
+  Set<UUID> possibleTargets=new HashSet<>();
+  MageObject object=game.getObject(sourceId);
+  if (object instanceof StackObject) {
+    UUID playerId=((StackObject)object).getStackAbility().getFirstTarget();
+    for (    UUID targetId : availablePossibleTargets) {
+      Permanent permanent=game.getPermanent(targetId);
+      if (permanent != null && permanent.getControllerId().equals(playerId)) {
+        possibleTargets.add(targetId);
+      }
+    }
+  }
+  return possibleTargets;
+}

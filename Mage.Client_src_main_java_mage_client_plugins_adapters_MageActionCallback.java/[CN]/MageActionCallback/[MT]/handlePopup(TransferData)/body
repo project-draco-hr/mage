@@ -1,10 +1,4 @@
 {
-  if (!Plugins.getInstance().isCardPluginLoaded()) {
-    return;
-  }
-  if (bigCard == null) {
-    return;
-  }
   MageCard mageCard=(MageCard)transferData.component;
   if (!popupTextWindowOpen || mageCard.getOriginal().getId() != bigCard.getCardId()) {
     if (bigCard.getWidth() > 0) {
@@ -23,6 +17,7 @@ synchronized (MageActionCallback.class) {
       popupTextWindowOpen=true;
     }
     if (!enlargedWindowState.equals(EnlargedWindowState.CLOSED)) {
+      cancelTimeout();
       displayEnlargedCard(mageCard.getOriginal(),transferData);
     }
   }

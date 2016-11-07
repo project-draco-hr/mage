@@ -1,0 +1,14 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null) {
+    Card card=game.getCard(targetPointer.getFirst(game,source));
+    if (card != null) {
+      FlashbackAbility ability=new FlashbackAbility(card.getManaCost(),TimingRule.SORCERY);
+      ability.setSourceId(card.getId());
+      ability.setControllerId(card.getOwnerId());
+      game.getState().addOtherAbility(card,ability);
+      return true;
+    }
+  }
+  return false;
+}

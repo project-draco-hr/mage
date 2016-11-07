@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{1}{W}");
+  this.getSpellAbility().addEffect(new PreventAllDamageByAllPermanentsEffect(Duration.EndOfTurn,true));
+  Mode mode=new Mode();
+  mode.getEffects().add(new RegenerateTargetEffect());
+  mode.getTargets().add(new TargetCreaturePermanent());
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new CounterTargetEffect());
+  mode.getTargets().add(new TargetSpell(filter));
+  this.getSpellAbility().addMode(mode);
+}

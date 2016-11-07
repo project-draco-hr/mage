@@ -1,0 +1,12 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourceObject=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    Integer toughness=(Integer)game.getState().getValue(RAVENOUS_WAMPA_STATE_VALUE_KEY_PREFIX + source.getSourceId() + sourceObject.getZoneChangeCounter(game));
+    if (toughness != null) {
+      controller.gainLife(toughness,game);
+    }
+    return true;
+  }
+  return false;
+}

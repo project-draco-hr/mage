@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(getTargetPointer().getFirst(game,source));
+  if (controller != null && permanent != null) {
+    permanent.destroy(source.getSourceId(),game,false);
+    if (!permanent.getName().isEmpty()) {
+      for (      Permanent perm : game.getBattlefield().getActivePermanents(source.getControllerId(),game)) {
+        if (!perm.getId().equals(permanent.getId()) && perm.getName().equals(permanent.getName()) && perm.getCardType().contains(CardType.ENCHANTMENT)) {
+          perm.destroy(source.getSourceId(),game,false);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

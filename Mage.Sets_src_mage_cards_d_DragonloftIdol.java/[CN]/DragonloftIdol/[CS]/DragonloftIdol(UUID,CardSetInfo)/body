@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT,CardType.CREATURE},"{4}");
+  this.subtype.add("Gargoyle");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  Effect effect=new ConditionalContinuousEffect(new BoostSourceEffect(1,1,Duration.WhileOnBattlefield),new PermanentsOnTheBattlefieldCondition(filter),"As long as you control a Dragon, Dragonloft Idol gets +1/+1");
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,effect);
+  effect=new ConditionalContinuousEffect(new GainAbilitySourceEffect(FlyingAbility.getInstance()),new PermanentsOnTheBattlefieldCondition(filter),"and has flying");
+  ability.addEffect(effect);
+  effect=new ConditionalContinuousEffect(new GainAbilitySourceEffect(TrampleAbility.getInstance()),new PermanentsOnTheBattlefieldCondition(filter),"and trample");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

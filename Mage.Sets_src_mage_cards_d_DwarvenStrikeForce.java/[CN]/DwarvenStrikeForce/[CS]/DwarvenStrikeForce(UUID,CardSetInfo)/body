@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{R}");
+  this.subtype.add("Dwarf");
+  this.subtype.add("Berserker");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(3);
+  Effect effect=new GainAbilitySourceEffect(FirstStrikeAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("{this} gains first strike");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new DiscardCardCost(true));
+  effect=new GainAbilitySourceEffect(HasteAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("and haste until end of turn");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

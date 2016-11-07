@@ -1,0 +1,33 @@
+{
+  this(ownerId,setInfo.getName());
+  this.rarity=setInfo.getRarity();
+  this.cardNumber=setInfo.getCardNumber();
+  this.expansionSetCode=setInfo.getExpansionSetCode();
+  this.cardType.addAll(Arrays.asList(cardTypes));
+  this.manaCost.load(costs);
+  setDefaultColor();
+  if (cardType.contains(CardType.LAND)) {
+    Ability ability=new PlayLandAbility(name);
+    ability.setSourceId(this.getId());
+    abilities.add(ability);
+  }
+ else {
+    SpellAbility ability=new SpellAbility(manaCost,name,Zone.HAND,spellAbilityType);
+    if (!cardType.contains(CardType.INSTANT)) {
+      ability.setTiming(TimingRule.SORCERY);
+    }
+    ability.setSourceId(this.getId());
+    abilities.add(ability);
+  }
+  CardGraphicInfo graphicInfo=setInfo.getGraphicInfo();
+  if (graphicInfo != null) {
+    this.usesVariousArt=graphicInfo.getUsesVariousArt();
+    if (graphicInfo.getFrameColor() != null) {
+      this.frameColor=graphicInfo.getFrameColor().copy();
+    }
+    if (graphicInfo.getFrameStyle() != null) {
+      this.frameStyle=graphicInfo.getFrameStyle();
+    }
+  }
+  this.morphCard=false;
+}

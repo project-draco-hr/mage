@@ -1,0 +1,25 @@
+{
+  if (new HelmOfKaldraCondition().apply(game,source)) {
+    CreateTokenEffect effect=new CreateTokenEffect(new KaldraToken());
+    effect.apply(game,source);
+    for (    UUID tokenId : effect.getLastAddedTokenIds()) {
+      Permanent kaldra=game.getPermanent(tokenId);
+      if (kaldra != null) {
+        for (        Permanent kaldrasHelm : game.getBattlefield().getAllActivePermanents(HelmOfKaldra.filterHelm,source.getControllerId(),game)) {
+          kaldra.addAttachment(kaldrasHelm.getId(),game);
+          break;
+        }
+        for (        Permanent kaldrasShield : game.getBattlefield().getAllActivePermanents(HelmOfKaldra.filterShield,source.getControllerId(),game)) {
+          kaldra.addAttachment(kaldrasShield.getId(),game);
+          break;
+        }
+        for (        Permanent kaldrasSword : game.getBattlefield().getAllActivePermanents(HelmOfKaldra.filterSword,source.getControllerId(),game)) {
+          kaldra.addAttachment(kaldrasSword.getId(),game);
+          break;
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}

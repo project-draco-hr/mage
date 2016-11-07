@@ -1,0 +1,22 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int damage=(Integer)getValue("VialSmasherTheFierceCMC");
+    if (damage > 0) {
+      Set<UUID> opponents=game.getOpponents(source.getControllerId());
+      int random=RandomUtil.nextInt(opponents.size());
+      Iterator<UUID> iterator=opponents.iterator();
+      for (int i=0; i < random; i++) {
+        iterator.next();
+      }
+      UUID opponentId=iterator.next();
+      Player opponent=game.getPlayer(opponentId);
+      if (opponent != null) {
+        game.informPlayers(opponent.getLogName() + " was chosen at random.");
+        opponent.damage(damage,source.getSourceId(),game,false,true);
+      }
+    }
+    return true;
+  }
+  return false;
+}

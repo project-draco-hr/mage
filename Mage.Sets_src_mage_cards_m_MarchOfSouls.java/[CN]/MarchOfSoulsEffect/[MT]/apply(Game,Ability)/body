@@ -1,0 +1,20 @@
+{
+  List<Permanent> creatures=game.getBattlefield().getActivePermanents(new FilterCreaturePermanent(),source.getControllerId(),source.getSourceId(),game);
+  HashMap<UUID,Integer> playersWithCreatures=new HashMap<UUID,Integer>();
+  for (  Permanent p : creatures) {
+    UUID controllerId=p.getControllerId();
+    if (p.destroy(source.getSourceId(),game,true)) {
+      if (playersWithCreatures.containsKey(controllerId)) {
+        playersWithCreatures.put(controllerId,playersWithCreatures.get(controllerId) + 1);
+      }
+ else {
+        playersWithCreatures.put(controllerId,1);
+      }
+    }
+  }
+  SpiritWhiteToken token=new SpiritWhiteToken();
+  for (  UUID playerId : playersWithCreatures.keySet()) {
+    token.putOntoBattlefield(playersWithCreatures.get(playerId),game,source.getSourceId(),playerId);
+  }
+  return true;
+}

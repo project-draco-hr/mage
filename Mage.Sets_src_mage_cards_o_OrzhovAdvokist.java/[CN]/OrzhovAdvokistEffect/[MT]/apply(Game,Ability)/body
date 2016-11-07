@@ -1,0 +1,32 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    ArrayList<UUID> players=new ArrayList<>();
+    ArrayList<UUID> creatures=new ArrayList<>();
+    for (    UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        if (player.chooseUse(outcome,"Put two +1/+1 counters on a creature you control?",source,game)) {
+          Target target=new TargetControlledCreaturePermanent(new FilterControlledCreaturePermanent("a creature you control (to add two +1/+1 counters on it)"));
+          if (player.choose(outcome,target,playerId,game)) {
+            creatures.add(target.getFirstTarget());
+            players.add(player.getId());
+          }
+        }
+      }
+    }
+    for (    UUID creatureId : creatures) {
+      Permanent creature=game.getPermanent(creatureId);
+      if (creature != null) {
+        creature.addCounters(CounterType.P1P1.createInstance(2),game);
+      }
+    }
+    for (    UUID playerId : players) {
+      FilterCreaturePermanent filter=new FilterCreaturePermanent();
+      filter.add(new ControllerIdPredicate(playerId));
+      game.addEffect(new CantAttackYouAllEffect(Duration.UntilYourNextTurn,filter,true),source);
+    }
+    return true;
+  }
+  return false;
+}

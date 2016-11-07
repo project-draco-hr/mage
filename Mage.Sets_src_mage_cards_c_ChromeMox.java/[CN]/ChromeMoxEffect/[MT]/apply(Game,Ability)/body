@@ -1,0 +1,25 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    TargetCard target=new TargetCard(Zone.HAND,filter);
+    target.setNotTarget(true);
+    Card cardToImprint=null;
+    Permanent sourcePermanent=game.getPermanent(source.getSourceId());
+    if (controller.getHand().size() > 0 && controller.choose(Outcome.Benefit,target,source.getSourceId(),game)) {
+      cardToImprint=controller.getHand().get(target.getFirstTarget(),game);
+    }
+    if (sourcePermanent != null) {
+      if (cardToImprint != null) {
+        controller.moveCardsToExile(cardToImprint,source,game,true,source.getSourceId(),sourceObject.getIdName() + " (Imprint)");
+        sourcePermanent.imprint(cardToImprint.getId(),game);
+        sourcePermanent.addInfo("imprint",CardUtil.addToolTipMarkTags("[Imprinted card - " + GameLog.getColoredObjectIdNameForTooltip(cardToImprint) + "]"),game);
+      }
+ else {
+        sourcePermanent.addInfo("imprint",CardUtil.addToolTipMarkTags("[Imprinted card - None]"),game);
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,10 @@
+{
+  TargetCardInHand target=new TargetCardInHand(0,Integer.MAX_VALUE,filter);
+  if (target.choose(Outcome.Benefit,source.getControllerId(),source.getSourceId(),game)) {
+    Mana mana=Mana.GreenMana(target.getTargets().size());
+    checkToFirePossibleEvents(mana,game,source);
+    game.getPlayer(source.getControllerId()).getManaPool().addMana(mana,game,source);
+    return true;
+  }
+  return false;
+}

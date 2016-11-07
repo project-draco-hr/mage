@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{W}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.Protect));
+  this.addAbility(new EnchantAbility(auraTarget.getTargetName()));
+  this.addAbility(new AsEntersBattlefieldAbility(new ChooseColorEffect(Outcome.Benefit)));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ProtectionChosenColorAttachedEffect(true)));
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new ReturnToHandSourceEffect(),new ManaCostsImpl("{W}")));
+}

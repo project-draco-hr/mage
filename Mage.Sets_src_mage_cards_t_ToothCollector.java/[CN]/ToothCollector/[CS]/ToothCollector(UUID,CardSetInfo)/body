@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{B}");
+  this.subtype.add("Human");
+  this.subtype.add("Rogue");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(2);
+  Ability ability=new EntersBattlefieldTriggeredAbility(new BoostTargetEffect(-1,-1,Duration.EndOfTurn));
+  ability.addTarget(new TargetCreaturePermanent(FILTER));
+  this.addAbility(ability);
+  ability=new ConditionalTriggeredAbility(new ToothCollectorAbility(),new DeliriumCondition(),"<i>Delirium</i> &mdash; At the beginning of each opponent's upkeep, if there are four or more card types among cards in your graveyard, " + "target creature that player controls gets -1/-1 until end of turn.");
+  this.addAbility(ability);
+}

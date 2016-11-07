@@ -1,0 +1,19 @@
+{
+  addCard(Zone.BATTLEFIELD,playerA,"Plains",2);
+  addCard(Zone.HAND,playerA,"Hopeful Eidolon");
+  addCard(Zone.BATTLEFIELD,playerA,"Ersatz Gnomes");
+  addCard(Zone.BATTLEFIELD,playerB,"Island",1);
+  addCard(Zone.HAND,playerB,"Unsummon");
+  castSpell(1,PhaseStep.PRECOMBAT_MAIN,playerA,"Hopeful Eidolon");
+  activateAbility(1,PhaseStep.PRECOMBAT_MAIN,playerA,"{T}: Target spell","Hopeful Eidolon");
+  castSpell(1,PhaseStep.END_COMBAT,playerB,"Unsummon","Hopeful Eidolon");
+  castSpell(1,PhaseStep.POSTCOMBAT_MAIN,playerA,"Hopeful Eidolon");
+  setStopAt(1,PhaseStep.END_TURN);
+  execute();
+  assertGraveyardCount(playerB,"Unsummon",1);
+  assertHandCount(playerA,"Hopeful Eidolon",0);
+  assertPermanentCount(playerA,"Hopeful Eidolon",1);
+  assertTapped("Ersatz Gnomes",true);
+  Permanent lion=getPermanent("Hopeful Eidolon",playerA);
+  Assert.assertTrue("Hopeful Eidolon has to be white",lion.getColor(currentGame).isWhite());
+}

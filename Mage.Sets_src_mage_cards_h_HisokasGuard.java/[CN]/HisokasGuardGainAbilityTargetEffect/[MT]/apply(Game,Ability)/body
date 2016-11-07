@@ -1,0 +1,16 @@
+{
+  Permanent hisokasGuard=game.getPermanent(source.getSourceId());
+  if (hisokasGuard != null && hisokasGuard.getConnectedCards("HisokasGuard").size() > 0) {
+    Permanent guardedCreature=game.getPermanent(hisokasGuard.getConnectedCards("HisokasGuard").get(0));
+    if (guardedCreature != null && hisokasGuard.isTapped()) {
+      guardedCreature.addAbility(ability,game);
+      return true;
+    }
+ else {
+      if (!hisokasGuard.isTapped()) {
+        hisokasGuard.clearConnectedCards("HisokasGuard");
+      }
+    }
+  }
+  return false;
+}

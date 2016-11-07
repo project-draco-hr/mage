@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (sourceObject != null && controller != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(filter);
+    if (controller.searchLibrary(target,game)) {
+      if (target.getTargets().size() > 0) {
+        Card card=game.getCard(target.getFirstTarget());
+        Cards revealed=new CardsImpl();
+        revealed.add(card);
+        controller.revealCards(sourceObject.getIdName(),revealed,game);
+        controller.moveCards(revealed,Zone.HAND,source,game);
+      }
+    }
+    controller.shuffleLibrary(source,game);
+    return true;
+  }
+  return false;
+}

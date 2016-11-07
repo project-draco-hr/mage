@@ -1,0 +1,17 @@
+{
+  ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+  if (zEvent.getToZone() == Zone.GRAVEYARD) {
+    Card card=game.getCard(event.getTargetId());
+    if (card != null && game.getOpponents(source.getControllerId()).contains(card.getOwnerId())) {
+      if (zEvent.getTarget() != null) {
+        if (zEvent.getTarget().getCardType().contains(CardType.CREATURE)) {
+          return true;
+        }
+      }
+ else       if (card.getCardType().contains(CardType.CREATURE)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

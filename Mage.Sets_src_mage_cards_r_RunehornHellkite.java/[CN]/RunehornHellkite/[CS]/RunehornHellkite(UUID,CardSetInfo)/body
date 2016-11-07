@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{5}{R}");
+  this.subtype.add("Dragon");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  this.addAbility(FlyingAbility.getInstance());
+  Effect effect=new DrawCardAllEffect(7);
+  effect.setText(", then draws seven cards");
+  Ability ability=new SimpleActivatedAbility(Zone.GRAVEYARD,new DiscardHandAllEffect(),new ManaCostsImpl("{5}{R}"));
+  ability.addCost(new ExileSourceFromGraveCost());
+  ability.addEffect(effect);
+  this.addAbility(ability);
+}

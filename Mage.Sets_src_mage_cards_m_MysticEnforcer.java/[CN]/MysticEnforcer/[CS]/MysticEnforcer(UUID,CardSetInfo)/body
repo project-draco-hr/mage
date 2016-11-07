@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{G}{W}");
+  this.subtype.add("Human");
+  this.subtype.add("Nomad");
+  this.subtype.add("Mystic");
+  this.power=new MageInt(3);
+  this.toughness=new MageInt(3);
+  this.addAbility(ProtectionAbility.from(ObjectColor.BLACK));
+  Ability thresholdAbility=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new BoostSourceEffect(3,3,Duration.WhileOnBattlefield),new CardsInControllerGraveCondition(7)," as long as seven or more cards are in your graveyard, {this} gets +3/+3"));
+  thresholdAbility.addEffect(new ConditionalContinuousEffect(new GainAbilitySourceEffect(FlyingAbility.getInstance()),new CardsInControllerGraveCondition(7),"and has flying"));
+  thresholdAbility.setAbilityWord(AbilityWord.THRESHOLD);
+  this.addAbility(thresholdAbility);
+}

@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{2}");
+  Effect scryEffect=new ScryEffect(2);
+  scryEffect.setText("scry 2");
+  Ability ability=new EntersBattlefieldTriggeredAbility(scryEffect);
+  Effect energyEffect=new GetEnergyCountersControllerEffect(2);
+  energyEffect.setText(", then you get {E}{E}");
+  ability.addEffect(energyEffect);
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,scryEffect,new ManaCostsImpl<>("{2}{U}"));
+  ability.addCost(new SacrificeSourceCost());
+  ability.addEffect(energyEffect);
+  this.addAbility(ability);
+}

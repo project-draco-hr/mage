@@ -1,0 +1,27 @@
+{
+  boolean result;
+  if (event.getType().equals(EventType.ENTERS_THE_BATTLEFIELD)) {
+    result=event.getTargetId().equals(this.getSourceId());
+  }
+ else {
+    result=event.getPlayerId().equals(this.getControllerId());
+  }
+  if (result) {
+    Permanent enchantment=game.getPermanentOrLKIBattlefield(getSourceId());
+    if (enchantment != null && enchantment.getAttachedTo() != null) {
+      Effect effect=new GainControlTargetEffect(Duration.EndOfTurn,true);
+      effect.setTargetPointer(new FixedTarget(enchantment.getAttachedTo(),game));
+      getEffects().add(effect);
+      effect=new UntapTargetEffect();
+      effect.setTargetPointer(new FixedTarget(enchantment.getAttachedTo(),game));
+      getEffects().add(effect);
+      effect=new GainAbilityTargetEffect(HasteAbility.getInstance(),Duration.EndOfTurn);
+      effect.setTargetPointer(new FixedTarget(enchantment.getAttachedTo(),game));
+      getEffects().add(effect);
+    }
+ else {
+      result=false;
+    }
+  }
+  return result;
+}

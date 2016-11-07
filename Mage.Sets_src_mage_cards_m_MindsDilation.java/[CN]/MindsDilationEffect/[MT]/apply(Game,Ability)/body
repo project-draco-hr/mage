@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  Player opponent=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (controller != null && sourceObject != null && opponent != null) {
+    if (opponent.getLibrary().size() > 0) {
+      Card card=opponent.getLibrary().getFromTop(game);
+      if (card != null && opponent.moveCards(card,Zone.EXILED,source,game)) {
+        if (!card.getCardType().contains(CardType.LAND)) {
+          if (controller.chooseUse(outcome,"Cast " + card.getLogName() + " without paying its mana cost from exile?",source,game)) {
+            controller.cast(card.getSpellAbility(),game,true);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

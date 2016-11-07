@@ -1,0 +1,22 @@
+{
+  Player targetOpponent=game.getPlayer(source.getTargets().getFirstTarget());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (targetOpponent == null || controller == null) {
+    return false;
+  }
+  FilterControlledPermanent filter=new FilterControlledPermanent("a green or white creature");
+  filter.add(new CardTypePredicate(CardType.CREATURE));
+  filter.add(new ControllerPredicate(TargetController.YOU));
+  filter.add(Predicates.or(new ColorPredicate(ObjectColor.GREEN),new ColorPredicate(ObjectColor.WHITE)));
+  TargetControlledPermanent target=new TargetControlledPermanent(1,1,filter,true);
+  if (target.canChoose(source.getSourceId(),targetOpponent.getId(),game)) {
+    targetOpponent.chooseTarget(Outcome.Sacrifice,target,source,game);
+    Permanent permanent=game.getPermanent(target.getFirstTarget());
+    if (permanent != null) {
+      if (permanent.sacrifice(source.getSourceId(),game)) {
+        targetOpponent.loseLife(2,game,false);
+      }
+    }
+  }
+  return true;
+}

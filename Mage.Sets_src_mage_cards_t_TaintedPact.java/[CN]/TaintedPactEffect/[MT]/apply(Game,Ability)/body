@@ -1,0 +1,23 @@
+{
+  Card sourceCard=game.getCard(source.getSourceId());
+  Player player=game.getPlayer(source.getControllerId());
+  if (player == null || sourceCard == null) {
+    return false;
+  }
+  Set<String> names=new HashSet<>();
+  while (player.canRespond() && player.getLibrary().size() > 0) {
+    Card card=player.getLibrary().getFromTop(game);
+    if (card != null) {
+      card.moveToExile(null,null,source.getSourceId(),game);
+      if (names.contains(card.getName())) {
+        break;
+      }
+      names.add(card.getName());
+      if (player.chooseUse(outcome,new StringBuilder("Put ").append(card.getName()).append("into your hand?").toString(),source,game)) {
+        card.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+        break;
+      }
+    }
+  }
+  return true;
+}

@@ -1,0 +1,22 @@
+{
+  if (super.canTarget(id,game)) {
+    Card card=game.getCard(id);
+    if (card != null) {
+      if (targets.size() == 1) {
+        Card card2=game.getCard(targets.entrySet().iterator().next().getKey());
+        if (card2 != null && card2.getColor(game).equals(card.getColor(game))) {
+          return true;
+        }
+      }
+ else {
+        FilterCard colorFilter=new FilterCard();
+        colorFilter.add(new ColorPredicate(card.getColor(game)));
+        Player player=game.getPlayer(card.getOwnerId());
+        if (player.getHand().getCards(colorFilter,game).size() > 1) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

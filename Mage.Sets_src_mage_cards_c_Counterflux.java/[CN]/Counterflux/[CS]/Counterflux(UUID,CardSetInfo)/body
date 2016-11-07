@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{U}{U}{R}");
+  Effect effect=new CantBeCounteredSourceEffect();
+  effect.setText("{this} can't be countered by spells or abilities");
+  Ability ability=new SimpleStaticAbility(Zone.STACK,effect);
+  ability.setRuleAtTheTop(true);
+  this.addAbility(ability);
+  this.getSpellAbility().addTarget(new TargetSpell(filter));
+  this.getSpellAbility().addEffect(new CounterTargetEffect());
+  this.addAbility(new OverloadAbility(this,new CounterfluxEffect(),new ManaCostsImpl("{1}{U}{U}{R}")));
+}

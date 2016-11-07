@@ -1,0 +1,12 @@
+{
+  Set<UUID> availablePossibleTargets=super.possibleTargets(sourceId,sourceControllerId,game);
+  Set<UUID> possibleTargets=new HashSet<UUID>();
+  PlayerDamagedBySourceWatcher watcher=(PlayerDamagedBySourceWatcher)game.getState().getWatchers().get("PlayerDamagedBySource",sourceControllerId);
+  for (  UUID targetId : availablePossibleTargets) {
+    Permanent permanent=game.getPermanent(targetId);
+    if (permanent != null && watcher != null && watcher.hasSourceDoneDamage(targetId,game)) {
+      possibleTargets.add(targetId);
+    }
+  }
+  return possibleTargets;
+}

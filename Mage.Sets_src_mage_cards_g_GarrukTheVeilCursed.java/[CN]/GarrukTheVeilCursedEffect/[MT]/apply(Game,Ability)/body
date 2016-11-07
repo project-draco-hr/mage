@@ -1,0 +1,39 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null) {
+    return false;
+  }
+  Target target=new TargetControlledPermanent(1,1,filterCreature,false);
+  boolean sacrificed=false;
+  if (target.canChoose(controller.getId(),game)) {
+    while (controller.canRespond() && !target.isChosen() && target.canChoose(controller.getId(),game)) {
+      controller.chooseTarget(Outcome.Sacrifice,target,source,game);
+    }
+    for (int idx=0; idx < target.getTargets().size(); idx++) {
+      Permanent permanent=game.getPermanent(target.getTargets().get(idx));
+      if (permanent != null) {
+        sacrificed|=permanent.sacrifice(source.getSourceId(),game);
+      }
+    }
+  }
+  if (sacrificed) {
+    FilterCreatureCard filter=new FilterCreatureCard();
+    TargetCardInLibrary targetInLibrary=new TargetCardInLibrary(filter);
+    Cards cards=new CardsImpl();
+    if (controller.searchLibrary(targetInLibrary,game)) {
+      for (      UUID cardId : targetInLibrary.getTargets()) {
+        Card card=controller.getLibrary().remove(cardId,game);
+        if (card != null) {
+          card.moveToZone(Zone.HAND,source.getSourceId(),game,false);
+          cards.add(card);
+        }
+      }
+    }
+    if (cards.size() > 0) {
+      controller.revealCards("Garruk, the Veil-Cursed",cards,game);
+    }
+    controller.shuffleLibrary(source,game);
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,33 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (sourceObject == null || controller == null) {
+    return false;
+  }
+  UUID exileId=CardUtil.getExileZoneId(game,source.getSourceId(),source.getSourceObjectZoneChangeCounter());
+  if (exileId == null) {
+    return false;
+  }
+  for (  UUID opponentId : game.getOpponents(source.getControllerId())) {
+    Player opponent=game.getPlayer(opponentId);
+    if (opponent != null) {
+      Cards cards=new CardsImpl();
+      cards.addAll(opponent.getHand());
+      for (      UUID cardId : cards) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          controller.moveCardToExileWithInfo(card,exileId,sourceObject.getIdName(),source.getSourceId(),game,Zone.HAND,true);
+        }
+      }
+      cards.clear();
+      cards.addAll(opponent.getGraveyard());
+      for (      UUID cardId : cards) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          controller.moveCardToExileWithInfo(card,exileId,sourceObject.getIdName(),source.getSourceId(),game,Zone.GRAVEYARD,true);
+        }
+      }
+    }
+  }
+  return true;
+}

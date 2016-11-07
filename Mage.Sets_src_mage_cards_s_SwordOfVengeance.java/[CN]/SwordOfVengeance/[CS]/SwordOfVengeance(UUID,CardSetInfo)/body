@@ -1,0 +1,19 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{3}");
+  this.subtype.add("Equipment");
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEquippedEffect(2,0));
+  Effect effect=new GainAbilityAttachedEffect(FirstStrikeAbility.getInstance(),AttachmentType.EQUIPMENT);
+  effect.setText("and has first strike");
+  ability.addEffect(effect);
+  effect=new GainAbilityAttachedEffect(VigilanceAbility.getInstance(),AttachmentType.EQUIPMENT);
+  effect.setText(", vigilance");
+  ability.addEffect(effect);
+  effect=new GainAbilityAttachedEffect(TrampleAbility.getInstance(),AttachmentType.EQUIPMENT);
+  effect.setText(", trample");
+  ability.addEffect(effect);
+  effect=new GainAbilityAttachedEffect(HasteAbility.getInstance(),AttachmentType.EQUIPMENT);
+  effect.setText(", and haste");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  this.addAbility(new EquipAbility(Outcome.AddAbility,new GenericManaCost(3)));
+}

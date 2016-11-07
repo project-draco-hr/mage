@@ -1,0 +1,87 @@
+{
+  Player you=game.getPlayer(source.getControllerId());
+  Cards cards=new CardsImpl();
+  FilterCard filterWhite=new FilterCard("white card");
+  filterWhite.add(new ColorPredicate(ObjectColor.WHITE));
+  FilterCard filterBlue=new FilterCard("blue card");
+  filterBlue.add(new ColorPredicate(ObjectColor.BLUE));
+  FilterCard filterBlack=new FilterCard("black card");
+  filterBlack.add(new ColorPredicate(ObjectColor.BLACK));
+  FilterCard filterRed=new FilterCard("red card");
+  filterRed.add(new ColorPredicate(ObjectColor.RED));
+  FilterCard filterGreen=new FilterCard("green card");
+  filterGreen.add(new ColorPredicate(ObjectColor.GREEN));
+  TargetCardInLibrary targetWhite=new TargetCardInLibrary(filterWhite);
+  TargetCardInLibrary targetBlue=new TargetCardInLibrary(filterBlue);
+  TargetCardInLibrary targetBlack=new TargetCardInLibrary(filterBlack);
+  TargetCardInLibrary targetRed=new TargetCardInLibrary(filterRed);
+  TargetCardInLibrary targetGreen=new TargetCardInLibrary(filterGreen);
+  if (you != null && you.getLibrary().size() > 0) {
+    if (you.searchLibrary(targetWhite,game)) {
+      if (targetWhite.getTargets().size() > 0) {
+        for (        UUID cardId : (List<UUID>)targetWhite.getTargets()) {
+          Card card=you.getLibrary().remove(cardId,game);
+          if (card != null) {
+            cards.add(card);
+          }
+        }
+      }
+    }
+  }
+  if (you != null && you.getLibrary().size() > 0) {
+    if (you.searchLibrary(targetBlue,game)) {
+      if (targetBlue.getTargets().size() > 0) {
+        for (        UUID cardId : (List<UUID>)targetBlue.getTargets()) {
+          Card card=you.getLibrary().remove(cardId,game);
+          if (card != null) {
+            cards.add(card);
+          }
+        }
+      }
+    }
+  }
+  if (you != null && you.getLibrary().size() > 0) {
+    if (you.searchLibrary(targetBlack,game)) {
+      if (targetBlack.getTargets().size() > 0) {
+        for (        UUID cardId : (List<UUID>)targetBlack.getTargets()) {
+          Card card=you.getLibrary().remove(cardId,game);
+          if (card != null) {
+            cards.add(card);
+          }
+        }
+      }
+    }
+  }
+  if (you != null && you.getLibrary().size() > 0) {
+    if (you.searchLibrary(targetRed,game)) {
+      if (targetRed.getTargets().size() > 0) {
+        for (        UUID cardId : (List<UUID>)targetRed.getTargets()) {
+          Card card=you.getLibrary().remove(cardId,game);
+          if (card != null) {
+            cards.add(card);
+          }
+        }
+      }
+    }
+  }
+  if (you != null && you.getLibrary().size() > 0) {
+    if (you.searchLibrary(targetGreen,game)) {
+      if (targetGreen.getTargets().size() > 0) {
+        for (        UUID cardId : (List<UUID>)targetGreen.getTargets()) {
+          Card card=you.getLibrary().remove(cardId,game);
+          if (card != null) {
+            cards.add(card);
+          }
+        }
+      }
+    }
+  }
+  if (you != null) {
+    you.revealCards("Conflux",cards,game);
+    for (    Card card : cards.getCards(game)) {
+      card.moveToZone(Zone.HAND,source.getSourceId(),game,true);
+    }
+    you.shuffleLibrary(source,game);
+  }
+  return true;
+}

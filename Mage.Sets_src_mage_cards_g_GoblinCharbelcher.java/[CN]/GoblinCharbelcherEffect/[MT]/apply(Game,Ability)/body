@@ -1,0 +1,46 @@
+{
+  boolean isMountain=false;
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller == null || sourceObject == null) {
+    return false;
+  }
+  Cards cards=new CardsImpl();
+  boolean landFound=false;
+  while (controller.getLibrary().size() > 0) {
+    Card card=controller.getLibrary().removeFromTop(game);
+    if (card != null) {
+      cards.add(card);
+      if (card.getCardType().contains(CardType.LAND)) {
+        landFound=true;
+        if (card.getSubtype(game).contains("Mountain")) {
+          isMountain=true;
+        }
+        break;
+      }
+    }
+ else {
+      break;
+    }
+  }
+  controller.revealCards(sourceObject.getName(),cards,game);
+  int damage=cards.size();
+  if (landFound) {
+    damage--;
+  }
+  if (isMountain == true) {
+    damage*=2;
+  }
+  Permanent permanent=game.getPermanent(targetPointer.getFirst(game,source));
+  if (permanent != null) {
+    permanent.damage(damage,source.getSourceId(),game,false,true);
+  }
+ else {
+    Player targetPlayer=game.getPlayer(targetPointer.getFirst(game,source));
+    if (targetPlayer != null) {
+      targetPlayer.damage(damage,source.getSourceId(),game,false,true);
+    }
+  }
+  controller.putCardsOnBottomOfLibrary(cards,game,source,true);
+  return true;
+}

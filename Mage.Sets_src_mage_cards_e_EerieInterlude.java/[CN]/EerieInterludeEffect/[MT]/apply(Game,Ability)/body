@@ -1,0 +1,38 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (sourceObject != null && controller != null) {
+    Set<Card> toExile=new HashSet<>();
+    for (    UUID targetId : getTargetPointer().getTargets(game,source)) {
+      Permanent targetCreature=game.getPermanent(targetId);
+      if (targetCreature != null) {
+        toExile.add(targetCreature);
+      }
+    }
+    UUID exileId=CardUtil.getExileZoneId(game,source.getSourceId(),source.getSourceObjectZoneChangeCounter());
+    controller.moveCardsToExile(toExile,source,game,true,exileId,sourceObject.getIdName());
+    Cards cardsToReturn=new CardsImpl();
+    for (    Card exiled : toExile) {
+      if (exiled instanceof PermanentMeld) {
+        MeldCard meldCard=(MeldCard)((PermanentCard)exiled).getCard();
+        Card topCard=meldCard.getTopHalfCard();
+        Card bottomCard=meldCard.getBottomHalfCard();
+        if (topCard.getZoneChangeCounter(game) == meldCard.getTopLastZoneChangeCounter()) {
+          cardsToReturn.add(topCard);
+        }
+        if (bottomCard.getZoneChangeCounter(game) == meldCard.getBottomLastZoneChangeCounter()) {
+          cardsToReturn.add(bottomCard);
+        }
+      }
+ else       if (exiled.getZoneChangeCounter(game) == game.getState().getZoneChangeCounter(exiled.getId()) - 1) {
+        cardsToReturn.add(exiled);
+      }
+    }
+    Effect effect=new ReturnToBattlefieldUnderOwnerControlTargetEffect();
+    effect.setTargetPointer(new FixedTargets(cardsToReturn,game));
+    AtTheBeginOfNextEndStepDelayedTriggeredAbility delayedAbility=new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect);
+    game.addDelayedTriggeredAbility(delayedAbility,source);
+    return true;
+  }
+  return false;
+}

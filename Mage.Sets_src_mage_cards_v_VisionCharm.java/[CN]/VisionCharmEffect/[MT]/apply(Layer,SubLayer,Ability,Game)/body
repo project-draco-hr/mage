@@ -1,0 +1,27 @@
+{
+  FilterPermanent filter=new FilterLandPermanent();
+  filter.add(new SubtypePredicate(targetLandType));
+  for (  Permanent land : game.getBattlefield().getActivePermanents(filter,source.getControllerId(),game)) {
+    land.getSubtype(game).removeAll(land.getSubtype(game));
+    land.getSubtype(game).add(targetBasicLandType);
+    land.removeAllAbilities(source.getId(),game);
+switch (targetBasicLandType) {
+case "Swamp":
+      land.addAbility(new BlackManaAbility(),source.getSourceId(),game);
+    break;
+case "Mountain":
+  land.addAbility(new RedManaAbility(),source.getSourceId(),game);
+break;
+case "Forest":
+land.addAbility(new GreenManaAbility(),source.getSourceId(),game);
+break;
+case "Island":
+land.addAbility(new BlueManaAbility(),source.getSourceId(),game);
+break;
+case "Plains":
+land.addAbility(new WhiteManaAbility(),source.getSourceId(),game);
+break;
+}
+}
+return true;
+}

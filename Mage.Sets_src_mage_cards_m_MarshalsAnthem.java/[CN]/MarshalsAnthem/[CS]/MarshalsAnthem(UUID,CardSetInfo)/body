@@ -1,0 +1,8 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{2}{W}{W}");
+  this.addAbility(new MultikickerAbility("{1}{W}"));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostAllEffect(1,1,Duration.WhileOnBattlefield,filter,false)));
+  Ability ability=new ConditionalTriggeredAbility(new EntersBattlefieldTriggeredAbility(new ReturnFromGraveyardToBattlefieldTargetEffect(),false),KickedCondition.getInstance(),"When {this} enters the battlefield, return up to X target creature cards from your graveyard to the battlefield, where X is the number of times {this} was kicked.");
+  originalId=ability.getOriginalId();
+  this.addAbility(ability);
+}

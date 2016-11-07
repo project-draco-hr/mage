@@ -1,0 +1,24 @@
+{
+  Player activePlayer=game.getPlayer(getTargetPointer().getFirst(game,source));
+  Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (activePlayer != null && sourcePermanent != null) {
+    int count=sourcePermanent.getCounters(game).getCount("Soot");
+    if (count > 0) {
+      int amount=Math.min(count,game.getBattlefield().countAll(new FilterControlledPermanent(),activePlayer.getId(),game));
+      Target target=new TargetControlledPermanent(amount,amount,new FilterControlledPermanent(),true);
+      if (target.canChoose(activePlayer.getId(),game)) {
+        while (!target.isChosen() && target.canChoose(activePlayer.getId(),game) && activePlayer.canRespond()) {
+          activePlayer.choose(Outcome.Sacrifice,target,source.getSourceId(),game);
+        }
+        for (int idx=0; idx < target.getTargets().size(); idx++) {
+          Permanent permanent=game.getPermanent(target.getTargets().get(idx));
+          if (permanent != null) {
+            permanent.sacrifice(source.getSourceId(),game);
+          }
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

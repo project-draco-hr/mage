@@ -1,0 +1,24 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Library library=controller.getLibrary();
+    List<Card> cards=new ArrayList<>();
+    int count=Math.min(amount.calculate(game,source,this),library.size());
+    for (int i=0; i < count; i++) {
+      Card card=library.removeFromTop(game);
+      if (card != null) {
+        cards.add(card);
+      }
+    }
+    if (cards.size() > 0) {
+      List<UUID> cardsId=new ArrayList<>();
+      for (      Card card : cards) {
+        card.moveToExile(source.getSourceId(),"Flames of Remembrance",source.getSourceId(),game);
+        cardsId.add(card.getId());
+      }
+      game.addEffect(new FlamesOfRemembranceMayPlayExiledEffect(cardsId),source);
+    }
+    return true;
+  }
+  return false;
+}

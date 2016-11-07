@@ -1,0 +1,12 @@
+{
+  int damageDealt=0;
+  for (  UUID playerId : game.getState().getPlayersInRange(source.getControllerId(),game)) {
+    if (!playerId.equals(source.getControllerId())) {
+      damageDealt+=game.getPlayer(playerId).damage(2,source.getSourceId(),game,false,true);
+    }
+  }
+  if (damageDealt > 0) {
+    game.getPlayer(source.getControllerId()).gainLife(damageDealt,game);
+  }
+  return true;
+}

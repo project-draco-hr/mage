@@ -1,0 +1,22 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    ArrayList<Permanent> toDestroy=new ArrayList<>();
+    for (    Permanent permanent : game.getBattlefield().getActivePermanents(controller.getId(),game)) {
+      if (permanent.getCardType().contains(CardType.CREATURE)) {
+        toDestroy.add(permanent);
+      }
+ else       if (permanent.getAttachedTo() != null) {
+        Permanent attachedTo=game.getPermanent(permanent.getAttachedTo());
+        if (attachedTo != null && attachedTo.getCardType().contains(CardType.CREATURE)) {
+          toDestroy.add(permanent);
+        }
+      }
+    }
+    for (    Permanent permanent : toDestroy) {
+      permanent.destroy(source.getSourceId(),game,false);
+    }
+    return true;
+  }
+  return false;
+}

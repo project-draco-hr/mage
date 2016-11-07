@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{G}");
+  this.subtype.add("Spider");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(4);
+  this.addAbility(ReachAbility.getInstance());
+  DynamicValue xValue=new CardsInControllerGraveyardCount(new FilterCreatureCard("creature cards"));
+  Ability ability=new LimitedTimesPerTurnActivatedAbility(Zone.BATTLEFIELD,new BoostSourceEffect(xValue,xValue,Duration.EndOfTurn,true),new ManaCostsImpl("{3}{B}"));
+  this.addAbility(ability);
+}

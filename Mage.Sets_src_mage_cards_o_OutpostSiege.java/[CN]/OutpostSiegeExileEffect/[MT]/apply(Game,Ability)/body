@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (controller != null && sourcePermanent != null) {
+    Card card=controller.getLibrary().getFromTop(game);
+    if (card != null) {
+      String exileName=sourcePermanent.getIdName() + " <this card may be played the turn it was exiled";
+      controller.moveCardsToExile(card,source,game,true,source.getSourceId(),exileName);
+      if (game.getState().getZone(card.getId()) == Zone.EXILED) {
+        ContinuousEffect effect=new CastFromNonHandZoneTargetEffect(Duration.EndOfTurn);
+        effect.setTargetPointer(new FixedTarget(card.getId(),card.getZoneChangeCounter(game)));
+        game.addEffect(effect,source);
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{U}");
+  this.subtype.add("Aura");
+  this.addAbility(FlashAbility.getInstance());
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  DynamicValue value=new SignInversionDynamicValue(new CardsInControllerGraveyardCount());
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(value,new StaticValue(-0))));
+}

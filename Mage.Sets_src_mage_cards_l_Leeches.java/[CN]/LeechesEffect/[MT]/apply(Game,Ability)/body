@@ -1,0 +1,13 @@
+{
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (targetPlayer == null) {
+    return false;
+  }
+  int countPoisonCounters=targetPlayer.getCounters().getCount(CounterType.POISON);
+  if (countPoisonCounters > 0) {
+    targetPlayer.removeCounters(CounterType.POISON.getName(),countPoisonCounters,source,game);
+    targetPlayer.damage(countPoisonCounters,source.getSourceId(),game,false,true);
+    return true;
+  }
+  return false;
+}

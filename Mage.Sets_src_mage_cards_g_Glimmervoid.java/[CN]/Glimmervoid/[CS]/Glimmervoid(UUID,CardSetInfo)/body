@@ -1,0 +1,6 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.LAND},"");
+  TriggeredAbility triggered=new OnEventTriggeredAbility(GameEvent.EventType.END_TURN_STEP_PRE,"beginning of the end step",true,new SacrificeSourceEffect());
+  this.addAbility(new ConditionalTriggeredAbility(triggered,new PermanentsOnTheBattlefieldCondition(new FilterControlledArtifactPermanent(),PermanentsOnTheBattlefieldCondition.CountType.FEWER_THAN,1),"At the beginning of the end step, if you control no artifacts, sacrifice {this}."));
+  this.addAbility(new AnyColorManaAbility());
+}

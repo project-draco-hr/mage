@@ -1,0 +1,21 @@
+{
+  Player opponent=game.getPlayer(getTargetPointer().getFirst(game,source));
+  if (opponent != null) {
+    Cards cards=new CardsImpl();
+    int landsFound=0;
+    while (landsFound < 4 && opponent.getLibrary().size() > 0) {
+      Card card=opponent.getLibrary().removeFromTop(game);
+      if (card == null) {
+        break;
+      }
+      if (card.getCardType().contains(CardType.LAND)) {
+        landsFound++;
+      }
+      cards.add(card);
+    }
+    opponent.revealCards("Mind Funeral",cards,game);
+    opponent.moveCards(cards,Zone.GRAVEYARD,source,game);
+    return true;
+  }
+  return false;
+}

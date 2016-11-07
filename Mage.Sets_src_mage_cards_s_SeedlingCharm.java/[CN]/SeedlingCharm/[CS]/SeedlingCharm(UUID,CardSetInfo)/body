@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{G}");
+  this.getSpellAbility().addEffect(new ReturnToHandTargetEffect());
+  this.getSpellAbility().addTarget(new TargetPermanent(filter1));
+  Mode mode=new Mode();
+  mode.getEffects().add(new RegenerateTargetEffect());
+  mode.getTargets().add(new TargetPermanent(filter2));
+  this.getSpellAbility().addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new GainAbilityTargetEffect(TrampleAbility.getInstance(),Duration.EndOfTurn));
+  mode.getTargets().add(new TargetCreaturePermanent());
+  this.getSpellAbility().addMode(mode);
+}

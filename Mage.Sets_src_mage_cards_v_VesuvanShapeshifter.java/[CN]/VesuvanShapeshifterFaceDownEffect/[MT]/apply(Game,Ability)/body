@@ -1,0 +1,20 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (controller != null && permanent != null) {
+    permanent.removeAllAbilities(source.getSourceId(),game);
+    for (    Effect effect : game.getState().getContinuousEffects().getLayeredEffects(game)) {
+      if (effect instanceof CopyEffect) {
+        CopyEffect copyEffect=(CopyEffect)effect;
+        if (copyEffect.getSourceId().equals(permanent.getId())) {
+          copyEffect.discard();
+        }
+      }
+    }
+    permanent.turnFaceDown(game,source.getControllerId());
+    permanent.setManifested(false);
+    permanent.setMorphed(true);
+    return permanent.isFaceDown(game);
+  }
+  return false;
+}

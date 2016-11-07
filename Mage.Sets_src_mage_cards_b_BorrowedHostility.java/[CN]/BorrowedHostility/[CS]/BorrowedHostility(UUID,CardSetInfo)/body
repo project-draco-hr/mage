@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{R}");
+  this.addAbility(new EscalateAbility(new ManaCostsImpl<>("{3}")));
+  this.getSpellAbility().getModes().setMinModes(1);
+  this.getSpellAbility().getModes().setMaxModes(2);
+  Effect effect=new BoostTargetEffect(3,0,Duration.EndOfTurn);
+  effect.setText("Target creature gets +3/+0 until end of turn");
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent(filterBoost));
+  this.getSpellAbility().addEffect(effect);
+  Mode mode=new Mode();
+  effect=new GainAbilityTargetEffect(FirstStrikeAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("Target creature gains first strike until end of turn");
+  mode.getEffects().add(effect);
+  mode.getTargets().add(new TargetCreaturePermanent(filterFirstStrike));
+  this.getSpellAbility().addMode(mode);
+}

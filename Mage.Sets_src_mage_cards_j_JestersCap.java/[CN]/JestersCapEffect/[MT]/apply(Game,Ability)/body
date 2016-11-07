@@ -1,0 +1,17 @@
+{
+  boolean applied=false;
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  Player player=game.getPlayer(source.getControllerId());
+  if (player != null && targetPlayer != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(3,3,new FilterCard());
+    player.searchLibrary(target,game,targetPlayer.getId());
+    for (    UUID cardId : target.getTargets()) {
+      final Card targetCard=game.getCard(cardId);
+      if (targetCard != null) {
+        applied|=player.moveCardToExileWithInfo(targetCard,null,null,source.getSourceId(),game,Zone.LIBRARY,true);
+      }
+    }
+    targetPlayer.shuffleLibrary(source,game);
+  }
+  return applied;
+}

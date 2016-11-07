@@ -1,0 +1,24 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    int xValue=source.getManaCostsToPay().getX();
+    if (xValue > 0) {
+      List<Player> usingPlayers=new ArrayList<>();
+      this.chooseAndSearchLibrary(usingPlayers,controller,xValue,source,sourceObject,game);
+      for (      UUID playerId : game.getState().getPlayersInRange(controller.getId(),game)) {
+        if (!playerId.equals(controller.getId())) {
+          Player player=game.getPlayer(playerId);
+          if (player != null) {
+            this.chooseAndSearchLibrary(usingPlayers,player,xValue,source,sourceObject,game);
+          }
+        }
+      }
+      for (      Player player : usingPlayers) {
+        player.shuffleLibrary(source,game);
+      }
+      return true;
+    }
+  }
+  return false;
+}

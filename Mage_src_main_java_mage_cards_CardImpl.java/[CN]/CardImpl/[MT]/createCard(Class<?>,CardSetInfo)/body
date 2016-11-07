@@ -1,0 +1,18 @@
+{
+  try {
+    Card card;
+    if (setInfo == null) {
+      Constructor<?> con=clazz.getConstructor(UUID.class);
+      card=(Card)con.newInstance(new Object[]{null});
+    }
+ else {
+      Constructor<?> con=clazz.getConstructor(UUID.class,CardSetInfo.class);
+      card=(Card)con.newInstance(null,setInfo);
+    }
+    return card;
+  }
+ catch (  Exception e) {
+    logger.fatal("Error loading card: " + clazz.getCanonicalName(),e);
+    return null;
+  }
+}

@@ -1,0 +1,34 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null) {
+    Choice typeChoice=new ChoiceImpl(true);
+    typeChoice.setMessage("Choose a creature type:");
+    typeChoice.setChoices(CardRepository.instance.getCreatureTypes());
+    while (!controller.choose(outcome,typeChoice,game)) {
+      if (!controller.canRespond()) {
+        return false;
+      }
+    }
+    if (typeChoice.getChoice() != null) {
+      game.informPlayers(sourceObject.getLogName() + " chosen type: " + typeChoice.getChoice());
+    }
+    FilterCard filterSubtype=new FilterCard();
+    filterSubtype.add(new SubtypePredicate(typeChoice.getChoice()));
+    if (controller.getLibrary().size() > 0) {
+      Card card=controller.getLibrary().getFromTop(game);
+      Cards cards=new CardsImpl(card);
+      controller.revealCards(sourceObject.getIdName(),cards,game);
+      if (card != null) {
+        if (filterSubtype.match(card,game)) {
+          controller.moveCards(card,Zone.HAND,source,game);
+        }
+ else {
+          controller.moveCards(card,Zone.GRAVEYARD,source,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

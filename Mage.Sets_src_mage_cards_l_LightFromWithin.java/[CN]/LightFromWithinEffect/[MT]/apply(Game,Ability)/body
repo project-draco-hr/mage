@@ -1,0 +1,13 @@
+{
+  for (  Permanent creature : game.getBattlefield().getAllActivePermanents(new FilterControlledCreaturePermanent(),source.getControllerId(),game)) {
+    if (creature != null) {
+      Player controller=game.getPlayer(source.getControllerId());
+      if (controller != null) {
+        creature.addPower(new ChromaLightFromWithinCount(creature).calculate(game,source,this));
+        creature.addToughness(new ChromaLightFromWithinCount(creature).calculate(game,source,this));
+        boosted=true;
+      }
+    }
+  }
+  return boosted;
+}

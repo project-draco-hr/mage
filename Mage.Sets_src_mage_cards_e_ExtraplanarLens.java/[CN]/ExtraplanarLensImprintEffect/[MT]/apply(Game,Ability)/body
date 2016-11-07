@@ -1,0 +1,19 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent extraplanarLens=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (controller != null) {
+    if (game.getBattlefield().countAll(filter,controller.getId(),game) > 0) {
+      TargetPermanent target=new TargetPermanent(1,filter);
+      if (target.canChoose(source.getSourceId(),source.getControllerId(),game) && controller.choose(Outcome.Neutral,target,source.getSourceId(),game)) {
+        Permanent targetLand=game.getPermanent(target.getFirstTarget());
+        if (targetLand != null) {
+          targetLand.moveToExile(null,extraplanarLens.getName() + " (Imprint)",source.getSourceId(),game);
+          extraplanarLens.imprint(targetLand.getId(),game);
+          extraplanarLens.addInfo("imprint",CardUtil.addToolTipMarkTags("[Imprinted card - " + targetLand.getLogName() + "]"),game);
+        }
+      }
+      return true;
+    }
+  }
+  return false;
+}

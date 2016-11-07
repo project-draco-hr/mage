@@ -1,0 +1,16 @@
+{
+  Player targetPlayer=game.getPlayer(this.getTargetPointer().getFirst(game,source));
+  if (targetPlayer != null && !targetPlayer.getHand().isEmpty()) {
+    TargetDiscard target=new TargetDiscard(targetPlayer.getId());
+    targetPlayer.choose(Outcome.Discard,target,source.getSourceId(),game);
+    Card card=targetPlayer.getHand().get(target.getFirstTarget(),game);
+    if (card != null) {
+      targetPlayer.discard(card,source,game);
+      if (!card.getCardType().contains(CardType.LAND) && !targetPlayer.getHand().isEmpty()) {
+        targetPlayer.discard(1,false,source,game);
+      }
+      return true;
+    }
+  }
+  return false;
+}

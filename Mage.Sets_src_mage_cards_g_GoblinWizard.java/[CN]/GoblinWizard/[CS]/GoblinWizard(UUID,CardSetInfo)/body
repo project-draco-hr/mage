@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{2}{R}{R}");
+  this.rarity=Rarity.RARE;
+  this.subtype.add("Goblin");
+  this.subtype.add("Wizard");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new PutPermanentOnBattlefieldEffect(filter),new TapSourceCost()));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new GainAbilityTargetEffect(ProtectionAbility.from(ObjectColor.WHITE),Duration.EndOfTurn),new ManaCostsImpl("{R}"));
+  Target target=new TargetPermanent(goblinPermanent);
+  ability.addTarget(target);
+  this.addAbility(ability);
+}

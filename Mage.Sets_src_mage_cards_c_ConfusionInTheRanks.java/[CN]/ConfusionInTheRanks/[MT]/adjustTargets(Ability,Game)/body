@@ -1,0 +1,30 @@
+{
+  if (ability.getOriginalId().equals(originalId)) {
+    UUID enteringPermanentId=null;
+    for (    Effect effect : ability.getEffects()) {
+      enteringPermanentId=effect.getTargetPointer().getFirst(game,ability);
+    }
+    if (enteringPermanentId != null) {
+      Permanent enteringPermanent=game.getPermanent(enteringPermanentId);
+      if (enteringPermanent != null) {
+        ability.setControllerId(enteringPermanent.getControllerId());
+        ability.getTargets().clear();
+        FilterPermanent filterTarget=new FilterPermanent();
+        String message="";
+        filterTarget.add(Predicates.not(new ControllerIdPredicate(enteringPermanent.getControllerId())));
+        Set<CardTypePredicate> cardTypesPredicates=new HashSet<>(1);
+        for (        CardType cardTypeEntering : enteringPermanent.getCardType()) {
+          cardTypesPredicates.add(new CardTypePredicate(cardTypeEntering));
+          if (!message.isEmpty()) {
+            message+="or ";
+          }
+          message+=cardTypeEntering.toString().toLowerCase() + " ";
+        }
+        filterTarget.add(Predicates.or(cardTypesPredicates));
+        message+="you do not control";
+        filterTarget.setMessage(message);
+        ability.getTargets().add(new TargetPermanent(filterTarget));
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  AureliasFuryDamagedByWatcher watcher=(AureliasFuryDamagedByWatcher)game.getState().getWatchers().get("AureliasFuryDamagedByWatcher",source.getSourceId());
+  if (watcher != null) {
+    for (    UUID creatureId : watcher.damagedCreatures) {
+      Permanent permanent=game.getPermanent(creatureId);
+      if (permanent != null) {
+        permanent.tap(game);
+      }
+    }
+    for (    UUID playerId : watcher.damagedPlayers) {
+      ContinuousEffect effect=new AureliasFuryCantCastEffect();
+      effect.setTargetPointer(new FixedTarget(playerId));
+      game.addEffect(effect,source);
+    }
+    watcher.reset();
+  }
+  return false;
+}

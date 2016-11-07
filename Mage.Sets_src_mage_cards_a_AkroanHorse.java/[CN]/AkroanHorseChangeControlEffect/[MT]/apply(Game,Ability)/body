@@ -1,0 +1,14 @@
+{
+  Target target=new TargetOpponent();
+  target.setNotTarget(true);
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    if (controller.chooseTarget(outcome,target,source,game)) {
+      ContinuousEffect effect=new AkroanHorseGainControlEffect(Duration.Custom,target.getFirstTarget());
+      effect.setTargetPointer(new FixedTarget(source.getSourceId()));
+      game.addEffect(effect,source);
+      return true;
+    }
+  }
+  return false;
+}

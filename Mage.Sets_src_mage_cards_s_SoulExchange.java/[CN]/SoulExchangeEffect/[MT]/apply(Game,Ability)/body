@@ -1,0 +1,18 @@
+{
+  ReturnFromGraveyardToBattlefieldTargetEffect effect=new ReturnFromGraveyardToBattlefieldTargetEffect();
+  if (!effect.apply(game,source))   return false;
+  for (  Cost c : source.getCosts()) {
+    if (c.isPaid() && c instanceof ExileTargetCost) {
+      for (      Permanent exiled : ((ExileTargetCost)c).getPermanents()) {
+        if (exiled != null) {
+          if (exiled.getSubtype(game).contains("Thrull")) {
+            game.getPermanent(source.getFirstTarget()).addCounters(CounterType.P2P2.createInstance(),game);
+            return true;
+          }
+        }
+ else         return false;
+      }
+    }
+  }
+  return true;
+}

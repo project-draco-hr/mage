@@ -1,0 +1,7 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{U}{B}{R}");
+  TriggeredAbility triggeredAbility=new BeginningOfEndStepTriggeredAbility(new GainLifeEffect(1),TargetController.ANY,false);
+  triggeredAbility.addEffect(new CreateTokenEffect(new RoyalGuardToken()));
+  Ability ability=new ConditionalTriggeredAbility(triggeredAbility,HateCondition.getInstance(),"<i>Hate</i> &mdash; At the beggining of each end step, if opponent lost life from a source other than combat damage this turn, you gain 1 life and create a 2/2 red Soldier creature token with first strike named Royal Guard.");
+  this.addAbility(ability,new LifeLossOtherFromCombatWatcher());
+}

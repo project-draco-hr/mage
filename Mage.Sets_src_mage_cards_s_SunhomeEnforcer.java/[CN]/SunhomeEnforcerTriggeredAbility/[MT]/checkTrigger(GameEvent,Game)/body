@@ -1,0 +1,11 @@
+{
+  DamagedEvent damageEvent=(DamagedEvent)event;
+  if (damageEvent.isCombatDamage()) {
+    if (event.getSourceId().equals(this.sourceId)) {
+      this.getEffects().clear();
+      this.getEffects().add(new GainLifeEffect(damageEvent.getAmount()));
+      return true;
+    }
+  }
+  return false;
+}

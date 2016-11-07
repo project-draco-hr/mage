@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (controller != null && permanent != null) {
+    for (    StackObject stackObject : game.getStack()) {
+      if ((stackObject instanceof Spell) && !stackObject.isCopy() && stackObject.getControllerId().equals(source.getControllerId())) {
+        Spell spell=(Spell)stackObject;
+        if (filter.match(spell,game)) {
+          game.getState().addOtherAbility(spell.getCard(),ability);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,61 @@
+{
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (permanent != null) {
+    if (objectReference == null || !objectReference.refersTo(permanent,game)) {
+      abilitiesToAdd=new HashSet<>();
+      this.objectReference=new MageObjectReference(permanent,game);
+      String keyString=CardUtil.getCardZoneString("delvedCards",source.getSourceId(),game,true);
+      Cards delvedCards=(Cards)game.getState().getValue(keyString);
+      if (delvedCards != null) {
+        for (        Card card : delvedCards.getCards(game)) {
+          if (!card.getCardType().contains(CardType.CREATURE)) {
+            continue;
+          }
+          for (          Ability cardAbility : card.getAbilities()) {
+            if (cardAbility instanceof FlyingAbility) {
+              abilitiesToAdd.add(FlyingAbility.getInstance());
+            }
+            if (cardAbility instanceof FirstStrikeAbility) {
+              abilitiesToAdd.add(FirstStrikeAbility.getInstance());
+            }
+            if (cardAbility instanceof DoubleStrikeAbility) {
+              abilitiesToAdd.add(DoubleStrikeAbility.getInstance());
+            }
+            if (cardAbility instanceof DeathtouchAbility) {
+              abilitiesToAdd.add(DeathtouchAbility.getInstance());
+            }
+            if (cardAbility instanceof HasteAbility) {
+              abilitiesToAdd.add(HasteAbility.getInstance());
+            }
+            if (cardAbility instanceof HexproofAbility) {
+              abilitiesToAdd.add(HexproofAbility.getInstance());
+            }
+            if (cardAbility instanceof IndestructibleAbility) {
+              abilitiesToAdd.add(IndestructibleAbility.getInstance());
+            }
+            if (cardAbility instanceof LifelinkAbility) {
+              abilitiesToAdd.add(LifelinkAbility.getInstance());
+            }
+            if (cardAbility instanceof ReachAbility) {
+              abilitiesToAdd.add(ReachAbility.getInstance());
+            }
+            if (cardAbility instanceof TrampleAbility) {
+              abilitiesToAdd.add(TrampleAbility.getInstance());
+            }
+            if (cardAbility instanceof VigilanceAbility) {
+              abilitiesToAdd.add(VigilanceAbility.getInstance());
+            }
+          }
+        }
+      }
+    }
+    for (    Ability ability : abilitiesToAdd) {
+      permanent.addAbility(ability,source.getSourceId(),game);
+    }
+    return true;
+  }
+ else   if (abilitiesToAdd != null) {
+    abilitiesToAdd=null;
+  }
+  return false;
+}

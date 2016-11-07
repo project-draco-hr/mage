@@ -1,0 +1,17 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{2}{W}{U}");
+  this.getSpellAbility().getModes().setMinModes(2);
+  this.getSpellAbility().getModes().setMaxModes(2);
+  this.getSpellAbility().getEffects().add(new ReturnFromGraveyardToBattlefieldTargetEffect());
+  this.getSpellAbility().getTargets().add(new TargetCardInYourGraveyard(filter));
+  Mode mode=new Mode();
+  mode.getEffects().add(new GainLifeEffect(4));
+  this.getSpellAbility().getModes().addMode(mode);
+  mode=new Mode();
+  mode.getTargets().add(new TargetSpell(filter2));
+  mode.getEffects().add(new CounterTargetEffect());
+  this.getSpellAbility().getModes().addMode(mode);
+  mode=new Mode();
+  mode.getEffects().add(new DrawCardSourceControllerEffect(1));
+  this.getSpellAbility().getModes().addMode(mode);
+}

@@ -1,0 +1,14 @@
+{
+  DamagedPlayerEvent damageEvent=(DamagedPlayerEvent)event;
+  Permanent p=game.getPermanent(event.getSourceId());
+  if (damageEvent.isCombatDamage() && p != null && p.getAttachments().contains(this.getSourceId())) {
+    FilterPermanent filter=new FilterPermanent("Equipment that player controls");
+    filter.add(new SubtypePredicate("Equipment"));
+    filter.add(new ControllerIdPredicate(event.getPlayerId()));
+    filter.setMessage("creature controlled by " + game.getPlayer(event.getTargetId()).getLogName());
+    this.getTargets().clear();
+    this.addTarget(new TargetPermanent(filter));
+    return true;
+  }
+  return false;
+}

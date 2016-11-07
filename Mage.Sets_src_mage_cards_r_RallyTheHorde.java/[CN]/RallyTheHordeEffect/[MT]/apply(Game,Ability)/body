@@ -1,0 +1,21 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    int nonLandCardsExiled=0;
+    while (controller.getLibrary().size() > 0) {
+      nonLandCardsExiled+=checkIfNextLibCardIsNonLandAndExile(controller,source,game);
+      if (controller.getLibrary().size() > 0) {
+        nonLandCardsExiled+=checkIfNextLibCardIsNonLandAndExile(controller,source,game);
+      }
+      if (controller.getLibrary().size() > 0) {
+        int nonLands=checkIfNextLibCardIsNonLandAndExile(controller,source,game);
+        if (nonLands == 0) {
+          break;
+        }
+        nonLandCardsExiled+=nonLands;
+      }
+    }
+    return new CreateTokenEffect(new RallyTheHordeWarriorToken(),nonLandCardsExiled).apply(game,source);
+  }
+  return false;
+}

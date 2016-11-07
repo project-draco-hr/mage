@@ -1,0 +1,13 @@
+{
+  if (targets.choose(Outcome.Discard,controllerId,sourceId,game)) {
+    Player player=game.getPlayer(controllerId);
+    for (    UUID targetId : targets.get(0).getTargets()) {
+      card=player.getHand().get(targetId,game);
+      if (card == null) {
+        return false;
+      }
+      paid|=player.discard(card,null,game);
+    }
+  }
+  return paid;
+}

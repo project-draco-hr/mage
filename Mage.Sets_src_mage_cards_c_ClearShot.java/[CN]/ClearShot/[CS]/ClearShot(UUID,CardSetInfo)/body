@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{2}{G}");
+  Effect effect=new BoostTargetEffect(1,1,Duration.EndOfTurn);
+  effect.setApplyEffectsAfter();
+  this.getSpellAbility().addTarget(new TargetControlledCreaturePermanent());
+  this.getSpellAbility().addEffect(effect);
+  effect=new ClearShotDamageEffect();
+  effect.setText("It deals damage equal to its power to target creature you don't control");
+  effect.setTargetPointer(new SecondTargetPointer());
+  this.getSpellAbility().addEffect(effect);
+  Target target=new TargetCreaturePermanent(filter);
+  this.getSpellAbility().addTarget(target);
+}

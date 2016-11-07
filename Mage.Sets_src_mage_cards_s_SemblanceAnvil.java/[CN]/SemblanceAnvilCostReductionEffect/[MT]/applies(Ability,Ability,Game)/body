@@ -1,0 +1,18 @@
+{
+  if (abilityToModify instanceof SpellAbility || abilityToModify instanceof FlashbackAbility) {
+    Card sourceCard=game.getCard(abilityToModify.getSourceId());
+    if (sourceCard != null && sourceCard.getOwnerId().equals(source.getControllerId())) {
+      Permanent permanent=game.getPermanent(source.getSourceId());
+      if (permanent != null) {
+        List<UUID> imprinted=permanent.getImprinted();
+        if (imprinted.size() > 0) {
+          Card imprintedCard=game.getCard(imprinted.get(0));
+          if (imprintedCard != null && CardUtil.shareTypes(imprintedCard,sourceCard)) {
+            return true;
+          }
+        }
+      }
+    }
+  }
+  return false;
+}

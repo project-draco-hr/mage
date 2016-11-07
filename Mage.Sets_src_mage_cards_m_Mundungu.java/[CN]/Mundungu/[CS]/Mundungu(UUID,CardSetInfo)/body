@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{U}{B}");
+  this.subtype.add("Human");
+  this.subtype.add("Wizard");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  CostsImpl<Cost> costs=new CostsImpl<>();
+  costs.add(new GenericManaCost(1));
+  costs.add(new PayLifeCost(1));
+  costs.setText("{1} and 1 life");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CounterUnlessPaysEffect(costs),new TapSourceCost());
+  ability.addTarget(new TargetSpell());
+  this.addAbility(ability);
+}

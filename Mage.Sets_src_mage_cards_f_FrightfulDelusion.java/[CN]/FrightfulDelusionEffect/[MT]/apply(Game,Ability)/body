@@ -1,0 +1,15 @@
+{
+  StackObject spell=game.getStack().getStackObject(targetPointer.getFirst(game,source));
+  Cost cost=new GenericManaCost(1);
+  if (spell != null) {
+    Player player=game.getPlayer(spell.getControllerId());
+    if (player != null) {
+      cost.clearPaid();
+      game.getPlayer(spell.getControllerId()).discard(1,false,source,game);
+      if (!cost.pay(source,game,spell.getControllerId(),spell.getControllerId(),false,null)) {
+        return game.getStack().counter(source.getFirstTarget(),source.getSourceId(),game);
+      }
+    }
+  }
+  return false;
+}

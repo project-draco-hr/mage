@@ -1,0 +1,39 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (controller != null && sourceObject != null) {
+    controller.moveCardsToExile(controller.getLibrary().getTopCards(game,source.getManaCostsToPay().getX()),source,game,true,source.getSourceId(),sourceObject.getIdName());
+    ExileZone epicExperimentExileZone=game.getExile().getExileZone(source.getSourceId());
+    FilterCard filter=new FilterInstantOrSorceryCard();
+    filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.LessThan,source.getManaCostsToPay().getX() + 1));
+    filter.setMessage("instant and sorcery cards with converted mana cost " + source.getManaCostsToPay().getX() + " or less");
+    Cards cardsToCast=new CardsImpl();
+    if (epicExperimentExileZone == null) {
+      return true;
+    }
+    cardsToCast.addAll(epicExperimentExileZone.getCards(filter,source.getSourceId(),source.getControllerId(),game));
+    while (cardsToCast.size() > 0) {
+      if (!controller.chooseUse(Outcome.PlayForFree,"Cast (another) a card exiled with " + sourceObject.getLogName() + " without paying its mana cost?",source,game)) {
+        break;
+      }
+      TargetCard targetCard=new TargetCard(1,Zone.EXILED,new FilterCard("instant or sorcery card to cast for free"));
+      if (controller.choose(Outcome.PlayForFree,cardsToCast,targetCard,game)) {
+        Card card=game.getCard(targetCard.getFirstTarget());
+        if (card != null) {
+          if (controller.cast(card.getSpellAbility(),game,true)) {
+            cardsToCast.remove(card);
+          }
+ else {
+            game.informPlayer(controller,"You're not able to cast " + card.getIdName() + " or you canceled the casting.");
+          }
+        }
+      }
+    }
+    ExileZone exileZone=game.getExile().getExileZone(source.getSourceId());
+    if (exileZone != null) {
+      controller.moveCards(exileZone.getCards(game),Zone.GRAVEYARD,source,game);
+    }
+    return true;
+  }
+  return false;
+}

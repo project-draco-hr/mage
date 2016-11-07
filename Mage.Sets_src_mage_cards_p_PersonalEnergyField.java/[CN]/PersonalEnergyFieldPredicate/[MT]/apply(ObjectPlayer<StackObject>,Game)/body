@@ -1,0 +1,21 @@
+{
+  UUID controllerId=input.getPlayerId();
+  if (controllerId == null) {
+    return false;
+  }
+  for (  UUID modeId : input.getObject().getStackAbility().getModes().getSelectedModes()) {
+    Mode mode=input.getObject().getStackAbility().getModes().get(modeId);
+    for (    Target target : mode.getTargets()) {
+      for (      UUID targetId : target.getTargets()) {
+        if (controllerId.equals(targetId)) {
+          return true;
+        }
+        Permanent permanent=game.getPermanent(targetId);
+        if (permanent != null && controllerId.equals(permanent.getControllerId())) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}

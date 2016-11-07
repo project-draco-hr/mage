@@ -1,0 +1,27 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller == null || sourceObject == null) {
+    return false;
+  }
+  int xValue=source.getManaCostsToPay().getX();
+  for (  Cost cost : source.getCosts()) {
+    if (cost instanceof ExileFromGraveCost) {
+      xValue=((ExileFromGraveCost)cost).getExiledCards().size();
+    }
+  }
+  Cards cards=new CardsImpl();
+  cards.addAll(controller.getLibrary().getTopCards(game,xValue));
+  controller.lookAtCards(sourceObject.getIdName(),cards,game);
+  TargetCard target=new TargetCard(Zone.LIBRARY,new FilterCard("card to put into your hand"));
+  target.setNotTarget(true);
+  if (controller.chooseTarget(Outcome.DrawCard,cards,target,source,game)) {
+    Card card=cards.get(target.getFirstTarget(),game);
+    if (card != null) {
+      controller.moveCards(card,Zone.HAND,source,game);
+      cards.remove(card);
+    }
+  }
+  controller.putCardsOnBottomOfLibrary(cards,game,source,true);
+  return true;
+}

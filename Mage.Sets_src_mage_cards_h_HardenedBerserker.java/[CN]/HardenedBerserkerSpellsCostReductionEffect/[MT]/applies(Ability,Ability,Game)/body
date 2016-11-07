@@ -1,0 +1,13 @@
+{
+  CastSpellLastTurnWatcher watcher=(CastSpellLastTurnWatcher)game.getState().getWatchers().get(CastSpellLastTurnWatcher.class.getName());
+  if (watcher != null) {
+    if (watcher.getAmountOfSpellsPlayerCastOnCurrentTurn(source.getControllerId()) > spellsCast) {
+      discard();
+      return false;
+    }
+  }
+  if (abilityToModify instanceof SpellAbility) {
+    return abilityToModify.getControllerId().equals(source.getControllerId());
+  }
+  return false;
+}

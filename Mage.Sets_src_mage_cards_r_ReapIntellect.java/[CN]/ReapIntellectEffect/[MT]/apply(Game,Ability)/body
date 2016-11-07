@@ -1,0 +1,62 @@
+{
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (targetPlayer != null && sourceObject != null && controller != null) {
+    targetPlayer.revealCards(sourceObject.getName(),targetPlayer.getHand(),game);
+    Cards exiledCards=new CardsImpl();
+    int xCost=Math.min(source.getManaCostsToPay().getX(),targetPlayer.getHand().size());
+    TargetCardInHand target=new TargetCardInHand(0,xCost,filterNonLands);
+    target.setNotTarget(true);
+    controller.choose(Outcome.Benefit,targetPlayer.getHand(),target,game);
+    for (    UUID cardId : target.getTargets()) {
+      Card chosenCard=game.getCard(cardId);
+      if (chosenCard != null) {
+        controller.moveCardToExileWithInfo(chosenCard,null,"",source.getSourceId(),game,Zone.HAND,true);
+        exiledCards.add(chosenCard);
+      }
+    }
+    if (!exiledCards.isEmpty()) {
+      ArrayList<NamePredicate> names=new ArrayList<>();
+      FilterCard filterNamedCards=new FilterCard();
+      for (      Card card : exiledCards.getCards(game)) {
+        if (exiledCards.size() == 1) {
+          filterNamedCards.add(new NamePredicate(card.getName()));
+        }
+ else {
+          names.add(new NamePredicate(card.getName()));
+        }
+      }
+      if (exiledCards.size() > 1) {
+        filterNamedCards.add(Predicates.or(names));
+      }
+      TargetCardInGraveyard targetCardsGraveyard=new TargetCardInGraveyard(0,Integer.MAX_VALUE,filterNamedCards);
+      controller.chooseTarget(outcome,targetPlayer.getGraveyard(),targetCardsGraveyard,source,game);
+      for (      UUID cardId : targetCardsGraveyard.getTargets()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.GRAVEYARD,true);
+        }
+      }
+      TargetCardInHand targetCardsHand=new TargetCardInHand(0,Integer.MAX_VALUE,filterNamedCards);
+      controller.chooseTarget(outcome,targetPlayer.getGraveyard(),targetCardsHand,source,game);
+      for (      UUID cardId : targetCardsHand.getTargets()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.HAND,true);
+        }
+      }
+      TargetCardInLibrary targetCardsLibrary=new TargetCardInLibrary(0,Integer.MAX_VALUE,filterNamedCards);
+      controller.searchLibrary(targetCardsLibrary,game,targetPlayer.getId());
+      for (      UUID cardId : targetCardsLibrary.getTargets()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.LIBRARY,true);
+        }
+      }
+    }
+    targetPlayer.shuffleLibrary(source,game);
+    return true;
+  }
+  return false;
+}

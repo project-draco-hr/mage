@@ -1,0 +1,26 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Player targetPlayer=game.getPlayer(source.getFirstTarget());
+  if (targetPlayer != null) {
+    for (    Card card : targetPlayer.getGraveyard().getCards(game)) {
+      if (!filter.match(card,game)) {
+        card.moveToExile(null,"",source.getSourceId(),game);
+        FilterCard filterCard=new FilterCard("cards named " + card.getName());
+        filterCard.add(new NamePredicate(card.getName()));
+        int count=targetPlayer.getLibrary().count(filterCard,game);
+        TargetCardInLibrary target=new TargetCardInLibrary(count,count,filterCard);
+        player.searchLibrary(target,game,targetPlayer.getId());
+        List<UUID> targets=target.getTargets();
+        for (        UUID cardId : targets) {
+          Card libraryCard=game.getCard(cardId);
+          if (libraryCard != null) {
+            libraryCard.moveToExile(null,"",source.getSourceId(),game);
+          }
+        }
+      }
+    }
+    targetPlayer.shuffleLibrary(source,game);
+    return true;
+  }
+  return false;
+}

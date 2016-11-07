@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.LAND},"");
+  this.supertype.add("Legendary");
+  this.addAbility(new EntersBattlefieldTappedAbility());
+  Mana mana=Mana.ColorlessMana(1);
+  mana.setFlag(true);
+  SimpleManaAbility ability=new SimpleManaAbility(Zone.BATTLEFIELD,mana,new TapSourceCost());
+  ability.addCost(new PayLifeCost(2));
+  ability.getEffects().get(0).setText("Add {C} to your mana pool. If that mana is spent on an instant or sorcery spell, that spell can't be countered by spells or abilities");
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoseijuWhoSheltersAllCantCounterEffect()),new BoseijuWhoSheltersAllWatcher());
+}

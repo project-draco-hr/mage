@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{6}{R}{R}");
+  this.subtype.add("Giant");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(5);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new CreateTokenEffect(new ElementalShamanToken("LRW"),2),false));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostTargetEffect(3,1,Duration.EndOfTurn),new SacrificeTargetCost(new TargetControlledPermanent(filterElemental)));
+  ability.addTarget(new TargetCreaturePermanent(filterGiant));
+  this.addAbility(ability);
+}

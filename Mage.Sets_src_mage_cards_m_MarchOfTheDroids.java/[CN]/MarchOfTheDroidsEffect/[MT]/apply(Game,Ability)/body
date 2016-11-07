@@ -1,0 +1,22 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards castable=new CardsImpl();
+    for (    Card card : controller.getGraveyard().getCards(game)) {
+      if (card.getOwnerId().equals(controller.getId()) && card.getCounters(game).getCount(CounterType.REPAIR) > 0) {
+        int number=card.getCounters(game).getCount(CounterType.REPAIR);
+        if (number > 0) {
+          castable.add(card);
+          card.removeCounters(CounterType.REPAIR.createInstance(number),game);
+        }
+      }
+    }
+    if (!castable.isEmpty()) {
+      ContinuousEffect effect=new MarchOfTheDroidsCastFromExileEffect();
+      effect.setTargetPointer(new FixedTargets(castable,game));
+      game.addEffect(effect,source);
+    }
+    return true;
+  }
+  return false;
+}

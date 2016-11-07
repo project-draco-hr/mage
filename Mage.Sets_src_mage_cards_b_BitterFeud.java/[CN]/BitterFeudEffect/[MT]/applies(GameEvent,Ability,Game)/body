@@ -1,0 +1,38 @@
+{
+  player1=(Player)game.getState().getValue(source.getSourceId() + "_player1");
+  player2=(Player)game.getState().getValue(source.getSourceId() + "_player2");
+  if (player1 != null && player2 != null) {
+    UUID targetPlayerId=null;
+switch (event.getType()) {
+case DAMAGE_PLAYER:
+      targetPlayerId=event.getTargetId();
+    break;
+case DAMAGE_CREATURE:
+case DAMAGE_PLANESWALKER:
+  Permanent permanent=game.getPermanent(event.getTargetId());
+if (permanent != null) {
+  targetPlayerId=permanent.getControllerId();
+}
+break;
+default :
+return false;
+}
+if (player1.getId().equals(targetPlayerId) || player2.getId().equals(targetPlayerId)) {
+UUID sourcePlayerId=null;
+MageObject damageSource=game.getObject(event.getSourceId());
+if (damageSource instanceof StackObject) {
+sourcePlayerId=((StackObject)damageSource).getControllerId();
+}
+ else if (damageSource instanceof Permanent) {
+sourcePlayerId=((Permanent)damageSource).getControllerId();
+}
+ else if (damageSource instanceof Card) {
+sourcePlayerId=((Card)damageSource).getOwnerId();
+}
+if (sourcePlayerId != null && (player1.getId().equals(sourcePlayerId) || player2.getId().equals(sourcePlayerId)) && !sourcePlayerId.equals(targetPlayerId)) {
+return true;
+}
+}
+}
+return false;
+}

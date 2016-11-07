@@ -1,5 +1,5 @@
 {
-  this.computedMana.clear();
+  Mana computedMana=new Mana();
   int count;
   if (netMana && netAmount != null) {
     count=netAmount.calculate(game,source,this);
@@ -32,7 +32,7 @@
  else {
       Player controller=game.getPlayer(source.getControllerId());
       if (controller != null) {
-        ChoiceColor choiceColor=new ChoiceColor();
+        ChoiceColor choiceColor=new ChoiceColor(true);
         for (int i=0; i < count; i++) {
           if (!choiceColor.isChosen()) {
             while (!controller.choose(Outcome.Benefit,choiceColor,game)) {
@@ -41,21 +41,7 @@
               }
             }
           }
-          if (choiceColor.getColor().isBlack()) {
-            computedMana.increaseBlack();
-          }
- else           if (choiceColor.getColor().isBlue()) {
-            computedMana.increaseBlue();
-          }
- else           if (choiceColor.getColor().isRed()) {
-            computedMana.increaseRed();
-          }
- else           if (choiceColor.getColor().isGreen()) {
-            computedMana.increaseGreen();
-          }
- else           if (choiceColor.getColor().isWhite()) {
-            computedMana.increaseWhite();
-          }
+          choiceColor.increaseMana(computedMana);
           if (!oneChoice) {
             choiceColor.clearChoice();
           }

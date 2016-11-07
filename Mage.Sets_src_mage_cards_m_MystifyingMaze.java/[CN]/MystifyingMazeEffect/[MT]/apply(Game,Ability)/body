@@ -1,0 +1,14 @@
+{
+  Permanent permanent=game.getPermanent(source.getFirstTarget());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (permanent != null && sourceObject != null) {
+    if (permanent.moveToExile(source.getSourceId(),sourceObject.getIdName(),source.getSourceId(),game)) {
+      Effect effect=new ReturnToBattlefieldUnderOwnerControlTargetEffect();
+      effect.setText("At the beginning of the next end step, return it to the battlefield tapped under its owner's control");
+      effect.setTargetPointer(new FixedTarget(source.getFirstTarget(),game));
+      game.addDelayedTriggeredAbility(new AtTheBeginOfNextEndStepDelayedTriggeredAbility(effect),source);
+      return true;
+    }
+  }
+  return false;
+}

@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.LAND},"");
+  this.transformable=true;
+  this.secondSideCardClazz=OrmendahlProfanePrince.class;
+  this.addAbility(new ColorlessManaAbility());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new HumanClericToken()),new GenericManaCost(5));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new PayLifeCost(1));
+  this.addAbility(ability);
+  this.addAbility(new TransformAbility());
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new TransformSourceEffect(true),new GenericManaCost(5));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new SacrificeTargetCost(new TargetControlledPermanent(5,5,new FilterControlledCreaturePermanent("five creatures"),true)));
+  ability.addEffect(new UntapSourceEffect());
+  this.addAbility(ability);
+}

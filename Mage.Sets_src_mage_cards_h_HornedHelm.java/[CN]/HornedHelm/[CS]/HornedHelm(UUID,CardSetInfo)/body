@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ARTIFACT},"{2}");
+  this.subtype.add("Equipment");
+  Effect effect=new BoostEquippedEffect(1,1);
+  effect.setText("Equipped creature gets +1/+1");
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,effect);
+  effect=new GainAbilityAttachedEffect(TrampleAbility.getInstance(),AttachmentType.EQUIPMENT);
+  effect.setText("and has trample");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new AttachEffect(Outcome.BoostCreature,"Attach {this} to target creature you control"),new ManaCostsImpl("{G}{G}"));
+  ability.addTarget(new TargetControlledCreaturePermanent());
+  this.addAbility(ability);
+  this.addAbility(new EquipAbility(Outcome.BoostCreature,new GenericManaCost(1)));
+}

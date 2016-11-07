@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT,CardType.CREATURE},"{3}{G}");
+  this.supertype.add("Legendary");
+  this.subtype.add("God");
+  this.power=new MageInt(6);
+  this.toughness=new MageInt(6);
+  this.addAbility(IndestructibleAbility.getInstance());
+  Effect effect=new LoseCreatureTypeSourceEffect(new DevotionCount(ColoredManaSymbol.G),5);
+  effect.setText("As long as your devotion to green is less than five, Nylea isn't a creature.<i>(Each {G} in the mana costs of permanents you control counts towards your devotion to green.)</i>");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new GainAbilityControlledEffect(TrampleAbility.getInstance(),Duration.WhileOnBattlefield,new FilterCreaturePermanent(),true)));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostTargetEffect(2,2,Duration.EndOfTurn),new ManaCostsImpl("{3}{G}"));
+  ability.addTarget(new TargetCreaturePermanent());
+  this.addAbility(ability);
+}

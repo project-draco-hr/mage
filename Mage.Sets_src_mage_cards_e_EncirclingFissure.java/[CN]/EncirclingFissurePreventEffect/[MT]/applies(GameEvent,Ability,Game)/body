@@ -1,0 +1,12 @@
+{
+  if (super.applies(event,source,game) && event instanceof DamageEvent && event.getAmount() > 0) {
+    DamageEvent damageEvent=(DamageEvent)event;
+    if (damageEvent.isCombatDamage()) {
+      Permanent permanent=game.getPermanent(damageEvent.getSourceId());
+      if (permanent != null && permanent.getCardType().contains(CardType.CREATURE) && permanent.getControllerId().equals(getTargetPointer().getFirst(game,source))) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

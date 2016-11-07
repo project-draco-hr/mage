@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{U}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new DrawCardSourceControllerEffect(1)));
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BecomesColorTargetEffect(Duration.EndOfTurn),new ManaCostsImpl("{2}{U}"));
+  ability.addTarget(new TargetCreaturePermanent());
+  Effect effect=new GainAbilityAttachedEffect(ability,AttachmentType.AURA);
+  effect.setText("Enchanted creature has \"{2}{U}: Target creature becomes the color of your choice until end of turn.\"");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+}

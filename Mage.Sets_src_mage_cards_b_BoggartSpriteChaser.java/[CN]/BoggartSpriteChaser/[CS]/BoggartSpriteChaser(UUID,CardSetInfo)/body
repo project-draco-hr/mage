@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{R}");
+  this.subtype.add("Goblin");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(2);
+  FilterPermanent filter=new FilterPermanent("Faerie","Faerie");
+  Effect effect=new BoostSourceWhileControlsEffect(filter,1,1);
+  effect.setText("As long as you control a Faerie, {this} gets +1/+1");
+  Ability ability=new SimpleStaticAbility(Zone.BATTLEFIELD,effect);
+  ability.addEffect(new ConditionalContinuousEffect(new GainAbilitySourceEffect(FlyingAbility.getInstance(),Duration.WhileOnBattlefield),new PermanentsOnTheBattlefieldCondition(filter),"and has flying"));
+  this.addAbility(ability);
+}

@@ -1,0 +1,33 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    Set<Card> allPermanents=new HashSet<>();
+    allPermanents.addAll(game.getBattlefield().getActivePermanents(new FilterPermanent(),source.getControllerId(),source.getSourceId(),game));
+    controller.moveCards(allPermanents,Zone.HAND,source,game,false,false,true,null);
+    game.informPlayers(sourceObject.getLogName() + " - All permanents returned to owners' hands");
+    for (    UUID playerId : game.getState().getPlayerList(controller.getId())) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        Cards hand=player.getHand();
+        int numberInHand=Math.min(7,hand.size());
+        TargetCardInHand target=new TargetCardInHand(0,numberInHand,new FilterCard("cards to keep in hand"));
+        Cards cardsToLibrary=new CardsImpl();
+        if (player.choose(Outcome.Benefit,target,source.getSourceId(),game)) {
+          for (          Card card : hand.getCards(game)) {
+            if (!target.getTargets().contains(card.getId())) {
+              cardsToLibrary.add(card);
+              card.moveToZone(Zone.LIBRARY,source.getSourceId(),game,false);
+            }
+          }
+        }
+        player.putCardsOnTopOfLibrary(cardsToLibrary,game,source,false);
+        player.shuffleLibrary(source,game);
+      }
+    }
+    game.emptyManaPools();
+    game.informPlayers(sourceObject.getLogName() + " - All mana pools have been emptied");
+    return true;
+  }
+  return false;
+}

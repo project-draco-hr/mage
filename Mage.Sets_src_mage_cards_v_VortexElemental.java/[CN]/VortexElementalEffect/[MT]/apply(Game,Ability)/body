@@ -1,0 +1,34 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Combat combat=game.getState().getCombat();
+    Set<UUID> creaturesToReturn=new HashSet<>();
+    Set<UUID> playersToShuffle=new HashSet<>();
+    creaturesToReturn.add(source.getSourceId());
+    if (combat != null) {
+      for (      CombatGroup combatGroup : combat.getGroups()) {
+        if (combatGroup.getAttackers().contains(source.getSourceId())) {
+          creaturesToReturn.addAll(combatGroup.getBlockers());
+        }
+ else         if (combatGroup.getBlockers().contains(source.getSourceId())) {
+          creaturesToReturn.addAll(combatGroup.getAttackers());
+        }
+      }
+    }
+    for (    UUID creatureId : creaturesToReturn) {
+      Permanent creature=game.getPermanent(creatureId);
+      if (creature != null) {
+        playersToShuffle.add(creature.getControllerId());
+        creature.moveToZone(Zone.LIBRARY,source.getSourceId(),game,true);
+      }
+    }
+    for (    UUID playerId : playersToShuffle) {
+      Player player=game.getPlayer(playerId);
+      if (player != null) {
+        player.shuffleLibrary(source,game);
+      }
+    }
+    return true;
+  }
+  return false;
+}

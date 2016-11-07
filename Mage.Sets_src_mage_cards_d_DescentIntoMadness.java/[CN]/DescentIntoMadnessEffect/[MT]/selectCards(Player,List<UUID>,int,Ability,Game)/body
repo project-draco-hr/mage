@@ -1,0 +1,55 @@
+{
+  int amount=Math.min(count,player.getHand().size() + game.getBattlefield().getAllActivePermanents(player.getId()).size());
+  int cardsFromHand=0;
+  while (player.canRespond() && amount > 0) {
+    Target target;
+    do {
+      FilterControlledPermanent filter=new FilterControlledPermanent();
+      filter.setMessage("permanent you control (" + amount + " left in total)");
+      List<PermanentIdPredicate> uuidPredicates=new ArrayList<>();
+      for (      UUID uuid : selectedObjects) {
+        uuidPredicates.add(new PermanentIdPredicate(uuid));
+      }
+      filter.add(Predicates.not(Predicates.or(uuidPredicates)));
+      target=new TargetControlledPermanent(0,1,filter,true);
+      if (target.canChoose(player.getId(),game) && player.choose(Outcome.Exile,target,source.getSourceId(),game)) {
+        for (        UUID targetId : target.getTargets()) {
+          if (!selectedObjects.contains(targetId)) {
+            Permanent chosen=game.getPermanent(targetId);
+            if (chosen != null) {
+              amount--;
+              game.informPlayers(player.getLogName() + " selects " + chosen.getLogName()+ " from battlefield");
+              selectedObjects.add(targetId);
+            }
+          }
+        }
+      }
+    }
+ while (amount > 0 && !target.getTargets().isEmpty() && player.canRespond());
+    if (amount > 0) {
+      TargetCard targetInHand;
+      do {
+        FilterCard filterInHand=new FilterCard();
+        filterInHand.setMessage("card from your hand (" + amount + " left in total)");
+        targetInHand=new TargetCard(0,1,Zone.HAND,filterInHand);
+        List<CardIdPredicate> uuidPredicates=new ArrayList<>();
+        for (        UUID uuid : selectedObjects) {
+          uuidPredicates.add(new CardIdPredicate(uuid));
+        }
+        filterInHand.add(Predicates.not(Predicates.or(uuidPredicates)));
+        if (targetInHand.canChoose(player.getId(),game) && player.choose(Outcome.Exile,player.getHand(),targetInHand,game)) {
+          Card card=player.getHand().get(targetInHand.getFirstTarget(),game);
+          if (card != null) {
+            selectedObjects.add(targetInHand.getFirstTarget());
+            amount--;
+            cardsFromHand++;
+          }
+        }
+      }
+ while (amount > 0 && !targetInHand.getTargets().isEmpty() && player.canRespond());
+    }
+  }
+  if (cardsFromHand > 0) {
+    game.informPlayers(player.getLogName() + " selects " + cardsFromHand+ (cardsFromHand == 1 ? " card" : " cards")+ " from his or her hand");
+  }
+}

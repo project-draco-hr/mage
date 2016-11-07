@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{G}{G}");
+  this.subtype.add("Fungus");
+  this.power=new MageInt(5);
+  this.toughness=new MageInt(2);
+  this.addAbility(new BeginningOfUpkeepTriggeredAbility(new AddCountersSourceEffect(CounterType.SPORE.createInstance()),TargetController.YOU,false));
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new SaprolingToken()),new RemoveCountersSourceCost(CounterType.SPORE.createInstance(3))));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new RegenerateTargetEffect(),new SacrificeTargetCost(new TargetControlledCreaturePermanent(1,1,filter2,false)));
+  ability.addTarget(new TargetPermanent(filter));
+  this.addAbility(ability);
+}

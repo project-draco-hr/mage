@@ -1,0 +1,30 @@
+{
+  List<Class> cards=new ArrayList<>();
+  if (!file.exists())   return cards;
+  JarInputStream jarFile=null;
+  try {
+    jarFile=new JarInputStream(new FileInputStream(file));
+    while (true) {
+      JarEntry jarEntry=jarFile.getNextJarEntry();
+      if (jarEntry == null) {
+        break;
+      }
+      if (jarEntry.getName().endsWith(".class")) {
+        String className=jarEntry.getName().replace(".class","").replace('/','.');
+        int packageNameEnd=className.lastIndexOf('.');
+        String packageName=packageNameEnd != -1 ? className.substring(0,packageNameEnd) : "";
+        if (packages.contains(packageName))         checkClassForInclusion(cards,type,className,classLoader);
+      }
+    }
+  }
+ catch (  IOException ex) {
+  }
+ finally {
+    try {
+      if (jarFile != null)       jarFile.close();
+    }
+ catch (    IOException ex) {
+    }
+  }
+  return cards;
+}

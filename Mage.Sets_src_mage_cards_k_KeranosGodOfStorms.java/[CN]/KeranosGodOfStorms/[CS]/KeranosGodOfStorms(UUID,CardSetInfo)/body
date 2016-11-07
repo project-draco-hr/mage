@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT,CardType.CREATURE},"{3}{U}{R}");
+  this.supertype.add("Legendary");
+  this.subtype.add("God");
+  this.power=new MageInt(6);
+  this.toughness=new MageInt(5);
+  this.addAbility(IndestructibleAbility.getInstance());
+  Effect effect=new LoseCreatureTypeSourceEffect(new DevotionCount(ColoredManaSymbol.U,ColoredManaSymbol.R),7);
+  effect.setText("As long as your devotion to blue and red is less than seven, Keranos isn't a creature");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  this.addAbility(new KeranosGodOfStormsTriggeredAbility(),new CardsAmountDrawnThisTurnWatcher());
+}

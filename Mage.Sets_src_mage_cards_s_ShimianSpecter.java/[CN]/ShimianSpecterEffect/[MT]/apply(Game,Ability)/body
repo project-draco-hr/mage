@@ -1,0 +1,49 @@
+{
+  Player targetPlayer=game.getPlayer(getTargetPointer().getFirst(game,source));
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=source.getSourceObject(game);
+  if (targetPlayer != null && sourceObject != null && controller != null) {
+    targetPlayer.revealCards(sourceObject.getName(),targetPlayer.getHand(),game);
+    TargetCardInHand target=new TargetCardInHand(new FilterNonlandCard());
+    target.setNotTarget(true);
+    Card chosenCard=null;
+    if (controller.choose(Outcome.Benefit,targetPlayer.getHand(),target,game)) {
+      chosenCard=game.getCard(target.getFirstTarget());
+    }
+    FilterCard filterNamedCards=new FilterCard();
+    if (chosenCard != null) {
+      filterNamedCards.add(new NamePredicate(chosenCard.getName()));
+    }
+ else {
+      filterNamedCards.add(new NamePredicate("----"));
+    }
+    if (chosenCard != null) {
+      for (      Card checkCard : targetPlayer.getGraveyard().getCards(game)) {
+        if (checkCard.getName().equals(chosenCard.getName())) {
+          controller.moveCardToExileWithInfo(checkCard,null,"",source.getSourceId(),game,Zone.GRAVEYARD,true);
+        }
+      }
+      TargetCardInHand targetHandCards=new TargetCardInHand(0,Integer.MAX_VALUE,filterNamedCards);
+      controller.chooseTarget(outcome,targetPlayer.getHand(),targetHandCards,source,game);
+      for (      UUID cardId : targetHandCards.getTargets()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.HAND,true);
+        }
+      }
+    }
+    if (chosenCard != null || controller.chooseUse(outcome,"Search library anyway?",source,game)) {
+      TargetCardInLibrary targetCardsLibrary=new TargetCardInLibrary(0,Integer.MAX_VALUE,filterNamedCards);
+      controller.searchLibrary(targetCardsLibrary,game,targetPlayer.getId());
+      for (      UUID cardId : targetCardsLibrary.getTargets()) {
+        Card card=game.getCard(cardId);
+        if (card != null) {
+          controller.moveCardToExileWithInfo(card,null,"",source.getSourceId(),game,Zone.LIBRARY,true);
+        }
+      }
+      targetPlayer.shuffleLibrary(source,game);
+    }
+    return true;
+  }
+  return false;
+}

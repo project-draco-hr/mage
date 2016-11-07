@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{U}{U}");
+  this.subtype.add("Djinn");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(3);
+  this.addAbility(new SkipUntapOptionalAbility());
+  FilterCreaturePermanent controllableCreatures=new FilterCreaturePermanent("creature with power less than or equal to Old Man of the Sea's power");
+  controllableCreatures.add(new PowerLowerEqualSourcePredicate(this.getId()));
+  ConditionalContinuousEffect effect=new ConditionalContinuousEffect(new OldManOfTheSeaGainControlTargetEffect(Duration.Custom,true),new CompoundCondition(SourceTappedCondition.getInstance(),new SourcePowerGreaterEqualTargetCondition()),"Gain control of target creature with power less than or equal to {this}'s power for as long as {this} remains tapped and that creature's power remains less than or equal to {this}'s power");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new TapSourceCost());
+  ability.addTarget(new TargetCreaturePermanent(controllableCreatures));
+  this.addAbility(ability);
+  this.addAbility(new OldManOfTheSeaStateBasedTriggeredAbility());
+}

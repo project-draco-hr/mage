@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{G}{G}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Treefolk");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(7);
+  this.addAbility(new KickerAbility("{X}"));
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("Saproling creatures and other Treefolk creatures");
+  filter.add(Predicates.or(Predicates.and(new SubtypePredicate("Treefolk"),Predicates.not(new PermanentIdPredicate(this.getId()))),new SubtypePredicate("Saproling")));
+  filter.add(Predicates.not(new PermanentIdPredicate(this.getId())));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostAllEffect(1,1,Duration.WhileOnBattlefield,filter,false)));
+  EntersBattlefieldTriggeredAbility ability=new EntersBattlefieldTriggeredAbility(new CreateTokenEffect(new SaprolingToken(),new GetKickerXValue()),false);
+  this.addAbility(new ConditionalTriggeredAbility(ability,KickedCondition.getInstance(),"When {this} enters the battlefield, if it was kicked, create X 1/1 green Saproling creature tokens."));
+}

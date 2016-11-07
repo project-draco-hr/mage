@@ -1,0 +1,19 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{R}{W}{U}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Minotaur");
+  this.subtype.add("Monk");
+  this.power=new MageInt(2);
+  this.toughness=new MageInt(4);
+  Effect effect=new GainLifeEffect(new PermanentsYouOwnThatOpponentsControlCount());
+  effect.setText("you gain X life");
+  Ability ability=new BeginningOfUpkeepTriggeredAbility(effect,TargetController.YOU,false);
+  effect=new DrawCardSourceControllerEffect(new PermanentsYouOwnThatOpponentsControlCount());
+  effect.setText("and draw X cards, where X is the number of permanents you own that your opponents control");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new ZedruuTheGreatheartedEffect(),new ManaCostsImpl("{R}{W}{U}"));
+  ability.addTarget(new TargetOpponent());
+  ability.addTarget(new TargetControlledPermanent());
+  this.addAbility(ability);
+}

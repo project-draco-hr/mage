@@ -1,0 +1,18 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{G}");
+  this.subtype.add("Human");
+  this.subtype.add("Shaman");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new FightTargetsEffect(),new ManaCostsImpl("{1}{G}"));
+  ability.addCost(new TapSourceCost());
+  Target controlledTarget=new TargetControlledCreaturePermanent();
+  controlledTarget.setTargetTag(1);
+  ability.addTarget(controlledTarget);
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("another creature to fight");
+  filter.add(new AnotherTargetPredicate(2));
+  Target secondTarget=new TargetCreaturePermanent(filter);
+  secondTarget.setTargetTag(2);
+  ability.addTarget(secondTarget);
+  this.addAbility(ability);
+}

@@ -1,0 +1,18 @@
+{
+  Mode mode=ability.getModes().getMode();
+  for (  Effect effect : mode.getEffects()) {
+    if (effect instanceof ReturnFromGraveyardToBattlefieldTargetEffect) {
+      mode.getTargets().clear();
+      int xValue=ability.getManaCostsToPay().getX();
+      FilterCard filter=new FilterCreatureCard("creature card with converted mana cost " + xValue + " or less from your graveyard");
+      filter.add(new ConvertedManaCostPredicate(Filter.ComparisonType.LessThan,xValue + 1));
+      mode.getTargets().add(new TargetCardInYourGraveyard(filter));
+    }
+    if (effect instanceof GainAbilityTargetEffect) {
+      mode.getTargets().clear();
+      int xValue=ability.getManaCostsToPay().getX();
+      FilterCreaturePermanent filter=new FilterCreaturePermanent("creatures gain fear until end of turn");
+      mode.getTargets().add(new TargetCreaturePermanent(0,xValue,filter,false));
+    }
+  }
+}

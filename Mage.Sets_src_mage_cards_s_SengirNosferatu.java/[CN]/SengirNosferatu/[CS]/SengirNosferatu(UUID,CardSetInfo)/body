@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{3}{B}{B}");
+  this.subtype.add("Vampire");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(4);
+  this.addAbility(FlyingAbility.getInstance());
+  Effect effect=new CreateTokenEffect(new SengirNosferatuBatToken(),1);
+  effect.setText("Create a 1/2 black Bat creature token with flying. It has \"{1}{B}, Sacrifice this creature: Return an exiled card named Sengir Nosferatu to the battlefield under its owner's control.\"");
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,effect,new ManaCostsImpl("{1}{B}"));
+  ability.addCost(new ExileSourceCost());
+  this.addAbility(ability);
+}

@@ -1,0 +1,9 @@
+{
+  DamagedPlayerEvent damageEvent=(DamagedPlayerEvent)event;
+  Permanent p=game.getPermanent(event.getSourceId());
+  if (damageEvent.isCombatDamage() && p != null && p.getAttachments().contains(this.getSourceId())) {
+    game.getState().setValue(new StringBuilder("Damage_").append(getSourceId().toString()).toString(),new Integer(damageEvent.getAmount()));
+    return true;
+  }
+  return false;
+}

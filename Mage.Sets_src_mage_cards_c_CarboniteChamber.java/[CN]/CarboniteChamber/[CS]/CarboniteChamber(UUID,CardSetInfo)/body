@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{W}{U}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new EntersBattlefieldTriggeredAbility(new RemoveAllCountersEffect()));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new ControlEnchantedEffect()));
+  Ability attachedAbility=new SimpleStaticAbility(Zone.BATTLEFIELD,new CantHaveCountersSourceEffect());
+  Effect effect=new GainAbilityAttachedEffect(attachedAbility,AttachmentType.AURA);
+  effect.setText("It can't have counters placed on it");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new CantBlockAttackActivateAttachedEffect()));
+}

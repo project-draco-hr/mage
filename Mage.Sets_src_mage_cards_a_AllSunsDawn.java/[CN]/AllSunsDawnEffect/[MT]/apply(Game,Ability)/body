@@ -1,0 +1,16 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    Cards cardsToHand=new CardsImpl();
+    for (    Target target : source.getTargets()) {
+      UUID targetId=target.getFirstTarget();
+      Card card=game.getCard(targetId);
+      if (card != null) {
+        cardsToHand.add(card);
+      }
+    }
+    controller.moveCards(cardsToHand,Zone.HAND,source,game);
+    return true;
+  }
+  return false;
+}

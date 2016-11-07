@@ -1,0 +1,15 @@
+{
+  if (ability instanceof EntersBattlefieldTriggeredAbility) {
+    ability.getTargets().clear();
+    for (    UUID opponentId : game.getOpponents(ability.getControllerId())) {
+      Player opponent=game.getPlayer(opponentId);
+      if (opponent != null) {
+        FilterPermanent filter=new FilterPermanent("nonland permanent from opponent " + opponent.getLogName());
+        filter.add(new ControllerIdPredicate(opponentId));
+        filter.add(Predicates.not(new CardTypePredicate(CardType.LAND)));
+        TargetPermanent target=new TargetPermanent(0,1,filter,false);
+        ability.addTarget(target);
+      }
+    }
+  }
+}

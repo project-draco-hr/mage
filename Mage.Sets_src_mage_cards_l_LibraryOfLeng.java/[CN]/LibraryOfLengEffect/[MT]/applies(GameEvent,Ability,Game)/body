@@ -1,0 +1,13 @@
+{
+  if (event.getType().equals(EventType.DISCARD_CARD)) {
+    return event.getPlayerId().equals(source.getControllerId());
+  }
+  if (event.getType().equals(EventType.ZONE_CHANGE)) {
+    if (event.getTargetId().equals(cardId) && game.getState().getZoneChangeCounter(event.getTargetId()) == zoneChangeCounter) {
+      if (((ZoneChangeEvent)event).getFromZone().equals(Zone.HAND) && ((ZoneChangeEvent)event).getToZone().equals(Zone.GRAVEYARD)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

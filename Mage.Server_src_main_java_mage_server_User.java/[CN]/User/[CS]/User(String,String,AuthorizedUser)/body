@@ -1,0 +1,31 @@
+{
+  this.userId=UUID.randomUUID();
+  this.userName=userName;
+  this.host=host;
+  this.userState=UserState.Created;
+  this.connectionTime=new Date();
+  this.lastActivity=new Date();
+  if (authorizedUser != null) {
+    this.active=authorizedUser.active;
+    this.chatLockedUntil=authorizedUser.chatLockedUntil;
+    this.lockedUntil=authorizedUser.lockedUntil;
+    this.authorizedUser=authorizedUser;
+    updateAuthorizedUser();
+  }
+ else {
+    this.active=true;
+    this.chatLockedUntil=null;
+    this.lockedUntil=null;
+    this.authorizedUser=null;
+  }
+  this.tables=new ConcurrentHashMap<>();
+  this.gameSessions=new ConcurrentHashMap<>();
+  this.draftSessions=new ConcurrentHashMap<>();
+  this.userTournaments=new ConcurrentHashMap<>();
+  this.constructing=new ConcurrentHashMap<>();
+  this.sideboarding=new ConcurrentHashMap<>();
+  this.watchedGames=new ArrayList<>();
+  this.tablesToDelete=new ArrayList<>();
+  this.sessionId="";
+  this.clientVersion="";
+}

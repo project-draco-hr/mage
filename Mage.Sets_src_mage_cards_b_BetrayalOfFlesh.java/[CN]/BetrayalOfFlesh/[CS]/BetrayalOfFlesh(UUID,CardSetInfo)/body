@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{5}{B}");
+  this.getSpellAbility().getModes().setMinModes(1);
+  this.getSpellAbility().getModes().setMaxModes(1);
+  this.getSpellAbility().addEffect(new DestroyTargetEffect());
+  this.getSpellAbility().addTarget(new TargetCreaturePermanent());
+  Mode mode=new Mode();
+  mode.getEffects().add(new ReturnFromGraveyardToBattlefieldTargetEffect());
+  mode.getTargets().add(new TargetCardInYourGraveyard(new FilterCreatureCard("creature card from your graveyard")));
+  this.getSpellAbility().getModes().addMode(mode);
+  this.addAbility(new EntwineAbility(new SacrificeTargetCost(new TargetControlledPermanent(3,3,new FilterControlledLandPermanent("three lands"),true))));
+}

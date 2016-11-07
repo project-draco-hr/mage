@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{4}{B}");
+  this.subtype.add("Wurm");
+  this.power=new MageInt(4);
+  this.toughness=new MageInt(3);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new BoostTargetEffect(-1,-1,Duration.EndOfTurn),new ManaCostsImpl("{B}"));
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("green creature blocking {this}");
+  filter.add(new ColorPredicate(ObjectColor.GREEN));
+  filter.add(new BlockingAttackerIdPredicate(this.getId()));
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability);
+}

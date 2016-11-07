@@ -1,0 +1,14 @@
+{
+  for (  Permanent permanent : game.getBattlefield().getActivePermanents(opponentEnchantmentsFilter,source.getControllerId(),source.getSourceId(),game)) {
+    permanent.destroy(source.getSourceId(),game,false);
+  }
+  Player controller=game.getPlayer(source.getControllerId());
+  if (controller != null) {
+    if (game.getState().getBattlefield().countAll(untappedLandFilter,controller.getId(),game) > 0) {
+      for (      Permanent permanent : game.getBattlefield().getActivePermanents(controlledEnchantmentsFilter,source.getControllerId(),source.getSourceId(),game)) {
+        permanent.destroy(source.getSourceId(),game,false);
+      }
+    }
+  }
+  return true;
+}

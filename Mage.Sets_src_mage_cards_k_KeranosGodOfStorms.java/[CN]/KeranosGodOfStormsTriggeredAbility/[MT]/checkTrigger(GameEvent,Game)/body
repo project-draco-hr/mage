@@ -1,0 +1,27 @@
+{
+  if (event.getPlayerId().equals(this.getControllerId())) {
+    if (game.getActivePlayerId().equals(this.getControllerId())) {
+      CardsAmountDrawnThisTurnWatcher watcher=(CardsAmountDrawnThisTurnWatcher)game.getState().getWatchers().get(CardsAmountDrawnThisTurnWatcher.BASIC_KEY);
+      if (watcher != null && watcher.getAmountCardsDrawn(event.getPlayerId()) != 1) {
+        return false;
+      }
+      Card card=game.getCard(event.getTargetId());
+      Player controller=game.getPlayer(this.getControllerId());
+      Permanent sourcePermanent=(Permanent)getSourceObject(game);
+      if (card != null && controller != null && sourcePermanent != null) {
+        controller.revealCards(sourcePermanent.getIdName(),new CardsImpl(card),game);
+        this.getTargets().clear();
+        this.getEffects().clear();
+        if (card.getCardType().contains(CardType.LAND)) {
+          this.addEffect(new DrawCardSourceControllerEffect(1));
+        }
+ else {
+          this.addEffect(new DamageTargetEffect(3));
+          this.addTarget(new TargetCreatureOrPlayer());
+        }
+        return true;
+      }
+    }
+  }
+  return false;
+}

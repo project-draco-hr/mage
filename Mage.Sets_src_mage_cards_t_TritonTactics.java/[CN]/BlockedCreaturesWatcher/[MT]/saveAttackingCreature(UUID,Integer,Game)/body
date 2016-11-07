@@ -1,0 +1,18 @@
+{
+  Set<String> attackers;
+  Map<Integer,Set<String>> attackerMap;
+  Object object=game.getState().getValue("blockedAttackers" + getSourceId());
+  if (object != null && object instanceof Map) {
+    attackerMap=(Map<Integer,Set<String>>)object;
+  }
+ else {
+    attackerMap=new HashMap<>();
+  }
+  attackers=attackerMap.get(zoneChangeCounter);
+  if (attackers == null) {
+    attackers=new HashSet<>();
+    attackerMap.put(zoneChangeCounter,attackers);
+  }
+  attackers.add(CardUtil.getCardZoneString(null,attackerId,game));
+  game.getState().setValue("blockedAttackers" + getSourceId().toString(),attackerMap);
+}

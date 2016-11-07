@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{W}{W}");
+  this.subtype.add("Wall");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(7);
+  this.addAbility(DefenderAbility.getInstance());
+  FilterCreaturePermanent filter=new FilterCreaturePermanent("creatures blocked by {this}");
+  filter.add(new BlockedByIdPredicate(this.getId()));
+  this.addAbility(new EndOfCombatTriggeredAbility(new ExileAllEffect(filter,this.getId(),this.getIdName()),false));
+  this.addAbility(new LeavesBattlefieldTriggeredAbility(new ReturnFromExileEffect(this.getId(),Zone.BATTLEFIELD,"return all cards exiled with {this} to the battlefield under their owners' control"),false));
+}

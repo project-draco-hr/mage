@@ -1,0 +1,21 @@
+{
+  Player player=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanent(source.getSourceId());
+  if (player != null && permanent != null) {
+    for (    Card card : player.getHand().getCards(CastThroughTime.filter,game)) {
+      addReboundAbility(card,source,game);
+    }
+    for (Iterator<StackObject> iterator=game.getStack().iterator(); iterator.hasNext(); ) {
+      StackObject stackObject=iterator.next();
+      if (stackObject instanceof Spell && stackObject.getControllerId().equals(source.getControllerId())) {
+        Spell spell=(Spell)stackObject;
+        Card card=spell.getCard();
+        if (card != null) {
+          addReboundAbility(card,source,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}

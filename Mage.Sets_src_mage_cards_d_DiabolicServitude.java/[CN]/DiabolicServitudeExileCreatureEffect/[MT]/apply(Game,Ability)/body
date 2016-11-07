@@ -1,0 +1,10 @@
+{
+  Object object=game.getState().getValue(source.getSourceId().toString() + "returnedCreature");
+  if ((object instanceof MageObjectReference)) {
+    Effect effect=new ExileTargetEffect();
+    effect.setTargetPointer(new FixedTarget(((MageObjectReference)object).getSourceId()));
+    effect.apply(game,source);
+    return new ReturnToHandSourceEffect(true).apply(game,source);
+  }
+  return false;
+}

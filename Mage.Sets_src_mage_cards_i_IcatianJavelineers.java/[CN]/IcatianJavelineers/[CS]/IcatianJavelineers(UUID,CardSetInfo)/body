@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{W}");
+  this.subtype.add("Human");
+  this.subtype.add("Soldier");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  this.addAbility(new EntersBattlefieldAbility(new AddCountersSourceEffect(CounterType.JAVELIN.createInstance()),"with a javelin counter on it"));
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new TapSourceCost());
+  ability.addCost(new RemoveCountersSourceCost(CounterType.JAVELIN.createInstance()));
+  ability.addTarget(new TargetCreatureOrPlayer());
+  this.addAbility(ability);
+}

@@ -1,0 +1,14 @@
+{
+  execute("toggleActivation",sessionId,new Action(){
+    @Override public void execute(){
+      User user=UserManager.getInstance().getUserByName(userName);
+      if (user != null) {
+        user.setActive(!user.isActive());
+        if (!user.isActive() && user.isConnected()) {
+          SessionManager.getInstance().disconnectUser(sessionId,user.getSessionId());
+        }
+      }
+    }
+  }
+);
+}

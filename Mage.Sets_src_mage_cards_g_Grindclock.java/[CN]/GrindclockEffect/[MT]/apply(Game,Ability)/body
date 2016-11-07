@@ -1,0 +1,12 @@
+{
+  Permanent sourceObject=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (sourceObject != null) {
+    int amount=sourceObject.getCounters(game).getCount(CounterType.CHARGE);
+    Player targetPlayer=game.getPlayer(source.getFirstTarget());
+    if (targetPlayer != null) {
+      targetPlayer.moveCards(targetPlayer.getLibrary().getTopCards(game,amount),Zone.GRAVEYARD,source,game);
+      return true;
+    }
+  }
+  return false;
+}

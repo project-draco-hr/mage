@@ -1,0 +1,9 @@
+{
+  if (sourceAbility.getFirstTarget() == null) {
+    return 0;
+  }
+  FilterLandPermanent filter=new FilterLandPermanent();
+  filter.add(Predicates.not(new SupertypePredicate("Basic")));
+  filter.add(new ControllerIdPredicate(sourceAbility.getFirstTarget()));
+  return game.getBattlefield().count(filter,sourceAbility.getSourceId(),sourceAbility.getControllerId(),game);
+}

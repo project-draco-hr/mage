@@ -1,0 +1,13 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{2}{R}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetLandPermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.PutCreatureInPlay));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  Ability ability2=new SimpleStaticAbility(Zone.BATTLEFIELD,new BecomesCreatureAttachedEffect(new BeastToken(),"Enchanted land is a 4/2 red Beast creature with trample. It's still a land.",Duration.WhileOnBattlefield));
+  this.addAbility(ability2);
+  Ability ability3=new DiesAttachedTriggeredAbility(new ReturnToHandAttachedEffect(),"enchanted land",false);
+  this.addAbility(ability3);
+}

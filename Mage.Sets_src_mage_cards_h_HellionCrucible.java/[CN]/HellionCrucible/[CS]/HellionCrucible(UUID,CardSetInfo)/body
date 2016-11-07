@@ -1,0 +1,12 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.LAND},"");
+  this.addAbility(new ColorlessManaAbility());
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new AddCountersSourceEffect(CounterType.PRESSURE.createInstance()),new ManaCostsImpl("{1}{R}"));
+  ability.addCost(new TapSourceCost());
+  this.addAbility(ability);
+  ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new CreateTokenEffect(new HellionToken(),1),new ManaCostsImpl("{1}{R}"));
+  ability.addCost(new TapSourceCost());
+  ability.addCost(new RemoveCountersSourceCost(CounterType.PRESSURE.createInstance(2)));
+  ability.addCost(new SacrificeSourceCost());
+  this.addAbility(ability);
+}

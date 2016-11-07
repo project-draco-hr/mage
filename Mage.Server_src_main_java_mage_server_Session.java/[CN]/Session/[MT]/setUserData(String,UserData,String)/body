@@ -1,0 +1,22 @@
+{
+  User user=UserManager.getInstance().getUserByName(userName);
+  if (user != null) {
+    if (clientVersion != null) {
+      user.setClientVersion(clientVersion);
+    }
+    if (user.getUserData() == null || user.getUserData().getGroupId() == UserGroup.DEFAULT.getGroupId()) {
+      user.setUserData(userData);
+    }
+ else {
+      user.getUserData().update(userData);
+    }
+    if (user.getUserData().getAvatarId() < Constants.MIN_AVATAR_ID || user.getUserData().getAvatarId() > Constants.MAX_AVATAR_ID) {
+      user.getUserData().setAvatarId(Constants.DEFAULT_AVATAR_ID);
+    }
+    if (user.getUserData().getAvatarId() == 11) {
+      user.getUserData().setAvatarId(updateAvatar(user.getName()));
+    }
+    return true;
+  }
+  return false;
+}

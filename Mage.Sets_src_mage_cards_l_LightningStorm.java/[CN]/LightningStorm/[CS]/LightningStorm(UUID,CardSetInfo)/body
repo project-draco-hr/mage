@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.INSTANT},"{1}{R}{R}");
+  Effect effect=new DamageTargetEffect(new LightningStormCountCondition(CounterType.CHARGE));
+  effect.setText("{this} deals X damage to target creature or player, where X is 3 plus the number of charge counters on it");
+  this.getSpellAbility().addEffect(effect);
+  this.getSpellAbility().addTarget(new TargetCreatureOrPlayer());
+  SimpleActivatedAbility ability=new SimpleActivatedAbility(Zone.STACK,new LightningStormAddCounterEffect(),new DiscardTargetCost(new TargetCardInHand(new FilterLandCard())));
+  ability.setMayActivate(TargetController.ANY);
+  ability.addEffect(new InfoEffect("Any player may activate this ability but only if {this} is on the stack"));
+  this.addAbility(ability);
+}

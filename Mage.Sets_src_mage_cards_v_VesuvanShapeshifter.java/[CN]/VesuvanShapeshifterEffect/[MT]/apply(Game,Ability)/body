@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent copyToCreature=game.getPermanent(source.getSourceId());
+  if (copyToCreature != null) {
+    FilterCreaturePermanent filter=new FilterCreaturePermanent("another creature");
+    filter.add(new AnotherPredicate());
+    TargetCreaturePermanent target=new TargetCreaturePermanent(0,1,filter,false);
+    if (controller.chooseTarget(Outcome.BecomeCreature,target,source,game) && !target.getTargets().isEmpty()) {
+      Permanent copyFromCreature=game.getPermanentOrLKIBattlefield(target.getFirstTarget());
+      if (copyFromCreature != null) {
+        game.copyPermanent(Duration.Custom,copyFromCreature,copyToCreature.getId(),source,new vesuvanShapeShifterFaceUpApplier());
+        source.getTargets().clear();
+        return true;
+      }
+    }
+  }
+  return false;
+}

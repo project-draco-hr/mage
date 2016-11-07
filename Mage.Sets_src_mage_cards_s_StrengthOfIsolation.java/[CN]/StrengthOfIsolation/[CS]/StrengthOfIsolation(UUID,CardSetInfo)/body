@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{W}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.BoostCreature));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  ability=new SimpleStaticAbility(Zone.BATTLEFIELD,new BoostEnchantedEffect(1,2,Duration.WhileOnBattlefield));
+  Effect effect=new GainAbilityAttachedEffect(ProtectionAbility.from(ObjectColor.BLACK),AttachmentType.AURA);
+  effect.setText("and has protection from black");
+  ability.addEffect(effect);
+  this.addAbility(ability);
+  this.addAbility(new MadnessAbility(this,new ManaCostsImpl("{W}")));
+}

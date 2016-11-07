@@ -1,0 +1,15 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{B/R}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  SimpleStaticAbility blackAbility=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new BoostEnchantedEffect(1,1),new EnchantedCreatureColorCondition(ObjectColor.BLACK),"As long as enchanted creature is black, it gets +1/+1"));
+  blackAbility.addEffect(new ConditionalContinuousEffect(new GainAbilityAttachedEffect(WitherAbility.getInstance(),AttachmentType.AURA),new EnchantedCreatureColorCondition(ObjectColor.BLACK),"and has wither"));
+  this.addAbility(blackAbility);
+  SimpleStaticAbility redAbility=new SimpleStaticAbility(Zone.BATTLEFIELD,new ConditionalContinuousEffect(new BoostEnchantedEffect(1,1),new EnchantedCreatureColorCondition(ObjectColor.RED),"As long as enchanted creature is red, it gets +1/+1"));
+  redAbility.addEffect(new ConditionalContinuousEffect(new GainAbilityAttachedEffect(FirstStrikeAbility.getInstance(),AttachmentType.AURA),new EnchantedCreatureColorCondition(ObjectColor.RED),"and has first strike"));
+  this.addAbility(redAbility);
+}

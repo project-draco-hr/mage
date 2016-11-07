@@ -1,0 +1,28 @@
+{
+  super.init(source,game);
+  Permanent permanent=game.getPermanent(this.targetPointer.getFirst(game,source));
+  if (permanent != null) {
+    FilterCreaturePermanent filter=new FilterCreaturePermanent();
+    filter.add(Predicates.not(new PermanentIdPredicate(this.targetPointer.getFirst(game,source))));
+    filter.add(new AttackingPredicate());
+    boolean allCreatureTypes=false;
+    if (permanent.getSubtype(game).contains(ChangelingAbility.ALL_CREATURE_TYPE)) {
+      allCreatureTypes=true;
+    }
+ else {
+      for (      Ability ability : permanent.getAbilities()) {
+        if (ability instanceof ChangelingAbility) {
+          allCreatureTypes=true;
+        }
+      }
+    }
+    if (!allCreatureTypes) {
+      ArrayList<Predicate<MageObject>> predicateList=new ArrayList<>();
+      for (      String subtype : permanent.getSubtype(game)) {
+        predicateList.add(new SubtypePredicate(subtype));
+      }
+      filter.add(Predicates.or(predicateList));
+    }
+    power=game.getBattlefield().getActivePermanents(filter,source.getControllerId(),source.getSourceId(),game).size();
+  }
+}

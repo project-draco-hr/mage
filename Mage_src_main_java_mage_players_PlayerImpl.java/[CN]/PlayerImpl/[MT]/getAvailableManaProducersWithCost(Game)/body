@@ -1,8 +1,12 @@
 {
   List<Permanent> result=new ArrayList<>();
   for (  Permanent permanent : game.getBattlefield().getAllActivePermanents(playerId)) {
-    for (    ManaAbility ability : permanent.getAbilities().getManaAbilities(Zone.BATTLEFIELD)) {
-      if (ability.canActivate(playerId,game) && !ability.getManaCosts().isEmpty()) {
+    Boolean canUse=null;
+    for (    ActivatedManaAbilityImpl ability : permanent.getAbilities().getActivatedManaAbilities(Zone.BATTLEFIELD)) {
+      if (canUse == null) {
+        canUse=permanent.canUseActivatedAbilities(game);
+      }
+      if (canUse && ability.canActivate(playerId,game) && !ability.getManaCosts().isEmpty()) {
         result.add(permanent);
         break;
       }

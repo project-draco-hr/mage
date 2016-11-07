@@ -1,0 +1,16 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{7}{G}");
+  this.subtype.add("Centaur");
+  this.subtype.add("Warrior");
+  this.power=new MageInt(8);
+  this.toughness=new MageInt(8);
+  this.addAbility(TrampleAbility.getInstance());
+  this.addAbility(IndestructibleAbility.getInstance());
+  GainAbilityTargetEffect effect=new GainAbilityTargetEffect(TrampleAbility.getInstance(),Duration.EndOfTurn);
+  effect.setText("it gains trample ");
+  Ability ability=new AttacksAllTriggeredAbility(effect,false,filter,SetTargetPointer.PERMANENT,false);
+  GainAbilityTargetEffect effect2=new GainAbilityTargetEffect(IndestructibleAbility.getInstance(),Duration.EndOfTurn);
+  effect2.setText(" and indestructible until end of turn");
+  ability.addEffect(effect2);
+  this.addAbility(ability);
+}

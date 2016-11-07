@@ -1,0 +1,14 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent sourcePermanent=(Permanent)game.getLastKnownInformation(source.getSourceId(),Zone.BATTLEFIELD);
+  if (sourcePermanent != null && controller != null && (sourcePermanent.getZoneChangeCounter(game) == source.getSourceObjectZoneChangeCounter() || sourcePermanent.getZoneChangeCounter(game) + 1 == source.getSourceObjectZoneChangeCounter())) {
+    int amount=sourcePermanent.getCounters(game).getCount(CounterType.P1P1);
+    if (amount > 0) {
+      Effect effect=new AddCountersTargetEffect(CounterType.P1P1.createInstance(amount));
+      effect.setTargetPointer(targetPointer);
+      effect.apply(game,source);
+    }
+    return true;
+  }
+  return false;
+}

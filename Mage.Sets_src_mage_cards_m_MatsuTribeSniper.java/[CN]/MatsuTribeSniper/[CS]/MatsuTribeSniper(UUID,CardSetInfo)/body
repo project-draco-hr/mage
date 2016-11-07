@@ -1,0 +1,14 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{1}{G}");
+  this.subtype.add("Snake");
+  this.subtype.add("Warrior");
+  this.subtype.add("Archer");
+  this.power=new MageInt(1);
+  this.toughness=new MageInt(1);
+  Ability ability=new SimpleActivatedAbility(Zone.BATTLEFIELD,new DamageTargetEffect(1),new TapSourceCost());
+  ability.addTarget(new TargetCreaturePermanent(filter));
+  this.addAbility(ability);
+  ability=new DealsDamageToACreatureTriggeredAbility(new TapTargetEffect("that creature"),false,false,true);
+  ability.addEffect(new DontUntapInControllersNextUntapStepTargetEffect("and it"));
+  this.addAbility(ability);
+}

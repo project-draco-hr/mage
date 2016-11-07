@@ -1,0 +1,37 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  MageObject sourceObject=game.getObject(source.getSourceId());
+  if (controller != null && sourceObject != null) {
+    Cards cards=new CardsImpl();
+    int creatureCardsFound=0;
+    int count=Math.min(controller.getLibrary().size(),8);
+    for (int i=0; i < count; i++) {
+      Card card=controller.getLibrary().removeFromTop(game);
+      if (card != null) {
+        cards.add(card);
+        if (filter.match(card,source.getSourceId(),source.getControllerId(),game)) {
+          creatureCardsFound++;
+        }
+      }
+    }
+    if (!cards.isEmpty()) {
+      controller.revealCards(sourceObject.getName(),cards,game);
+      if (creatureCardsFound > 0 && controller.chooseUse(outcome,"Put creature(s) into play?",source,game)) {
+        int cardsToChoose=Math.min(numberOfCardsToPutIntoPlay,creatureCardsFound);
+        TargetCard target=new TargetCard(cardsToChoose,cardsToChoose,Zone.LIBRARY,filter);
+        if (controller.choose(Outcome.PutCreatureInPlay,cards,target,game)) {
+          for (          UUID creatureId : target.getTargets()) {
+            Card card=game.getCard(creatureId);
+            if (card != null) {
+              cards.remove(card);
+              controller.moveCards(card,Zone.BATTLEFIELD,source,game);
+            }
+          }
+        }
+      }
+      controller.moveCards(cards,Zone.GRAVEYARD,source,game);
+    }
+    return true;
+  }
+  return false;
+}

@@ -1,0 +1,11 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.ENCHANTMENT},"{1}{U}");
+  this.subtype.add("Aura");
+  TargetPermanent auraTarget=new TargetCreaturePermanent();
+  this.getSpellAbility().addTarget(auraTarget);
+  this.getSpellAbility().addEffect(new AttachEffect(Outcome.AddAbility));
+  Ability ability=new EnchantAbility(auraTarget.getTargetName());
+  this.addAbility(ability);
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new CantBeBlockedAttachedEffect(AttachmentType.AURA)));
+  this.addAbility(new AttacksAttachedTriggeredAbility(new CloakingDeviceLoseLifeDefendingPlayerEffect(1,true),AttachmentType.AURA,false));
+}

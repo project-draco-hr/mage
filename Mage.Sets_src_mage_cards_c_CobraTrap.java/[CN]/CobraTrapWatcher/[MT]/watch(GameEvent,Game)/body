@@ -1,0 +1,13 @@
+{
+  if (event.getType() == EventType.DESTROYED_PERMANENT) {
+    Permanent perm=(Permanent)game.getPermanentOrLKIBattlefield(event.getTargetId());
+    if (perm != null && !perm.getCardType().contains(CardType.CREATURE)) {
+      if (game.getStack().size() > 0) {
+        StackObject spell=game.getStack().getStackObject(event.getSourceId());
+        if (spell != null && game.getOpponents(perm.getControllerId()).contains(spell.getControllerId())) {
+          players.add(perm.getControllerId());
+        }
+      }
+    }
+  }
+}

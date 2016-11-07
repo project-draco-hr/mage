@@ -1,0 +1,12 @@
+{
+  if (ability.getOriginalId().equals(originalId)) {
+    int amount=0;
+    for (    Cost cost : ability.getCosts()) {
+      if (cost instanceof RevealVariableBlackCardsFromHandCost) {
+        amount=((VariableCost)cost).getAmount();
+      }
+    }
+    ability.getTargets().clear();
+    ability.addTarget(new TargetCardInASingleGraveyard(0,amount,new FilterCard()));
+  }
+}

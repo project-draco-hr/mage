@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{5}{U}{U}");
+  this.supertype.add("Legendary");
+  this.subtype.add("Kraken");
+  this.power=new MageInt(8);
+  this.toughness=new MageInt(8);
+  Effect effect=new ConditionalContinuousEffect(new GainAbilitySourceEffect(HexproofAbility.getInstance(),Duration.WhileOnBattlefield),new InvertCondition(new SourceMatchesFilterCondition(new FilterAttackingOrBlockingCreature())),"{this} has hexproof unless it's attacking or blocking");
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,effect));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new CantBeBlockedUnlessAllEffect()));
+}

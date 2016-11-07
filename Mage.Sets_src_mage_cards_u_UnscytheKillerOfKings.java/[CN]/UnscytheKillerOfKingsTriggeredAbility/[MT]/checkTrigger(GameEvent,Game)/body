@@ -1,0 +1,23 @@
+{
+  if (((ZoneChangeEvent)event).isDiesEvent()) {
+    ZoneChangeEvent zEvent=(ZoneChangeEvent)event;
+    if (zEvent.getTarget().getCardType().contains(CardType.CREATURE)) {
+      Permanent equipment=game.getPermanent(getSourceId());
+      if (equipment != null && equipment.getAttachedTo() != null) {
+        boolean damageDealt=false;
+        for (        MageObjectReference mor : zEvent.getTarget().getDealtDamageByThisTurn()) {
+          if (mor.refersTo(equipment.getAttachedTo(),game)) {
+            damageDealt=true;
+            break;
+          }
+        }
+        if (damageDealt) {
+          Effect effect=this.getEffects().get(0);
+          effect.setTargetPointer(new FixedTarget(event.getTargetId()));
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
