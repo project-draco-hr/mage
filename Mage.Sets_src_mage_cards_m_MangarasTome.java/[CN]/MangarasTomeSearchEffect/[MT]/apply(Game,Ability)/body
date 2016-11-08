@@ -1,0 +1,18 @@
+{
+  Player controller=game.getPlayer(source.getControllerId());
+  Permanent permanent=game.getPermanentOrLKIBattlefield(source.getSourceId());
+  if (controller != null && permanent != null) {
+    TargetCardInLibrary target=new TargetCardInLibrary(5,new FilterCard());
+    if (controller.searchLibrary(target,game)) {
+      for (      UUID targetId : target.getTargets()) {
+        Card card=controller.getLibrary().getCard(targetId,game);
+        if (card != null) {
+          controller.moveCardsToExile(card,source,game,false,CardUtil.getCardExileZoneId(game,source),permanent.getLogName());
+          card.setFaceDown(true,game);
+        }
+      }
+    }
+    return true;
+  }
+  return false;
+}
