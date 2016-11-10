@@ -1,0 +1,10 @@
+{
+  super(ownerId,setInfo,new CardType[]{CardType.CREATURE},"{X}{R}{R}");
+  this.subtype.add("Hydra");
+  this.power=new MageInt(0);
+  this.toughness=new MageInt(0);
+  this.addAbility(new EntersBattlefieldAbility(new EntersBattlefieldWithXCountersEffect(CounterType.P1P1.createInstance())));
+  this.addAbility(new SimpleStaticAbility(Zone.BATTLEFIELD,new RockHydraEffect()));
+  this.addAbility(new SimpleActivatedAbility(Zone.BATTLEFIELD,new PreventDamageToSourceEffect(Duration.EndOfTurn,1),new ManaCostsImpl("{R}")));
+  this.addAbility(new ConditionalActivatedAbility(Zone.BATTLEFIELD,new AddCountersSourceEffect(CounterType.P1P1.createInstance(1)),new ManaCostsImpl("{R}{R}{R}"),new IsStepCondition(PhaseStep.UPKEEP),null));
+}
